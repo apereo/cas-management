@@ -35,7 +35,15 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-oidc-core:$casVersion"
     implementation "org.apereo.cas:cas-server-support-ws-idp-api:$casVersion"
     implementation "org.apereo.cas:cas-server-support-grouper-core:$casVersion"
+    implementation "org.apereo.cas:cas-server-support-json-service-registry:$casVersion"
     
     testImplementation "org.apereo.cas:cas-server-core-services-authentication:$casVersion"
     //testImplementation (path: ":cas-server-core-services", configuration: "tests")
+    compile ('org.eclipse.jgit:org.eclipse.jgit:4.6.1.201703071140-r') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        exclude group: 'org.slf4j', module: 'slf4j'
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+        exclude group: 'org.apache.commons', module: 'commons-lang3'
+    }
+
 }

@@ -203,3 +203,7 @@ export class MetadataEntityAttributesAttributeReleasePolicy extends ReturnAllowe
     this['@class'] = MetadataEntityAttributesAttributeReleasePolicy.cName;
   }
 }
+
+
+
+

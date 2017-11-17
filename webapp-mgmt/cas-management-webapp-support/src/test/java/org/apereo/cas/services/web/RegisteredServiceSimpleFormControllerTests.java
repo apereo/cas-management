@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.validation.BindingResult;
 
 import java.util.Arrays;
@@ -62,7 +64,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     }
 
     @Test
-    public void verifyAddRegisteredServiceWithValues() {
+    public void verifyAddRegisteredServiceWithValues() throws Exception {
         final RegexRegisteredService svc = new RegexRegisteredService();
         svc.setDescription(DESCRIPTION);
         svc.setServiceId(SERVICE_ID);
@@ -70,7 +72,9 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setEvaluationOrder(123);
 
         assertTrue(this.manager.getAllServices().isEmpty());
-        this.controller.saveService(svc);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        this.controller.saveService(request, response, svc);
 
         final Collection<RegisteredService> services = this.manager.getAllServices();
         assertEquals(1, services.size());
@@ -78,7 +82,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     }
 
     @Test
-    public void verifyEditRegisteredServiceWithValues() {
+    public void verifyEditRegisteredServiceWithValues() throws Exception {
         final RegexRegisteredService r = new RegexRegisteredService();
         r.setId(1000);
         r.setName("Test Service");
@@ -94,7 +98,9 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setId(1000);
         svc.setEvaluationOrder(1000);
 
-        this.controller.saveService(svc);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        this.controller.saveService(request, response, svc);
 
         assertFalse(this.manager.getAllServices().isEmpty());
         final RegisteredService r2 = this.manager.findServiceBy(1000);
@@ -103,7 +109,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     }
 
     @Test
-    public void verifyAddRegexRegisteredService() {
+    public void verifyAddRegexRegisteredService() throws Exception {
         final RegexRegisteredService svc = new RegexRegisteredService();
         svc.setDescription(DESCRIPTION);
         svc.setServiceId("^serviceId");
@@ -111,7 +117,9 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setId(1000);
         svc.setEvaluationOrder(1000);
 
-        this.controller.saveService(svc);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        this.controller.saveService(request, response, svc);
 
         final Collection<RegisteredService> services = this.manager.getAllServices();
         assertEquals(1, services.size());
@@ -119,7 +127,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     }
 
     @Test
-    public void verifyAddMultipleRegisteredServiceTypes() {
+    public void verifyAddMultipleRegisteredServiceTypes() throws Exception {
         AbstractRegisteredService svc = new RegexRegisteredService();
         svc.setDescription(DESCRIPTION);
         svc.setServiceId("^serviceId");
@@ -127,7 +135,9 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setId(1000);
         svc.setEvaluationOrder(1000);
 
-        this.controller.saveService(svc);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        this.controller.saveService(request, response, svc);
 
         svc = new RegexRegisteredService();
         svc.setDescription(DESCRIPTION);
@@ -136,14 +146,14 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setId(100);
         svc.setEvaluationOrder(100);
 
-        this.controller.saveService(svc);
+        this.controller.saveService(request,response,svc);
 
         final Collection<RegisteredService> services = this.manager.getAllServices();
         assertEquals(2, services.size());
     }
 
     @Test
-    public void verifyAddMockRegisteredService() {
+    public void verifyAddMockRegisteredService() throws Exception {
         this.controller = new RegisteredServiceSimpleFormController(this.manager);
 
         final RegexRegisteredService svc = new RegexRegisteredService();
@@ -153,7 +163,9 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setId(1000);
         svc.setEvaluationOrder(1000);
 
-        this.controller.saveService(svc);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        this.controller.saveService(request,response,svc);
 
         final Collection<RegisteredService> services = this.manager.getAllServices();
         assertEquals(1, services.size());
@@ -161,7 +173,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     }
 
     @Test
-    public void verifyEditMockRegisteredService() {
+    public void verifyEditMockRegisteredService() throws Exception {
         this.controller = new RegisteredServiceSimpleFormController(this.manager);
 
         final RegexRegisteredService r = new RegexRegisteredService();
@@ -173,7 +185,9 @@ public class RegisteredServiceSimpleFormControllerTests {
         this.manager.save(r);
 
         r.setServiceId("serviceId1");
-        this.controller.saveService(r);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        this.controller.saveService(request, response, r);
 
         assertFalse(this.manager.getAllServices().isEmpty());
         final RegisteredService r2 = this.manager.findServiceBy(1000);

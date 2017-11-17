@@ -7,6 +7,7 @@ import {Location} from '@angular/common';
 import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
 import {ControlsService} from '../controls/controls.service';
+import {RevertComponent} from '../revert/revert.component';
 
 @Component({
   selector: 'app-services',
@@ -17,6 +18,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   deleteItem: ServiceItem;
   domain: String;
   selectedItem: ServiceItem;
+  revertItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'description'];
 
@@ -27,7 +29,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: ServiceViewService,
-              private location: Location,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               public controlsService: ControlsService) {
@@ -45,7 +46,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
         setTimeout(() => {
           this.dataSource.data = data.resp;
-        }, 10);
+        },10);
       }
     );
     this.route.params.subscribe((params) => this.domain = params['domain']);
@@ -60,6 +61,14 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       this.selectedItem = item;
     }
     this.router.navigate(['/form', this.selectedItem.assignedId]);
+  }
+
+  getYaml() {
+    this.router.navigate(['/yaml', this.selectedItem.assignedId]);
+  }
+
+  getJson() {
+    this.router.navigate(['/json', this.selectedItem.assignedId]);
   }
 
   serviceDuplicate() {
@@ -80,6 +89,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     this.deleteItem = this.selectedItem;
   };
 
+  openModalRevert() {
+    const dialogRef = this.dialog.open(RevertComponent, {
+      data: this.selectedItem,
+      width: '500px',
+      position: {top: '100px'}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.revert();
+      }
+    });
+    this.revertItem = this.selectedItem;
+  };
+
   delete() {
     const myData = {id: this.deleteItem.assignedId};
 
@@ -97,8 +120,26 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     this.refresh();
   }
 
+  history() {
+    const fileName: string = (this.selectedItem.name + '-' + this.selectedItem.assignedId + '.json').replace(/ /g, '');
+    this.router.navigate(['/history', fileName]);
+  }
+
+  revert() {
+    const fileName: string = (this.revertItem.name + '-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
+    if (this.controlsService.changeStyle(this.revertItem.assignedId) === 'deleted') {
+      this.service.revertDelete(fileName)
+          .then(resp => this.refresh());
+    } else {
+      this.service.revert(fileName)
+          .then(resp => this.refresh());
+    }
+  }
+
+
   refresh() {
     this.getServices();
+    this.controlsService.untracked();
   }
 
   getServices() {
@@ -129,19 +170,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  showMoveDown(): boolean {
+    if (!this.selectedItem) {
+      return false;
+    }
+    const index = this.dataSource.data.indexOf(this.selectedItem);
+    return index < this.dataSource.data.length - 1
+           && this.dataSource.data[index + 1].status !== 'DELETE'
+           && this.selectedItem && this.selectedItem.status !== 'DELETE';
+  }
   showMoveUp(): boolean {
     if (!this.selectedItem) {
       return false;
     }
     const index = this.dataSource.data.indexOf(this.selectedItem);
     return index > 0;
-  }
-
-  showMoveDown(): boolean {
-    if (!this.selectedItem) {
-      return false;
-    }
-    const index = this.dataSource.data.indexOf(this.selectedItem);
-    return index < this.dataSource.data.length - 1;
   }
 }

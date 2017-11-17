@@ -1,0 +1,107 @@
+<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+  <div style="padding-top: 10px;">
+    <mat-icon style="padding-top: 3px;">file_upload</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;">
+      <ng-container i18n>
+        Pull Requests
+      </ng-container>
+    </h4>
+  </div>
+  <div style="flex: 1 1 auto"></div>
+  <div>
+    <app-controls [showRefresh]="true" (refresh)="refresh()"></app-controls>
+  </div>
+</div>
+
+<div style="display: inline-flex;margin-left:25px;">
+  <input class="checkCell" [(ngModel)]="showPending" (change)="refresh()" type="checkbox"><ng-container i18n>Pending</ng-container>
+  <input class="checkCell" [(ngModel)]="showAccepted" (change)="refresh()" type="checkbox"><ng-container i18n>Accepted</ng-container>
+  <input class="checkCell" [(ngModel)]="showRejected" (change)="refresh()" type="checkbox"><ng-container i18n>Rejected</ng-container>
+</div>
+
+<div style="display: flex; flex-direction: column;margin-right:25px;margin-left:25px;">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="message">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'messageWidth'">
+        <ng-container i18n>
+          Message
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'messageWidth'">
+        {{ row.msg }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="branch">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
+        <ng-container i18n>
+          Branch Name
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <a (click)="viewChanges(row)">
+        {{ row.name}}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'statusWidth'">
+        <ng-container i18n>
+          Status
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'statusWidth'">
+        {{ status(row) }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="pullMenu" (click)="selectedBranch = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>
+
+<mat-menu #pullMenu>
+  <button mat-menu-item (click)="viewChanges()">
+    <mat-icon>visibility</mat-icon>
+    <ng-container i18n>View Changes</ng-container>
+  </button>
+  <button mat-menu-item (click)="openAcceptModal()" *ngIf="status(selectedBranch) === 'Pending'">
+    <mat-icon>thumb_up</mat-icon>
+    <ng-container i18n>Accept</ng-container>
+  </button>
+  <button mat-menu-item (click)="openRejectModal()" *ngIf="status(selectedBranch) === 'Pending'">
+    <mat-icon>thumb_down</mat-icon>
+    <ng-container i18n>Reject</ng-container>
+  </button>
+  <button mat-menu-item (click)="getNotes()">
+    <mat-icon>note</mat-icon>
+    <ng-container>Notes</ng-container>
+  </button>
+  <button mat-menu-item (click)="addNote()">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>Add Note</ng-container>
+  </button>
+</mat-menu>
+
+

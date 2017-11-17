@@ -6,7 +6,6 @@ import {
   TimeBasedRegisteredServiceAccessStrategy
 } from '../../../domain/access-strategy';
 import {FormData} from '../../../domain/form-data';
-import {AbstractRegisteredService} from '../../../domain/registered-service';
 import {Util} from '../../util/util';
 import {Data} from '../data';
 

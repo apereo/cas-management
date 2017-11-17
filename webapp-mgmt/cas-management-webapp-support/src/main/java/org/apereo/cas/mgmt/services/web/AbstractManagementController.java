@@ -37,7 +37,7 @@ public abstract class AbstractManagementController {
     /**
      * Instantiates a new manage registered services multi action controller.
      *
-     * @param servicesManager the services manager
+     * @param servicesManager the services from
      */
     public AbstractManagementController(final ServicesManager servicesManager) {
         this.servicesManager = servicesManager;

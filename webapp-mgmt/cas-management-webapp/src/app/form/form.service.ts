@@ -1,7 +1,7 @@
 /**
  * Created by tschmidt on 2/14/17.
  */
-import {Http, Headers} from '@angular/http'
+import {Headers} from '@angular/http'
 import {Injectable} from '@angular/core';
 import {AbstractRegisteredService} from '../../domain/registered-service';
 import {FormData} from '../../domain/form-data';
@@ -13,7 +13,7 @@ export class FormService {
   constructor(private http: HttpClient) {}
 
   getService(id: string): Promise<AbstractRegisteredService> {
-    return this.http.get('getService?id=' + id)
+    return this.http.get<AbstractRegisteredService>('getService?id=' + id)
       .toPromise()
       .then(resp => {
         const as: AbstractRegisteredService = resp as AbstractRegisteredService;
@@ -32,7 +32,7 @@ export class FormService {
 
 
   formData(): Promise<FormData> {
-    return this.http.get('formData')
+    return this.http.get<FormData>('formData')
       .toPromise()
       .then(resp => resp)
       .catch(this.handleError);

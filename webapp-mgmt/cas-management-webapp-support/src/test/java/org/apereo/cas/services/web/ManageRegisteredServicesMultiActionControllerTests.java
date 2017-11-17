@@ -69,7 +69,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     private ServicesManager servicesManager;
 
     @Test
-    public void verifyDeleteService() {
+    public void verifyDeleteService() throws Exception {
         final RegexRegisteredService r = new RegexRegisteredService();
         r.setId(1200);
         r.setName(NAME);
@@ -80,7 +80,8 @@ public class ManageRegisteredServicesMultiActionControllerTests {
 
         final MockHttpServletResponse response = new MockHttpServletResponse();
         this.controller.manage(response);
-        this.controller.deleteRegisteredService(1200);
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        this.controller.deleteRegisteredService(request,response,1200);
 
         assertNull(this.servicesManager.findServiceBy(1200));
     }
@@ -88,14 +89,15 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     @Test
     public void verifyDeleteServiceNoService() throws Exception {
         final MockHttpServletResponse response = new MockHttpServletResponse();
-        final ResponseEntity entity = this.controller.deleteRegisteredService(5000);
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        final ResponseEntity entity = this.controller.deleteRegisteredService(request, response,5000);
         assertNull(this.servicesManager.findServiceBy(5000));
         assertFalse(response.getContentAsString().contains("serviceName"));
         assertFalse(entity.getStatusCode().is2xxSuccessful());
     }
 
     @Test
-    public void updateEvaluationOrderInvalidServiceId() {
+    public void updateEvaluationOrderInvalidServiceId() throws Exception {
         final RegexRegisteredService r = new RegexRegisteredService();
         r.setId(1200);
         r.setName(NAME);
@@ -125,9 +127,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         r.setEvaluationOrder(2);
 
         this.servicesManager.save(r);
-
-        final MockHttpServletResponse response = new MockHttpServletResponse();
-        final ModelAndView mv = this.controller.manage(response);
+        final ModelAndView mv = this.controller.manage(new MockHttpServletResponse());
 
         assertTrue(mv.getModel().containsKey("defaultServiceUrl"));
         assertTrue(mv.getModel().containsKey("status"));

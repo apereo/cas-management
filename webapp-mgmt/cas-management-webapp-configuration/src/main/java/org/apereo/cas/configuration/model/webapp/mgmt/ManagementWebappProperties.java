@@ -22,10 +22,14 @@ import java.util.List;
 public class ManagementWebappProperties implements Serializable {
     private static final long serialVersionUID = -7686426966125636166L;
     /**
-     * List of roles required to accept the web application.
+     * List of roles that allow admin access to the web application.
      */
     private List<String> adminRoles = CollectionUtils.wrap("ROLE_ADMIN");
 
+    /**
+     * List of roles that allow a non-admin access to the web application.
+     */
+    private List<String> userRoles = CollectionUtils.wrap("ROLE_USER");
     /**
      * The server name/address of the management web application.
      */
@@ -73,6 +77,21 @@ public class ManagementWebappProperties implements Serializable {
      * </pre>
      */
     private Resource userPropertiesFile = new ClassPathResource("user-details.properties");
+
+    /**
+     * A writable location where the Git repository will be created to track changes.
+     */
+    private String servicesRepo = "/etc/cas/services-repo";
+
+    /**
+     * A writable location where the users Git repositories will be created.
+     */
+    private String userReposDir = "/etc/cas/user-repos";
+
+    /**
+     * Path to executable bean shell script to sync server nodes.
+     */
+    private String syncScript;
     
     public Ldap getLdap() {
         return ldap;
@@ -146,6 +165,38 @@ public class ManagementWebappProperties implements Serializable {
         public void setLdapAuthz(final LdapAuthorizationProperties ldapAuthz) {
             this.ldapAuthz = ldapAuthz;
         }
+    }
+
+    public String getServicesRepo() {
+        return servicesRepo;
+    }
+
+    public void setServicesRepo(final String servicesRepo) {
+        this.servicesRepo = servicesRepo;
+    }
+
+    public String getSyncScript() {
+        return syncScript;
+    }
+
+    public void setSyncScript(final String syncScript) {
+        this.syncScript = syncScript;
+    }
+
+    public String getUserReposDir() {
+        return userReposDir;
+    }
+
+    public void setUserReposDir(final String userReposDir) {
+        this.userReposDir = userReposDir;
+    }
+
+    public List<String> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(final List<String> userRoles) {
+        this.userRoles = userRoles;
     }
 }
 

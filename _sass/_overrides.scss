@@ -1,0 +1,89 @@
+/**
+ * CSS overrides for the default Pygment files
+ */
+.highlight pre, .highlight code {
+  color: white;
+}
+
+.nav-pills .nav-link.active:hover {
+  background-color: #272822; 
+}  
+
+.nav-pills .nav-link.active, .nav-pills .nav-link.active:focus, .nav-pills .nav-item.open .nav-link, .nav-pills .nav-item.open .nav-link:focus, .nav-pills .nav-item.open .nav-link:hover {
+  background-color: #272822;
+  color: white;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+code.highlighter-rouge {
+  color: #318f7b 
+}
+
+
+/**
+ * Tab overrides
+ */
+div.tab-content div.tab-pane:first-child table {
+    border-top-left-radius: 0;
+}
+
+/**
+ * Quotes overrides
+ */
+blockquote {
+  display:block;
+  background: #fff;
+  padding: 15px 15px 2px 10px;
+  margin: 0 0 20px;
+  position: relative;
+  
+  /*Font*/
+  font-family: Merriweather, Georgia, serif;
+  font-size: x-large;
+  font-style: italic;
+  line-height: 1.5;
+  color: #666;
+  text-align: justify;
+  
+  border-left: 15px solid #145b98;
+  border-right: 5px solid #145b98;
+  
+  /*Box Shadow - (Optional)*/
+  -moz-box-shadow: 2px 2px 15px #ccc;
+  -webkit-box-shadow: 2px 2px 15px #ccc;
+  box-shadow: 2px 2px 15px #ccc;
+}
+
+blockquote::before{
+  // content: "\201C"; /*Unicode for Left Double Quote*/
+  
+  /*Font*/
+  font-family: Georgia, serif;
+  font-size: 60px;
+  font-weight: bold;
+  color: #999;
+  position: absolute;
+  left: 10px;
+  top:5px;
+}
+
+blockquote::after {
+  content: "";
+}
+
+blockquote a {
+  text-decoration: none;
+  background: #eee;
+  cursor: pointer;
+  padding: 0 3px;
+  color: #c76c0c;
+}
+
+blockquote a:hover{
+ color: #666;
+}
+
+blockquote em{
+  font-style: italic;
+}

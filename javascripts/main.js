@@ -56,7 +56,7 @@ function getActiveDocumentationVersionInView(returnBlankIfNoVersion) {
 
 
 function loadSidebarForActiveVersion() {
-    $.get( "/cas/" + getActiveDocumentationVersionInView() + "/sidebar.html", function( data ) {
+    $.get( "/cas-management/" + getActiveDocumentationVersionInView() + "/sidebar.html", function( data ) {
 
         var menu = $(data);
 
@@ -164,7 +164,7 @@ function generateToolbarIcons() {
         editablePage = "index.md";
     }
 
-    var imagesPath = "/cas/images/";
+    var imagesPath = "/cas-management/images/";
     if (isDocumentationSiteViewedLocally()) {
         var loc = location.href;
         var index = loc.indexOf(CONST_SITE_TARGET_DIR);
@@ -174,7 +174,7 @@ function generateToolbarIcons() {
 
 
     if (activeVersion != CONST_CURRENT_VER && activeVersion != "") {
-        var linkToDev = "/cas/" + page.replace(activeVersion, CONST_CURRENT_VER);
+        var linkToDev = "/cas-management/" + page.replace(activeVersion, CONST_CURRENT_VER);
         linkToDev = linkToDev.replace("html/", "html");
 
         $('#toolbarIcons').append("<a href='" + linkToDev +

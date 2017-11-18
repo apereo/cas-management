@@ -1,4 +1,4 @@
-description = "Apereo CAS Documentation"
+description = "Apereo CAS Management Documentation"
 
 javadoc {
     enabled false

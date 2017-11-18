@@ -27,7 +27,7 @@ If you have already identified an enhancement or a bug, it is STRONGLY recommend
 
 ## Documentation
 
-[![JavaDoc](https://javadoc-emblem.rhcloud.com/doc/org.apereo.cas/cas-server/badge.svg)](http://www.javadoc.io/doc/org.apereo.cas/cas-server)
+[![JavaDoc](https://javadoc-emblem.rhcloud.com/doc/org.apereo.cas/cas-management/badge.svg)](http://www.javadoc.io/doc/org.apereo.cas/cas-management)
 
 - [Documentation][wiki]
 - [Blog][blog]
@@ -40,7 +40,7 @@ CAS is 100% free open source software managed by [Apereo](https://www.apereo.org
 
 [wiki]: https://apereo.github.io/cas-management
 [contribute]: https://apereo.github.io/cas/developer/Contributor-Guidelines.html
-[cassonatype]: https://oss.sonatype.org/content/repositories/snapshots/org/jasig/cas/
+[cassonatype]: https://oss.sonatype.org/content/repositories/snapshots/org/apereo/cas/
 [casmavencentral]: http://mvnrepository.com/artifact/org.apereo.cas
 [downloadcasgithub]: https://github.com/apereo/cas-management/archive/master.zip
 [releasenotes]: https://github.com/apereo/cas-management/releases

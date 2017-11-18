@@ -38,7 +38,7 @@ If you have already identified an enhancement or a bug, it is STRONGLY recommend
 
 CAS is 100% free open source software managed by [Apereo](https://www.apereo.org/), licensed under [Apache v2](LICENSE). Our community has access to all releases of the CAS software with absolutely no costs. We welcome contributions from our community of all types and sizes. The time and effort to develop and maintain this project is dedicated by a group of [volunteers and contributors](https://github.com/apereo/cas/graphs/contributors). Support options may be [found here][cassupport]. If you (or your employer) benefit from this project, please consider becoming a [Friend of Apereo](https://www.apereo.org/friends) and contribute.
 
-[wiki]: https://apereo.github.io/cas
+[wiki]: https://apereo.github.io/cas-management
 [contribute]: https://apereo.github.io/cas/developer/Contributor-Guidelines.html
 [cassonatype]: https://oss.sonatype.org/content/repositories/snapshots/org/jasig/cas/
 [casmavencentral]: http://mvnrepository.com/artifact/org.apereo.cas

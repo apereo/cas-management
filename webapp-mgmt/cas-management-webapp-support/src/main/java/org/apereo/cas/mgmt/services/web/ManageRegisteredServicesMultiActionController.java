@@ -7,7 +7,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
-import org.apereo.cas.mgmt.services.GitServicesManagerWrapped;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
@@ -165,7 +164,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
                                                           final HttpServletResponse response,
                                                           @RequestParam("id") final long idAsLong) throws Exception {
-        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
+        final GitServicesManager manager = managerFactory.from(request, response);
         final RegisteredService svc = manager.findServiceBy(this.defaultService);
         if (svc == null || svc.getId() == idAsLong) {
             return new ResponseEntity<>("The default service " + this.defaultService.getId() + " cannot be deleted. "
@@ -195,7 +194,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @GetMapping(value = "/domainList")
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
-        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
+        final GitServicesManager manager = managerFactory.from(request, response);
         final Collection<String> data = manager.getDomains();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -229,7 +228,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                                    final HttpServletResponse response,
                                                                    @RequestParam final String domain) throws Exception {
         ensureDefaultServiceExists();
-        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
+        final GitServicesManager manager = managerFactory.from(request, response);
         return new ResponseEntity<>(manager.getServiceItemsForDomain(domain), HttpStatus.OK);
     }
 
@@ -247,7 +246,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<List<RegisteredServiceItem>> search(final HttpServletRequest request,
                                                               final HttpServletResponse response,
                                                               @RequestParam final String query) throws Exception {
-        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
+        final GitServicesManager manager = managerFactory.from(request, response);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
         final List<RegisteredServiceItem> serviceBeans = new ArrayList<>();
         final List<RegisteredService> services = manager.getAllServices()
@@ -291,7 +290,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
                             @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
-        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
+        final GitServicesManager manager = managerFactory.from(request, response);
         final String id = svcs[0].getAssignedId();
         final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {

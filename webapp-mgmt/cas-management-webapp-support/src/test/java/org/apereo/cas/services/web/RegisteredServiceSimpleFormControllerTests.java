@@ -11,13 +11,15 @@ import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementWebAppConfiguration;
+import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.AbstractRegisteredService;
+import org.apereo.cas.services.DefaultServicesManager;
+import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
-import org.apereo.cas.services.ServicesManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +35,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.BindingResult;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.HashMap;
 import static org.junit.Assert.*;
@@ -70,14 +74,14 @@ public class RegisteredServiceSimpleFormControllerTests {
 
     private RegisteredServiceSimpleFormController controller;
 
-    @Autowired
-    private ServicesManager manager;
+    private GitServicesManager manager;
 
     @Autowired
     private CasConfigurationProperties casProperties;
 
     @Before
     public void setUp() throws Exception {
+        this.manager = new GitServicesManager(new DefaultServicesManager(new InMemoryServiceRegistry(), null), null);
         final CasUserProfile casUserProfile = mock(CasUserProfile.class);
         when(casUserProfile.isAdministrator()).thenReturn(true);
         final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
@@ -85,7 +89,7 @@ public class RegisteredServiceSimpleFormControllerTests {
                 .thenReturn(casUserProfile);
         final RepositoryFactory repositoryFactory = new RepositoryFactory(casProperties, casUserProfileFactory);
         final ManagerFactory managerFactory = mock(ManagerFactory.class);
-        when(managerFactory.from(any(), mock(CasUserProfile.class))).thenReturn(this.manager);
+        when(managerFactory.from(any(HttpServletRequest.class), any(HttpServletResponse.class))).thenReturn(this.manager);
 
         this.controller = new RegisteredServiceSimpleFormController(this.manager, managerFactory, casUserProfileFactory);
     }

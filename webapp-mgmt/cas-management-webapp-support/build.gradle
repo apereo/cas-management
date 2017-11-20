@@ -16,28 +16,64 @@ dependencies {
     implementation libraries.springcloudconfigclient
     implementation libraries.thymeleaf
 
-    implementation "org.apereo.cas:cas-server-core-api-authentication:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-api-authentication:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
 
-    implementation "org.apereo.cas:cas-server-core-util:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-authentication-attributes:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-util:$casVersion"){
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
     implementation project(":webapp-mgmt:cas-management-webapp-configuration")
-    implementation "org.apereo.cas:cas-server-core-services:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-services-registry:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-web:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-logging-config:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-ws-idp-api:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-person-directory:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-surrogate-api:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-services:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-core-services-registry:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-core-web:$casVersion") {
+            exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-core-logging-config:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-person-directory:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
 
-    implementation "org.apereo.cas:cas-server-support-oauth-services:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-saml-idp-core:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-oidc-services:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-oidc-core:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-ws-idp-api:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-grouper-core:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-json-service-registry:$casVersion"
+    implementation ("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-oidc-services:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
     
-    testImplementation "org.apereo.cas:cas-server-core-services-authentication:$casVersion"
+    testImplementation ("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
     //testImplementation (path: ":cas-server-core-services", configuration: "tests")
     compile ('org.eclipse.jgit:org.eclipse.jgit:4.6.1.201703071140-r') {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

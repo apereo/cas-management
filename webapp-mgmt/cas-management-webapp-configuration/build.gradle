@@ -16,10 +16,18 @@ dependencies {
     
     optional libraries.springbootconfigmetadata
 
-    implementation "org.apereo.cas:cas-server-core-api-authentication:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-api-webflow:$casVersion"
-    compileOnly "org.apereo.cas:cas-server-core-util:$casVersion"
-    testImplementation "org.apereo.cas:cas-server-core-util:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-api-authentication:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-webflow:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    compileOnly ("org.apereo.cas:cas-server-core-util:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
+    testImplementation ("org.apereo.cas:cas-server-core-util:$casVersion") {
+        exclude group: 'org.apereo.cas', module: 'cas-server-core-configuration'
+    }
 }
 
 task generateConfigurationMetadata(type: JavaExec) {

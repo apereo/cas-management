@@ -1,32 +1,23 @@
 package org.apereo.cas.mgmt.services;
 
 import javafx.util.Pair;
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
-import org.apereo.cas.services.DomainServicesManager;
-import org.apereo.cas.services.JsonServiceRegistryDao;
 import org.apereo.cas.services.RegisteredService;
-import org.apereo.cas.services.ServiceRegistryDao;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.util.DigestUtils;
-import org.apereo.cas.util.RegexUtils;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -35,9 +26,9 @@ import java.util.stream.Collectors;
  * @author Travis Schmidt
  * @since 5.2.0
  */
-public class GitServicesManagerWrapped implements ServicesManager {
+public class GitServicesManager implements ServicesManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GitServicesManagerWrapped.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GitServicesManager.class);
 
     private GitUtil git;
 
@@ -46,7 +37,7 @@ public class GitServicesManagerWrapped implements ServicesManager {
     private ServicesManager manager;
 
 
-    public GitServicesManagerWrapped(final ServicesManager manager, final GitUtil git) {
+    public GitServicesManager(final ServicesManager manager, final GitUtil git) {
         this.manager = manager;
         this.git = git;
     }
@@ -137,52 +128,52 @@ public class GitServicesManagerWrapped implements ServicesManager {
     }
 
     @Override
-    public RegisteredService save(RegisteredService registeredService) {
+    public RegisteredService save(final RegisteredService registeredService) {
         return this.manager.save(registeredService);
     }
 
     @Override
-    public RegisteredService save(RegisteredService registeredService, boolean b) {
+    public RegisteredService save(final RegisteredService registeredService, final boolean b) {
         return this.manager.save(registeredService, b);
     }
 
     @Override
-    public RegisteredService delete(long l) {
+    public RegisteredService delete(final long l) {
         return this.manager.delete(l);
     }
 
     @Override
-    public RegisteredService delete(RegisteredService registeredService) {
+    public RegisteredService delete(final RegisteredService registeredService) {
         return this.manager.delete(registeredService);
     }
 
     @Override
-    public RegisteredService findServiceBy(String s) {
+    public RegisteredService findServiceBy(final String s) {
         return this.manager.findServiceBy(s);
     }
 
     @Override
-    public RegisteredService findServiceBy(Service service) {
+    public RegisteredService findServiceBy(final Service service) {
         return this.manager.findServiceBy(service);
     }
 
     @Override
-    public Collection<RegisteredService> findServiceBy(Predicate<RegisteredService> predicate) {
+    public Collection<RegisteredService> findServiceBy(final Predicate<RegisteredService> predicate) {
         return this.manager.findServiceBy(predicate);
     }
 
     @Override
-    public <T extends RegisteredService> T findServiceBy(Service service, Class<T> aClass) {
+    public <T extends RegisteredService> T findServiceBy(final Service service, final Class<T> aClass) {
         return this.manager.findServiceBy(service, aClass);
     }
 
     @Override
-    public <T extends RegisteredService> T findServiceBy(String s, Class<T> aClass) {
+    public <T extends RegisteredService> T findServiceBy(final String s, final Class<T> aClass) {
         return this.manager.findServiceBy(s, aClass);
     }
 
     @Override
-    public RegisteredService findServiceBy(long l) {
+    public RegisteredService findServiceBy(final long l) {
         return this.manager.findServiceBy(l);
     }
 
@@ -192,12 +183,12 @@ public class GitServicesManagerWrapped implements ServicesManager {
     }
 
     @Override
-    public boolean matchesExistingService(Service service) {
+    public boolean matchesExistingService(final Service service) {
         return this.manager.matchesExistingService(service);
     }
 
     @Override
-    public boolean matchesExistingService(String s) {
+    public boolean matchesExistingService(final String s) {
         return this.matchesExistingService(s);
     }
 
@@ -212,7 +203,7 @@ public class GitServicesManagerWrapped implements ServicesManager {
     }
 
     @Override
-    public Collection<RegisteredService> getServicesForDomain(String domain) {
+    public Collection<RegisteredService> getServicesForDomain(final String domain) {
         return this.manager.getServicesForDomain(domain);
     }
 

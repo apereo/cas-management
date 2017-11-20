@@ -34,7 +34,7 @@ export class ChangesComponent implements OnInit {
       .subscribe((data: { resp: DiffEntry[]}) => {
       setTimeout(() => {
         this.dataSource.data = data.resp;
-      },10);
+      }, 10);
       });
   }
 

@@ -44,7 +44,7 @@ export class HistoryComponent implements OnInit {
         }
         setTimeout(() => {
           this.dataSource.data = data.resp;
-        },10);
+        }, 10);
       });
     this.route.params.subscribe((params) => this.fileName = params['fileName']);
   }

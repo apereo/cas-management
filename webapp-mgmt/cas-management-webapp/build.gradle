@@ -24,7 +24,7 @@ node {
 
 npm_install.dependsOn(npm_cache_verify)
 
-task buildClientDev(type: NpmTask, dependsOn: "npm_install", group: "build",
+task buildClientDev(type: NpmTask, dependsOn: "npm_install", group: "bootRun",
         description: "Compile client side folder for development") {
     args = ['run', 'buildDev']
 }
@@ -54,7 +54,9 @@ bootRun {
     }
     
     jvmArgs = list
-    dependsOn(buildClientDev)
+    if (!Boolean.getBoolean("skipClientBuild")) {
+        dependsOn(buildClientDev)
+    }
 }
 
 springBoot {

@@ -1,27 +1,40 @@
 package org.apereo.cas.services.web;
 
+import org.apereo.cas.config.CasCoreServicesConfiguration;
+import org.apereo.cas.config.CasCoreUtilConfiguration;
+import org.apereo.cas.config.CasCoreWebConfiguration;
+import org.apereo.cas.config.support.CasWebApplicationServiceFactoryConfiguration;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
+import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
+import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
+import org.apereo.cas.mgmt.config.CasManagementWebAppConfiguration;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
+import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
+import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.AbstractRegisteredService;
-import org.apereo.cas.services.DomainServicesManager;
-import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
-import org.apereo.services.persondir.support.StubPersonAttributeDao;
+import org.apereo.cas.services.ServicesManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.BindingResult;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -32,28 +45,51 @@ import static org.mockito.Mockito.*;
  * @author Misagh Moayyed
  * @since 3.1
  */
-@RunWith(JUnit4.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(
+        classes = {
+                AopAutoConfiguration.class,
+                RefreshAutoConfiguration.class,
+                CasManagementAuditConfiguration.class,
+                CasManagementWebAppConfiguration.class,
+                ServerPropertiesAutoConfiguration.class,
+                CasCoreUtilConfiguration.class,
+                CasCoreServicesConfiguration.class,
+                CasManagementAuthenticationConfiguration.class,
+                CasWebApplicationServiceFactoryConfiguration.class,
+                CasManagementAuthorizationConfiguration.class,
+                CasCoreWebConfiguration.class})
+@DirtiesContext
+@TestPropertySource(locations = "classpath:/mgmt.properties")
 public class RegisteredServiceSimpleFormControllerTests {
 
     private static final String NAME = "name";
     private static final String SERVICE_ID = "serviceId";
     private static final String DESCRIPTION = "description";
     private static final String TEST_ID = "test";
+
     private RegisteredServiceSimpleFormController controller;
-    private DomainServicesManager manager;
-    private StubPersonAttributeDao repository;
+
+    @Autowired
+    private ServicesManager manager;
+
+    @Autowired
+    private CasConfigurationProperties casProperties;
 
     @Before
-    public void setUp() {
-        final Map<String, List<Object>> attributes = new HashMap<>();
-        attributes.put(TEST_ID, Arrays.asList(new Object[]{TEST_ID}));
+    public void setUp() throws Exception {
+        final CasUserProfile casUserProfile = mock(CasUserProfile.class);
+        when(casUserProfile.isAdministrator()).thenReturn(true);
+        final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
+        when(casUserProfileFactory.from(any(), any()))
+                .thenReturn(casUserProfile);
+        final RepositoryFactory repositoryFactory = new RepositoryFactory(casProperties, casUserProfileFactory);
+        final ManagerFactory managerFactory = mock(ManagerFactory.class);
+        when(managerFactory.from(any(), mock(CasUserProfile.class))).thenReturn(this.manager);
 
-        this.repository = new StubPersonAttributeDao();
-        this.repository.setBackingMap(attributes);
-
-        this.manager = new DomainServicesManager(new InMemoryServiceRegistry(), mock(ApplicationEventPublisher.class));
-        this.controller = new RegisteredServiceSimpleFormController(this.manager);
+        this.controller = new RegisteredServiceSimpleFormController(this.manager, managerFactory, casUserProfileFactory);
     }
+
 
     @Test
     public void verifyAddRegisteredServiceNoValues() {
@@ -146,7 +182,7 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setId(100);
         svc.setEvaluationOrder(100);
 
-        this.controller.saveService(request,response,svc);
+        this.controller.saveService(request, response, svc);
 
         final Collection<RegisteredService> services = this.manager.getAllServices();
         assertEquals(2, services.size());
@@ -154,7 +190,6 @@ public class RegisteredServiceSimpleFormControllerTests {
 
     @Test
     public void verifyAddMockRegisteredService() throws Exception {
-        this.controller = new RegisteredServiceSimpleFormController(this.manager);
 
         final RegexRegisteredService svc = new RegexRegisteredService();
         svc.setDescription(DESCRIPTION);
@@ -165,7 +200,7 @@ public class RegisteredServiceSimpleFormControllerTests {
 
         final MockHttpServletResponse response = new MockHttpServletResponse();
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        this.controller.saveService(request,response,svc);
+        this.controller.saveService(request, response, svc);
 
         final Collection<RegisteredService> services = this.manager.getAllServices();
         assertEquals(1, services.size());
@@ -174,7 +209,6 @@ public class RegisteredServiceSimpleFormControllerTests {
 
     @Test
     public void verifyEditMockRegisteredService() throws Exception {
-        this.controller = new RegisteredServiceSimpleFormController(this.manager);
 
         final RegexRegisteredService r = new RegexRegisteredService();
         r.setId(1000);

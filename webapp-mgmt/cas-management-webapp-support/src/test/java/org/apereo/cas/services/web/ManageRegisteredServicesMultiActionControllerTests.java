@@ -81,7 +81,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         final MockHttpServletResponse response = new MockHttpServletResponse();
         this.controller.manage(response);
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        this.controller.deleteRegisteredService(request,response,1200);
+        this.controller.deleteRegisteredService(request, response, 1200);
 
         assertNull(this.servicesManager.findServiceBy(1200));
     }
@@ -90,7 +90,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     public void verifyDeleteServiceNoService() throws Exception {
         final MockHttpServletResponse response = new MockHttpServletResponse();
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        final ResponseEntity entity = this.controller.deleteRegisteredService(request, response,5000);
+        final ResponseEntity entity = this.controller.deleteRegisteredService(request, response, 5000);
         assertNull(this.servicesManager.findServiceBy(5000));
         assertFalse(response.getContentAsString().contains("serviceName"));
         assertFalse(entity.getStatusCode().is2xxSuccessful());

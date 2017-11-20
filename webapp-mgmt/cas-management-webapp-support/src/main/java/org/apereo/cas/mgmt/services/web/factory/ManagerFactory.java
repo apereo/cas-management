@@ -6,9 +6,12 @@ import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
+import org.apereo.cas.mgmt.services.GitServicesManagerWrapped;
+import org.apereo.cas.services.DefaultServicesManager;
+import org.apereo.cas.services.DomainServicesManager;
+import org.apereo.cas.services.JsonServiceRegistryDao;
 import org.apereo.cas.services.ServicesManager;
 import org.eclipse.jgit.api.Git;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,22 +27,20 @@ import java.nio.file.Paths;
  */
 public class ManagerFactory {
 
-    @Autowired
-    private RepositoryFactory repositoryFactory;
+    private final RepositoryFactory repositoryFactory;
 
-    @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    private final CasUserProfileFactory casUserProfileFactory;
 
-    private CasConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
-    private final boolean defaultOnly;
 
     public ManagerFactory(final ServicesManager servicesManager,
                           final CasConfigurationProperties casProperties,
-                          final RepositoryFactory repositoryFactory) {
+                          final RepositoryFactory repositoryFactory,
+                          final CasUserProfileFactory casUserProfileFactory) {
         this.repositoryFactory = repositoryFactory;
         this.casProperties = casProperties;
-        this.defaultOnly = casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DEFAULT;
+        this.casUserProfileFactory = casUserProfileFactory;
         final Path servicesRepo = Paths.get(casProperties.getMgmt().getServicesRepo());
         if (!Files.exists(servicesRepo)) {
             try {
@@ -49,7 +50,7 @@ public class ManagerFactory {
             }
             try {
                 final GitUtil git = repositoryFactory.masterRepository();
-                final GitServicesManager manager = new GitServicesManager(git, defaultOnly);
+                final GitServicesManagerWrapped manager = new GitServicesManagerWrapped(createJSONServiceManager(git),git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();
                 git.getGit().commit().setAll(true).setMessage("Initial commit").call();
@@ -69,7 +70,7 @@ public class ManagerFactory {
      * @return - GitServicesManager for the logged in user
      * @throws Exception - failed
      */
-    public GitServicesManager from(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public GitServicesManagerWrapped from(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         return from(request, casUserProfileFactory.from(request, response));
     }
 
@@ -81,15 +82,29 @@ public class ManagerFactory {
      * @return - GitServicesManager for the logged in user
      * @throws Exception - failed
      */
-    public GitServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
-        GitServicesManager manager = (GitServicesManager) request.getSession().getAttribute("servicesManager");
+    public GitServicesManagerWrapped from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
+        GitServicesManagerWrapped manager = (GitServicesManagerWrapped) request.getSession().getAttribute("servicesManager");
         if (manager != null) {
             manager.load();
         } else {
             final GitUtil git = repositoryFactory.from(user);
-            manager = new GitServicesManager(git, defaultOnly);
+            manager = new GitServicesManagerWrapped(createJSONServiceManager(git), git);
         }
         request.getSession().setAttribute("servicesManager", manager);
+        return manager;
+    }
+
+    private ServicesManager createJSONServiceManager(GitUtil git) {
+        ServicesManager manager;
+        JsonServiceRegistryDao serviceRegistryDAO = new JsonServiceRegistryDao(Paths.get(git.repoPath()),
+                false,
+                null);
+        if (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN) {
+            manager = new DomainServicesManager(serviceRegistryDAO, null);
+        } else {
+            manager = new DefaultServicesManager(serviceRegistryDAO, null);
+        }
+        manager.load();
         return manager;
     }
 }

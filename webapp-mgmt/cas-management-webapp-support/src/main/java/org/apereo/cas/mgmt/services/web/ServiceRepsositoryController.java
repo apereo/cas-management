@@ -21,7 +21,6 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -54,25 +53,27 @@ public class ServiceRepsositoryController {
 
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?://([^:/]+)");
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
-    @Autowired
-    private ServicesManager servicesManager;
+    private final ServicesManager servicesManager;
 
-    private RepositoryFactory repositoryFactory;
+    private final RepositoryFactory repositoryFactory;
 
-    private CasUserProfileFactory casUserProfileFactory;
+    private final CasUserProfileFactory casUserProfileFactory;
 
     private final ManagerFactory managerFactory;
 
     public ServiceRepsositoryController(
             final RepositoryFactory repositoryFactory,
             final ManagerFactory managerFactory,
-            final CasUserProfileFactory casUserProfileFactory) {
+            final CasUserProfileFactory casUserProfileFactory,
+            final CasConfigurationProperties casProperties,
+            final ServicesManager servicesManager) {
         this.repositoryFactory = repositoryFactory;
         this.managerFactory = managerFactory;
         this.casUserProfileFactory = casUserProfileFactory;
+        this.casProperties = casProperties;
+        this.servicesManager = servicesManager;
     }
 
     /**

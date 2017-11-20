@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services;
 
 import javafx.util.Pair;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.services.DomainServicesManager;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -33,64 +35,20 @@ import java.util.stream.Collectors;
  * @author Travis Schmidt
  * @since 5.2.0
  */
-public class GitServicesManager extends DomainServicesManager {
+public class GitServicesManagerWrapped implements ServicesManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GitServicesManager.class);
-
-    private final boolean defaultOnly;
+    private static final Logger LOGGER = LoggerFactory.getLogger(GitServicesManagerWrapped.class);
 
     private GitUtil git;
 
     private Map<Integer, String> uncommitted;
 
-    private final Pattern domainExtractor = RegexUtils.createPattern("^\\^?https?://([^:/]+)");
-    private final Pattern domainPattern = RegexUtils.createPattern("^[a-z0-9-.]*$");
+    private ServicesManager manager;
 
 
-    public GitServicesManager(final GitUtil git, final boolean defaultOnly) {
-
-        this(new JsonServiceRegistryDao(Paths.get(git.repoPath()),
-                                        false,
-                                        null),
-                                        null, defaultOnly);
+    public GitServicesManagerWrapped(final ServicesManager manager, final GitUtil git) {
+        this.manager = manager;
         this.git = git;
-    }
-
-    /**
-     * Protected constructor matching extended class for creating an instance.
-     *
-     * @param registryDao - JSONRegistryDAO for the git repo
-     * @param eventPublisher - ApplicationPublisher
-     * @param defaultOnly - boolean if DefaultServicesManager is used.
-     */
-    protected GitServicesManager(final ServiceRegistryDao registryDao,
-                                 final ApplicationEventPublisher eventPublisher,
-                                 final boolean defaultOnly) {
-        super(registryDao, eventPublisher);
-        this.defaultOnly = defaultOnly;
-        load();
-    }
-
-    @Override
-    protected Collection<RegisteredService> getCandidateServicesToMatch(final String serviceId) {
-        if (defaultOnly) {
-            return getAllServices();
-        }
-        return super.getCandidateServicesToMatch(serviceId);
-    }
-
-    private String extractDomain(final String service) {
-        if (defaultOnly) {
-            return "default";
-        }
-        Matcher extractor = this.domainExtractor.matcher(service.toLowerCase());
-        return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
-    }
-
-    private String validateDomain(String providedDomain) {
-        String domain = StringUtils.remove(providedDomain, "\\");
-        Matcher match = this.domainPattern.matcher(StringUtils.remove(domain, "\\"));
-        return match.matches() ? domain : "default";
     }
 
     /**
@@ -176,5 +134,90 @@ public class GitServicesManager extends DomainServicesManager {
         } catch (final Exception e) {
         }
         return null;
+    }
+
+    @Override
+    public RegisteredService save(RegisteredService registeredService) {
+        return this.manager.save(registeredService);
+    }
+
+    @Override
+    public RegisteredService save(RegisteredService registeredService, boolean b) {
+        return this.manager.save(registeredService, b);
+    }
+
+    @Override
+    public RegisteredService delete(long l) {
+        return this.manager.delete(l);
+    }
+
+    @Override
+    public RegisteredService delete(RegisteredService registeredService) {
+        return this.manager.delete(registeredService);
+    }
+
+    @Override
+    public RegisteredService findServiceBy(String s) {
+        return this.manager.findServiceBy(s);
+    }
+
+    @Override
+    public RegisteredService findServiceBy(Service service) {
+        return this.manager.findServiceBy(service);
+    }
+
+    @Override
+    public Collection<RegisteredService> findServiceBy(Predicate<RegisteredService> predicate) {
+        return this.manager.findServiceBy(predicate);
+    }
+
+    @Override
+    public <T extends RegisteredService> T findServiceBy(Service service, Class<T> aClass) {
+        return this.manager.findServiceBy(service, aClass);
+    }
+
+    @Override
+    public <T extends RegisteredService> T findServiceBy(String s, Class<T> aClass) {
+        return this.manager.findServiceBy(s, aClass);
+    }
+
+    @Override
+    public RegisteredService findServiceBy(long l) {
+        return this.manager.findServiceBy(l);
+    }
+
+    @Override
+    public Collection<RegisteredService> getAllServices() {
+        return this.manager.getAllServices();
+    }
+
+    @Override
+    public boolean matchesExistingService(Service service) {
+        return this.manager.matchesExistingService(service);
+    }
+
+    @Override
+    public boolean matchesExistingService(String s) {
+        return this.matchesExistingService(s);
+    }
+
+    @Override
+    public void load() {
+        this.manager.load();
+    }
+
+    @Override
+    public int count() {
+        return this.manager.count();
+    }
+
+    @Override
+    public Collection<RegisteredService> getServicesForDomain(String domain) {
+        return this.manager.getServicesForDomain(domain);
+    }
+
+    @Override
+    public Collection<String> getDomains() {
+        return this.manager.getDomains();
     }
 }

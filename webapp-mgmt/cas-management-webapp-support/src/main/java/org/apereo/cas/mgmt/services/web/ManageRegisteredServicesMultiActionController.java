@@ -7,6 +7,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
+import org.apereo.cas.mgmt.services.GitServicesManagerWrapped;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
@@ -18,7 +19,6 @@ import org.apereo.cas.util.RegexUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -59,14 +59,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     private final IPersonAttributeDao personAttributeDao;
     private final CasUserProfileFactory casUserProfileFactory;
     private final Service defaultService;
-
-    @Autowired
-    private ManagerFactory managerFactory;
-
-    @Autowired
-    private RepositoryFactory repositoryFactory;
-
-    private CasConfigurationProperties casProperties;
+    private final ManagerFactory managerFactory;
+    private final RepositoryFactory repositoryFactory;
+    private final CasConfigurationProperties casProperties;
 
     /**
      * Instantiates a new manage registered services multi action controller.
@@ -84,12 +79,16 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
             final String defaultServiceUrl,
             final CasConfigurationProperties casProperties,
-            final CasUserProfileFactory casUserProfileFactory) {
+            final CasUserProfileFactory casUserProfileFactory,
+            final ManagerFactory managerFactory,
+            final RepositoryFactory repositoryFactory) {
         super(servicesManager);
         this.personAttributeDao = personAttributeDao;
         this.defaultService = webApplicationServiceFactory.createService(defaultServiceUrl);
         this.casProperties = casProperties;
         this.casUserProfileFactory = casUserProfileFactory;
+        this.managerFactory = managerFactory;
+        this.repositoryFactory = repositoryFactory;
     }
 
     /**
@@ -166,7 +165,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
                                                           final HttpServletResponse response,
                                                           @RequestParam("id") final long idAsLong) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
         final RegisteredService svc = manager.findServiceBy(this.defaultService);
         if (svc == null || svc.getId() == idAsLong) {
             return new ResponseEntity<>("The default service " + this.defaultService.getId() + " cannot be deleted. "
@@ -196,7 +195,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @GetMapping(value = "/domainList")
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
         final Collection<String> data = manager.getDomains();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -230,7 +229,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                                    final HttpServletResponse response,
                                                                    @RequestParam final String domain) throws Exception {
         ensureDefaultServiceExists();
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
         return new ResponseEntity<>(manager.getServiceItemsForDomain(domain), HttpStatus.OK);
     }
 
@@ -248,7 +247,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<List<RegisteredServiceItem>> search(final HttpServletRequest request,
                                                               final HttpServletResponse response,
                                                               @RequestParam final String query) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
         final List<RegisteredServiceItem> serviceBeans = new ArrayList<>();
         final List<RegisteredService> services = manager.getAllServices()
@@ -292,7 +291,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
                             @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final GitServicesManagerWrapped manager = managerFactory.from(request, response);
         final String id = svcs[0].getAssignedId();
         final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {

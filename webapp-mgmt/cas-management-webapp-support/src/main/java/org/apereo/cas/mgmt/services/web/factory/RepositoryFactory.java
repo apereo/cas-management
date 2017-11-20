@@ -6,7 +6,6 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,13 +22,14 @@ import java.nio.file.Paths;
  */
 public class RepositoryFactory {
 
-    @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    private final CasUserProfileFactory casUserProfileFactory;
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
-    public RepositoryFactory() {
+    public RepositoryFactory(final CasConfigurationProperties casProperties,
+                             final CasUserProfileFactory casUserProfileFactory) {
+        this.casProperties = casProperties;
+        this.casUserProfileFactory = casUserProfileFactory;
     }
 
     /**

@@ -25,13 +25,6 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$PUBLISH_SNAPSHOTS" == "true" ]; 
     exit 0
 fi
 
-echo -e "Setting build environment...\n"
-sudo mkdir -p /etc/cas/config /etc/cas/saml /etc/cas/services
-
-echo -e "Configuring Oracle JDK8 JCE...\n"
-sudo unzip -j -o ./etc/jce8.zip *.jar -d $JAVA_HOME/jre/lib/security
-sudo cp ./etc/java.security $JAVA_HOME/jre/lib/security
-
 echo -e "Configuring Gradle wrapper...\n"
 chmod -R 777 ./gradlew
 

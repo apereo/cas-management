@@ -191,17 +191,17 @@ function generateToolbarIcons() {
         historyLink = baseLink + "/commits/gh-pages/";
         deleteLink = baseLink + "/delete/gh-pages/";
     } else if (activeVersion == CONST_CURRENT_VER) {
-        editLink = baseLink + "/edit/master/docs/cas-server-documentation/";
-        historyLink = baseLink + "/commits/master/docs/cas-server-documentation/";
-        deleteLink = baseLink + "/delete/master/docs/cas-server-documentation/";
+        editLink = baseLink + "/edit/master/docs/cas-management-documentation/";
+        historyLink = baseLink + "/commits/master/docs/cas-management-documentation/";
+        deleteLink = baseLink + "/delete/master/docs/cas-management-documentation/";
     } else if (activeVersion.indexOf("5.") != -1 || activeVersion.indexOf("6.") != -1) {
-        editLink = baseLink + "/edit/" + activeVersion + "/docs/cas-server-documentation/";
-        historyLink = baseLink + "/commits/" + activeVersion + "/docs/cas-server-documentation/";
-        deleteLink = baseLink + "/delete/" + activeVersion + "/docs/cas-server-documentation/";
+        editLink = baseLink + "/edit/" + activeVersion + "/docs/cas-management-documentation/";
+        historyLink = baseLink + "/commits/" + activeVersion + "/docs/cas-management-documentation/";
+        deleteLink = baseLink + "/delete/" + activeVersion + "/docs/cas-management-documentation/";
     } else if (activeVersion != CONST_CURRENT_VER) {
-        editLink = baseLink + "/edit/" + activeVersion + "/cas-server-documentation/";
-        historyLink = baseLink + "/commits/" + activeVersion + "/cas-server-documentation/";
-        deleteLink = baseLink + "/delete/" + activeVersion + "/cas-server-documentation/";
+        editLink = baseLink + "/edit/" + activeVersion + "/cas-management-documentation/";
+        historyLink = baseLink + "/commits/" + activeVersion + "/cas-management-documentation/";
+        deleteLink = baseLink + "/delete/" + activeVersion + "/cas-management-documentation/";
     }
 
     editLink += editablePage;

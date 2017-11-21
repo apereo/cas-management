@@ -42,6 +42,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
      * Instantiates a new registered service simple form controller.
      *
      * @param servicesManager          the services from
+     * @param managerFactory           the manager factory
+     * @param casUserProfileFactory    the cas user factory
      */
     public RegisteredServiceSimpleFormController(final ServicesManager servicesManager,
                                                  final ManagerFactory managerFactory,

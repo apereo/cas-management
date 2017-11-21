@@ -1,6 +1,6 @@
 ---
 layout: default
-title: CAS Management - Home
+title: CAS Management
 ---
 
 # CAS Management Web Application

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: CAS Management - Home
+title: CAS Management Web Application
 ---
 
 # CAS Management Web Application
 
-* Manage and register [client applications and services](installation/Service-Management.html) with specific authentication policies.
+* Manage and register [client applications and services](installation/Installing-ServicesMgmt-Webapp.html) with specific authentication policies.
 
 ## Contribute
 

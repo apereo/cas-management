@@ -34,6 +34,13 @@ If you have already identified an enhancement or a bug, it is STRONGLY recommend
 - [Release Notes][releasenotes]
 - [Support][cassupport]
 
+## Development
+
+[![Build Status](https://travis-ci.org/apereo/cas-management.svg?branch=master)](https://travis-ci.org/apereo/cas-management)
+
+To build the project locally, please follow [this guide](https://apereo.github.io/cas/developer/Build-Process.html). The release schedule is [available here](https://github.com/apereo/cas-management/milestones).
+
+
 ## Support
 
 CAS is 100% free open source software managed by [Apereo](https://www.apereo.org/), licensed under [Apache v2](LICENSE). Our community has access to all releases of the CAS software with absolutely no costs. We welcome contributions from our community of all types and sizes. The time and effort to develop and maintain this project is dedicated by a group of [volunteers and contributors](https://github.com/apereo/cas/graphs/contributors). Support options may be [found here][cassupport]. If you (or your employer) benefit from this project, please consider becoming a [Friend of Apereo](https://www.apereo.org/friends) and contribute.

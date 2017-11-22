@@ -1,20 +1,21 @@
 package org.apereo.cas.services.web;
 
+import org.apache.commons.io.FileUtils;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.config.CasCoreServicesConfiguration;
 import org.apereo.cas.config.CasCoreUtilConfiguration;
 import org.apereo.cas.config.CasCoreWebConfiguration;
+import org.apereo.cas.config.CasServiceRegistryInitializationConfiguration;
+import org.apereo.cas.config.JsonServiceRegistryConfiguration;
 import org.apereo.cas.config.support.CasWebApplicationServiceFactoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.mgmt.CasManagementUtils;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementWebAppConfiguration;
-import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
@@ -22,6 +23,8 @@ import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
+import org.apereo.cas.services.ServicesManager;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,20 +33,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -63,30 +66,25 @@ import static org.mockito.Mockito.*;
                 ServerPropertiesAutoConfiguration.class,
                 CasCoreUtilConfiguration.class,
                 CasCoreServicesConfiguration.class,
+                CasServiceRegistryInitializationConfiguration.class,
                 CasManagementAuthenticationConfiguration.class,
                 CasWebApplicationServiceFactoryConfiguration.class,
                 CasManagementAuthorizationConfiguration.class,
-                CasCoreWebConfiguration.class})
+                CasCoreWebConfiguration.class,
+                JsonServiceRegistryConfiguration.class})
 @DirtiesContext
-@TestPropertySource(locations = "classpath:/mgmt.properties")
+@TestPropertySource(locations = "classpath:mgmt.properties")
 public class ManageRegisteredServicesMultiActionControllerTests {
-
-    private static final String NAME = "name";
-    private static final String UNIQUE_DESCRIPTION = "uniqueDescription";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     private ManageRegisteredServicesMultiActionController controller;
 
-    private GitServicesManager servicesManager;
+    private ServicesManager servicesManager;
 
     @Autowired
     private CasConfigurationProperties casProperties;
-
-    @Autowired
-    private ServerProperties serverProperties;
-
 
     @Autowired
     @Qualifier("webApplicationServiceFactory")
@@ -94,83 +92,110 @@ public class ManageRegisteredServicesMultiActionControllerTests {
 
     @Before
     public void init() throws Exception {
-        this.servicesManager = new GitServicesManager(new DefaultServicesManager(new InMemoryServiceRegistry(), null), null);
+        FileUtils.deleteDirectory(new File("/tmp/services-repo"));
+        this.servicesManager = new DefaultServicesManager(new InMemoryServiceRegistry(), null);
+        RegexRegisteredService svc = new RegexRegisteredService();
+        svc.setServiceId("^https://.*");
+        svc.setName("Wildcard");
+        svc.setDescription("Wildacard defualt service");
+        this.servicesManager.save(svc);
+        svc = new RegexRegisteredService();
+        svc.setServiceId("^https://www.apereo.org/.*");
+        svc.setName("Apereo");
+        svc.setDescription("Service for Apereo domain");
+        this.servicesManager.save(svc);
         final CasUserProfile casUserProfile = mock(CasUserProfile.class);
         when(casUserProfile.isAdministrator()).thenReturn(true);
         final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
         final RepositoryFactory repositoryFactory = new RepositoryFactory(casProperties, casUserProfileFactory);
-        final ManagerFactory managerFactory = mock(ManagerFactory.class);
-        when(managerFactory.from(any(HttpServletRequest.class), any(HttpServletResponse.class))).thenReturn(this.servicesManager);
+        final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager, casProperties, repositoryFactory, casUserProfileFactory);
         this.controller = new ManageRegisteredServicesMultiActionController(this.servicesManager,
-                null, webApplicationServiceFactory, CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties),
+                null, webApplicationServiceFactory, "^https://.*",
                  casProperties, casUserProfileFactory, managerFactory, repositoryFactory);
-
     }
+
+    @After
+    public void tearDown() throws Exception {
+        FileUtils.deleteDirectory(new File("/tmp/services-repo"));
+    }
+
+    @Test
+    public void verifyGetUser() throws Exception {
+        final ResponseEntity<CasUserProfile> user = this.controller.getUser(new MockHttpServletRequest(),
+                                                                            new MockHttpServletResponse());
+        assertTrue(user.getBody().isAdministrator());
+    }
+
+    @Test
+    public void verifyDomainList() throws Exception {
+        final Collection<String> domains = this.controller.getDomains(new MockHttpServletRequest(),
+                                                                      new MockHttpServletResponse()).getBody();
+        assertFalse(domains.isEmpty());
+        assertTrue(domains.contains("default"));
+    }
+
+    @Test
+    public void verifyGetServices() throws Exception {
+        final List<RegisteredServiceItem> services = this.controller.getServices(new MockHttpServletRequest(),
+                                                                                 new MockHttpServletResponse(),
+                                                                                "default").getBody();
+        assertFalse(services.isEmpty());
+        assertEquals(2, services.size());
+    }
+
+    @Test
+    public void verifySearch() throws Exception {
+        final List<RegisteredServiceItem> services = this.controller.search(new MockHttpServletRequest(),
+                                                                            new MockHttpServletResponse(),
+                                                                            "apereo").getBody();
+        assertFalse(services.isEmpty());
+        assertEquals(1, services.size());
+    }
+
+    @Test
+    public void verifyUpdateOrder() throws Exception {
+        List<RegisteredServiceItem> services = this.controller.getServices(new MockHttpServletRequest(),
+                                                                                 new MockHttpServletResponse(),
+                                                                                 "default").getBody();
+        services.get(0).setEvalOrder(1);
+        services.get(1).setEvalOrder(0);
+        final RegisteredServiceItem[] svcs = new RegisteredServiceItem[2];
+        services.toArray(svcs);
+        this.controller.updateOrder(new MockHttpServletRequest(), new MockHttpServletResponse(), svcs);
+        services = this.controller.getServices(new MockHttpServletRequest(),
+                                               new MockHttpServletResponse(),
+                                               "default").getBody();
+        assertTrue(services.get(0).getName().startsWith("Wildcard"));
+        assertTrue(services.get(1).getName().startsWith("Apereo"));
+    }
+
 
     @Test
     public void verifyDeleteService() throws Exception {
-        final RegexRegisteredService r = new RegexRegisteredService();
-        r.setId(1200);
-        r.setName(NAME);
-        r.setServiceId("serviceId");
-        r.setEvaluationOrder(1);
-
-        this.servicesManager.save(r);
-
-        final MockHttpServletResponse response = new MockHttpServletResponse();
-        this.controller.manage(response);
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-        this.controller.deleteRegisteredService(request, response, 1200);
-
-        assertNull(this.servicesManager.findServiceBy(1200));
+        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
+                                                                                    new MockHttpServletResponse(),
+                                                                                   2L);
+        assertEquals(HttpStatus.OK, resp.getStatusCode());
+        assertTrue(resp.getBody().contains("Apereo"));
     }
 
     @Test
-    public void verifyDeleteServiceNoService() throws Exception {
-        final MockHttpServletResponse response = new MockHttpServletResponse();
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-        final ResponseEntity entity = this.controller.deleteRegisteredService(request, response, 5000);
-        assertNull(this.servicesManager.findServiceBy(5000));
-        assertFalse(response.getContentAsString().contains("serviceName"));
-        assertFalse(entity.getStatusCode().is2xxSuccessful());
+    public void verifyCantDelteDefault() throws Exception {
+        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
+                                                                                    new MockHttpServletResponse(),
+                                                                                   1L);
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+        assertTrue(resp.getBody().startsWith("The default service"));
     }
 
     @Test
-    public void updateEvaluationOrderInvalidServiceId() throws Exception {
-        final RegexRegisteredService r = new RegexRegisteredService();
-        r.setId(1200);
-        r.setName(NAME);
-        r.setServiceId("test");
-        r.setEvaluationOrder(2);
-
-        this.thrown.expect(IllegalArgumentException.class);
-
-        this.servicesManager.save(r);
-        final RegisteredServiceItem[] svcs = new RegisteredServiceItem[2];
-        RegisteredServiceItem rsb = new RegisteredServiceItem();
-        rsb.setAssignedId("5000");
-        svcs[0] = rsb;
-        rsb = new RegisteredServiceItem();
-        rsb.setAssignedId("1200");
-        svcs[1] = rsb;
-        this.controller.updateOrder(new MockHttpServletRequest(), new MockHttpServletResponse(), svcs);
-    }
-
-    @Test
-    public void verifyManage() {
-        final RegexRegisteredService r = new RegexRegisteredService();
-        r.setId(1200);
-        r.setName(NAME);
-        r.setDescription(UNIQUE_DESCRIPTION);
-        r.setServiceId("test");
-        r.setEvaluationOrder(2);
-
-        this.servicesManager.save(r);
-        final ModelAndView mv = this.controller.manage(new MockHttpServletResponse());
-
-        assertTrue(mv.getModel().containsKey("defaultServiceUrl"));
-        assertTrue(mv.getModel().containsKey("status"));
+    public void verifyDeleteNonExistentService() throws Exception {
+        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
+                                                                                    new MockHttpServletResponse(),
+                                                                                   3L);
+        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+        assertTrue(resp.getBody().startsWith("Service id"));
     }
 }

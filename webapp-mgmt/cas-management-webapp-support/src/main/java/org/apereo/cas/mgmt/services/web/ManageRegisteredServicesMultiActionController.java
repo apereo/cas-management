@@ -167,17 +167,16 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                           final HttpServletResponse response,
                                                           @RequestParam("id") final long idAsLong) throws Exception {
         final GitServicesManager manager = managerFactory.from(request, response);
-        final RegisteredService svc = manager.findServiceBy(this.defaultService);
-        if (svc == null || svc.getId() == idAsLong) {
+        final RegisteredService svc = manager.findServiceBy(idAsLong);
+        if (svc == null) {
+            return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
+        }
+        if (svc.getServiceId().equals(this.defaultService.getId())) {
             return new ResponseEntity<>("The default service " + this.defaultService.getId() + " cannot be deleted. "
                     + "The definition is required for accessing the application.", HttpStatus.BAD_REQUEST);
         }
-
-        final RegisteredService r = manager.delete(idAsLong);
-        if (r == null) {
-            return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(r.getName(), HttpStatus.OK);
+        manager.delete(idAsLong);
+        return new ResponseEntity<>(svc.getName(), HttpStatus.OK);
     }
 
     @GetMapping(value = "managerType")

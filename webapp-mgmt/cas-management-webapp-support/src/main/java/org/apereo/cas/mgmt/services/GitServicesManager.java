@@ -106,7 +106,7 @@ public class GitServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        if (uncommitted.containsKey(service.getId())) {
+        if (uncommitted != null && uncommitted.containsKey(service.getId())) {
             serviceItem.setStatus(uncommitted.get(service.getId()));
         }
         return serviceItem;

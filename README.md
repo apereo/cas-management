@@ -27,12 +27,19 @@ If you have already identified an enhancement or a bug, it is STRONGLY recommend
 
 ## Documentation
 
-[![JavaDoc](https://javadoc-emblem.rhcloud.com/doc/org.apereo.cas/cas-management/badge.svg)](http://www.javadoc.io/doc/org.apereo.cas/cas-management)
+[![JavaDoc](https://img.shields.io/badge/Documentation-Javadoc-ff69b4.svg)](http://www.javadoc.io/doc/org.apereo.cas/cas-management)
 
 - [Documentation][wiki]
 - [Blog][blog]
 - [Release Notes][releasenotes]
 - [Support][cassupport]
+
+## Development
+
+[![Build Status](https://travis-ci.org/apereo/cas-management.svg?branch=master)](https://travis-ci.org/apereo/cas-management)
+
+To build the project locally, please follow [this guide](https://apereo.github.io/cas/developer/Build-Process.html). The release schedule is [available here](https://github.com/apereo/cas-management/milestones).
+
 
 ## Support
 

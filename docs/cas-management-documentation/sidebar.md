@@ -3,7 +3,7 @@ layout: null
 ---
 
 * [Installation](#casinstallation)
-    *   [WAR Overlays](/$version/installation/Installing-ServicesMgmt-Webapp.html)
+    *   [Overview](/$version/installation/Installing-ServicesMgmt-Webapp.html)
 
 * [Developer](#developer)
     *   [Javadocs](http://www.javadoc.io/doc/org.apereo.cas/cas-server)

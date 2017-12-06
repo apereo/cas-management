@@ -8,9 +8,26 @@ repositories {
 }
 
 dependencies {
-    implementation "org.apereo.cas:cas-server-support-ldap-core:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-authentication:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-util:$casVersion"
+    implementation ("org.apereo.cas:cas-server-support-ldap-core:$casVersion"){
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration"
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration-api"
+        exclude group: "org.apereo.cas", module: "cas-server-core-web"
+    }
+    implementation ("org.apereo.cas:cas-server-core-authentication:$casVersion"){
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration"
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration-api"
+        exclude group: "org.apereo.cas", module: "cas-server-core-web"
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-configuration:$casVersion"){
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration"
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration-api"
+        exclude group: "org.apereo.cas", module: "cas-server-core-web"
+    }
+    implementation ("org.apereo.cas:cas-server-core-util:$casVersion"){
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration"
+        exclude group: "org.apereo.cas", module: "cas-server-core-configuration-api"
+        exclude group: "org.apereo.cas", module: "cas-server-core-web"
+    }
+    implementation project(":webapp-mgmt:cas-management-webapp-support")
     implementation libraries.pac4j
 }

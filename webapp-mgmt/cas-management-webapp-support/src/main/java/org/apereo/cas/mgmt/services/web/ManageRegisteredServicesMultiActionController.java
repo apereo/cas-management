@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.services.web;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.config.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
@@ -57,7 +57,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     private final CasUserProfileFactory casUserProfileFactory;
     private final Service defaultService;
 
-    private CasConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties casProperties;
 
     /**
      * Instantiates a new manage registered services multi action controller.
@@ -74,7 +74,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             final IPersonAttributeDao personAttributeDao,
             final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
             final String defaultServiceUrl,
-            final CasConfigurationProperties casProperties,
+            final CasManagementConfigurationProperties casProperties,
             final CasUserProfileFactory casUserProfileFactory) {
         super(servicesManager);
         this.personAttributeDao = personAttributeDao;

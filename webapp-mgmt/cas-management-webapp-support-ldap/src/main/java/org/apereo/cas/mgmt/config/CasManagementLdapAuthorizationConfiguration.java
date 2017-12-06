@@ -15,7 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.apereo.cas.mgmt.config.CasManagementConfigurationProperties;
 import java.util.ArrayList;
 
 /**
@@ -25,11 +25,11 @@ import java.util.ArrayList;
  * @since 5.0.0
  */
 @Configuration("casManagementLdapAuthorizationConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties(CasManagementConfigurationProperties.class)
 public class CasManagementLdapAuthorizationConfiguration {
 
     @Autowired
-    private CasConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties casProperties;
 
     @RefreshScope
     @Bean

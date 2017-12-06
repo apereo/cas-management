@@ -1,4 +1,4 @@
-package org.apereo.cas.configuration.config;
+package org.apereo.cas.mgmt.config;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;

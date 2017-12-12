@@ -1,8 +1,8 @@
 package org.apereo.cas.mgmt.configuration;
 
-import org.apereo.cas.configuration.CasConfigurationPropertiesEnvironmentManager;
-import org.apereo.cas.configuration.CasConfigurationPropertiesSourceLocator;
-import org.apereo.cas.configuration.CommaSeparatedStringToThrowablesConverter;
+import org.apereo.cas.mgmt.configuration.CasConfigurationPropertiesEnvironmentManager;
+import org.apereo.cas.mgmt.configuration.CasConfigurationPropertiesSourceLocator;
+import org.apereo.cas.mgmt.configuration.CommaSeparatedStringToThrowablesConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;

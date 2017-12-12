@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt;
 
-import org.apereo.cas.mgmt.config.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 

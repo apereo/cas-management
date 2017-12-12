@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.config;
 
-import org.apereo.cas.mgmt.config.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.CasManagementUtils;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.pac4j.cas.client.direct.DirectCasClient;

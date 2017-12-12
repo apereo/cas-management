@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt.web;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.mgmt.config.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.springframework.boot.actuate.autoconfigure.MetricsDropwizardAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;

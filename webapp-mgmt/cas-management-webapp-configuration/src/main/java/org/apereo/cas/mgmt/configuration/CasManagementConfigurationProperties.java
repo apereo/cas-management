@@ -1,30 +1,44 @@
-package org.apereo.cas.mgmt.config;
+package org.apereo.cas.mgmt.configuration;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.core.CasServerProperties;
 import org.apereo.cas.configuration.model.core.authentication.AuthenticationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.configuration.model.webapp.LocaleProperties;
+import org.apereo.cas.mgmt.configuration.model.ManagementWebappProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @ConfigurationProperties("cas")
 public class CasManagementConfigurationProperties {
-
-
+    /**
+       Authentication
+     */
     @NestedConfigurationProperty
     AuthenticationProperties authn = new AuthenticationProperties();
 
+    /**
+     * ServiceRegistry
+     */
     @NestedConfigurationProperty
     ServiceRegistryProperties serviceRegistry = new ServiceRegistryProperties();
 
+    /**
+     * Locale
+     */
     @NestedConfigurationProperty
     LocaleProperties locale = new LocaleProperties();
 
+    /**
+     * Sever
+     */
     @NestedConfigurationProperty
     CasServerProperties server = new CasServerProperties();
 
+    /**
+     * Management
+     */
     @NestedConfigurationProperty
     ManagementWebappProperties mgmt = new ManagementWebappProperties();
 

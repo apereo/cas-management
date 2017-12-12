@@ -2,4 +2,3 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.apereo.cas.mg
   org.apereo.cas.mgmt.config.CasManagementAuditConfiguration,\
   org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration,\
   org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration
-org.springframework.cloud.bootstrap.BootstrapConfiguration=org.apereo.cas.mgmt.config.CasCoreBootstrapStandaloneConfiguration

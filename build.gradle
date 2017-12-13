@@ -288,7 +288,7 @@ subprojects {
         api libraries.jackson
         api libraries.httpclient
         api libraries.quartz
-        api libraries.hibernate
+        //api libraries.hibernate
         api libraries.springcloud
         api libraries.springboot
 

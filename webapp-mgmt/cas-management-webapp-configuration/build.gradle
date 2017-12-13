@@ -18,6 +18,7 @@ dependencies {
 
 }
 
+/*
 task generateConfigurationMetadata(type: JavaExec) {
     doFirst {
         println "\nRunning CAS Spring configuration metadata processor in addition to the native " +
@@ -35,5 +36,5 @@ compileJava.dependsOn(processResources)
 if (!Boolean.getBoolean("skipNestedConfigMetadataGen")) {
     jar.dependsOn(generateConfigurationMetadata)
 }
-
+*/
 

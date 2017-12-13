@@ -13,5 +13,5 @@ dependencies {
     implementation "org.apereo.cas:cas-server-core-api-configuration:$casVersion"
     implementation "org.apereo.cas:cas-server-core-util:$casVersion"
     implementation project(":webapp-mgmt:cas-management-webapp-configuration")
-    implementation libraries.pac4j
+   // implementation libraries.pac4j
 }

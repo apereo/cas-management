@@ -24,7 +24,7 @@ dependencies {
     implementation "org.apereo.cas:cas-server-core-util:$casVersion"
 
     implementation "org.apereo.cas:cas-server-core-authentication-attributes:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-api-configuration:$casVersion"
+//    implementation "org.apereo.cas:cas-server-core-api-configuration:$casVersion"
     implementation "org.apereo.cas:cas-server-core-services:$casVersion"
     implementation "org.apereo.cas:cas-server-core-services-registry:$casVersion"
     implementation "org.apereo.cas:cas-server-core-web:$casVersion"

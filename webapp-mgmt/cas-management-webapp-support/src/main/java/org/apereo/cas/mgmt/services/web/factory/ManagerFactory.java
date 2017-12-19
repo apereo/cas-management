@@ -97,7 +97,7 @@ public class ManagerFactory {
         final ServicesManager manager;
         final JsonServiceRegistryDao serviceRegistryDAO = new JsonServiceRegistryDao(Paths.get(git.repoPath()),
                 false,
-                null);
+                null, null);
         if (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN) {
             manager = new DomainServicesManager(serviceRegistryDAO, null);
         } else {

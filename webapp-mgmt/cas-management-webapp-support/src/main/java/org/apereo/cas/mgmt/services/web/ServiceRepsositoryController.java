@@ -741,6 +741,7 @@ public class ServiceRepsositoryController {
      * @return - Change
      * @throws Exception - failed
      */
+    @SuppressWarnings("DefaultCharset")
     private Change createModifyChange(final GitUtil git, final DiffEntry entry) throws Exception {
         final String file = git.repoPath() + "/" + entry.getNewPath();
         final String json = new String(Files.readAllBytes(Paths.get(file)));

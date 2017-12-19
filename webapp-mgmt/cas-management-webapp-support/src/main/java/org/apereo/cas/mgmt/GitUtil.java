@@ -257,6 +257,7 @@ public class GitUtil {
      * @return - File returned as String.
      * @throws Exception - failed.
      */
+    @SuppressWarnings("DefaultCharset")
     public String readObject(final ObjectId id) throws Exception {
         final ObjectReader reader = git.getRepository().newObjectReader();
         if (reader.has(id)) {
@@ -300,7 +301,7 @@ public class GitUtil {
      */
     public void appendNote(final RevObject com, final String msg) throws Exception {
         final Note note = note(com);
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         if (note != null) {
             final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             git.getRepository().open(note.getData()).copyTo(bytes);
@@ -530,7 +531,7 @@ public class GitUtil {
     /**
      * Class used to define a TreeFilter to only pull history for a single path.
      */
-    public class HistoryTreeFilter extends TreeFilter {
+    public static class HistoryTreeFilter extends TreeFilter {
         private String path;
 
         public HistoryTreeFilter(final String path) {
@@ -733,6 +734,7 @@ public class GitUtil {
      * @return - RawText.
      * @throws Exception - failed.
      */
+    @SuppressWarnings("DefaultCharset")
     public RawText rawText(final ObjectId id) throws Exception {
         if (objectReader().has(id)) {
             return new RawText(objectReader().open(id).getBytes());
@@ -869,7 +871,7 @@ public class GitUtil {
     /**
      * Object used to represent the history of a branch.
      */
-    public class BranchMap {
+    public static class BranchMap {
         private Ref ref;
         private RevCommit revCommit;
         private GitUtil git;

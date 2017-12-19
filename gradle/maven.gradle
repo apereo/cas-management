@@ -31,6 +31,10 @@ def generatePom() {
                     name "Jérôme Leleu"
                 }
                 developer {
+                    id "mindblender"
+                    name "Jeff Sittler"
+                }
+                developer {
                     id "apetro"
                     name "Andrew Petro"
                 }
@@ -61,6 +65,10 @@ def generatePom() {
                 developer {
                     id "dima767"
                     name "Dmitriy Kopylenko"
+                }
+                developer {
+                    id "tsschmidt"
+                    name "Travis Schmidt"
                 }
             }
 
@@ -117,10 +125,6 @@ def generatePom() {
                     name "Fredrik Jönsson"
                     email "fjo@kth.se"
                 }
-                contributor {
-                    name "Jeff Sittler"
-                    email "jsittler@unicon.net"
-                }
             }
 
 
@@ -165,6 +169,13 @@ def generatePom() {
                 repository {
                     id "jitpack"
                     url "https://jitpack.io"
+                    releases {
+                        enabled true
+                    }
+                }
+                repository {
+                    id "spring-plugins"
+                    url "https://repo.spring.io/plugins-release/"
                     releases {
                         enabled true
                     }

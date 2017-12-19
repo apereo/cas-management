@@ -8,7 +8,6 @@ repositories {
 }
 
 dependencies {
-    implementation libraries.metrics
     implementation libraries.pac4j
     implementation libraries.casclient
     implementation libraries.groovy
@@ -19,12 +18,13 @@ dependencies {
     implementation libraries.jasypt
     implementation libraries.ldaptive
     implementation libraries.caffein
+    implementation libraries.jgit
 
     implementation libraries.thymeleaf
 
-    implementation project(":webapp-mgmt:cas-management-webapp-configuration")
+    api project(":webapp-mgmt:cas-management-webapp-configuration")
 
-    implementation ("org.apereo.cas:cas-server-core-configuration:$casVersion") {
+    implementation ("org.apereo.cas:cas-server-core-configuration-api:$casVersion") {
         transitive = false
     }
 
@@ -40,7 +40,14 @@ dependencies {
         transitive = false
     }
 
+    implementation ("org.apereo.cas:cas-server-core-util-api:$casVersion") {
+        transitive = false
+    }
+
     implementation ("org.apereo.cas:cas-server-core-api-web:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-web-api:$casVersion") {
         transitive = false
     }
     implementation ("org.apereo.cas:cas-server-core-api-events:$casVersion") {
@@ -52,7 +59,9 @@ dependencies {
     implementation ("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
         transitive = false
     }
-//    implementation "org.apereo.cas:cas-server-core-api-configuration:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-api-configuration:$casVersion") {
+        transitive = false
+    }
     implementation ("org.apereo.cas:cas-server-core-api-services:$casVersion") {
         transitive = false
     }
@@ -110,13 +119,4 @@ dependencies {
     implementation ("org.apereo.cas:cas-server-core-api-protocol:$casVersion") {
         transitive = false
     }
-
-    //testImplementation (path: ":cas-server-core-services", configuration: "tests")
-    compile('org.eclipse.jgit:org.eclipse.jgit:4.6.1.201703071140-r') {
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-        exclude group: 'org.slf4j', module: 'slf4j'
-        exclude group: 'org.slf4j', module: 'slf4j-api'
-        exclude group: 'org.apache.commons', module: 'commons-lang3'
-    }
-
 }

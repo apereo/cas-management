@@ -106,8 +106,8 @@ public class GitServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        if (uncommitted != null && uncommitted.containsKey(service.getId())) {
-            serviceItem.setStatus(uncommitted.get(service.getId()));
+        if (uncommitted != null && uncommitted.containsKey((int)service.getId())) {
+            serviceItem.setStatus(uncommitted.get((int)service.getId()));
         }
         return serviceItem;
     }
@@ -189,7 +189,7 @@ public class GitServicesManager implements ServicesManager {
 
     @Override
     public boolean matchesExistingService(final String s) {
-        return this.matchesExistingService(s);
+        return this.manager.matchesExistingService(s);
     }
 
     @Override

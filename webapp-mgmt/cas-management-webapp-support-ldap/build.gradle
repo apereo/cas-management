@@ -8,14 +8,24 @@ repositories {
 }
 
 dependencies {
+    implementation libraries.ldaptive
+
     implementation ("org.apereo.cas:cas-server-support-ldap-core:$casVersion") {
         transitive = false
     }
     implementation ("org.apereo.cas:cas-server-core-authentication:$casVersion") {
         transitive = false
     }
-    //implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-api-configuration:$casVersion") {
+        transitive = false
+    }
     implementation ("org.apereo.cas:cas-server-core-util:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-util:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-util-api:$casVersion") {
         transitive = false
     }
     implementation project(":webapp-mgmt:cas-management-webapp-configuration")

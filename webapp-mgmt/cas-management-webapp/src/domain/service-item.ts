@@ -4,4 +4,5 @@ export class ServiceItem {
   serviceId: String;
   name: String;
   description: String;
+  status: String;
 }

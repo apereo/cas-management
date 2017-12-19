@@ -1,0 +1,15 @@
+.actionWidth {
+    flex: 0 0 50px;
+}
+
+.nameWidth {
+    flex: 0 0 300px;
+}
+
+.messageWidth {
+    flex: 1 1 auto;
+}
+
+.statusWidth {
+    flex: 0 0 100px;
+}

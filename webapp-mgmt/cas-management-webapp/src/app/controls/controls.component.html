@@ -13,5 +13,32 @@
         </ng-container>
     </button>
   </div>
+  <div style="display:inline;">
+    <button mat-button id="commit" *ngIf="isAdmin && service.changes"
+            (click)="openModalCommit()">
+      <mat-icon>input</mat-icon>
+      <ng-container i18n>Commit</ng-container>
+    </button>
+    <button mat-button *ngIf="isAdmin && publishDirty" id="publish"
+            (click)="openModalPublish()">
+      <mat-icon>launch</mat-icon>
+      <ng-container i18n>Publish</ng-container>
+    </button>
+    <button mat-button *ngIf="!isAdmin && service.changes != null"
+            (click)="callSubmit()">
+      <mat-icon>file_upload</mat-icon>
+      <ng-container i18n>Submit</ng-container>
+    </button>
+  </div>
+  <div style="display:inline;" *ngIf="showRefresh">
+    <button mat-icon-button (click)="refresh.emit()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+  <div style="display:inline;" *ngIf="!showEdit">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
 </div>
 

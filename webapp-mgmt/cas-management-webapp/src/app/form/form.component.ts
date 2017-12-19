@@ -44,6 +44,7 @@ enum Tabs {
 export class FormComponent implements OnInit {
 
   id: String;
+  view: boolean;
 
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
@@ -58,6 +59,7 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.view = this.route.snapshot.data.view;
     this.route.data
       .subscribe((data: { resp: AbstractRegisteredService}) => {
         if (data.resp) {

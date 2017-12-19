@@ -1,0 +1,20 @@
+<div>
+  <h3 matDialogTitle i18n>Revert</h3>
+</div>
+<mat-dialog-content>
+  <div>
+    <span i18n>Caution this action can not be undone and all local changes will be lost. Are you sure you want to proceed?</span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button matDialogClose>
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button mat-button matDialogClose="true">
+      <mat-icon>undo</mat-icon>
+      <ng-container i18n>Revert</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -12,6 +12,9 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.web.ForwardingController;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
+import org.apereo.cas.mgmt.services.web.ServiceRepsositoryController;
+import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
+import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.web.CasManagementRootController;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
 import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
@@ -84,6 +87,10 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
     @Qualifier("casUserProfileFactory")
     private CasUserProfileFactory casUserProfileFactory;
+
+    @Autowired
+    @Qualifier("servicesManager")
+    private ServicesManager servicesManager;
 
     @Bean
     public Filter characterEncodingFilter() {
@@ -166,12 +173,27 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
             @Qualifier("servicesManager") final ServicesManager servicesManager) {
         final String defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
         return new ManageRegisteredServicesMultiActionController(servicesManager, attributeRepository(),
-                webApplicationServiceFactory, defaultCallbackUrl, casProperties, casUserProfileFactory);
+                webApplicationServiceFactory, defaultCallbackUrl, casProperties, casUserProfileFactory, managerFactory(), repositoryFactory());
     }
 
     @Bean
     public RegisteredServiceSimpleFormController registeredServiceSimpleFormController(@Qualifier("servicesManager") final ServicesManager servicesManager) {
-        return new RegisteredServiceSimpleFormController(servicesManager);
+        return new RegisteredServiceSimpleFormController(servicesManager, managerFactory(), casUserProfileFactory);
+    }
+
+    @Bean
+    public RepositoryFactory repositoryFactory() {
+        return new RepositoryFactory(casProperties, casUserProfileFactory);
+    }
+
+    @Bean
+    public ManagerFactory managerFactory() {
+        return new ManagerFactory(servicesManager, casProperties, repositoryFactory(), casUserProfileFactory);
+    }
+
+    @Bean
+    public ServiceRepsositoryController serviceRepsositoryController() {
+        return new ServiceRepsositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory, casProperties, servicesManager);
     }
 
     @RefreshScope

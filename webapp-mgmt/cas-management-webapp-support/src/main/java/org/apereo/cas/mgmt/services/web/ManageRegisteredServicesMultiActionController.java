@@ -6,12 +6,14 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
+import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
+import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.RegexUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.slf4j.Logger;
@@ -56,8 +58,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     private final IPersonAttributeDao personAttributeDao;
     private final CasUserProfileFactory casUserProfileFactory;
     private final Service defaultService;
-
-    private CasManagementConfigurationProperties casProperties;
+    private final ManagerFactory managerFactory;
+    private final RepositoryFactory repositoryFactory;
+    private final CasManagementConfigurationProperties casProperties;
 
     /**
      * Instantiates a new manage registered services multi action controller.
@@ -68,6 +71,8 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param defaultServiceUrl            the default service url
      * @param casProperties                the cas properties
      * @param casUserProfileFactory        the cas user profile factory
+     * @param managerFactory               the manager factory
+     * @param repositoryFactory            the repository factory
      */
     public ManageRegisteredServicesMultiActionController(
             final ServicesManager servicesManager,
@@ -75,12 +80,16 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
             final String defaultServiceUrl,
             final CasManagementConfigurationProperties casProperties,
-            final CasUserProfileFactory casUserProfileFactory) {
+            final CasUserProfileFactory casUserProfileFactory,
+            final ManagerFactory managerFactory,
+            final RepositoryFactory repositoryFactory) {
         super(servicesManager);
         this.personAttributeDao = personAttributeDao;
         this.defaultService = webApplicationServiceFactory.createService(defaultServiceUrl);
         this.casProperties = casProperties;
         this.casUserProfileFactory = casUserProfileFactory;
+        this.managerFactory = managerFactory;
+        this.repositoryFactory = repositoryFactory;
     }
 
     /**
@@ -147,45 +156,49 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * the default service that is the management app itself cannot be deleted
      * or the user will be locked out.
      *
+     * @param request - HttpServletRequest
+     * @param response - HttpServletResponse
      * @param idAsLong the id
      * @return the response entity
+     * @throws Exception - failed
      */
     @GetMapping(value = "/deleteRegisteredService")
-    public ResponseEntity<String> deleteRegisteredService(@RequestParam("id") final long idAsLong) {
-        ensureDefaultServiceExists();
-        final RegisteredService svc = this.servicesManager.findServiceBy(this.defaultService);
+    public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
+                                                          final HttpServletResponse response,
+                                                          @RequestParam("id") final long idAsLong) throws Exception {
+        final GitServicesManager manager = managerFactory.from(request, response);
+        final RegisteredService svc = manager.findServiceBy(idAsLong);
         if (svc == null) {
-            return new ResponseEntity<>("The default service " + this.defaultService.getId() + " cannot be found. ", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
         }
-        if (svc.getId() == idAsLong) {
+        if (svc.getServiceId().equals(this.defaultService.getId())) {
             return new ResponseEntity<>("The default service " + this.defaultService.getId() + " cannot be deleted. "
                     + "The definition is required for accessing the application.", HttpStatus.BAD_REQUEST);
         }
-
-        final RegisteredService r = this.servicesManager.delete(idAsLong);
-        if (r == null) {
-            return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(r.getName(), HttpStatus.OK);
+        manager.delete(idAsLong);
+        return new ResponseEntity<>(svc.getName(), HttpStatus.OK);
     }
 
     @GetMapping(value = "managerType")
     public ResponseEntity<String> getManagerType() {
-        return new ResponseEntity<>(casProperties.getServiceRegistry().getManagementType().toString(), HttpStatus.OK);
+        return new ResponseEntity<String>(casProperties.getServiceRegistry().getManagementType().toString(), HttpStatus.OK);
     }
 
     /**
      * Gets domains.
      *
+     * @param request - HttpServletRequest
+     * @param response - HttpServletResponse
      * @return the domains
+     * @throws Exception the exception
      */
     @GetMapping(value = "/domainList")
-    public ResponseEntity<Collection<String>> getDomains() {
-        ensureDefaultServiceExists();
-        final Collection<String> data = this.servicesManager.getDomains();
+    public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
+                                                         final HttpServletResponse response) throws Exception {
+        final GitServicesManager manager = managerFactory.from(request, response);
+        final Collection<String> data = manager.getDomains();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
-
 
     /**
      * Gets user.
@@ -193,10 +206,11 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param request  the request
      * @param response the response
      * @return the user
+     * @throws Exception the exception
      */
     @GetMapping(value = "/user")
     public ResponseEntity<CasUserProfile> getUser(final HttpServletRequest request,
-                                                  final HttpServletResponse response) {
+                                                  final HttpServletResponse response) throws Exception {
         final CasUserProfile data = casUserProfileFactory.from(request, response);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -204,37 +218,45 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     /**
      * Gets services.
      *
+     * @param request - HttpServletRequest
+     * @param response - HttpServletResponse
      * @param domain the domain for which services will be retrieved
      * @return the services
+     * @throws Exception - failed
      */
     @GetMapping(value = "/getServices")
-    public ResponseEntity<List<RegisteredServiceItem>> getServices(@RequestParam final String domain) {
+    public ResponseEntity<List<RegisteredServiceItem>> getServices(final HttpServletRequest request,
+                                                                   final HttpServletResponse response,
+                                                                   @RequestParam final String domain) throws Exception {
         ensureDefaultServiceExists();
-        final List<RegisteredServiceItem> serviceItems = new ArrayList<>();
-        final List<RegisteredService> services = new ArrayList<>(this.servicesManager.getServicesForDomain(domain));
-        serviceItems.addAll(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
-        return new ResponseEntity<>(serviceItems, HttpStatus.OK);
+        final GitServicesManager manager = managerFactory.from(request, response);
+        return new ResponseEntity<>(manager.getServiceItemsForDomain(domain), HttpStatus.OK);
     }
 
     /**
      * Method will filter all services in the register using the passed string a regular expression against the
      * service name, service id, and service description.
      *
+     * @param request - HttpServletRequest
+     * @param response - HttpServletResponse
      * @param query - a string representing text to search for
      * @return - the resulting services
+     * @throws Exception - failed
      */
     @GetMapping(value = "/search")
-    public ResponseEntity<List<RegisteredServiceItem>> search(@RequestParam final String query) {
-        ensureDefaultServiceExists();
+    public ResponseEntity<List<RegisteredServiceItem>> search(final HttpServletRequest request,
+                                                              final HttpServletResponse response,
+                                                              @RequestParam final String query) throws Exception {
+        final GitServicesManager manager = managerFactory.from(request, response);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
         final List<RegisteredServiceItem> serviceBeans = new ArrayList<>();
-        final List<RegisteredService> services = this.servicesManager.getAllServices()
+        final List<RegisteredService> services = manager.getAllServices()
                 .stream()
                 .filter(service -> pattern.matcher(service.getServiceId()).lookingAt()
                         || pattern.matcher(service.getName()).lookingAt()
                         || pattern.matcher(service.getDescription()).lookingAt())
                 .collect(Collectors.toList());
-        serviceBeans.addAll(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
+        serviceBeans.addAll(services.stream().map(manager::createServiceItem).collect(Collectors.toList()));
         return new ResponseEntity<>(serviceBeans, HttpStatus.OK);
     }
 
@@ -242,10 +264,10 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * Gets form data.
      *
      * @return the form data
+     * @throws Exception the exception
      */
     @GetMapping(value = "formData")
-    public ResponseEntity<FormData> getFormData() {
-        ensureDefaultServiceExists();
+    public ResponseEntity<FormData> getFormData() throws Exception {
         final FormData formData = new FormData();
         final Set<String> possibleUserAttributeNames = this.personAttributeDao.getPossibleUserAttributeNames();
         final List<String> possibleAttributeNames = new ArrayList<>();
@@ -263,37 +285,29 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param request  the request
      * @param response the response
      * @param svcs     the services to be updated
+     * @throws Exception - failed
      */
     @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
-                            @RequestBody final RegisteredServiceItem[] svcs) {
-        ensureDefaultServiceExists();
+                            @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
+        final GitServicesManager manager = managerFactory.from(request, response);
         final String id = svcs[0].getAssignedId();
-        final RegisteredService svcA = this.servicesManager.findServiceBy(Long.parseLong(id));
+        final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {
             throw new IllegalArgumentException("Service " + id + " cannot be found");
         }
         final String id2 = svcs[1].getAssignedId();
-        final RegisteredService svcB = this.servicesManager.findServiceBy(Long.parseLong(id2));
+        final RegisteredService svcB = manager.findServiceBy(Long.parseLong(id2));
         if (svcB == null) {
             throw new IllegalArgumentException("Service " + id2 + " cannot be found");
         }
         svcA.setEvaluationOrder(svcs[0].getEvalOrder());
         svcB.setEvaluationOrder(svcs[1].getEvalOrder());
-        this.servicesManager.save(svcA);
-        this.servicesManager.save(svcB);
+        manager.save(svcA);
+        manager.save(svcB);
     }
 
-    private RegisteredServiceItem createServiceItem(final RegisteredService service) {
-        final RegisteredServiceItem serviceItem = new RegisteredServiceItem();
-        serviceItem.setAssignedId(String.valueOf(service.getId()));
-        serviceItem.setEvalOrder(service.getEvaluationOrder());
-        serviceItem.setName(service.getName());
-        serviceItem.setServiceId(service.getServiceId());
-        serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        return serviceItem;
-    }
 
 }
 

@@ -1,0 +1,29 @@
+<div>
+  <h3 matDialogTitle>
+    <ng-container i18n>
+      Reject Request
+    </ng-container>
+  </h3>
+</div>
+<mat-dialog-content>
+  <mat-form-field style="width:400px;">
+     <textarea matInput required rows="5"
+               i18n-placeholder
+               placeholder="Enter a message"
+               [(ngModel)]="rejectMessage">
+    </textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button matDialogClose>
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button mat-button [matDialogClose]="rejectMessage">
+      <mat-icon>thumb_down</mat-icon>
+      <ng-container i18n>Reject</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>
+

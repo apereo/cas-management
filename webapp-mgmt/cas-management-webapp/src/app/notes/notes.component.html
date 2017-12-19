@@ -1,0 +1,20 @@
+<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+  <div style="padding-top: 10px;">
+    <mat-icon style="padding-top: 3px;">edit</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;">
+      <ng-container i18n>
+        Notes
+      </ng-container>
+    </h4>
+  </div>
+  <div style="flex: 1 1 auto"></div>
+  <div>
+    <app-controls (save)="saveNote()" [showEdit]="viewOnly"></app-controls>
+  </div>
+</div>
+
+<div style="height:600px;margin-right:25px;margin-left:25px;">
+  <app-editor [file]="file" mode="text" style="width:100%;height:100%;"></app-editor>
+</div>
+
+

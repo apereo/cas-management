@@ -14,10 +14,13 @@ dependencies {
     implementation ("org.apereo.cas:cas-server-core-authentication:$casVersion") {
         transitive = false
     }
-    //implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-configuration:$casVersion") {
+        transitive = false
+    }
     implementation ("org.apereo.cas:cas-server-core-util:$casVersion") {
         transitive = false
     }
     implementation project(":webapp-mgmt:cas-management-webapp-configuration")
     implementation libraries.pac4j
+    implementation libraries.ldaptive
 }

@@ -16,6 +16,7 @@ import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementWebAppConfiguration;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
@@ -84,7 +85,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     private ServicesManager servicesManager;
 
     @Autowired
-    private CasConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties casProperties;
 
     @Autowired
     @Qualifier("webApplicationServiceFactory")

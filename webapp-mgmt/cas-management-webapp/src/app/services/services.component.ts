@@ -3,7 +3,6 @@ import {ServiceItem} from '../../domain/service-item';
 import {Messages} from '../messages';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
-import {Location} from '@angular/common';
 import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
 import {ControlsService} from '../controls/controls.service';
@@ -138,6 +137,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
 
   refresh() {
+    console.log("doing refresh");
     this.getServices();
     this.controlsService.untracked();
   }

@@ -89,6 +89,7 @@ export class ControlsComponent implements OnInit {
     this.snackBar.open(this.messages.management_services_status_committed, 'Dismiss', {
         duration: 5000
     });
+    this.refresh.emit();
   }
 
   handleNotCommitted(e: any) {

@@ -1,0 +1,35 @@
+<div>
+  <h3 matDialogTitle i18n>
+    <ng-container i18n>
+      Accept Request
+    </ng-container>
+  </h3>
+</div>
+<mat-dialog-content>
+  <mat-form-field style="width:400px;">
+     <textarea matInput required rows="5"
+               i18n-placeholder
+               placeholder="Enter a message"
+               [(ngModel)]="acceptMessage">
+    </textarea>
+  </mat-form-field>
+  <div>
+    <span i18n>Changes to be merged:</span>
+  </div>
+  <ul *ngFor="let change of changes">
+    <li>{{ change.changeType + " - " + change.path }}</li>
+  </ul>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button matDialogClose="CANCEL">
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button mat-button [matDialogClose]="acceptMessage">
+      <mat-icon>thumb_up</mat-icon>
+      <ng-container i18n>Accept</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>
+

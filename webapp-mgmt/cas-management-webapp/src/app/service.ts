@@ -2,9 +2,7 @@
  * Created by tsschmi on 4/25/17.
  */
 
-import { Headers, ResponseContentType} from '@angular/http';
 import {HttpClient} from '@angular/common/http';
-import {textDef} from '@angular/core/src/view';
 
 export abstract class Service {
 
@@ -12,14 +10,15 @@ export abstract class Service {
 
   }
 
-  headers(): Headers {
-    return new Headers({
-      'Content-Type': 'application/json'
-    });
+  post<T>(url: string , data: any): Promise<T> {
+    return this.http.post<T>(url, data)
+      .toPromise()
+      .then(resp => resp)
+      .catch(this.handleError);
   }
 
-  post<T>(url: string , data: any): Promise<T> {
-    return this.http.post<T>(url, JSON.stringify(data))
+  postText(url: string , data: any): Promise<String> {
+    return this.http.post(url, data, {responseType: 'text'})
       .toPromise()
       .then(resp => resp)
       .catch(this.handleError);

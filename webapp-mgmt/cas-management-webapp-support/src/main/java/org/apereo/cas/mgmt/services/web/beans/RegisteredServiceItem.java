@@ -18,6 +18,7 @@ public class RegisteredServiceItem implements Serializable {
     private String serviceId;
     private String name;
     private String description;
+    private String status;
 
     public int getEvalOrder() {
         return this.evalOrder;
@@ -57,5 +58,13 @@ public class RegisteredServiceItem implements Serializable {
 
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(final String status) {
+        this.status = status;
     }
 }

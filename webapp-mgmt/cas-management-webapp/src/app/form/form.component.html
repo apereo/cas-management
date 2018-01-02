@@ -2,16 +2,24 @@
 
   <div style="display:flex;">
     <div style="padding-top: 3px;">
-      <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
-      <h4 style="display: inline;position: relative;top: -5px;">
-        <ng-container i18n="services.form.header.page.editService">
-          {{ messages.services_form_header_page_editService }}
-        </ng-container>
-      </h4>
+      <div *ngIf="!view">
+        <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
+        <h4 style="display: inline;position: relative;top: -5px;">
+          <ng-container i18n="services.form.header.page.editService">
+            {{ messages.services_form_header_page_editService }}
+          </ng-container>
+        </h4>
+      </div>
+      <div *ngIf="view">
+        <mat-icon style="padding-top: 3px;">visibility</mat-icon>
+        <h4 style="display: inline;position: relative;top: -5px;">
+          <ng-container i18n>View Service</ng-container>
+        </h4>
+      </div>
     </div>
     <div style="flex: 1 1 auto"></div>
     <div>
-      <app-controls (save)="save()"></app-controls>
+      <app-controls (save)="save()" [showEdit]="!view"></app-controls>
     </div>
   </div>
 

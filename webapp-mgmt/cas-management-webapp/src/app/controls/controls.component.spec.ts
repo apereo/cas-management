@@ -3,8 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ControlsComponent } from './controls.component';
-import {Messages} from '../messages';
+import {CommitComponent} from '../commit/commit.component';
+import {Change} from '../../domain/change';
 import {ControlsService} from './controls.service';
+import {UserService} from '../user.service';
+import {PublishComponent} from '../publish/publish.component';
+import {Messages} from '../messages';
 
 const userServiceStub = {
   getRoles(): Promise<String[]> {
@@ -16,6 +20,25 @@ const userServiceStub = {
 };
 
 const controlsServiceStub = {
+  commit(msg: String): Promise<String> {
+    return Promise.resolve('');
+  },
+
+  publish(): Promise<void> {
+    return Promise.resolve();
+  },
+
+  submit(): Promise<void> {
+    return Promise.resolve();
+  },
+
+  untracked(): Promise<Change[]> {
+    return Promise.resolve([]);
+  },
+
+  unpublished(): Promise<number> {
+    return Promise.resolve(0);
+  }
 }
 
 describe('ControlsComponent', () => {
@@ -28,10 +51,11 @@ describe('ControlsComponent', () => {
         FormsModule,
         RouterTestingModule
       ],
-      declarations: [ ControlsComponent ],
+      declarations: [ ControlsComponent, CommitComponent, PublishComponent ],
       providers: [
         Messages,
         {provide: ControlsService, useValue: controlsServiceStub},
+        {provide: UserService, useValue: userServiceStub}
       ]
     })
     .compileComponents();

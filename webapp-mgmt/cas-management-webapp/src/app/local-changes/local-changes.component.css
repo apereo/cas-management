@@ -1,0 +1,31 @@
+.MODIFY {
+    color: blue;
+    font-style: italic;
+}
+
+.ADD {
+    color:green;
+    font-style: italic;
+}
+
+.DELETE {
+    color:red;
+    font-style: italic;
+}
+
+.actionWidth {
+    flex: 0 0 50px;
+}
+
+.filenameWidth {
+    color: inherit !important;
+}
+
+.serviceNameWidth {
+    color: inherit !important;
+}
+
+.changeTypeWidth {
+    flex: 0 0 200px;
+    color: inherit !important
+}

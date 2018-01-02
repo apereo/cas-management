@@ -31,6 +31,9 @@ import {
 import {CdkTableModule} from '@angular/cdk/table';
 import {ControlsComponent} from '../controls/controls.component';
 import {ControlsService} from '../controls/controls.service';
+import {EditorComponent} from '../editor.component';
+import {CommitComponent} from '../commit/commit.component';
+import {PublishComponent} from '../publish/publish.component';
 
 @NgModule({
   imports: [
@@ -58,10 +61,17 @@ import {ControlsService} from '../controls/controls.service';
     MatDialogModule,
     MatAutocompleteModule,
     MatSnackBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   declarations: [
-    ControlsComponent
+    EditorComponent,
+    ControlsComponent,
+    CommitComponent,
+    PublishComponent
+  ],
+  entryComponents: [
+    CommitComponent,
+    PublishComponent
   ],
   providers: [
     ControlsService
@@ -90,7 +100,9 @@ import {ControlsService} from '../controls/controls.service';
     MatAutocompleteModule,
     MatSnackBarModule,
     MatPaginatorModule,
-    ControlsComponent
+    EditorComponent,
+    ControlsComponent,
+    CommitComponent
   ]
 })
 export class SharedModule {}

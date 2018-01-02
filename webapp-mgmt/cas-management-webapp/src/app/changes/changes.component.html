@@ -1,0 +1,75 @@
+<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+  <div style="padding-top: 10px;">
+    <mat-icon style="padding-top: 3px;">visibility</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;">
+      <ng-container i18n>
+        View Changes
+      </ng-container>
+    </h4>
+  </div>
+  <div style="flex: 1 1 auto"></div>
+  <div>
+    <app-controls [showEdit]="false"></app-controls>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column; margin-right:25px;margin-left:25px;">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="file">
+      <mat-header-cell *matHeaderCellDef>
+        <ng-container i18n>
+          File
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+          {{ row.path }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="change">
+      <mat-header-cell *matHeaderCellDef>
+        <ng-container i18n>
+          Change
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.changeType }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="changesMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>
+
+<mat-menu #changesMenu>
+  <button mat-menu-item (click)="viewChange()">
+    <mat-icon>visibility</mat-icon>
+    <ng-container i18n>View</ng-container>
+  </button>
+  <button mat-menu-item (click)="viewDiff()">
+    <mat-icon>compare_arrows</mat-icon>
+    <ng-container i18n>Diff</ng-container>
+  </button>
+</mat-menu>
+

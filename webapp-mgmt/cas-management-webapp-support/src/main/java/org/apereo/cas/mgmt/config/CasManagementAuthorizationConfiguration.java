@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,7 +62,10 @@ public class CasManagementAuthorizationConfiguration {
     @Bean
     @RefreshScope
     public Authorizer managementWebappAuthorizer() {
-        return new CasRoleBasedAuthorizer(casProperties.getMgmt().getAdminRoles());
+        final List<String> roles = new ArrayList<>();
+        roles.addAll(casProperties.getMgmt().getAdminRoles());
+        roles.addAll(casProperties.getMgmt().getUserRoles());
+        return new CasRoleBasedAuthorizer(roles);
     }
 
     @RefreshScope

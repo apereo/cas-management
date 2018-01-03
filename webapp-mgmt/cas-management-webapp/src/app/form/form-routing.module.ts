@@ -20,6 +20,7 @@ import {TabWsfedComponent} from './tab-wsfed/tab-wsfed.component';
 import {TabContactsComponent} from './tab-contacts/tab-contacts.component';
 import {TabExpirationComponent} from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
+import {TabBaseComponent} from "./tab-base";
 
 const childRoutes: Routes = [
   {
@@ -95,6 +96,11 @@ const childRoutes: Routes = [
   {
     path: 'advanced',
     component: TabAdvancedComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'clear',
+    component: TabBaseComponent,
     outlet: 'form'
   }
 ]

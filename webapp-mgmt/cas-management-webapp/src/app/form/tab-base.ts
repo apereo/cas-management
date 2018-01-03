@@ -1,12 +1,13 @@
-import {ApplicationRef, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import 'rxjs/add/operator/switchMap';
 import {Data} from './data';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-tab-base',
-  template: ''
+  template: `'<div></div>'`
 })
+
 export class TabBaseComponent implements OnInit, OnDestroy {
 
   @ViewChild('submit')
@@ -19,16 +20,21 @@ export class TabBaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.data.submitted) {
-      this.submit.nativeElement.click();
+    if (this.submit) {
+      if (this.data.submitted) {
+          this.submit.nativeElement.click();
+      }
+      this.sub = this.data.save.asObservable().subscribe(() => {
+          this.submit.nativeElement.click();
+      });
+      this.changeRef.detectChanges();
     }
-    this.sub = this.data.save.asObservable().subscribe(() => {
-      this.submit.nativeElement.click();
-    });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    if (this.sub) {
+        this.sub.unsubscribe();
+    }
   }
 
 }

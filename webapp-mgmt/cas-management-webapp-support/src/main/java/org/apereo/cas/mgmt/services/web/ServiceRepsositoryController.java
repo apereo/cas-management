@@ -196,7 +196,7 @@ public class ServiceRepsositoryController {
      * @return ResponseEntity
      * @throws Exception - failed.
      */
-    @PostMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/submit", consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> submitPull(final HttpServletResponse response,
                                              final HttpServletRequest request,
                                              final @RequestBody String msg) throws Exception {

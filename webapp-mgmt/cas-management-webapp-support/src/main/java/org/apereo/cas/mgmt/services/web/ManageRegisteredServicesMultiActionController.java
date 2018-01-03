@@ -195,8 +195,14 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @GetMapping(value = "/domainList")
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request,response);
         final GitServicesManager manager = managerFactory.from(request, response);
-        final Collection<String> data = manager.getDomains();
+        Collection<String> data = manager.getDomains();
+        if (!casUserProfile.isAdministrator()) {
+            data = data.stream()
+                    .filter(d -> casUserProfile.getPermissions().contains(d))
+                    .collect(Collectors.toList());
+        }
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -229,6 +235,12 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                                    final HttpServletResponse response,
                                                                    @RequestParam final String domain) throws Exception {
         ensureDefaultServiceExists();
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        if (!casUserProfile.isAdministrator()) {
+            if (!casUserProfile.getPermissions().contains(domain)) {
+                throw new IllegalAccessException("You do not have permission to the domain '"+domain+"'");
+            }
+        }
         final GitServicesManager manager = managerFactory.from(request, response);
         return new ResponseEntity<>(manager.getServiceItemsForDomain(domain), HttpStatus.OK);
     }
@@ -247,14 +259,23 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<List<RegisteredServiceItem>> search(final HttpServletRequest request,
                                                               final HttpServletResponse response,
                                                               @RequestParam final String query) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         final GitServicesManager manager = managerFactory.from(request, response);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
         final List<RegisteredServiceItem> serviceBeans = new ArrayList<>();
-        final List<RegisteredService> services = manager.getAllServices()
-                .stream()
+        List<RegisteredService> services;
+        if (!casUserProfile.isAdministrator()) {
+            services = casUserProfile.getPermissions()
+                    .stream()
+                    .flatMap(d -> manager.getServicesForDomain(d).stream())
+                    .collect(Collectors.toList());
+        } else {
+            services = (List<RegisteredService>)manager.getAllServices();
+        }
+        services = services.stream()
                 .filter(service -> pattern.matcher(service.getServiceId()).lookingAt()
                         || pattern.matcher(service.getName()).lookingAt()
-                        || pattern.matcher(service.getDescription()).lookingAt())
+                       || pattern.matcher(service.getDescription() != null ? service.getDescription() : "").lookingAt())
                 .collect(Collectors.toList());
         serviceBeans.addAll(services.stream().map(manager::createServiceItem).collect(Collectors.toList()));
         return new ResponseEntity<>(serviceBeans, HttpStatus.OK);

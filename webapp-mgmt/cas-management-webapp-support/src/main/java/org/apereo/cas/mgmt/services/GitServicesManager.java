@@ -32,7 +32,7 @@ public class GitServicesManager implements ServicesManager {
 
     private GitUtil git;
 
-    private Map<Integer, String> uncommitted;
+    private Map<Long, String> uncommitted;
 
     private ServicesManager manager;
 
@@ -106,13 +106,13 @@ public class GitServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        if (uncommitted != null && uncommitted.containsKey((int)service.getId())) {
-            serviceItem.setStatus(uncommitted.get((int)service.getId()));
+        if (uncommitted != null && uncommitted.containsKey(service.getId())) {
+            serviceItem.setStatus(uncommitted.get(service.getId()));
         }
         return serviceItem;
     }
 
-    private Pair<Integer, String> createChange(final DiffEntry entry) {
+    private Pair<Long, String> createChange(final DiffEntry entry) {
         try {
             final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
             final RegisteredService svc;

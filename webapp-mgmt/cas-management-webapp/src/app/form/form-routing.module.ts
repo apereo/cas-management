@@ -20,7 +20,7 @@ import {TabWsfedComponent} from './tab-wsfed/tab-wsfed.component';
 import {TabContactsComponent} from './tab-contacts/tab-contacts.component';
 import {TabExpirationComponent} from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
-import {TabBaseComponent} from "./tab-base";
+import {TabBaseComponent} from './tab-base';
 
 const childRoutes: Routes = [
   {

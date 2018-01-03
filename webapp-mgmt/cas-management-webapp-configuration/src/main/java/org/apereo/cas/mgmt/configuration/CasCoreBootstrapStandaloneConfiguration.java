@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.configuration;
 
-import org.apereo.cas.mgmt.configuration.CasConfigurationPropertiesEnvironmentManager;
+import org.apereo.cas.configuration.CasConfigurationPropertiesEnvironmentManager;
 import org.apereo.cas.configuration.CommaSeparatedStringToThrowablesConverter;
 import org.apereo.cas.configuration.api.CasConfigurationPropertiesSourceLocator;
 import org.springframework.beans.factory.annotation.Autowired;

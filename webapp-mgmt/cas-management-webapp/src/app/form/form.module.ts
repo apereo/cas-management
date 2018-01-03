@@ -71,7 +71,7 @@ import { OptionalComponent } from './samlclient/optional/optional.component';
 import { NameidComponent } from './samlclient/nameid/nameid.component';
 import { MappedComponent } from './attribute-release-filters/mapped/mapped.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
-import {InvalidDomainDirective} from "./serviceid/invalid-domain.directive";
+import {InvalidDomainDirective} from './serviceid/invalid-domain.directive';
 
 
 @NgModule({

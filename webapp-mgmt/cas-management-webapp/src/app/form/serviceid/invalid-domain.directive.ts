@@ -1,6 +1,6 @@
-import {AbstractControl, NG_VALIDATORS, Validator} from "@angular/forms";
-import {Data} from "../data";
-import {Directive, Input} from "@angular/core";
+import {AbstractControl, NG_VALIDATORS, Validator} from '@angular/forms';
+import {Data} from '../data';
+import {Directive, Input} from '@angular/core';
 
 @Directive({
     selector: '[appInvalidDomain]',

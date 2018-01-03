@@ -19,8 +19,8 @@ import {WSFederationRegisterdService} from '../../domain/wsed-service';
 import {MatSnackBar, MatTabGroup} from '@angular/material';
 import {GrouperRegisteredServiceAccessStrategy} from '../../domain/access-strategy';
 import {RegisteredServiceRegexAttributeFilter} from '../../domain/attribute-filter';
-import {UserService} from "../user.service";
-import {UserProfile} from "../../domain/user-profile";
+import {UserService} from '../user.service';
+import {UserProfile} from '../../domain/user-profile';
 
 enum Tabs {
   BASICS,
@@ -190,7 +190,7 @@ export class FormComponent implements OnInit {
       });
       this.goto(-1);
       setTimeout(() => {
-        this.goto((formErrors > 0 && this.isCas()) ? formErrors - 1 : formErrors)},10);
+        this.goto(( formErrors > 0 && this.isCas() ) ? formErrors - 1 : formErrors ) }, 10);
     } else {
       this.service.saveService(this.data.service)
         .then(resp => this.handleSave(resp))
@@ -243,12 +243,12 @@ export class FormComponent implements OnInit {
   validateDomain(service: string): boolean {
     const domainPattern = new RegExp('^https?://([^:/]+)');
     try {
-      var domain = domainPattern.exec(service);
+      const domain = domainPattern.exec(service);
       if (domain != null) {
         return this.user.permissions.indexOf(domain[1]) > -1;
       }
     } catch (e) {
-      console.log("Failed Domain parse");
+      console.log('Failed Domain parse');
     }
     return false;
   }

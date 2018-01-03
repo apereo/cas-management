@@ -137,7 +137,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
 
   refresh() {
-    console.log("doing refresh");
     this.getServices();
     this.controlsService.untracked();
   }

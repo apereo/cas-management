@@ -1,52 +1,56 @@
 package org.apereo.cas.mgmt.configuration;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.core.CasServerProperties;
 import org.apereo.cas.configuration.model.core.authentication.AuthenticationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.configuration.model.webapp.LocaleProperties;
 import org.apereo.cas.mgmt.configuration.model.ManagementWebappProperties;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+/**
+ * Configuration class used to read values from congigured properties files.
+ *
+ * @author Travis Schmidt
+ * @since 5.3.0
+ */
 @ConfigurationProperties("cas")
 public class CasManagementConfigurationProperties {
     /**
-       Authentication
+       Authentication.
      */
     @NestedConfigurationProperty
-    AuthenticationProperties authn = new AuthenticationProperties();
+    private AuthenticationProperties authn = new AuthenticationProperties();
 
     /**
-     * ServiceRegistry
+     * ServiceRegistry.
      */
     @NestedConfigurationProperty
-    ServiceRegistryProperties serviceRegistry = new ServiceRegistryProperties();
+    private ServiceRegistryProperties serviceRegistry = new ServiceRegistryProperties();
 
     /**
-     * Locale
+     * Locale.
      */
     @NestedConfigurationProperty
-    LocaleProperties locale = new LocaleProperties();
+    private LocaleProperties locale = new LocaleProperties();
 
     /**
-     * Sever
+     * Sever.
      */
     @NestedConfigurationProperty
-    CasServerProperties server = new CasServerProperties();
+    private CasServerProperties server = new CasServerProperties();
 
     /**
-     * Management
+     * Management.
      */
     @NestedConfigurationProperty
-    ManagementWebappProperties mgmt = new ManagementWebappProperties();
+    private ManagementWebappProperties mgmt = new ManagementWebappProperties();
 
     public ManagementWebappProperties getMgmt() {
         return mgmt;
     }
 
-    public void setMgmt(ManagementWebappProperties mgmt) {
+    public void setMgmt(final ManagementWebappProperties mgmt) {
         this.mgmt = mgmt;
     }
 
@@ -54,7 +58,7 @@ public class CasManagementConfigurationProperties {
         return authn;
     }
 
-    public void setAuthn(AuthenticationProperties authn) {
+    public void setAuthn(final AuthenticationProperties authn) {
         this.authn = authn;
     }
 
@@ -62,7 +66,7 @@ public class CasManagementConfigurationProperties {
         return serviceRegistry;
     }
 
-    public void setServiceRegistry(ServiceRegistryProperties serviceRegistry) {
+    public void setServiceRegistry(final ServiceRegistryProperties serviceRegistry) {
         this.serviceRegistry = serviceRegistry;
     }
 
@@ -70,7 +74,7 @@ public class CasManagementConfigurationProperties {
         return locale;
     }
 
-    public void setLocale(LocaleProperties locale) {
+    public void setLocale(final LocaleProperties locale) {
         this.locale = locale;
     }
 
@@ -78,7 +82,7 @@ public class CasManagementConfigurationProperties {
         return server;
     }
 
-    public void setServer(CasServerProperties server) {
+    public void setServer(final CasServerProperties server) {
         this.server = server;
     }
 

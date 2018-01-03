@@ -195,7 +195,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @GetMapping(value = "/domainList")
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request,response);
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         final GitServicesManager manager = managerFactory.from(request, response);
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
@@ -270,7 +270,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                     .flatMap(d -> manager.getServicesForDomain(d).stream())
                     .collect(Collectors.toList());
         } else {
-            services = (List<RegisteredService>)manager.getAllServices();
+            services = (List<RegisteredService>) manager.getAllServices();
         }
         services = services.stream()
                 .filter(service -> pattern.matcher(service.getServiceId()).lookingAt()

@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt.services.web;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;

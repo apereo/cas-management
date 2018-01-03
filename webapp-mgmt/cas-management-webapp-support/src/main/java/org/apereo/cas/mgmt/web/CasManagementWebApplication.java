@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.web;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.springframework.boot.actuate.autoconfigure.MetricsDropwizardAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Import;
                 JmxAutoConfiguration.class,
                 MetricsDropwizardAutoConfiguration.class})
 @Import(value = AopAutoConfiguration.class)
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties(CasManagementConfigurationProperties.class)
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class CasManagementWebApplication {
     /**

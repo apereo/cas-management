@@ -2,7 +2,7 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.support.oidc.OidcProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.CasManagementUtils;
@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
  * @since 5.0.0
  */
 @Configuration("casManagementWebAppConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties(CasManagementConfigurationProperties.class)
 public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -75,7 +75,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     private Config casManagementSecurityConfiguration;
 
     @Autowired
-    private CasConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties casProperties;
 
     @Autowired
     @Qualifier("webApplicationServiceFactory")

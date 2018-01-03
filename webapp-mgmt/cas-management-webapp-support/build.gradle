@@ -8,19 +8,23 @@ repositories {
 }
 
 dependencies {
-    implementation libraries.metrics
-    implementation libraries.pac4j
-    implementation libraries.casclient
+//    implementation libraries.metrics
+//    implementation libraries.pac4j
+//    implementation libraries.casclient
     implementation libraries.groovy
     implementation libraries.opensaml
     implementation libraries.springcloudconfigclient
+
     implementation libraries.thymeleaf
+
+    implementation project(":webapp-mgmt:cas-management-webapp-configuration")
 
     implementation "org.apereo.cas:cas-server-core-api-authentication:$casVersion"
 
     implementation "org.apereo.cas:cas-server-core-util:$casVersion"
+
     implementation "org.apereo.cas:cas-server-core-authentication-attributes:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
+    implementation "org.apereo.cas:cas-server-core-api-configuration:$casVersion"
     implementation "org.apereo.cas:cas-server-core-services:$casVersion"
     implementation "org.apereo.cas:cas-server-core-services-registry:$casVersion"
     implementation "org.apereo.cas:cas-server-core-web:$casVersion"
@@ -28,14 +32,15 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-ws-idp-api:$casVersion"
     implementation "org.apereo.cas:cas-server-support-person-directory:$casVersion"
     implementation "org.apereo.cas:cas-server-support-surrogate-api:$casVersion"
-
     implementation "org.apereo.cas:cas-server-support-oauth-services:$casVersion"
     implementation "org.apereo.cas:cas-server-support-saml-idp-core:$casVersion"
     implementation "org.apereo.cas:cas-server-support-oidc-services:$casVersion"
     implementation "org.apereo.cas:cas-server-support-oidc-core:$casVersion"
     implementation "org.apereo.cas:cas-server-support-ws-idp-api:$casVersion"
     implementation "org.apereo.cas:cas-server-support-grouper-core:$casVersion"
-    
     testImplementation "org.apereo.cas:cas-server-core-services-authentication:$casVersion"
+
     //testImplementation (path: ":cas-server-core-services", configuration: "tests")
 }
+
+

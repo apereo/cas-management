@@ -10,7 +10,8 @@ repositories {
 dependencies {
     implementation "org.apereo.cas:cas-server-support-ldap-core:$casVersion"
     implementation "org.apereo.cas:cas-server-core-authentication:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
+    implementation "org.apereo.cas:cas-server-core-api-configuration:$casVersion"
     implementation "org.apereo.cas:cas-server-core-util:$casVersion"
-    implementation libraries.pac4j
+    implementation project(":webapp-mgmt:cas-management-webapp-configuration")
+   // implementation libraries.pac4j
 }

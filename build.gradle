@@ -15,7 +15,7 @@ ext {
     Open the Git repository in the current directory.
     Get commit id of HEAD.
      */
-    git = org.ajoberstar.grgit.Grgit.open(file('.'))
+    git = org.ajoberstar.grgit.Grgit.open(dir: file('.').canonicalPath)
     def gitHead = git.head()
     currentRevision = gitHead.id
     currentAbbreviatedRevision = gitHead.abbreviatedId
@@ -41,12 +41,13 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
         classpath "com.netflix.nebula:gradle-lint-plugin:8.3.1"
-        classpath "org.standardout:gradle-versioneye-plugin:1.5.0"
-        classpath "io.spring.gradle:propdeps-plugin:0.0.9.RELEASE"
-        classpath "org.ajoberstar:grgit:1.7.2"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath "io.spring.gradle:propdeps-plugin:0.0.10.RELEASE"
+        classpath "org.ajoberstar:grgit:2.1.0"
+        classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.13"
         classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
         classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
-        classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.1"
+        classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2"
     }
 }
 
@@ -55,7 +56,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "maven"
     apply plugin: "signing"
-    apply plugin: "org.standardout.versioneye"
+    apply plugin: "com.github.ben-manes.versions"
     apply plugin: "jacoco"
 
     if (!rootProject.publishSnapshots) {
@@ -110,6 +111,9 @@ subprojects {
         doLast {}
     }
     apply plugin: "java-library"
+    if (!Boolean.getBoolean("skipErrorProneCompiler")) {
+        apply plugin: "net.ltgt.errorprone"
+    }
     apply plugin: "checkstyle"
     apply plugin: "findbugs"
     apply plugin: "propdeps"
@@ -126,14 +130,18 @@ subprojects {
         mavenCentral()
         maven { url "https://build.shibboleth.net/nexus/content/repositories/releases" }
         
-        if (rootProject.publishSnapshots) {
+       // if (rootProject.publishSnapshots) {
             maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        }
+        //}
         
         maven { url "https://oss.sonatype.org/content/repositories/releases" }
         maven { url "https://dl.bintray.com/uniconiam/maven" }
         maven { url "https://jitpack.io" }
         jcenter()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += [ '-XepAllErrorsAsWarnings' ]
     }
 
     test {
@@ -244,11 +252,6 @@ subprojects {
         enabled = !Boolean.getBoolean("skipCheckstyle")
     }
 
-    versioneye {
-        includePlugins = false
-        includeSubProjects = true
-        exclude project.configurations.findAll { !it.canBeResolved }*.name as String[]
-    }
 
     findbugs {
         toolVersion = "${findbugsVersion}"
@@ -285,7 +288,7 @@ subprojects {
         api libraries.jackson
         api libraries.httpclient
         api libraries.quartz
-        api libraries.hibernate
+        //api libraries.hibernate
         api libraries.springcloud
         api libraries.springboot
 

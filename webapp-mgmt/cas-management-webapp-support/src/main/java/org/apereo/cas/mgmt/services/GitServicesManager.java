@@ -32,7 +32,7 @@ public class GitServicesManager implements ServicesManager {
 
     private GitUtil git;
 
-    private Map<Integer, String> uncommitted;
+    private Map<Long, String> uncommitted;
 
     private ServicesManager manager;
 
@@ -112,7 +112,7 @@ public class GitServicesManager implements ServicesManager {
         return serviceItem;
     }
 
-    private Pair<Integer, String> createChange(final DiffEntry entry) {
+    private Pair<Long, String> createChange(final DiffEntry entry) {
         try {
             final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
             final RegisteredService svc;
@@ -189,7 +189,7 @@ public class GitServicesManager implements ServicesManager {
 
     @Override
     public boolean matchesExistingService(final String s) {
-        return this.matchesExistingService(s);
+        return this.manager.matchesExistingService(s);
     }
 
     @Override

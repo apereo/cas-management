@@ -196,7 +196,7 @@ public class ServiceRepsositoryController {
      * @return ResponseEntity
      * @throws Exception - failed.
      */
-    @PostMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/submit", consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> submitPull(final HttpServletResponse response,
                                              final HttpServletRequest request,
                                              final @RequestBody String msg) throws Exception {
@@ -741,6 +741,7 @@ public class ServiceRepsositoryController {
      * @return - Change
      * @throws Exception - failed
      */
+    @SuppressWarnings("DefaultCharset")
     private Change createModifyChange(final GitUtil git, final DiffEntry entry) throws Exception {
         final String file = git.repoPath() + "/" + entry.getNewPath();
         final String json = new String(Files.readAllBytes(Paths.get(file)));

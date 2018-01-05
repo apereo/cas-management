@@ -1,17 +1,19 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Messages} from '../../messages';
 import {
-  DefaultRegisteredServiceAccessStrategy, GrouperRegisteredServiceAccessStrategy,
-  RemoteEndpointServiceAccessStrategy, SurrogateRegisteredServiceAccessStrategy,
-  TimeBasedRegisteredServiceAccessStrategy
+    DefaultRegisteredServiceAccessStrategy, GroovyRegisteredServiceAccessStrategy,
+    GrouperRegisteredServiceAccessStrategy,
+    RemoteEndpointServiceAccessStrategy, SurrogateRegisteredServiceAccessStrategy,
+    TimeBasedRegisteredServiceAccessStrategy
 } from '../../../domain/access-strategy';
 import {FormData} from '../../../domain/form-data';
 import {Util} from '../../util/util';
 import {Data} from '../data';
+import {DefaultRegisteredServiceDelegatedAuthenticationPolicy} from '../../../domain/delegated-authn';
 
 
 enum Type {
-  DEFAULT, TIME, GROUPER, REMOTE, SURROGATE
+  DEFAULT, TIME, GROUPER, REMOTE, SURROGATE, GROOVY
 }
 
 @Component({
@@ -25,7 +27,8 @@ export class AccessStrategyComponent implements OnInit {
   formData: FormData;
   type: Type;
   TYPE = Type;
-  types = [Type.DEFAULT, Type.TIME, Type.GROUPER, Type.REMOTE, Type.SURROGATE];
+  types = [Type.DEFAULT, Type.TIME, Type.GROUPER, Type.REMOTE, Type.SURROGATE, Type.GROOVY];
+  delegatedAuthn: String[] = [];
 
   constructor(public messages: Messages,
               public data: Data) {
@@ -44,6 +47,11 @@ export class AccessStrategyComponent implements OnInit {
       service.accessStrategy.requiredAttributes = new Map();
     }
 
+    if (service.accessStrategy.delegatedAuthenticationPolicy) {
+      const delegatedPolicy = service.accessStrategy.delegatedAuthenticationPolicy as DefaultRegisteredServiceDelegatedAuthenticationPolicy;
+      this.delegatedAuthn = delegatedPolicy.allowedProviders;
+    }
+
     this.formData.availableAttributes.forEach((item: any) => {
       service.accessStrategy.requiredAttributes[item] = service.accessStrategy.requiredAttributes[item] || [item];
     });
@@ -56,6 +64,8 @@ export class AccessStrategyComponent implements OnInit {
       this.type = Type.GROUPER;
     } else if (SurrogateRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
       this.type = Type.SURROGATE;
+    } else if (GroovyRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
+      this.type = Type.GROOVY;
     } else {
       this.type = Type.DEFAULT;
     }
@@ -78,7 +88,20 @@ export class AccessStrategyComponent implements OnInit {
       case Type.SURROGATE :
         this.data.service.accessStrategy = new SurrogateRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
         break;
+      case Type.GROOVY :
+        this.data.service.accessStrategy = new GroovyRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
+        break;
       default:
+    }
+  }
+
+  changeDelegatedAuthns() {
+    if (this.delegatedAuthn.length === 0) {
+      this.data.service.accessStrategy.delegatedAuthenticationPolicy = null;
+    } else {
+      const policy = new DefaultRegisteredServiceDelegatedAuthenticationPolicy();
+      policy.allowedProviders = this.delegatedAuthn;
+      this.data.service.accessStrategy.delegatedAuthenticationPolicy = policy;
     }
   }
 }

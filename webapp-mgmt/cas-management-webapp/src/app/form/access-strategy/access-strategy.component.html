@@ -94,6 +94,42 @@
         <app-surrogate></app-surrogate>
       </div>
 
+      <div *ngIf="type == TYPE.GROOVY">
+        <mat-form-field class="textInput">
+          <input matInput
+                 i18n-placeholder="services.form.label.sas.groovy.scriptFile"
+                 [placeholder]="messages.services_form_label_sas_groovy_scriptFile"
+                 [(ngModel)]="data.service.accessStrategy.groovyScript">
+        </mat-form-field>
+        <mat-icon style="font-size: medium"
+                  i18n-matTooltip="services.form.tooltip.sas.groovy.scriptFile"
+                  [matTooltip]="messages.services_form_tooltip_sas_groovy_scriptFile">help
+        </mat-icon>
+      </div>
+
+    </div>
+  </mat-card>
+
+  <mat-card class="tabCard">
+    <mat-card-title>
+      <h5>Delegated Authentication</h5>
+    </mat-card-title>
+    <div class="cardContent">
+      <div>
+        <mat-form-field class="textInput">
+          <mat-select i18n-placeHolder="services.form.label.sas.delegatedAuthn" multiple
+                      [placeholder]="messages.services_form_label_sas_delegatedAuthn"
+                      [(ngModel)]="delegatedAuthn" (change)="changeDelegatedAuthns()">
+            <mat-option *ngFor="let opt of formData.delegatedAuthnProviders" [value]="opt">
+              {{ opt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-icon style="font-size: medium"
+                  i18n-matTooltip="services.form.tooltip.sas.delegatedAuthn"
+                  [matTooltip]="messages.services_form_tooltip_sas_delegatedAuthn">help
+        </mat-icon>
+      </div>
     </div>
   </mat-card>
 

@@ -5,7 +5,7 @@ import {FormData} from '../../../domain/form-data';
 import {
     DefaultRegisteredServiceMultifactorPolicy,
     GroovyRegisteredServiceMultifactorPolicy
-} from "../../../domain/multifactor";
+} from '../../../domain/multifactor';
 
 enum Type {
   DEFAULT,

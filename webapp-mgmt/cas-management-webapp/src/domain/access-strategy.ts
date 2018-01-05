@@ -1,8 +1,10 @@
+import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn';
+
 export abstract class RegisteredServiceAccessStrategy {
   enabled = true;
   ssoEnabled = false;
   unauthorizedRedirectUrl: String;
-  delegatedAuthenticationPolicy: DefaultRegisteredServiceDelegatedAuthenticationPolicy;
+  delegatedAuthenticationPolicy: RegisteredServiceDelegatedAuthenticationPolicy;
   requireAllAttributes = false;
   requiredAttributes: Map<String, String[]>;
   rejectedAttributes: Map<String, String[]>;
@@ -93,20 +95,6 @@ export class SurrogateRegisteredServiceAccessStrategy extends DefaultRegisteredS
   constructor(strat?: RegisteredServiceAccessStrategy) {
     super(strat);
     this['@class'] = SurrogateRegisteredServiceAccessStrategy.cName;
-  }
-}
-
-export class DefaultRegisteredServiceDelegatedAuthenticationPolicy {
-  static cName = 'org.apereo.cas.services.DefaultRegisteredServiceDelegatedAuthenticationPolicy';
-
-  allowedProviders: String[];
-
-  static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === DefaultRegisteredServiceDelegatedAuthenticationPolicy.cName;
-  }
-
-  constructor() {
-    this['@class'] = DefaultRegisteredServiceDelegatedAuthenticationPolicy.cName;
   }
 }
 

@@ -166,11 +166,14 @@ export class Messages {
  readonly services_form_label_sas_surrogate_enabled = 'Surrogate Enabled';
  readonly services_form_label_sas_surrogate_ssoEnabled = 'Surrogate SSO Enabled';
  readonly services_form_label_sas_surrogate_requiredAttributes = 'Surrogate Required Attributes';
+ readonly services_form_label_sas_groovy_scriptFile = 'Groovy Script File';
+ readonly services_form_label_sas_delegatedAuthn = 'Allowed Providers';
  readonly services_form_label_multiauth_providers = 'Providers';
  readonly services_form_label_multiauth_failuremode = 'Failure Mode';
  readonly services_form_label_multiauth_principalattribute_nametrigger = 'Principal Attribute Name Trigger';
  readonly services_form_label_multiauth_principalattribute_valuetomatch = 'Principal Attribute Value To Match';
  readonly services_form_label_multiauth_bypassenabled = 'Enable Bypass';
+ readonly services_form_label_multiauth_groovy_scriptFile = 'Groovy Script Location';
 
  readonly services_form_label_saml_header = 'SAML Client';
  readonly services_form_label_saml_metadata_location = 'Metadata Location';
@@ -322,11 +325,14 @@ export class Messages {
  readonly services_form_tooltip_sas_surrogate_enabled = 'Determines whether this service is allowed to use surrogate authentication.';
  readonly services_form_tooltip_sas_surrogate_ssoEnabled = 'Determines whether a Surrogate authentication should participate in SSO';
  readonly services_form_tooltip_sas_surrogate_requiredAttributes = 'List of attributes and values that must be present for the primary user in order to allow surrogate authentication';
+ readonly services_form_tooltip_sas_groovy_scriptFile = 'Location where the groovy script file to determine granting access to this service is located';
+ readonly services_form_tooltip_sas_delegatedAuthn = 'List of authentication providers this service is allowed to delegate authentication to';
  readonly services_form_tooltip_multiauth_providers = 'List of multifactor provider ids to assign to this service.';
  readonly services_form_tooltip_multiauth_failuremode = 'Decide what CAS should do in the event that a provider is not available.';
  readonly services_form_tooltip_multiauth_principalattribute_nametrigger = 'Principal attribute name to trigger MFA when accessing this service.';
  readonly services_form_tooltip_multiauth_principalattribute_valuetomatch = 'Principal attribute value to match in order to trigger MFA when accessing this service.';
  readonly services_form_tooltip_multiauth_bypassenabled = 'Bypass multifactor authentication for this service.';
+ readonly services_form_tooltip_multiauth_groovy_scriptFile = 'Location of groovy script file that will be used by this service to determine if MFA is triggered when accessing this service';
 
  readonly services_form_tooltip_saml_header = 'SAML Client';
  readonly services_form_tooltip_saml_metadata_location = 'Metadata location for this particular service provider.';

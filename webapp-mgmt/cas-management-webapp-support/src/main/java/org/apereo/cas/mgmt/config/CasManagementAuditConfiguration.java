@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.config;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.services.audit.Pac4jAuditablePrincipalResolver;
 import org.apereo.cas.mgmt.services.audit.ServiceManagementResourceResolver;
 import org.apereo.cas.util.CollectionUtils;
@@ -30,7 +30,7 @@ import java.util.Map;
  * @since 5.1.0
  */
 @Configuration("casManagementAuditConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties(CasManagementConfigurationProperties.class)
 public class CasManagementAuditConfiguration {
     private static final String AUDIT_ACTION_SUFFIX_FAILED = "_FAILED";
     private static final String AUDIT_ACTION_SUFFIX_SUCCESS = "_SUCCESS";

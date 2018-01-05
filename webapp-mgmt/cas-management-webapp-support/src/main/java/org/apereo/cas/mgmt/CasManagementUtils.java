@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 
@@ -21,7 +21,7 @@ public final class CasManagementUtils {
      * @param serverProperties the server properties
      * @return the default callback url
      */
-    public static String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
+    public static String getDefaultCallbackUrl(final CasManagementConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
             return casProperties.getMgmt().getServerName().concat(serverProperties.getContextPath()).concat("/manage.html");
         } catch (final Exception e) {

@@ -19,6 +19,8 @@ import {WSFederationRegisterdService} from '../../domain/wsed-service';
 import {MatSnackBar, MatTabGroup} from '@angular/material';
 import {GrouperRegisteredServiceAccessStrategy} from '../../domain/access-strategy';
 import {RegisteredServiceRegexAttributeFilter} from '../../domain/attribute-filter';
+import {UserService} from '../user.service';
+import {UserProfile} from '../../domain/user-profile';
 
 enum Tabs {
   BASICS,
@@ -44,9 +46,12 @@ enum Tabs {
 export class FormComponent implements OnInit {
 
   id: String;
+  view: boolean;
 
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
+
+  user: UserProfile;
 
   constructor(public messages: Messages,
               private route: ActivatedRoute,
@@ -54,10 +59,12 @@ export class FormComponent implements OnInit {
               private service: FormService,
               public data: Data,
               private location: Location,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              private userService: UserService) {
   }
 
   ngOnInit() {
+    this.view = this.route.snapshot.data.view;
     this.route.data
       .subscribe((data: { resp: AbstractRegisteredService}) => {
         if (data.resp) {
@@ -65,11 +72,12 @@ export class FormComponent implements OnInit {
           this.goto(Tabs.BASICS)
         }
       });
+    this.userService.getUser().then(resp => this.user = resp);
   }
 
   goto(tab: Tabs) {
     const route: any[] = [{outlets: {form: [this.tabRoute(tab)]}}];
-    this.router.navigate(route, {skipLocationChange: true, relativeTo: this.route} );
+    this.router.navigate(route, {skipLocationChange: true, relativeTo: this.route, replaceUrl: true});
   }
 
   save() {
@@ -109,6 +117,9 @@ export class FormComponent implements OnInit {
   }
 
   tabRoute(tab: Tabs): String {
+    if (tab < 0) {
+      return 'clear';
+    }
     if (tab > 0 && this.isCas()) {
       tab++
     }
@@ -177,22 +188,19 @@ export class FormComponent implements OnInit {
       this.snackBar.open(this.messages.services_form_alert_formHasErrors, 'Dismiss', {
         duration: 5000
       });
-      this.tabGroup.selectedIndex = (formErrors > 0 && this.isCas()) ? formErrors - 1 : formErrors;
+      this.goto(-1);
+      setTimeout(() => {
+        this.goto(( formErrors > 0 && this.isCas() ) ? formErrors - 1 : formErrors ) }, 10);
     } else {
       this.service.saveService(this.data.service)
         .then(resp => this.handleSave(resp))
         .catch(e => this.handleNotSaved(e));
     }
-
   };
 
   clearErrors() {
-    const missing = document.getElementsByClassName('required-missing');
-    let i = 0;
-    const j = missing.length;
-    for (i = 0; i < j; i++) {
-      missing.item(0).classList.remove('required-missing');
-    }
+    this.data.invalidDomain = false;
+    this.data.invalidRegEx = false;
   }
 
   handleSave(id: number) {
@@ -219,7 +227,7 @@ export class FormComponent implements OnInit {
     });
   }
 
-  validateRegex(pattern) {
+  validateRegex(pattern): boolean {
     try {
       if (pattern === '') {
         return false;
@@ -228,8 +236,21 @@ export class FormComponent implements OnInit {
       return true;
     } catch (e) {
       console.log('Failed regex');
-      return false;
     }
+    return false;
+  }
+
+  validateDomain(service: string): boolean {
+    const domainPattern = new RegExp('^https?://([^:/]+)');
+    try {
+      const domain = domainPattern.exec(service);
+      if (domain != null) {
+        return this.user.permissions.indexOf(domain[1]) > -1;
+      }
+    } catch (e) {
+      console.log('Failed Domain parse');
+    }
+    return false;
   }
 
   validateForm(): Tabs {
@@ -239,6 +260,13 @@ export class FormComponent implements OnInit {
     if (!data.serviceId ||
         !this.validateRegex(data.serviceId) ||
         !data.name) {
+        this.data.invalidRegEx = true;
+      return Tabs.BASICS;
+    }
+
+    if (!this.user.administrator &&
+        !this.validateDomain(data.serviceId as string)) {
+        this.data.invalidDomain = true;
       return Tabs.BASICS;
     }
 

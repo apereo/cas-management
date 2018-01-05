@@ -8,34 +8,115 @@ repositories {
 }
 
 dependencies {
-    implementation libraries.metrics
     implementation libraries.pac4j
     implementation libraries.casclient
     implementation libraries.groovy
     implementation libraries.opensaml
     implementation libraries.springcloudconfigclient
+    implementation libraries.jose4j
+    implementation libraries.bouncycastle
+    implementation libraries.jasypt
+    implementation libraries.ldaptive
+    implementation libraries.caffein
+    implementation libraries.jgit
+
     implementation libraries.thymeleaf
 
-    implementation "org.apereo.cas:cas-server-core-api-authentication:$casVersion"
+    api project(":webapp-mgmt:cas-management-webapp-configuration")
 
-    implementation "org.apereo.cas:cas-server-core-util:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-authentication-attributes:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-services:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-services-registry:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-web:$casVersion"
-    implementation "org.apereo.cas:cas-server-core-logging-config:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-ws-idp-api:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-person-directory:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-surrogate-api:$casVersion"
+    implementation ("org.apereo.cas:cas-server-core-configuration-api:$casVersion") {
+        transitive = false
+    }
 
-    implementation "org.apereo.cas:cas-server-support-oauth-services:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-saml-idp-core:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-oidc-services:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-oidc-core:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-ws-idp-api:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-grouper-core:$casVersion"
-    
-    testImplementation "org.apereo.cas:cas-server-core-services-authentication:$casVersion"
-    //testImplementation (path: ":cas-server-core-services", configuration: "tests")
+    implementation ("org.apereo.cas:cas-server-core-api-authentication:$casVersion") {
+        transitive = false
+    }
+
+    implementation ("org.apereo.cas:cas-server-core-util:$casVersion") {
+        transitive = false
+    }
+
+    implementation ("org.apereo.cas:cas-server-core-api-util:$casVersion") {
+        transitive = false
+    }
+
+    implementation ("org.apereo.cas:cas-server-core-util-api:$casVersion") {
+        transitive = false
+    }
+
+    implementation ("org.apereo.cas:cas-server-core-api-web:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-web-api:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-events:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-authentication:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-configuration:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-services:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-services:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-services-api:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-services-registry:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-web:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-logging-config:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-person-directory:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-oidc-services:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
+        transitive = false
+    }
+    testImplementation ("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
+        transitive = false
+    }
+    implementation ("org.apereo.cas:cas-server-core-api-protocol:$casVersion") {
+        transitive = false
+    }
 }

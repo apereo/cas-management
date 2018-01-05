@@ -179,7 +179,7 @@ public class FormData implements Serializable {
         return CaseCanonicalizationMode.values();
     }
 
-    private class Option {
+    private static class Option {
         private String display;
         private String value;
 

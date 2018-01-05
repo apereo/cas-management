@@ -1,5 +1,5 @@
-<div style="display:flex;margin-bottom:10px;">
-  <div style="margin-left:25px;padding-top: 3px;">
+<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+  <div style="padding-top: 3px;">
     <mat-icon style="padding-top: 3px;">build</mat-icon>
     <h4 style="display: inline;position: relative;top: -5px;">
       <ng-container i18n>
@@ -10,7 +10,7 @@
   <div style="flex: 1 1 auto">
   </div>
   <div>
-    <app-controls></app-controls>
+    <app-controls (refresh)="refresh()"></app-controls>
   </div>
 </div>
 
@@ -27,6 +27,17 @@
         <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
           <mat-icon>menu</mat-icon>
         </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'statusWidth'">
+        <ng-container i18n>Status</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'statusWidth'">
+        <span *ngIf="row.status === 'ADDED'" style="color:green;">A</span>
+        <span *ngIf="row.status === 'MODIFIED'" style="color:blue;">M</span>
+        <span *ngIf="row.status === 'DELETED'" style="color:red;">D</span>
       </mat-cell>
     </ng-container>
 
@@ -77,25 +88,42 @@
 </div>
 
 <mat-menu #serviceMenu>
-  <button mat-menu-item (click)="serviceEdit()">
+  <button mat-menu-item (click)="serviceEdit()" *ngIf="selectedItem && selectedItem.status !== 'DELETE'">
     <mat-icon>edit</mat-icon>
     <ng-container i18n="management.services.table.button.edit">
       {{ messages.management_services_table_button_edit }}
     </ng-container>
   </button>
-  <button mat-menu-item (click)="serviceDuplicate()">
+  <button mat-menu-item (click)="getYaml()" *ngIf="selectedItem && selectedItem.status !== 'DELETE'">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>YAML</ng-container>
+  </button>
+  <button mat-menu-item (click)="getJson()" *ngIf="selectedItem && selectedItem.status !== 'DELETE'">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>JSON</ng-container>
+  </button>
+  <button mat-menu-item (click)="serviceDuplicate()" *ngIf="selectedItem && selectedItem.status !== 'DELETE'">
     <mat-icon>content_copy</mat-icon>
     <ng-container i18n="management.services.table.button.duplicate">
       {{ messages.management_services_table_button_duplicate }}
     </ng-container>
   </button>
-  <button mat-menu-item (click)="openModalDelete()">
+  <button mat-menu-item (click)="openModalDelete()" *ngIf="selectedItem && selectedItem.status !== 'DELETE'">
     <mat-icon>delete</mat-icon>
     <ng-container i18n="management.services.table.button.delete">
       {{ messages.management_services_table_button_delete }}
     </ng-container>
   </button>
-  <button mat-menu-item (click)="moveUp(selectedItem)" *ngIf="showMoveUp()">
+  <button mat-menu-item (click)="history()" *ngIf="selectedItem && selectedItem.status !== 'ADD'">
+    <mat-icon>history</mat-icon>
+    <ng-container i18n>History</ng-container>
+  </button>
+
+  <button mat-menu-item (click)="openModalRevert()" *ngIf="selectedItem && selectedItem.status !== 'ADD'">
+    <mat-icon>undo</mat-icon>
+    <ng-container i18n>Revert</ng-container>
+  </button>
+  <button mat-menu-item (click)="moveUp(selectedItem)" *ngIf="dataSource.data.indexOf(selectedItem) > 0 && selectedItem && selectedItem.status !== 'DELETE'">
     <mat-icon>arrow_upward</mat-icon>
     <ng-container>Move Up</ng-container>
   </button>

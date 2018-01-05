@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {Messages} from '../../messages';
 import {Data} from '../data';
 import {SamlRegisteredService} from '../../../domain/saml-service';
@@ -19,6 +19,7 @@ export class ServiceidComponent implements OnInit {
 
   ngOnInit() {
     this.isSaml = SamlRegisteredService.instanceOf(this.data.service);
+    console.log(this.data.invalidDomain);
   }
 
   placeholder() {

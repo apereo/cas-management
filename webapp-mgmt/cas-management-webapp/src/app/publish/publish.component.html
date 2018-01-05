@@ -1,0 +1,29 @@
+<div>
+  <h3 matDialogTitle i18n>
+    <ng-container i18n="management.services.table.modal.commit.header">
+      Publish
+    </ng-container>
+  </h3>
+</div>
+<mat-dialog-content>
+  <div>
+    <span i18n>The following commits will be published to the CAS Servers:</span>
+  </div>
+  <ul *ngFor="let commit of commits">
+    <li>{{commit.text}}</li>
+  </ul>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button matDialogClose>
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button mat-button matDialogClose="true">
+      <mat-icon>launch</mat-icon>
+      <ng-container i18n>Publish</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>
+
+

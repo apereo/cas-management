@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.config;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authorization.LdapUserAttributesToRolesAuthorizationGenerator;
 import org.apereo.cas.authorization.LdapUserGroupsToRolesAuthorizationGenerator;
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.LdapUtils;
@@ -15,7 +14,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import java.util.ArrayList;
 
 /**
@@ -25,11 +24,11 @@ import java.util.ArrayList;
  * @since 5.0.0
  */
 @Configuration("casManagementLdapAuthorizationConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties(CasManagementConfigurationProperties.class)
 public class CasManagementLdapAuthorizationConfiguration {
 
     @Autowired
-    private CasConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties casProperties;
 
     @RefreshScope
     @Bean

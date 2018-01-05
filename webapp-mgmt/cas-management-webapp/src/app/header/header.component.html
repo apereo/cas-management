@@ -10,7 +10,7 @@
     </a>
   </div>
   <div class="searchbox">
-    <input #search class="search" placeholder="Search Services" (keypress)="doSearch($event.target.value)">
+    <input #search class="search" placeholder="Search Services" (keyup)="doSearch($event.target.value)">
   </div>
   <div>
     <button mat-button [matMenuTriggerFor]="links">
@@ -28,11 +28,23 @@
     <mat-icon>apps</mat-icon>
     <span i18n>Services</span>
   </button>
+  <button *ngIf="isAdmin" mat-menu-item routerLink="/pulls">
+    <mat-icon>file_download</mat-icon>
+    <ng-container i18n>Pull Requests</ng-container>
+  </button>
+  <button *ngIf="!isAdmin" mat-menu-item routerLink="/submits">
+    <mat-icon>file_upload</mat-icon>
+    <ng-container i18n>Submit Requests</ng-container>
+  </button>
   <button mat-menu-item routerLink="/form/-1">
     <mat-icon>add_circle</mat-icon>
     <span i18n="managment.services.header.navitem.addNewService">
         {{ messages.management_services_header_navbar_navitem_addNewService }}
       </span>
+  </button>
+  <button mat-menu-item routerLink="/localChanges">
+    <mat-icon>build</mat-icon>
+    <ng-container i18n>Working Changes</ng-container>
   </button>
   <button mat-menu-item target="_self" id="logoutUrlLink" (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>
@@ -40,4 +52,5 @@
       {{ messages.management_services_header_navbar_navitem_logout }}
     </ng-container>
   </button>
+</mat-menu>
 

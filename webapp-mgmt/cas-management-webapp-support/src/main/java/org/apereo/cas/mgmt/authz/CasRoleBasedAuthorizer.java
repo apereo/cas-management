@@ -23,13 +23,13 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
     }
 
     @Override
-    protected boolean check(final WebContext context, final CommonProfile profile, final String element) throws HttpAction {
-        LOGGER.debug("Evaluating [{}] against profile [{}]", element, profile);
-        final boolean result = super.check(context, profile, element);
+    protected boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) throws HttpAction {
+        LOGGER.debug("Evaluating profile [{}]", profile);
+        final boolean result = super.isProfileAuthorized(context, profile);
         if (!result) {
-            LOGGER.warn("Unable to authorize access, since the authenticated profile [{}] does not contain the required role [{}]", profile, element);
+            LOGGER.warn("Unable to authorize access, since the authenticated profile [{}] does not contain any required roles", profile);
         } else {
-            LOGGER.debug("Successfully authorized access for profile [{}] having matched required role [{}]", profile, element);
+            LOGGER.debug("Successfully authorized access for profile [{}]", profile);
         }
         return result;
     }

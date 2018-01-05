@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.authentication;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
@@ -17,9 +17,9 @@ import java.util.Optional;
  * @since 5.2.0
  */
 public class CasUserProfileFactory {
-    private final CasConfigurationProperties casProperties;
+    private final CasManagementConfigurationProperties casProperties;
 
-    public CasUserProfileFactory(final CasConfigurationProperties casProperties) {
+    public CasUserProfileFactory(final CasManagementConfigurationProperties casProperties) {
         this.casProperties = casProperties;
     }
 

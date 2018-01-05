@@ -40,6 +40,7 @@ export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServi
 
   patterns: Map<String, String>;
   excludeUnmappedAttributes: boolean;
+  caseInsensitve: boolean;
   completeMatch: boolean;
   order: number;
 
@@ -47,9 +48,13 @@ export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServi
     return obj && obj['@class'] === RegisteredServiceMappedRegexAttributeFilter.cName;
   }
 
-  constructor() {
+  constructor(filter?: RegisteredServiceMappedRegexAttributeFilter) {
     super();
-    this.patterns = new Map<String, String>();
+    this.patterns = filter ? filter.patterns : new Map<String, String>();
+    this.excludeUnmappedAttributes = filter && filter.excludeUnmappedAttributes;
+    this.caseInsensitve = filter && filter.caseInsensitve;
+    this.completeMatch = filter && filter.completeMatch;
+    this.order = filter && filter.order;
     this['@class'] = RegisteredServiceMappedRegexAttributeFilter.cName;
   }
 }
@@ -61,10 +66,23 @@ export class RegisteredServiceReverseMappedRegexAttributeFilter extends Register
     return obj && obj['@class'] === RegisteredServiceReverseMappedRegexAttributeFilter.cName;
   }
 
-  constructor() {
-    super();
+  constructor(filter?: RegisteredServiceMappedRegexAttributeFilter) {
+    super(filter);
     this['@class'] = RegisteredServiceReverseMappedRegexAttributeFilter.cName;
   }
+}
+
+export class RegisteredServiceMutantRegexAttributeFilter extends RegisteredServiceMappedRegexAttributeFilter {
+    static cName = 'org.apereo.cas.services.support.RegisteredServiceMutantRegexAttributeFilter';
+
+    static instanceof(obj: any): boolean {
+        return obj && obj['@class'] === RegisteredServiceMutantRegexAttributeFilter.cName;
+    }
+
+    constructor(filter?: RegisteredServiceMappedRegexAttributeFilter) {
+        super(filter);
+        this['@class'] = RegisteredServiceMutantRegexAttributeFilter.cName;
+    }
 }
 
 export class RegisteredServiceScriptedAttributeFilter extends RegisteredServiceAttributeFilter {

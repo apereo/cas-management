@@ -21,6 +21,7 @@ export abstract class RegisteredService {
   theme: String;
   informationUrl: String;
   privacyUrl: String;
+  responseType: String;
   id: number;
   description: String;
   proxyPolicy: RegisteredServiceProxyPolicy;
@@ -44,6 +45,7 @@ export abstract class RegisteredService {
     this.theme = service && service.theme;
     this.informationUrl = service && service.informationUrl;
     this.privacyUrl = service && service.privacyUrl;
+    this.responseType = service && service.responseType;
     this.id = (service && service.id) || -1;
     this.description = service && service.description;
     this.proxyPolicy = (service && service.proxyPolicy) || new RefuseRegisteredServiceProxyPolicy();

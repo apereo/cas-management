@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { AccessStrategyComponent } from './access-strategy.component';
-import {RejectedattributesComponent} from '../rejectedattributes/rejectedattributes.component';
+import {AttributemappingComponent} from '../attributemapping/attributemapping.component';
 import {Messages} from '../../messages';
 import {FormData} from '../../../domain/form-data';
 import {SharedModule} from '../../shared/shared.module';
@@ -17,7 +17,7 @@ describe('AccessStrategyComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ AccessStrategyComponent, RejectedattributesComponent ],
+      declarations: [ AccessStrategyComponent, AttributemappingComponent ],
       providers: [
         Messages
       ]

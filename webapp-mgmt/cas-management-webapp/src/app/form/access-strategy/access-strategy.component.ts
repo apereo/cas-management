@@ -47,14 +47,9 @@ export class AccessStrategyComponent implements OnInit {
       service.accessStrategy.requiredAttributes = new Map();
     }
 
-    if (service.accessStrategy.delegatedAuthenticationPolicy) {
-      const delegatedPolicy = service.accessStrategy.delegatedAuthenticationPolicy as DefaultRegisteredServiceDelegatedAuthenticationPolicy;
-      this.delegatedAuthn = delegatedPolicy.allowedProviders;
+    if (Util.isEmpty(service.accessStrategy.requiredAttributes)) {
+      service.accessStrategy.requiredAttributes = new Map();
     }
-
-    this.formData.availableAttributes.forEach((item: any) => {
-      service.accessStrategy.requiredAttributes[item] = service.accessStrategy.requiredAttributes[item] || [item];
-    });
 
     if (RemoteEndpointServiceAccessStrategy.instanceOf(service.accessStrategy)) {
       this.type = Type.REMOTE;

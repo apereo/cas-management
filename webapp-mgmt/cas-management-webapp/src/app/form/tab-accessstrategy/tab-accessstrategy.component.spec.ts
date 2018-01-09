@@ -8,7 +8,7 @@ import { TabAccessstrategyComponent } from './tab-accessstrategy.component';
 import {Data} from '../data';
 import {AccessStrategyComponent} from '../access-strategy/access-strategy.component';
 import {Messages} from '../../messages';
-import {RejectedattributesComponent} from '../rejectedattributes/rejectedattributes.component';
+import {AttributemappingComponent} from '../attributemapping/attributemapping.component';
 import {SharedModule} from '../../shared/shared.module';
 
 describe('TabAccessstrategyComponent', () => {
@@ -18,7 +18,7 @@ describe('TabAccessstrategyComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ TabAccessstrategyComponent, AccessStrategyComponent, RejectedattributesComponent ],
+      declarations: [ TabAccessstrategyComponent, AccessStrategyComponent, AttributemappingComponent ],
       providers: [ Data, Messages ]
     })
     .compileComponents();

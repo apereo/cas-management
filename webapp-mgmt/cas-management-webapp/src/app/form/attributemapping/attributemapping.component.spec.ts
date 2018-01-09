@@ -1,29 +1,26 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
-import { RejectedattributesComponent } from './rejectedattributes.component';
+import { AttributemappingComponent } from './attributemapping.component';
 import {Messages} from '../../messages';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
-describe('RejectedattributesComponent', () => {
-  let component: RejectedattributesComponent;
-  let fixture: ComponentFixture<RejectedattributesComponent>;
+describe('AttributemappingComponent', () => {
+  let component: AttributemappingComponent;
+  let fixture: ComponentFixture<AttributemappingComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ RejectedattributesComponent ],
+      declarations: [ AttributemappingComponent ],
       providers: [ Messages ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RejectedattributesComponent);
+    fixture = TestBed.createComponent(AttributemappingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

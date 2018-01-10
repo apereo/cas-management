@@ -1,7 +1,10 @@
+import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn';
+
 export abstract class RegisteredServiceAccessStrategy {
   enabled = true;
   ssoEnabled = false;
   unauthorizedRedirectUrl: String;
+  delegatedAuthenticationPolicy: RegisteredServiceDelegatedAuthenticationPolicy;
   requireAllAttributes = false;
   requiredAttributes: Map<String, String[]>;
   rejectedAttributes: Map<String, String[]>;
@@ -11,6 +14,7 @@ export abstract class RegisteredServiceAccessStrategy {
     this.enabled = (strat && strat.enabled) || true;
     this.ssoEnabled = strat && strat.ssoEnabled;
     this.unauthorizedRedirectUrl = strat && strat.unauthorizedRedirectUrl;
+    this.delegatedAuthenticationPolicy = strat && strat.delegatedAuthenticationPolicy;
     this.requiredAttributes = strat && strat.requiredAttributes;
     this.requireAllAttributes = strat && strat.requireAllAttributes;
     this.rejectedAttributes = strat && strat.rejectedAttributes;
@@ -93,3 +97,20 @@ export class SurrogateRegisteredServiceAccessStrategy extends DefaultRegisteredS
     this['@class'] = SurrogateRegisteredServiceAccessStrategy.cName;
   }
 }
+
+export class GroovyRegisteredServiceAccessStrategy extends RegisteredServiceAccessStrategy {
+  static cName = 'org.apereo.cas.services.GroovyRegisteredServiceAccessStrategy';
+
+  order: number;
+  groovyScript: String;
+
+  static instanceOf(obj: any): boolean {
+    return obj && obj['@class'] === GroovyRegisteredServiceAccessStrategy.cName;
+  }
+
+  constructor(strat?: RegisteredServiceAccessStrategy) {
+    super(strat);
+    this['@class'] = GroovyRegisteredServiceAccessStrategy.cName;
+  }
+}
+

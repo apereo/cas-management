@@ -179,6 +179,26 @@ public class FormData implements Serializable {
         return CaseCanonicalizationMode.values();
     }
 
+    /**
+     * Returns a list of providers that authentication can be delegated to.
+     *
+     * @return the providers
+     */
+    public List<String> getDelegatedAuthnProviders() {
+        final List<String> providers = new ArrayList<>();
+        providers.add("Twitter");
+        providers.add("Paypal");
+        providers.add("Wordpress");
+        providers.add("Yahoo");
+        providers.add("Orcid");
+        providers.add("Dropbox");
+        providers.add("Github");
+        providers.add("Foursquare");
+        providers.add("WindowsLive");
+        providers.add("Google");
+        return providers;
+    }
+
     private static class Option {
         private String display;
         private String value;

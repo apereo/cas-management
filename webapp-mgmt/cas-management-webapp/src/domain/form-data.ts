@@ -19,6 +19,7 @@ export class FormData {
     oidcEncryptAlgOptions: PropertyEnum[];
     oidcSubjectTypes: PropertyEnum[];
     canonicalizationModes: String[];
+    delegatedAuthnProviders: String[];
 }
 
 export interface PropertyEnum {

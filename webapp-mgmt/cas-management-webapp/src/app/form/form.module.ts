@@ -31,7 +31,7 @@ import {OauthclientComponent} from './oauthclient/oauthclient.component';
 import {PropertiespaneComponent} from './propertiespane/propertiespane.component';
 import {ProxyComponent} from './proxy/proxy.component';
 import {PubkeyComponent} from './pubkey/pubkey.component';
-import {RejectedattributesComponent} from './rejectedattributes/rejectedattributes.component';
+import {AttributemappingComponent} from './attributemapping/attributemapping.component';
 import {ReqhandlersComponent} from './reqhandlers/reqhandlers.component';
 import {SamlclientComponent} from './samlclient/samlclient.component';
 import {ServicedescComponent} from './servicedesc/servicedesc.component';
@@ -54,7 +54,6 @@ import { RemoteComponent } from './access-strategy/remote/remote.component';
 import { TimeComponent } from './access-strategy/time/time.component';
 import { GrouperComponent } from './access-strategy/grouper/grouper.component';
 import { OidcclientComponent } from './oidcclient/oidcclient.component';
-import { MappedattributesComponent } from './mappedattributes/mappedattributes.component';
 import { TabOauthComponent } from './tab-oauth/tab-oauth.component';
 import { TabSamlComponent } from './tab-saml/tab-saml.component';
 import { TabWsfedComponent } from './tab-wsfed/tab-wsfed.component';
@@ -112,7 +111,7 @@ import {InvalidDomainDirective} from './serviceid/invalid-domain.directive';
     PropertiespaneComponent,
     ProxyComponent,
     PubkeyComponent,
-    RejectedattributesComponent,
+    AttributemappingComponent,
     ReqhandlersComponent,
     SamlclientComponent,
     ServicedescComponent,
@@ -132,7 +131,6 @@ import {InvalidDomainDirective} from './serviceid/invalid-domain.directive';
     TimeComponent,
     GrouperComponent,
     OidcclientComponent,
-    MappedattributesComponent,
     TabOauthComponent,
     TabSamlComponent,
     TabWsfedComponent,

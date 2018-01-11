@@ -6,6 +6,8 @@ title: CAS Management Web Application
 # CAS Management Web Application
 
 * Manage and register [client applications and services](installation/Installing-ServicesMgmt-Webapp.html) with specific authentication policies.
+* View, edit, restore and track changes registration records in history.
+* Implement approval/review workflows when submitting client registration requests.
 
 ## Contribute
 

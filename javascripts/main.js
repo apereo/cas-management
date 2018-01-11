@@ -140,7 +140,7 @@ function generateSidebarLinksForActiveVersion() {
         var href = this.href;
 
         if (href.indexOf("$version") != -1) {
-            href = href.replace("$version", "cas/" + getActiveDocumentationVersionInView());
+            href = href.replace("$version", "cas-management/" + getActiveDocumentationVersionInView());
             $(this).attr('href', href);
         }
     });

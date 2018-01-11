@@ -19,7 +19,6 @@ export class ServiceidComponent implements OnInit {
 
   ngOnInit() {
     this.isSaml = SamlRegisteredService.instanceOf(this.data.service);
-    console.log(this.data.invalidDomain);
   }
 
   placeholder() {

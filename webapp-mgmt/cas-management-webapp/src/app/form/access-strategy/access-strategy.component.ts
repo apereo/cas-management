@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import {Messages} from '../../messages';
 import {
     DefaultRegisteredServiceAccessStrategy, GroovyRegisteredServiceAccessStrategy,
@@ -10,6 +10,11 @@ import {FormData} from '../../../domain/form-data';
 import {Util} from '../../util/util';
 import {Data} from '../data';
 import {DefaultRegisteredServiceDelegatedAuthenticationPolicy} from '../../../domain/delegated-authn';
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {
+    MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent,
+    MatInput
+} from "@angular/material";
 
 
 enum Type {
@@ -30,6 +35,14 @@ export class AccessStrategyComponent implements OnInit {
   types = [Type.DEFAULT, Type.TIME, Type.GROUPER, Type.REMOTE, Type.SURROGATE, Type.GROOVY];
   delegatedAuthn: String[] = [];
 
+  separatorKeysCodes = [ENTER, COMMA];
+
+  @ViewChild("providerInput")
+  providerInput: ElementRef;
+
+  @ViewChild( MatAutocompleteTrigger )
+  autoTrigger: MatAutocompleteTrigger;
+
   constructor(public messages: Messages,
               public data: Data) {
     this.formData = data.formData;
@@ -49,6 +62,11 @@ export class AccessStrategyComponent implements OnInit {
 
     if (Util.isEmpty(service.accessStrategy.requiredAttributes)) {
       service.accessStrategy.requiredAttributes = new Map();
+    }
+
+    if (service.accessStrategy.delegatedAuthenticationPolicy) {
+      this.delegatedAuthn = (service.accessStrategy.delegatedAuthenticationPolicy as
+                             DefaultRegisteredServiceDelegatedAuthenticationPolicy).allowedProviders
     }
 
     if (RemoteEndpointServiceAccessStrategy.instanceOf(service.accessStrategy)) {
@@ -97,6 +115,42 @@ export class AccessStrategyComponent implements OnInit {
       const policy = new DefaultRegisteredServiceDelegatedAuthenticationPolicy();
       policy.allowedProviders = this.delegatedAuthn;
       this.data.service.accessStrategy.delegatedAuthenticationPolicy = policy;
+    }
+  }
+
+  add(event: MatChipInputEvent): void {
+    let input = event.input;
+    let value = event.value;
+
+    if ((value || '').trim()) {
+      this.delegatedAuthn.push(value.trim());
+      this.changeDelegatedAuthns();
+      this.autoTrigger.closePanel();
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(provider: any): void {
+    let index = this.delegatedAuthn.indexOf(provider);
+
+    if (index >= 0) {
+      this.delegatedAuthn.splice(index, 1);
+    }
+    this.changeDelegatedAuthns();
+  }
+
+  selection(val: MatAutocompleteSelectedEvent) {
+    const value =  val.option.value;
+    if ((value || '').trim()) {
+      this.delegatedAuthn.push(value.trim());
+      this.changeDelegatedAuthns();
+    }
+
+    if (this.providerInput) {
+      this.providerInput.nativeElement.value = '';
     }
   }
 }

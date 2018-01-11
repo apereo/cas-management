@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FooterService} from "./footer.service";
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  casVersion: String;
+  mgmtVersion: String;
+
+  constructor(private service: FooterService) { }
 
   ngOnInit() {
+    this.service.getVersions()
+        .then(resp => {
+            this.casVersion = resp[0];
+            this.mgmtVersion = resp[1];
+        });
   }
 
 }

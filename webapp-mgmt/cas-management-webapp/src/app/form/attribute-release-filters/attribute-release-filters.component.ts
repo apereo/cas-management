@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Messages} from '../../messages';
 import {
     RegisteredServiceAttributeFilter, RegisteredServiceChainingAttributeFilter,
-    RegisteredServiceMappedRegexAttributeFilter,
+    RegisteredServiceMappedRegexAttributeFilter, RegisteredServiceMutantRegexAttributeFilter,
     RegisteredServiceRegexAttributeFilter, RegisteredServiceReverseMappedRegexAttributeFilter,
     RegisteredServiceScriptedAttributeFilter
 } from '../../../domain/attribute-filter';
@@ -71,6 +71,10 @@ export class AttributeReleaseFiltersComponent implements OnInit {
     this.addFilter(new RegisteredServiceReverseMappedRegexAttributeFilter());
   }
 
+  addMutantMappedRegex() {
+    this.addFilter(new RegisteredServiceMutantRegexAttributeFilter());
+  }
+
   addScript() {
     this.addFilter(new RegisteredServiceScriptedAttributeFilter());
   }
@@ -119,6 +123,10 @@ export class AttributeReleaseFiltersComponent implements OnInit {
     return RegisteredServiceReverseMappedRegexAttributeFilter.instanceof(filter);
   }
 
+  isMutantMappedRegEx(filter: any): boolean {
+    return RegisteredServiceMutantRegexAttributeFilter.instanceof(filter);
+  }
+
   isScripted(filter: any): boolean {
     return RegisteredServiceScriptedAttributeFilter.instanceof(filter);
   }
@@ -137,16 +145,14 @@ export class AttributeReleaseFiltersComponent implements OnInit {
     attributeFilter.filters[i - 1] = this.selectedFilter;
   }
 
-    moveDown() {
-        const attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter as RegisteredServiceChainingAttributeFilter;
-        const i = attributeFilter.filters.indexOf(this.selectedFilter);
-        if (i === attributeFilter.filters.length - 1) {
-            return;
-        }
-        attributeFilter.filters[i] = attributeFilter.filters[i + 1];
-        attributeFilter.filters[i + 1] = this.selectedFilter;
+  moveDown() {
+    const attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter as RegisteredServiceChainingAttributeFilter;
+    const i = attributeFilter.filters.indexOf(this.selectedFilter);
+    if (i === attributeFilter.filters.length - 1) {
+      return;
     }
+    attributeFilter.filters[i] = attributeFilter.filters[i + 1];
+    attributeFilter.filters[i + 1] = this.selectedFilter;
+  }
 
 }
-
-

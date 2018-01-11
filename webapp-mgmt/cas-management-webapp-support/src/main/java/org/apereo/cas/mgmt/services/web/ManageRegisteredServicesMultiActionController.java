@@ -14,6 +14,7 @@ import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.RegexUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.slf4j.Logger;
@@ -329,6 +330,10 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         manager.save(svcB);
     }
 
+    @GetMapping("footer")
+    public ResponseEntity<String[]> footer() throws Exception {
+        return new ResponseEntity<>(new String[]{CasVersion.getVersion(),this.getClass().getPackage().getImplementationVersion()},HttpStatus.OK);
+    }
 
 }
 

@@ -7,11 +7,13 @@
             <mat-icon style="font-size: medium;">menu</mat-icon></button>
         <span *ngIf="isRegEx(filter)">Regex</span>
         <span *ngIf="isMappedRegEx(filter)">Mapped</span>
+        <span *ngIf="isMutantMappedRegEx(filter)">Mutant</span>
         <span *ngIf="isReverseMapped(filter)">Reverse Mapped</span>
         <span *ngIf="isScripted(filter)">Scripted</span>
       </mat-panel-title>
       <mat-panel-description>
         <span *ngIf="isRegEx(filter)">{{ filter.pattern }}</span>
+        <span *ngIf="isMutantMappedRegEx(filter)">{{ getAttributes(filter) }}</span>
         <span *ngIf="isMappedRegEx(filter)">{{ getAttributes(filter) }} </span>
         <span *ngIf="isReverseMapped(filter)">{{ getAttributes(filter) }}</span>
         <span *ngIf="isScripted(filter)">{{ filter.script }}</span>
@@ -29,7 +31,7 @@
                [matTooltip]="messages.services_form_tooltip_attrRelease_attrFilter">help
       </mat-icon>
     </div>
-    <div *ngIf="isMappedRegEx(filter) || isReverseMapped(filter)">
+    <div *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
       <app-mapped [filter]="filter"></app-mapped>
     </div>
     <div *ngIf="isScripted(filter)">
@@ -60,5 +62,6 @@
   <button mat-menu-item (click)="addRegEx()">Regex</button>
   <button mat-menu-item (click)="addMappedRegex()">Mapped Regex</button>
   <button mat-menu-item (click)="addReverseMapped()">Reverse Mapped Regex</button>
+  <button mat-menu-item (click)="addMutantMappedRegex()">Mutant Regex</button>
   <button mat-menu-item (click)="addScript()">Script</button>
 </mat-menu>

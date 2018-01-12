@@ -330,9 +330,17 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         manager.save(svcB);
     }
 
+    /**
+     * Returns the versions this instance was compiled against.
+
+     * @return - cas versions
+     * @throws Exception - failed
+     */
     @GetMapping("footer")
     public ResponseEntity<String[]> footer() throws Exception {
-        return new ResponseEntity<>(new String[]{CasVersion.getVersion(),this.getClass().getPackage().getImplementationVersion()},HttpStatus.OK);
+        return new ResponseEntity<>(new String[]{CasVersion.getVersion(),
+                                    this.getClass().getPackage().getImplementationVersion()},
+                                    HttpStatus.OK);
     }
 
 }

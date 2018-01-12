@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt.services;
 
-import javafx.util.Pair;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
@@ -15,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -62,9 +62,8 @@ public class GitServicesManager implements ServicesManager {
         if (git.isNull()) {
             return new ArrayList<>();
         }
-        this.uncommitted = git.scanWorkingDiffs().stream()
-                .map(d -> createChange(d))
-                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+        this.uncommitted = new HashMap<>();
+        git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
         final List<RegisteredServiceItem> serviceItems = new ArrayList<>();
         final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
         serviceItems.addAll(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
@@ -112,7 +111,7 @@ public class GitServicesManager implements ServicesManager {
         return serviceItem;
     }
 
-    private Pair<Long, String> createChange(final DiffEntry entry) {
+    private void createChange(final DiffEntry entry) {
         try {
             final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
             final RegisteredService svc;
@@ -121,10 +120,13 @@ public class GitServicesManager implements ServicesManager {
             } else {
                 svc = ser.from(new File(git.repoPath() + "/" + entry.getNewPath()));
             }
-            return new Pair(svc.getId(), entry.getChangeType().toString());
+            if (this.uncommitted.containsKey(svc.getId())) {
+                this.uncommitted.replace(svc.getId(), "MODIFY");
+            } else {
+                this.uncommitted.put(svc.getId(), entry.getChangeType().toString());
+            }
         } catch (final Exception e) {
         }
-        return null;
     }
 
     @Override

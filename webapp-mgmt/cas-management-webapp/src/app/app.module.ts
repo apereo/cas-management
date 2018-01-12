@@ -35,7 +35,7 @@ import {SubmitModule} from './submits/submits.module';
 import {NotesModule} from './notes/notes.module';
 import {RejectComponent} from './reject/reject.component';
 import {AcceptComponent} from './accept/accept.component';
-import {FooterService} from "./footer/footer.service";
+import {FooterService} from './footer/footer.service';
 
 
 @NgModule({

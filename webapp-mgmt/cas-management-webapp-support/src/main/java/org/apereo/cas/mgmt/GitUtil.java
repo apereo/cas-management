@@ -37,6 +37,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,9 +83,11 @@ public class GitUtil {
      * @throws Exception - failed
      */
     public List<Commit> getUnpublishedCommits() throws Exception {
-        return StreamSupport.stream(git.log().addRange(getPublished().getPeeledObjectId(), git.getRepository().resolve("HEAD"))
+        final List<Commit> commits = StreamSupport.stream(git.log().addRange(getPublished().getPeeledObjectId(), git.getRepository().resolve("HEAD"))
                 .call().spliterator(), false).map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage()))
                 .collect(Collectors.toList());
+        Collections.reverse(commits);
+        return commits;
     }
 
     /**
@@ -195,7 +200,8 @@ public class GitUtil {
         oldTreeIter.reset(reader, git.getRepository().resolve("HEAD^{tree}"));
         final DiffFormatter formatter = new DiffFormatter(new ByteArrayOutputStream());
         formatter.setRepository(git.getRepository());
-        return formatter.scan(oldTreeIter, workTreeIterator);
+        final List<DiffEntry> diffs = formatter.scan(oldTreeIter, workTreeIterator);
+        return diffs;
     }
 
     /**
@@ -372,7 +378,7 @@ public class GitUtil {
      * @throws Exception - failed.
      */
     public Stream<RevCommit> logs(final String path) throws Exception {
-        return StreamSupport.stream(git.log().addPath(path).call().spliterator(), false);
+        return StreamSupport.stream(git.log().all().call().spliterator(), false);
     }
 
     /**
@@ -540,7 +546,9 @@ public class GitUtil {
         }
         @Override
         public boolean include(final TreeWalk treeWalk) throws MissingObjectException, IncorrectObjectTypeException, IOException {
-            return treeWalk.getPathString().equals(path);
+            final String[] id0 = path.split("-");
+            final String[] id1 = treeWalk.getPathString().split("-");
+            return id0[id0.length-1].equals(id1[id1.length -1]);
         }
 
         @Override
@@ -866,6 +874,20 @@ public class GitUtil {
         formatter.setRepository(git.getRepository());
         return formatter.scan(oldTreeIter, workTreeIterator).stream()
                 .filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE);
+    }
+
+    /**
+     * This methods moves the file when it has been renamed.
+     *
+     * @param oldName - the old name
+     * @param newName - the new mame
+     * @throws Exception - failed.
+     */
+    public void move(final String oldName, final String newName) throws Exception {
+        Files.move(Paths.get(repoPath()+"/"+oldName),
+                   Paths.get(repoPath()+"/"+newName));
+        git.add().addFilepattern(newName).call();
+        git.rm().addFilepattern(oldName).call();
     }
 
     /**

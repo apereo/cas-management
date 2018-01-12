@@ -151,7 +151,9 @@
       <h5>Rejected Attributes</h5>
     </mat-card-title>
     <div class="cardContent">
-    <app-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"></app-attributemapping>
+    <app-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"
+                          [attributeNames]="data.formData.availableAttributes">
+    </app-attributemapping>
     </div>
   </mat-card>
 

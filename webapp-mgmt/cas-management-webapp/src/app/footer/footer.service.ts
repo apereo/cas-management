@@ -13,7 +13,7 @@ export class FooterService extends Service {
   }
 
   getVersions(): Promise<String[]> {
-    return this.get<String[]>("footer");
+    return this.get<String[]>('footer');
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Messages} from '../../messages';
 import {
     DefaultRegisteredServiceAccessStrategy, GroovyRegisteredServiceAccessStrategy,
@@ -10,11 +10,10 @@ import {FormData} from '../../../domain/form-data';
 import {Util} from '../../util/util';
 import {Data} from '../data';
 import {DefaultRegisteredServiceDelegatedAuthenticationPolicy} from '../../../domain/delegated-authn';
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {
-    MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent,
-    MatInput
-} from "@angular/material";
+    MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent
+} from '@angular/material';
 
 
 enum Type {
@@ -37,7 +36,7 @@ export class AccessStrategyComponent implements OnInit {
 
   separatorKeysCodes = [ENTER, COMMA];
 
-  @ViewChild("providerInput")
+  @ViewChild('providerInput')
   providerInput: ElementRef;
 
   @ViewChild( MatAutocompleteTrigger )
@@ -119,8 +118,8 @@ export class AccessStrategyComponent implements OnInit {
   }
 
   add(event: MatChipInputEvent): void {
-    let input = event.input;
-    let value = event.value;
+    const input = event.input;
+    const value = event.value;
 
     if ((value || '').trim()) {
       this.delegatedAuthn.push(value.trim());
@@ -134,7 +133,7 @@ export class AccessStrategyComponent implements OnInit {
   }
 
   remove(provider: any): void {
-    let index = this.delegatedAuthn.indexOf(provider);
+    const index = this.delegatedAuthn.indexOf(provider);
 
     if (index >= 0) {
       this.delegatedAuthn.splice(index, 1);

@@ -119,18 +119,29 @@
     <div class="cardContent">
       <div>
         <mat-form-field class="textInput">
-          <mat-select i18n-placeHolder="services.form.label.sas.delegatedAuthn" multiple
-                      [placeholder]="messages.services_form_label_sas_delegatedAuthn"
-                      [(ngModel)]="delegatedAuthn" (change)="changeDelegatedAuthns()">
-            <mat-option *ngFor="let opt of formData.delegatedAuthnProviders" [value]="opt">
-              {{ opt }}
-            </mat-option>
-          </mat-select>
+
+            <input i18n-placeHolder="services.form.label.sas.delegatedAuthn" matInput
+                   placeholder="Add Provider"
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   matChipInputAddOnBlur="true"
+                   (matChipInputTokenEnd)="add($event)"
+                   [matAutocomplete]="auto"
+                   #providerInput>
         </mat-form-field>
         <mat-icon style="font-size: medium"
                   i18n-matTooltip="services.form.tooltip.sas.delegatedAuthn"
                   [matTooltip]="messages.services_form_tooltip_sas_delegatedAuthn">help
         </mat-icon>
+          <h5 *ngIf="delegatedAuthn.length > 0">Allowed Providers</h5>
+          <mat-chip-list #chipList [selectable]="false">
+            <mat-chip *ngFor="let provider of delegatedAuthn" [selectable]="false"
+                      removable="true" (remove)="remove(provider)">
+              {{ provider }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+
       </div>
     </div>
   </mat-card>
@@ -140,10 +151,15 @@
       <h5>Rejected Attributes</h5>
     </mat-card-title>
     <div class="cardContent">
-    <app-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"></app-attributemapping>
+    <app-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"
+                          [attributeNames]="data.formData.availableAttributes">
+    </app-attributemapping>
     </div>
   </mat-card>
 
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event);">
+  <mat-option *ngFor="let opt of formData.delegatedAuthnProviders" [value]="opt">{{ opt }}</mat-option>
+</mat-autocomplete>
 
 
 

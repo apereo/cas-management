@@ -178,7 +178,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public RegisteredServiceSimpleFormController registeredServiceSimpleFormController(@Qualifier("servicesManager") final ServicesManager servicesManager) {
-        return new RegisteredServiceSimpleFormController(servicesManager, managerFactory(), casUserProfileFactory);
+        return new RegisteredServiceSimpleFormController(servicesManager, managerFactory(), casUserProfileFactory, repositoryFactory());
     }
 
     @Bean

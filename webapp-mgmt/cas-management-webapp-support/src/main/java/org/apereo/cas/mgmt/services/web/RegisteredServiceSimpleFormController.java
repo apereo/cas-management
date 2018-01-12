@@ -1,8 +1,11 @@
 package org.apereo.cas.mgmt.services.web;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
+import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -38,19 +41,24 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
 
     private final CasUserProfileFactory casUserProfileFactory;
 
+    private final RepositoryFactory repositoryFactory;
+
     /**
      * Instantiates a new registered service simple form controller.
      *
      * @param servicesManager          the services from
      * @param managerFactory           the manager factory
      * @param casUserProfileFactory    the cas user factory
+     * @param repositoryFactory        the git repository factory
      */
     public RegisteredServiceSimpleFormController(final ServicesManager servicesManager,
                                                  final ManagerFactory managerFactory,
-                                                 final CasUserProfileFactory casUserProfileFactory) {
+                                                 final CasUserProfileFactory casUserProfileFactory,
+                                                 final RepositoryFactory repositoryFactory) {
         super(servicesManager);
         this.managerFactory = managerFactory;
         this.casUserProfileFactory = casUserProfileFactory;
+        this.repositoryFactory = repositoryFactory;
     }
 
     /**
@@ -70,6 +78,11 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
         if (service.getEvaluationOrder() < 0) {
             service.setEvaluationOrder(manager.getAllServices().size());
         }
+
+        if (service.getId() > -1) {
+            checkForRename(service, request, response);
+        }
+
         final RegisteredService newSvc = manager.save(service);
         LOGGER.info("Saved changes to service [{}]", service.getId());
         return new ResponseEntity<>(String.valueOf(newSvc.getId()), HttpStatus.OK);
@@ -147,5 +160,21 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
             }
         }
         return service;
+    }
+
+    private void checkForRename(final RegisteredService service,
+                                final HttpServletRequest request,
+                                final HttpServletResponse response) throws Exception {
+        final RegisteredService oldSvc = managerFactory.from(request, response).findServiceBy(service.getId());
+        if (oldSvc != null) {
+            if (!service.getName().equals(oldSvc.getName())) {
+                final GitUtil git = repositoryFactory.from(request, response);
+                git.move(makeFileName(oldSvc), makeFileName(service));
+            }
+        }
+    }
+
+    private String makeFileName(final RegisteredService service) throws Exception{
+        return StringUtils.remove(service.getName()+ "-" + service.getId() + ".json", " ");
     }
 }

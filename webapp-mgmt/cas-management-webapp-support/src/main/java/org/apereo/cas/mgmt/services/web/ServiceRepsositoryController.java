@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 @Controller("publish")
 public class ServiceRepsositoryController {
 
-    private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?://([^:/]+)");
+    private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?\\??://([^:/]+)");
 
     private final CasManagementConfigurationProperties casProperties;
 
@@ -116,20 +116,26 @@ public class ServiceRepsositoryController {
         final GitUtil git = repositoryFactory.masterRepository();
         git.getUnpublishedCommits().forEach(commit -> {
             try {
-                git.getDiffs(commit.getId()).forEach(l -> {
-                    final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
-                    if (l.getChangeType() == DiffEntry.ChangeType.DELETE) {
-                        try {
-                            this.servicesManager.delete(ser.from(git.readObject(l.getOldId().toObjectId())).getId());
-                        } catch (final Exception e) {
-                        }
-                    } else {
-                        try {
-                            this.servicesManager.save(ser.from(git.readObject(l.getNewId().toObjectId())));
-                        } catch (final Exception e) {
-                        }
-                    }
-                });
+                final List<DiffEntry> diffs = git.getDiffs(commit.getId());
+
+                // Run through deletes first in case of name change
+                diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
+                        .forEach(c -> {
+                            final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+                            try {
+                                this.servicesManager.delete(ser.from(git.readObject(c.getOldId().toObjectId())).getId());
+                            } catch (final Exception e) {
+
+                            }
+                        });
+                diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)
+                        .forEach(c -> {
+                            final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+                            try {
+                                this.servicesManager.save(ser.from(git.readObject(c.getNewId().toObjectId())));
+                            } catch (final Exception e) {
+                            }
+                        });
             } catch (final Exception e) {
             }
         });

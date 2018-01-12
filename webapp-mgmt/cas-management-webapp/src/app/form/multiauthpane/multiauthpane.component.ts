@@ -21,7 +21,7 @@ export class MultiauthpaneComponent implements OnInit {
   type: Type;
   TYPE = Type;
   types = [Type.DEFAULT, Type.GROOVY];
-  display = ['Default Multifactor', 'Groovy Script'];
+  display = ['Default', 'Groovy Script'];
 
   constructor(public messages: Messages,
               public data: Data) {

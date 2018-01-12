@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import com.google.common.base.Splitter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
@@ -546,9 +547,9 @@ public class GitUtil {
         }
         @Override
         public boolean include(final TreeWalk treeWalk) throws MissingObjectException, IncorrectObjectTypeException, IOException {
-            final String[] id0 = path.split("-");
-            final String[] id1 = treeWalk.getPathString().split("-");
-            return id0[id0.length-1].equals(id1[id1.length -1]);
+            final List<String> pathSplit = Splitter.on("-").splitToList(path);
+            final List<String> treePathSplit = Splitter.on("-").splitToList(treeWalk.getPathString());
+            return pathSplit.get(pathSplit.size() - 1).equals(treePathSplit.get(treePathSplit.size() - 1));
         }
 
         @Override

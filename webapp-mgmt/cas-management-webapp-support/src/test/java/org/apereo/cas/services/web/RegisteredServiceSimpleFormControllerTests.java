@@ -101,7 +101,7 @@ public class RegisteredServiceSimpleFormControllerTests {
                 .thenReturn(casUserProfile);
         final RepositoryFactory repositoryFactory = new RepositoryFactory(casProperties, casUserProfileFactory);
         final ManagerFactory managerFactory = new ManagerFactory(servicesManager, casProperties, repositoryFactory, casUserProfileFactory);
-        this.controller = new RegisteredServiceSimpleFormController(servicesManager, managerFactory, casUserProfileFactory);
+        this.controller = new RegisteredServiceSimpleFormController(servicesManager, managerFactory, casUserProfileFactory, repositoryFactory);
     }
 
     @After

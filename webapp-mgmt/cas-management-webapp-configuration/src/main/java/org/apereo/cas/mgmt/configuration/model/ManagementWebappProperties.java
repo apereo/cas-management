@@ -91,7 +91,12 @@ public class ManagementWebappProperties implements Serializable {
      * Path to executable bean shell script to sync server nodes.
      */
     private String syncScript;
-    
+
+    /**
+     * Notifications.
+     */
+    private NotificationsProperties notifications = new NotificationsProperties();
+
     public Ldap getLdap() {
         return ldap;
     }
@@ -196,6 +201,14 @@ public class ManagementWebappProperties implements Serializable {
 
     public void setUserRoles(final List<String> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public NotificationsProperties getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(final NotificationsProperties notifications) {
+        this.notifications = notifications;
     }
 }
 

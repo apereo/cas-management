@@ -49,6 +49,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
      * @param servicesManager          the services from
      * @param managerFactory           the manager factory
      * @param casUserProfileFactory    the cas user factory
+     * @param repositoryFactory        the repository factory
      */
     public RegisteredServiceSimpleFormController(final ServicesManager servicesManager,
                                                  final ManagerFactory managerFactory,

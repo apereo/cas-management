@@ -49,6 +49,7 @@ export class ControlsComponent implements OnInit {
     this.userService.getUser().then(resp => this.isAdmin = resp.administrator);
     this.service.untracked();
     this.unpublished();
+    this.service.checkNotifications();
   }
 
   goBack() {

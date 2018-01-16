@@ -13,6 +13,7 @@ export class ControlsService extends Service {
 
   changes: Change[];
   commits: Commit[];
+  notification: String;
 
   constructor(http: HttpClient) {
     super(http);
@@ -94,6 +95,11 @@ export class ControlsService extends Service {
   handleCommits(commits: Commit[]): Commit[] {
     this.commits = commits;
     return commits;
+  }
+
+  checkNotifications(): Promise<String> {
+    return this.getText('notifications')
+        .then(resp => this.notification = resp);
   }
 
 }

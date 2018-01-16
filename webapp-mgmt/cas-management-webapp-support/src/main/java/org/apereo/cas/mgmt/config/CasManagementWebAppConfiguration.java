@@ -20,6 +20,7 @@ import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
 import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.CollectionUtils;
+import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,7 +194,8 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public ServiceRepsositoryController serviceRepsositoryController() {
-        return new ServiceRepsositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory, casProperties, servicesManager);
+        return new ServiceRepsositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
+                casProperties, servicesManager, communicationsManager());
     }
 
     @RefreshScope
@@ -223,6 +225,11 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
         resolver.setOrder(0);
         resolver.setCheckExistence(true);
         return resolver;
+    }
+
+    @Bean
+    public CommunicationsManager communicationsManager() {
+        return new CommunicationsManager();
     }
 
     @Override

@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {HeaderService} from './header.service';
 import {UserService} from '../user.service';
+import {ControlsService} from '../controls/controls.service';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +22,8 @@ export class HeaderComponent implements OnInit {
               public router: Router,
               public location: Location,
               private service: HeaderService,
-              private userService: UserService) { }
+              private userService: UserService,
+              public controlsService: ControlsService) { }
 
   ngOnInit() {
     this.service.getMangerType().then(resp => this.type = resp);

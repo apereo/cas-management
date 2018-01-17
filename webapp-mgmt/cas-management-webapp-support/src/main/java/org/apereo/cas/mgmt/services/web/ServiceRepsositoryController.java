@@ -23,6 +23,7 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -53,6 +55,8 @@ import java.util.stream.Collectors;
  */
 @Controller("publish")
 public class ServiceRepsositoryController {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ServiceRepsositoryController.class);
 
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?://([^:/]+)");
 

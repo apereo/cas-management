@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.services.web;
 
+import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
@@ -17,6 +18,7 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
+import org.apereo.cas.util.io.CommunicationsManager;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.notes.Note;
@@ -35,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,17 +66,21 @@ public class ServiceRepsositoryController {
 
     private final ManagerFactory managerFactory;
 
+    private final CommunicationsManager communicationsManager;
+
     public ServiceRepsositoryController(
             final RepositoryFactory repositoryFactory,
             final ManagerFactory managerFactory,
             final CasUserProfileFactory casUserProfileFactory,
             final CasManagementConfigurationProperties casProperties,
-            final ServicesManager servicesManager) {
+            final ServicesManager servicesManager,
+            final CommunicationsManager communicationsManager) {
         this.repositoryFactory = repositoryFactory;
         this.managerFactory = managerFactory;
         this.casUserProfileFactory = casUserProfileFactory;
         this.casProperties = casProperties;
         this.servicesManager = servicesManager;
+        this.communicationsManager = communicationsManager;
     }
 
     /**
@@ -221,12 +228,24 @@ public class ServiceRepsositoryController {
         git.commit(user, msg);
         git.createPullRequest(commit, submitName);
         git.checkout("master");
-        //mailUtil.sendSubmitMessage(submitName,createDiffs(submitName),user);
+        sendSubmitMessage(submitName, createDiffs(submitName), user);
         git.close();
 
         return new ResponseEntity<>("Request Submitted", HttpStatus.OK);
     }
 
+    private void sendSubmitMessage(final String submitName, final List<Diff> diffs, final CasUserProfile user) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getSubmit();
+            communicationsManager.email(
+                    emailProps.getText(),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    user.getEmail(),
+                    emailProps.getCc(),
+                    emailProps.getBcc());
+        }
+    }
     /**
      * Returns a list of Diffs of what is committed in services-repo to what is committed
      * in the passed ref.
@@ -472,8 +491,22 @@ public class ServiceRepsositoryController {
         final String msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + "\n    "
                 + text.replaceAll("\\n", "\n    ");
         git.appendNote(com, msg);
-        //mailUtil.sendAcceptMessage(branch.getName().split("/")[2], com.getCommitterIdent().getEmailAddress());
+        sendAcceptMessage(branch.getName().split("/")[2], com.getCommitterIdent().getEmailAddress());
         return new ResponseEntity<>("Branch Merged", HttpStatus.OK);
+    }
+
+    private void sendAcceptMessage(final String submitName, final String email) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getAccept();
+            communicationsManager.email(
+                    MessageFormat.format(emailProps.getText(), submitName),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    email,
+                    emailProps.getCc(),
+                    emailProps.getBcc()
+            );
+        }
     }
 
     /**
@@ -501,8 +534,22 @@ public class ServiceRepsositoryController {
         final String msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + "\n    "
                 + text.replaceAll("\\n", "\n    ");
         git.appendNote(com, msg);
-        //mailUtil.sendRejectMessage(branch.getName().split("/")[2], text, com.getCommitterIdent().getEmailAddress());
+        sendRejectMessage(branch.getName().split("/")[2], text, com.getCommitterIdent().getEmailAddress());
         return new ResponseEntity<String>("Branch Rejected", HttpStatus.OK);
+    }
+
+    private void sendRejectMessage(final String submitName, final String note, final String email) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getReject();
+            communicationsManager.email(
+                    MessageFormat.format(emailProps.getText(), submitName, note),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    email,
+                    emailProps.getCc(),
+                    emailProps.getBcc()
+            );
+        }
     }
 
     /**
@@ -678,6 +725,32 @@ public class ServiceRepsositoryController {
         git.close();
         repositoryFactory.masterRepository().markAsReverted(branchName, user);
         return new ResponseEntity<>("Submit reverted", HttpStatus.OK);
+    }
+
+    /**
+     * Returns text of notifications of a pull request that is pending.
+     *
+     * @param request - the request.
+     * @param response - the response.
+     * @return - String representing notification.
+     * @throws Exception - failed.
+     */
+    @GetMapping("notifications")
+    public ResponseEntity<String> notifications(final HttpServletRequest request,
+                                                final HttpServletResponse response) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        String resp = "";
+        if (casUserProfile.isAdministrator()) {
+            final GitUtil git = repositoryFactory.masterRepository();
+            final boolean pending = git.branches()
+                    .map(git::mapBranches)
+                    .filter(r -> filterPulls(r, new boolean[] {true, false, false}))
+                    .findAny().isPresent();
+            if (pending) {
+                resp = "There are pending pull requests for your approval";
+            }
+        }
+        return new ResponseEntity(resp, HttpStatus.OK);
     }
 
     /**

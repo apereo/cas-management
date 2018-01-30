@@ -13,7 +13,7 @@ import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementWebAppConfiguration;
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
@@ -79,7 +79,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     private ServicesManager servicesManager;
 
     @Autowired
-    private CasManagementConfigurationProperties casProperties;
+    private CasConfigurationProperties casProperties;
 
     @Before
     public void setUp() throws Exception {

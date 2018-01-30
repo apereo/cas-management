@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.services.web;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
@@ -61,7 +61,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     private final Service defaultService;
     private final ManagerFactory managerFactory;
     private final RepositoryFactory repositoryFactory;
-    private final CasManagementConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
     /**
      * Instantiates a new manage registered services multi action controller.
@@ -80,7 +80,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             final IPersonAttributeDao personAttributeDao,
             final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
             final String defaultServiceUrl,
-            final CasManagementConfigurationProperties casProperties,
+            final CasConfigurationProperties casProperties,
             final CasUserProfileFactory casUserProfileFactory,
             final ManagerFactory managerFactory,
             final RepositoryFactory repositoryFactory) {
@@ -342,6 +342,5 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                     this.getClass().getPackage().getImplementationVersion()},
                                     HttpStatus.OK);
     }
-
 }
 

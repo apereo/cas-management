@@ -4,7 +4,7 @@ import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.services.web.beans.BranchActionData;
 import org.apereo.cas.mgmt.services.web.beans.BranchData;
 import org.apereo.cas.mgmt.services.web.beans.CNote;
@@ -56,7 +56,7 @@ public class ServiceRepsositoryController {
 
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?\\??://([^:/]+)");
 
-    private final CasManagementConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
     private final ServicesManager servicesManager;
 
@@ -72,7 +72,7 @@ public class ServiceRepsositoryController {
             final RepositoryFactory repositoryFactory,
             final ManagerFactory managerFactory,
             final CasUserProfileFactory casUserProfileFactory,
-            final CasManagementConfigurationProperties casProperties,
+            final CasConfigurationProperties casProperties,
             final ServicesManager servicesManager,
             final CommunicationsManager communicationsManager) {
         this.repositoryFactory = repositoryFactory;

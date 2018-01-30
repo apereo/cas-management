@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services.web.beans;
 
 import org.apereo.cas.authentication.principal.cache.AbstractPrincipalAttributesRepository;
 import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPProperties;
+import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPResponseProperties;
 import org.apereo.cas.grouper.GrouperGroupField;
 import org.apereo.cas.oidc.OidcConstants;
 import org.apereo.cas.services.OidcSubjectTypes;
@@ -47,7 +48,7 @@ public class FormData implements Serializable {
 
     private String[] samlAttributeNameFormats = {Attribute.BASIC, Attribute.UNSPECIFIED, Attribute.URI_REFERENCE};
 
-    private List<String> samlCredentialTypes = Arrays.stream(SamlIdPProperties.Response.SignatureCredentialTypes.values())
+    private List<String> samlCredentialTypes = Arrays.stream(SamlIdPResponseProperties.SignatureCredentialTypes.values())
             .map(s -> s.name().toUpperCase())
             .collect(Collectors.toList());
 

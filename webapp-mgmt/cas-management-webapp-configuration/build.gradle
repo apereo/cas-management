@@ -12,6 +12,9 @@ dependencies {
 
     //optional libraries.springbootconfigmetadata
 
+    runtime ("org.apereo.cas:cas-server-core-configuration:$casVersion") {
+        transitive = false;
+    }
     implementation ("org.apereo.cas:cas-server-core-configuration-api:$casVersion") {
         transitive = false;
     }
@@ -21,7 +24,7 @@ dependencies {
     implementation ("org.apereo.cas:cas-server-core-util-api:$casVersion") {
         transitive = false;
     }
-    implementation ("org.apereo.cas:cas-server-core-api-configuration:$casVersion") {
+    implementation ("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
         transitive = false
     }
 

@@ -6,20 +6,11 @@ import {SamlRegisteredService} from '../../../domain/saml-service';
 import {WSFederationRegisterdService} from '../../../domain/wsed-service';
 import {Data} from '../data';
 
-enum Type {
-  CAS = 'cas',
-  OAUTH = 'oauth',
-  SAML = 'saml',
-  OIDC = 'oidc',
-  WS_FED = 'wsfed'
-}
-
 @Component({
   selector: 'app-servicetype',
   templateUrl: './servicetype.component.html'
 })
 export class ServicetypeComponent implements OnInit {
-
 
   type: string;
 
@@ -29,33 +20,33 @@ export class ServicetypeComponent implements OnInit {
 
   ngOnInit() {
     if (OAuthRegisteredService.instanceOf(this.data.service)) {
-      this.type = Type.OAUTH;
+      this.type = OAuthRegisteredService.cName;
     } else if (WSFederationRegisterdService.instanceOf(this.data.service)) {
-      this.type = Type.WS_FED;
+      this.type = WSFederationRegisterdService.cName;
     } else if (OidcRegisteredService.instanceOf(this.data.service)) {
-      this.type = Type.OIDC;
+      this.type = OidcRegisteredService.cName;
     } else if (SamlRegisteredService.instanceOf(this.data.service)) {
-      this.type = Type.SAML;
+      this.type = SamlRegisteredService.cName;
     } else {
-      this.type = Type.CAS;
+      this.type = RegexRegisteredService.cName;
     }
   }
 
   changeType() {
     switch (this.type) {
-      case Type.CAS :
+      case RegexRegisteredService.cName :
         this.data.service = new RegexRegisteredService(this.data.service);
         break;
-      case Type.OAUTH :
+      case OAuthRegisteredService.cName :
         this.data.service = new OAuthRegisteredService(this.data.service);
         break;
-      case Type.OIDC :
+      case OidcRegisteredService.cName :
         this.data.service = new OidcRegisteredService(this.data.service);
         break;
-      case Type.SAML :
+      case SamlRegisteredService.cName :
         this.data.service = new SamlRegisteredService(this.data.service);
         break;
-      case Type.WS_FED :
+      case WSFederationRegisterdService.cName :
         this.data.service = new WSFederationRegisterdService(this.data.service);
         break;
     }

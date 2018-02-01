@@ -13,6 +13,7 @@ import org.apereo.cas.mgmt.services.web.ForwardingController;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
 import org.apereo.cas.mgmt.services.web.ServiceRepsositoryController;
+import org.apereo.cas.mgmt.services.web.factory.FormDataFactory;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.web.CasManagementRootController;
@@ -183,7 +184,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     public ManageRegisteredServicesMultiActionController manageRegisteredServicesMultiActionController(
             @Qualifier("servicesManager") final ServicesManager servicesManager) {
         final String defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ManageRegisteredServicesMultiActionController(servicesManager, attributeRepository(),
+        return new ManageRegisteredServicesMultiActionController(servicesManager, formDataFactory(),
                 webApplicationServiceFactory, defaultCallbackUrl, casProperties, casUserProfileFactory, managerFactory(), repositoryFactory());
     }
 
@@ -200,6 +201,11 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public ManagerFactory managerFactory() {
         return new ManagerFactory(servicesManager, casProperties, repositoryFactory(), casUserProfileFactory);
+    }
+
+    @Bean
+    public FormDataFactory formDataFactory() {
+        return new FormDataFactory(casProperties, attributeRepository());
     }
 
     @Bean

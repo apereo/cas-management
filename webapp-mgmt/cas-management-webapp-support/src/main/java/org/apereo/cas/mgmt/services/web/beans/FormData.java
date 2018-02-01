@@ -5,11 +5,16 @@ import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPProperties;
 import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPResponseProperties;
 import org.apereo.cas.grouper.GrouperGroupField;
 import org.apereo.cas.oidc.OidcConstants;
+import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.OidcSubjectTypes;
+import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceMultifactorPolicy;
 import org.apereo.cas.services.RegisteredServiceProperty;
+import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.ws.idp.WSFederationClaims;
+import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
 import org.apereo.services.persondir.util.CaseCanonicalizationMode;
 import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
 import org.jose4j.jwe.KeyManagementAlgorithmIdentifiers;
@@ -25,7 +30,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -38,7 +46,7 @@ import java.util.stream.Collectors;
 public class FormData implements Serializable {
     private static final long serialVersionUID = -5201796557461644152L;
 
-    private List<String> availableAttributes = new ArrayList<>();
+    private Set<String> availableAttributes = new HashSet<>();
 
     private List<Integer> remoteCodes = Arrays.stream(HttpStatus.values()).map(HttpStatus::value).collect(Collectors.toList());
 
@@ -56,11 +64,17 @@ public class FormData implements Serializable {
 
     private List<String> encodingAlgOptions = locateContentEncryptionAlgorithmsSupported();
 
-    public List<String> getAvailableAttributes() {
+    private List<Option> serviceTypes = new ArrayList<>();
+
+    private List<Option> mfaProviders = new ArrayList<>();
+
+    private Set<String> delegatedAuthnProviders = new HashSet<>();
+
+    public Set<String> getAvailableAttributes() {
         return this.availableAttributes;
     }
 
-    public void setAvailableAttributes(final List<String> availableAttributes) {
+    public void setAvailableAttributes(final Set<String> availableAttributes) {
         this.availableAttributes = availableAttributes;
     }
 
@@ -88,19 +102,12 @@ public class FormData implements Serializable {
         return RegisteredService.LogoutType.values();
     }
 
-    /**
-     * Gets service types.
-     *
-     * @return the service types
-     */
     public List<Option> getServiceTypes() {
-        final ArrayList<Option> serviceTypes = new ArrayList<>();
-        serviceTypes.add(new Option("CAS Client", "cas"));
-        serviceTypes.add(new Option("OAuth2 Client", "oauth"));
-        serviceTypes.add(new Option("SAML2 Service Provider", "saml"));
-        serviceTypes.add(new Option("OpenID Connect Client", "oidc"));
-        serviceTypes.add(new Option("WS Federation", "wsfed"));
         return serviceTypes;
+    }
+
+    public void setServiceTypes(final List<Option> serviceTypes) {
+        this.serviceTypes = serviceTypes;
     }
 
     public String[] getSamlRoles() {
@@ -123,23 +130,12 @@ public class FormData implements Serializable {
         return WSFederationClaims.values();
     }
 
-    /**
-     * Gets mfa providers.
-     *
-     * @return the mfa providers
-     */
     public List<Option> getMfaProviders() {
-        final ArrayList<Option> providers = new ArrayList<>();
-        providers.add(new Option("Duo Security", "mfa-duo"));
-        providers.add(new Option("Authy Authenticator", "mfa-authy"));
-        providers.add(new Option("YubiKey", "mfa-yubikey"));
-        providers.add(new Option("RSA/RADIUS", "mfa-radius"));
-        providers.add(new Option("WiKID", "mfa-wikid"));
-        providers.add(new Option("Google Authenitcator", "mfa-gauth"));
-        providers.add(new Option("Microsoft Azure", "mfa-azure"));
-        providers.add(new Option("FIDO U2F", "mfa-u2f"));
-        providers.add(new Option("Swivel Secure", "mfa-swivel"));
-        return providers;
+        return mfaProviders;
+    }
+
+    public void setMfaProviders(final List<Option> mfaProviders) {
+        this.mfaProviders = mfaProviders;
     }
 
     /**
@@ -185,26 +181,32 @@ public class FormData implements Serializable {
      *
      * @return the providers
      */
-    public List<String> getDelegatedAuthnProviders() {
-        final List<String> providers = new ArrayList<>();
-        providers.add("Twitter");
-        providers.add("Paypal");
-        providers.add("Wordpress");
-        providers.add("Yahoo");
-        providers.add("Orcid");
-        providers.add("Dropbox");
-        providers.add("Github");
-        providers.add("Foursquare");
-        providers.add("WindowsLive");
-        providers.add("Google");
-        return providers;
+    public Set<String> getDelegatedAuthnProviders() {
+        if (delegatedAuthnProviders == null) {
+            delegatedAuthnProviders = new HashSet<>();
+            delegatedAuthnProviders.add("Twitter");
+            delegatedAuthnProviders.add("Paypal");
+            delegatedAuthnProviders.add("Wordpress");
+            delegatedAuthnProviders.add("Yahoo");
+            delegatedAuthnProviders.add("Orcid");
+            delegatedAuthnProviders.add("Dropbox");
+            delegatedAuthnProviders.add("Github");
+            delegatedAuthnProviders.add("Foursquare");
+            delegatedAuthnProviders.add("WindowsLive");
+            delegatedAuthnProviders.add("Google");
+        }
+        return delegatedAuthnProviders ;
     }
 
-    private static class Option {
+    public void setDelegatedAuthnProviders(final Set<String> delegatedAuthnProviders) {
+        this.delegatedAuthnProviders = delegatedAuthnProviders;
+    }
+
+    public static class Option {
         private String display;
         private String value;
 
-        Option(final String display, final String value) {
+        public Option(final String display, final String value) {
             this.display = display;
             this.value = value;
         }

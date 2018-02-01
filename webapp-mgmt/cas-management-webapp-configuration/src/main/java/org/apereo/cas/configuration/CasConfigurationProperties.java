@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.model.core.CasServerProperties;
 import org.apereo.cas.configuration.model.core.authentication.AuthenticationProperties;
+import org.apereo.cas.configuration.model.core.authentication.HttpClientProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.configuration.model.core.standalone.StandaloneConfigurationProperties;
 import org.apereo.cas.configuration.model.webapp.LocaleProperties;
@@ -53,6 +54,12 @@ public class CasConfigurationProperties implements Serializable {
      */
     @NestedConfigurationProperty
     private ManagementWebappProperties mgmt = new ManagementWebappProperties();
+
+    /**
+     * Http.
+     */
+    @NestedConfigurationProperty
+    private HttpClientProperties httpClient = new HttpClientProperties();
 
     /**
      * Standalone configuration settings.

@@ -1,4 +1,4 @@
-description = "Apereo Central Authentication Service $version"
+description = "Apereo CAS Management Application $version"
 
 defaultTasks "clean", "build"
 
@@ -53,6 +53,13 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
         classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion"
+    }
+}
+
+if (rootProject.continuousIntegrationBuild) {
+    buildScan {
+        licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+        licenseAgree = 'yes'
     }
 }
 
@@ -116,6 +123,7 @@ subprojects {
         doLast {}
     }
     apply plugin: "kotlin"
+    apply plugin: "kotlin-spring"
     apply plugin: "java-library"
     if (!Boolean.getBoolean("skipErrorProneCompiler")) {
         apply plugin: "net.ltgt.errorprone"
@@ -136,20 +144,18 @@ subprojects {
         mavenLocal()
         mavenCentral()
         maven { url "https://build.shibboleth.net/nexus/content/repositories/releases" }
-
-        if (rootProject.publishSnapshots) {
-            maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url "https://repo.spring.io/plugins-release/" }
         maven { url "https://dl.bintray.com/uniconiam/maven" }
         maven { url "https://jitpack.io" }
         jcenter()
     }
-    
+
     tasks.withType(JavaCompile) {
-        options.compilerArgs += [ '-XepAllErrorsAsWarnings' ]
+        // The last argument to disable parameter names is a workaround for: https://github.com/google/error-prone/issues/780
+        options.compilerArgs += ['-XepAllErrorsAsWarnings', '-Xep:MissingOverride:OFF', '-Xep:ParameterName:OFF']
     }
-    
+
     test {
         enabled = !Boolean.getBoolean("skipTests")
         useJUnit()
@@ -215,8 +221,8 @@ subprojects {
     ext.buildDate = null
     ext.buildJarFile = new File(project.buildDir, "libs/${project.name}-${project.version}.jar")
 
+    compileJava.options.compilerArgs << '-parameters'
     compileJava.options.fork = true
-
     if (Boolean.getBoolean("enableIncremental")) {
         compileJava.options.incremental = true
     }
@@ -231,6 +237,19 @@ subprojects {
 
     tasks.jar.onlyIf {
         project.buildDate != null || !project.buildJarFile.exists()
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "$targetCompatibility"
+        kotlinOptions.javaParameters = true
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "$targetCompatibility"
+    }
+
+    lombok {
+        version = "$lombokVersion"
     }
 
     jar {
@@ -282,6 +301,8 @@ subprojects {
     }
 
     dependencies {
+        //optional libraries.springcomponentindexer
+
         implementation libraries.aspectj
 
         api libraries.kotlin

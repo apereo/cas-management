@@ -1,6 +1,8 @@
 package org.apereo.cas.mgmt.services.web.factory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.discovery.CasServerProfile;
@@ -13,10 +15,9 @@ import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.HttpUtils;
 import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
 import org.apereo.services.persondir.IPersonAttributeDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,21 +26,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
+@RequiredArgsConstructor
 public class FormDataFactory {
 
     private final CasConfigurationProperties casProperties;
     private final IPersonAttributeDao attributeRepository;
 
     private CasServerProfile profile;
-
-    private final Logger LOGGER = LoggerFactory.getLogger(FormDataFactory.class);
-
-    public FormDataFactory(final CasConfigurationProperties casProperties,
-                           final IPersonAttributeDao attributeRepository) {
-        this.casProperties = casProperties;
-        this.attributeRepository = attributeRepository;
-        callForProfile();
-    }
 
     public FormData create() {
         final FormData formData = new FormData();
@@ -50,6 +44,7 @@ public class FormDataFactory {
         return formData;
     }
 
+    @PostConstruct
     private void callForProfile() {
         try {
             final Map<String, String> params = new HashMap<>();

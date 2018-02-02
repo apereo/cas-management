@@ -1,11 +1,10 @@
 package org.apereo.cas.mgmt.authz;
 
+import lombok.extern.slf4j.Slf4j;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.HttpAction;
 import org.pac4j.core.profile.CommonProfile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,8 +14,8 @@ import java.util.List;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
+@Slf4j
 public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfile> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CasRoleBasedAuthorizer.class);
 
     public CasRoleBasedAuthorizer(final List<String> roles) {
         super(roles);

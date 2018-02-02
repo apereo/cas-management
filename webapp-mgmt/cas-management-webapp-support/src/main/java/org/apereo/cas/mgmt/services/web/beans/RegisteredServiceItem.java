@@ -1,5 +1,9 @@
 package org.apereo.cas.mgmt.services.web.beans;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -9,62 +13,41 @@ import java.io.Serializable;
  * @author Travis Schmidt
  * @since 5.2
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegisteredServiceItem implements Serializable {
 
     private static final long serialVersionUID = 4882440567964605644L;
 
+    /**
+     * Order for the service.
+     */
     private int evalOrder = Integer.MIN_VALUE;
+
+    /**
+     * Generated ID for the service.
+     */
     private String assignedId;
+
+    /**
+     * Service ID as url for the service.
+     */
     private String serviceId;
+
+    /**
+     * Given name of the service.
+     */
     private String name;
+
+    /**
+     * Description for the service.
+     */
     private String description;
+
+    /**
+     * Current status if changed.
+     */
     private String status;
 
-    public int getEvalOrder() {
-        return this.evalOrder;
-    }
-
-    public void setEvalOrder(final int evalOrder) {
-        this.evalOrder = evalOrder;
-    }
-
-    public String getAssignedId() {
-        return this.assignedId;
-    }
-
-    public void setAssignedId(final String assignedId) {
-        this.assignedId = assignedId;
-    }
-
-    public String getServiceId() {
-        return this.serviceId;
-    }
-
-    public void setServiceId(final String serviceId) {
-        this.serviceId = serviceId;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
-    }
 }

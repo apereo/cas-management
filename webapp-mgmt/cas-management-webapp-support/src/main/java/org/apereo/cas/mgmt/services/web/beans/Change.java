@@ -1,5 +1,9 @@
 package org.apereo.cas.mgmt.services.web.beans;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -8,73 +12,38 @@ import java.io.Serializable;
  * @author Travis Schmidt
  * @since 5.2.0
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Change implements Serializable {
+
+    /**
+     * Id of the change.
+     */
     private String id;
+
+    /**
+     * Name of the file changed.
+     */
     private String fileName;
+
+    /**
+     * Type of change.
+     */
     private String changeType;
+
+    /**
+     * Name of the Registered Service affected.
+     */
     private String serviceName;
+
+    /**
+     * The old Object ID.
+     */
     private String oldId;
+
+    /**
+     *  The new Objec ID.
+     */
     private String newId;
-
-    public Change(final String id,
-                  final String fileName,
-                  final String changeType,
-                  final String serviceName,
-                  final String oldId,
-                  final String newId) {
-        this.id = id;
-        this.fileName = fileName;
-        this.changeType = changeType;
-        this.serviceName = serviceName;
-        this.newId = newId;
-        this.oldId = oldId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(final String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getChangeType() {
-        return changeType;
-    }
-
-    public void setChangeType(final String changeType) {
-        this.changeType = changeType;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(final String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public String getOldId() {
-        return oldId;
-    }
-
-    public void setOldId(final String oldId) {
-        this.oldId = oldId;
-    }
-
-    public String getNewId() {
-        return newId;
-    }
-
-    public void setNewId(final String newId) {
-        this.newId = newId;
-    }
 }

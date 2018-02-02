@@ -3,7 +3,6 @@ package org.apereo.cas.services.web;
 import org.apache.commons.io.FileUtils;
 import org.apereo.cas.config.CasCoreServicesConfiguration;
 import org.apereo.cas.config.CasCoreUtilConfiguration;
-import org.apereo.cas.config.CasCoreWebConfiguration;
 import org.apereo.cas.config.CasServiceRegistryInitializationConfiguration;
 import org.apereo.cas.config.JsonServiceRegistryConfiguration;
 import org.apereo.cas.config.support.CasWebApplicationServiceFactoryConfiguration;
@@ -65,7 +64,6 @@ import static org.mockito.Mockito.*;
                 CasManagementAuthenticationConfiguration.class,
                 CasWebApplicationServiceFactoryConfiguration.class,
                 CasManagementAuthorizationConfiguration.class,
-                CasCoreWebConfiguration.class,
                 JsonServiceRegistryConfiguration.class})
 @DirtiesContext
 @TestPropertySource(locations = "classpath:/mgmt.properties")

@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.authz;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.util.ResourceUtils;
 import org.apereo.cas.util.io.FileWatcherService;
 import org.jooq.lambda.Unchecked;
@@ -7,8 +8,6 @@ import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.SpringSecurityPropertiesAuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.CommonProfile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
 import java.io.FileInputStream;
@@ -20,8 +19,8 @@ import java.util.Properties;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
+@Slf4j
 public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGenerator<CommonProfile> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CasSpringSecurityAuthorizationGenerator.class);
 
     private SpringSecurityPropertiesAuthorizationGenerator generator;
 

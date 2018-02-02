@@ -5,7 +5,7 @@ import org.apereo.cas.mgmt.authz.CasRoleBasedAuthorizer;
 import org.apereo.cas.mgmt.authz.CasSpringSecurityAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.json.JsonResourceAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.yaml.YamlResourceAuthorizationGenerator;
-import org.apereo.cas.mgmt.configuration.model.ManagementWebappProperties;
+import org.apereo.cas.configuration.model.ManagementWebappProperties;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.FromAttributesAuthorizationGenerator;

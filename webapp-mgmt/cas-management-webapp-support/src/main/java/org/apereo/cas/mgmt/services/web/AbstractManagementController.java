@@ -1,9 +1,9 @@
 package org.apereo.cas.mgmt.services.web;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.JsonUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Misagh Moayyed
  * @since 4.1
  */
+@Slf4j
+@RequiredArgsConstructor
 public abstract class AbstractManagementController {
     /**
      * Ajax request header name to examine for exceptions.
@@ -27,21 +29,10 @@ public abstract class AbstractManagementController {
      */
     private static final String AJAX_REQUEST_HEADER_VALUE = "XMLHttpRequest";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractManagementController.class);
-
     /**
      * Instance of ServicesManager.
      */
     protected final ServicesManager servicesManager;
-
-    /**
-     * Instantiates a new manage registered services multi action controller.
-     *
-     * @param servicesManager the services manager
-     */
-    public AbstractManagementController(final ServicesManager servicesManager) {
-        this.servicesManager = servicesManager;
-    }
 
     /**
      * Resolve exception.

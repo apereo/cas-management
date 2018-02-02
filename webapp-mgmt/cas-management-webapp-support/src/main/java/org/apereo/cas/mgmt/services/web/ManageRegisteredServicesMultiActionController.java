@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.services.web;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -17,8 +18,6 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.RegexUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +50,8 @@ import java.util.stream.Collectors;
  * @since 3.1
  */
 @Controller("manageRegisteredServicesMultiActionController")
+@Slf4j
 public class ManageRegisteredServicesMultiActionController extends AbstractManagementController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ManageRegisteredServicesMultiActionController.class);
 
     private static final String STATUS = "status";
 

@@ -1,5 +1,8 @@
-package org.apereo.cas.mgmt.configuration.model;
+package org.apereo.cas.configuration.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
@@ -18,6 +21,9 @@ import java.util.List;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
+@Getter
+@Setter
+@Slf4j
 public class ManagementWebappProperties implements Serializable {
     private static final long serialVersionUID = -7686426966125636166L;
     /**
@@ -97,61 +103,6 @@ public class ManagementWebappProperties implements Serializable {
      */
     private NotificationsProperties notifications = new NotificationsProperties();
     
-    public Ldap getLdap() {
-        return ldap;
-    }
-
-    public void setLdap(final Ldap ldap) {
-        this.ldap = ldap;
-    }
-
-    public List<String> getAdminRoles() {
-        return adminRoles;
-    }
-
-    public void setAdminRoles(final List<String> adminRoles) {
-        this.adminRoles = adminRoles;
-    }
-
-    public Resource getUserPropertiesFile() {
-        return userPropertiesFile;
-    }
-
-    public void setUserPropertiesFile(final Resource userPropertiesFile) {
-        this.userPropertiesFile = userPropertiesFile;
-    }
-
-    public String getServerName() {
-        return serverName;
-    }
-
-    public void setServerName(final String serverName) {
-        this.serverName = serverName;
-    }
-
-    public List<String> getAuthzAttributes() {
-        return authzAttributes;
-    }
-
-    public void setAuthzAttributes(final List<String> authzAttributes) {
-        this.authzAttributes = authzAttributes;
-    }
-
-    public String getDefaultLocale() {
-        return defaultLocale;
-    }
-
-    public void setDefaultLocale(final String defaultLocale) {
-        this.defaultLocale = defaultLocale;
-    }
-
-    public String getAuthzIpRegex() {
-        return authzIpRegex;
-    }
-
-    public void setAuthzIpRegex(final String authzIpRegex) {
-        this.authzIpRegex = authzIpRegex;
-    }
 
     @RequiresModule(name = "cas-management-webapp-support-ldap")
     public static class Ldap extends AbstractLdapProperties {
@@ -171,45 +122,6 @@ public class ManagementWebappProperties implements Serializable {
         }
     }
 
-    public String getServicesRepo() {
-        return servicesRepo;
-    }
-
-    public void setServicesRepo(final String servicesRepo) {
-        this.servicesRepo = servicesRepo;
-    }
-
-    public String getSyncScript() {
-        return syncScript;
-    }
-
-    public void setSyncScript(final String syncScript) {
-        this.syncScript = syncScript;
-    }
-
-    public String getUserReposDir() {
-        return userReposDir;
-    }
-
-    public void setUserReposDir(final String userReposDir) {
-        this.userReposDir = userReposDir;
-    }
-
-    public List<String> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(final List<String> userRoles) {
-        this.userRoles = userRoles;
-    }
-
-    public NotificationsProperties getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(final NotificationsProperties notifications) {
-        this.notifications = notifications;
-    }
 }
 
 

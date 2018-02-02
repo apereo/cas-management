@@ -1,5 +1,7 @@
 package org.apereo.cas.mgmt.services;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
@@ -8,8 +10,6 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.util.DigestUtils;
 import org.eclipse.jgit.diff.DiffEntry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,21 +26,14 @@ import java.util.stream.Collectors;
  * @author Travis Schmidt
  * @since 5.2.0
  */
+@Slf4j
+@RequiredArgsConstructor
 public class GitServicesManager implements ServicesManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GitServicesManager.class);
-
-    private GitUtil git;
+    private final ServicesManager manager;
+    private final GitUtil git;
 
     private Map<Long, String> uncommitted;
-
-    private ServicesManager manager;
-
-
-    public GitServicesManager(final ServicesManager manager, final GitUtil git) {
-        this.manager = manager;
-        this.git = git;
-    }
 
     /**
      * Loads Services form an existing ServiceManger to initialize a new repository.

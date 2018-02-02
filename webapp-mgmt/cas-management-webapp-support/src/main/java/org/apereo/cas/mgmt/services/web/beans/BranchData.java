@@ -1,5 +1,9 @@
 package org.apereo.cas.mgmt.services.web.beans;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -8,81 +12,47 @@ import java.io.Serializable;
  * @author Travis Schmidt
  * @since 5.2.0
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BranchData implements Serializable {
+    /**
+     * Name of branch.
+     */
     private String name;
-    private boolean accepted;
+
+    /**
+     * Commit Message for branch.
+     */
     private String msg;
+
+    /**
+     * Name of committer.
+     */
     private String committer;
+
+    /**
+     * Timestamp of commit.
+     */
     private long time;
+
+    /**
+     * Object Id of the branch commit.
+     */
     private String id;
+
+    /**
+     * Flag if branch has been accepted.
+     */
+    private boolean accepted;
+
+    /**
+     * Flag if branch has been rejected.
+     */
     private boolean rejected;
+
+    /**
+     * Flag if branch has been reverted.
+     */
     private boolean reverted;
-
-    public BranchData() {
-
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(final String msg) {
-        this.msg = msg;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getCommitter() {
-        return committer;
-    }
-
-    public void setCommitter(final String committer) {
-        this.committer = committer;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(final long time) {
-        this.time = time;
-    }
-
-    public boolean isRejected() {
-        return rejected;
-    }
-
-    public void setRejected(final boolean rejected) {
-        this.rejected = rejected;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(final boolean accepted) {
-        this.accepted = accepted;
-    }
-
-    public boolean isReverted() {
-        return reverted;
-    }
-
-    public void setReverted(final boolean reverted) {
-        this.reverted = reverted;
-    }
 }

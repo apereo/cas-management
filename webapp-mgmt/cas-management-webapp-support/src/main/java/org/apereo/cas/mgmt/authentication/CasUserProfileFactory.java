@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.authentication;
 
+import lombok.RequiredArgsConstructor;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
@@ -16,12 +17,9 @@ import java.util.Optional;
  * @author Travis Schmidt
  * @since 5.2.0
  */
+@RequiredArgsConstructor
 public class CasUserProfileFactory {
     private final CasConfigurationProperties casProperties;
-
-    public CasUserProfileFactory(final CasConfigurationProperties casProperties) {
-        this.casProperties = casProperties;
-    }
 
     /**
      * create user profile for views.

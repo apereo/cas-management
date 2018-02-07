@@ -6,11 +6,15 @@ import {HttpClient} from '@angular/common/http';
 @Injectable()
 export class UserService extends Service {
 
+    user: UserProfile;
+
     constructor(protected http: HttpClient) {
         super(http);
+        this.getUser();
     }
 
     getUser(): Promise<UserProfile> {
-        return this.get<UserProfile>('user');
+        return this.get<UserProfile>('user')
+          .then(resp => this.user = resp);
     }
 }

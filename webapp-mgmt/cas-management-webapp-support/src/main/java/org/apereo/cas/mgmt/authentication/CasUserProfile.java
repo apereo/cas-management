@@ -39,6 +39,11 @@ public class CasUserProfile extends CommonProfile {
         return findFirstMatchingAttribute("phone|phoneNumber|telephoneNumber|primaryPhone|primaryPhoneNumber");
     }
 
+    @Override
+    public String getEmail() {
+        return findFirstMatchingAttribute("email|mail");
+    }
+
     private String findFirstMatchingAttribute(final String pattern) {
         return getAttributes().entrySet()
                 .stream()

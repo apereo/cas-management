@@ -7,6 +7,7 @@ import org.apereo.cas.mgmt.services.web.beans.Commit;
 import org.apereo.cas.mgmt.services.web.beans.History;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.diff.DiffAlgorithm;
@@ -22,15 +23,19 @@ import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevObject;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,9 +44,12 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -53,6 +61,8 @@ import java.util.stream.StreamSupport;
  * @since 5.2
  */
 public class GitUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GitUtil.class);
 
     private static final int NAME_LENGTH = 40;
 
@@ -811,10 +821,60 @@ public class GitUtil {
      */
     public GitUtil rebase() {
         try {
-            git.pull().setRebase(true).call();
+            if (checkMaster()) {
+                attemptRebase().stream().forEach(this::resolveConflict);
+            }
         } catch(final Exception e) {
+            LOGGER.error("Error Rebasing git ", e);
+        } finally {
+            git.close();
         }
         return this;
+    }
+
+    private boolean checkMaster() throws Exception {
+        final FetchResult fr = git.fetch().setDryRun(true).call();
+        git.close();
+        return !fr.getTrackingRefUpdates().isEmpty();
+    }
+
+    private Collection<String> attemptRebase() throws Exception {
+        final Collection<String> conflicts = new HashSet<String>();
+        createStashIfNeeded();
+        final PullResult pr = git.pull().setStrategy(MergeStrategy.RESOLVE).setRebase(true).call();
+        if (pr.getRebaseResult().getConflicts() != null) {
+            conflicts.addAll(pr.getRebaseResult().getConflicts());
+        }
+        conflicts.addAll(applyStashIfNeeded());
+        return conflicts;
+    }
+
+    private void resolveConflict(final String path) {
+        try {
+            git.reset().addPath(path).call();
+            git.checkout().addPath(path).call();
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private void createStashIfNeeded() throws Exception {
+        if (!git.status().call().isClean()) {
+            git.stashCreate().call();
+        }
+    }
+
+    private Collection<String> applyStashIfNeeded() throws Exception {
+        if (!git.stashList().call().isEmpty()) {
+            try {
+                git.stashApply().call();
+            } catch (final Exception e) {
+                final Set<String> conflicts = git.status().call().getConflicting();
+                git.close();
+                return conflicts;
+            }
+        }
+        return new HashSet<>();
     }
 
     /**

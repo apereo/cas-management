@@ -1,7 +1,7 @@
-import {Component, OnInit, Input, Inject} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {Messages} from '../messages';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {DiffEntry} from '../../domain/diff-entry';
+import {GitStatus} from '../../domain/git-status';
 
 @Component({
   selector: 'app-commit',
@@ -11,7 +11,7 @@ import {DiffEntry} from '../../domain/diff-entry';
 export class CommitComponent implements OnInit {
 
   commitMessage: String;
-  changes: DiffEntry[];
+  status: GitStatus;
   isAdmin: boolean;
 
   constructor(public dialogRef: MatDialogRef<CommitComponent>,
@@ -19,7 +19,7 @@ export class CommitComponent implements OnInit {
               public messages: Messages) { }
 
   ngOnInit() {
-    this.changes = this.data[0];
+    this.status = this.data[0];
     this.isAdmin = this.data[1];
   }
 

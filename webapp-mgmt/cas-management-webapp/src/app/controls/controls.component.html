@@ -14,17 +14,17 @@
     </button>
   </div>
   <div style="display:inline;">
-    <button mat-button id="commit" *ngIf="isAdmin && service.changes"
+    <button mat-button id="commit" *ngIf="isAdmin() && hasChanges()"
             (click)="openModalCommit()">
       <mat-icon>input</mat-icon>
       <ng-container i18n>Commit</ng-container>
     </button>
-    <button mat-button *ngIf="isAdmin && publishDirty" id="publish"
+    <button mat-button *ngIf="isAdmin() && unpublished()" id="publish"
             (click)="openModalPublish()">
       <mat-icon>launch</mat-icon>
       <ng-container i18n>Publish</ng-container>
     </button>
-    <button mat-button *ngIf="!isAdmin && service.changes != null"
+    <button mat-button *ngIf="!isAdmin() && hasChanges()"
             (click)="callSubmit()">
       <mat-icon>file_upload</mat-icon>
       <ng-container i18n>Submit</ng-container>

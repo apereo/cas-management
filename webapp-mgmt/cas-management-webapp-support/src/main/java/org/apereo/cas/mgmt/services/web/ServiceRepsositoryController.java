@@ -11,6 +11,7 @@ import org.apereo.cas.mgmt.services.web.beans.CNote;
 import org.apereo.cas.mgmt.services.web.beans.Change;
 import org.apereo.cas.mgmt.services.web.beans.Commit;
 import org.apereo.cas.mgmt.services.web.beans.Diff;
+import org.apereo.cas.mgmt.services.web.beans.GitStatus;
 import org.apereo.cas.mgmt.services.web.beans.History;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
@@ -19,10 +20,12 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.io.CommunicationsManager;
+import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,7 +45,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -56,7 +58,7 @@ import java.util.stream.Collectors;
 @Controller("publish")
 public class ServiceRepsositoryController {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ServiceRepsositoryController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRepsositoryController.class);
 
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?://([^:/]+)");
 
@@ -262,6 +264,29 @@ public class ServiceRepsositoryController {
         return repositoryFactory.masterRepository().getDiffs("refs/heads/" + ref).stream()
                 .map(this::createDiff)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Method returns to the client a payload that describes the state of the user's repository.
+     *
+     * @param request    - the request
+     * @param response   - the response
+     * @return           - GitStatus
+     * @throws Exception - failed
+     */
+    @GetMapping("/gitStatus")
+    public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
+                                               final HttpServletResponse response) throws Exception{
+        final GitUtil git = repositoryFactory.from(request, response);
+        final GitStatus gitStatus = new GitStatus();
+        final Status status = git.getGit().status().call();
+        gitStatus.setHasChanges(!status.isClean());
+        gitStatus.setAdded(status.getUntracked());
+        gitStatus.setModified(status.getModified());
+        gitStatus.setDeleted(status.getRemoved());
+        gitStatus.setUnpublished(getPublishBehindCount() > 0);
+        gitStatus.setPendingSubmits(pendingSubmits(request, response));
+        return new ResponseEntity<>(gitStatus, HttpStatus.OK);
     }
 
     /**
@@ -755,6 +780,20 @@ public class ServiceRepsositoryController {
             }
         }
         return new ResponseEntity(resp, HttpStatus.OK);
+    }
+
+    private boolean pendingSubmits(final HttpServletRequest request,
+                                   final HttpServletResponse response) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        if (casUserProfile.isAdministrator()) {
+            final GitUtil git = repositoryFactory.masterRepository();
+            return git.branches()
+                    .map(git::mapBranches)
+                    .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
+                    .findAny().isPresent();
+        } else {
+            return false;
+        }
     }
 
     /**

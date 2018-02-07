@@ -7,13 +7,12 @@ import {Service} from '../service';
 import {HttpClient} from '@angular/common/http';
 import {Change} from '../../domain/change';
 import {Commit} from '../../domain/commit';
+import {GitStatus} from '../../domain/git-status';
 
 @Injectable()
 export class ControlsService extends Service {
 
-  changes: Change[];
-  commits: Commit[];
-  notification: String;
+  status: GitStatus;
 
   constructor(http: HttpClient) {
     super(http);
@@ -31,75 +30,19 @@ export class ControlsService extends Service {
     return this.postText('submit', msg);
   }
 
+
   untracked(): Promise<Change[]> {
     return this.get<Change[]>('untracked')
-      .then(resp => this.handleUntracked(resp));
-  }
-
-  handleUntracked(changes: Change[]): Change[] {
-    this.changes = changes;
-    if (this.changes.length === 0) {
-      this.changes = null;
-    }
-    return this.changes;
-  }
-
-  unpublished(): Promise<number> {
-    return this.get<number>('unpublished')
-  }
-
-  isChanged(id: String): Change {
-    let change: Change;
-    if (this.changes) {
-      this.changes.forEach((c) => {
-        if (c.id === id) {
-          change = c;
-        }
-      });
-      return change;
-    }
-  }
-
-  changeStyle(id: String): String {
-    const change: Change = this.isChanged(id);
-    if (change) {
-      switch (change.changeType) {
-        case 'MODIFY' :
-          return 'modified';
-        case 'DELETE' :
-          return 'deleted';
-        case 'ADD' :
-          return 'added';
-      }
-    }
-    return 'inherit';
-  }
-
-  revertable(id: String): boolean {
-    const change: Change = this.isChanged(id);
-    if (change) {
-      switch (change.changeType) {
-        case 'MODIFY' :
-        case 'DELETE' :
-          return true;
-      }
-    }
-    return false;
+      .then(resp => resp);
   }
 
   getCommits(): Promise<Commit[]> {
     return this.get<Commit[]>('commitList')
-      .then(resp => this.handleCommits(resp));
+      .then(resp => resp);
   }
 
-  handleCommits(commits: Commit[]): Commit[] {
-    this.commits = commits;
-    return commits;
-  }
-
-  checkNotifications(): Promise<String> {
-    return this.getText('notifications')
-        .then(resp => this.notification = resp);
+  gitStatus() {
+    this.get<GitStatus>('gitStatus').then(resp => this.status = resp);
   }
 
 }

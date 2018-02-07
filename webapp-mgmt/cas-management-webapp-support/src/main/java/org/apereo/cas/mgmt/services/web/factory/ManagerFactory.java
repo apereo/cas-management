@@ -84,9 +84,18 @@ public class ManagerFactory {
     public GitServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
         GitServicesManager manager = (GitServicesManager) request.getSession().getAttribute("servicesManager");
         if (manager != null) {
+            if (!user.isAdministrator()) {
+                manager.getGit().rebase();
+            }
             manager.load();
         } else {
-            final GitUtil git = repositoryFactory.from(user);
+            final GitUtil git;
+            if (!user.isAdministrator()) {
+                git = repositoryFactory.from(user);
+                git.rebase();
+            } else {
+                git = repositoryFactory.masterRepository();
+            }
             manager = new GitServicesManager(createJSONServiceManager(git), git);
         }
         request.getSession().setAttribute("servicesManager", manager);

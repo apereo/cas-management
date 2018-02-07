@@ -62,8 +62,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ServiceRepsositoryController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRepsositoryController.class);
-
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?\\??://([^:/]+)");
 
     private final RepositoryFactory repositoryFactory;

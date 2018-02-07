@@ -16,18 +16,16 @@ export class HeaderComponent implements OnInit {
   @ViewChild('search') search: ElementRef;
 
   type: String;
-  isAdmin: boolean;
 
   constructor(public messages: Messages,
               public router: Router,
               public location: Location,
               private service: HeaderService,
-              private userService: UserService,
+              public userService: UserService,
               public controlsService: ControlsService) { }
 
   ngOnInit() {
     this.service.getMangerType().then(resp => this.type = resp);
-    this.userService.getUser().then(resp => this.isAdmin = resp.administrator);
   }
 
   doSearch(val: string) {
@@ -36,6 +34,10 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     window.location.href = 'logout.html';
+  }
+
+  isAdmin(): boolean {
+    return this.userService.user && this.userService.user.administrator;
   }
 
 }

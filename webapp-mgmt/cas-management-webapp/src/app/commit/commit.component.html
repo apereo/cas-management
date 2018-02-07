@@ -24,8 +24,10 @@
   <div *ngIf="!isAdmin">
     <span i18n>Changes to be submitted:</span>
   </div>
-  <ul *ngFor="let change of changes">
-    <li>{{ change.changeType + " - " + change.fileName }}</li>
+  <ul>
+    <li *ngFor="let change of status.added">{{ "ADDED - " + change }}</li>
+    <li *ngFor="let change of status.modified">{{ "MODIFIED - " + change }}</li>
+    <li *ngFor="let change of status.deleted">{{ "DELETED - " + change }}</li>
   </ul>
 </mat-dialog-content>
 <mat-dialog-actions style="float:right;">

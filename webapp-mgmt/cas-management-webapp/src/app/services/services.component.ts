@@ -126,7 +126,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   revert() {
     const fileName: string = (this.revertItem.name + '-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
-    if (this.controlsService.changeStyle(this.revertItem.assignedId) === 'deleted') {
+    if (this.revertItem.status === 'deleted') {
       this.service.revertDelete(fileName)
           .then(resp => this.refresh());
     } else {
@@ -138,7 +138,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   refresh() {
     this.getServices();
-    this.controlsService.untracked();
+    this.controlsService.gitStatus();
   }
 
   getServices() {

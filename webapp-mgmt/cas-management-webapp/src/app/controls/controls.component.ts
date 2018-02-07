@@ -17,11 +17,6 @@ import {CommitComponent} from '../commit/commit.component';
 
 export class ControlsComponent implements OnInit {
 
-  isAdmin = false;
-  showCommit = false;
-  publishDirty = false;
-  userAhead = false;
-
   @Input()
   showEdit: boolean;
 
@@ -39,17 +34,13 @@ export class ControlsComponent implements OnInit {
 
   constructor(public messages: Messages,
               public service: ControlsService,
-              private router: Router,
-              private userService: UserService,
+              public userService: UserService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               public location: Location) { }
 
   ngOnInit() {
-    this.userService.getUser().then(resp => this.isAdmin = resp.administrator);
-    this.service.untracked();
-    this.unpublished();
-    this.service.checkNotifications();
+    this.service.gitStatus();
   }
 
   goBack() {
@@ -58,7 +49,7 @@ export class ControlsComponent implements OnInit {
 
   openModalCommit() {
       const dialogRef = this.dialog.open(CommitComponent, {
-          data: [this.service.changes, this.isAdmin],
+          data: [this.service.status, this.userService.user.administrator],
           width: '500px',
           position: {top: '100px'}
       });
@@ -72,7 +63,7 @@ export class ControlsComponent implements OnInit {
   commit(msg: String) {
     if (msg === 'CANCEL') {
       return;
-    } else if (!this.isAdmin) {
+    } else if (!this.userService.user.administrator) {
       this.submit(msg);
     } else {
       if (msg !== null && msg !== '') {
@@ -84,9 +75,7 @@ export class ControlsComponent implements OnInit {
   }
 
   handleCommit(resp: String) {
-    this.publishDirty = true;
-    this.userAhead = true;
-    this.service.untracked().then();
+    this.service.gitStatus();
     this.snackBar.open(this.messages.management_services_status_committed, 'Dismiss', {
         duration: 5000
     });
@@ -120,7 +109,7 @@ export class ControlsComponent implements OnInit {
   }
 
   handlePublish() {
-    this.publishDirty = false;
+    this.service.gitStatus();
     this.snackBar.open(this.messages.management_services_status_published, 'Dismiss', {
         duration: 5000
     });
@@ -143,9 +132,7 @@ export class ControlsComponent implements OnInit {
   }
 
   handleSubmit() {
-    this.publishDirty = true;
-    this.userAhead = true;
-    this.service.untracked().then();
+    this.service.gitStatus();
     this.snackBar.open('Your commit has been submitted for review', 'Dismiss', {
         duration: 5000
     });
@@ -157,9 +144,18 @@ export class ControlsComponent implements OnInit {
     });
   }
 
-  unpublished () {
-    this.service.unpublished()
-      .then(behind => this.publishDirty = behind > 0);
+  isAdmin(): boolean {
+    return this.userService.user && this.userService.user.administrator;
   }
+
+  hasChanges(): boolean {
+    return this.service.status && this.service.status.hasChanges;
+  }
+
+
+  unpublished (): boolean {
+    return this.service.status && this.service.status.unpublished;
+  }
+
 
 }

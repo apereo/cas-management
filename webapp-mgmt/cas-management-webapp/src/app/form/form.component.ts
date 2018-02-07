@@ -20,7 +20,6 @@ import {MatSnackBar, MatTabGroup} from '@angular/material';
 import {GrouperRegisteredServiceAccessStrategy} from '../../domain/access-strategy';
 import {RegisteredServiceRegexAttributeFilter} from '../../domain/attribute-filter';
 import {UserService} from '../user.service';
-import {UserProfile} from '../../domain/user-profile';
 
 enum Tabs {
   BASICS,
@@ -51,8 +50,6 @@ export class FormComponent implements OnInit {
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
 
-  user: UserProfile;
-
   constructor(public messages: Messages,
               private route: ActivatedRoute,
               private router: Router,
@@ -60,7 +57,7 @@ export class FormComponent implements OnInit {
               public data: Data,
               private location: Location,
               public snackBar: MatSnackBar,
-              private userService: UserService) {
+              public userService: UserService) {
   }
 
   ngOnInit() {
@@ -72,7 +69,6 @@ export class FormComponent implements OnInit {
           this.goto(Tabs.BASICS)
         }
       });
-    this.userService.getUser().then(resp => this.user = resp);
   }
 
   goto(tab: Tabs) {
@@ -245,7 +241,7 @@ export class FormComponent implements OnInit {
     try {
       const domain = domainPattern.exec(service);
       if (domain != null) {
-        return this.user.permissions.indexOf(domain[1]) > -1;
+        return this.userService.user.permissions.indexOf(domain[1]) > -1;
       }
     } catch (e) {
       console.log('Failed Domain parse');
@@ -264,7 +260,7 @@ export class FormComponent implements OnInit {
       return Tabs.BASICS;
     }
 
-    if (!this.user.administrator &&
+    if (!this.userService.user.administrator &&
         !this.validateDomain(data.serviceId as string)) {
         this.data.invalidDomain = true;
       return Tabs.BASICS;

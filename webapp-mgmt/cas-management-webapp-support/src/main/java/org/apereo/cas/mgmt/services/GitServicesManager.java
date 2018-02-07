@@ -213,4 +213,8 @@ public class GitServicesManager implements ServicesManager {
     public Collection<String> getDomains() {
         return this.manager.getDomains();
     }
+
+    public GitUtil getGit() {
+        return git;
+    }
 }

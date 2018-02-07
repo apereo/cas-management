@@ -59,7 +59,7 @@ public class RepositoryFactory {
         if (!Files.exists(path)) {
             clone(path.toString());
         }
-        return userRepository(user.getId()).rebase();
+        return userRepository(user.getId());
     }
 
     /**

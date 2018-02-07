@@ -13,8 +13,8 @@
     <input #search class="search" placeholder="Search Services" (keyup)="doSearch($event.target.value)">
   </div>
   <div>
-    <button *ngIf="controlsService.notification" mat-icon-button>
-      <mat-icon [matTooltip]="controlsService.notification">notifications</mat-icon>
+    <button *ngIf="controlsService.status && controlsService.status.pendingSubmits" mat-icon-button>
+      <mat-icon [matTooltip]="messages.management_services_header_pendingSubmits">notifications</mat-icon>
     </button>
     <button mat-icon-button [matMenuTriggerFor]="links">
       <mat-icon>menu</mat-icon>
@@ -31,11 +31,11 @@
     <mat-icon>apps</mat-icon>
     <span i18n>Services</span>
   </button>
-  <button *ngIf="isAdmin" mat-menu-item routerLink="/pulls">
+  <button *ngIf="isAdmin()" mat-menu-item routerLink="/pulls">
     <mat-icon>file_download</mat-icon>
     <ng-container i18n>Pull Requests</ng-container>
   </button>
-  <button *ngIf="!isAdmin" mat-menu-item routerLink="/submits">
+  <button *ngIf="!isAdmin()" mat-menu-item routerLink="/submits">
     <mat-icon>file_upload</mat-icon>
     <ng-container i18n>Submit Requests</ng-container>
   </button>

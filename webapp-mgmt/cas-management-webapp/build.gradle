@@ -67,11 +67,7 @@ bootRepackage {
     mainClass = MAIN_CLASS
     enabled = !rootProject.publishingRelease
 
-    if (rootProject.publishReleases) {
-        dependsOn(buildClient)
-    } else {
-        dependsOn(buildClientDev)
-    }
+    dependsOn(buildClient)
 }
 
 war {
@@ -86,12 +82,6 @@ war {
                 "Implementation-Version": project.version)
     }
     enabled = !rootProject.publishingRelease && !rootProject.publishSnapshots
-
-    if (rootProject.publishReleases) {
-        dependsOn(buildClient)
-    } else {
-        dependsOn(buildClientDev)
-    }
 }
 
 task angularTest(type: NpmTask, dependsOn: 'npm_install', group: 'test', description: "Run Angular unit tests") {

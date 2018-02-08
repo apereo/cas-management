@@ -71,6 +71,7 @@ import { NameidComponent } from './samlclient/nameid/nameid.component';
 import { MappedComponent } from './attribute-release-filters/mapped/mapped.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {InvalidDomainDirective} from './serviceid/invalid-domain.directive';
+import { ResponsetypeComponent } from './responsetype/responsetype.component';
 
 
 @NgModule({
@@ -145,7 +146,8 @@ import {InvalidDomainDirective} from './serviceid/invalid-domain.directive';
     OptionalComponent,
     NameidComponent,
     MappedComponent,
-    InvalidDomainDirective
+    InvalidDomainDirective,
+    ResponsetypeComponent
   ],
   providers: [
     FormResolve,

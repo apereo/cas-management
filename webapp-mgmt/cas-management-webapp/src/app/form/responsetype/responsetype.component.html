@@ -1,0 +1,16 @@
+<div>
+    <mat-form-field class="textInput">
+        <mat-select i18n-placeholder="services.form.label.responseType"
+                    [placeholder]="messages.services_form_label_responseType"
+                    [(ngModel)]="data.service.responseType">
+            <mat-option></mat-option>
+            <mat-option value="POST">POST</mat-option>
+            <mat-option value="REDIRECT">REDIRECT</mat-option>
+            <mat-option value="HEADER">HEADER</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-icon style="font-size: medium"
+              i18n-matTooltip="services.form.tooltip.responseType"
+              [matTooltip]="messages.services_form_tooltip_responseType">help
+    </mat-icon>
+</div>

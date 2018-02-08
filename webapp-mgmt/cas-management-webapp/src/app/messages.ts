@@ -78,6 +78,7 @@ export class Messages {
  readonly services_form_label_name = 'Service Name';
  readonly services_form_label_description = 'Description';
  readonly services_form_label_type = 'Service Type';
+ readonly services_form_label_responseType = 'Response Type';
  readonly services_form_label_casClients = 'CAS Client';
  readonly services_form_label_renewalDate = 'Renewal Date';
  readonly services_form_label_theme = 'Theme';
@@ -252,6 +253,7 @@ export class Messages {
  readonly services_form_tooltip_consumer_url = 'A url that represents a WS Federation Consumer URL';
  readonly services_form_tooltip_name = 'The service name.';
  readonly services_form_tooltip_description = 'The service description.';
+ readonly services_form_tooltip_responseType = 'Defines how CAS should respond to requests for this service.';
  readonly services_form_tooltip_type = 'Everything that applies to a CAS client applies to an OAuth client too, but OAuth clients have a few more extra settings.';
  readonly services_form_tooltip_casClients = 'List any known CAS Clients used by this service.(mod_auth_cas...)';
  readonly services_form_tooltip_renewalDate = 'This is the date by which the service will need to verified active by the service contacts.';

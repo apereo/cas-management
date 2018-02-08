@@ -26,6 +26,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Class used to create a FormData record to be delivered to the client.
+ *
+ * @author Travis Schmidt
+ * @since 5.3.0
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class FormDataFactory {
@@ -35,6 +41,11 @@ public class FormDataFactory {
 
     private CasServerProfile profile;
 
+    /**
+     * Factoryu method to create an instance of FormData.
+     *
+     * @return - FormData
+     */
     public FormData create() {
         final FormData formData = new FormData();
         loadServiceTypes(formData);
@@ -60,7 +71,7 @@ public class FormDataFactory {
                         response.getStatusLine().getStatusCode(),
                         url);
             }
-        } catch(Exception e) {
+        } catch(final Exception e) {
             LOGGER.error("An error occurred attempting to contact CAS Server to retrieve profile", e);
         }
     }
@@ -68,7 +79,7 @@ public class FormDataFactory {
     private void loadServiceTypes(final FormData formData) {
         if (profile != null && profile.getRegisteredServiceTypes().size() > 0) {
             final List<FormData.Option> types = profile.getRegisteredServiceTypes().entrySet().stream()
-                    .map(e -> new FormData.Option(e.getKey(),e.getValue().getTypeName()))
+                    .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
                     .collect(Collectors.toList());
             formData.setServiceTypes(types);
         } else {
@@ -85,7 +96,7 @@ public class FormDataFactory {
     private void loadMfaProviders(final FormData formData) {
         if (profile != null && profile.getMultifactorAuthenticationProviderTypes().size() > 0) {
             final List<FormData.Option> mfas = profile.getMultifactorAuthenticationProviderTypes().entrySet().stream()
-                    .map(e -> new FormData.Option(e.getKey(),e.getValue()))
+                    .map(e -> new FormData.Option(e.getKey(), e.getValue()))
                     .collect(Collectors.toList());
             formData.setMfaProviders(mfas);
         } else {

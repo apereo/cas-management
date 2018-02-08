@@ -147,6 +147,9 @@ public class FormData implements Serializable {
             .collect(Collectors.toList());
     }
 
+    /**
+     * Class used to format display options for client.
+     */
     @Data
     @AllArgsConstructor
     public static class Option {

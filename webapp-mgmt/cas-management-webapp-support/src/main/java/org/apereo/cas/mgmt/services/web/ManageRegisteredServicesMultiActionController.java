@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.services.web;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -9,6 +10,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
+import org.apereo.cas.mgmt.services.web.factory.FormDataFactory;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -16,9 +18,6 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.RegexUtils;
-import org.apereo.services.persondir.IPersonAttributeDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -51,12 +48,12 @@ import java.util.stream.Collectors;
  * @since 3.1
  */
 @Controller("manageRegisteredServicesMultiActionController")
+@Slf4j
 public class ManageRegisteredServicesMultiActionController extends AbstractManagementController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ManageRegisteredServicesMultiActionController.class);
 
     private static final String STATUS = "status";
 
-    private final IPersonAttributeDao personAttributeDao;
+    private final FormDataFactory formDataFactory;
     private final CasUserProfileFactory casUserProfileFactory;
     private final Service defaultService;
     private final ManagerFactory managerFactory;
@@ -67,7 +64,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * Instantiates a new manage registered services multi action controller.
      *
      * @param servicesManager              the services manager
-     * @param personAttributeDao           the person attribute dao
+     * @param formDataFactory              the form data factory
      * @param webApplicationServiceFactory the web application service factory
      * @param defaultServiceUrl            the default service url
      * @param casProperties                the cas properties
@@ -77,7 +74,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      */
     public ManageRegisteredServicesMultiActionController(
             final ServicesManager servicesManager,
-            final IPersonAttributeDao personAttributeDao,
+            final FormDataFactory formDataFactory,
             final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
             final String defaultServiceUrl,
             final CasConfigurationProperties casProperties,
@@ -85,7 +82,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             final ManagerFactory managerFactory,
             final RepositoryFactory repositoryFactory) {
         super(servicesManager);
-        this.personAttributeDao = personAttributeDao;
+        this.formDataFactory = formDataFactory;
         this.defaultService = webApplicationServiceFactory.createService(defaultServiceUrl);
         this.casProperties = casProperties;
         this.casUserProfileFactory = casUserProfileFactory;
@@ -290,15 +287,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      */
     @GetMapping(value = "formData")
     public ResponseEntity<FormData> getFormData() throws Exception {
-        final FormData formData = new FormData();
-        final Set<String> possibleUserAttributeNames = this.personAttributeDao.getPossibleUserAttributeNames();
-        final List<String> possibleAttributeNames = new ArrayList<>();
-        if (possibleUserAttributeNames != null) {
-            possibleAttributeNames.addAll(possibleUserAttributeNames);
-            Collections.sort(possibleAttributeNames);
-        }
-        formData.setAvailableAttributes(possibleAttributeNames);
-        return new ResponseEntity<>(formData, HttpStatus.OK);
+        return new ResponseEntity<>(formDataFactory.create(), HttpStatus.OK);
     }
 
     /**

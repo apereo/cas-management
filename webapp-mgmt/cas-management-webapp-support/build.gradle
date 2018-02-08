@@ -90,9 +90,11 @@ dependencies {
     implementation ("org.apereo.cas:cas-server-support-person-directory:$casVersion") {
         transitive = false
     }
+
     implementation ("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
         transitive = false
     }
+
     implementation ("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
         transitive = false
     }
@@ -108,9 +110,11 @@ dependencies {
     implementation ("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
         transitive = false
     }
+
     implementation ("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
         transitive = false
     }
+
     testImplementation ("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
         transitive = false
     }

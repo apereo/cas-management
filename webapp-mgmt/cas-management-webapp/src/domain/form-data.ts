@@ -1,3 +1,5 @@
+import {ProtractorError} from 'protractor/built/exitCodes';
+
 export class FormData {
     availableAttributes: String[] = [];
     registeredServiceProperties: PropertyEnum[];
@@ -6,7 +8,7 @@ export class FormData {
     timeUnits: String[];
     mergingStrategies: String[];
     logoutTypes: String[];
-    serviceTypes: String[];
+    serviceTypes: PropertyEnum[];
     samlRoles: String[];
     samlDirections: String[];
     attributeNameFormats: String[];

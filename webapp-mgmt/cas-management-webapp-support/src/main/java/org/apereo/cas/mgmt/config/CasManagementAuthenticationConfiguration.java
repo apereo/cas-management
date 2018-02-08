@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.CasManagementUtils;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
@@ -12,8 +13,6 @@ import org.pac4j.core.client.direct.AnonymousClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,8 +34,8 @@ import java.util.List;
  */
 @Configuration("casManagementAuthenticationConfiguration")
 @EnableConfigurationProperties(CasConfigurationProperties.class)
+@Slf4j
 public class CasManagementAuthenticationConfiguration {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CasManagementAuthenticationConfiguration.class);
 
     @Autowired
     private ServerProperties serverProperties;

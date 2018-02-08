@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.services.web.factory;
 
+import lombok.RequiredArgsConstructor;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
@@ -20,17 +21,12 @@ import java.nio.file.Paths;
  * @author Travis Schmidt
  * @since 5.2.0
  */
+@RequiredArgsConstructor
 public class RepositoryFactory {
 
+    private final CasConfigurationProperties casProperties;
     private final CasUserProfileFactory casUserProfileFactory;
 
-    private final CasConfigurationProperties casProperties;
-
-    public RepositoryFactory(final CasConfigurationProperties casProperties,
-                             final CasUserProfileFactory casUserProfileFactory) {
-        this.casProperties = casProperties;
-        this.casUserProfileFactory = casUserProfileFactory;
-    }
 
     /**
      * Method looks up user from servlet request to return correct repository.

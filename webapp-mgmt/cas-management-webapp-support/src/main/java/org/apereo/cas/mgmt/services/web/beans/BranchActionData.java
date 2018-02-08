@@ -1,5 +1,9 @@
 package org.apereo.cas.mgmt.services.web.beans;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -8,27 +12,19 @@ import java.io.Serializable;
  * @author Travis Schmidt
  * @since 5.2.0
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BranchActionData implements Serializable {
+
+    /**
+     * Data to identify branch.
+     */
     private BranchData branch;
+
+    /**
+     * Note attached to branch.
+     */
     private String note;
 
-    BranchActionData() {
-
-    }
-
-    public BranchData getBranch() {
-        return branch;
-    }
-
-    public void setBranch(final BranchData branch) {
-        this.branch = branch;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(final String note) {
-        this.note = note;
-    }
 }

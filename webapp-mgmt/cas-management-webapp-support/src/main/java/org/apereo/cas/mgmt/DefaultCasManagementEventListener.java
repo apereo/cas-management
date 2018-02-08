@@ -1,10 +1,9 @@
 package org.apereo.cas.mgmt;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.util.AsciiArtUtils;
 import org.apereo.cas.util.DateTimeUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 
@@ -14,9 +13,8 @@ import org.springframework.context.event.EventListener;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
+@Slf4j
 public class DefaultCasManagementEventListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCasManagementEventListener.class);
-    
     /**
      * Handle application ready event.
      *

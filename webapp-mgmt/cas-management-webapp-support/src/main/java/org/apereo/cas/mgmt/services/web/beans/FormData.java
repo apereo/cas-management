@@ -1,5 +1,9 @@
 package org.apereo.cas.mgmt.services.web.beans;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apereo.cas.authentication.principal.cache.AbstractPrincipalAttributesRepository;
 import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPResponseProperties;
 import org.apereo.cas.grouper.GrouperGroupField;
@@ -24,7 +28,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -34,10 +40,12 @@ import java.util.stream.Collectors;
  * @author Misagh Moayyed
  * @since 4.1
  */
+@Getter
+@Setter
 public class FormData implements Serializable {
     private static final long serialVersionUID = -5201796557461644152L;
 
-    private List<String> availableAttributes = new ArrayList<>();
+    private Set<String> availableAttributes = new HashSet<>();
 
     private List<Integer> remoteCodes = Arrays.stream(HttpStatus.values()).map(HttpStatus::value).collect(Collectors.toList());
 
@@ -55,13 +63,11 @@ public class FormData implements Serializable {
 
     private List<String> encodingAlgOptions = locateContentEncryptionAlgorithmsSupported();
 
-    public List<String> getAvailableAttributes() {
-        return this.availableAttributes;
-    }
+    private List<Option> serviceTypes = new ArrayList<>();
 
-    public void setAvailableAttributes(final List<String> availableAttributes) {
-        this.availableAttributes = availableAttributes;
-    }
+    private List<Option> mfaProviders = new ArrayList<>();
+
+    private Set<String> delegatedAuthnProviders = new HashSet<>();
 
     public RegisteredServiceProperty.RegisteredServiceProperties[] getRegisteredServiceProperties() {
         return RegisteredServiceProperty.RegisteredServiceProperties.values();
@@ -87,58 +93,8 @@ public class FormData implements Serializable {
         return RegisteredService.LogoutType.values();
     }
 
-    /**
-     * Gets service types.
-     *
-     * @return the service types
-     */
-    public List<Option> getServiceTypes() {
-        final ArrayList<Option> serviceTypes = new ArrayList<>();
-        serviceTypes.add(new Option("CAS Client", "cas"));
-        serviceTypes.add(new Option("OAuth2 Client", "oauth"));
-        serviceTypes.add(new Option("SAML2 Service Provider", "saml"));
-        serviceTypes.add(new Option("OpenID Connect Client", "oidc"));
-        serviceTypes.add(new Option("WS Federation", "wsfed"));
-        return serviceTypes;
-    }
-
-    public String[] getSamlRoles() {
-        return samlMetadataRoles;
-    }
-
-    public List<String> getSamlDirections() {
-        return samlDirections;
-    }
-
-    public String[] getSamlAttributeNameFormats() {
-        return samlAttributeNameFormats;
-    }
-
-    public List<String> getSamlCredentialTypes() {
-        return samlCredentialTypes;
-    }
-
     public WSFederationClaims[] getWsFederationClaims() {
         return WSFederationClaims.values();
-    }
-
-    /**
-     * Gets mfa providers.
-     *
-     * @return the mfa providers
-     */
-    public List<Option> getMfaProviders() {
-        final ArrayList<Option> providers = new ArrayList<>();
-        providers.add(new Option("Duo Security", "mfa-duo"));
-        providers.add(new Option("Authy Authenticator", "mfa-authy"));
-        providers.add(new Option("YubiKey", "mfa-yubikey"));
-        providers.add(new Option("RSA/RADIUS", "mfa-radius"));
-        providers.add(new Option("WiKID", "mfa-wikid"));
-        providers.add(new Option("Google Authenitcator", "mfa-gauth"));
-        providers.add(new Option("Microsoft Azure", "mfa-azure"));
-        providers.add(new Option("FIDO U2F", "mfa-u2f"));
-        providers.add(new Option("Swivel Secure", "mfa-swivel"));
-        return providers;
     }
 
     /**
@@ -163,14 +119,6 @@ public class FormData implements Serializable {
         return scopes;
     }
 
-    public List<String> getOidcEncodingAlgOptions() {
-        return encodingAlgOptions;
-    }
-
-    public List<String> getOidcEncryptAlgOptions() {
-        return encryptAlgOptions;
-    }
-
     public OidcSubjectTypes[] getOidcSubjectTypes() {
         return OidcSubjectTypes.values();
     }
@@ -178,53 +126,6 @@ public class FormData implements Serializable {
     public CaseCanonicalizationMode[] getCanonicalizationModes() {
         return CaseCanonicalizationMode.values();
     }
-
-    /**
-     * Returns a list of providers that authentication can be delegated to.
-     *
-     * @return the providers
-     */
-    public List<String> getDelegatedAuthnProviders() {
-        final List<String> providers = new ArrayList<>();
-        providers.add("Twitter");
-        providers.add("Paypal");
-        providers.add("Wordpress");
-        providers.add("Yahoo");
-        providers.add("Orcid");
-        providers.add("Dropbox");
-        providers.add("Github");
-        providers.add("Foursquare");
-        providers.add("WindowsLive");
-        providers.add("Google");
-        return providers;
-    }
-
-    private static class Option {
-        private String display;
-        private String value;
-
-        Option(final String display, final String value) {
-            this.display = display;
-            this.value = value;
-        }
-
-        public String getDisplay() {
-            return display;
-        }
-
-        public void setDisplay(final String display) {
-            this.display = display;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(final String value) {
-            this.value = value;
-        }
-    }
-
 
     private List<String> locateKeyAlgorithmsSupported() {
         return ReflectionUtils.getFields(KeyManagementAlgorithmIdentifiers.class,
@@ -244,5 +145,15 @@ public class FormData implements Serializable {
             .map(Field::getName)
             .sorted()
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Class used to format display options for client.
+     */
+    @Data
+    @AllArgsConstructor
+    public static class Option {
+        private String display;
+        private String value;
     }
 }

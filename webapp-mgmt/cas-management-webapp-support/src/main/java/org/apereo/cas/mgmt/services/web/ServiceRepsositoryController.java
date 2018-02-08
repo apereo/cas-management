@@ -1,5 +1,7 @@
 package org.apereo.cas.mgmt.services.web;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
@@ -25,8 +27,6 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -56,38 +56,18 @@ import java.util.stream.Collectors;
  * @since 5.2
  */
 @Controller("publish")
+@Slf4j
+@RequiredArgsConstructor
 public class ServiceRepsositoryController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRepsositoryController.class);
 
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?\\??://([^:/]+)");
 
-    private final CasConfigurationProperties casProperties;
-
-    private final ServicesManager servicesManager;
-
     private final RepositoryFactory repositoryFactory;
-
-    private final CasUserProfileFactory casUserProfileFactory;
-
     private final ManagerFactory managerFactory;
-
+    private final CasUserProfileFactory casUserProfileFactory;
+    private final CasConfigurationProperties casProperties;
+    private final ServicesManager servicesManager;
     private final CommunicationsManager communicationsManager;
-
-    public ServiceRepsositoryController(
-            final RepositoryFactory repositoryFactory,
-            final ManagerFactory managerFactory,
-            final CasUserProfileFactory casUserProfileFactory,
-            final CasConfigurationProperties casProperties,
-            final ServicesManager servicesManager,
-            final CommunicationsManager communicationsManager) {
-        this.repositoryFactory = repositoryFactory;
-        this.managerFactory = managerFactory;
-        this.casUserProfileFactory = casUserProfileFactory;
-        this.casProperties = casProperties;
-        this.servicesManager = servicesManager;
-        this.communicationsManager = communicationsManager;
-    }
 
     /**
      * Method commits all modified and untracked work in the working tree.
@@ -884,8 +864,8 @@ public class ServiceRepsositoryController {
      */
     private Diff createDiff(final DiffEntry d) {
         return new Diff(d.getNewPath(),
-                d.getOldId().toObjectId(),
-                d.getNewId().toObjectId(),
+                d.getOldId().toObjectId().toString(),
+                d.getNewId().toObjectId().toString(),
                 d.getChangeType().toString());
     }
 

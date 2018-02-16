@@ -10,8 +10,6 @@ import {Data} from '../../data';
 })
 export class GrouperComponent implements OnInit {
 
-  groupFields = ['NAME', 'DISPLAY_NAME', 'EXTENSION', 'DISPLAY_EXTENSION'];
-
   accessStrategy: GrouperRegisteredServiceAccessStrategy;
   constructor(public messages: Messages,
               public data: Data) {

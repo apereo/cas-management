@@ -5,14 +5,13 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabAttrreleaseComponent } from './tab-attrrelease.component';
-import {AttributeReleaseComponent} from '../attribute-release/attribute-release.component';
 import {Messages} from '../../messages';
 import {Data} from '../data';
 import {SharedModule} from '../../shared/shared.module';
-import {AttributeReleaseChecksComponent} from '../attribute-release-checks/attribute-release-checks.component';
-import {AttributeReleaseFiltersComponent} from '../attribute-release-filters/attribute-release-filters.component';
-import {AttributeReleasePoliciesComponent} from '../attribute-release-policies/attribute-release-policies.component';
-import {AttributeReleasePrincipalRepoComponent} from '../attribute-release-principal-repo/attribute-release-principal-repo.component';
+import {ChecksComponent} from '../attribute-release/checks/checks.component';
+import {FiltersComponent} from '../attribute-release/filters/filters.component';
+import {PoliciesComponent} from '../attribute-release/policies/policies.component';
+import {PrincipalRepoComponent} from '../attribute-release/principal-repo/principal-repo.component';
 import {WsfedattrrelpoliciesComponent} from '../wsfedattrrelpolocies/wsfedattrrelpolicies.component';
 
 describe('TabAttrreleaseComponent', () => {
@@ -24,11 +23,10 @@ describe('TabAttrreleaseComponent', () => {
       imports: [ FormsModule, SharedModule ],
       declarations: [
         TabAttrreleaseComponent,
-        AttributeReleaseComponent,
-        AttributeReleaseChecksComponent,
-        AttributeReleaseFiltersComponent,
-        AttributeReleasePoliciesComponent,
-        AttributeReleasePrincipalRepoComponent,
+        ChecksComponent,
+        FiltersComponent,
+        PoliciesComponent,
+        PrincipalRepoComponent,
         WsfedattrrelpoliciesComponent
       ],
       providers: [ Messages, Data ]

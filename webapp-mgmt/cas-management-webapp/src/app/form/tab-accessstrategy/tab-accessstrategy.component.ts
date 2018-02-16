@@ -1,8 +1,21 @@
 import {Component} from '@angular/core';
 import {TabBaseComponent} from '../tab-base';
+import {GroovyRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 
 @Component({
-  selector: 'app-tab-accessstratefy',
+  selector: 'app-tab-accessstrategy',
   templateUrl: './tab-accessstrategy.component.html'
 })
-export class TabAccessstrategyComponent extends TabBaseComponent {}
+export class TabAccessstrategyComponent extends TabBaseComponent {
+
+  groovyAccessStrategy: boolean;
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.typeChange();
+  }
+
+  typeChange() {
+    this.groovyAccessStrategy = GroovyRegisteredServiceAccessStrategy.instanceOf(this.data.service.accessStrategy);
+  }
+}

@@ -1,165 +1,38 @@
-<mat-card class="tabCard">
-  <mat-card-title>
-    <h5>Service Access Strategy</h5>
-  </mat-card-title>
-  <div class="cardContent">
-    <div>
-      <mat-checkbox [(ngModel)]="data.service.accessStrategy.ssoEnabled">
+<div>
+    <mat-checkbox [(ngModel)]="data.service.accessStrategy.ssoEnabled">
         <ng-container i18n="services.form.label.sas.ssoEnabled">
-          {{ messages.services_form_label_sas_ssoEnabled }}
+            {{ messages.services_form_label_sas_ssoEnabled }}
         </ng-container>
-      </mat-checkbox>
-      <mat-icon style="font-size: medium"
-               i18n-matTooltip="services.form.tooltip.sas.ssoEnabled"
-               [matTooltip]="messages.services_form_tooltip_sas_ssoEnabled">help
-      </mat-icon>
-      <mat-checkbox [(ngModel)]="data.service.accessStrategy.requireAllAttributes">
+    </mat-checkbox>
+    <mat-icon style="font-size: medium"
+              i18n-matTooltip="services.form.tooltip.sas.ssoEnabled"
+              [matTooltip]="messages.services_form_tooltip_sas_ssoEnabled">help
+    </mat-icon>
+    <mat-checkbox [(ngModel)]="data.service.accessStrategy.requireAllAttributes">
         <ng-container i18n="services.form.label.sas.requireAll">
-          {{ messages.services_form_label_sas_requireAll }}
+            {{ messages.services_form_label_sas_requireAll }}
         </ng-container>
-      </mat-checkbox>
-      <mat-icon style="font-size: medium"
-               i18n-matTooltip="services.form.tooltip.sas.requireAll"
-               [matTooltip]="messages.services_form_tooltip_sas_requireAll">help
-      </mat-icon>
-    </div>
+    </mat-checkbox>
+    <mat-icon style="font-size: medium"
+              i18n-matTooltip="services.form.tooltip.sas.requireAll"
+              [matTooltip]="messages.services_form_tooltip_sas_requireAll">help
+    </mat-icon>
+</div>
 
-    <div>
-      <mat-form-field class="textInput">
+<div>
+    <mat-form-field class="textInput">
         <input matInput
                i18n-placeholder="services.form.label.sas.unauthorizedredirecturl"
                [placeholder]="messages.services_form_label_sas_unauthorizedredirecturl"
                [(ngModel)]="data.service.accessStrategy.unauthorizedRedirectUrl">
-      </mat-form-field>
-      <mat-icon style="font-size: medium"
-               i18n-matTooltip="services.form.tooltip.sas.unauthorizedredirecturl"
-               [matTooltip]="messages.services_form_tooltip_sas_unauthorizedredirecturl">help
-      </mat-icon>
-    </div>
-  </div>
-</mat-card>
-<mat-card class="tabCard">
-  <mat-card-title>
-    <h5>Required Attributes</h5>
-  </mat-card-title>
-  <div class="cardContent">
-    <app-attributemapping [attributes]="data.service.accessStrategy.requiredAttributes"
-                          [attributeNames]="data.formData.availableAttributes">
-    </app-attributemapping>
-    <div>
-      <mat-checkbox [(ngModel)]="data.service.accessStrategy.caseInsensitive">
-        <ng-container i18n="services.form.label.sas.caseinsensitive">
-          {{ messages.services_form_label_sas_caseinsensitive }}
-        </ng-container>
-      </mat-checkbox>
-      <mat-icon style="font-size: medium"
-                i18n-matTooltip="services.form.tooltip.sas.unauthorizedredirecturl"
-                [matTooltip]="messages.services_form_tooltip_sas_unauthorizedredirecturl">help
-      </mat-icon>
-    </div>
-  </div>
-</mat-card>
+    </mat-form-field>
+    <mat-icon style="font-size: medium"
+              i18n-matTooltip="services.form.tooltip.sas.unauthorizedredirecturl"
+              [matTooltip]="messages.services_form_tooltip_sas_unauthorizedredirecturl">help
+    </mat-icon>
+</div>
 
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5>Type</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <div>
-        <mat-form-field class="textInput">
-          <mat-select i18n-placeHolder="services.form.label.sas.selecttype"
-                      [placeholder]="messages.services_form_label_sas_selecttype"
-                     [(ngModel)]="type" (change)="changeType()">
-            <mat-option *ngFor="let opt of types" [value]="opt">{{ TYPE[opt] }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-icon style="font-size: medium"
-                 i18n-matTooltip="services.form.tooltip.sas.selecttype"
-                 [matTooltip]="messages.services_form_tooltip_sas_selecttype">help
-        </mat-icon>
 
-      </div>
-
-      <div *ngIf="type == TYPE.REMOTE">
-        <app-remote></app-remote>
-      </div>
-
-      <div *ngIf="type == TYPE.TIME || type == TYPE.GROUPER">
-        <app-time></app-time>
-      </div>
-
-      <div *ngIf="type == TYPE.GROUPER">
-        <app-grouper></app-grouper>
-      </div>
-
-      <div *ngIf="type == TYPE.SURROGATE">
-        <app-surrogate></app-surrogate>
-      </div>
-
-      <div *ngIf="type == TYPE.GROOVY">
-        <mat-form-field class="textInput">
-          <input matInput
-                 i18n-placeholder="services.form.label.sas.groovy.scriptFile"
-                 [placeholder]="messages.services_form_label_sas_groovy_scriptFile"
-                 [(ngModel)]="data.service.accessStrategy.groovyScript">
-        </mat-form-field>
-        <mat-icon style="font-size: medium"
-                  i18n-matTooltip="services.form.tooltip.sas.groovy.scriptFile"
-                  [matTooltip]="messages.services_form_tooltip_sas_groovy_scriptFile">help
-        </mat-icon>
-      </div>
-
-    </div>
-  </mat-card>
-
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5>Delegated Authentication</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <div>
-        <mat-form-field class="textInput">
-
-            <input i18n-placeHolder="services.form.label.sas.delegatedAuthn" matInput
-                   placeholder="Add Provider"
-                   [matChipInputFor]="chipList"
-                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                   matChipInputAddOnBlur="true"
-                   (matChipInputTokenEnd)="add($event)"
-                   [matAutocomplete]="auto"
-                   #providerInput>
-        </mat-form-field>
-        <mat-icon style="font-size: medium"
-                  i18n-matTooltip="services.form.tooltip.sas.delegatedAuthn"
-                  [matTooltip]="messages.services_form_tooltip_sas_delegatedAuthn">help
-        </mat-icon>
-          <h5 *ngIf="delegatedAuthn.length > 0">Allowed Providers</h5>
-          <mat-chip-list #chipList [selectable]="false">
-            <mat-chip *ngFor="let provider of delegatedAuthn" [selectable]="false"
-                      removable="true" (remove)="remove(provider)">
-              {{ provider }}
-              <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-          </mat-chip-list>
-
-      </div>
-    </div>
-  </mat-card>
-
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5>Rejected Attributes</h5>
-    </mat-card-title>
-    <div class="cardContent">
-    <app-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"
-                          [attributeNames]="data.formData.availableAttributes">
-    </app-attributemapping>
-    </div>
-  </mat-card>
-
-<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event);">
-  <mat-option *ngFor="let opt of formData.delegatedAuthnProviders" [value]="opt">{{ opt }}</mat-option>
-</mat-autocomplete>
 
 
 

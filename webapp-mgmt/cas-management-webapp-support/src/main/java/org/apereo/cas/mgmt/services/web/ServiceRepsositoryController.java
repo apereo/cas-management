@@ -435,6 +435,27 @@ public class ServiceRepsositoryController {
     }
 
     /**
+     * Method returns a RegisteredService instance of the the submitted service that it can be viewed in the
+     * online form before being accepted by an admin.
+     *
+     * @param response - HttpServletResponse
+     * @param request  - HttpServletRequest
+     * @param id       - id of service
+     * @return ResponseEntity
+     * @throws Exception - failed
+     */
+    @GetMapping(value = "/changePair")
+    public ResponseEntity<RegisteredService[]> changePair(final HttpServletResponse response,
+                                                        final HttpServletRequest request,
+                                                        final @RequestParam String id) throws Exception {
+        final GitUtil git = repositoryFactory.from(request, response);
+        final RegisteredService change = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
+        final RegisteredService orig = managerFactory.from(request, response).findServiceBy(change.getId());
+        final RegisteredService[] resp = {change, orig};
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    /**
      * Method will return a previous version of a service in HJson.
      *
      * @param request - HttpServletRequest

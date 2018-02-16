@@ -1,0 +1,34 @@
+<div>
+    <mat-form-field class="textInput">
+        <mat-select i18n-placeHolder="services.form.label.sas.selecttype"
+                    [placeholder]="messages.services_form_label_sas_selecttype"
+                    [(ngModel)]="type" (change)="changeType()">
+            <mat-option *ngFor="let opt of types" [value]="opt">{{ TYPE[opt] }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-icon style="font-size: medium"
+              i18n-matTooltip="services.form.tooltip.sas.selecttype"
+              [matTooltip]="messages.services_form_tooltip_sas_selecttype">help
+    </mat-icon>
+
+</div>
+
+<div *ngIf="type == TYPE.REMOTE">
+    <app-remote></app-remote>
+</div>
+
+<div *ngIf="type == TYPE.TIME || type == TYPE.GROUPER">
+    <app-time></app-time>
+</div>
+
+<div *ngIf="type == TYPE.GROUPER">
+    <app-grouper></app-grouper>
+</div>
+
+<div *ngIf="type == TYPE.SURROGATE">
+    <app-surrogate></app-surrogate>
+</div>
+
+<div *ngIf="type == TYPE.GROOVY">
+    <app-groovy></app-groovy>
+</div>

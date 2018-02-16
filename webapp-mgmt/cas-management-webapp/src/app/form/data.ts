@@ -10,8 +10,10 @@ import {FormComponent} from './form.component';
 @Injectable()
 export class Data {
   service: AbstractRegisteredService;
+  diff: AbstractRegisteredService;
   formData: FormData = new FormData();
   submitted: boolean;
+  view: boolean;
   save: EventEmitter<void> = new EventEmitter<void>();
   form: FormComponent;
   invalidRegEx: boolean;

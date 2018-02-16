@@ -62,12 +62,17 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
+    this.data.view = this.view;
     this.route.data
-      .subscribe((data: { resp: AbstractRegisteredService}) => {
-        if (data.resp) {
-          this.loadService(data.resp);
+      .subscribe((data: { resp: AbstractRegisteredService[]}) => {
+        if (data.resp && data.resp[1]) {
+          this.data.diff = data.resp[1];
+        }
+        if (data.resp && data.resp[0]) {
+          this.loadService(data.resp[0]);
           this.goto(Tabs.BASICS)
         }
+
       });
   }
 

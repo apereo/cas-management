@@ -13,6 +13,7 @@ import {SurrogateComponent} from './surrogate/surrogate.component';
 import {TimeComponent} from './time/time.component';
 import {TypeComponent} from './type/type.component';
 import {AttributemappingModule} from '../attributemapping/attributemapping.module';
+import {FormSharedModule} from '../form-shared.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import {AttributemappingModule} from '../attributemapping/attributemapping.modul
     FormsModule,
     HttpModule,
     SharedModule,
+    FormSharedModule,
     AttributemappingModule
   ],
   declarations: [

@@ -13,13 +13,15 @@ import {Row, RowDataSource} from '../../row';
 export class SurrogateComponent implements OnInit {
 
   accessStrategy: SurrogateRegisteredServiceAccessStrategy;
+  origAccessStrategy: SurrogateRegisteredServiceAccessStrategy;
 
   displayedColumns = ['source', 'mapped', 'delete'];
   dataSource: RowDataSource;
 
   constructor(public messages: Messages,
-              private data: Data) {
+              public data: Data) {
     this.accessStrategy = data.service.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
+    this.origAccessStrategy = data.diff.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
   }
 
   ngOnInit() {

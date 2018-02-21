@@ -1,16 +1,22 @@
-<div>
+<app-input field="excludeDefaultAttributes" [change]="data.service.attributeReleasePolicy"
+           [orig]="data.diff.attributeReleasePolicy">
   <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.excludeDefaultAttributes">
     <ng-container i18n="services.form.label.attrRelease.excludeDefault">
       {{ messages.services_form_label_attrRelease_excludeDefault }}
     </ng-container>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.excludeDefault"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_excludeDefault">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_excludeDefault">
     </mat-icon>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-checkbox>
-</div>
+</app-input>
 
-<div>
+<app-input field="authorizedToReleaseCredentialPassword"
+           [change]="data.service.attributeReleasePolicy"
+           [orig]="data.diff.attributeReleasePolicy">
   <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.authorizedToReleaseCredentialPassword">
     <ng-container i18n="services.form.label.attrRelease.releaseCredPassword">
       {{ messages.services_form_label_attrRelease_releaseCredPassword }}
@@ -19,29 +25,42 @@
              i18n-matTooltip="services.form.tooltip.attrRelease.releaseCredPassword"
              [matTooltip]="messages.services_form_tooltip_attrRelease_releaseCredPassword">help
     </mat-icon>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-checkbox>
-</div>
+</app-input>
 
-<div>
+<app-input field="authorizedToReleaseProxyGrantingTicket"
+           [change]="data.service.attributeReleasePolicy"
+           [orig]="data.diff.attributeReleasePolicy">
   <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.authorizedToReleaseProxyGrantingTicket">
     <ng-container i18n="services.form.label.attrRelease.releaseProxyTicket">
       {{ messages.services_form_label_attrRelease_releaseProxyTicket }}
     </ng-container>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.releaseProxyTicket"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_releaseProxyTicket">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_releaseProxyTicket">
     </mat-icon>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-checkbox>
-</div>
+</app-input>
 
-<div>
+<app-input field="authorizedToReleaseAuthenticationAttributes"
+           [change]="data.service.attributeReleasePolicy"
+           [orig]="data.diff.attributeReleasePolicy">
   <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.authorizedToReleaseAuthenticationAttributes">
     <ng-container i18n="services.form.label.attrRelease.releaseAuthenticationAttributes">
       {{ messages.services_form_label_attrRelease_releaseAuthenticationAttributes }}
     </ng-container>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.releaseAuthenticationAttributes"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_releaseAuthenticationAttributes">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_releaseAuthenticationAttributes">
     </mat-icon>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-checkbox>
-</div>
+</app-input>

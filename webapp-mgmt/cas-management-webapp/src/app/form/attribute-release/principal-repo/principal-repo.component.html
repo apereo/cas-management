@@ -16,51 +16,69 @@
   </mat-radio-group>
 </div>
 
-<div *ngIf="type == TYPE.CACHING">
-  <div>
+<ng-container *ngIf="type == TYPE.CACHING">
+  <app-input field="timeUnit"
+             [change]="data.service.attributeReleasePolicy.principalAttributesRepository"
+             [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
     <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.timeUnit">
+        {{ messages.services_form_label_attrRelease_principleAttRepo_cached_timeUnit }}
+      </mat-placeholder>
       <mat-select required
-                  i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.timeUnit"
-                  [placeholder]="messages.services_form_label_attrRelease_principleAttRepo_cached_timeUnit"
                   [(ngModel)]="data.service.attributeReleasePolicy.principalAttributesRepository.timeUnit">
         <mat-option *ngFor="let opt of formData.timeUnits" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
     </mat-form-field>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.principleAttRepo.cached.timeUnit"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_principleAttRepo_cached_timeUnit">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_principleAttRepo_cached_timeUnit">
     </mat-icon>
-  </div>
+  </app-input>
 
-  <div>
+  <app-input field="expiration"
+             [change]="data.service.attributeReleasePolicy.principalAttributesRepository"
+             [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
     <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.expiration">
+        {{ messages.services_form_label_attrRelease_principleAttRepo_cached_expiration }}
+      </mat-placeholder>
       <input matInput
-             i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.expiration"
-             [placeholder]="messages.services_form_label_attrRelease_principleAttRepo_cached_expiration"
              [(ngModel)]="data.service.attributeReleasePolicy.principalAttributesRepository.expiration">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
     </mat-form-field>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.principleAttRepo.cached.expiration"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_principleAttRepo_cached_expiration">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_principleAttRepo_cached_expiration">
     </mat-icon>
-  </div>
+  </app-input>
 
-  <div>
+  <app-input field="mergingStrategy"
+             [change]="data.service.attributeReleasePolicy.principalAttributesRepository"
+             [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
     <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.mergeStrategy">
+       {{ messages.services_form_label_attrRelease_principleAttRepo_cached_mergeStrategy }}
+      </mat-placeholder>
       <mat-select required
-                  i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.mergeStrategy"
-                  [placeholder]="messages.services_form_label_attrRelease_principleAttRepo_cached_mergeStrategy"
                   [(ngModel)]="data.service.attributeReleasePolicy.principalAttributesRepository.mergingStrategy">
         <mat-option *ngFor="let opt of formData.mergingStrategies" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
     </mat-form-field>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.principleAttRepo.cached.mergeStrategy"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_principleAttRepo_cached_mergeStrategy">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_principleAttRepo_cached_mergeStrategy">
     </mat-icon>
-  </div>
-</div>
+  </app-input>
+</ng-container>

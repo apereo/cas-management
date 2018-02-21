@@ -1,34 +1,33 @@
 <div>
-    <mat-form-field class="textInput">
+  <mat-form-field class="textInput">
         <mat-select i18n-placeHolder="services.form.label.sas.selecttype"
                     [placeholder]="messages.services_form_label_sas_selecttype"
                     [(ngModel)]="type" (change)="changeType()">
             <mat-option *ngFor="let opt of types" [value]="opt">{{ TYPE[opt] }}</mat-option>
         </mat-select>
     </mat-form-field>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
               i18n-matTooltip="services.form.tooltip.sas.selecttype"
-              [matTooltip]="messages.services_form_tooltip_sas_selecttype">help
+              [matTooltip]="messages.services_form_tooltip_sas_selecttype">
     </mat-icon>
-
 </div>
 
-<div *ngIf="type == TYPE.REMOTE">
+<ng-container *ngIf="type == TYPE.REMOTE">
     <app-remote></app-remote>
-</div>
+</ng-container>
 
-<div *ngIf="type == TYPE.TIME || type == TYPE.GROUPER">
+<ng-container *ngIf="type == TYPE.TIME || type == TYPE.GROUPER">
     <app-time></app-time>
-</div>
+</ng-container>
 
-<div *ngIf="type == TYPE.GROUPER">
+<ng-container *ngIf="type == TYPE.GROUPER">
     <app-grouper></app-grouper>
-</div>
+</ng-container>
 
-<div *ngIf="type == TYPE.SURROGATE">
+<ng-container *ngIf="type == TYPE.SURROGATE">
     <app-surrogate></app-surrogate>
-</div>
+</ng-container>
 
-<div *ngIf="type == TYPE.GROOVY">
+<ng-container *ngIf="type == TYPE.GROOVY">
     <app-groovy></app-groovy>
-</div>
+</ng-container>

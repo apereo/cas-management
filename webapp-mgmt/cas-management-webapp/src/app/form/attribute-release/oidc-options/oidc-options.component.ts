@@ -14,6 +14,7 @@ export class OidcOptionsComponent implements OnInit {
   isOidc: boolean;
   isWsFed: boolean;
   oidcService: OidcRegisteredService;
+  origOidcService: OidcRegisteredService;
 
   constructor(public messages: Messages,
               public data: Data) {
@@ -24,6 +25,7 @@ export class OidcOptionsComponent implements OnInit {
     this.isWsFed = WSFederationRegisterdService.instanceOf(this.data.service);
     if (this.isOidc) {
       this.oidcService = this.data.service as OidcRegisteredService;
+      this.origOidcService = this.data.diff as OidcRegisteredService;
     }
   }
 

@@ -14,6 +14,7 @@ import {WsfedOptionsComponent} from './wsfed-options/wsfed-options.component';
 import {MappedComponent} from './filters/mapped/mapped.component';
 import {AttributemappingModule} from '../attributemapping/attributemapping.module';
 import {WsfedattrrelpoliciesModule} from '../wsfedattrrelpolocies/wsfedattrrelpolicies.module';
+import {FormSharedModule} from '../form-shared.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import {WsfedattrrelpoliciesModule} from '../wsfedattrrelpolocies/wsfedattrrelpo
     FormsModule,
     HttpModule,
     SharedModule,
+    FormSharedModule,
     FormRoutingModule,
     AttributemappingModule,
     WsfedattrrelpoliciesModule

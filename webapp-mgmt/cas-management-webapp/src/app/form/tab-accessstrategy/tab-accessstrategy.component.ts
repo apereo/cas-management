@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TabBaseComponent} from '../tab-base';
 import {GroovyRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 
@@ -6,7 +6,7 @@ import {GroovyRegisteredServiceAccessStrategy} from '../../../domain/access-stra
   selector: 'app-tab-accessstrategy',
   templateUrl: './tab-accessstrategy.component.html'
 })
-export class TabAccessstrategyComponent extends TabBaseComponent {
+export class TabAccessstrategyComponent extends TabBaseComponent implements OnInit {
 
   groovyAccessStrategy: boolean;
 

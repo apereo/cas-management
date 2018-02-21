@@ -1,13 +1,19 @@
-<div>
+<app-input field="serviceId" [change]="data.service" [orig]="data.diff">
   <mat-form-field class="textInput">
-    <input matInput id="serviceId" i18n-placeholder required
-           [placeholder]="placeholder()" appInvalidDomain [data]="data"
+    <mat-placeholder>
+      {{ placeholder() }}
+    </mat-placeholder>
+    <input matInput id="serviceId" required
+           appInvalidDomain [data]="data"
            [(ngModel)]="data.service.serviceId">
     <mat-error i18n *ngIf="data.invalidRegEx">The entered service id is not a valid regular expression</mat-error>
     <mat-error i18n *ngIf="data.invalidDomain">You do not have permissions to create a service for the domain entered in the service id</mat-error>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
-  <mat-icon style="font-size: medium;"
+  <mat-icon appHelp
            i18n-matTooltip="services.form.label.serviceId"
-           [matTooltip]="tooltip()">help
+           [matTooltip]="tooltip()">
   </mat-icon>
-</div>
+</app-input>

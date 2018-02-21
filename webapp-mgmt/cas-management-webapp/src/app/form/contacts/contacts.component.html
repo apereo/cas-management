@@ -1,50 +1,58 @@
 <div>
   <mat-tab-group [(selectedIndex)]="selectedTab">
     <mat-tab *ngFor="let contact of data.service.contacts;let i = index;" [label]="getTabHeader(contact)">
-      <div>
+      <app-input field="name" [change]="contact" [orig]="data.diff && data.diff.contacts && data.diff.contacts[i]">
         <mat-form-field class="textInput">
-          <input matInput required
-                 placeholder="Name" name="name" id="name"
-                 [(ngModel)]="contact.name">
+          <mat-placeholder i18n>Name</mat-placeholder>
+          <input matInput required name="name" [(ngModel)]="contact.name">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
         </mat-form-field>
-        <mat-icon style="font-size: medium"
+        <mat-icon appHelp
                  i18n-matTooltip="contact.name"
-                 matTooltip="First and last name of the contact">help
+                 matTooltip="First and last name of the contact">
         </mat-icon>
-      </div>
-      <div>
+      </app-input>
+      <app-input field="email" [change]="contact" [orig]="data.diff && data.diff.contacts[i]">
         <mat-form-field class="textInput">
-          <input matInput required
-                 placeholder="Email"
-                 [(ngModel)]="contact.email">
+          <mat-placeholder i18n>EMail</mat-placeholder>
+          <input matInput required [(ngModel)]="contact.email">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
         </mat-form-field>
-        <mat-icon style="font-size: medium"
+        <mat-icon appHelp
                  i18n-matTooltip="contact.email"
-                 matTooltip="EMail of the contact">help
+                 matTooltip="EMail of the contact">
         </mat-icon>
-      </div>
-      <div>
+      </app-input>
+      <app-input field="phone" [change]="contact" [orig]="data.diff && data.diff.contacts[i]">
         <mat-form-field class="textInput">
-          <input matInput
-                 placeholder="Phone"
-                 [(ngModel)]="contact.phone">
+          <mat-placeholder>Phone</mat-placeholder>
+          <input matInput [(ngModel)]="contact.phone">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
         </mat-form-field>
-        <mat-icon style="font-size: medium"
+        <mat-icon appHelp
                  i18n-matTooltip="contact.phone"
-                 matTooltip="Phone number of the contact">help
+                 matTooltip="Phone number of the contact">
         </mat-icon>
-      </div>
-      <div>
+      </app-input>
+      <app-input field="department" [change]="contact" [orig]="data.diff && data.diff.contacts[i]">
         <mat-form-field class="textInput">
-          <input matInput
-                 placeholder="Department"
-                 [(ngModel)]="contact.department">
+          <mat-placeholder>Department</mat-placeholder>
+          <input matInput [(ngModel)]="contact.department">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
         </mat-form-field>
-        <mat-icon style="font-size: medium"
+        <mat-icon appHelp
                  i18n-matTooltip="contact.department"
-                 matTooltip="Department of the contact">help
+                 matTooltip="Department of the contact">
         </mat-icon>
-      </div>
+      </app-input>
     </mat-tab>
   </mat-tab-group>
   <div style="height:25px;padding-top: 5px;">

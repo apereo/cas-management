@@ -6,12 +6,13 @@ import {HttpModule} from '@angular/http';
 import {SharedModule} from '../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
 import {WsfedattrrelpoliciesComponent} from './wsfedattrrelpolicies.component';
+import {FormSharedModule} from '../form-shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    HttpModule,
+    FormSharedModule,
     SharedModule,
     FormRoutingModule,
   ],

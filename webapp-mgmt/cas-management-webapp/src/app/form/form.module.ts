@@ -57,13 +57,11 @@ import { NameidComponent } from './samlclient/nameid/nameid.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {InvalidDomainDirective} from './serviceid/invalid-domain.directive';
 import { ResponsetypeComponent } from './responsetype/responsetype.component';
-import { InputComponent } from './input/input.component';
-import { HintComponent } from './hint/hint.component';
-import { HelpDirective } from './help.directive';
 import {AttributeReleaseModule} from './attribute-release/attribute-release.module';
 import {AccessStrategyModule} from './access-strategy/access-strategy.module';
 import {AttributemappingModule} from './attributemapping/attributemapping.module';
 import {WsfedattrrelpoliciesModule} from './wsfedattrrelpolocies/wsfedattrrelpolicies.module';
+import {FormSharedModule} from './form-shared.module';
 
 
 @NgModule({
@@ -73,6 +71,7 @@ import {WsfedattrrelpoliciesModule} from './wsfedattrrelpolocies/wsfedattrrelpol
     HttpModule,
     SharedModule,
     FormRoutingModule,
+    FormSharedModule,
     AccessStrategyModule,
     AttributeReleaseModule,
     AttributemappingModule,
@@ -129,9 +128,6 @@ import {WsfedattrrelpoliciesModule} from './wsfedattrrelpolocies/wsfedattrrelpol
     NameidComponent,
     InvalidDomainDirective,
     ResponsetypeComponent,
-    InputComponent,
-    HintComponent,
-    HelpDirective
   ],
   providers: [
     FormResolve,

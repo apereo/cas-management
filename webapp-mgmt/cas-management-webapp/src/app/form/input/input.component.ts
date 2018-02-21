@@ -3,6 +3,7 @@ import {
   QueryList
 } from '@angular/core';
 import {HintComponent} from '../hint/hint.component';
+import {MatFormField} from '@angular/material';
 
 @Component({
   selector: 'app-input',
@@ -21,8 +22,8 @@ export class InputComponent implements AfterContentInit, OnChanges {
   @ContentChildren(HintComponent, {descendants: true})
   hints: QueryList<HintComponent>;
 
-  @ContentChild('input')
-  input: ElementRef;
+  @ContentChildren(MatFormField)
+  formFields: QueryList<MatFormField>;
 
   temp: any;
 
@@ -31,11 +32,14 @@ export class InputComponent implements AfterContentInit, OnChanges {
   ngAfterContentInit() {
     this.hints.first.difference = this.difference();
     this.hints.first.showDiff.subscribe(d => this.show(d));
+    this.ngOnChanges();
   }
 
   ngOnChanges() {
-    this.input.nativeElement.style.color = this.difference() ? 'blue' : 'inherit';
-    this.input.nativeElement.style.fontStyle = this.difference() ? 'italic' : 'inherit';
+    if (this.formFields && this.formFields.first) {
+      this.formFields.first._elementRef.nativeElement.style.color = this.difference() ? 'blue' : 'inherit';
+      this.formFields.first._elementRef.nativeElement.style.fontStyle = this.difference() ? 'italic' : 'inherit';
+    }
   }
 
   difference(): boolean {

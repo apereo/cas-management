@@ -1,12 +1,15 @@
-<div>
+<app-input field="evaluationOrder" [change]="data.service" [orig]="data.diff">
   <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.evalOrder"
-           [placeholder]="messages.services_form_label_evalOrder"
-           [(ngModel)]="data.service.evaluationOrder">
+    <mat-placeholder i18n-placeholder="services.form.label.evalOrder">
+      {{ messages.services_form_label_evalOrder }}
+    </mat-placeholder>
+    <input matInput [(ngModel)]="data.service.evaluationOrder">
   </mat-form-field>
-  <mat-icon style="font-size: medium"
+  <mat-hint align="end">
+    <app-hint></app-hint>
+  </mat-hint>
+  <mat-icon appHelp
            i18n-matTooltip="services.form.tooltip.evalOrder"
-           [matTooltip]="messages.services_form_tooltip_evalOrder">help
+           [matTooltip]="messages.services_form_tooltip_evalOrder">
   </mat-icon>
-</div>
+</app-input>

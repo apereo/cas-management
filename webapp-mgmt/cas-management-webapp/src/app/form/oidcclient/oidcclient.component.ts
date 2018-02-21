@@ -11,11 +11,13 @@ import {Data} from '../data';
 export class OidcclientComponent implements OnInit {
 
   service: OidcRegisteredService;
+  original: OidcRegisteredService;
   showOAuthSecret: boolean;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.service = data.service as OidcRegisteredService;
+    this.original = data.diff && data.diff as OidcRegisteredService;
   }
 
   ngOnInit() {

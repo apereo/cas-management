@@ -1,11 +1,16 @@
-<div style="padding-bottom: 10px;">
+<app-input [change]="data.service.accessStrategy"
+           [orig]="data.diff && data.diff.accessStrategy"
+           field="enabled" style="padding-bottom: 10px;">
   <mat-checkbox [(ngModel)]="data.service.accessStrategy.enabled">
     <ng-container i18n="services.form.label.sas.casEnabled">
       {{ messages.services_form_label_sas_casEnabled }}
     </ng-container>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.sas.casEnabled"
-             [matTooltip]="messages.services_form_tooltip_sas_casEnabled">help
+             [matTooltip]="messages.services_form_tooltip_sas_casEnabled">
     </mat-icon>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-checkbox>
-</div>
+</app-input>

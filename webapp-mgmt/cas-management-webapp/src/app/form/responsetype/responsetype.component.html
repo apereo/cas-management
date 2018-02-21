@@ -1,16 +1,20 @@
-<div>
-    <mat-form-field class="textInput">
-        <mat-select i18n-placeholder="services.form.label.responseType"
-                    [placeholder]="messages.services_form_label_responseType"
-                    [(ngModel)]="data.service.responseType">
-            <mat-option></mat-option>
-            <mat-option value="POST">POST</mat-option>
-            <mat-option value="REDIRECT">REDIRECT</mat-option>
-            <mat-option value="HEADER">HEADER</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-icon style="font-size: medium"
-              i18n-matTooltip="services.form.tooltip.responseType"
-              [matTooltip]="messages.services_form_tooltip_responseType">help
-    </mat-icon>
-</div>
+<app-input field="responseType" [change]="data.service" [orig]="data.diff">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n-placeholder="services.form.label.responseType">
+      {{ messages.services_form_label_responseType }}
+    </mat-placeholder>
+    <mat-select [(ngModel)]="data.service.responseType">
+      <mat-option></mat-option>
+      <mat-option value="POST">POST</mat-option>
+      <mat-option value="REDIRECT">REDIRECT</mat-option>
+      <mat-option value="HEADER">HEADER</mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp
+            i18n-matTooltip="services.form.tooltip.responseType"
+            [matTooltip]="messages.services_form_tooltip_responseType">
+  </mat-icon>
+</app-input>

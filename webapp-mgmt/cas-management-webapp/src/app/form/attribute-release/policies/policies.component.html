@@ -11,121 +11,162 @@
   </mat-form-field>
 </div>
 
-<div *ngIf="type == TYPE.SCRIPT">
-  <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.attrRelease.policies.scriptFile"
-           [placeholder]="messages.services_form_label_attrRelease_policies_scriptFile"
-           [(ngModel)]="data.service.attributeReleasePolicy.scriptFile">
-  </mat-form-field>
-  <mat-icon style="font-size: medium"
-           i18n-matTooltip="services.form.tooltip.attrRelease.policies.scriptFile"
-           [matTooltip]="messages.services_form_tooltip_attrRelease_policies_scriptFile">help
-  </mat-icon>
-</div>
+<ng-container *ngIf="type == TYPE.SCRIPT">
+  <app-input field="scriptFile" [change]="data.service.attributeReleasePolicy"
+             [orig]="data.diff.attributeReleasePolicy">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.policies.scriptFile">
+        {{ messages.services_form_label_attrRelease_policies_scriptFile }}
+      </mat-placeholder>
+      <input matInput [(ngModel)]="data.service.attributeReleasePolicy.scriptFile">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp
+             i18n-matTooltip="services.form.tooltip.attrRelease.policies.scriptFile"
+             [matTooltip]="messages.services_form_tooltip_attrRelease_policies_scriptFile">
+    </mat-icon>
+  </app-input>
+</ng-container>
 
-<div *ngIf="type == TYPE.GROOVY">
-  <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.attrRelease.policies.scriptFile"
-           [placeholder]="messages.services_form_label_attrRelease_policies_scriptFile"
-           [(ngModel)]="data.service.attributeReleasePolicy.groovyScript">
-  </mat-form-field>
-  <mat-icon style="font-size: medium"
-           i18n-matTooltip="services.form.tooltip.attrRelease.policies.scriptFile"
-           [matTooltip]="messages.services_form_tooltip_attrRelease_policies_scriptFile">help
-  </mat-icon>
-</div>
+<ng-container *ngIf="type == TYPE.GROOVY">
+  <app-input field="groovyScript" [change]="data.service.attributeReleasePolicy"
+             [orig]="data.diff.attributeReleasePolicy">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.policies.scriptFile">
+        {{ messages.services_form_label_attrRelease_policies_scriptFile }}
+      </mat-placeholder>
+      <input matInput [(ngModel)]="data.service.attributeReleasePolicy.groovyScript">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp
+             i18n-matTooltip="services.form.tooltip.attrRelease.policies.scriptFile"
+             [matTooltip]="messages.services_form_tooltip_attrRelease_policies_scriptFile">
+    </mat-icon>
+  </app-input>
+</ng-container>
 
-<div *ngIf="(type == TYPE.RETURN_ALLOWED || type == TYPE.METADATA) && !isEmpty( formData.availableAttributes )">
-  <mat-form-field class="textInput">
-    <mat-select multiple
-                i18n-placeholder="services.form.label.attrRelease.policies.returnAllowed"
-                [placeholder]="messages.services_form_label_attrRelease_policies_returnAllowed"
-                [(ngModel)]="data.service.attributeReleasePolicy.allowedAttributes">
-      <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
-        {{ opt }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-icon style="font-size: medium"
-           i18n-matTooltip="services.form.tooltip.attrRelease.policies.returnAllowed"
-           [matTooltip]="messages.services_form_tooltip_attrRelease_policies_returnAllowed">help
-  </mat-icon>
-</div>
+<ng-container *ngIf="(type == TYPE.RETURN_ALLOWED || type == TYPE.METADATA) && !isEmpty( formData.availableAttributes )">
+  <app-input field="allowedAttributes" [change]="data.service.attributeReleasePolicy"
+             [orig]="data.diff.attributeReleasePolicy">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.policies.returnAllowed">
+        {{ messages.services_form_label_attrRelease_policies_returnAllowed }}
+      </mat-placeholder>
+      <mat-select multiple [(ngModel)]="data.service.attributeReleasePolicy.allowedAttributes">
+        <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
+          {{ opt }}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp
+             i18n-matTooltip="services.form.tooltip.attrRelease.policies.returnAllowed"
+             [matTooltip]="messages.services_form_tooltip_attrRelease_policies_returnAllowed">
+    </mat-icon>
+  </app-input>
+</ng-container>
 
-<div *ngIf="type == TYPE.RETURN_MAPPED">
+<ng-container *ngIf="type == TYPE.RETURN_MAPPED">
   <app-attributemapping [attributes]="data.service.attributeReleasePolicy.allowedAttributes"
                         [attributeNames]="data.formData.availableAttributes">
   </app-attributemapping>
-</div>
+</ng-container>
 
-<div *ngIf="type == TYPE.METADATA" style="padding-top:25px;">
-  <div>
+<ng-container *ngIf="type == TYPE.METADATA" style="padding-top:25px;">
+  <app-input field="entityAttribute" [change]="data.service.attributeReleasePolicy"
+             [orig]="data.diff.attributeReleasePolicy">
     <mat-form-field class="textInput">
-      <input matInput
-             i18n-placeholder="services.form.label.attrRelease.entityAttribute"
-             [placeholder]="messages.services_form_label_attrRelease_entityAttribute"
-             [(ngModel)]="data.service.attributeReleasePolicy.entityAttribute">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.entityAttribute">
+        {{ messages.services_form_label_attrRelease_entityAttribute }}
+      </mat-placeholder>
+      <input matInput [(ngModel)]="data.service.attributeReleasePolicy.entityAttribute">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
     </mat-form-field>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.entityAttribute"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_policies_entityAttribute">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_policies_entityAttribute">
     </mat-icon>
-  </div>
+  </app-input>
 
-  <div>
+  <app-input field="entityAttributeFormat" [change]="data.service.attributeReleasePolicy"
+             [orig]="data.diff.attributeReleasePolicy">
     <mat-form-field class="textInput">
-      <input matInput
-             i18n-placeholder="services.form.label.attrRelease.entityAttributeFormat"
-             [placeholder]="messages.services_form_label_attrRelease_entityAttributeFormat"
-             [(ngModel)]="data.service.attributeReleasePolicy.entityAttributeFormat">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.entityAttribute">
+        {{ messages.services_form_label_attrRelease_entityAttribute }}
+      </mat-placeholder>
+      <input matInput [(ngModel)]="data.service.attributeReleasePolicy.entityAttributeFormat">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
     </mat-form-field>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.entityAttributeFormat"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_entityAttributeFormat">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_entityAttributeFormat">
     </mat-icon>
-  </div>
+  </app-input>
 
-  <div>
+  <app-input field="entityAttributeValues" [change]="data.service.attributeReleasePolicy"
+             [orig]="data.diff.attributeReleasePolicy">
     <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.entityAttributeValues">
+        {{ messages.services_form_label_attrRelease_entityAttributeValues }}
+      </mat-placeholder>
       <input matInput
-             i18n-placeholder="services.form.label.attrRelease.entityAttributeValues"
-             [placeholder]="messages.services_form_label_attrRelease_entityAttributeValues"
              [ngModel]="data.service.attributeReleasePolicy.entityAttributeValues"
              (ngModelChange)="data.service.attributeReleasePolicy.entityAttributeValues = $event.split(',')">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
     </mat-form-field>
-    <mat-icon style="font-size: medium"
+    <mat-icon appHelp
              i18n-matTooltip="services.form.tooltip.attrRelease.entityAttribute"
-             [matTooltip]="messages.services_form_tooltip_attrRelease_entityAttributeValues">help
+             [matTooltip]="messages.services_form_tooltip_attrRelease_entityAttributeValues">
     </mat-icon>
-  </div>
+  </app-input>
 
-</div>
+</ng-container>
 
-<div *ngIf="type == TYPE.RESTFUL">
-  <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.attrRelease.policies.restful"
-           [placeholder]="messages.services_form_label_attrRelease_policies_restful"
-           [(ngModel)]="data.service.attributeReleasePolicy.endpoint">
-  </mat-form-field>
-  <mat-icon style="font-size: medium"
-            i18n-matTooltip="services.form.tooltip.attrRelease.policies.restful"
-            [matTooltip]="messages.services_form_tooltip_attrRelease_policies_restful">help
-  </mat-icon>
-</div>
+<ng-container *ngIf="type == TYPE.RESTFUL">
+  <app-input field="endpoint" [change]="data.service.attributeReleasePolicy" [orig]="data.diff.attributeReleasePolicy">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.policies.restful">
+        {{ messages.services_form_label_attrRelease_policies_restful }}
+      </mat-placeholder>
+      <input matInput [(ngModel)]="data.service.attributeReleasePolicy.endpoint">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp
+              i18n-matTooltip="services.form.tooltip.attrRelease.policies.restful"
+              [matTooltip]="messages.services_form_tooltip_attrRelease_policies_restful">
+    </mat-icon>
+  </app-input>
+</ng-container>
 
-<div *ngIf="type == TYPE.GROOVY_SAML">
-  <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.attrRelease.policies.groovySaml"
-           [placeholder]="messages.services_form_label_attrRelease_policies_groovySaml"
-           [(ngModel)]="data.service.attributeReleasePolicy.groovyScript">
-  </mat-form-field>
-  <mat-icon style="font-size: medium"
-            i18n-matTooltip="services.form.tooltip.attrRelease.policies.groovySaml"
-            [matTooltip]="messages.services_form_tooltip_attrRelease_policies_groovySaml">help
-  </mat-icon>
-</div>
+<ng-container *ngIf="type == TYPE.GROOVY_SAML">
+  <app-input field="groovyScript" [change]="data.service.attributeReleasePolicy" [orig]="data.diff.attributeReleasePolicy">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.attrRelease.policies.groovySaml">
+        {{ messages.services_form_label_attrRelease_policies_groovySaml }}
+      </mat-placeholder>
+      <input matInput [(ngModel)]="data.service.attributeReleasePolicy.groovyScript">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp
+              i18n-matTooltip="services.form.tooltip.attrRelease.policies.groovySaml"
+              [matTooltip]="messages.services_form_tooltip_attrRelease_policies_groovySaml">
+    </mat-icon>
+  </app-input>
+</ng-container>
 

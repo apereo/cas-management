@@ -1,5 +1,5 @@
 <mat-accordion #accordian style="width:600px;" multi="true">
-  <mat-expansion-panel *ngFor="let filter of filters();let last=last" style="width:630px;left:-35px;position:relative;"
+  <mat-expansion-panel *ngFor="let filter of filters();let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
        [expanded]="last">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -19,33 +19,43 @@
         <span *ngIf="isScripted(filter)">{{ filter.script }}</span>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div *ngIf="isRegEx(filter)">
-      <mat-form-field class="textInput">
-        <input matInput
-               i18n-placeholder="services.form.label.attrRelease.attrFilter"
-               [placeholder]="messages.services_form_label_attrRelease_attrFilter"
-               [(ngModel)]="filter.pattern">
-      </mat-form-field>
-      <mat-icon style="font-size: medium"
-               i18n-matTooltip="services.form.tooltip.attrRelease.attrFilter"
-               [matTooltip]="messages.services_form_tooltip_attrRelease_attrFilter">help
-      </mat-icon>
-    </div>
-    <div *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
+    <ng-container *ngIf="isRegEx(filter)">
+      <app-input field="pattern" [change]="filter" [orig]="filters()[i]">
+        <mat-form-field class="textInput">
+          <mat-placeholder i18n-placeholder="services.form.label.attrRelease.attrFilter">
+            {{ messages.services_form_label_attrRelease_attrFilter }}
+          </mat-placeholder>
+          <input matInput [(ngModel)]="filter.pattern">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon appHelp
+                 i18n-matTooltip="services.form.tooltip.attrRelease.attrFilter"
+                 [matTooltip]="messages.services_form_tooltip_attrRelease_attrFilter">
+        </mat-icon>
+      </app-input>
+    </ng-container>
+    <ng-container *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
       <app-mapped [filter]="filter"></app-mapped>
-    </div>
-    <div *ngIf="isScripted(filter)">
-      <mat-form-field class="textInput">
-        <input matInput
-               i18n-placeholder="services.form.label.attrRelease.attrFilter.scripted"
-               [placeholder]="messages.services_form_label_attrRelease_attrFilter_scripted"
-               [(ngModel)]="filter.script">
-      </mat-form-field>
-      <mat-icon style="font-size: medium"
-                i18n-matTooltip="services.form.tooltip.attrRelease.attrFilter.scripted"
-                [matTooltip]="messages.services_form_tooltip_attrRelease_attrFilter_scripted">help
-      </mat-icon>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="isScripted(filter)">
+      <app-input field="script" [change]="filter" [orig]="filters()[i]">
+        <mat-form-field class="textInput">
+          <mat-placeholder i18n-placeholder="services.form.label.attrRelease.attrFilter.scripted">
+            {{ messages.services_form_label_attrRelease_attrFilter_scripted }}
+          </mat-placeholder>
+          <input matInput [(ngModel)]="filter.script">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon appHelp
+                  i18n-matTooltip="services.form.tooltip.attrRelease.attrFilter.scripted"
+                  [matTooltip]="messages.services_form_tooltip_attrRelease_attrFilter_scripted">
+        </mat-icon>
+      </app-input>
+    </ng-container>
   </mat-expansion-panel>
 </mat-accordion>
 <div style="height:25px;padding-top: 5px;">

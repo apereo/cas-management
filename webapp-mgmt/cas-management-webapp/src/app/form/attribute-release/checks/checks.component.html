@@ -1,5 +1,4 @@
-<app-input field="excludeDefaultAttributes" [change]="policy"
-           [orig]="data.diff.attributeReleasePolicy">
+<app-input field="excludeDefaultAttributes" [change]="policy" [orig]="original">
   <mat-checkbox [(ngModel)]="policy.excludeDefaultAttributes">
     <ng-container i18n="services.form.label.attrRelease.excludeDefault">
       {{ messages.services_form_label_attrRelease_excludeDefault }}
@@ -14,9 +13,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="authorizedToReleaseCredentialPassword"
-           [change]="policy"
-           [orig]="data.diff.attributeReleasePolicy">
+<app-input field="authorizedToReleaseCredentialPassword" [change]="policy" [orig]="original">
   <mat-checkbox [(ngModel)]="policy.authorizedToReleaseCredentialPassword">
     <ng-container i18n="services.form.label.attrRelease.releaseCredPassword">
       {{ messages.services_form_label_attrRelease_releaseCredPassword }}
@@ -31,9 +28,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="authorizedToReleaseProxyGrantingTicket"
-           [change]="policy"
-           [orig]="data.diff.attributeReleasePolicy">
+<app-input field="authorizedToReleaseProxyGrantingTicket" [change]="policy" [orig]="original">
   <mat-checkbox [(ngModel)]="policy.authorizedToReleaseProxyGrantingTicket">
     <ng-container i18n="services.form.label.attrRelease.releaseProxyTicket">
       {{ messages.services_form_label_attrRelease_releaseProxyTicket }}
@@ -48,9 +43,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="authorizedToReleaseAuthenticationAttributes"
-           [change]="policy"
-           [orig]="data.diff.attributeReleasePolicy">
+<app-input field="authorizedToReleaseAuthenticationAttributes" [change]="policy" [orig]="original">
   <mat-checkbox [(ngModel)]="policy.authorizedToReleaseAuthenticationAttributes">
     <ng-container i18n="services.form.label.attrRelease.releaseAuthenticationAttributes">
       {{ messages.services_form_label_attrRelease_releaseAuthenticationAttributes }}

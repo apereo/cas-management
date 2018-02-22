@@ -13,21 +13,18 @@ enum Type {
 }
 
 @Component({
-  selector: 'app-multiauthpane',
-  templateUrl: './multiauthpane.component.html'
+  selector: 'app-mfa',
+  templateUrl: './mfa.component.html'
 })
-export class MultiauthpaneComponent implements OnInit {
+export class MfaComponent implements OnInit {
   formData: FormData;
   type: Type;
   TYPE = Type;
   types = [Type.DEFAULT, Type.GROOVY];
   display = ['Default', 'Groovy Script'];
 
-  policy: any;
-
   constructor(public messages: Messages,
               public data: Data) {
-    this.policy = this.data.service.multifactorPolicy;
     this.formData = data.formData;
   }
 
@@ -48,7 +45,6 @@ export class MultiauthpaneComponent implements OnInit {
         this.data.service.multifactorPolicy = new GroovyRegisteredServiceMultifactorPolicy();
         break;
     }
-    this.policy = this.data.service.multifactorPolicy;
   }
 
 }

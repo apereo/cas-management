@@ -12,14 +12,14 @@ import {FormData} from '../../../../domain/form-data';
 export class AnonymousComponent implements OnInit {
 
   provider: AnonymousRegisteredServiceUsernameProvider;
-  orig: AnonymousRegisteredServiceUsernameProvider;
+  original: AnonymousRegisteredServiceUsernameProvider;
   formData: FormData;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.provider = data.service.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
     this.formData = data.formData;
-    this.orig = data.diff && data.diff.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
+    this.original = data.original && data.original.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
   }
 
   ngOnInit() {

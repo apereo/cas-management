@@ -13,10 +13,12 @@ import {
 export class GroovyComponent implements OnInit {
 
   policy: GroovyScriptAttributeReleasePolicy;
+  original: GroovyScriptAttributeReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.policy = data.service.attributeReleasePolicy as GroovyScriptAttributeReleasePolicy;
+    this.original = data.original && data.original.attributeReleasePolicy as GroovyScriptAttributeReleasePolicy;
   }
 
   ngOnInit() {

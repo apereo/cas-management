@@ -1,7 +1,7 @@
 <div>
   <mat-tab-group [(selectedIndex)]="selectedTab">
     <mat-tab *ngFor="let contact of data.service.contacts;let i = index;" [label]="getTabHeader(contact)">
-      <app-input field="name" [change]="contact" [orig]="data.diff && data.diff.contacts && data.diff.contacts[i]">
+      <app-input field="name" [change]="contact" [orig]="original && original[i]">
         <mat-form-field class="textInput">
           <mat-placeholder i18n>Name</mat-placeholder>
           <input matInput required name="name" [(ngModel)]="contact.name">
@@ -14,7 +14,7 @@
                  matTooltip="First and last name of the contact">
         </mat-icon>
       </app-input>
-      <app-input field="email" [change]="contact" [orig]="data.diff && data.diff.contacts[i]">
+      <app-input field="email" [change]="contact" [orig]="original && original[i]">
         <mat-form-field class="textInput">
           <mat-placeholder i18n>EMail</mat-placeholder>
           <input matInput required [(ngModel)]="contact.email">
@@ -27,7 +27,7 @@
                  matTooltip="EMail of the contact">
         </mat-icon>
       </app-input>
-      <app-input field="phone" [change]="contact" [orig]="data.diff && data.diff.contacts[i]">
+      <app-input field="phone" [change]="contact" [orig]="original && original[i]">
         <mat-form-field class="textInput">
           <mat-placeholder>Phone</mat-placeholder>
           <input matInput [(ngModel)]="contact.phone">
@@ -40,7 +40,7 @@
                  matTooltip="Phone number of the contact">
         </mat-icon>
       </app-input>
-      <app-input field="department" [change]="contact" [orig]="data.diff && data.diff.contacts[i]">
+      <app-input field="department" [change]="contact" [orig]="original && original[i]">
         <mat-form-field class="textInput">
           <mat-placeholder>Department</mat-placeholder>
           <input matInput [(ngModel)]="contact.department">

@@ -11,10 +11,12 @@ import {Data} from '../data';
 export class WsfedclientComponent implements OnInit {
 
   service: WSFederationRegisterdService;
-
+  original: WSFederationRegisterdService;
+  
   constructor(public messages: Messages,
               public data: Data) {
     this.service = data.service as WSFederationRegisterdService;
+    this.original = data.original && data.original as WSFederationRegisterdService;
   }
 
   ngOnInit() {

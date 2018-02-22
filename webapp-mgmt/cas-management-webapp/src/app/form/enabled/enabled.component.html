@@ -1,7 +1,5 @@
-<app-input [change]="data.service.accessStrategy"
-           [orig]="data.diff && data.diff.accessStrategy"
-           field="enabled" style="padding-bottom: 10px;">
-  <mat-checkbox [(ngModel)]="data.service.accessStrategy.enabled">
+<app-input [change]="accessStrategy" [orig]="original" field="enabled" style="padding-bottom: 10px;">
+  <mat-checkbox [(ngModel)]="accessStrategy.enabled">
     <ng-container i18n="services.form.label.sas.casEnabled">
       {{ messages.services_form_label_sas_casEnabled }}
     </ng-container>

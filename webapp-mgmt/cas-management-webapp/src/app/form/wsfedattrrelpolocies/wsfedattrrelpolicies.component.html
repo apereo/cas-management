@@ -21,9 +21,7 @@
         </mat-icon>
       </mat-header-cell>
       <mat-cell *cdkCellDef="let row">
-        <app-input field="row.key"
-                   [change]="policy.allowedAttributes"
-                   [orig]="data.diff.attributeReleasePolicy.allowedAttributes">
+        <app-input field="row.key" [change]="policy.allowedAttributes" [orig]="original.allowedAttributes">
           <mat-form-field>
             <mat-select [(ngModel)]="policy.allowedAttributes[row.key]">
               <mat-option *ngFor="let item of data.formData.wsFederationClaims" [value]="item">{{ item }}</mat-option>

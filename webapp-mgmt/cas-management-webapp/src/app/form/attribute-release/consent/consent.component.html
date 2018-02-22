@@ -1,4 +1,4 @@
-<app-input field="enabled" [change]="policy" [orig]="origPolicy">
+<app-input field="enabled" [change]="policy" [orig]="original">
   <mat-checkbox [(ngModel)]="policy.enabled">
     <ng-container i18n="services.form.label.attrRelease.constent.enabled">
       {{ messages.services_form_label_attrRelease_consent_enabled }}
@@ -11,7 +11,7 @@
 </app-input>
 
 <ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
-  <app-input field="excludeAttributes" [change]="policy" [orig]="origPolicy">
+  <app-input field="excludeAttributes" [change]="policy" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.consent.excludedAttributes">
         {{ messages.services_form_label_attrRelease_consent_excludedAttributes }}
@@ -34,7 +34,7 @@
 </ng-container>
 
 <ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
-  <app-input field="includeOnlyAttributes" [change]="policy" [orig]="origPolicy">
+  <app-input field="includeOnlyAttributes" [change]="policy" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.consent.includeOnlyAttributes">
         {{ messages.services_form_label_attrRelease_consent_includeOnlyAttributes }}

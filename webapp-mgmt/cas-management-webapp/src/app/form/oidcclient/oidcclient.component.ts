@@ -17,7 +17,7 @@ export class OidcclientComponent implements OnInit {
   constructor(public messages: Messages,
               public data: Data) {
     this.service = data.service as OidcRegisteredService;
-    this.original = data.diff && data.diff as OidcRegisteredService;
+    this.original = data.original && data.original as OidcRegisteredService;
   }
 
   ngOnInit() {

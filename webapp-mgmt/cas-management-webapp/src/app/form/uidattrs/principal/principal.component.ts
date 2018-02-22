@@ -12,11 +12,14 @@ import {FormData} from '../../../../domain/form-data';
 export class PrincipalComponent implements OnInit {
 
   provider: PrincipalAttributeRegisteredServiceUsernameProvider;
+  original: PrincipalAttributeRegisteredServiceUsernameProvider;
   formData: FormData;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.provider = data.service.usernameAttributeProvider as PrincipalAttributeRegisteredServiceUsernameProvider;
+    this.original = data.original &&
+                    data.original.usernameAttributeProvider as PrincipalAttributeRegisteredServiceUsernameProvider;
     this.formData = data.formData;
   }
 

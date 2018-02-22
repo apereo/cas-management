@@ -17,9 +17,7 @@
 </div>
 
 <ng-container *ngIf="type == TYPE.CACHING">
-  <app-input field="timeUnit"
-             [change]="repo"
-             [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
+  <app-input field="timeUnit" [change]="repo" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.timeUnit">
         {{ messages.services_form_label_attrRelease_principleAttRepo_cached_timeUnit }}
@@ -40,9 +38,7 @@
     </mat-icon>
   </app-input>
 
-  <app-input field="expiration"
-             [change]="repo"
-             [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
+  <app-input field="expiration" [change]="repo" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.expiration">
         {{ messages.services_form_label_attrRelease_principleAttRepo_cached_expiration }}
@@ -59,9 +55,7 @@
     </mat-icon>
   </app-input>
 
-  <app-input field="mergingStrategy"
-             [change]="repo"
-             [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
+  <app-input field="mergingStrategy" [change]="repo" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.mergeStrategy">
        {{ messages.services_form_label_attrRelease_principleAttRepo_cached_mergeStrategy }}

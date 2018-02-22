@@ -1,4 +1,4 @@
-<app-input field="requiredNameIdFormat" [change]="service" [orig]="data.diff">
+<app-input field="requiredNameIdFormat" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.requiredNameIdFormat">
       {{ messages.services_form_label_saml_requiredNameIdFormat }}
@@ -14,7 +14,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="serviceProviderNameIdQualifier" [change]="service" [orig]="data.diff">
+<app-input field="serviceProviderNameIdQualifier" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.serviceProviderNameQualifier">
       {{ messages.services_form_label_saml_serviceProviderNameQualifier }}
@@ -30,7 +30,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="nameIdQualifier" [change]="service" [orig]="data.diff">
+<app-input field="nameIdQualifier" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.nameQualifier">
       {{ messages.services_form_label_saml_nameQualifier }}

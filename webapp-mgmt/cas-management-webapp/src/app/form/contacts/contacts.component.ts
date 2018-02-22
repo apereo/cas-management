@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Data} from '../data';
 import {Messages} from '../../messages';
-import {DefaultRegisteredServiceContact} from '../../../domain/contact';
+import {DefaultRegisteredServiceContact, RegisteredServiceContact} from '../../../domain/contact';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -16,18 +16,21 @@ export class ContactsComponent implements OnInit {
   @Input()
   form: NgForm;
 
+  contacts: RegisteredServiceContact[];
+  original: RegisteredServiceContact[];
+
   constructor(public messages: Messages,
-              public data: Data) { }
+              public data: Data) {
+    this.contacts = data.service.contacts;
+    this.original = data.original && data.original.contacts;
+  }
 
   ngOnInit() {
-    if (!this.data.service.contacts) {
-      this.data.service.contacts = [];
-    }
   }
 
   addContact() {
-    this.data.service.contacts.push(new DefaultRegisteredServiceContact());
-    this.selectedTab = this.data.service.contacts.length - 1;
+    this.contacts.push(new DefaultRegisteredServiceContact());
+    this.selectedTab = this.contacts.length - 1;
     setTimeout(() => {
         this.form.resetForm();
     }, 100);
@@ -35,12 +38,12 @@ export class ContactsComponent implements OnInit {
 
   deleteContact() {
     if (this.selectedTab > -1) {
-      this.data.service.contacts.splice(this.selectedTab, 1);
+      this.contacts.splice(this.selectedTab, 1);
     }
   }
 
   getTabHeader(contact: DefaultRegisteredServiceContact) {
-    return contact.name ? contact.name : this.data.service.contacts.indexOf(contact) + 1;
+    return contact.name ? contact.name : this.contacts.indexOf(contact) + 1;
   }
 
 }

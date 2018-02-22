@@ -1,5 +1,4 @@
-<app-input field="entityAttribute" [change]="policy"
-           [orig]="data.diff.attributeReleasePolicy">
+<app-input field="entityAttribute" [change]="policy" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.attrRelease.entityAttribute">
       {{ messages.services_form_label_attrRelease_entityAttribute }}
@@ -15,8 +14,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="entityAttributeFormat" [change]="policy"
-           [orig]="data.diff.attributeReleasePolicy">
+<app-input field="entityAttributeFormat" [change]="policy" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.attrRelease.entityAttribute">
       {{ messages.services_form_label_attrRelease_entityAttribute }}
@@ -32,8 +30,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="entityAttributeValues" [change]="policy"
-           [orig]="data.diff.attributeReleasePolicy">
+<app-input field="entityAttributeValues" [change]="policy" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.attrRelease.entityAttributeValues">
       {{ messages.services_form_label_attrRelease_entityAttributeValues }}

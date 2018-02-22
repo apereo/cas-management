@@ -14,11 +14,13 @@ export class AccessStrategyComponent implements OnInit {
   formData: FormData;
 
   accessStrategy: RegisteredServiceAccessStrategy;
+  original: RegisteredServiceAccessStrategy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.accessStrategy = data.service.accessStrategy;
     this.formData = data.formData;
+    this.original = data.original && data.original.accessStrategy;
   }
 
   ngOnInit() {

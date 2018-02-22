@@ -11,10 +11,12 @@ import {ScriptedRegisteredServiceAttributeReleasePolicy} from '../../../../../do
 export class ScriptComponent implements OnInit {
 
   policy: ScriptedRegisteredServiceAttributeReleasePolicy;
+  original: ScriptedRegisteredServiceAttributeReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.policy = data.service.attributeReleasePolicy as ScriptedRegisteredServiceAttributeReleasePolicy;
+    this.original = data.original && data.original.attributeReleasePolicy as ScriptedRegisteredServiceAttributeReleasePolicy;
   }
 
   ngOnInit() {

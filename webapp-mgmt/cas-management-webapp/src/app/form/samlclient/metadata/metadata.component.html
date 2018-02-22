@@ -1,4 +1,4 @@
-<app-input field="metadataLocation" [change]="service" [orig]="data.diff">
+<app-input field="metadataLocation" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.metadata.location">
       {{ messages.services_form_label_saml_metadata_location }}
@@ -14,7 +14,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="metadataMaxValidity" [change]="service" [orig]="data.diff">
+<app-input field="metadataMaxValidity" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.metadata.maximumvalidity">
       {{ messages.services_form_label_saml_metadata_maximumvalidity }}
@@ -30,7 +30,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="metadataSignatureLocation" [change]="service" [orig]="data.diff">
+<app-input field="metadataSignatureLocation" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.metadata.signaturepublickeylocation">
       {{ messages.services_form_label_saml_metadata_signaturepublickeylocation }}
@@ -46,7 +46,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="metadataExpirationDuration" [change]="service" [orig]="data.diff">
+<app-input field="metadataExpirationDuration" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n>
       Metadata Expiration Duration
@@ -61,7 +61,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="metadataCriteriaPattern" [change]="service" [orig]="data.diff">
+<app-input field="metadataCriteriaPattern" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.metadata.pattern">
       {{ messages.services_form_label_saml_metadata_pattern }}
@@ -77,7 +77,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="metadataCriteriaDirection" [change]="service" [orig]="data.diff">
+<app-input field="metadataCriteriaDirection" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.metadata.dir">
       {{ messages.services_form_label_saml_metadata_dir }}
@@ -97,7 +97,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="metadataCriteriaRoles" [change]="service" [orig]="data.diff">
+<app-input field="metadataCriteriaRoles" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.metadata.role">
       {{ messages.services_form_label_saml_metadata_role }}}
@@ -117,7 +117,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="metadataCriteriaRemoveEmptyEntitiesDescriptors" [change]="service" [orig]="data.diff">
+<app-input field="metadataCriteriaRemoveEmptyEntitiesDescriptors" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.metadataCriteriaRemoveEmptyEntitiesDescriptors">
     <ng-container i18n="services.form.saml.removeEmptyEntities">
       {{ messages.services_form_label_saml_removeEmptyEntities }}
@@ -133,7 +133,7 @@
 </app-input>
 
 <app-input style="padding-bottom: 10px;"
-           field="metadataCriteriaRemoveRolelessEntityDescriptors" [change]="service" [orig]="data.diff">
+           field="metadataCriteriaRemoveRolelessEntityDescriptors" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.metadataCriteriaRemoveRolelessEntityDescriptors">
     <ng-container i18n="services.form.label.saml.removeRoleless">
       {{ messages.services_form_label_saml_removeRoleless }}

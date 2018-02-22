@@ -16,7 +16,7 @@ export class OauthclientComponent implements OnInit {
   constructor(public messages: Messages,
               public data: Data) {
     this.service = data.service as OAuthRegisteredService;
-    this.original = data.diff && data.diff as OAuthRegisteredService;
+    this.original = data.original && data.original as OAuthRegisteredService;
   }
 
   ngOnInit() {

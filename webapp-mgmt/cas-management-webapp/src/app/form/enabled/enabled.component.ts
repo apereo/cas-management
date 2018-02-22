@@ -1,6 +1,7 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../messages';
 import {Data} from '../data';
+import {RegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 
 
 @Component({
@@ -9,9 +10,13 @@ import {Data} from '../data';
 })
 export class EnabledComponent implements OnInit {
 
+  accessStrategy: RegisteredServiceAccessStrategy;
+  original: RegisteredServiceAccessStrategy;
 
   constructor(public messages: Messages,
               public data: Data) {
+    this.accessStrategy = data.service.accessStrategy;
+    this.original = data.original && data.original.accessStrategy;
   }
 
   ngOnInit() {

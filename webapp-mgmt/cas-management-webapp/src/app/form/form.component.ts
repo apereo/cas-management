@@ -66,7 +66,7 @@ export class FormComponent implements OnInit {
     this.route.data
       .subscribe((data: { resp: AbstractRegisteredService[]}) => {
         if (data.resp && data.resp[1]) {
-          this.data.diff = data.resp[1];
+          this.data.original = data.resp[1];
         }
         if (data.resp && data.resp[0]) {
           this.loadService(data.resp[0]);

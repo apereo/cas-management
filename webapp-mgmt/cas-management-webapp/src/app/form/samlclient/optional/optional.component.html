@@ -1,4 +1,4 @@
-<app-input field="skipGeneratingAssertionNameId" [change]="service" [orig]="data.diff">
+<app-input field="skipGeneratingAssertionNameId" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.skipGeneratingAssertionNameId">
     <ng-container i18n="services.form.label.saml.skipAssertionNameId">
       {{ messages.services_form_label_saml_skipAssertionNameId }}
@@ -13,7 +13,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="skipGeneratingSubjectConfirmationInResponseTo" [change]="service" [orig]="data.diff">
+<app-input field="skipGeneratingSubjectConfirmationInResponseTo" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationInResponseTo">
     <ng-container i18n="services.form.label.saml.skipInResponseTo">
       {{ messages.services_form_label_saml_skipInResponseTo }}
@@ -28,7 +28,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="skipGeneratingSubjectConfirmationNotOnOrAfter" [change]="service" [orig]="data.diff">
+<app-input field="skipGeneratingSubjectConfirmationNotOnOrAfter" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationNotOnOrAfter">
     <ng-container i18n="services.form.label.saml.skipNotOnOrAfter">
       {{ messages.services_form_label_saml_skipNotOnOrAfter }}
@@ -43,7 +43,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="skipGeneratingSubjectConfirmationRecipient" [change]="service" [orig]="data.diff">
+<app-input field="skipGeneratingSubjectConfirmationRecipient" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationRecipient">
     <ng-container i18n="services.form.label.saml.skipRecipient">
       {{ messages.services_form_label_saml_skipRecipient }}
@@ -58,7 +58,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="skipGeneratingSubjectConfirmationNotBefore" [change]="service" [orig]="data.diff">
+<app-input field="skipGeneratingSubjectConfirmationNotBefore" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationNotBefore">
     <ng-container i18n="services.form.label.saml.skipNotBefore">
       {{ messages.services_form_label_saml_skipNotBefore }}

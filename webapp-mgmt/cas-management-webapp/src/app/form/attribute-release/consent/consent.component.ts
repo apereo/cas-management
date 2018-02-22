@@ -13,12 +13,13 @@ export class ConsentComponent implements OnInit {
   formData: FormData;
 
   policy: RegisteredServiceConsentPolicy;
-  origPolicy: RegisteredServiceConsentPolicy;
+  original: RegisteredServiceConsentPolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.policy = data.service.attributeReleasePolicy && data.service.attributeReleasePolicy.consentPolicy;
-    this.origPolicy = data.diff && data.diff.attributeReleasePolicy && data.diff.attributeReleasePolicy.consentPolicy;
+    this.original = data.original && data.original.attributeReleasePolicy
+      && data.original.attributeReleasePolicy.consentPolicy;
     this.formData = data.formData;
   }
 

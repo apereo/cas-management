@@ -22,6 +22,7 @@ export class ProxyComponent implements OnInit {
   TYPE = Type;
 
   policy: RegexMatchingRegisteredServiceProxyPolicy;
+  original: RegexMatchingRegisteredServiceProxyPolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
@@ -33,6 +34,7 @@ export class ProxyComponent implements OnInit {
     } else if (RegexMatchingRegisteredServiceProxyPolicy.instanceOf(this.data.service.proxyPolicy)) {
       this.type = Type.REGEX;
       this.policy = this.data.service.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
+      this.original = this.data.original && this.data.original.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
     }
   }
 

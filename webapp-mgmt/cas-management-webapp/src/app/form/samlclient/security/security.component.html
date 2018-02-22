@@ -1,4 +1,4 @@
-<app-input field="signAssertions" [change]="service" [orig]="data.diff">
+<app-input field="signAssertions" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.signAssertions">
     <ng-container i18n="services.form.label.saml.signassertions">
       {{ messages.services_form_label_saml_signassertions }}
@@ -13,7 +13,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="signResponses" [change]="service" [orig]="data.diff">
+<app-input field="signResponses" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.signResponses">
     <ng-container i18n="services.form.label.saml.signresponses">
       {{ messages.services_form_label_saml_signresponses }}
@@ -29,7 +29,7 @@
 </app-input>
 
 <app-input style="padding-bottom: 10px;"
-           field="encryptAssertions" [change]="service" [orig]="data.diff">
+           field="encryptAssertions" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.encryptAssertions">
     <ng-container i18n="services.form.label.saml.encryptassertions">
       {{ messages.services_form_label_saml_encryptassertions }}
@@ -44,7 +44,7 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="signingCredentialType" [change]="service" [orig]="data.diff">
+<app-input field="signingCredentialType" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.signingCredentialType">
       {{ messages.services_form_label_saml_signingCredentialType }}
@@ -64,7 +64,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="requiredAuthenticationContextClass" [change]="service" [orig]="data.diff">
+<app-input field="requiredAuthenticationContextClass" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.saml.authenticationcontextclass">
       {{ messages.services_form_label_saml_authenticationcontextclass }}

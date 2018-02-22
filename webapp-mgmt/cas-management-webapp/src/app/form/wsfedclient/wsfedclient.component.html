@@ -1,4 +1,4 @@
-<app-input field="realm" [change]="service" [orig]="data.diff">
+<app-input field="realm" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.wsfed.realm">
       {{ messages.services_form_label_wsfed_realm }}
@@ -14,7 +14,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="appliesTo" [change]="service" [orig]="data.diff">
+<app-input field="appliesTo" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.wsfed.appliesTo">
       {{ messages.services_form_label_wsfed_appliesTo }}

@@ -11,10 +11,12 @@ import {RegisteredServiceAttributeReleasePolicy} from '../../../../domain/attrib
 export class ChecksComponent implements OnInit {
 
   policy: RegisteredServiceAttributeReleasePolicy;
+  original: RegisteredServiceAttributeReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
-    this.policy = data.service.attributeReleasePolicy
+    this.policy = data.service.attributeReleasePolicy;
+    this.original = data.original && data.service.attributeReleasePolicy;
   }
 
   ngOnInit() {

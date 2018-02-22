@@ -19,11 +19,13 @@ export class WsfedattrrelpoliciesComponent implements OnInit {
   dataSource: RowDataSource;
 
   policy: WsFederationClaimsReleasePolicy;
+  original: WsFederationClaimsReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.formData = data.formData;
     this.policy = data.service.attributeReleasePolicy as WsFederationClaimsReleasePolicy;
+    this.original = data.original && data.original.attributeReleasePolicy as WsFederationClaimsReleasePolicy;
   }
 
   ngOnInit() {

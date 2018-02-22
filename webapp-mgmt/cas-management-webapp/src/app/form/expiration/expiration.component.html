@@ -1,9 +1,9 @@
-<app-input field="expirationData" [change]="data.service.expirationPolicy" [orig]="data.diff.expirationPolicy">
+<app-input field="expirationData" [change]="policy" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.expirationPolicy.expirationDate">
       {{ messages.services_form_label_expirationPolicy_expirationDate }}
     </mat-placeholder>
-    <input matInput [(ngModel)]="data.service.expirationPolicy.expirationDate">
+    <input matInput [(ngModel)]="policy.expirationDate">
     <mat-hint align="end">
       <app-hint></app-hint>
     </mat-hint>
@@ -14,8 +14,8 @@
   </mat-icon>
 </app-input>
 
-<app-input field="deleteWhenExpired" [change]="data.service.expirationPolicy" [orig]="data.diff.expirationPolicy">
-  <mat-checkbox [(ngModel)]="data.service.expirationPolicy.deleteWhenExpired">
+<app-input field="deleteWhenExpired" [change]="policy" [orig]="original">
+  <mat-checkbox [(ngModel)]="policy.deleteWhenExpired">
     <ng-container i18n="services.form.label.expirationPolicy.deleteWhenExpired">
       {{ messages.services_form_label_expirationPolicy_deleteWhenExpired }}
     </ng-container>
@@ -29,8 +29,8 @@
   </mat-checkbox>
 </app-input>
 
-<app-input field="notifyWhenDeleted" [change]="data.service.expirationPolicy"  [orig]="data.diff.expirationPolicy">
-  <mat-checkbox [(ngModel)]="data.service.expirationPolicy.notifyWhenDeleted">
+<app-input field="notifyWhenDeleted" [change]="policy"  [orig]="original">
+  <mat-checkbox [(ngModel)]="policy.notifyWhenDeleted">
     <ng-container i18n="services.form.label.expirationPolicy.notifyWhenDeleted">
       {{ messages.services_form_label_expirationPolicy_notifyWhenDeleted }}
     </ng-container>

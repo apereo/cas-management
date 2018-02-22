@@ -11,10 +11,12 @@ import {GroovySamlRegisteredServiceAttributeReleasePolicy} from '../../../../../
 export class GroovySamlComponent implements OnInit {
 
   policy: GroovySamlRegisteredServiceAttributeReleasePolicy;
+  original: GroovySamlRegisteredServiceAttributeReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.policy = data.service.attributeReleasePolicy as GroovySamlRegisteredServiceAttributeReleasePolicy;
+    this.original = data.original && data.original.attributeReleasePolicy as GroovySamlRegisteredServiceAttributeReleasePolicy;
   }
 
   ngOnInit() {

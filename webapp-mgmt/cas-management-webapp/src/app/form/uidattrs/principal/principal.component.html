@@ -1,5 +1,4 @@
-<app-input field="usernameAttribute" [change]="provider"
-           [orig]="data.diff.usernameAttributeProvider">
+<app-input field="usernameAttribute" [change]="provider" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.uap.usernameAttribute">
       {{ messages.services_form_label_uap_usernameAttribute }}
@@ -16,8 +15,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="encryptUserName" [change]="provider"
-           [orig]="data.diff.usernameAttributeProvider">
+<app-input field="encryptUserName" [change]="provider" [orig]="original">
   <mat-checkbox [(ngModel)]="provider.encryptUserName">
     <ng-container i18n>
       Encrypt Username
@@ -32,8 +30,7 @@
   </mat-hint>
 </app-input>
 
-<app-input field="canonicalizationMode" [change]="provider"
-           [orig]="data.diff.usernameAttributeProvider">
+<app-input field="canonicalizationMode" [change]="provider" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.uap.canonicalizationMode">
       {{ messages.services_form_label_uap_canonicalizationMode }}

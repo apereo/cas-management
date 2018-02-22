@@ -18,9 +18,12 @@ export class SamlservicespaneComponent implements OnInit {
   type: String;
 
   service: SamlRegisteredService;
+  original: SamlRegisteredService;
+  
   constructor(public messages: Messages,
               public data: Data) {
     this.service = data.service as SamlRegisteredService;
+    this.original = data.original && data.original as SamlRegisteredService;
   }
 
   ngOnInit() {

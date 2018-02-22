@@ -23,7 +23,6 @@ import {LinkrefsComponent} from './linkrefs/linkrefs.component';
 import {LogoComponent} from './logo/logo.component';
 import {LogoutComponent} from './logout/logout.component';
 import {LogouttypeevalComponent} from './logouttypeeval/logouttypeeval.component';
-import {MultiauthpaneComponent} from './multiauthpane/multiauthpane.component';
 import {OauthclientComponent} from './oauthclient/oauthclient.component';
 import {PropertiespaneComponent} from './propertiespane/propertiespane.component';
 import {ProxyComponent} from './proxy/proxy.component';
@@ -61,6 +60,7 @@ import {AttributemappingModule} from './attributemapping/attributemapping.module
 import {WsfedattrrelpoliciesModule} from './wsfedattrrelpolocies/wsfedattrrelpolicies.module';
 import {FormSharedModule} from './form-shared.module';
 import {UidattrsModule} from './uidattrs/uidattrs.module';
+import {MfaModule} from './mfa/mfa.module';
 
 
 @NgModule({
@@ -74,7 +74,8 @@ import {UidattrsModule} from './uidattrs/uidattrs.module';
     AttributeReleaseModule,
     AttributemappingModule,
     WsfedattrrelpoliciesModule,
-    UidattrsModule
+    UidattrsModule,
+    MfaModule
   ],
   declarations: [
     FormComponent,
@@ -99,7 +100,6 @@ import {UidattrsModule} from './uidattrs/uidattrs.module';
     LogoComponent,
     LogoutComponent,
     LogouttypeevalComponent,
-    MultiauthpaneComponent,
     OauthclientComponent,
     PropertiespaneComponent,
     ProxyComponent,

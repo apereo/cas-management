@@ -2,27 +2,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import { MultiauthpaneComponent } from './multiauthpane.component';
+import { MfaComponent } from './mfa.component';
 import {Messages} from '../../messages';
-import {Data} from '../data';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
-describe('MultiauthpaneComponent', () => {
-  let component: MultiauthpaneComponent;
-  let fixture: ComponentFixture<MultiauthpaneComponent>;
+describe('MfaComponent', () => {
+  let component: MfaComponent;
+  let fixture: ComponentFixture<MfaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ MultiauthpaneComponent ],
+      declarations: [ MfaComponent ],
       providers: [ Messages ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MultiauthpaneComponent);
+    fixture = TestBed.createComponent(MfaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

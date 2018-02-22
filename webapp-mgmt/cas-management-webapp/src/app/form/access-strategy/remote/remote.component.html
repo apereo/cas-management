@@ -1,4 +1,4 @@
-<app-input field="endpointUrl" [change]="accessStrategy" [orig]="data.diff.accessStrategy">
+<app-input field="endpointUrl" [change]="accessStrategy" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.sas.remoteUrl">
       {{ messages.services_form_label_sas_remoteUrl }}
@@ -14,7 +14,7 @@
   </mat-icon>
 </app-input>
 
-<app-input field="acceptableResponseCodes" [change]="accessStrategy" [orig]="data.diff.accessStrategy">
+<app-input field="acceptableResponseCodes" [change]="accessStrategy" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n-placeholder="services.form.label.sas.authorizedCodes">
       {{ messages.services_form_label_sas_authorizedCodes }}

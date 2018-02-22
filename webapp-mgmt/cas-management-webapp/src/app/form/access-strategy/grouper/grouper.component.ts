@@ -11,10 +11,12 @@ import {Data} from '../../data';
 export class GrouperComponent implements OnInit {
 
   accessStrategy: GrouperRegisteredServiceAccessStrategy;
+  original: GrouperRegisteredServiceAccessStrategy;
+  
   constructor(public messages: Messages,
               public data: Data) {
     this.accessStrategy = data.service.accessStrategy as GrouperRegisteredServiceAccessStrategy;
-
+    this.original = data.original && data.original.accessStrategy as GrouperRegisteredServiceAccessStrategy;
   }
 
   ngOnInit() {

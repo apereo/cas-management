@@ -23,11 +23,13 @@ export class PrincipalRepoComponent implements OnInit {
   TYPE = Type;
 
   repo: any;
-
+  original: any;
+  
   constructor(public messages: Messages,
               public data: Data) {
     this.formData = data.formData;
-    this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
+    this.repo = data.service.attributeReleasePolicy.principalAttributesRepository;
+    this.original = data.original && data.original.attributeReleasePolicy && data.original.attributeReleasePolicy.principalAttributesRepository;
   }
 
   ngOnInit() {

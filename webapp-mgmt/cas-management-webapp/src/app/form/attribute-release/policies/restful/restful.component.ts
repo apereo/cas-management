@@ -11,10 +11,12 @@ import {ReturnRestfulAttributeReleasePolicy} from '../../../../../domain/attribu
 export class RestfulComponent implements OnInit {
 
   policy: ReturnRestfulAttributeReleasePolicy;
+  original: ReturnRestfulAttributeReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.policy = data.service.attributeReleasePolicy as ReturnRestfulAttributeReleasePolicy;
+    this.original = data.original && data.original.attributeReleasePolicy as ReturnRestfulAttributeReleasePolicy;
   }
 
   ngOnInit() {

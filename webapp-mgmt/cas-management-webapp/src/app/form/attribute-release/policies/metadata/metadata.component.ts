@@ -11,10 +11,12 @@ import {MetadataEntityAttributesAttributeReleasePolicy} from '../../../../../dom
 export class MetadataComponent implements OnInit {
 
   policy: MetadataEntityAttributesAttributeReleasePolicy;
+  original: MetadataEntityAttributesAttributeReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.policy = data.service.attributeReleasePolicy as MetadataEntityAttributesAttributeReleasePolicy;
+    this.original = data.original && data.original.attributeReleasePolicy as MetadataEntityAttributesAttributeReleasePolicy;
   }
 
   ngOnInit() {

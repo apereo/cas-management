@@ -11,10 +11,12 @@ import {Data} from '../../data';
 export class RemoteComponent implements OnInit {
 
   accessStrategy: RemoteEndpointServiceAccessStrategy;
+  original: RemoteEndpointServiceAccessStrategy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.accessStrategy = data.service.accessStrategy as RemoteEndpointServiceAccessStrategy;
+    this.original = data.original && data.original.accessStrategy as RemoteEndpointServiceAccessStrategy;
   }
 
   ngOnInit() {

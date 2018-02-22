@@ -16,7 +16,7 @@
 </mat-radio-group>
 
 <ng-container *ngIf="type == TYPE.REGEX">
-  <app-input field="pattern" [change]="policy" [orig]="data.diff.proxyPolicy">
+  <app-input field="pattern" [change]="policy" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.proxyPolicy.regex">
         {{ messages.services_form_label_proxyPolicy_regex }}

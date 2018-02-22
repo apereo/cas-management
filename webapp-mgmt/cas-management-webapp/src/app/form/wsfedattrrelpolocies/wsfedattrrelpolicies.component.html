@@ -16,22 +16,22 @@
           {{ messages.services_form_label_attrRelease_policies_wsFedClaim }}
         </ng-container>
         <mat-icon style="font-size: medium;"
-                 i18n-matTooltip="services.form.tooltip.attrRelease.policies.returnWsMapped"
-                 [matTooltip]="messages.services_form_tooltip_attrRelease_policies_returnWsMapped">help
+                  i18n-matTooltip="services.form.tooltip.attrRelease.policies.returnWsMapped"
+                  [matTooltip]="messages.services_form_tooltip_attrRelease_policies_returnWsMapped">help
         </mat-icon>
       </mat-header-cell>
       <mat-cell *cdkCellDef="let row">
         <app-input field="row.key"
-                   [change]="data.service.attributeReleasePolicy.allowedAttributes"
+                   [change]="policy.allowedAttributes"
                    [orig]="data.diff.attributeReleasePolicy.allowedAttributes">
-        <mat-form-field>
-          <mat-select [(ngModel)]="data.service.attributeReleasePolicy.allowedAttributes[row.key]">
-            <mat-option *ngFor="let item of data.formData.wsFederationClaims" [value]="item">{{ item }}</mat-option>
-          </mat-select>
-          <mat-hint align="end">
-            <app-hint></app-hint>
-          </mat-hint>
-        </mat-form-field>
+          <mat-form-field>
+            <mat-select [(ngModel)]="policy.allowedAttributes[row.key]">
+              <mat-option *ngFor="let item of data.formData.wsFederationClaims" [value]="item">{{ item }}</mat-option>
+            </mat-select>
+            <mat-hint align="end">
+              <app-hint></app-hint>
+            </mat-hint>
+          </mat-form-field>
         </app-input>
       </mat-cell>
     </ng-container>

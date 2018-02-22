@@ -23,8 +23,11 @@ export class MultiauthpaneComponent implements OnInit {
   types = [Type.DEFAULT, Type.GROOVY];
   display = ['Default', 'Groovy Script'];
 
+  policy: any;
+
   constructor(public messages: Messages,
               public data: Data) {
+    this.policy = this.data.service.multifactorPolicy;
     this.formData = data.formData;
   }
 
@@ -45,6 +48,7 @@ export class MultiauthpaneComponent implements OnInit {
         this.data.service.multifactorPolicy = new GroovyRegisteredServiceMultifactorPolicy();
         break;
     }
+    this.policy = this.data.service.multifactorPolicy;
   }
 
 }

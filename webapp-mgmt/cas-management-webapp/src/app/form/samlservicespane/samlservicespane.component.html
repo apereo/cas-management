@@ -15,10 +15,10 @@
     <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'">Value</mat-header-cell>
     <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
       <app-input field="row.key"
-                 [change]="data.service.attributeNameFormats"
+                 [change]="service.attributeNameFormats"
                  [orig]="data.diff.attributeNameFormats">
         <mat-form-field>
-          <mat-select [(ngModel)]="data.service.attributeNameFormats[row.key]">
+          <mat-select [(ngModel)]="service.attributeNameFormats[row.key]">
             <mat-option *ngFor="let item of data.formData.attributeNameFormats" [value]="item">
               {{item}}
             </mat-option>

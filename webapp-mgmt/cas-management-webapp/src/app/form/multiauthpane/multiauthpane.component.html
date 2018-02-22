@@ -13,14 +13,14 @@
 
 <ng-container *ngIf="type === TYPE.DEFAULT">
   <app-input field="multifactorAuthenticationProviders"
-             [change]="data.service.multifactorPolicy"
+             [change]="policy"
              [orig]="data.diff.multifactorPolicy">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.multiauth.providers">
        {{ messages.services_form_label_multiauth_providers }}
       </mat-placeholder>
       <mat-select multiple
-             [(ngModel)]="data.service.multifactorPolicy.multifactorAuthenticationProviders">
+             [(ngModel)]="policy.multifactorAuthenticationProviders">
         <mat-option *ngFor="let opt of formData.mfaProviders" [value]="opt.value">
           {{ opt.display }}
         </mat-option>
@@ -35,12 +35,12 @@
     </mat-icon>
   </app-input>
 
-  <app-input field="failureMode" [change]="data.service.multifactorPolicy" [orig]="data.diff.multifactorPolicy">
+  <app-input field="failureMode" [change]="policy" [orig]="data.diff.multifactorPolicy">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.multiauth.failuremode">
         {{ messages.services_form_label_multiauth_failuremode }}
       </mat-placeholder>
-      <mat-select [(ngModel)]="data.service.multifactorPolicy.failureMode">
+      <mat-select [(ngModel)]="policy.failureMode">
         <mat-option *ngFor="let opt of formData.mfaFailureModes" [value]="opt">
           {{ opt }}
         </mat-option>
@@ -56,14 +56,14 @@
   </app-input>
 
   <app-input field="principalAttributeNameTrigger"
-             [change="data.service.multifactorPolicy"
+             [change]="policy"
              [orig]="data.diff.multifactorPolicy">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.multiauth.principalattribute.nametrigger">
         {{ messages.services_form_label_multiauth_principalattribute_nametrigger }}
       </mat-placeholder>
       <input matInput [matAutocomplete]="auto"
-             [(ngModel)]="data.service.multifactorPolicy.principalAttributeNameTrigger">
+             [(ngModel)]="policy.principalAttributeNameTrigger">
       <mat-hint align="end">
         <app-hint></app-hint>
       </mat-hint>
@@ -78,13 +78,13 @@
   </app-input>
 
   <app-input field="principalAttributeValueToMatch"
-             [change]="data.service.multifactorPolicy"
+             [change]="policy"
              [orig]="data.diff.multifactorPolicy">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.multiauth.principalattribute.valuetomatch">
         {{ messages.services_form_label_multiauth_principalattribute_valuetomatch }}
       </mat-placeholder>
-      <input matInput [(ngModel)]="data.service.multifactorPolicy.principalAttributeValueToMatch">
+      <input matInput [(ngModel)]="policy.principalAttributeValueToMatch">
       <mat-hint align="end">
         <app-hint></app-hint>
       </mat-hint>
@@ -95,8 +95,8 @@
     </mat-icon>
   </app-input>
 
-  <app-input field="bypassEnabled" [change]="data.service.multifactorPolicy" [orig]="data.diff.multifactorPolicy">
-    <mat-checkbox [(ngModel)]="data.service.multifactorPolicy.bypassEnabled">
+  <app-input field="bypassEnabled" [change]="policy" [orig]="data.diff.multifactorPolicy">
+    <mat-checkbox [(ngModel)]="policy.bypassEnabled">
       <ng-container i18n="services.form.label.multiauth.bypassenabled">
         {{ messages.services_form_label_multiauth_bypassenabled }}
       </ng-container>
@@ -112,12 +112,12 @@
 </ng-container>
 
 <ng-container *ngIf="type === TYPE.GROOVY">
-  <app-input field="groovyScript" [change]="data.service.multifactorPolicy" [orig]="data.diff.multifactorPolicy">
+  <app-input field="groovyScript" [change]="policy" [orig]="data.diff.multifactorPolicy">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.multiauth.groovy.scriptFile">
         {{ messages.services_form_label_multiauth_groovy_scriptFile }}
       </mat-placeholder>
-      <input matInput [(ngModel)]="data.service.multifactorPolicy.groovyScript">
+      <input matInput [(ngModel)]="policy.groovyScript">
     </mat-form-field>
     <mat-hint align="end">
       <app-hint></app-hint>

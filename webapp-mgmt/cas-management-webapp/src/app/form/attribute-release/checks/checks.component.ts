@@ -1,6 +1,7 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../../messages';
 import {Data} from '../../data';
+import {RegisteredServiceAttributeReleasePolicy} from '../../../../domain/attribute-release';
 
 @Component({
   selector: 'app-attribute-release-checks',
@@ -9,8 +10,11 @@ import {Data} from '../../data';
 })
 export class ChecksComponent implements OnInit {
 
+  policy: RegisteredServiceAttributeReleasePolicy;
+
   constructor(public messages: Messages,
               public data: Data) {
+    this.policy = data.service.attributeReleasePolicy
   }
 
   ngOnInit() {

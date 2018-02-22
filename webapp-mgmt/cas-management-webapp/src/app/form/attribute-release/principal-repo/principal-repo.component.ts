@@ -22,9 +22,12 @@ export class PrincipalRepoComponent implements OnInit {
   type: Type;
   TYPE = Type;
 
+  repo: any;
+
   constructor(public messages: Messages,
               public data: Data) {
     this.formData = data.formData;
+    this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
   }
 
   ngOnInit() {
@@ -39,9 +42,11 @@ export class PrincipalRepoComponent implements OnInit {
     switch (+this.type) {
       case Type.DEFAULT :
         this.data.service.attributeReleasePolicy.principalAttributesRepository = new DefaultPrincipalAttributesRepository();
+        this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
         break;
       case Type.CACHING :
         this.data.service.attributeReleasePolicy.principalAttributesRepository = new CachingPrincipalAttributesRepository();
+        this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
         break;
     }
   }

@@ -4,7 +4,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 
 import {FormRoutingModule} from './form-routing.module';
 import {FormComponent} from './form.component';
@@ -35,7 +34,6 @@ import {ServiceidComponent} from './serviceid/serviceid.component';
 import {ServicenameComponent} from './servicename/servicename.component';
 import {ServicetypeComponent} from './servicetype/servicetype.component';
 import {ThemeidComponent} from './themeid/themeid.component';
-import {UidattrsComponent} from './uidattrs/uidattrs.component';
 import {Data} from './data';
 import {SharedModule} from '../shared/shared.module';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
@@ -62,20 +60,21 @@ import {AccessStrategyModule} from './access-strategy/access-strategy.module';
 import {AttributemappingModule} from './attributemapping/attributemapping.module';
 import {WsfedattrrelpoliciesModule} from './wsfedattrrelpolocies/wsfedattrrelpolicies.module';
 import {FormSharedModule} from './form-shared.module';
+import {UidattrsModule} from './uidattrs/uidattrs.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    HttpModule,
     SharedModule,
     FormRoutingModule,
     FormSharedModule,
     AccessStrategyModule,
     AttributeReleaseModule,
     AttributemappingModule,
-    WsfedattrrelpoliciesModule
+    WsfedattrrelpoliciesModule,
+    UidattrsModule
   ],
   declarations: [
     FormComponent,
@@ -111,7 +110,6 @@ import {FormSharedModule} from './form-shared.module';
     ServicenameComponent,
     ServicetypeComponent,
     ThemeidComponent,
-    UidattrsComponent,
     WsfedclientComponent,
     SamlservicespaneComponent,
     OidcclientComponent,

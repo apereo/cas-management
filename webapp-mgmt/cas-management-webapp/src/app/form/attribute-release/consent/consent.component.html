@@ -1,7 +1,5 @@
-<app-input field="enabled"
-           [change]="data.service.attributeReleasePolicy.consentPolicy"
-           [orig]="data.diff.attributeReleasePolicy.consentPolicy">
-  <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.consentPolicy.enabled">
+<app-input field="enabled" [change]="policy" [orig]="origPolicy">
+  <mat-checkbox [(ngModel)]="policy.enabled">
     <ng-container i18n="services.form.label.attrRelease.constent.enabled">
       {{ messages.services_form_label_attrRelease_consent_enabled }}
     </ng-container>
@@ -12,16 +10,14 @@
   </mat-checkbox>
 </app-input>
 
-<ng-container *ngIf="data.service.attributeReleasePolicy.consentPolicy.enabled && !isEmpty( formData.availableAttributes )">
-  <app-input field="excludeAttributes"
-             [change]="data.service.attributeReleasePolicy.consentPolicy"
-             [orig]="data.diff.attributeReleasePolicy.consentPolicy">
+<ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
+  <app-input field="excludeAttributes" [change]="policy" [orig]="origPolicy">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.consent.excludedAttributes">
         {{ messages.services_form_label_attrRelease_consent_excludedAttributes }}
       </mat-placeholder>
       <mat-select multiple
-                  [(ngModel)]="data.service.attributeReleasePolicy.consentPolicy.excludedAttributes">
+                  [(ngModel)]="policy.excludedAttributes">
         <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
           {{ opt }}
         </mat-option>
@@ -37,16 +33,14 @@
   </app-input>
 </ng-container>
 
-<ng-container *ngIf="data.service.attributeReleasePolicy.consentPolicy.enabled && !isEmpty( formData.availableAttributes )">
-  <app-input field="includeOnlyAttributes"
-             [change]="data.service.attributeReleasePolicy.consentPolicy"
-             [orig]="data.diff.attributeReleasePolicy.consentPolicy">
+<ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
+  <app-input field="includeOnlyAttributes" [change]="policy" [orig]="origPolicy">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.consent.includeOnlyAttributes">
         {{ messages.services_form_label_attrRelease_consent_includeOnlyAttributes }}
       </mat-placeholder>
       <mat-select multiple
-                  [(ngModel)]="data.service.attributeReleasePolicy.consentPolicy.includeOnlyAttributes">
+                  [(ngModel)]="policy.includeOnlyAttributes">
         <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
           {{ opt }}
         </mat-option>

@@ -15,29 +15,28 @@ import {Row, RowDataSource} from '../row';
 export class WsfedattrrelpoliciesComponent implements OnInit {
 
   formData: FormData;
-  wsFedOnly: boolean;
-
   displayedColumns = ['source', 'mapped'];
   dataSource: RowDataSource;
 
+  policy: WsFederationClaimsReleasePolicy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.formData = data.formData;
+    this.policy = data.service.attributeReleasePolicy as WsFederationClaimsReleasePolicy;
   }
 
   ngOnInit() {
-    const attrPolicy: WsFederationClaimsReleasePolicy = this.data.service.attributeReleasePolicy as WsFederationClaimsReleasePolicy;
     const rows = [];
-    if (Util.isEmpty(attrPolicy.allowedAttributes)) {
-      attrPolicy.allowedAttributes = new Map();
+    if (Util.isEmpty(this.policy.allowedAttributes)) {
+      this.policy.allowedAttributes = new Map();
     }
 
     this.formData.availableAttributes.forEach((k) => {
-      attrPolicy.allowedAttributes[k as string] = k;
+      this.policy.allowedAttributes[k as string] = k;
     });
 
-    for (const key of Array.from(Object.keys(attrPolicy.allowedAttributes))) {
+    for (const key of Array.from(Object.keys(this.policy.allowedAttributes))) {
       rows.push(new Row(key as string));
     }
     this.dataSource = new RowDataSource(rows);

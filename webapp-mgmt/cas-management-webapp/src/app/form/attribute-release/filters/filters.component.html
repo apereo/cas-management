@@ -37,7 +37,7 @@
       </app-input>
     </ng-container>
     <ng-container *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
-      <app-mapped [filter]="filter"></app-mapped>
+      <app-filter-mapped [filter]="filter"></app-filter-mapped>
     </ng-container>
     <ng-container *ngIf="isScripted(filter)">
       <app-input field="script" [change]="filter" [orig]="filters()[i]">

@@ -1,7 +1,5 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TabBaseComponent} from '../tab-base';
-import {Messages} from '../../messages';
-import {Data} from '../data';
 import {WSFederationRegisterdService} from '../../../domain/wsed-service';
 import {OidcRegisteredService} from '../../../domain/oauth-service';
 

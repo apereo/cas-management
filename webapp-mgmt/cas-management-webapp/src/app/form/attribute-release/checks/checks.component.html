@@ -1,6 +1,6 @@
-<app-input field="excludeDefaultAttributes" [change]="data.service.attributeReleasePolicy"
+<app-input field="excludeDefaultAttributes" [change]="policy"
            [orig]="data.diff.attributeReleasePolicy">
-  <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.excludeDefaultAttributes">
+  <mat-checkbox [(ngModel)]="policy.excludeDefaultAttributes">
     <ng-container i18n="services.form.label.attrRelease.excludeDefault">
       {{ messages.services_form_label_attrRelease_excludeDefault }}
     </ng-container>
@@ -15,9 +15,9 @@
 </app-input>
 
 <app-input field="authorizedToReleaseCredentialPassword"
-           [change]="data.service.attributeReleasePolicy"
+           [change]="policy"
            [orig]="data.diff.attributeReleasePolicy">
-  <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.authorizedToReleaseCredentialPassword">
+  <mat-checkbox [(ngModel)]="policy.authorizedToReleaseCredentialPassword">
     <ng-container i18n="services.form.label.attrRelease.releaseCredPassword">
       {{ messages.services_form_label_attrRelease_releaseCredPassword }}
     </ng-container>
@@ -32,9 +32,9 @@
 </app-input>
 
 <app-input field="authorizedToReleaseProxyGrantingTicket"
-           [change]="data.service.attributeReleasePolicy"
+           [change]="policy"
            [orig]="data.diff.attributeReleasePolicy">
-  <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.authorizedToReleaseProxyGrantingTicket">
+  <mat-checkbox [(ngModel)]="policy.authorizedToReleaseProxyGrantingTicket">
     <ng-container i18n="services.form.label.attrRelease.releaseProxyTicket">
       {{ messages.services_form_label_attrRelease_releaseProxyTicket }}
     </ng-container>
@@ -49,9 +49,9 @@
 </app-input>
 
 <app-input field="authorizedToReleaseAuthenticationAttributes"
-           [change]="data.service.attributeReleasePolicy"
+           [change]="policy"
            [orig]="data.diff.attributeReleasePolicy">
-  <mat-checkbox [(ngModel)]="data.service.attributeReleasePolicy.authorizedToReleaseAuthenticationAttributes">
+  <mat-checkbox [(ngModel)]="policy.authorizedToReleaseAuthenticationAttributes">
     <ng-container i18n="services.form.label.attrRelease.releaseAuthenticationAttributes">
       {{ messages.services_form_label_attrRelease_releaseAuthenticationAttributes }}
     </ng-container>

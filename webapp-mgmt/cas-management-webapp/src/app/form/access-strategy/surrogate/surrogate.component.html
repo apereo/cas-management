@@ -1,4 +1,4 @@
-<app-input field="surrogateEnabled" [change]="accessStrategy" [orig]="data.diff.accessStrategy">
+<app-input field="surrogateEnabled" [change]="accessStrategy" [orig]="origAccessStrategy">
   <mat-checkbox [(ngModel)]="accessStrategy.surrogateEnabled">
     <ng-container i18n="services.form.label.sas.surrogate.enabled">
       {{ messages.services_form_label_sas_surrogate_enabled }}

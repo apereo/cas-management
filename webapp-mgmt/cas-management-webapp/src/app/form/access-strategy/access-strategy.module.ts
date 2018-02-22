@@ -1,5 +1,4 @@
 import {CommonModule} from '@angular/common';
-import {HttpModule} from '@angular/http';
 import {NgModule} from '@angular/core';
 import {SharedModule} from '../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
@@ -19,7 +18,6 @@ import {FormSharedModule} from '../form-shared.module';
   imports: [
     CommonModule,
     FormsModule,
-    HttpModule,
     SharedModule,
     FormSharedModule,
     AttributemappingModule

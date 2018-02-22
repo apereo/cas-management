@@ -18,14 +18,14 @@
 
 <ng-container *ngIf="type == TYPE.CACHING">
   <app-input field="timeUnit"
-             [change]="data.service.attributeReleasePolicy.principalAttributesRepository"
+             [change]="repo"
              [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.timeUnit">
         {{ messages.services_form_label_attrRelease_principleAttRepo_cached_timeUnit }}
       </mat-placeholder>
       <mat-select required
-                  [(ngModel)]="data.service.attributeReleasePolicy.principalAttributesRepository.timeUnit">
+                  [(ngModel)]="repo.timeUnit">
         <mat-option *ngFor="let opt of formData.timeUnits" [value]="opt">
           {{ opt }}
         </mat-option>
@@ -41,14 +41,14 @@
   </app-input>
 
   <app-input field="expiration"
-             [change]="data.service.attributeReleasePolicy.principalAttributesRepository"
+             [change]="repo"
              [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.expiration">
         {{ messages.services_form_label_attrRelease_principleAttRepo_cached_expiration }}
       </mat-placeholder>
       <input matInput
-             [(ngModel)]="data.service.attributeReleasePolicy.principalAttributesRepository.expiration">
+             [(ngModel)]="repo.expiration">
       <mat-hint align="end">
         <app-hint></app-hint>
       </mat-hint>
@@ -60,14 +60,14 @@
   </app-input>
 
   <app-input field="mergingStrategy"
-             [change]="data.service.attributeReleasePolicy.principalAttributesRepository"
+             [change]="repo"
              [orig]="data.diff.attributeReleasePolicy.principalAttributesRepository">
     <mat-form-field class="textInput">
       <mat-placeholder i18n-placeholder="services.form.label.attrRelease.principleAttRepo.cached.mergeStrategy">
        {{ messages.services_form_label_attrRelease_principleAttRepo_cached_mergeStrategy }}
       </mat-placeholder>
       <mat-select required
-                  [(ngModel)]="data.service.attributeReleasePolicy.principalAttributesRepository.mergingStrategy">
+                  [(ngModel)]="repo.mergingStrategy">
         <mat-option *ngFor="let opt of formData.mergingStrategies" [value]="opt">
           {{ opt }}
         </mat-option>

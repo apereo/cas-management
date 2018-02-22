@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OidcRegisteredService} from '../../../domain/oauth-service';
 import {Messages} from '../../messages';
 import {Data} from '../data';

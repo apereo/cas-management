@@ -1,7 +1,5 @@
-import {ApplicationRef, Component, OnInit, ViewChild} from '@angular/core';
-import 'rxjs/add/operator/switchMap';
+import {Component, OnInit} from '@angular/core';
 import {TabBaseComponent} from '../tab-base';
-import {Subscription} from 'rxjs/Subscription';
 import {GroovyRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 
 @Component({

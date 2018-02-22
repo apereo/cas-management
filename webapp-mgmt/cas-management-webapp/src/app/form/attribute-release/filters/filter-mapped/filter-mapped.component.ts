@@ -5,11 +5,11 @@ import {Messages} from '../../../../messages';
 import {Row, RowDataSource} from '../../../row';
 
 @Component({
-  selector: 'app-mapped',
-  templateUrl: './mapped.component.html',
-  styleUrls: ['./mapped.component.css']
+  selector: 'app-filter-mapped',
+  templateUrl: './filter-mapped.component.html',
+  styleUrls: ['./filter-mapped.component.css']
 })
-export class MappedComponent implements OnInit {
+export class FilterMappedComponent implements OnInit {
   displayedColumns = ['source', 'mapped', 'delete'];
   dataSource: RowDataSource;
   formData;

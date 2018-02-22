@@ -1,8 +1,8 @@
-<app-attributemapping [attributes]="data.service.accessStrategy.requiredAttributes"
-                      [attributeNames]="data.formData.availableAttributes">
+<app-attributemapping [attributes]="accessStrategy.requiredAttributes"
+                      [attributeNames]="formData.availableAttributes">
 </app-attributemapping>
-<app-input field="caseInsensitive" [change]="data.service.accessStrategy" [orig]="data.diff.accessStrategy">
-    <mat-checkbox [(ngModel)]="data.service.accessStrategy.caseInsensitive">
+<app-input field="caseInsensitive" [change]="accessStrategy" [orig]="data.diff.accessStrategy">
+    <mat-checkbox [(ngModel)]="accessStrategy.caseInsensitive">
         <ng-container i18n="services.form.label.sas.caseinsensitive">
             {{ messages.services_form_label_sas_caseinsensitive }}
         </ng-container>

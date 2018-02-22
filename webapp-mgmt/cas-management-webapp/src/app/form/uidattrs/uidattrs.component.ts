@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../messages';
 import {FormData} from '../../../domain/form-data';
 import {

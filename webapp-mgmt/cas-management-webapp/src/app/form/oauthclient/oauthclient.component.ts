@@ -1,6 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../messages';
-import {AbstractRegisteredService} from '../../../domain/registered-service';
 import {OAuthRegisteredService, OidcRegisteredService} from '../../../domain/oauth-service';
 import {Data} from '../data';
 

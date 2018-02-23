@@ -25,7 +25,7 @@
     <ng-container cdkColumnDef="source">
       <mat-header-cell *cdkHeaderCellDef [ngClass]="'nameWidth'">Name</mat-header-cell>
       <mat-cell *cdkCellDef="let row; let i = index;" [ngClass]="'nameWidth'">
-        <app-input field="key" [change]="row" [orig]="original.surrogateRequiredAttributes[i]">
+        <app-input field="key" [change]="row" [orig]="original && original.surrogateRequiredAttributes[i]">
           <mat-form-field>
             <input matInput #text
                    [ngModel]="row.key"
@@ -42,7 +42,7 @@
       <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'">Value</mat-header-cell>
       <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
         <app-input field="row.key" [change]="accessStrategy.surrogateRequiredAttributes"
-                   [orig]="original.surrogateRequiredAttributes">
+                   [orig]="original && original.surrogateRequiredAttributes">
         <mat-form-field>
           <input matInput
                  [ngModel]="accessStrategy.surrogateRequiredAttributes[row.key]"

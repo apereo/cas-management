@@ -19,7 +19,7 @@ export class SamlservicespaneComponent implements OnInit {
 
   service: SamlRegisteredService;
   original: SamlRegisteredService;
-  
+
   constructor(public messages: Messages,
               public data: Data) {
     this.service = data.service as SamlRegisteredService;

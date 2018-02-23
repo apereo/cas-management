@@ -24,18 +24,22 @@ export class PrincipalRepoComponent implements OnInit {
 
   repo: any;
   original: any;
-  
+
   constructor(public messages: Messages,
               public data: Data) {
     this.formData = data.formData;
     this.repo = data.service.attributeReleasePolicy.principalAttributesRepository;
-    this.original = data.original && data.original.attributeReleasePolicy && data.original.attributeReleasePolicy.principalAttributesRepository;
+    this.original = data.original &&
+                    data.original.attributeReleasePolicy &&
+                    data.original.attributeReleasePolicy.principalAttributesRepository;
   }
 
   ngOnInit() {
-    if (DefaultPrincipalAttributesRepository.instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
+    if (DefaultPrincipalAttributesRepository
+        .instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
       this.type = Type.DEFAULT;
-    } else if (CachingPrincipalAttributesRepository.instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
+    } else if (CachingPrincipalAttributesRepository
+        .instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
       this.type = Type.CACHING;
     }
   }
@@ -43,11 +47,13 @@ export class PrincipalRepoComponent implements OnInit {
   changeType() {
     switch (+this.type) {
       case Type.DEFAULT :
-        this.data.service.attributeReleasePolicy.principalAttributesRepository = new DefaultPrincipalAttributesRepository();
+        this.data.service.attributeReleasePolicy.principalAttributesRepository =
+          new DefaultPrincipalAttributesRepository();
         this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
         break;
       case Type.CACHING :
-        this.data.service.attributeReleasePolicy.principalAttributesRepository = new CachingPrincipalAttributesRepository();
+        this.data.service.attributeReleasePolicy.principalAttributesRepository =
+          new CachingPrincipalAttributesRepository();
         this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
         break;
     }

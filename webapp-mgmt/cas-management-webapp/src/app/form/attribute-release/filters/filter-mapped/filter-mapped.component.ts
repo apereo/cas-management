@@ -37,7 +37,6 @@ export class FilterMappedComponent implements OnInit {
   }
 
   doChange(row: Row, val: string) {
-    console.log(row.key + ' : ' + val);
     this.filter.patterns[val] = this.filter.patterns[row.key as string];
     delete this.filter.patterns[row.key as string];
     row.key = val;

@@ -21,7 +21,7 @@ export class SurrogateComponent implements OnInit {
   constructor(public messages: Messages,
               public data: Data) {
     this.accessStrategy = data.service.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
-    this.original = data.original.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
+    this.original = data.original && data.original.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
   }
 
   ngOnInit() {

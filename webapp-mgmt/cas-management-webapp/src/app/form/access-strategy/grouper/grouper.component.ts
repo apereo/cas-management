@@ -12,7 +12,7 @@ export class GrouperComponent implements OnInit {
 
   accessStrategy: GrouperRegisteredServiceAccessStrategy;
   original: GrouperRegisteredServiceAccessStrategy;
-  
+
   constructor(public messages: Messages,
               public data: Data) {
     this.accessStrategy = data.service.accessStrategy as GrouperRegisteredServiceAccessStrategy;

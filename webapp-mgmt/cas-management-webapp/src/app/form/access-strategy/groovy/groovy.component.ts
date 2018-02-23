@@ -14,7 +14,7 @@ export class GroovyComponent implements OnInit {
   formData: FormData;
   accessStrategy: GroovyRegisteredServiceAccessStrategy;
   original: GroovyRegisteredServiceAccessStrategy;
-  
+
   constructor(public messages: Messages,
               public data: Data) {
     this.formData = data.formData;

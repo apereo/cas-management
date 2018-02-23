@@ -304,6 +304,7 @@ export class Messages {
  readonly services_form_tooltip_attrRelease_policies_returnWsMapped = 'List of WS Federation Claims that will be mapped to the corresponding attribute from the attributes repository.';
  readonly services_form_tooltip_attrRelease_policies_restful = 'The URL of the REST endpoint that will be called to retrieve a list of attributes that will be released';
  readonly services_form_tooltip_attrRelease_policies_groovySaml = 'Location of a groovy script file that can be triggered by the server to determine the attributes to be released';
+ readonly services_form_tooltip_attrRelease_policies_scriptFile = 'Location of a script file that can be triggered to determine which attributes can be released';
  readonly services_form_tooltip_attrRelease_consent_enabled = 'Control whether consent is active/inactive for this service.';
  readonly services_form_tooltip_attrRelease_consent_excludedAttributes = 'Exclude the indicated attributes from consent.';
  readonly services_form_tooltip_attrRelease_consent_includeOnlyAttributes = 'Force-include the indicated attributes in consent, provided attributes are resolved.';

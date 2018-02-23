@@ -3,7 +3,7 @@ import {Messages} from '../../messages';
 import {AbstractRegisteredService} from '../../../domain/registered-service';
 import {
   RefuseRegisteredServiceProxyPolicy,
-  RegexMatchingRegisteredServiceProxyPolicy
+  RegexMatchingRegisteredServiceProxyPolicy, RegisteredServiceProxyPolicy
 } from '../../../domain/proxy-policy,ts';
 import {Data} from '../data';
 
@@ -21,6 +21,9 @@ export class ProxyComponent implements OnInit {
   type: Type;
   TYPE = Type;
 
+  policy: RegexMatchingRegisteredServiceProxyPolicy;
+  original: RegexMatchingRegisteredServiceProxyPolicy;
+
   constructor(public messages: Messages,
               public data: Data) {
   }
@@ -30,6 +33,8 @@ export class ProxyComponent implements OnInit {
       this.type = Type.REFUSE;
     } else if (RegexMatchingRegisteredServiceProxyPolicy.instanceOf(this.data.service.proxyPolicy)) {
       this.type = Type.REGEX;
+      this.policy = this.data.service.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
+      this.original = this.data.original && this.data.original.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
     }
   }
 
@@ -40,8 +45,10 @@ export class ProxyComponent implements OnInit {
         break;
       case Type.REGEX :
         this.data.service.proxyPolicy = new RegexMatchingRegisteredServiceProxyPolicy();
+        this.policy = this.data.service.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
         break;
     }
+
   }
 
 }

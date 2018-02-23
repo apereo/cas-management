@@ -1,38 +1,47 @@
-<div>
+<app-input field="requiredNameIdFormat" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.saml.requiredNameIdFormat"
-           [placeholder]=" messages.services_form_label_saml_requiredNameIdFormat"
-           [(ngModel)]="service.requiredNameIdFormat">
+    <mat-placeholder i18n-placeholder="services.form.label.saml.requiredNameIdFormat">
+      {{ messages.services_form_label_saml_requiredNameIdFormat }}
+    </mat-placeholder>
+    <input matInput [(ngModel)]="service.requiredNameIdFormat">
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
-  <mat-icon style="font-size: medium"
+  <mat-icon appHelp
             i18n-matTooltip="services.form.tooltip.saml.requiredNameIdFormat"
-            [matTooltip]="messages.services_form_tooltip_saml_requiredNameIdFormat">help
+            [matTooltip]="messages.services_form_tooltip_saml_requiredNameIdFormat">
   </mat-icon>
-</div>
+</app-input>
 
-<div>
+<app-input field="serviceProviderNameIdQualifier" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.saml.serviceProviderNameQualifier"
-           [placeholder]=" messages.services_form_label_saml_serviceProviderNameQualifier"
-           [(ngModel)]="service.serviceProviderNameIdQualifier">
+    <mat-placeholder i18n-placeholder="services.form.label.saml.serviceProviderNameQualifier">
+      {{ messages.services_form_label_saml_serviceProviderNameQualifier }}
+    </mat-placeholder>
+    <input matInput [(ngModel)]="service.serviceProviderNameIdQualifier">
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
-  <mat-icon style="font-size: medium"
+  <mat-icon appHelp
             i18n-matTooltip="services.form.tooltip.saml.serviceProviderNameQualifier"
-            [matTooltip]="messages.services_form_tooltip_saml_serviceProviderNameQualifier">help
+            [matTooltip]="messages.services_form_tooltip_saml_serviceProviderNameQualifier">
   </mat-icon>
-</div>
+</app-input>
 
-<div>
+<app-input field="nameIdQualifier" [change]="service" [orig]="original">
   <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.saml.nameQualifier"
-           [placeholder]=" messages.services_form_label_saml_nameQualifier"
-           [(ngModel)]="service.nameIdQualifier">
+    <mat-placeholder i18n-placeholder="services.form.label.saml.nameQualifier">
+      {{ messages.services_form_label_saml_nameQualifier }}
+    </mat-placeholder>
+    <input matInput [(ngModel)]="service.nameIdQualifier">
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
-  <mat-icon style="font-size: medium"
+  <mat-icon appHelp
             i18n-matTooltip="services.form.tooltip.saml.nameQualifier"
-            [matTooltip]="messages.services_form_tooltip_saml_nameQualifier">help
+            [matTooltip]="messages.services_form_tooltip_saml_nameQualifier">
   </mat-icon>
-</div>
+</app-input>

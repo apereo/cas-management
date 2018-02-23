@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OidcRegisteredService} from '../../../domain/oauth-service';
 import {Messages} from '../../messages';
 import {Data} from '../data';
@@ -11,11 +11,13 @@ import {Data} from '../data';
 export class OidcclientComponent implements OnInit {
 
   service: OidcRegisteredService;
+  original: OidcRegisteredService;
   showOAuthSecret: boolean;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.service = data.service as OidcRegisteredService;
+    this.original = data.original && data.original as OidcRegisteredService;
   }
 
   ngOnInit() {

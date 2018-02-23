@@ -11,10 +11,12 @@ import {Data} from '../../data';
 export class TimeComponent implements OnInit {
 
   accessStrategy: TimeBasedRegisteredServiceAccessStrategy;
+  original: TimeBasedRegisteredServiceAccessStrategy;
 
   constructor(public messages: Messages,
               public data: Data) {
     this.accessStrategy = data.service.accessStrategy as TimeBasedRegisteredServiceAccessStrategy;
+    this.original = data.original && data.original.accessStrategy as TimeBasedRegisteredServiceAccessStrategy;
   }
 
   ngOnInit() {

@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabMulitauthComponent } from './tab-mulitauth.component';
-import {MultiauthpaneComponent} from '../multiauthpane/multiauthpane.component';
+import {MfaComponent} from '../mfa/mfa.component';
 import {Data} from '../data';
 import {Messages} from '../../messages';
 import {SharedModule} from '../../shared/shared.module';
@@ -17,7 +17,7 @@ describe('TabMulitauthComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ TabMulitauthComponent, MultiauthpaneComponent ],
+      declarations: [ TabMulitauthComponent, MfaComponent ],
       providers: [ Messages, Data]
     })
     .compileComponents();

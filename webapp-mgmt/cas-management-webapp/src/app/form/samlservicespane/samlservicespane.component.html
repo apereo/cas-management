@@ -14,20 +14,27 @@
   <ng-container cdkColumnDef="mapped">
     <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'">Value</mat-header-cell>
     <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
-      <mat-form-field>
-        <mat-select [(ngModel)]="data.service.attributeNameFormats[row.key]">
-          <mat-option *ngFor="let item of data.formData.attributeNameFormats" [value]="item">
-            {{item}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <app-input field="row.key" [change]="service.attributeNameFormats" [orig]="original && original.attributeNameFormats">
+        <mat-form-field>
+          <mat-select [(ngModel)]="service.attributeNameFormats[row.key]">
+            <mat-option *ngFor="let item of data.formData.attributeNameFormats" [value]="item">
+              {{item}}
+            </mat-option>
+          </mat-select>
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
+        </mat-form-field>
+      </app-input>
     </mat-cell>
   </ng-container>
 
   <ng-container cdkColumnDef="delete">
     <mat-header-cell *cdkHeaderCellDef [ngClass]="'actionWidth'"></mat-header-cell>
     <mat-cell *cdkCellDef="let row" [ngClass]="'actionWidth'">
-      <button mat-icon-button (click)="delete(row)"><mat-icon style="font-size: medium">delete</mat-icon></button>
+      <button mat-icon-button (click)="delete(row)">
+        <mat-icon style="font-size: medium">delete</mat-icon>
+      </button>
     </mat-cell>
   </ng-container>
 

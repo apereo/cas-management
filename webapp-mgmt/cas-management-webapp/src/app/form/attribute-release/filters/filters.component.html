@@ -1,0 +1,77 @@
+<mat-accordion #accordian style="width:600px;" multi="true">
+  <mat-expansion-panel *ngFor="let filter of filters();let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
+       [expanded]="last">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+          <button [matMenuTriggerFor]="panelMenu" mat-icon-button (click)="selectedFilter = filter;$event.stopPropagation()" style="width:auto;height:auto;line-height: 0px!important;">
+            <mat-icon style="font-size: medium;">menu</mat-icon></button>
+        <span *ngIf="isRegEx(filter)">Regex</span>
+        <span *ngIf="isMappedRegEx(filter)">Mapped</span>
+        <span *ngIf="isMutantMappedRegEx(filter)">Mutant</span>
+        <span *ngIf="isReverseMapped(filter)">Reverse Mapped</span>
+        <span *ngIf="isScripted(filter)">Scripted</span>
+      </mat-panel-title>
+      <mat-panel-description>
+        <span *ngIf="isRegEx(filter)">{{ filter.pattern }}</span>
+        <span *ngIf="isMutantMappedRegEx(filter)">{{ getAttributes(filter) }}</span>
+        <span *ngIf="isMappedRegEx(filter)">{{ getAttributes(filter) }} </span>
+        <span *ngIf="isReverseMapped(filter)">{{ getAttributes(filter) }}</span>
+        <span *ngIf="isScripted(filter)">{{ filter.script }}</span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-container *ngIf="isRegEx(filter)">
+      <app-input field="pattern" [change]="filter" [orig]="filters()[i]">
+        <mat-form-field class="textInput">
+          <mat-placeholder i18n-placeholder="services.form.label.attrRelease.attrFilter">
+            {{ messages.services_form_label_attrRelease_attrFilter }}
+          </mat-placeholder>
+          <input matInput [(ngModel)]="filter.pattern">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon appHelp
+                 i18n-matTooltip="services.form.tooltip.attrRelease.attrFilter"
+                 [matTooltip]="messages.services_form_tooltip_attrRelease_attrFilter">
+        </mat-icon>
+      </app-input>
+    </ng-container>
+    <ng-container *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
+      <app-filter-mapped [filter]="filter"></app-filter-mapped>
+    </ng-container>
+    <ng-container *ngIf="isScripted(filter)">
+      <app-input field="script" [change]="filter" [orig]="filters()[i]">
+        <mat-form-field class="textInput">
+          <mat-placeholder i18n-placeholder="services.form.label.attrRelease.attrFilter.scripted">
+            {{ messages.services_form_label_attrRelease_attrFilter_scripted }}
+          </mat-placeholder>
+          <input matInput [(ngModel)]="filter.script">
+          <mat-hint align="end">
+            <app-hint></app-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon appHelp
+                  i18n-matTooltip="services.form.tooltip.attrRelease.attrFilter.scripted"
+                  [matTooltip]="messages.services_form_tooltip_attrRelease_attrFilter_scripted">
+        </mat-icon>
+      </app-input>
+    </ng-container>
+  </mat-expansion-panel>
+</mat-accordion>
+<div style="height:25px;padding-top: 5px;">
+  <button mat-mini-fab [matMenuTriggerFor]="addMenu" style="float:right;">+</button>
+</div>
+
+<mat-menu #panelMenu>
+  <button mat-menu-item (click)="moveUp()">Move UP</button>
+  <button mat-menu-item (click)="moveDown()">Move Down</button>
+  <button mat-menu-item (click)="removeFilter()">Remove</button>
+</mat-menu>
+
+<mat-menu #addMenu>
+  <button mat-menu-item (click)="addRegEx()">Regex</button>
+  <button mat-menu-item (click)="addMappedRegex()">Mapped Regex</button>
+  <button mat-menu-item (click)="addReverseMapped()">Reverse Mapped Regex</button>
+  <button mat-menu-item (click)="addMutantMappedRegex()">Mutant Regex</button>
+  <button mat-menu-item (click)="addScript()">Script</button>
+</mat-menu>

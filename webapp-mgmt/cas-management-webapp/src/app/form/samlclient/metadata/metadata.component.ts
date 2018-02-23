@@ -9,11 +9,14 @@ import {SamlRegisteredService} from '../../../../domain/saml-service';
   styleUrls: ['./metadata.component.css']
 })
 export class MetadataComponent implements OnInit {
+
   service: SamlRegisteredService;
+  original: SamlRegisteredService;
 
   constructor(public messages: Messages,
               public data: Data) {
-      this.service = data.service as SamlRegisteredService;
+    this.service = data.service as SamlRegisteredService;
+    this.original = data.original && data.original as SamlRegisteredService;
   }
 
   ngOnInit() {

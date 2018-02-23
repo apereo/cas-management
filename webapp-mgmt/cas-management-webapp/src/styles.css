@@ -155,3 +155,6 @@ a:focus {
   width:550px;
 }
 
+.mat-select-value{
+    color: inherit !important;
+}

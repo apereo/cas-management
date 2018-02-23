@@ -1,12 +1,15 @@
-<div>
+<app-input field="logoutUrl" [change]="data.service" [orig]="data.original">
   <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.logoutUrl"
-           [placeholder]="messages.services_form_label_logoutUrl"
-           [(ngModel)]="data.service.logoutUrl">
+    <mat-placeholder i18n-placeholder="services.form.label.logoutUrl">
+      {{ messages.services_form_label_logoutUrl }}
+    </mat-placeholder>
+    <input matInput [(ngModel)]="data.service.logoutUrl">
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
-  <mat-icon style="font-size: medium"
+  <mat-icon appHelp
            i18n-matTooltip="services.form.tooltip.logoutUrl"
-           [matTooltip]="messages.services_form_tooltip_logoutUrl">help
+           [matTooltip]="messages.services_form_tooltip_logoutUrl">
   </mat-icon>
-</div>
+</app-input>

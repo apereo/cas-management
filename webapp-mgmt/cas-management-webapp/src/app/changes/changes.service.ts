@@ -35,4 +35,8 @@ export class ChangesService extends Service {
     return this.get<AbstractRegisteredService>('viewChange?id=' + change);
   }
 
+  getChangePair(change: String): Promise<AbstractRegisteredService[]> {
+    return this.get<AbstractRegisteredService[]>('changePair?id=' + change);
+  }
+
 }

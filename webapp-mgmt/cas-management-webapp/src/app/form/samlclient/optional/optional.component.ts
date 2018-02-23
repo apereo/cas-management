@@ -9,11 +9,14 @@ import {Data} from '../../data';
   styleUrls: ['./optional.component.css']
 })
 export class OptionalComponent implements OnInit {
+
   service: SamlRegisteredService;
+  original: SamlRegisteredService;
 
   constructor(public messages: Messages,
               public data: Data) {
-      this.service = data.service as SamlRegisteredService;
+    this.service = data.service as SamlRegisteredService;
+    this.original = data.original && data.original as SamlRegisteredService;
   }
 
   ngOnInit() {

@@ -1,12 +1,15 @@
-<div>
+<app-input field="theme" [change]="data.service" [orig]="data.original">
   <mat-form-field class="textInput">
-    <input matInput
-           i18n-placeholder="services.form.label.theme"
-           [placeholder]="messages.services_form_label_theme"
-           [(ngModel)]="data.service.theme">
+    <mat-placeholder i18n-placeholder="services.form.label.theme">
+      {{ messages.services_form_label_theme }}
+    </mat-placeholder>
+    <input matInput [(ngModel)]="data.service.theme">
   </mat-form-field>
-  <mat-icon style="font-size: medium;"
+  <mat-hint align="end">
+    <app-hint></app-hint>
+  </mat-hint>
+  <mat-icon appHelp
            i18n-matTooltip="services.form.tooltip.theme"
-           [matTooltip]="messages.services_form_tooltip_theme">help
+           [matTooltip]="messages.services_form_tooltip_theme">
   </mat-icon>
-</div>
+</app-input>

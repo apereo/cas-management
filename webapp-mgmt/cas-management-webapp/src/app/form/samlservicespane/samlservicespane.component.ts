@@ -17,17 +17,21 @@ export class SamlservicespaneComponent implements OnInit {
 
   type: String;
 
+  service: SamlRegisteredService;
+  original: SamlRegisteredService;
+
   constructor(public messages: Messages,
               public data: Data) {
+    this.service = data.service as SamlRegisteredService;
+    this.original = data.original && data.original as SamlRegisteredService;
   }
 
   ngOnInit() {
-    const service: SamlRegisteredService = this.data.service as SamlRegisteredService;
     const rows = [];
-    if (Util.isEmpty(service.attributeNameFormats)) {
-      service.attributeNameFormats = new Map();
+    if (Util.isEmpty(this.service.attributeNameFormats)) {
+      this.service.attributeNameFormats = new Map();
     }
-    for (const p of Array.from(Object.keys(service.attributeNameFormats))) {
+    for (const p of Array.from(Object.keys(this.service.attributeNameFormats))) {
       rows.push(new Row(p));
     }
     this.dataSource = new RowDataSource(rows);
@@ -38,15 +42,13 @@ export class SamlservicespaneComponent implements OnInit {
   }
 
   doChange(row: Row, val: string) {
-    const service: SamlRegisteredService = this.data.service as SamlRegisteredService;
-    service.attributeNameFormats[val] = service.attributeNameFormats[row.key as string];
-    delete service.attributeNameFormats[row.key as string];
+    this.service.attributeNameFormats[val] = this.service.attributeNameFormats[row.key as string];
+    delete this.service.attributeNameFormats[row.key as string];
     row.key = val;
   }
 
   delete(row: Row) {
-    const service: SamlRegisteredService = this.data.service as SamlRegisteredService
-    delete service.attributeNameFormats[row.key as string];
+    delete this.service.attributeNameFormats[row.key as string];
     this.dataSource.removeRow(row);
   }
 }

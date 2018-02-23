@@ -1,4 +1,11 @@
 <form #wsForm="ngForm">
- <app-wsfedclient></app-wsfedclient>
- <button type="submit"style="display:none" #submit></button>
+  <mat-card class="tabCard">
+    <mat-card-title>
+      <h5>WS Federation Options</h5>
+    </mat-card-title>
+    <div class="cardContent">
+       <app-wsfedclient></app-wsfedclient>
+    </div>
+  </mat-card>
+  <button type="submit"style="display:none" #submit></button>
 </form>

@@ -15,15 +15,20 @@
 
 </mat-radio-group>
 
-<div *ngIf="type == TYPE.REGEX">
-  <mat-form-field class="textInput">
-    <input matInput required
-           i18n-placeholder="services.form.label.proxyPolicy.regex"
-           [placeholder]="messages.services_form_label_proxyPolicy_regex"
-           [(ngModel)]="data.service.proxyPolicy.pattern">
-  </mat-form-field>
-  <mat-icon style="font-size: medium"
-           i18n-matTooltip="services.form.tooltip.proxyPolicy.regex"
-           [matTooltip]="messages.services_form_tooltip_proxyPolicy_regex">help
-  </mat-icon>
-</div>
+<ng-container *ngIf="type == TYPE.REGEX">
+  <app-input field="pattern" [change]="policy" [orig]="original">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n-placeholder="services.form.label.proxyPolicy.regex">
+        {{ messages.services_form_label_proxyPolicy_regex }}
+      </mat-placeholder>
+      <input matInput required [(ngModel)]="policy.pattern">
+      <mat-hint align="end">
+        <app-hint></app-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp
+             i18n-matTooltip="services.form.tooltip.proxyPolicy.regex"
+             [matTooltip]="messages.services_form_tooltip_proxyPolicy_regex">
+    </mat-icon>
+  </app-input>
+</ng-container>

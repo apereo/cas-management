@@ -16,6 +16,8 @@ import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
+import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.RegexUtils;
 import org.springframework.http.HttpStatus;
@@ -330,6 +332,37 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         return new ResponseEntity<>(new String[]{CasVersion.getVersion(),
                                     this.getClass().getPackage().getImplementationVersion()},
                                     HttpStatus.OK);
+    }
+
+    /**
+     * Parses the passes json or yaml string into a Registered Service object and returns to the client.
+     * The id of the service will be set to -1 to force adding a new assigned id if saved.
+     *
+     * @param request - the request
+     * @param response - the response
+     * @param service - the json/yaml string of the service.
+     * @return - the parsed RegisteredService.
+     * @throws Exception - failed
+     */
+    @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<RegisteredService> importService(final HttpServletRequest request,
+                                                           final HttpServletResponse response,
+                                                           final @RequestBody String service) throws Exception {
+        try {
+            final RegisteredService svc;
+            if (service.startsWith("{")) {
+                final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+                svc = serializer.from(service);
+            } else {
+                final RegisteredServiceYamlSerializer yamlSerializer = new RegisteredServiceYamlSerializer();
+                svc = yamlSerializer.from(service);
+            }
+            svc.setId(-1);
+            return new ResponseEntity<>(svc, HttpStatus.OK);
+        } catch (final Exception e) {
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            throw new Exception("Failed to parse Service");
+        }
     }
 }
 

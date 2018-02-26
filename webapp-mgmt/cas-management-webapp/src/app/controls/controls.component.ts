@@ -23,11 +23,17 @@ export class ControlsComponent implements OnInit {
   @Input()
   showRefresh: boolean;
 
+  @Input()
+  showOpen: boolean;
+
   @ViewChild('publishModal')
   submitComp: PublishComponent;
 
   @Output()
   save: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
+  openFile: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   refresh: EventEmitter<void> = new EventEmitter<void>();

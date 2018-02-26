@@ -136,6 +136,15 @@ const childRoutes: Routes = [
           resp: FormResolve
         },
         children: childRoutes
+      },
+      {
+        path: 'importService',
+        component: FormComponent,
+        children: childRoutes,
+        data: {
+          import: true
+        }
+
       }
     ])
   ],

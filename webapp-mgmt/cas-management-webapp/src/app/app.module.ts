@@ -36,6 +36,8 @@ import {NotesModule} from './notes/notes.module';
 import {RejectComponent} from './reject/reject.component';
 import {AcceptComponent} from './accept/accept.component';
 import {FooterService} from './footer/footer.service';
+import { ImportComponent } from './import/import.component';
+import {ImportService} from './import/import.service';
 
 
 @NgModule({
@@ -68,7 +70,8 @@ import {FooterService} from './footer/footer.service';
     InitComponent,
     LocalChangesComponent,
     FooterComponent,
-    YamlComponent
+    YamlComponent,
+    ImportComponent
   ],
   entryComponents: [
     DeleteComponent,
@@ -82,7 +85,8 @@ import {FooterService} from './footer/footer.service';
     HeaderService,
     UserService,
     YamlResolver,
-    FooterService
+    FooterService,
+    ImportService
   ],
   bootstrap: [AppComponent]
 })

@@ -21,6 +21,7 @@ import {SubmitsComponent} from './submits/submits.component';
 import {ChangesComponent} from './changes/changes.component';
 import {ChangesResolve} from './changes/changes.resolover';
 import {NotesComponent} from './notes/notes.component';
+import {ImportComponent} from './import/import.component';
 
 @NgModule({
   imports: [
@@ -111,6 +112,10 @@ import {NotesComponent} from './notes/notes.component';
       {
         path: 'notes/:id',
         component: NotesComponent
+      },
+      {
+        path: 'import',
+        component: ImportComponent
       }
     ]),
   ],

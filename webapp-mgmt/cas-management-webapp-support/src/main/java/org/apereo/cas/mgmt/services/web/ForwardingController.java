@@ -28,7 +28,8 @@ public class ForwardingController {
             "search/{query:.*}",
             "history/{fileName:.*}",
             "json/{fileId:.*}",
-            "localChanges"})
+            "localChanges",
+            "import"})
     public String forward() {
         return "manage.html";
     }

@@ -6,12 +6,12 @@ import {HttpClient} from '@angular/common/http';
 @Injectable()
 export class ImportService {
 
-  constructor(private http: HttpClient) {}
-
   service: AbstractRegisteredService;
 
+  constructor(private http: HttpClient) {}
+
   import(file: String): Promise<AbstractRegisteredService> {
-    return this.http.post<AbstractRegisteredService>("import", file)
+    return this.http.post<AbstractRegisteredService>('import', file)
       .toPromise()
       .then(resp => {
         this.service = resp;

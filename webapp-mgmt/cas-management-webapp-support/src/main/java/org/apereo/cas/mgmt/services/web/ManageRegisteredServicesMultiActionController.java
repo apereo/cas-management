@@ -359,7 +359,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             }
             svc.setId(-1);
             return new ResponseEntity<>(svc, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             throw new Exception("Failed to parse Service");
         }

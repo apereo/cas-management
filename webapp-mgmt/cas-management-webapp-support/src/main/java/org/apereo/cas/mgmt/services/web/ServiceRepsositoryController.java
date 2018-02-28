@@ -277,16 +277,21 @@ public class ServiceRepsositoryController {
     @GetMapping("/gitStatus")
     public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
                                                final HttpServletResponse response) throws Exception{
-        final GitUtil git = repositoryFactory.from(request, response);
-        final GitStatus gitStatus = new GitStatus();
-        final Status status = git.getGit().status().call();
-        gitStatus.setHasChanges(!status.isClean());
-        gitStatus.setAdded(status.getUntracked());
-        gitStatus.setModified(status.getModified());
-        gitStatus.setDeleted(status.getRemoved());
-        gitStatus.setUnpublished(getPublishBehindCount() > 0);
-        gitStatus.setPendingSubmits(pendingSubmits(request, response));
-        return new ResponseEntity<>(gitStatus, HttpStatus.OK);
+        try {
+            final GitUtil git = repositoryFactory.from(request, response);
+            final GitStatus gitStatus = new GitStatus();
+            final Status status = git.getGit().status().call();
+            gitStatus.setHasChanges(!status.isClean());
+            gitStatus.setAdded(status.getUntracked());
+            gitStatus.setModified(status.getModified());
+            gitStatus.setDeleted(status.getRemoved());
+            gitStatus.setUnpublished(getPublishBehindCount() > 0);
+            gitStatus.setPendingSubmits(pendingSubmits(request, response));
+            return new ResponseEntity<>(gitStatus, HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new GitStatus(), HttpStatus.OK);
     }
 
     /**

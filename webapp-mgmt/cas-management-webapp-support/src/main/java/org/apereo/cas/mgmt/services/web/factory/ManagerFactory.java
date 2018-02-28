@@ -45,6 +45,7 @@ public class ManagerFactory {
             try {
                 Git.init().setDirectory(servicesRepo.toFile()).call();
             } catch(final Exception e) {
+                e.printStackTrace();
                 return;
             }
             try {
@@ -56,6 +57,7 @@ public class ManagerFactory {
                 git.setPublished();
                 git.close();
             }catch (final Exception e) {
+                e.printStackTrace();
             }
         }
     }

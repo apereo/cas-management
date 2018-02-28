@@ -10,9 +10,9 @@
     "testSingleRun": "ng test --single-run",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "buildDev": "ng build",
+    "buildDev": "ng build --bh",
     "buildWatch": "ng build --watch=true",
-    "build": "ng build --prod"
+    "build": "ng build --prod --bh"
   },
   "private": true,
   "dependencies": {

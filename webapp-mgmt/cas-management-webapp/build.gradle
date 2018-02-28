@@ -26,16 +26,16 @@ npm_install.dependsOn(npm_cache_clean)
 
 task buildClientDev(type: NpmTask, dependsOn: "npm_install", group: "bootRun",
         description: "Compile client side folder for development") {
-    args = ['run', 'buildDev']
+    args = ['run', 'buildDev', mgmtUrl]
 }
 
 task buildClient(type: NpmTask, dependsOn: "npm_install", group: "build",
         description: "Compile client side folder for production") {
-    args = ['run', 'build']
+    args = ['run', 'build', mgmtUrl]
 }
 
 task buildClientWatch(type: NpmTask, dependsOn: "npm_install", group: "application", description: "Build and watches the client side assets for rebuilding") {
-    args = ['run', 'buildWatch']
+    args = ['run', 'buildWatch', mgmtUrl]
 }
 
 task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
@@ -67,7 +67,7 @@ bootRepackage {
     mainClass = MAIN_CLASS
     enabled = !rootProject.publishingRelease
 
-    if (rootProject.publishReleases) {
+    if (rootProject.publishReleases || Boolean.getBoolean("buildProd")) {
         dependsOn(buildClient)
     } else {
         dependsOn(buildClientDev)
@@ -87,7 +87,7 @@ war {
     }
     enabled = !rootProject.publishingRelease && !rootProject.publishSnapshots
 
-    if (rootProject.publishReleases) {
+    if (rootProject.publishReleases || Boolean.getBoolean("buildProd")) {
         dependsOn(buildClient)
     } else {
         dependsOn(buildClientDev)

@@ -3,14 +3,15 @@ import {Messages} from '../../../messages';
 import {Data} from '../../data';
 import {FormData} from '../../../../domain/form-data';
 import {
-  DefaultRegisteredServiceAccessStrategy, GroovyRegisteredServiceAccessStrategy, GrouperRegisteredServiceAccessStrategy,
+  DefaultRegisteredServiceAccessStrategy, GroovyRegisteredServiceAccessStrategy,
+  GroovySurrogateRegisteredServiceAccessStrategy, GrouperRegisteredServiceAccessStrategy,
   RemoteEndpointServiceAccessStrategy,
   SurrogateRegisteredServiceAccessStrategy,
   TimeBasedRegisteredServiceAccessStrategy
 } from '../../../../domain/access-strategy';
 
 enum Type {
-  DEFAULT, TIME, GROUPER, REMOTE, SURROGATE, GROOVY
+  DEFAULT, TIME, GROUPER, REMOTE, SURROGATE, GROOVY_SURROGATE, GROOVY
 }
 
 @Component({
@@ -22,7 +23,7 @@ export class TypeComponent implements OnInit {
 
   type: Type;
   TYPE = Type;
-  types = [Type.DEFAULT, Type.TIME, Type.GROUPER, Type.REMOTE, Type.SURROGATE, Type.GROOVY];
+  types = [Type.DEFAULT, Type.TIME, Type.GROUPER, Type.REMOTE, Type.SURROGATE, Type.GROOVY_SURROGATE, Type.GROOVY];
 
   formData: FormData;
 
@@ -47,6 +48,8 @@ export class TypeComponent implements OnInit {
       this.type = Type.SURROGATE;
     } else if (GroovyRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
       this.type = Type.GROOVY;
+    } else if (GroovySurrogateRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
+      this.type = Type.GROOVY_SURROGATE;
     } else {
       this.type = Type.DEFAULT;
     }
@@ -71,6 +74,9 @@ export class TypeComponent implements OnInit {
         break;
       case Type.GROOVY :
         this.data.service.accessStrategy = new GroovyRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
+        break;
+      case Type.GROOVY_SURROGATE :
+        this.data.service.accessStrategy = new GroovySurrogateRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
         break;
       default:
     }

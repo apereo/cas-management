@@ -98,6 +98,21 @@ export class SurrogateRegisteredServiceAccessStrategy extends DefaultRegisteredS
   }
 }
 
+export class GroovySurrogateRegisteredServiceAccessStrategy extends RegisteredServiceAccessStrategy {
+  static cName = 'org.apereo.cas.services.GroovySurrogateRegisteredServiceAccessStrategy';
+
+  groovyScript: String;
+
+  static instanceOf(obj: any): boolean {
+    return obj && obj['@class'] === GroovySurrogateRegisteredServiceAccessStrategy.cName;
+  }
+
+  constructor(strat?: RegisteredServiceAccessStrategy) {
+    super(strat);
+    this['@class'] = GroovySurrogateRegisteredServiceAccessStrategy.cName;
+  }
+}
+
 export class GroovyRegisteredServiceAccessStrategy extends RegisteredServiceAccessStrategy {
   static cName = 'org.apereo.cas.services.GroovyRegisteredServiceAccessStrategy';
 

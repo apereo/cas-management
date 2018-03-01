@@ -28,6 +28,10 @@
     <app-surrogate></app-surrogate>
 </ng-container>
 
+<ng-container *ngIf="type == TYPE.GROOVY_SURROGATE">
+  <app-groovy-surrogate></app-groovy-surrogate>
+</ng-container>
+
 <ng-container *ngIf="type == TYPE.GROOVY">
     <app-groovy></app-groovy>
 </ng-container>

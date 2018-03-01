@@ -2,9 +2,9 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Messages} from '../messages';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {HeaderService} from './header.service';
 import {UserService} from '../user.service';
 import {ControlsService} from '../controls/controls.service';
+import {AppConfigService} from '../app-config.service';
 
 @Component({
   selector: 'app-header',
@@ -20,12 +20,11 @@ export class HeaderComponent implements OnInit {
   constructor(public messages: Messages,
               public router: Router,
               public location: Location,
-              private service: HeaderService,
+              public appService: AppConfigService,
               public userService: UserService,
               public controlsService: ControlsService) { }
 
   ngOnInit() {
-    this.service.getMangerType().then(resp => this.type = resp);
   }
 
   doSearch(val: string) {

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.GitServicesManager;
+import org.apereo.cas.mgmt.services.MgmtServicesManager;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -72,7 +72,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<String> saveService(final HttpServletRequest request,
                                               final HttpServletResponse response,
                                               @RequestBody final RegisteredService service) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final MgmtServicesManager manager = managerFactory.from(request, response);
         if (service.getEvaluationOrder() < 0) {
             service.setEvaluationOrder(manager.getAllServices().size());
         }
@@ -146,7 +146,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     private RegisteredService getService(final HttpServletRequest request,
                                          final HttpServletResponse response,
                                          final Long id) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final MgmtServicesManager manager = managerFactory.from(request, response);
         final RegisteredService service;
         if (id == -1) {
             service = new RegexRegisteredService();

@@ -99,6 +99,16 @@ public class ManagementWebappProperties implements Serializable {
     private String syncScript;
 
     /**
+     * Flag to enable version control with git.
+     */
+    private boolean enableVersionControl;
+
+    /**
+     * Flag to enable delegated management.
+     */
+    private boolean enableDelegatedMgmt;
+
+    /**
      * Notifications.
      */
     private NotificationsProperties notifications = new NotificationsProperties();

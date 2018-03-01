@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class GitServicesManager implements ServicesManager {
+public class MgmtServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
     private final GitUtil git;
@@ -52,25 +52,25 @@ public class GitServicesManager implements ServicesManager {
      * @throws Exception -failed
      */
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
-        if (git.isNull()) {
-            return new ArrayList<>();
+        if (git != null) {
+            this.uncommitted = new HashMap<>();
+            git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
         }
-        this.uncommitted = new HashMap<>();
-        git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
         final List<RegisteredServiceItem> serviceItems = new ArrayList<>();
         final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
         serviceItems.addAll(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
-        //serviceItems.addAll(checkForDeleted(git));
         return serviceItems;
 
     }
 
     private List<RegisteredServiceItem> checkForDeleted() {
-        try {
-            return git.checkForDeletes()
-                    .map(d -> getService(d))
-                    .collect(Collectors.toList());
-        }catch (final Exception e) {
+        if (git != null) {
+            try {
+                return git.checkForDeletes()
+                        .map(d -> getService(d))
+                        .collect(Collectors.toList());
+            } catch (final Exception e) {
+            }
         }
         return new ArrayList<>();
     }
@@ -98,8 +98,10 @@ public class GitServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        if (uncommitted != null && uncommitted.containsKey(service.getId())) {
-            serviceItem.setStatus(uncommitted.get(service.getId()));
+        if (git != null) {
+            if (uncommitted != null && uncommitted.containsKey(service.getId())) {
+                serviceItem.setStatus(uncommitted.get(service.getId()));
+            }
         }
         return serviceItem;
     }

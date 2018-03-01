@@ -109,7 +109,7 @@ export class GroovySurrogateRegisteredServiceAccessStrategy extends RegisteredSe
 
   constructor(strat?: RegisteredServiceAccessStrategy) {
     super(strat);
-    this['@class'] = GroovyRegisteredServiceAccessStrategy.cName;
+    this['@class'] = GroovySurrogateRegisteredServiceAccessStrategy.cName;
   }
 }
 

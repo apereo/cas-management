@@ -7,7 +7,8 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.GitServicesManager;
+import org.apereo.cas.mgmt.services.MgmtServicesManager;
+import org.apereo.cas.mgmt.services.web.beans.AppConfig;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.FormDataFactory;
@@ -111,7 +112,6 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * Ensure default service exists.
      */
     private void ensureDefaultServiceExists() {
-        this.servicesManager.load();
         final Collection<RegisteredService> c = this.servicesManager.getAllServices();
         if (c == null) {
             throw new IllegalStateException("Services cannot be empty");
@@ -166,7 +166,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
                                                           final HttpServletResponse response,
                                                           @RequestParam("id") final long idAsLong) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final MgmtServicesManager manager = managerFactory.from(request, response);
         final RegisteredService svc = manager.findServiceBy(idAsLong);
         if (svc == null) {
             return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
@@ -196,7 +196,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final MgmtServicesManager manager = managerFactory.from(request, response);
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
             data = data.stream()
@@ -241,7 +241,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                 throw new IllegalAccessException("You do not have permission to the domain '"+domain+"'");
             }
         }
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final MgmtServicesManager manager = managerFactory.from(request, response);
         return new ResponseEntity<>(manager.getServiceItemsForDomain(domain), HttpStatus.OK);
     }
 
@@ -260,7 +260,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                               final HttpServletResponse response,
                                                               @RequestParam final String query) throws Exception {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final MgmtServicesManager manager = managerFactory.from(request, response);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
         final List<RegisteredServiceItem> serviceBeans = new ArrayList<>();
         List<RegisteredService> services;
@@ -304,7 +304,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
                             @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
-        final GitServicesManager manager = managerFactory.from(request, response);
+        final MgmtServicesManager manager = managerFactory.from(request, response);
         final String id = svcs[0].getAssignedId();
         final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {
@@ -363,6 +363,20 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             throw new Exception("Failed to parse Service");
         }
+    }
+
+    /**
+     * Method called by client to determine which features are available and configured.
+     *
+     * @return - AppConfig
+     */
+    @GetMapping("/appConfig")
+    public ResponseEntity<AppConfig> appConfig() {
+        final AppConfig config = new AppConfig();
+        config.setMgmtType(casProperties.getServiceRegistry().getManagementType().toString());
+        config.setVersionControl(casProperties.getMgmt().isEnableVersionControl());
+        config.setDelegatedMgmt(casProperties.getMgmt().isEnableDelegatedMgmt());
+        return new ResponseEntity<>(config, HttpStatus.OK);
     }
 }
 

@@ -8,6 +8,7 @@ import {PublishComponent} from '../publish/publish.component';
 import {Commit} from '../../domain/commit';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {CommitComponent} from '../commit/commit.component';
+import {AppConfigService} from '../app-config.service';
 
 @Component({
   selector: 'app-controls',
@@ -41,12 +42,15 @@ export class ControlsComponent implements OnInit {
   constructor(public messages: Messages,
               public service: ControlsService,
               public userService: UserService,
+              public appService: AppConfigService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               public location: Location) { }
 
   ngOnInit() {
-    this.service.gitStatus();
+    if (this.appService.config.versionControl) {
+      this.service.gitStatus();
+    }
   }
 
   goBack() {
@@ -151,17 +155,22 @@ export class ControlsComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.userService.user && this.userService.user.administrator;
+    return this.appService.config.versionControl &&
+           this.userService.user &&
+           this.userService.user.administrator;
   }
 
   hasChanges(): boolean {
-    return this.service.status && this.service.status.hasChanges;
+    return this.appService.config.versionControl &&
+           this.service.status &&
+           this.service.status.hasChanges;
   }
 
 
   unpublished (): boolean {
-    return this.service.status && this.service.status.unpublished;
+    return this.appService.config.versionControl &&
+           this.service.status &&
+           this.service.status.unpublished;
   }
-
 
 }

@@ -15,7 +15,6 @@ import {DomainsModule} from './domains/domains.module';
 import { SearchComponent } from './search/search.component';
 import {SearchService} from './search/SearchService';
 
-import {HeaderService} from './header/header.service';
 import {UserService} from './user.service';
 import {HistoryModule} from './history/history.module';
 import {RevertComponent} from './revert/revert.component';
@@ -38,6 +37,7 @@ import {AcceptComponent} from './accept/accept.component';
 import {FooterService} from './footer/footer.service';
 import { ImportComponent } from './import/import.component';
 import {ImportService} from './import/import.service';
+import {AppConfigService} from './app-config.service';
 
 
 @NgModule({
@@ -82,11 +82,11 @@ import {ImportService} from './import/import.service';
   providers: [
     Messages,
     SearchService,
-    HeaderService,
     UserService,
     YamlResolver,
     FooterService,
-    ImportService
+    ImportService,
+    AppConfigService
   ],
   bootstrap: [AppComponent]
 })

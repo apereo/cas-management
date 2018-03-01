@@ -7,6 +7,7 @@ import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular
 import {DeleteComponent} from '../delete/delete.component';
 import {ControlsService} from '../controls/controls.service';
 import {RevertComponent} from '../revert/revert.component';
+import {AppConfigService} from '../app-config.service';
 
 @Component({
   selector: 'app-services',
@@ -28,6 +29,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: ServiceViewService,
+              public appService: AppConfigService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               public controlsService: ControlsService) {
@@ -184,5 +186,36 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
     const index = this.dataSource.data.indexOf(this.selectedItem);
     return index > 0;
+  }
+
+  showHistory(): boolean {
+    return this.appService.config.versionControl &&
+           this.selectedItem &&
+           this.selectedItem.status !== 'ADD';
+  }
+
+  showRevert(): boolean {
+    return this.appService.config.versionControl &&
+           this.selectedItem &&
+           this.selectedItem.status !== 'ADD';
+  }
+
+  added(row: ServiceItem): boolean {
+    return this.appService.config.versionControl &&
+           row.status === 'ADDED';
+  }
+
+  modified(row: ServiceItem): boolean {
+    return this.appService.config.versionControl &&
+           row.status === 'MODIFIED';
+  }
+
+  deleted(row: ServiceItem): boolean {
+    return this.appService.config.versionControl &&
+           row.status === 'DELETED';
+  }
+
+  status(row: ServiceItem): String {
+    return this.appService.config.versionControl ? row.status : '';
   }
 }

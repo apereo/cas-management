@@ -93,7 +93,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         FileUtils.deleteDirectory(new File("/tmp/services-repo"));
         this.servicesManager = new DefaultServicesManager(new InMemoryServiceRegistry(), null);
         RegexRegisteredService svc = new RegexRegisteredService();
-        svc.setServiceId("^https://.*");
+        svc.setServiceId("https://.*");
         svc.setName("Wildcard");
         svc.setDescription("Wildacard defualt service");
         this.servicesManager.save(svc);
@@ -110,7 +110,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         final RepositoryFactory repositoryFactory = new RepositoryFactory(casProperties, casUserProfileFactory);
         final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager, casProperties, repositoryFactory, casUserProfileFactory);
         this.controller = new ManageRegisteredServicesMultiActionController(this.servicesManager,
-                null, webApplicationServiceFactory, "^https://.*",
+                null, webApplicationServiceFactory, "https://.*",
                  casProperties, casUserProfileFactory, managerFactory, repositoryFactory);
     }
 
@@ -159,14 +159,17 @@ public class ManageRegisteredServicesMultiActionControllerTests {
                                                                                  "default").getBody();
         services.get(0).setEvalOrder(1);
         services.get(1).setEvalOrder(0);
+        final String name0 = services.get(0).getName();
+        final String name1 = services.get(1).getName();
         final RegisteredServiceItem[] svcs = new RegisteredServiceItem[2];
-        services.toArray(svcs);
+        svcs[0] = services.get(0);
+        svcs[1] = services.get(1);
         this.controller.updateOrder(new MockHttpServletRequest(), new MockHttpServletResponse(), svcs);
         services = this.controller.getServices(new MockHttpServletRequest(),
                                                new MockHttpServletResponse(),
                                                "default").getBody();
-        assertTrue(services.get(0).getName().startsWith("Wildcard"));
-        assertTrue(services.get(1).getName().startsWith("Apereo"));
+        assertTrue(services.get(0).getName().equals(name1));
+        assertTrue(services.get(1).getName().equals(name0));
     }
 
 

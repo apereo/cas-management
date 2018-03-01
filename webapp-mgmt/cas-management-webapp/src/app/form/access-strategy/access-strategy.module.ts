@@ -13,6 +13,7 @@ import {TimeComponent} from './time/time.component';
 import {TypeComponent} from './type/type.component';
 import {AttributemappingModule} from '../attributemapping/attributemapping.module';
 import {FormSharedModule} from '../form-shared.module';
+import {GroovySurrogateComponent} from './groovySurrogate/groovy-surrogate.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import {FormSharedModule} from '../form-shared.module';
     RemoteComponent,
     RequiredComponent,
     SurrogateComponent,
+    GroovySurrogateComponent,
     TimeComponent,
     TypeComponent
   ],
@@ -41,6 +43,7 @@ import {FormSharedModule} from '../form-shared.module';
     RemoteComponent,
     RequiredComponent,
     SurrogateComponent,
+    GroovySurrogateComponent,
     TimeComponent,
     TypeComponent
   ]

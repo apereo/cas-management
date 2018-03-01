@@ -1,0 +1,15 @@
+<app-input field="groovyScript" [change]="accessStrategy" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n-placeholder="services.form.label.sas.groovy.scriptFile">
+      {{ messages.services_form_label_sas_groovy_scriptFile }}
+    </mat-placeholder>
+    <input matInput [(ngModel)]="accessStrategy.groovyScript">
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp
+            i18n-matTooltip="services.form.tooltip.sas.groovy.scriptFile"
+            [matTooltip]="messages.services_form_tooltip_sas_groovy_scriptFile">
+  </mat-icon>
+</app-input>

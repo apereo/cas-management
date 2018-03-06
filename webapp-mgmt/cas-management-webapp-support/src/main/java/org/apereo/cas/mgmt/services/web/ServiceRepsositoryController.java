@@ -158,6 +158,25 @@ public class ServiceRepsositoryController {
     }
 
     /**
+     * Method to run sync script outside of publish.
+     *
+     * @param request - the request
+     * @param response - ther resposne
+     * @return - status
+     * @throws Exception - failed
+     */
+    @GetMapping("sync")
+    public ResponseEntity<String> sync(final HttpServletRequest request,
+                                       final HttpServletResponse response) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        if (casUserProfile.isAdministrator()) {
+            runSyncScript();
+            return new ResponseEntity<>("Services Synced", HttpStatus.OK);
+        }
+        throw new Exception("You are not authorized for this operation");
+
+    }
+    /**
      * If a syncScript is configured it will be executed.
      *
      * @throws Exception - failed.

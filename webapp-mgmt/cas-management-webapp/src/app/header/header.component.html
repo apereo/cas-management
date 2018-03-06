@@ -49,6 +49,10 @@
     <mat-icon>build</mat-icon>
     <ng-container i18n>Working Changes</ng-container>
   </button>
+  <button *ngIf="isAdmin()" mat-menu-item (click)="sync()">
+    <mat-icon>sync</mat-icon>
+    <ng-container i18n>Synchronize</ng-container>
+  </button>
   <button mat-menu-item target="_self" id="logoutUrlLink" (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>
     <ng-container i18n="management.services.header.navbar.navitem.logout">

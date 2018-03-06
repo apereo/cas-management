@@ -5,6 +5,7 @@ import {Location} from '@angular/common';
 import {HeaderService} from './header.service';
 import {UserService} from '../user.service';
 import {ControlsService} from '../controls/controls.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit {
               public location: Location,
               private service: HeaderService,
               public userService: UserService,
-              public controlsService: ControlsService) { }
+              public controlsService: ControlsService,
+              public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.service.getMangerType().then(resp => this.type = resp);
@@ -38,6 +40,14 @@ export class HeaderComponent implements OnInit {
 
   isAdmin(): boolean {
     return this.userService.user && this.userService.user.administrator;
+  }
+
+  sync() {
+    this.service.sync().then(resp => {
+      this.snackBar.open("Services Synchronized", "Dismiss", {
+        duration: 5000
+      });
+    });
   }
 
 }

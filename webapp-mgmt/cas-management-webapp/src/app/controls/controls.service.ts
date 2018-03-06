@@ -45,4 +45,8 @@ export class ControlsService extends Service {
     this.get<GitStatus>('gitStatus').then(resp => this.status = resp);
   }
 
+  sync(): Promise<String> {
+    return this.getText("sync");
+  }
+
 }

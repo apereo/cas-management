@@ -20,6 +20,7 @@ import {MatSnackBar, MatTabGroup} from '@angular/material';
 import {GrouperRegisteredServiceAccessStrategy} from '../../domain/access-strategy';
 import {RegisteredServiceRegexAttributeFilter} from '../../domain/attribute-filter';
 import {UserService} from '../user.service';
+import {ImportService} from '../import/import.service';
 
 enum Tabs {
   BASICS,
@@ -54,6 +55,7 @@ export class FormComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: FormService,
+              private importService: ImportService,
               public data: Data,
               private location: Location,
               public snackBar: MatSnackBar,
@@ -62,13 +64,19 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
-    this.route.data
-      .subscribe((data: { resp: AbstractRegisteredService}) => {
-        if (data.resp) {
-          this.loadService(data.resp);
-          this.goto(Tabs.BASICS)
-        }
-      });
+    if (this.route.snapshot.data.import) {
+      this.loadService(this.importService.service);
+      this.goto(Tabs.BASICS);
+    } else {
+      this.route.data
+        .subscribe((data: { resp: AbstractRegisteredService }) => {
+          if (data.resp) {
+            this.loadService(data.resp);
+            this.goto(Tabs.BASICS)
+          }
+
+        });
+    }
   }
 
   goto(tab: Tabs) {

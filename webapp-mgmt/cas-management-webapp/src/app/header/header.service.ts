@@ -14,7 +14,5 @@ export class HeaderService extends Service {
     return this.getText('managerType');
   }
 
-  sync(): Promise<String> {
-    return this.getText("sync");
-  }
+
 }

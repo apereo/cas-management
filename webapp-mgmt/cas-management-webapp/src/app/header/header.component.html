@@ -23,19 +23,19 @@
 </div>
 
 <mat-menu #links>
-  <button mat-menu-item *ngIf="type === 'DOMAIN' " routerLink="/domains">
+  <button mat-menu-item *ngIf="appService.config.mgmtType === 'DOMAIN' " routerLink="/domains">
     <mat-icon>apps</mat-icon>
     <span i18n>Domains</span>
   </button>
-  <button *ngIf="type === 'DEFAULT'" mat-menu-item routerLink="/services/defualt">
+  <button *ngIf="appService.config.mgmtType === 'DEFAULT'" mat-menu-item routerLink="/services/defualt">
     <mat-icon>apps</mat-icon>
     <span i18n>Services</span>
   </button>
-  <button *ngIf="isAdmin()" mat-menu-item routerLink="/pulls">
+  <button *ngIf="appService.config.delegatedMgmt && isAdmin()" mat-menu-item routerLink="/pulls">
     <mat-icon>file_download</mat-icon>
     <ng-container i18n>Pull Requests</ng-container>
   </button>
-  <button *ngIf="!isAdmin()" mat-menu-item routerLink="/submits">
+  <button *ngIf="appService.config.delegatedMgmt && !isAdmin()" mat-menu-item routerLink="/submits">
     <mat-icon>file_upload</mat-icon>
     <ng-container i18n>Submit Requests</ng-container>
   </button>
@@ -45,11 +45,15 @@
         {{ messages.management_services_header_navbar_navitem_addNewService }}
       </span>
   </button>
-  <button mat-menu-item routerLink="/localChanges">
+  <button mat-menu-item routerLink="/import" *ngIf="isAdmin()">
+    <mat-icon>add_circle</mat-icon>
+    <ng-container i18n>Import Service</ng-container>
+  </button>
+  <button *ngIf="appService.config.versionControl" mat-menu-item routerLink="/localChanges">
     <mat-icon>build</mat-icon>
     <ng-container i18n>Working Changes</ng-container>
   </button>
-  <button *ngIf="isAdmin()" mat-menu-item (click)="sync()">
+  <button *ngIf="isAdmin() && isSyncScript()" mat-menu-item (click)="sync()">
     <mat-icon>sync</mat-icon>
     <ng-container i18n>Synchronize</ng-container>
   </button>

@@ -17,4 +17,5 @@ public class AppConfig {
     private String mgmtType;
     private boolean versionControl;
     private boolean delegatedMgmt;
+    private boolean syncScript;
 }

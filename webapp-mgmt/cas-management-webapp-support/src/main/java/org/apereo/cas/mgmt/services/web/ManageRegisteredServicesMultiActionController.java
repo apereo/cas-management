@@ -376,6 +376,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         config.setMgmtType(casProperties.getServiceRegistry().getManagementType().toString());
         config.setVersionControl(casProperties.getMgmt().isEnableVersionControl());
         config.setDelegatedMgmt(casProperties.getMgmt().isEnableDelegatedMgmt());
+        config.setSyncScript(casProperties.getMgmt().getSyncScript() != null);
         return new ResponseEntity<>(config, HttpStatus.OK);
     }
 }

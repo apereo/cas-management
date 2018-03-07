@@ -14,6 +14,7 @@ import org.eclipse.jgit.api.Git;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,10 +41,10 @@ public class ManagerFactory {
         this.repositoryFactory = repositoryFactory;
         this.casProperties = casProperties;
         this.casUserProfileFactory = casUserProfileFactory;
-        final Path servicesRepo = Paths.get(casProperties.getMgmt().getServicesRepo());
+        final Path servicesRepo = Paths.get(casProperties.getMgmt().getServicesRepo() + "/.git");
         if (!Files.exists(servicesRepo)) {
             try {
-                Git.init().setDirectory(servicesRepo.toFile()).call();
+                Git.init().setDirectory(new File(casProperties.getMgmt().getServicesRepo())).call();
             } catch(final Exception e) {
                 e.printStackTrace();
                 return;

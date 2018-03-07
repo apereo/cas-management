@@ -74,6 +74,8 @@ public class ServiceRepsositoryController {
 
     private final CommunicationsManager communicationsManager;
 
+    private boolean publishError;
+
     public ServiceRepsositoryController(
             final RepositoryFactory repositoryFactory,
             final ManagerFactory managerFactory,
@@ -127,6 +129,7 @@ public class ServiceRepsositoryController {
             throw new Exception("Permission denied");
         }
         final GitUtil git = repositoryFactory.masterRepository();
+        this.publishError = false;
         git.getUnpublishedCommits().forEach(commit -> {
             try {
                 final List<DiffEntry> diffs = git.getDiffs(commit.getId());
@@ -138,7 +141,8 @@ public class ServiceRepsositoryController {
                             try {
                                 this.servicesManager.delete(ser.from(git.readObject(c.getOldId().toObjectId())).getId());
                             } catch (final Exception e) {
-
+                                this.publishError = true;
+                                LOGGER.error(e.getMessage(), e);
                             }
                         });
                 diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)
@@ -147,11 +151,18 @@ public class ServiceRepsositoryController {
                             try {
                                 this.servicesManager.save(ser.from(git.readObject(c.getNewId().toObjectId())));
                             } catch (final Exception e) {
+                                this.publishError = true;
+                                LOGGER.error(e.getMessage(),e);
                             }
                         });
             } catch (final Exception e) {
+                this.publishError = true;
+                LOGGER.error(e.getMessage(), e);
             }
         });
+        if (this.publishError) {
+            return new ResponseEntity<>("Services were not published because of a failure.  Please review logs and try again", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         git.setPublished();
         runSyncScript();
         return new ResponseEntity<>("Services published", HttpStatus.OK);

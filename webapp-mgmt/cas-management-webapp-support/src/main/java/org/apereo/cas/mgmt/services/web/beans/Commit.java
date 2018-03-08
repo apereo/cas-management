@@ -9,14 +9,16 @@ package org.apereo.cas.mgmt.services.web.beans;
 public class Commit {
     private String id;
     private String text;
+    private String commitTime;
 
     public Commit() {
 
     }
 
-    public Commit(final String id, final String text) {
+    public Commit(final String id, final String text, final String commitTime) {
         this.id = id;
         this.text = text;
+        this.commitTime = commitTime;
     }
 
     public String getId() {
@@ -33,5 +35,13 @@ public class Commit {
 
     public void setText(final String text) {
         this.text = text;
+    }
+
+    public String getCommitTime() {
+        return commitTime;
+    }
+
+    public void setCommitTime(final String commitTime) {
+        this.commitTime = commitTime;
     }
 }

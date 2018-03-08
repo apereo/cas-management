@@ -20,11 +20,16 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.io.CommunicationsManager;
+import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -42,12 +47,17 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Controller the provides endpoints for using the Git workflow.
@@ -209,6 +219,40 @@ public class ServiceRepsositoryController {
      * @return ResponseEntity
      * @throws Exception - failed.
      */
+    @GetMapping(value = "/commits")
+    public ResponseEntity<List<Commit>> commitLogs(final HttpServletRequest request,
+                                                final HttpServletResponse response) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission denied");
+        }
+
+        final GitUtil git = repositoryFactory.masterRepository();
+        final List<Commit> commits = git.getLastNCommits(100)
+           .map(c -> new Commit(c.abbreviate(40).name(),
+                                c.getFullMessage(),
+                                formatCommitTime(c.getCommitTime()))
+                )
+                .collect(Collectors.toList());
+        git.close();
+        //commits.remove(0);
+        return new ResponseEntity<List<Commit>>(commits, HttpStatus.OK);
+    }
+
+    private String formatCommitTime(final int ctime) {
+       return  LocalDateTime.ofInstant(new Date(ctime * 1000l).toInstant(),
+                ZoneId.systemDefault())
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    /**
+     * Method returns a list of commits that have not been published to CAS Servers.
+     *
+     * @param request  - HttpServletRequest
+     * @param response - HttpServletResponse
+     * @return ResponseEntity
+     * @throws Exception - failed.
+     */
     @GetMapping(value = "/commitList")
     public ResponseEntity<List<Commit>> commits(final HttpServletRequest request,
                                                 final HttpServletResponse response) throws Exception {
@@ -219,7 +263,11 @@ public class ServiceRepsositoryController {
 
         final int behind = getPublishBehindCount();
         final GitUtil git = repositoryFactory.masterRepository();
-        final List<Commit> commits = git.getLastNCommits(behind);
+        final List<Commit> commits = git.getLastNCommits(behind)
+                .map(c -> new Commit(c.getId().abbreviate(40).name(),
+                                     c.getFullMessage(),
+                                     formatCommitTime(c.getCommitTime())))
+                .collect(toList());
         git.close();
         return new ResponseEntity<List<Commit>>(commits, HttpStatus.OK);
     }
@@ -293,7 +341,7 @@ public class ServiceRepsositoryController {
     private List<Diff> createDiffs(final String ref) throws Exception {
         return repositoryFactory.masterRepository().getDiffs("refs/heads/" + ref).stream()
                 .map(this::createDiff)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     /**
@@ -341,7 +389,7 @@ public class ServiceRepsositoryController {
         }
         final List<Change> changes = git.scanWorkingDiffs().stream()
                 .map(d -> createChange(d, git))
-                .collect(Collectors.toList());
+                .collect(toList());
         return new ResponseEntity<>(changes, HttpStatus.OK);
     }
 
@@ -378,7 +426,7 @@ public class ServiceRepsositoryController {
                 .map(git::mapBranches)
                 .filter(r -> filterPulls(r, options))
                 .map(r -> createBranch(r))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
@@ -421,7 +469,7 @@ public class ServiceRepsositoryController {
                 .filter(r -> r.getName().contains("/" + user.getId() + "_"))
                 .map(git::mapBranches)
                 .map(r -> createBranch(r))
-                .collect(Collectors.toList());
+                .collect(toList());
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
 
@@ -447,9 +495,31 @@ public class ServiceRepsositoryController {
         final GitUtil git = repositoryFactory.masterRepository();
         final List<Diff> changes = git.getDiffs(branch).stream()
                 .map(this::createDiff)
-                .collect(Collectors.toList());
+                .collect(toList());
         git.close();
         return new ResponseEntity<>(changes, HttpStatus.OK);
+    }
+
+    @GetMapping("/commitHistoryList")
+    public ResponseEntity<List<Diff>> commitHistoryList(final HttpServletResponse response,
+                                                 final HttpServletRequest request,
+                                                 @RequestParam("id") final String id) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission Denied");
+        }
+
+        final GitUtil git = repositoryFactory.masterRepository();
+        final RevCommit r = git.getCommit(id);
+        final List<Diff> diffs = git.getDiffs(id).stream()
+                .map(this::createDiff)
+                .map(d -> {d.setCommitter(r.getCommitterIdent().getName());
+                           d.setCommitTime(formatCommitTime(r.getCommitTime()));
+                           d.setCommit(id);
+                           return d;
+                })
+                .collect(toList());
+        return new ResponseEntity<>(diffs, HttpStatus.OK);
     }
 
     /**
@@ -705,6 +775,21 @@ public class ServiceRepsositoryController {
         return new ResponseEntity<>("File Reverted", HttpStatus.OK);
     }
 
+    @GetMapping("/revertRepo")
+    public ResponseEntity<String> revertRepo(final HttpServletRequest request,
+                                             final HttpServletResponse response,
+                                             final @RequestParam String id) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission denied");
+        }
+        final GitUtil git = repositoryFactory.masterRepository();
+        RegisteredService svc = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
+        managerFactory.from(request, response).save(svc);
+        git.close();
+        return new ResponseEntity<>("File Reverted", HttpStatus.OK);
+    }
+
     /**
      * Method will restore a deleted file to the working dir.
      *
@@ -751,6 +836,19 @@ public class ServiceRepsositoryController {
         return new ResponseEntity<>("File Checked Out", HttpStatus.OK);
     }
 
+    @GetMapping("/checkoutCommit")
+    public ResponseEntity<String> checkoutCommit(final HttpServletResponse response,
+                                                 final HttpServletRequest request,
+                                                 final @RequestParam String id) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission denied");
+        }
+        final GitUtil git = repositoryFactory.masterRepository();
+        git.getGit().reset().setRef(id).setMode(ResetCommand.ResetType.HARD).call();
+        git.close();
+        return new ResponseEntity<>("Commit checked out", HttpStatus.OK);
+    }
     /**
      * Restores a service into the service from at its original location.
      *

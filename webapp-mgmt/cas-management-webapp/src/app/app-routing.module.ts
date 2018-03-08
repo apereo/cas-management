@@ -22,6 +22,9 @@ import {ChangesComponent} from './changes/changes.component';
 import {ChangesResolve} from './changes/changes.resolover';
 import {NotesComponent} from './notes/notes.component';
 import {ImportComponent} from './import/import.component';
+import {RepoHistoryComponent} from './repo-history/repo-history.component';
+import {CommitHistoryComponent} from './commit-history/commit-history.component';
+import {CommitHistoryResolve} from './commit-history/commit-history.resolover';
 
 @NgModule({
   imports: [
@@ -116,6 +119,17 @@ import {ImportComponent} from './import/import.component';
       {
         path: 'import',
         component: ImportComponent
+      },
+      {
+        path: 'repo-history',
+        component: RepoHistoryComponent
+      },
+      {
+        path: 'commit-history/:id',
+        component: CommitHistoryComponent,
+        resolve: {
+          resp: CommitHistoryResolve
+        }
       }
     ]),
   ],

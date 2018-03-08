@@ -1,0 +1,20 @@
+.messageWidth {
+  flex: 0 0 100px;
+}
+
+.pathWidth {
+    flex: 1 1 auto;
+}
+
+.committerWidth {
+  flex: 0 0 240px;
+}
+
+.timeWidth {
+  flex: 0 0 240px;
+}
+
+.actionWidth {
+  flex: 0 0 50px;
+}
+

@@ -57,6 +57,10 @@
     <mat-icon>sync</mat-icon>
     <ng-container i18n>Synchronize</ng-container>
   </button>
+  <button *ngIf="isAdmin()" mat-menu-item routerLink="/repo-history">
+    <mat-icon>history</mat-icon>
+    <ng-container i18n>History</ng-container>
+  </button>
   <button mat-menu-item target="_self" id="logoutUrlLink" (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>
     <ng-container i18n="management.services.header.navbar.navitem.logout">

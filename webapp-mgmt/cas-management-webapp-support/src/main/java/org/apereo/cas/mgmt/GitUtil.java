@@ -44,6 +44,9 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -79,10 +82,8 @@ public class GitUtil {
      * @return - List of Commit objects
      * @throws Exception - failed.
      */
-    public List<Commit> getLastNCommits(final int n) throws Exception {
-        return StreamSupport.stream(git.log().setMaxCount(n).call().spliterator(), false)
-                .map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage()))
-                .collect(Collectors.toList());
+    public Stream<RevCommit> getLastNCommits(final int n) throws Exception {
+        return StreamSupport.stream(git.log().setMaxCount(n).call().spliterator(), false);
     }
 
     /**
@@ -94,7 +95,7 @@ public class GitUtil {
      */
     public List<Commit> getUnpublishedCommits() throws Exception {
         final List<Commit> commits = StreamSupport.stream(git.log().addRange(getPublished().getPeeledObjectId(), git.getRepository().resolve("HEAD"))
-                .call().spliterator(), false).map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage()))
+                .call().spliterator(), false).map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage(),null))
                 .collect(Collectors.toList());
         Collections.reverse(commits);
         return commits;
@@ -514,9 +515,8 @@ public class GitUtil {
      * @return - PersonIden object to be added to a commit.
      */
     public PersonIdent getCommitterId(final CasUserProfile user) {
-        final String displayName = user.getDisplayName();
         final String email = user.getEmail() != null ? user.getEmail() : "mgmt@cas.com";
-        return new PersonIdent(user.getId() + " - " + displayName, email);
+        return new PersonIdent( user.getId(), email);
     }
 
     /**

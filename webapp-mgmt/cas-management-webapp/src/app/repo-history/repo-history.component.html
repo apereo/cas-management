@@ -1,0 +1,87 @@
+<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+  <div style="padding-top: 10px;">
+    <mat-icon style="padding-top: 3px;">history</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;">
+      <ng-container i18n>
+        History
+      </ng-container>
+    </h4>
+  </div>
+  <div style="flex: 1 1 auto"></div>
+  <div>
+    <app-controls></app-controls>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column;margin-right:25px;margin-left:25px;">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="message">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'messageWidth'">
+        <ng-container i18n>
+          Message
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'messageWidth'">
+        {{ row.text}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
+        <ng-container i18n>
+          Id
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <a (click)="viewChanges(row)">
+          {{ row.id }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="time">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'statusWidth'">
+        <ng-container i18n>
+          Time
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'statusWidth'">
+        {{ row.commitTime }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="pullMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>
+
+<mat-menu #pullMenu>
+  <button mat-menu-item (click)="viewChanges()">
+    <mat-icon>visibility</mat-icon>
+    <ng-container i18n>View Changes</ng-container>
+  </button>
+  <button mat-menu-item (click)="checkout()">
+    <mat-icon>restore</mat-icon>
+    <ng-container i18n>Hard Reset</ng-container>
+  </button>
+</mat-menu>

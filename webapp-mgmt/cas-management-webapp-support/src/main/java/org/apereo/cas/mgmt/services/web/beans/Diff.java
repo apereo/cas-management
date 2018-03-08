@@ -15,6 +15,9 @@ public class Diff implements Serializable {
     private String newId;
     private String path;
     private String changeType;
+    private String committer;
+    private String commitTime;
+    private String commit;
 
     public Diff(){
 
@@ -60,5 +63,29 @@ public class Diff implements Serializable {
 
     public void setChangeType(final String changeType) {
         this.changeType = changeType;
+    }
+
+    public String getCommitter() {
+        return committer;
+    }
+
+    public void setCommitter(String committer) {
+        this.committer = committer;
+    }
+
+    public String getCommitTime() {
+        return commitTime;
+    }
+
+    public void setCommitTime(final String commitTime) {
+        this.commitTime = commitTime;
+    }
+
+    public String getCommit() {
+        return commit;
+    }
+
+    public void setCommit(final String commit) {
+        this.commit = commit;
     }
 }

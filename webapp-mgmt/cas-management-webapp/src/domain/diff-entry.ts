@@ -7,4 +7,7 @@ export class DiffEntry {
   newId: String;
   diff: String;
   changeType: String;
+  committer: String;
+  commitTime: String;
+  commit: String;
 }

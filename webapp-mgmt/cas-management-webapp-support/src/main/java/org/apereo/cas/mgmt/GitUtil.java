@@ -687,6 +687,21 @@ public class GitUtil {
     }
 
     /**
+     * Returns a list fo differences between the last two commits in a branch.
+     *
+     * @param branch - The branch to check for differences against.
+     * @return - List of DiffEntry.
+     * @throws Exception - failed.
+     */
+    public List<DiffEntry> getDiffsToRevert(final String branch) throws Exception {
+        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+        final ObjectReader reader = git.getRepository().newObjectReader();
+        oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
+        final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+        newTreeIter.reset(reader, git.getRepository().resolve("HEAD^{tree}"));
+        return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+    }
+    /**
      * Overloaded method to return a formatted diff by using two ObjectIds.
      *
      * @param oldId - ObjectId.

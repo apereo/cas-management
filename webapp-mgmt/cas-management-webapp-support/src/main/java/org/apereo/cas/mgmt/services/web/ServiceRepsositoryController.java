@@ -844,8 +844,20 @@ public class ServiceRepsositoryController {
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
+
         final GitUtil git = repositoryFactory.masterRepository();
-        git.getGit().reset().setRef(id).setMode(ResetCommand.ResetType.HARD).call();
+        final RevCommit r = git.getCommit(id);
+        git.getDiffsToRevert(id).stream().forEach(d -> {
+            try {
+                if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
+                    git.getGit().rm().addFilepattern(d.getNewPath()).call();
+                } else {
+                    git.checkout(d.getOldPath(), id);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         git.close();
         return new ResponseEntity<>("Commit checked out", HttpStatus.OK);
     }

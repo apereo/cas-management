@@ -8,6 +8,7 @@ export class AppConfigService {
   config: AppConfig = new AppConfig();
 
   constructor(private http: HttpClient) {
+    this.getConfig();
   }
 
   getConfig(): Promise<AppConfig> {

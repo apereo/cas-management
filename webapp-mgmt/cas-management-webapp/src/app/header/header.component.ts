@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
 
   sync() {
     this.controlsService.sync().then(resp => {
-      this.snackBar.open("Services Synchronized", "Dismiss", {
+      this.snackBar.open('Services Synchronized', 'Dismiss', {
         duration: 5000
       });
     });

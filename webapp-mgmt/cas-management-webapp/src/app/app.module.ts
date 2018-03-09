@@ -38,6 +38,9 @@ import {FooterService} from './footer/footer.service';
 import { ImportComponent } from './import/import.component';
 import {ImportService} from './import/import.service';
 import {AppConfigService} from './app-config.service';
+import { RepoHistoryComponent } from './repo-history/repo-history.component';
+import {RepoHistoryService} from './repo-history/repo-history.service';
+import {CommitHistoryModule} from './commit-history/commit-history.module';
 
 
 @NgModule({
@@ -57,7 +60,8 @@ import {AppConfigService} from './app-config.service';
     NotesModule,
     FormModule,
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CommitHistoryModule
   ],
   declarations: [
     AppComponent,
@@ -71,7 +75,8 @@ import {AppConfigService} from './app-config.service';
     LocalChangesComponent,
     FooterComponent,
     YamlComponent,
-    ImportComponent
+    ImportComponent,
+    RepoHistoryComponent
   ],
   entryComponents: [
     DeleteComponent,
@@ -86,7 +91,8 @@ import {AppConfigService} from './app-config.service';
     YamlResolver,
     FooterService,
     ImportService,
-    AppConfigService
+    AppConfigService,
+    RepoHistoryService
   ],
   bootstrap: [AppComponent]
 })

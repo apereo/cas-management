@@ -63,9 +63,12 @@ import java.util.stream.StreamSupport;
  */
 public class GitUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GitUtil.class);
+    /**
+     * Constant representing lenght of Object ID to return.
+     */
+    public static final int NAME_LENGTH = 40;
 
-    private static final int NAME_LENGTH = 40;
+    private static final Logger LOGGER = LoggerFactory.getLogger(GitUtil.class);
 
     private final Git git;
 
@@ -80,10 +83,8 @@ public class GitUtil {
      * @return - List of Commit objects
      * @throws Exception - failed.
      */
-    public List<Commit> getLastNCommits(final int n) throws Exception {
-        return StreamSupport.stream(git.log().setMaxCount(n).call().spliterator(), false)
-                .map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage()))
-                .collect(Collectors.toList());
+    public Stream<RevCommit> getLastNCommits(final int n) throws Exception {
+        return StreamSupport.stream(git.log().setMaxCount(n).call().spliterator(), false);
     }
 
     /**
@@ -95,7 +96,7 @@ public class GitUtil {
      */
     public List<Commit> getUnpublishedCommits() throws Exception {
         final List<Commit> commits = StreamSupport.stream(git.log().addRange(getPublished().getPeeledObjectId(), git.getRepository().resolve("HEAD"))
-                .call().spliterator(), false).map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage()))
+                .call().spliterator(), false).map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage(), null))
                 .collect(Collectors.toList());
         Collections.reverse(commits);
         return commits;
@@ -515,9 +516,8 @@ public class GitUtil {
      * @return - PersonIden object to be added to a commit.
      */
     public PersonIdent getCommitterId(final CasUserProfile user) {
-        final String displayName = user.getDisplayName();
         final String email = user.getEmail() != null ? user.getEmail() : "mgmt@cas.com";
-        return new PersonIdent(user.getId() + " - " + displayName, email);
+        return new PersonIdent(user.getId(), email);
     }
 
     /**
@@ -687,6 +687,21 @@ public class GitUtil {
         return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
     }
 
+    /**
+     * Returns a list fo differences between the last two commits in a branch.
+     *
+     * @param branch - The branch to check for differences against.
+     * @return - List of DiffEntry.
+     * @throws Exception - failed.
+     */
+    public List<DiffEntry> getDiffsToRevert(final String branch) throws Exception {
+        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+        final ObjectReader reader = git.getRepository().newObjectReader();
+        oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
+        final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+        newTreeIter.reset(reader, git.getRepository().resolve("HEAD^{tree}"));
+        return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+    }
     /**
      * Overloaded method to return a formatted diff by using two ObjectIds.
      *

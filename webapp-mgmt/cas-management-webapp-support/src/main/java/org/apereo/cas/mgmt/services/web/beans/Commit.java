@@ -23,4 +23,9 @@ public class Commit {
      * Commit message of the commit.
      */
     private String text;
+
+    /**
+     * Time commit occurred.
+     */
+    private String commitTime;
 }

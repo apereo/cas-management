@@ -42,12 +42,16 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Controller the provides endpoints for using the Git workflow.
@@ -60,6 +64,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ServiceRepsositoryController {
 
+    private static final int MAX_COMMITS = 100;
+
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?\\??://([^:/]+)");
 
     private final RepositoryFactory repositoryFactory;
@@ -68,6 +74,8 @@ public class ServiceRepsositoryController {
     private final CasConfigurationProperties casProperties;
     private final ServicesManager servicesManager;
     private final CommunicationsManager communicationsManager;
+
+    private boolean publishError;
 
     /**
      * Method commits all modified and untracked work in the working tree.
@@ -107,6 +115,7 @@ public class ServiceRepsositoryController {
             throw new Exception("Permission denied");
         }
         final GitUtil git = repositoryFactory.masterRepository();
+        this.publishError = false;
         git.getUnpublishedCommits().forEach(commit -> {
             try {
                 final List<DiffEntry> diffs = git.getDiffs(commit.getId());
@@ -118,7 +127,8 @@ public class ServiceRepsositoryController {
                             try {
                                 this.servicesManager.delete(ser.from(git.readObject(c.getOldId().toObjectId())).getId());
                             } catch (final Exception e) {
-
+                                this.publishError = true;
+                                LOGGER.error(e.getMessage(), e);
                             }
                         });
                 diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)
@@ -127,11 +137,19 @@ public class ServiceRepsositoryController {
                             try {
                                 this.servicesManager.save(ser.from(git.readObject(c.getNewId().toObjectId())));
                             } catch (final Exception e) {
+                                this.publishError = true;
+                                LOGGER.error(e.getMessage(), e);
                             }
                         });
             } catch (final Exception e) {
+                this.publishError = true;
+                LOGGER.error(e.getMessage(), e);
             }
         });
+        if (this.publishError) {
+            return new ResponseEntity<>("Services were not published because of a failure.  Please review logs and try again",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         git.setPublished();
         runSyncScript();
         return new ResponseEntity<>("Services published", HttpStatus.OK);
@@ -178,6 +196,40 @@ public class ServiceRepsositoryController {
      * @return ResponseEntity
      * @throws Exception - failed.
      */
+    @GetMapping(value = "/commits")
+    public ResponseEntity<List<Commit>> commitLogs(final HttpServletRequest request,
+                                                final HttpServletResponse response) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission denied");
+        }
+
+        final GitUtil git = repositoryFactory.masterRepository();
+        final List<Commit> commits = git.getLastNCommits(MAX_COMMITS)
+                .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
+                                c.getFullMessage(),
+                                formatCommitTime(c.getCommitTime()))
+                )
+                .collect(toList());
+        git.close();
+        //commits.remove(0);
+        return new ResponseEntity<List<Commit>>(commits, HttpStatus.OK);
+    }
+
+    private String formatCommitTime(final int ctime) {
+        return LocalDateTime.ofInstant(new Date(ctime * 1000L).toInstant(),
+                ZoneId.systemDefault())
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    /**
+     * Method returns a list of commits that have not been published to CAS Servers.
+     *
+     * @param request  - HttpServletRequest
+     * @param response - HttpServletResponse
+     * @return ResponseEntity
+     * @throws Exception - failed.
+     */
     @GetMapping(value = "/commitList")
     public ResponseEntity<List<Commit>> commits(final HttpServletRequest request,
                                                 final HttpServletResponse response) throws Exception {
@@ -188,7 +240,11 @@ public class ServiceRepsositoryController {
 
         final int behind = getPublishBehindCount();
         final GitUtil git = repositoryFactory.masterRepository();
-        final List<Commit> commits = git.getLastNCommits(behind);
+        final List<Commit> commits = git.getLastNCommits(behind)
+                .map(c -> new Commit(c.getId().abbreviate(GitUtil.NAME_LENGTH).name(),
+                                     c.getFullMessage(),
+                                     formatCommitTime(c.getCommitTime())))
+                .collect(toList());
         git.close();
         return new ResponseEntity<List<Commit>>(commits, HttpStatus.OK);
     }
@@ -262,7 +318,7 @@ public class ServiceRepsositoryController {
     private List<Diff> createDiffs(final String ref) throws Exception {
         return repositoryFactory.masterRepository().getDiffs("refs/heads/" + ref).stream()
                 .map(this::createDiff)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     /**
@@ -276,16 +332,21 @@ public class ServiceRepsositoryController {
     @GetMapping("/gitStatus")
     public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
                                                final HttpServletResponse response) throws Exception{
-        final GitUtil git = repositoryFactory.from(request, response);
-        final GitStatus gitStatus = new GitStatus();
-        final Status status = git.getGit().status().call();
-        gitStatus.setHasChanges(!status.isClean());
-        gitStatus.setAdded(status.getUntracked());
-        gitStatus.setModified(status.getModified());
-        gitStatus.setDeleted(status.getRemoved());
-        gitStatus.setUnpublished(getPublishBehindCount() > 0);
-        gitStatus.setPendingSubmits(pendingSubmits(request, response));
-        return new ResponseEntity<>(gitStatus, HttpStatus.OK);
+        try {
+            final GitUtil git = repositoryFactory.from(request, response);
+            final GitStatus gitStatus = new GitStatus();
+            final Status status = git.getGit().status().call();
+            gitStatus.setHasChanges(!status.isClean());
+            gitStatus.setAdded(status.getUntracked());
+            gitStatus.setModified(status.getModified());
+            gitStatus.setDeleted(status.getRemoved());
+            gitStatus.setUnpublished(getPublishBehindCount() > 0);
+            gitStatus.setPendingSubmits(pendingSubmits(request, response));
+            return new ResponseEntity<>(gitStatus, HttpStatus.OK);
+        }catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return new ResponseEntity<>(new GitStatus(), HttpStatus.OK);
     }
 
     /**
@@ -305,7 +366,7 @@ public class ServiceRepsositoryController {
         }
         final List<Change> changes = git.scanWorkingDiffs().stream()
                 .map(d -> createChange(d, git))
-                .collect(Collectors.toList());
+                .collect(toList());
         return new ResponseEntity<>(changes, HttpStatus.OK);
     }
 
@@ -342,7 +403,7 @@ public class ServiceRepsositoryController {
                 .map(git::mapBranches)
                 .filter(r -> filterPulls(r, options))
                 .map(r -> createBranch(r))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
@@ -385,7 +446,7 @@ public class ServiceRepsositoryController {
                 .filter(r -> r.getName().contains("/" + user.getId() + "_"))
                 .map(git::mapBranches)
                 .map(r -> createBranch(r))
-                .collect(Collectors.toList());
+                .collect(toList());
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
 
@@ -411,9 +472,41 @@ public class ServiceRepsositoryController {
         final GitUtil git = repositoryFactory.masterRepository();
         final List<Diff> changes = git.getDiffs(branch).stream()
                 .map(this::createDiff)
-                .collect(Collectors.toList());
+                .collect(toList());
         git.close();
         return new ResponseEntity<>(changes, HttpStatus.OK);
+    }
+
+    /**
+     * Method returns a list of changes committed by a commit int the repository.
+     *
+     * @param response - the response
+     * @param request - the request
+     * @param id - String representing an id of a commit
+     * @return - List of Differences
+     * @throws Exception - failed
+     */
+    @GetMapping("/commitHistoryList")
+    public ResponseEntity<List<Diff>> commitHistoryList(final HttpServletResponse response,
+                                                 final HttpServletRequest request,
+                                                 @RequestParam("id") final String id) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission Denied");
+        }
+
+        final GitUtil git = repositoryFactory.masterRepository();
+        final RevCommit r = git.getCommit(id);
+        final List<Diff> diffs = git.getDiffs(id).stream()
+                .map(this::createDiff)
+                .map(d -> {
+                    d.setCommitter(r.getCommitterIdent().getName());
+                    d.setCommitTime(formatCommitTime(r.getCommitTime()));
+                    d.setCommit(id);
+                    return d;
+                })
+                .collect(toList());
+        return new ResponseEntity<>(diffs, HttpStatus.OK);
     }
 
     /**
@@ -691,6 +784,30 @@ public class ServiceRepsositoryController {
     }
 
     /**
+     * Method will checkout a file with passed id into the working directory.
+     *
+     * @param request - the request
+     * @param response - the response
+     * @param id - the id of the commit
+     * @return - Status message
+     * @throws Exception - failed
+     */
+    @GetMapping("/revertRepo")
+    public ResponseEntity<String> revertRepo(final HttpServletRequest request,
+                                             final HttpServletResponse response,
+                                             final @RequestParam String id) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission denied");
+        }
+        final GitUtil git = repositoryFactory.masterRepository();
+        final RegisteredService svc = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
+        managerFactory.from(request, response).save(svc);
+        git.close();
+        return new ResponseEntity<>("File Reverted", HttpStatus.OK);
+    }
+
+    /**
      * Method will restore a deleted file to the working dir.
      *
      * @param request  - HttpServletRequest
@@ -736,6 +853,40 @@ public class ServiceRepsositoryController {
         return new ResponseEntity<>("File Checked Out", HttpStatus.OK);
     }
 
+    /**
+     * Method will checkout all changes in the passed commit to the working directory.
+     *
+     * @param response - the response
+     * @param request - the request
+     * @param id - Id of the commit
+     * @return - Status message
+     * @throws Exception - failed
+     */
+    @GetMapping("/checkoutCommit")
+    public ResponseEntity<String> checkoutCommit(final HttpServletResponse response,
+                                                 final HttpServletRequest request,
+                                                 final @RequestParam String id) throws Exception {
+        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        if (!user.isAdministrator()) {
+            throw new Exception("Permission denied");
+        }
+
+        final GitUtil git = repositoryFactory.masterRepository();
+        final RevCommit r = git.getCommit(id);
+        git.getDiffsToRevert(id).stream().forEach(d -> {
+            try {
+                if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
+                    git.getGit().rm().addFilepattern(d.getNewPath()).call();
+                } else {
+                    git.checkout(d.getOldPath(), id);
+                }
+            } catch (final Exception e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        });
+        git.close();
+        return new ResponseEntity<>("Commit checked out", HttpStatus.OK);
+    }
     /**
      * Restores a service into the service from at its original location.
      *
@@ -904,8 +1055,8 @@ public class ServiceRepsositoryController {
      */
     private Diff createDiff(final DiffEntry d) {
         return new Diff(d.getNewPath(),
-                d.getOldId().toObjectId().toString(),
-                d.getNewId().toObjectId().toString(),
+                d.getOldId().toObjectId(),
+                d.getNewId().toObjectId(),
                 d.getChangeType().toString());
     }
 

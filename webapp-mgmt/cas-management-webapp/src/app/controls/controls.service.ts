@@ -46,7 +46,7 @@ export class ControlsService extends Service {
   }
 
   sync(): Promise<String> {
-    return this.getText("sync");
+    return this.getText('sync');
   }
 
 }

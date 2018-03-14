@@ -25,6 +25,8 @@ import {ImportComponent} from './import/import.component';
 import {RepoHistoryComponent} from './repo-history/repo-history.component';
 import {CommitHistoryComponent} from './commit-history/commit-history.component';
 import {CommitHistoryResolve} from './commit-history/commit-history.resolover';
+import {SubmissionsComponent} from './submissions/submissions.component';
+import {SubmissionsResolve} from './submissions/submissions.resolover';
 
 @NgModule({
   imports: [
@@ -129,6 +131,13 @@ import {CommitHistoryResolve} from './commit-history/commit-history.resolover';
         component: CommitHistoryComponent,
         resolve: {
           resp: CommitHistoryResolve
+        }
+      },
+      {
+        path: 'submissions',
+        component: SubmissionsComponent,
+        resolve: {
+          resp: SubmissionsResolve
         }
       }
     ]),

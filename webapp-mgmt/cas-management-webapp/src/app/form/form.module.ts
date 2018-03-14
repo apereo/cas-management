@@ -151,6 +151,14 @@ import {InvalidDomainDirective} from './serviceid/invalid-domain.directive';
     FormResolve,
     FormService,
     Data
+  ],
+  exports: [
+    ServiceidComponent,
+    ServicedescComponent,
+    ServicenameComponent,
+    LogoutComponent,
+    LogouttypeevalComponent,
+    ContactsComponent
   ]
 })
 

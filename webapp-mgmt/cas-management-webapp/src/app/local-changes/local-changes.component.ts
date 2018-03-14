@@ -60,6 +60,8 @@ export class LocalChangesComponent implements OnInit {
     if (this.revertItem.changeType === 'DELETED') {
       this.service.revertDelete(fileName)
         .then(resp => this.refresh());
+    } else if (this.revertItem.changeType === 'ADD') {
+      this.service.delete(+this.revertItem.id)
     } else {
       this.service.revert(fileName)
         .then(resp => this.refresh());

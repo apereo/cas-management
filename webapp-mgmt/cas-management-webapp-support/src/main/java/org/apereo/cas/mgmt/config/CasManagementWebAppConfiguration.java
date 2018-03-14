@@ -11,8 +11,10 @@ import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.web.ForwardingController;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
+import org.apereo.cas.mgmt.services.web.RegisterController;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
 import org.apereo.cas.mgmt.services.web.ServiceRepsositoryController;
+import org.apereo.cas.mgmt.services.web.SubmissionController;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.web.CasManagementRootController;
@@ -193,6 +195,16 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
+    public RegisterController registerController() {
+        return new RegisterController();
+    }
+
+    @Bean
+    public SubmissionController submissionController() {
+        return new SubmissionController();
+    }
+
+    @Bean
     public ServiceRepsositoryController serviceRepsositoryController() {
         return new ServiceRepsositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
                 casProperties, servicesManager, communicationsManager());
@@ -214,15 +226,28 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public SpringResourceTemplateResolver staticTemplateResolver() {
+    public SpringResourceTemplateResolver manageStaticTemplateResolver() {
         final SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
-        resolver.setPrefix("classpath:/dist/");
+        resolver.setPrefix("classpath:/dist/manage/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
         resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
         resolver.setCacheable(false);
         resolver.setOrder(0);
+        resolver.setCheckExistence(true);
+        return resolver;
+    }
+
+    @Bean SpringResourceTemplateResolver registerStaticTemplateResolver() {
+        final SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(this.context);
+        resolver.setPrefix("classpath:/dist/register/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML");
+        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
+        resolver.setCacheable(false);
+        resolver.setOrder(1);
         resolver.setCheckExistence(true);
         return resolver;
     }
@@ -234,6 +259,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/dist/", "classpath:/static/");
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/dist/manage/", "classpath:/dist/register/", "classpath:/static/");
     }
 }

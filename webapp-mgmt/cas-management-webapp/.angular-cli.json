@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "src/main/resources/dist",
+      "outDir": "src/main/resources/dist/manage",
       "assets": [
         "assets",
         "favicon.ico"
@@ -17,6 +17,30 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
       "prefix": "app",
+      "styles": [
+        "styles.css",
+        "cas-theme.scss"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "root": "src",
+      "outDir": "src/main/resources/dist/register",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "register.html",
+      "main": "register.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.json",
+      "prefix": "register",
       "styles": [
         "styles.css",
         "cas-theme.scss"

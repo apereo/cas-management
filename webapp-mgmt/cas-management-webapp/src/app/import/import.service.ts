@@ -7,6 +7,7 @@ import {HttpClient} from '@angular/common/http';
 export class ImportService {
 
   service: AbstractRegisteredService;
+  submissionFile: String;
 
   constructor(private http: HttpClient) {}
 
@@ -14,6 +15,16 @@ export class ImportService {
     return this.http.post<AbstractRegisteredService>('import', file)
       .toPromise()
       .then(resp => {
+        this.service = resp;
+        return resp;
+      }).catch(this.handleError);
+  }
+
+  importSubmission(file: String): Promise<AbstractRegisteredService> {
+    return this.http.get<AbstractRegisteredService>('importSubmission?id=' + file)
+      .toPromise()
+      .then(resp => {
+        this.submissionFile = file;
         this.service = resp;
         return resp;
       }).catch(this.handleError);

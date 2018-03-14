@@ -26,7 +26,7 @@ import {
   MatChipsModule,
   MatAutocompleteModule,
   MatSnackBarModule,
-  MatPaginatorModule
+  MatPaginatorModule, MatStepperModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ControlsComponent} from '../controls/controls.component';
@@ -34,6 +34,7 @@ import {ControlsService} from '../controls/controls.service';
 import {EditorComponent} from '../editor.component';
 import {CommitComponent} from '../commit/commit.component';
 import {PublishComponent} from '../publish/publish.component';
+import {FooterComponent} from '../footer/footer.component';
 
 @NgModule({
   imports: [
@@ -62,12 +63,14 @@ import {PublishComponent} from '../publish/publish.component';
     MatAutocompleteModule,
     MatSnackBarModule,
     MatPaginatorModule,
+    MatStepperModule
   ],
   declarations: [
     EditorComponent,
     ControlsComponent,
     CommitComponent,
-    PublishComponent
+    PublishComponent,
+    FooterComponent
   ],
   entryComponents: [
     CommitComponent,
@@ -100,9 +103,11 @@ import {PublishComponent} from '../publish/publish.component';
     MatAutocompleteModule,
     MatSnackBarModule,
     MatPaginatorModule,
+    MatStepperModule,
     EditorComponent,
     ControlsComponent,
-    CommitComponent
+    CommitComponent,
+    FooterComponent
   ]
 })
 export class SharedModule {}

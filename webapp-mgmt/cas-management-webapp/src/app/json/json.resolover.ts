@@ -7,12 +7,14 @@ import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
 import {AbstractRegisteredService} from '../../domain/registered-service';
 import {ServiceViewService} from '../services/service.service';
+import {SubmissionsService} from '../submissions/submissions.service';
 
 @Injectable()
 export class JSONResolver implements Resolve<String> {
 
   constructor(private service: ServiceViewService,
               private changeService: ChangesService,
+              private submissionService: SubmissionsService,
               private router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Promise<String> {
@@ -24,6 +26,8 @@ export class JSONResolver implements Resolve<String> {
     } else {
       if (history) {
         return this.changeService.viewJson(param).then(resp => resp ? resp : null);
+      } else if (param.endsWith(".json")) {
+        return this.submissionService.getJson(param).then(resp => resp ? resp : null);
       } else {
         return this.service.getJson(+param).then(resp => resp ? resp : null);
       }

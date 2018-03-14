@@ -49,6 +49,10 @@
     <mat-icon>add_circle</mat-icon>
     <ng-container i18n>Import Service</ng-container>
   </button>
+  <button mat-menu-item routerLink="/submissions" *ngIf="isAdmin()">
+    <mat-icon>file_upload</mat-icon>
+    <ng-container i18n>Submissions</ng-container>
+  </button>
   <button *ngIf="appService.config.versionControl" mat-menu-item routerLink="/localChanges">
     <mat-icon>build</mat-icon>
     <ng-container i18n>Working Changes</ng-container>

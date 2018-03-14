@@ -12,7 +12,8 @@
     "e2e": "ng e2e",
     "buildDev": "ng build",
     "buildWatch": "ng build --watch=true",
-    "build": "ng build --prod"
+    "build": "ng build --prod --app 0",
+    "buildRegister": "ng build --prod --app 1"
   },
   "private": true,
   "dependencies": {

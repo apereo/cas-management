@@ -23,7 +23,7 @@ public final class CasManagementUtils {
      */
     public static String getDefaultCallbackUrl(final CasManagementConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            return casProperties.getMgmt().getServerName().concat(serverProperties.getContextPath()).concat("/manage.html");
+            return casProperties.getMgmt().getServerName().concat(serverProperties.getContextPath()).concat("/register.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }

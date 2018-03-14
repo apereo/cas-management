@@ -38,6 +38,11 @@ task buildClientWatch(type: NpmTask, dependsOn: "npm_install", group: "applicati
     args = ['run', 'buildWatch']
 }
 
+task buildRegister(type: NpmTask, dependsOn: "npm_install", group: "build",
+       description: "Compile register client") {
+    args = ['run', 'buildRegister']
+}
+
 task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
         description: "Runs Angular TypeScript and HtML Linting") {
     args = ['run', 'lint']
@@ -67,7 +72,7 @@ bootRepackage {
     mainClass = MAIN_CLASS
     enabled = !rootProject.publishingRelease
 
-    dependsOn(buildClient)
+    dependsOn(buildClient, buildRegister)
 }
 
 war {

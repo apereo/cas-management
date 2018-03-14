@@ -21,6 +21,7 @@ import {GrouperRegisteredServiceAccessStrategy} from '../../domain/access-strate
 import {RegisteredServiceRegexAttributeFilter} from '../../domain/attribute-filter';
 import {UserService} from '../user.service';
 import {ImportService} from '../import/import.service';
+import {SubmissionsService} from '../submissions/submissions.service';
 
 enum Tabs {
   BASICS,
@@ -47,6 +48,7 @@ export class FormComponent implements OnInit {
 
   id: String;
   view: boolean;
+  imported: boolean;
 
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
@@ -56,6 +58,7 @@ export class FormComponent implements OnInit {
               private router: Router,
               private service: FormService,
               private importService: ImportService,
+              private submissionService: SubmissionsService,
               public data: Data,
               private location: Location,
               public snackBar: MatSnackBar,
@@ -64,7 +67,8 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
-    if (this.route.snapshot.data.import) {
+    this.imported = this.route.snapshot.data.import;
+    if (this.imported) {
       this.loadService(this.importService.service);
       this.goto(Tabs.BASICS);
     } else {
@@ -222,7 +226,14 @@ export class FormComponent implements OnInit {
     }
 
     this.data.service.id = id;
-    this.location.back();
+    if (this.imported && this.importService.submissionFile) {
+      this.submissionService.delete(this.importService.submissionFile)
+        .then(resp => {
+          this.location.back();
+        });
+    } else {
+      this.location.back();
+    }
   }
 
   handleNotSaved(e: any) {

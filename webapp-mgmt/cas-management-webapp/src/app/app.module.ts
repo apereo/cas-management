@@ -41,7 +41,7 @@ import {AppConfigService} from './app-config.service';
 import { RepoHistoryComponent } from './repo-history/repo-history.component';
 import {RepoHistoryService} from './repo-history/repo-history.service';
 import {CommitHistoryModule} from './commit-history/commit-history.module';
-
+import {SubmissionsModule} from './submissions/submissions.module';
 
 @NgModule({
   imports: [
@@ -61,7 +61,8 @@ import {CommitHistoryModule} from './commit-history/commit-history.module';
     FormModule,
     SharedModule,
     AppRoutingModule,
-    CommitHistoryModule
+    CommitHistoryModule,
+    SubmissionsModule
   ],
   declarations: [
     AppComponent,
@@ -73,10 +74,9 @@ import {CommitHistoryModule} from './commit-history/commit-history.module';
     RejectComponent,
     InitComponent,
     LocalChangesComponent,
-    FooterComponent,
     YamlComponent,
     ImportComponent,
-    RepoHistoryComponent
+    RepoHistoryComponent,
   ],
   entryComponents: [
     DeleteComponent,

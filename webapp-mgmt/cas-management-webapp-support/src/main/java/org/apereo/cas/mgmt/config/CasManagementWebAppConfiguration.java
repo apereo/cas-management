@@ -260,6 +260,6 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/dist/manage/", "classpath:/dist/register/", "classpath:/static/");
+                .addResourceLocations("classpath:/dist/register/", "classpath:/dist/manage/", "classpath:/static/");
     }
 }

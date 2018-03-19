@@ -257,6 +257,9 @@ export class FormComponent implements OnInit {
 
   validateDomain(service: string): boolean {
     const domainPattern = new RegExp('^https?://([^:/]+)');
+    if (this.userService.user.permissions.indexOf("*") > -1) {
+      return true;
+    }
     try {
       const domain = domainPattern.exec(service);
       if (domain != null) {

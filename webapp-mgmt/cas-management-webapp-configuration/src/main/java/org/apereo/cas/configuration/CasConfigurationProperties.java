@@ -1,12 +1,13 @@
-package org.apereo.cas.mgmt.configuration;
+package org.apereo.cas.configuration;
 
+import org.apereo.cas.configuration.model.ManagementWebappProperties;
 import org.apereo.cas.configuration.model.core.CasServerProperties;
 import org.apereo.cas.configuration.model.core.authentication.AuthenticationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.configuration.model.webapp.LocaleProperties;
-import org.apereo.cas.mgmt.configuration.model.ManagementWebappProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.context.annotation.Primary;
 
 /**
  * Configuration class used to read values from congigured properties files.
@@ -15,7 +16,8 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  * @since 5.3.0
  */
 @ConfigurationProperties("cas")
-public class CasManagementConfigurationProperties {
+@Primary
+public class CasConfigurationProperties {
     /**
        Authentication.
      */

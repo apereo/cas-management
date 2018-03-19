@@ -1,4 +1,4 @@
-package org.apereo.cas.mgmt.configuration;
+package org.apereo.cas.configuration.config;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
@@ -110,7 +110,7 @@ public class CasCoreBootstrapStandaloneConfiguration implements PropertySourceLo
 
     private void loadSettingsFromStandaloneConfigFile(final Properties props, final File configFile) {
         final Properties pp = new Properties();
-        
+
         try (FileReader r = new FileReader(configFile)) {
             LOGGER.debug("Located CAS standalone configuration file at [{}]", configFile);
             pp.load(r);

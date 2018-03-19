@@ -1,4 +1,4 @@
-package org.apereo.cas.mgmt.configuration.model;
+package org.apereo.cas.configuration.model;
 
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

@@ -22,11 +22,11 @@ dependencies {
 
     implementation libraries.thymeleaf
 
-    implementation project(":webapp-mgmt:cas-management-webapp-configuration")
-
-    implementation ("org.apereo.cas:cas-server-core-configuration:$casVersion") {
+    implementation ("org.apereo.cas:cas-server-core-configuration-model:$casVersion") {
         transitive = false
     }
+
+    implementation project(":webapp-mgmt:cas-management-webapp-configuration")
 
     implementation ("org.apereo.cas:cas-server-core-api-authentication:$casVersion") {
         transitive = false

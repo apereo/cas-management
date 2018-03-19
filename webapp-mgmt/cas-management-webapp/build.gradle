@@ -72,7 +72,9 @@ bootRepackage {
     mainClass = MAIN_CLASS
     enabled = !rootProject.publishingRelease
 
-    dependsOn(buildClient, buildRegister)
+    if (!Boolean.getBoolean("skipClientBuild")) {
+        dependsOn(buildClient, buildRegister)
+    }
 }
 
 war {

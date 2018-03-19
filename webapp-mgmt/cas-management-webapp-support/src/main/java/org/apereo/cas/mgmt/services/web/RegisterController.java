@@ -31,7 +31,6 @@ public class RegisterController {
      */
     @GetMapping("/register.html")
     public ModelAndView manage(final HttpServletResponse response) {
-        System.out.println("********** In Register Controller ***********");
         final Map<String, Object> model = new HashMap<>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         return new ModelAndView("register", model);

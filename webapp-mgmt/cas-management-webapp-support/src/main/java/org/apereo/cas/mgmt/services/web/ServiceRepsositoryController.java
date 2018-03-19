@@ -4,7 +4,7 @@ import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.services.web.beans.BranchActionData;
 import org.apereo.cas.mgmt.services.web.beans.BranchData;
 import org.apereo.cas.mgmt.services.web.beans.CNote;
@@ -20,16 +20,11 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.io.CommunicationsManager;
-import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.treewalk.CanonicalTreeParser;
-import org.eclipse.jgit.treewalk.TreeWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -72,7 +67,7 @@ public class ServiceRepsositoryController {
 
     private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?://([^:/]+)");
 
-    private final CasManagementConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
     private final ServicesManager servicesManager;
 
@@ -90,7 +85,7 @@ public class ServiceRepsositoryController {
             final RepositoryFactory repositoryFactory,
             final ManagerFactory managerFactory,
             final CasUserProfileFactory casUserProfileFactory,
-            final CasManagementConfigurationProperties casProperties,
+            final CasConfigurationProperties casProperties,
             final ServicesManager servicesManager,
             final CommunicationsManager communicationsManager) {
         this.repositoryFactory = repositoryFactory;

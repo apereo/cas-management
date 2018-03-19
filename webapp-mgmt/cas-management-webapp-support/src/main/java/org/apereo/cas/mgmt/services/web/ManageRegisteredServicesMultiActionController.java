@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.services.web;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
@@ -64,7 +64,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     private final Service defaultService;
     private final ManagerFactory managerFactory;
     private final RepositoryFactory repositoryFactory;
-    private final CasManagementConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
     /**
      * Instantiates a new manage registered services multi action controller.
@@ -83,7 +83,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             final IPersonAttributeDao personAttributeDao,
             final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
             final String defaultServiceUrl,
-            final CasManagementConfigurationProperties casProperties,
+            final CasConfigurationProperties casProperties,
             final CasUserProfileFactory casUserProfileFactory,
             final ManagerFactory managerFactory,
             final RepositoryFactory repositoryFactory) {
@@ -204,7 +204,8 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
             data = data.stream()
-                    .filter(d -> casUserProfile.getPermissions().contains(d))
+                    .filter(d -> casUserProfile.getPermissions().contains(d) ||
+                            casUserProfile.getPermissions().contains("*"))
                     .collect(Collectors.toList());
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
@@ -241,7 +242,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         ensureDefaultServiceExists();
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator()) {
-            if (!casUserProfile.getPermissions().contains(domain)) {
+            if (!casUserProfile.getPermissions().contains("*") && !casUserProfile.getPermissions().contains(domain)) {
                 throw new IllegalAccessException("You do not have permission to the domain '"+domain+"'");
             }
         }

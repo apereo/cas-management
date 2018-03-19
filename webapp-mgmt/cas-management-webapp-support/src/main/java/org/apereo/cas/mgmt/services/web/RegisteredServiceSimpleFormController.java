@@ -79,10 +79,6 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
             service.setEvaluationOrder(manager.getAllServices().size());
         }
 
-        if (service.getId() > -1) {
-            checkForRename(service, request, response);
-        }
-
         final RegisteredService newSvc = manager.save(service);
         LOGGER.info("Saved changes to service [{}]", service.getId());
         return new ResponseEntity<>(String.valueOf(newSvc.getId()), HttpStatus.OK);

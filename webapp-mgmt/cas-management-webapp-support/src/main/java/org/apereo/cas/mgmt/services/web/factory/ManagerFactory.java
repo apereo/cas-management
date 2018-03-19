@@ -4,7 +4,7 @@ import org.apereo.cas.configuration.model.core.services.ServiceRegistryPropertie
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.DomainServicesManager;
@@ -31,11 +31,11 @@ public class ManagerFactory {
 
     private final CasUserProfileFactory casUserProfileFactory;
 
-    private final CasManagementConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
 
     public ManagerFactory(final ServicesManager servicesManager,
-                          final CasManagementConfigurationProperties casProperties,
+                          final CasConfigurationProperties casProperties,
                           final RepositoryFactory repositoryFactory,
                           final CasUserProfileFactory casUserProfileFactory) {
         this.repositoryFactory = repositoryFactory;

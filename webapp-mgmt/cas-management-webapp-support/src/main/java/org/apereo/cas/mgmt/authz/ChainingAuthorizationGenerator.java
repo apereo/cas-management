@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.authz;
 
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.CommonProfile;
@@ -16,7 +16,7 @@ import java.util.List;
  * @since 5.2.0
  */
 public class ChainingAuthorizationGenerator implements AuthorizationGenerator<CommonProfile> {
-    private final CasManagementConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
     private final List<AuthorizationGenerator<CommonProfile>> genenerators = new ArrayList<>();
 
     /**
@@ -24,7 +24,7 @@ public class ChainingAuthorizationGenerator implements AuthorizationGenerator<Co
      *
      * @param casProperties the cas properties
      */
-    public ChainingAuthorizationGenerator(final CasManagementConfigurationProperties casProperties) {
+    public ChainingAuthorizationGenerator(final CasConfigurationProperties casProperties) {
         this.casProperties = casProperties;
     }
 

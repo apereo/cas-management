@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.services.web.factory;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
@@ -24,9 +24,9 @@ public class RepositoryFactory {
 
     private final CasUserProfileFactory casUserProfileFactory;
 
-    private final CasManagementConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
-    public RepositoryFactory(final CasManagementConfigurationProperties casProperties,
+    public RepositoryFactory(final CasConfigurationProperties casProperties,
                              final CasUserProfileFactory casUserProfileFactory) {
         this.casProperties = casProperties;
         this.casUserProfileFactory = casUserProfileFactory;

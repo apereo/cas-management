@@ -14,7 +14,7 @@ dependencies {
     implementation ("org.apereo.cas:cas-server-core-authentication:$casVersion") {
         transitive = false
     }
-    implementation ("org.apereo.cas:cas-server-core-configuration:$casVersion") {
+    implementation ("org.apereo.cas:cas-server-core-configuration-model:$casVersion") {
         transitive = false
     }
     implementation ("org.apereo.cas:cas-server-core-util:$casVersion") {

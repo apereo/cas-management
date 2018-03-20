@@ -5,6 +5,8 @@ import {HttpClient} from '@angular/common/http';
 @Injectable()
 export class AppConfigService {
 
+  pageSize: number = 10;
+
   config: AppConfig = new AppConfig();
 
   constructor(private http: HttpClient) {

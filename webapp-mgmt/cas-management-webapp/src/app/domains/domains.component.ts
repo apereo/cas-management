@@ -1,9 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSnackBar, MatTableDataSource, PageEvent} from '@angular/material';
 import {DomainService} from './domain.service';
 import {Messages} from 'app/messages';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {AppConfigService} from '../app-config.service';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-domains',
@@ -15,7 +17,7 @@ export class DomainsComponent implements OnInit {
   dataSource: MatTableDataSource<String>;
   selectedItem: String;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
 
   constructor(public messages: Messages,
               private router: Router,
@@ -25,7 +27,7 @@ export class DomainsComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.domainService.getDomains()
       .then(resp => this.dataSource.data = resp)
       .catch(e => {console.log(e); this.snackBar.open('Failed to load domains', 'Dismiss'); });

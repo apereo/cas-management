@@ -4,6 +4,7 @@ import { Branch } from '../../domain/branch';
 import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {RevertComponent} from '../revert/revert.component';
 import {Router} from '@angular/router';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-submits',
@@ -16,7 +17,8 @@ export class SubmitsComponent implements OnInit {
   displayedColumns = ['actions', 'status', 'name', 'message'];
   dataSource: MatTableDataSource<Branch>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   selectedItem: Branch;
   revertBranch: Branch;
@@ -28,7 +30,7 @@ export class SubmitsComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.refresh();
   }
 

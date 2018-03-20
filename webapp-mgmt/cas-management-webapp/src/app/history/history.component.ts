@@ -6,6 +6,7 @@ import {History} from '../../domain/history';
 import {Location} from '@angular/common';
 import {ChangesService} from '../changes/changes.service';
 import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-history',
@@ -17,7 +18,8 @@ export class HistoryComponent implements OnInit {
   displayedColumns = ['actions', 'message', 'committer', 'time'];
   dataSource: MatTableDataSource<History>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   fileName: String;
 
@@ -34,7 +36,7 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: History[]}) => {
         if (!data.resp) {

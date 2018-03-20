@@ -7,6 +7,7 @@ import {Location} from '@angular/common';
 import {ChangesService} from '../changes/changes.service';
 import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry} from '../../domain/diff-entry';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-commit-history',
@@ -18,7 +19,8 @@ export class CommitHistoryComponent implements OnInit {
   displayedColumns = ['actions', 'path', 'message', 'committer', 'time'];
   dataSource: MatTableDataSource<DiffEntry>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   fileName: String;
 
@@ -35,7 +37,7 @@ export class CommitHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: DiffEntry[]}) => {
         if (!data.resp) {

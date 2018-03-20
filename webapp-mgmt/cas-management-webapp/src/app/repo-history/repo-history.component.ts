@@ -4,6 +4,7 @@ import {RepoHistoryService} from './repo-history.service';
 import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {Commit} from '../../domain/commit';
 import {Router} from '@angular/router';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-repo-history',
@@ -16,8 +17,8 @@ export class RepoHistoryComponent implements OnInit {
   displayedColumns = ['actions', 'id', 'message', 'time'];
   selectedItem: Commit;
 
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   constructor(public messages: Messages,
               private service: RepoHistoryService,
@@ -26,7 +27,7 @@ export class RepoHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<Commit>([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.service.commitLogs().then(resp => this.dataSource.data = resp);
   }
 

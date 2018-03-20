@@ -67,10 +67,7 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator #paginator
-                 [pageSize]="10"
-                 [pageSizeOptions]="[5, 10, 25, 100]">
-  </mat-paginator>
+  <app-paginator></app-paginator>
 </div>
 
 <mat-menu #submitsMenu>

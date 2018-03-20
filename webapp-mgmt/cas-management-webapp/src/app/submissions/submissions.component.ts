@@ -8,6 +8,7 @@ import {AppConfigService} from '../app-config.service';
 import {DeleteComponent} from '../delete/delete.component';
 import {SubmissionsService} from './submissions.service';
 import {ImportService} from '../import/import.service';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-submissions',
@@ -22,8 +23,8 @@ export class SubmissionsComponent implements OnInit {
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'description'];
 
-  @ViewChild('paginator')
-  paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   constructor(public messages: Messages,
               private route: ActivatedRoute,
@@ -38,7 +39,7 @@ export class SubmissionsComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: ServiceItem[]}) => {
           if (!data.resp) {

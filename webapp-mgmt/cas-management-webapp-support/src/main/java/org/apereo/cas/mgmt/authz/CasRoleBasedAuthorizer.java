@@ -30,12 +30,18 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
         } else if (context.getFullRequestURL().contains("manage.html")) {
             context.setSessionAttribute("register", "false");
         }
-        final boolean result = context.getSessionAttribute("register").equals("true") || super.isProfileAuthorized(context, profile);
+        final boolean result = isStaffOrFaculty(profile) &&
+                (context.getSessionAttribute("register").equals("true") || super.isProfileAuthorized(context, profile));
         if (!result) {
             LOGGER.warn("Unable to authorize access, since the authenticated profile [{}] does not contain any required roles", profile);
         } else {
             LOGGER.debug("Successfully authorized access for profile [{}]", profile);
         }
         return result;
+    }
+
+    private boolean isStaffOrFaculty(CommonProfile profile) {
+        final String aff = (String)profile.getAttribute("eduPersonAffiliation");
+        return aff.contains("staff") || aff.contains("faculty");
     }
 }

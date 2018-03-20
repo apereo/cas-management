@@ -65,7 +65,7 @@ public class ServiceRepsositoryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceRepsositoryController.class);
 
-    private static final Pattern DOAMIN_PATTERN = Pattern.compile("^\\^?https?\\??://([^:/]+)");
+    private static final Pattern DOMAIN_PATTERN = Pattern.compile("^\\^?https?\\??://([^:/]+)");
 
     private final CasConfigurationProperties casProperties;
 
@@ -1036,7 +1036,7 @@ public class ServiceRepsositoryController {
      * @return - domain extracted
      */
     private String getDomain(final String service) {
-        final Matcher match = DOAMIN_PATTERN.matcher(service.toLowerCase());
+        final Matcher match = DOMAIN_PATTERN.matcher(service.toLowerCase());
         return match.lookingAt() && !match.group(1).contains("*") ? match.group(1) : "default";
     }
 }

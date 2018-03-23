@@ -6,7 +6,7 @@
     <form #basicsForm="ngForm">
       <app-enabled></app-enabled>
       <app-servicetype></app-servicetype>
-      <app-serviceid></app-serviceid>
+      <app-serviceid [validUrl]="validateDomain(userService.user)"></app-serviceid>
       <app-servicename></app-servicename>
       <app-servicedesc></app-servicedesc>
       <app-themeid></app-themeid>

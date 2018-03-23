@@ -58,6 +58,13 @@ import {SubmissionsResolve} from './submissions/submissions.resolover';
         component: DiffComponent
       },
       {
+        path: 'diffSubmission',
+        component: DiffComponent,
+        data: {
+          submission: true
+        }
+      },
+      {
         path: 'json/:id',
         component: JSONComponent,
         resolve: {

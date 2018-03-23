@@ -29,7 +29,7 @@
         </ng-container>
     </button>
   </div>
-  <div style="display:inline;">
+  <div style="display:inline;" *ngIf="showVersionControl">
     <button mat-button id="commit" *ngIf="isAdmin() && hasChanges()"
             (click)="openModalCommit()">
       <mat-icon>input</mat-icon>

@@ -1,6 +1,6 @@
 <div>
   <mat-form-field class="textInput">
-    <input matInput required
+    <input matInput required #serviceName="ngModel" id="serviceName" name="serviceName"
            i18n-placeholder="services.form.label.name"
            [placeholder]="messages.services_form_label_name"
            [(ngModel)]="data.service.name">

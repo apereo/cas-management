@@ -14,4 +14,7 @@ export class RegisterService extends Service {
     return this.postText('submit',service);
   }
 
+  save(service: AbstractRegisteredService): Promise<String> {
+    return this.postText('registerSave', service);
+  }
 }

@@ -1,17 +1,27 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Messages} from '../../messages';
 import {Data} from '../data';
 import {SamlRegisteredService} from '../../../domain/saml-service';
 import {OAuthRegisteredService, OidcRegisteredService} from '../../../domain/oauth-service';
 import {WSFederationRegisterdService} from '../../../domain/wsed-service';
+import {ControlContainer, FormGroup, NgForm, NgModel, NgModelGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-serviceid',
-  templateUrl: './serviceid.component.html'
+  templateUrl: './serviceid.component.html',
+  viewProviders: [{
+    provide: ControlContainer,
+    useExisting: NgForm
+  }]
 })
 export class ServiceidComponent implements OnInit {
 
   isSaml: boolean;
+
+  @Input()
+  validUrl: Function;
+
+  @Input() form: FormGroup;
 
   constructor(public messages: Messages,
               public data: Data) {

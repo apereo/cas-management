@@ -5,4 +5,6 @@ export class ServiceItem {
   name: String;
   description: String;
   status: String;
+  duo: boolean;
+  expires: String;
 }

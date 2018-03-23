@@ -3,16 +3,34 @@
  */
 import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router';
-import {FormComponent} from './form/form.component';
+import {RegisterFormComponent} from './form/form.component';
 import {RegisterComponent} from './register.component';
 import {SubmitComponent} from './submit/submit.component';
+import {ServicesComponent} from './services/services.component';
+import {ServicesResolve} from './services/services.resolover';
+import {WizzardComponent} from './wizzard/wizzard.component';
+import {RegisterFormResolve} from './form/form.resolve';
 
 @NgModule({
   imports: [
     RouterModule.forRoot( [
       {
-        path: 'form',
-        component: FormComponent
+        path: 'registerForm/:id',
+        component: RegisterFormComponent,
+        resolve: {
+          resp: RegisterFormResolve
+        }
+      },
+      {
+        path: 'wizzard',
+        component: WizzardComponent
+      },
+      {
+        path: 'services',
+        component: ServicesComponent,
+        resolve: {
+          resp: ServicesResolve
+        }
       },
       {
         path: 'submitted',

@@ -14,8 +14,8 @@ export class Data {
   submitted: boolean;
   save: EventEmitter<void> = new EventEmitter<void>();
   form: FormComponent;
-  invalidRegEx: boolean;
-  invalidDomain: boolean;
+  invalidRegEx: boolean = false;
+  invalidDomain: boolean = false;
 }
 
 

@@ -2,19 +2,20 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Data} from '../data';
 import {Messages} from '../../messages';
 import {DefaultRegisteredServiceContact} from '../../../domain/contact';
-import {NgForm} from '@angular/forms';
+import {ControlContainer, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css']
+  styleUrls: ['./contacts.component.css'],
+  viewProviders: [{
+    provide: ControlContainer,
+    useExisting: NgForm
+  }]
 })
 export class ContactsComponent implements OnInit {
 
   selectedTab: number;
-
-  @Input()
-  form: NgForm;
 
   constructor(public messages: Messages,
               public data: Data) { }
@@ -29,7 +30,7 @@ export class ContactsComponent implements OnInit {
     this.data.service.contacts.push(new DefaultRegisteredServiceContact());
     this.selectedTab = this.data.service.contacts.length - 1;
     setTimeout(() => {
-        this.form.resetForm();
+        //this.form.resetForm();
     }, 100);
   }
 

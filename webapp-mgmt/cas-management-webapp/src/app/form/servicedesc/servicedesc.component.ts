@@ -1,11 +1,15 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Messages} from '../../messages';
-import {AbstractRegisteredService} from '../../../domain/registered-service';
 import {Data} from '../data';
+import {ControlContainer, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-servicedesc',
-  templateUrl: './servicedesc.component.html'
+  templateUrl: './servicedesc.component.html',
+  viewProviders: [{
+    provide: ControlContainer,
+    useExisting: NgForm
+  }]
 })
 export class ServicedescComponent implements OnInit {
 

@@ -1,6 +1,6 @@
 <div>
   <mat-form-field class="textInput">
-    <input matInput
+    <input matInput #logoutUrl="ngModel" name="logoutUrl" id="logoutUrl"
            i18n-placeholder="services.form.label.logoutUrl"
            [placeholder]="messages.services_form_label_logoutUrl"
            [(ngModel)]="data.service.logoutUrl">

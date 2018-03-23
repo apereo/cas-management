@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import {Messages} from '../messages';
 import { EditorComponent } from '../editor.component';
 import {ActivatedRoute} from '@angular/router';
+import {SubmissionsService} from '../submissions/submissions.service';
 
 @Component({
   selector: 'app-diff',
@@ -19,11 +20,17 @@ export class DiffComponent implements AfterViewInit, OnInit {
 
   constructor(public messages: Messages,
               private service: ChangesService,
+              private submissionService: SubmissionsService,
               private route: ActivatedRoute) { }
 
   ngAfterViewInit() {
-    this.service.viewDiff(this.route.snapshot.params['oldId'], this.route.snapshot.params['newId'])
-      .then(diff => this.file = diff);
+    if (this.route.snapshot.data.submission) {
+      this.submissionService.diff(this.route.snapshot.params['id'])
+        .then(diff => this.file = diff);
+    } else {
+      this.service.viewDiff(this.route.snapshot.params['oldId'], this.route.snapshot.params['newId'])
+        .then(diff => this.file = diff);
+    }
   }
 
   ngOnInit() {

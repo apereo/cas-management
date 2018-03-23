@@ -3,78 +3,52 @@
   <div style="display:flex;">
     <div style="padding-top: 3px;">
       <div>
-        <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
         <h4 style="display: inline;position: relative;top: -5px;">
+          <mat-icon style="padding-top: 3px;">visibility</mat-icon>
           <ng-container i18n>
-            Add CAS Service
+            View Service
           </ng-container>
         </h4>
       </div>
     </div>
+    <div style="flex: 1 1 auto">
+    </div>
+    <div>
+      <app-controls [showVersionControl]="false" [showEdit]="true" (save)="save()"></app-controls>
+    </div>
   </div>
   <mat-card class="tabCard">
     <div class="cardContent">
-      <form #basicsForm="ngForm">
-        <mat-horizontal-stepper style="width: 600px">
-          <mat-step label="Service Info">
-            <app-serviceid></app-serviceid>
-            <app-servicename></app-servicename>
-            <app-servicedesc></app-servicedesc>
-            <div style="display: flex; flex-direction: row;margin-top: 20px; width: 510px">
-              <div style="flex: 1 1 auto;"></div>
-              <button mat-icon-button matStepperNext type="button">
-                <mat-icon>arrow_forward</mat-icon>
-              </button>
+      <form #editForm="ngForm">
+        <mat-tab-group>
+          <mat-tab label="Service Info">
+            <div style="padding-bottom: 50px; padding-top: 10px;">
+              <app-serviceid [validUrl]="validateDomain()"></app-serviceid>
+              <app-servicename></app-servicename>
+              <app-servicedesc></app-servicedesc>
             </div>
-          </mat-step>
-          <mat-step label="Contacts">
-            <app-contacts></app-contacts>
-            <div style="display: flex; flex-direction: row; margin-top: 30px; width: 510px">
-              <button mat-icon-button matStepperPrevious type="button">
-                <mat-icon>arrow_back</mat-icon>
-              </button>
-              <div style="flex: 1 1 auto"></div>
-              <button mat-icon-button matStepperNext type="button">
-                <mat-icon>arrow_forward</mat-icon>
-              </button>
+          </mat-tab>
+          <mat-tab label="Contacts">
+            <div style="padding-bottom: 50px;pading-top: 10px">
+              <app-contacts></app-contacts>
             </div>
-          </mat-step>
-          <mat-step label="Advanced">
-            <div>
-              <mat-checkbox name="requiresDuo" [(ngModel)]="requiresDuo" (change)="changeDuo()">
-                <ng-container i18n>Requires Duo</ng-container>
-                <mat-icon style="font-size: medium"
-                          i18n-matTooltip
-                          matTooltip="Checking this box will require all uses who sign into this to perform second factor authentication through Duo">help
-                </mat-icon>
-              </mat-checkbox>
+          </mat-tab>
+          <mat-tab label="Advanced">
+            <div style="padding-bottom: 50px">
+              <div style="padding-top: 10px; padding-bottom: 10px;">
+                <mat-checkbox name="requiresDuo" [(ngModel)]="requiresDuo" (change)="changeDuo()">
+                  <ng-container i18n>Requires Duo</ng-container>
+                  <mat-icon style="font-size: medium"
+                            i18n-matTooltip
+                            matTooltip="Checking this box will require all uses who sign into this to perform second factor authentication through Duo">help
+                  </mat-icon>
+                </mat-checkbox>
+              </div>
+              <app-logout></app-logout>
+              <app-logouttypeeval></app-logouttypeeval>
             </div>
-            <app-logout></app-logout>
-            <app-logouttypeeval></app-logouttypeeval>
-            <div style="display: flex; flex-direction: row; margin-top: 20px; width: 510px;">
-              <button mat-icon-button matStepperPrevious type="button">
-                <mat-icon>arrow_back</mat-icon>
-              </button>
-              <div style="flex: 1 1 auto;"></div>
-              <button mat-icon-button matStepperNext type="button">
-                <mat-icon>arrow_forward</mat-icon>
-              </button>
-            </div>
-          </mat-step>
-          <mat-step label="Submit">
-            <div>
-              Confirm you submission for adding this service to the CAS Service Registry by pressing Submit.
-            </div>
-            <div style="display: flex; flex-direction: row; margin-top: 20px; width: 510px;">
-              <button mat-icon-button matStepperPrevious type="button">
-                <mat-icon>arrow_back</mat-icon>
-              </button>
-              <div style="flex: 1 1 auto;"></div>
-              <button mat-flat-button (click)="submitForm()">Submit</button>
-            </div>
-            <div></div>
-          </mat-step>
-        </mat-horizontal-stepper>
+          </mat-tab>
+        </mat-tab-group>
         <button type="submit" style="display:none;" #submit></button>
       </form>
     </div>

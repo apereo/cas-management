@@ -8,12 +8,19 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.util.DigestUtils;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.joda.time.YearMonth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,10 +112,19 @@ public class GitServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
+        serviceItem.setDuo(service.getMultifactorPolicy().getMultifactorAuthenticationProviders().contains("mfa-duo"));
+        serviceItem.setExpires(getExpires(service.getExpirationPolicy().getExpirationDate()));
         if (uncommitted != null && uncommitted.containsKey(service.getId())) {
             serviceItem.setStatus(uncommitted.get(service.getId()));
         }
         return serviceItem;
+    }
+
+    private String getExpires(final String date) {
+        if (date == null) {
+            return LocalDate.now().plus(1, ChronoUnit.YEARS).format(DateTimeFormatter.ISO_DATE);
+        }
+        return date;
     }
 
     private void createChange(final DiffEntry entry) {

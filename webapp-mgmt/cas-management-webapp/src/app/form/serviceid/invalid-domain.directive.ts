@@ -8,9 +8,14 @@ import {Directive, Input} from '@angular/core';
 })
 
 export class InvalidDomainDirective implements Validator {
-    @Input() data: Data;
+    @Input('appInvalidDomain') serviceVal: Function;
 
     validate(control: AbstractControl): {[key: string]: any} {
-        return this.data && (this.data.invalidDomain || this.data.invalidRegEx) ? {'invalidDomain': {value: control.value}} : null;
+      try {
+        const patt = new RegExp(control.value);
+      } catch (e) {
+        return {'invalidDomain' : {value: control.value}};
+      }
+      return !this.serviceVal(control.value) ? {'invalidDomain': {value: control.value}} : null;
     }
 }

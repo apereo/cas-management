@@ -69,6 +69,19 @@ export class SubmissionsComponent implements OnInit {
     this.router.navigate(['/json', this.selectedItem.assignedId]);
   }
 
+  diff() {
+    this.router.navigate(['diffSubmission', {id: this.selectedItem.assignedId}])
+  }
+
+  accept() {
+    this.service.accept(this.selectedItem.assignedId)
+      .then(resp => {
+        this.snackBar.open("Submission has been accepted", "Dismiss", {
+          duration: 5000
+        });
+        this.refresh();
+      });
+  }
   openModalDelete() {
     const dialogRef = this.dialog.open(DeleteComponent, {
       data: this.selectedItem,

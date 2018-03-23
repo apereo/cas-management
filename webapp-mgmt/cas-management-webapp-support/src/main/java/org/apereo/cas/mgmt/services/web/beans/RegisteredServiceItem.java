@@ -19,6 +19,8 @@ public class RegisteredServiceItem implements Serializable {
     private String name;
     private String description;
     private String status;
+    private boolean duo;
+    private String expires;
 
     public int getEvalOrder() {
         return this.evalOrder;
@@ -66,5 +68,21 @@ public class RegisteredServiceItem implements Serializable {
 
     public void setStatus(final String status) {
         this.status = status;
+    }
+
+    public boolean isDuo() {
+        return duo;
+    }
+
+    public void setDuo(final boolean duo) {
+        this.duo = duo;
+    }
+
+    public String getExpires() {
+        return expires;
+    }
+
+    public void setExpires(final String expires) {
+        this.expires = expires;
     }
 }

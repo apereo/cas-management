@@ -1,16 +1,16 @@
 <div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
   <div style="padding-top: 3px;">
-    <mat-icon style="padding-top: 3px;">build</mat-icon>
+    <mat-icon style="padding-top: 3px;">apps</mat-icon>
     <h4 style="display: inline;position: relative;top: -5px;">
       <ng-container i18n>
-        Submissions
+        Your Services
       </ng-container>
     </h4>
   </div>
   <div style="flex: 1 1 auto">
   </div>
   <div>
-    <app-controls (refresh)="refresh()"></app-controls>
+    <app-controls (refresh)="refresh()" [showVersionControl]="false"></app-controls>
   </div>
 </div>
 
@@ -37,7 +37,9 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
-        {{ row.name }}
+        <a (click)="edit(row)">
+          {{ row.name }}
+        </a>
       </mat-cell>
     </ng-container>
 
@@ -63,6 +65,25 @@
       </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="duo">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'duoWidth'">
+        <ng-container i18n>Duo</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'duoWidth'">
+        <mat-icon *ngIf="row.duo">check_box</mat-icon>
+        <mat-icon *ngIf="!row.duo">check_box_outline_blank</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="expires">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'expiresWidth'">
+        <ng-container i18n>Renewal</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'expiresWidth'">
+        {{ row.expires }}
+      </mat-cell>
+    </ng-container>
+
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -72,28 +93,16 @@
 </div>
 
 <mat-menu #serviceMenu>
-  <button mat-menu-item *ngIf="this.selectedItem && this.selectedItem.status === 'SUBMITTED'" (click)="serviceEdit()">
+  <button mat-menu-item (click)="edit()">
     <mat-icon>edit</mat-icon>
-    <ng-container i18n>Import</ng-container>
+    <ng-container i18n>Edit</ng-container>
   </button>
-  <button mat-menu-item *ngIf="this.selectedItem && this.selectedItem.status === 'EDIT'" (click)="diff()">
-    <mat-icon>compare_arrows</mat-icon>
-    <ng-container i18n>Diff</ng-container>
+  <button mat-menu-item (click)="renew()" *ngIf="showRenew()">
+    <mat-icon>restore</mat-icon>
+    <ng-container i18n>Renew</ng-container>
   </button>
-  <button mat-menu-item *ngIf="this.selectedItem && this.selectedItem.status === 'EDIT'" (click)="accept()">
-    <mat-icon>thumb_up</mat-icon>
-    <ng-container i18n>Accept</ng-container>
-  </button>
-  <button mat-menu-item *ngIf="this.selectedItem && this.selectedItem.status === 'EDIT'" (click)="reject()">
-    <mat-icon>thumb_down</mat-icon>
-    <ng-container i18n>Reject</ng-container>
-  </button>
-  <button mat-menu-item (click)="getYaml()">
-    <mat-icon>code</mat-icon>
-    <ng-container i18n>YAML</ng-container>
-  </button>
-  <button mat-menu-item (click)="getJson()">
-    <mat-icon>code</mat-icon>
-    <ng-container i18n>JSON</ng-container>
+  <button mat-menu-item (click)="remove()">
+    <mat-icon>delete</mat-icon>
+    <ng-container i18n>remove</ng-container>
   </button>
 </mat-menu>

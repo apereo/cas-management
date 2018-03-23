@@ -1,0 +1,25 @@
+.descriptionWidth {
+  flex: 1 1 auto;
+}
+
+.serviceIdWidth {
+  flex: 0 0 240px;
+}
+
+.nameWidth {
+  flex: 0 0 240px;
+}
+
+.duoWidth {
+  flex: 0 0 100px;
+}
+
+.expiresWidth {
+  flex: 0 0 150px;
+}
+
+
+.actionWidth {
+  flex: 0 0 50px;
+}
+

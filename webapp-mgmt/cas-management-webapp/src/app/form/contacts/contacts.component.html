@@ -1,9 +1,10 @@
 <div>
   <mat-tab-group [(selectedIndex)]="selectedTab">
     <mat-tab *ngFor="let contact of data.service.contacts;let i = index;" [label]="getTabHeader(contact)">
+      <ng-container [ngModelGroup]="'contact' + i">
       <div>
         <mat-form-field class="textInput">
-          <input matInput required
+          <input matInput required #name="ngModel"
                  placeholder="Name" name="name" id="name"
                  [(ngModel)]="contact.name">
         </mat-form-field>
@@ -14,8 +15,8 @@
       </div>
       <div>
         <mat-form-field class="textInput">
-          <input matInput required
-                 placeholder="Email"
+          <input matInput required #email="ngModel" email
+                 placeholder="Email" name="email" id="email"
                  [(ngModel)]="contact.email">
         </mat-form-field>
         <mat-icon style="font-size: medium"
@@ -25,8 +26,8 @@
       </div>
       <div>
         <mat-form-field class="textInput">
-          <input matInput
-                 placeholder="Phone"
+          <input matInput #phone="ngModel" pattern="^[+]?[\d\s]+$"
+                 placeholder="Phone" name="phone" id="phone"
                  [(ngModel)]="contact.phone">
         </mat-form-field>
         <mat-icon style="font-size: medium"
@@ -36,8 +37,8 @@
       </div>
       <div>
         <mat-form-field class="textInput">
-          <input matInput
-                 placeholder="Department"
+          <input matInput #department="ngModel"
+                 placeholder="Department" name="department" id="department"
                  [(ngModel)]="contact.department">
         </mat-form-field>
         <mat-icon style="font-size: medium"
@@ -45,6 +46,7 @@
                  matTooltip="Department of the contact">help
         </mat-icon>
       </div>
+      </ng-container>
     </mat-tab>
   </mat-tab-group>
   <div style="height:25px;padding-top: 5px;">

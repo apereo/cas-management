@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUser().then(resp =>
-      this.router.navigate(['form']));
+      this.router.navigate(['services']));
   }
 
 }

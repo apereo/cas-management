@@ -1,30 +1,29 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Messages} from '../../app/messages';
 import {Data} from '../../app/form/data';
-import {AbstractRegisteredService, RegexRegisteredService} from '../../domain/registered-service';
+import {RegexRegisteredService} from '../../domain/registered-service';
 import {UserService} from '../../app/user.service';
-import {DefaultRegisteredServiceContact, RegisteredServiceContact} from '../../domain/contact';
+import {DefaultRegisteredServiceContact} from '../../domain/contact';
 import {RegisterService} from '../register.servivce';
-import {MatSnackBar, MatTabGroup} from '@angular/material';
-import {ActivatedRoute, Router} from '@angular/router';
+import {MatHorizontalStepper, MatSnackBar} from '@angular/material';
+import {Router} from '@angular/router';
 import {FormService} from '../../app/form/form.service';
 import {DefaultRegisteredServiceMultifactorPolicy} from '../../domain/multifactor';
-import {ServiceidComponent} from '../../app/form/serviceid/serviceid.component';
-import {AbstractControl, NgForm} from '@angular/forms';
 import {UserProfile} from '../../domain/user-profile';
+import {NgForm} from '@angular/forms';
 
 @Component({
-  selector: 'register-form',
-  templateUrl: './form.component.html'
+  selector: 'register-wizzard',
+  templateUrl: './wizzard.component.html'
 })
-export class RegisterFormComponent implements OnInit {
+export class WizzardComponent implements OnInit {
 
   requiresDuo: boolean;
 
-  @ViewChild(MatTabGroup)
-  tabs: MatTabGroup
+  @ViewChild(MatHorizontalStepper)
+  stepper: MatHorizontalStepper;
 
-  @ViewChild('editForm')
+  @ViewChild('wizzardForm')
   form: NgForm;
 
   constructor(public messages: Messages,
@@ -33,18 +32,22 @@ export class RegisterFormComponent implements OnInit {
               public registerService: RegisterService,
               public formService: FormService,
               public router: Router,
-              private route: ActivatedRoute,
-              private snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar) {
     data.service = new RegexRegisteredService();
   }
 
   ngOnInit() {
-    this.route.data
-      .subscribe((data: { resp: AbstractRegisteredService }) => {
-        if (data.resp) {
-          this.data.service = data.resp;
-        }
-      });
+    this.formService.formData().then(resp => {
+      this.data.formData = resp;
+    });
+    const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
+    contact.id = 0;
+    contact.name = this.userService.user.firstName + " " + this.userService.user.familyName;
+    contact.email = this.userService.user.email;
+    contact.phone = this.userService.user.phone;
+    contact.department = this.userService.user.department;
+    this.data.service.contacts = [];
+    this.data.service.contacts.push(contact);
   }
 
   changeDuo(){
@@ -58,35 +61,18 @@ export class RegisterFormComponent implements OnInit {
   }
 
   submitForm() {
-    this.registerService.submitService(this.data.service)
-      .then(resp => this.router.navigate(['submitted']));
-  }
-
-  save() {
+    this.data.invalidRegEx = false;
     if (this.validateForm()) {
-      this.registerService.save(this.data.service)
+      this.registerService.submitService(this.data.service)
         .then(resp => this.router.navigate(['submitted']));
     } else {
-      this.snackBar.open("Please correct errors before submitting form", "Dismiss", {
+      this.snackBar.open("Please correct errors before service can be submitted.", "Dismiss", {
         duration: 5000
       });
     }
   }
 
-  validateRegex(pattern): boolean {
-    try {
-      if (pattern === '') {
-        return false;
-      }
-      const patt = new RegExp(pattern);
-      return true;
-    } catch (e) {
-      console.log('Failed regex');
-    }
-    return false;
-  }
-
-  validateDomain = function(user: UserProfile) {
+  validateDomain = function() {
     return function (service: string): boolean {
       const domainExtractor = new RegExp('^\\^?https?\\??://([^:/]+)');
       const domainPattern = new RegExp('^[a-z0-9-.]*$');
@@ -106,23 +92,26 @@ export class RegisterFormComponent implements OnInit {
   validateForm(): boolean {
     const data = this.data.service;
 
+    console.log(this.form);
+
     if (this.form.controls['serviceId'].errors) {
-      this.tabs.selectedIndex = 0;
+      this.stepper.selectedIndex = 0;
       return false;
     }
 
     if (this.form.controls['serviceName'].errors) {
-      this.tabs.selectedIndex = 0;
+      this.stepper.selectedIndex = 0;
       return false;
     }
 
     for (let i = 0; i < this.data.service.contacts.length; i++) {
       if (this.form.controls['contact'+i].status === 'INVALID') {
-        this.tabs.selectedIndex = 1;
+        this.stepper.selectedIndex = 1;
         return false;
       }
     }
 
     return true;
   }
+
 }

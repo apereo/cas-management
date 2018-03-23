@@ -9,5 +9,22 @@
       </h4>
     </a>
   </div>
+  <div class="searchbox">
+  </div>
+  <div>
+    <button mat-icon-button [matMenuTriggerFor]="links">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
 </div>
 
+<mat-menu #links>
+  <button mat-menu-item routerLink="/services">
+    <mat-icon>apps</mat-icon>
+    <span i18n>Your Services</span>
+  </button>
+  <button mat-menu-item routerLink="/wizzard">
+    <mat-icon>add_circle</mat-icon>
+    <span i18n>Add Service</span>
+  </button>
+</mat-menu>

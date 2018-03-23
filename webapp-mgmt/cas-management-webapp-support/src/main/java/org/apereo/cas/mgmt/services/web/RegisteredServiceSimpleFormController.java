@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
+import org.apereo.cas.services.DefaultRegisteredServiceExpirationPolicy;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 
 /**
  * Handle adding/editing of RegisteredServices.
@@ -79,7 +81,15 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
             service.setEvaluationOrder(manager.getAllServices().size());
         }
 
+        if (service.getId() < 0) {
+            final DefaultRegisteredServiceExpirationPolicy exp =
+                    (DefaultRegisteredServiceExpirationPolicy)service.getExpirationPolicy();
+            final LocalDate expDate = LocalDate.now().plusYears(1);
+            exp.setExpirationDate(expDate.toString());
+        }
+
         final RegisteredService newSvc = manager.save(service);
+
         LOGGER.info("Saved changes to service [{}]", service.getId());
         return new ResponseEntity<>(String.valueOf(newSvc.getId()), HttpStatus.OK);
     }

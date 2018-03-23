@@ -1,10 +1,16 @@
 package org.apereo.cas.mgmt.services.web;
 
+import org.apache.commons.io.FileUtils;
+import org.apereo.cas.mgmt.GitUtil;
+import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
+import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
+import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.DigestUtils;
+import org.eclipse.jgit.diff.RawText;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +35,15 @@ import static java.util.stream.Collectors.toList;
 @Controller
 public class SubmissionController {
 
+    private final RepositoryFactory repositoryFactory;
+    private final ManagerFactory managerFactory;
+
+    public SubmissionController(final RepositoryFactory repositoryFactory,
+                                final ManagerFactory managerFactory) {
+        this.repositoryFactory = repositoryFactory;
+        this.managerFactory = managerFactory;
+    }
+
     @GetMapping("getSubmissions")
     public ResponseEntity<List<RegisteredServiceItem>> getSubmissions(final HttpServletResponse response,
                                                                       final HttpServletRequest requet) throws Exception {
@@ -42,6 +57,11 @@ public class SubmissionController {
                 serviceItem.setName(service.getName());
                 serviceItem.setServiceId(service.getServiceId());
                 serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
+                if (p.getFileName().toString().startsWith("edit")) {
+                    serviceItem.setStatus("EDIT");
+                } else {
+                    serviceItem.setStatus("SUBMITTED");
+                }
                 return serviceItem;
             }).collect(toList());
             return new ResponseEntity<>(list, HttpStatus.OK);
@@ -80,6 +100,30 @@ public class SubmissionController {
                                                    @RequestParam final String id) throws Exception {
         Files.delete(Paths.get("/ucd/local/cas-mgmt-5.2/submitted/" + id));
         return new ResponseEntity<>("Submission deleted", HttpStatus.OK);
+    }
+
+    @GetMapping("diffSubmission")
+    public void diffSubmission(final HttpServletResponse response,
+                                                 final HttpServletRequest request,
+                                                 @RequestParam final String id) throws Exception {
+        final GitUtil git = repositoryFactory.masterRepository();
+        final RawText subPath = new RawText(FileUtils.readFileToByteArray(new File("/ucd/local/cas-mgmt-5.2/submitted/" + id)));
+        final String[] splitSub = id.split("-");
+        final RawText gitPath = new RawText(FileUtils.readFileToByteArray(new File("/ucd/local/cas-mgmt-5.2/services-repo/service-" + splitSub[1])));
+        response.getOutputStream().write(git.getFormatter(subPath, gitPath));
+    }
+
+    @GetMapping("acceptSubmission")
+    public ResponseEntity<String> acceptSubmission(final HttpServletResponse response,
+                                                   final HttpServletRequest request,
+                                                   @RequestParam final String id) throws Exception {
+        final GitServicesManager manager = managerFactory.from(request, response);
+        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        final Path path = Paths.get("/ucd/local/cas-mgmt-5.2/submitted/" + id);
+        final RegisteredService service = serializer.from(path.toFile());
+        manager.save(service);
+        Files.delete(path);
+        return new ResponseEntity<>("Service Accepted", HttpStatus.OK);
     }
 
     @GetMapping("importSubmission")

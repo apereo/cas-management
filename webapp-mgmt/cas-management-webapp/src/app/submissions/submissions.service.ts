@@ -29,4 +29,12 @@ export class SubmissionsService extends Service {
     return this.getText('deleteSubmission?id=' + id);
   }
 
+  diff(id: String): Promise<String> {
+    return this.getText('diffSubmission?id=' + id);
+  }
+
+  accept(id: String): Promise<String> {
+    return this.getText('acceptSubmission?id=' + id);
+  }
+
 }

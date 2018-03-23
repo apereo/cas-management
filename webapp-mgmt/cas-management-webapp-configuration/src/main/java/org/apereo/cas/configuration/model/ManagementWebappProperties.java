@@ -88,6 +88,11 @@ public class ManagementWebappProperties implements Serializable {
     private String userReposDir = "/etc/cas/user-repos";
 
     /**
+     * A writable location where submitted services will be queued.
+     */
+    private String submitDir = "/etc/cas/submitted";
+
+    /**
      * Path to executable bean shell script to sync server nodes.
      */
     private String syncScript;
@@ -177,6 +182,14 @@ public class ManagementWebappProperties implements Serializable {
 
     public void setServicesRepo(final String servicesRepo) {
         this.servicesRepo = servicesRepo;
+    }
+
+    public String getSubmitDir(){
+        return submitDir;
+    }
+
+    public void setSubmitDir(final String submitDir) {
+        this.submitDir = submitDir;
     }
 
     public String getSyncScript() {

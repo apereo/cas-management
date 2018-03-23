@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.mgmt.GitUtil;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
@@ -76,6 +77,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<String> saveService(final HttpServletRequest request,
                                               final HttpServletResponse response,
                                               @RequestBody final RegisteredService service) throws Exception {
+        checkForAdmin(request, response);
         final GitServicesManager manager = managerFactory.from(request, response);
         if (service.getEvaluationOrder() < 0) {
             service.setEvaluationOrder(manager.getAllServices().size());
@@ -106,7 +108,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     @GetMapping(value = "getService")
     public ResponseEntity<RegisteredService> getServiceById(final HttpServletRequest request,
                                                             final HttpServletResponse response,
-                                                            @RequestParam(value = "id", required = false) final Long id) throws Exception {
+                                                            @RequestParam(value = "id", required = false) final Long id)
+                                                            throws Exception {
         final RegisteredService service = getService(request, response, id);
         return new ResponseEntity<>(service, HttpStatus.OK);
     }
@@ -168,19 +171,11 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
         return service;
     }
 
-    private void checkForRename(final RegisteredService service,
-                                final HttpServletRequest request,
-                                final HttpServletResponse response) throws Exception {
-        final RegisteredService oldSvc = managerFactory.from(request, response).findServiceBy(service.getId());
-        if (oldSvc != null) {
-            if (!service.getName().equals(oldSvc.getName())) {
-                final GitUtil git = repositoryFactory.from(request, response);
-                git.move(makeFileName(oldSvc), makeFileName(service));
-            }
-        }
-    }
 
-    private String makeFileName(final RegisteredService service) throws Exception{
-        return StringUtils.remove(service.getName()+ "-" + service.getId() + ".json", " ");
+    private void checkForAdmin(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        if (!casUserProfile.isAdministrator()) {
+            throw new IllegalAccessException("You are not authorized for this request");
+        }
     }
 }

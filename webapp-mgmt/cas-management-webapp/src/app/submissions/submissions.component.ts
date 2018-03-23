@@ -82,6 +82,17 @@ export class SubmissionsComponent implements OnInit {
         this.refresh();
       });
   }
+
+  reject() {
+    this.service.delete(this.selectedItem.assignedId)
+      .then(resp => {
+        this.snackBar.open("Submission has been rejected", "Dismiss", {
+          duration: 5000
+        });
+      })
+    this.refresh();
+  }
+
   openModalDelete() {
     const dialogRef = this.dialog.open(DeleteComponent, {
       data: this.selectedItem,

@@ -17,7 +17,7 @@
       <form #wizzardForm="ngForm">
         <mat-horizontal-stepper style="width: 600px">
           <mat-step label="Service Info">
-            <app-serviceid [form]="wizzardForm" [validUrl]="validateDomain(userService.user)"></app-serviceid>
+            <app-serviceid [form]="wizzardForm" [validUrl]="validateDomain()"></app-serviceid>
             <app-servicename></app-servicename>
             <app-servicedesc></app-servicedesc>
             <div style="display: flex; flex-direction: row;margin-top: 20px; width: 510px">

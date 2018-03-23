@@ -86,7 +86,7 @@ export class RegisterFormComponent implements OnInit {
     return false;
   }
 
-  validateDomain = function(user: UserProfile) {
+  validateDomain = function() {
     return function (service: string): boolean {
       const domainExtractor = new RegExp('^\\^?https?\\??://([^:/]+)');
       const domainPattern = new RegExp('^[a-z0-9-.]*$');

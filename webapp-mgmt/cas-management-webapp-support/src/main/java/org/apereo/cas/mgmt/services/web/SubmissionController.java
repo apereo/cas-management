@@ -2,18 +2,22 @@ package org.apereo.cas.mgmt.services.web;
 
 import org.apache.commons.io.FileUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
+import org.apereo.cas.mgmt.services.web.beans.RejectData;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.DigestUtils;
+import org.apereo.cas.util.io.CommunicationsManager;
 import org.eclipse.jgit.diff.RawText;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +29,12 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static java.util.stream.Collectors.toList;
@@ -44,15 +51,18 @@ public class SubmissionController {
     private final ManagerFactory managerFactory;
     private final CasConfigurationProperties casProperties;
     private final CasUserProfileFactory casUserProfileFactory;
+    private final CommunicationsManager communicationsManager;
 
     public SubmissionController(final RepositoryFactory repositoryFactory,
                                 final ManagerFactory managerFactory,
                                 final CasConfigurationProperties casProperties,
-                                final CasUserProfileFactory casUserProfileFactory) {
+                                final CasUserProfileFactory casUserProfileFactory,
+                                final CommunicationsManager communicationsManager) {
         this.repositoryFactory = repositoryFactory;
         this.managerFactory = managerFactory;
         this.casProperties = casProperties;
         this.casUserProfileFactory = casUserProfileFactory;
+        this.communicationsManager = communicationsManager;
     }
 
     /**
@@ -141,19 +151,78 @@ public class SubmissionController {
      *
      * @param response - the response
      * @param request - the request
+     * @param data - RejectData
+     * @return - status
+     * @throws Exception - failed
+     */
+    @PostMapping(value = "rejectSubmission", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> rejectSubmission(final HttpServletResponse response,
+                                                   final HttpServletRequest request,
+                                                   @RequestBody final RejectData data) throws Exception {
+        checkForAdmin(request, response);
+        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        final Path path = Paths.get(casProperties.getMgmt().getSubmitDir() + "/" + data.getId());
+        final RegisteredService service = serializer.from(path.toFile());
+        Files.delete(path);
+        sendRejectMessage(service.getName(), data.getNote(),
+                 service.getContacts().get(0).getEmail(), data.getId().contains("edit"));
+        return new ResponseEntity<>("Submission deleted", HttpStatus.OK);
+    }
+
+    private void sendRejectMessage(final String submitName, final String note, final String email, final boolean isChange) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps;
+            if(isChange) {
+                emailProps = casProperties.getMgmt().getNotifications().getRegisterRejectChange();
+            } else {
+                emailProps = casProperties.getMgmt().getNotifications().getRegisterReject();
+            }
+            communicationsManager.email(
+                    MessageFormat.format(emailProps.getText(), submitName, note),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    email,
+                    emailProps.getCc(),
+                    emailProps.getBcc()
+            );
+        }
+    }
+
+    /**
+     * Mapped method to delete a submission from the queue.
+     *
+     * @param response - the response
+     * @param request - the request
      * @param id - file name of the service
      * @return - status
      * @throws Exception - failed
      */
-    @GetMapping("deleteSubmission")
-    public ResponseEntity<String> deleteSubmission(final HttpServletResponse response,
+    @GetMapping("addedSubmission")
+    public ResponseEntity<String> addedSubmission(final HttpServletResponse response,
                                                    final HttpServletRequest request,
                                                    @RequestParam final String id) throws Exception {
         checkForAdmin(request, response);
-        Files.delete(Paths.get(casProperties.getMgmt().getSubmitDir() + "/" + id));
-        return new ResponseEntity<>("Submission deleted", HttpStatus.OK);
+        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        final Path path = Paths.get(casProperties.getMgmt().getSubmitDir() + "/" + id);
+        final RegisteredService service = serializer.from(path.toFile());
+        Files.delete(path);
+        sendAddedMessage(service.getName(), "", service.getContacts().get(0).getEmail());
+        return new ResponseEntity<>("Submission Added", HttpStatus.OK);
     }
 
+    private void sendAddedMessage(final String submitName, final String note, final String email) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getRegisterAdded();
+            communicationsManager.email(
+                    MessageFormat.format(emailProps.getText(), submitName, note),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    email,
+                    emailProps.getCc(),
+                    emailProps.getBcc()
+            );
+        }
+    }
     /**
      * Mapped method that will return a diff of the submission and the current version in the repo.
      *
@@ -197,7 +266,22 @@ public class SubmissionController {
         final RegisteredService service = serializer.from(path.toFile());
         manager.save(service);
         Files.delete(path);
+        sendAcceptMessage(service.getName(), service.getContacts().get(0).getEmail());
         return new ResponseEntity<>("Service Accepted", HttpStatus.OK);
+    }
+
+    private void sendAcceptMessage(final String submitName, final String email) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getRegisterAccept();
+            communicationsManager.email(
+                    MessageFormat.format(emailProps.getText(), submitName),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    email,
+                    emailProps.getCc(),
+                    emailProps.getBcc()
+            );
+        }
     }
 
     @GetMapping("importSubmission")

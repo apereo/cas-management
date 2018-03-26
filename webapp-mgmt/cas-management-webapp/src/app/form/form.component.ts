@@ -227,7 +227,7 @@ export class FormComponent implements OnInit {
 
     this.data.service.id = id;
     if (this.imported && this.importService.submissionFile) {
-      this.submissionService.delete(this.importService.submissionFile)
+      this.submissionService.added(this.importService.submissionFile)
         .then(resp => {
           this.location.back();
         });

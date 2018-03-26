@@ -25,8 +25,8 @@ export class SubmissionsService extends Service {
     return this.getText('getJsonSubmission?id=' + id);
   }
 
-  delete(id: String): Promise<String> {
-    return this.getText('deleteSubmission?id=' + id);
+  reject(id: String, note: String): Promise<String> {
+    return this.postText('rejectSubmission', {id: id, note: note});
   }
 
   diff(id: String): Promise<String> {
@@ -35,6 +35,10 @@ export class SubmissionsService extends Service {
 
   accept(id: String): Promise<String> {
     return this.getText('acceptSubmission?id=' + id);
+  }
+
+  added(id: String): Promise<String> {
+    return this.getText('addedSubmission?id=' + id);
   }
 
 }

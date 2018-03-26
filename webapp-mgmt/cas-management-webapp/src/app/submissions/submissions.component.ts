@@ -9,6 +9,7 @@ import {DeleteComponent} from '../delete/delete.component';
 import {SubmissionsService} from './submissions.service';
 import {ImportService} from '../import/import.service';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {RejectComponent} from '../reject/reject.component';
 
 @Component({
   selector: 'app-submissions',
@@ -17,7 +18,7 @@ import {PaginatorComponent} from '../paginator/paginator.component';
 })
 
 export class SubmissionsComponent implements OnInit {
-  deleteItem: ServiceItem;
+  rejectItem: ServiceItem;
   domain: String;
   selectedItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
@@ -83,45 +84,28 @@ export class SubmissionsComponent implements OnInit {
       });
   }
 
-  reject() {
-    this.service.delete(this.selectedItem.assignedId)
-      .then(resp => {
-        this.snackBar.open("Submission has been rejected", "Dismiss", {
-          duration: 5000
-        });
-      })
-    this.refresh();
-  }
-
-  openModalDelete() {
-    const dialogRef = this.dialog.open(DeleteComponent, {
+  openRejectModal() {
+    const dialogRef = this.dialog.open(RejectComponent, {
       data: this.selectedItem,
       width: '500px',
       position: {top: '100px'}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.delete();
+        this.reject(result);
       }
     });
-    this.deleteItem = this.selectedItem;
-  };
+    this.rejectItem = this.selectedItem;
+  }
 
-  delete() {
-    const myData = {id: this.deleteItem.assignedId};
-
-    this.service.delete(this.deleteItem.assignedId)
-      .then(resp => this.handleDelete(resp))
-      .catch((e: any) => this.snackBar.open(e.message || e.text(), 'Dismiss', {
-        duration: 5000
-      }));
-  };
-
-  handleDelete(name: String) {
-    this.snackBar.open(name + ' ' + this.messages.management_services_status_deleted, 'Dismiss', {
-      duration: 5000
-    });
-    this.refresh();
+  reject(note: String) {
+    this.service.reject(this.rejectItem.assignedId, note)
+      .then(resp => {
+        this.snackBar.open('Submitted Service has been rejected', 'Dismiss', {
+          duration: 5000
+        });
+        this.refresh();
+      });
   }
 
   refresh() {

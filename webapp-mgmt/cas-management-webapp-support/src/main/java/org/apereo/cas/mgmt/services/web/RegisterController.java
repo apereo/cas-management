@@ -1,9 +1,11 @@
 package org.apereo.cas.mgmt.services.web;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.GitServicesManager;
+import org.apereo.cas.mgmt.services.web.beans.Diff;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.services.AbstractRegisteredService;
@@ -12,6 +14,7 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
+import org.apereo.cas.util.io.CommunicationsManager;
 import org.joda.time.LocalDate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,15 +53,18 @@ public class RegisterController {
     final private ManagerFactory managerFactory;
     final private ServicesManager published;
     final private CasConfigurationProperties casProperties;
+    private final CommunicationsManager communicationsManager;
 
     public RegisterController(final CasUserProfileFactory casUserProfileFactory,
                               final ManagerFactory managerFactory,
                               final ServicesManager published,
-                              final CasConfigurationProperties casProperties) {
+                              final CasConfigurationProperties casProperties,
+                              final CommunicationsManager communicationsManager) {
         this.casUserProfileFactory = casUserProfileFactory;
         this.managerFactory = managerFactory;
         this.published = published;
         this.casProperties = casProperties;
+        this.communicationsManager = communicationsManager;
     }
 
     /**
@@ -89,7 +96,21 @@ public class RegisterController {
         final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
         final Path path = Paths.get(casProperties.getMgmt().getSubmitDir() + "/submit-"+new Date().getTime()+".json");
         serializer.to(Files.newOutputStream(path), service);
+        sendSubmitMessage(service.getName(), casUserProfileFactory.from(request, response));
         return new ResponseEntity<>("Service submitted", HttpStatus.OK);
+    }
+
+    private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getRegisterSubmit();
+            communicationsManager.email(
+                    MessageFormat.format(emailProps.getText(), submitName),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    user.getEmail(),
+                    emailProps.getCc(),
+                    emailProps.getBcc());
+        }
     }
 
     /**
@@ -108,7 +129,21 @@ public class RegisterController {
         final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
         final Path path = Paths.get(casProperties.getMgmt().getSubmitDir() + "/edit-" + service.getId() + ".json");
         serializer.to(Files.newOutputStream(path), service);
+        sendChangeMessage(service.getName(), casUserProfileFactory.from(request, response));
         return new ResponseEntity<>("Service Saved", HttpStatus.OK);
+    }
+
+    private void sendChangeMessage(final String submitName, final CasUserProfile user) {
+        if (communicationsManager.isMailSenderDefined()) {
+            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getRegisterChange();
+            communicationsManager.email(
+                    MessageFormat.format(emailProps.getText(), submitName),
+                    emailProps.getFrom(),
+                    MessageFormat.format(emailProps.getSubject(), submitName),
+                    user.getEmail(),
+                    emailProps.getCc(),
+                    emailProps.getBcc());
+        }
     }
 
     /**

@@ -307,13 +307,13 @@ public class ServiceRepsositoryController {
         git.commit(user, msg);
         git.createPullRequest(commit, submitName);
         git.checkout("master");
-        sendSubmitMessage(submitName, createDiffs(submitName), user);
+        sendSubmitMessage(submitName, user);
         git.close();
 
         return new ResponseEntity<>("Request Submitted", HttpStatus.OK);
     }
 
-    private void sendSubmitMessage(final String submitName, final List<Diff> diffs, final CasUserProfile user) {
+    private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
             final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getSubmit();
             communicationsManager.email(

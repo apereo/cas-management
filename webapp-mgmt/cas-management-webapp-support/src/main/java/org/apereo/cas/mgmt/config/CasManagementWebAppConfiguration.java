@@ -196,12 +196,14 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public RegisterController registerController() {
-        return new RegisterController(casUserProfileFactory, managerFactory(), servicesManager, casProperties);
+        return new RegisterController(casUserProfileFactory, managerFactory(),
+                                      servicesManager, casProperties, communicationsManager());
     }
 
     @Bean
     public SubmissionController submissionController() {
-        return new SubmissionController(repositoryFactory(), managerFactory(), casProperties, casUserProfileFactory);
+        return new SubmissionController(repositoryFactory(), managerFactory(),
+                                        casProperties, casUserProfileFactory, communicationsManager());
     }
 
     @Bean

@@ -43,6 +43,9 @@ import {RegisterFormResolve} from './form/form.resolve';
     SubmitComponent,
     ServicesComponent
   ],
+  entryComponents: [
+    SubmitComponent
+  ],
   providers: [
     Messages,
     FooterService,

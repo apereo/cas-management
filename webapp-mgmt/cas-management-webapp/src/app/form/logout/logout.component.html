@@ -1,10 +1,13 @@
 <div>
   <mat-form-field class="textInput">
     <input matInput #logoutUrl="ngModel" name="logoutUrl" id="logoutUrl"
+           pattern="https?://[a-zA-Z0-9.]+:?[0-9]*/.*"
            i18n-placeholder="services.form.label.logoutUrl"
            [placeholder]="messages.services_form_label_logoutUrl"
            [(ngModel)]="data.service.logoutUrl">
+    <mat-error>You have entered an invalid URL</mat-error>
   </mat-form-field>
+
   <mat-icon style="font-size: medium"
            i18n-matTooltip="services.form.tooltip.logoutUrl"
            [matTooltip]="messages.services_form_tooltip_logoutUrl">help

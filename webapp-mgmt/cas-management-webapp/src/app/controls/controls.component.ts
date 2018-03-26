@@ -30,6 +30,9 @@ export class ControlsComponent implements OnInit {
   @Input()
   showVersionControl: boolean = true;
 
+  @Input()
+  saveEnabled: boolean = true;
+
   @ViewChild('publishModal')
   submitComp: PublishComponent;
 

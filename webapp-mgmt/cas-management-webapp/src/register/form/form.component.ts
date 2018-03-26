@@ -5,13 +5,14 @@ import {AbstractRegisteredService, RegexRegisteredService} from '../../domain/re
 import {UserService} from '../../app/user.service';
 import {DefaultRegisteredServiceContact, RegisteredServiceContact} from '../../domain/contact';
 import {RegisterService} from '../register.servivce';
-import {MatSnackBar, MatTabGroup} from '@angular/material';
+import {MatDialog, MatSnackBar, MatTabGroup} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormService} from '../../app/form/form.service';
 import {DefaultRegisteredServiceMultifactorPolicy} from '../../domain/multifactor';
 import {ServiceidComponent} from '../../app/form/serviceid/serviceid.component';
 import {AbstractControl, NgForm} from '@angular/forms';
 import {UserProfile} from '../../domain/user-profile';
+import {SubmitComponent} from '../submit/submit.component';
 
 @Component({
   selector: 'register-form',
@@ -34,7 +35,8 @@ export class RegisterFormComponent implements OnInit {
               public formService: FormService,
               public router: Router,
               private route: ActivatedRoute,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              public dialog: MatDialog) {
     data.service = new RegexRegisteredService();
   }
 
@@ -43,8 +45,15 @@ export class RegisterFormComponent implements OnInit {
       .subscribe((data: { resp: AbstractRegisteredService }) => {
         if (data.resp) {
           this.data.service = data.resp;
+          this.requiresDuo = this.data.service.multifactorPolicy &&
+            this.data.service.multifactorPolicy.multifactorAuthenticationProviders.indexOf('mfa-duo') > -1
+
         }
       });
+  }
+
+  changed(): boolean {
+    return this.form.dirty;
   }
 
   changeDuo(){
@@ -57,20 +66,26 @@ export class RegisterFormComponent implements OnInit {
     }
   }
 
-  submitForm() {
-    this.registerService.submitService(this.data.service)
-      .then(resp => this.router.navigate(['submitted']));
-  }
-
   save() {
     if (this.validateForm()) {
       this.registerService.save(this.data.service)
-        .then(resp => this.router.navigate(['submitted']));
+        .then(resp => this.showSubmit());
     } else {
       this.snackBar.open("Please correct errors before submitting form", "Dismiss", {
         duration: 5000
       });
     }
+  }
+
+  showSubmit() {
+    const dialogRef = this.dialog.open(SubmitComponent, {
+      data: true,
+      width: '500px',
+      position: {top: '100px'}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['services']);
+    });
   }
 
   validateRegex(pattern): boolean {
@@ -121,6 +136,11 @@ export class RegisterFormComponent implements OnInit {
         this.tabs.selectedIndex = 1;
         return false;
       }
+    }
+
+    if (this.form.controls["logoutUrl"].errors) {
+      this.tabs.selectedIndex = 2;
+      return false;
     }
 
     return true;

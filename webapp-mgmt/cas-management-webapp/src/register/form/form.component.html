@@ -3,10 +3,10 @@
   <div style="display:flex;">
     <div style="padding-top: 3px;">
       <div>
+        <mat-icon style="padding-top: 3px;">build</mat-icon>
         <h4 style="display: inline;position: relative;top: -5px;">
-          <mat-icon style="padding-top: 3px;">visibility</mat-icon>
           <ng-container i18n>
-            View Service
+            Edit Service
           </ng-container>
         </h4>
       </div>
@@ -14,7 +14,7 @@
     <div style="flex: 1 1 auto">
     </div>
     <div>
-      <app-controls [showVersionControl]="false" [showEdit]="true" (save)="save()"></app-controls>
+      <app-controls [showVersionControl]="false" [showEdit]="true" [saveEnabled]="!changed()" (save)="save()"></app-controls>
     </div>
   </div>
   <mat-card class="tabCard">

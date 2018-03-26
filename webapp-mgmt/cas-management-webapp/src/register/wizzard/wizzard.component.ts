@@ -5,12 +5,14 @@ import {RegexRegisteredService} from '../../domain/registered-service';
 import {UserService} from '../../app/user.service';
 import {DefaultRegisteredServiceContact} from '../../domain/contact';
 import {RegisterService} from '../register.servivce';
-import {MatHorizontalStepper, MatSnackBar} from '@angular/material';
+import {MatDialog, MatHorizontalStepper, MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';
 import {FormService} from '../../app/form/form.service';
 import {DefaultRegisteredServiceMultifactorPolicy} from '../../domain/multifactor';
 import {UserProfile} from '../../domain/user-profile';
 import {NgForm} from '@angular/forms';
+import {RejectComponent} from '../../app/reject/reject.component';
+import {SubmitComponent} from '../submit/submit.component';
 
 @Component({
   selector: 'register-wizzard',
@@ -32,7 +34,8 @@ export class WizzardComponent implements OnInit {
               public registerService: RegisterService,
               public formService: FormService,
               public router: Router,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              public dialog: MatDialog) {
     data.service = new RegexRegisteredService();
   }
 
@@ -64,12 +67,23 @@ export class WizzardComponent implements OnInit {
     this.data.invalidRegEx = false;
     if (this.validateForm()) {
       this.registerService.submitService(this.data.service)
-        .then(resp => this.router.navigate(['submitted']));
+        .then(resp => this.showSubmit());
     } else {
       this.snackBar.open("Please correct errors before service can be submitted.", "Dismiss", {
         duration: 5000
       });
     }
+  }
+
+  showSubmit() {
+    const dialogRef = this.dialog.open(SubmitComponent, {
+      data: false,
+      width: '500px',
+      position: {top: '100px'}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['services']);
+    });
   }
 
   validateDomain = function() {
@@ -92,8 +106,6 @@ export class WizzardComponent implements OnInit {
   validateForm(): boolean {
     const data = this.data.service;
 
-    console.log(this.form);
-
     if (this.form.controls['serviceId'].errors) {
       this.stepper.selectedIndex = 0;
       return false;
@@ -109,6 +121,11 @@ export class WizzardComponent implements OnInit {
         this.stepper.selectedIndex = 1;
         return false;
       }
+    }
+
+    if (this.form.controls['logoutUrl'].errors) {
+      this.stepper.selectedIndex = 2;
+      return false;
     }
 
     return true;

@@ -33,10 +33,6 @@ import {RegisterFormResolve} from './form/form.resolve';
         }
       },
       {
-        path: 'submitted',
-        component: SubmitComponent
-      },
-      {
         path: 'register.html',
         component: RegisterComponent
       }

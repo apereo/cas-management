@@ -13,6 +13,7 @@ export class ServicesResolve implements Resolve<ServiceItem[]> {
   constructor(private service: ServiceViewService, private router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Promise<ServiceItem[]> {
-    return this.service.getServices().then(resp => resp ? resp : null);
+    return this.service.getServices()
+      .then(resp => resp && resp.length > 0 ? resp : null);
   }
 }

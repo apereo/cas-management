@@ -32,14 +32,13 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.route.data
       .subscribe((data: { resp: ServiceItem[]}) => {
-        if (!data.resp) {
-          this.snackBar.open(this.messages.management_services_status_listfail, 'dismiss', {
-            duration: 5000
-          });
+        if (!data.resp || data.resp.length == 0) {
+          this.router.navigate(["wizzard"]);
+        } else {
+          setTimeout(() => {
+            this.dataSource.data = data.resp;
+          }, 10);
         }
-        setTimeout(() => {
-          this.dataSource.data = data.resp;
-        }, 10);
       }
     );
     this.route.params.subscribe((params) => this.domain = params['domain']);

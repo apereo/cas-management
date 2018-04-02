@@ -4,7 +4,7 @@ import {Data} from '../data';
 import {SamlRegisteredService} from '../../../domain/saml-service';
 import {OAuthRegisteredService, OidcRegisteredService} from '../../../domain/oauth-service';
 import {WSFederationRegisterdService} from '../../../domain/wsed-service';
-import {ControlContainer, FormGroup, NgForm, NgModel, NgModelGroup} from '@angular/forms';
+import {ControlContainer, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-serviceid',
@@ -20,8 +20,6 @@ export class ServiceidComponent implements OnInit {
 
   @Input()
   validUrl: Function;
-
-  @Input() form: FormGroup;
 
   constructor(public messages: Messages,
               public data: Data) {
@@ -44,7 +42,7 @@ export class ServiceidComponent implements OnInit {
     }
   }
 
-  tooltip() {
+  tooltip(): string {
     if (SamlRegisteredService.instanceOf(this.data.service)) {
       return this.messages.services_form_tooltip_entityId;
     } else if (OidcRegisteredService.instanceOf(this.data.service) ||

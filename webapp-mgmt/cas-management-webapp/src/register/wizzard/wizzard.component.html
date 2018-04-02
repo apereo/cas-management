@@ -17,7 +17,7 @@
       <form #wizzardForm="ngForm">
         <mat-horizontal-stepper style="width: 600px">
           <mat-step label="Service Info">
-            <app-serviceid [form]="wizzardForm" [validUrl]="validateDomain()"></app-serviceid>
+            <app-serviceid [validUrl]="validateDomain()"></app-serviceid>
             <app-servicename></app-servicename>
             <app-servicedesc></app-servicedesc>
             <div style="display: flex; flex-direction: row;margin-top: 20px; width: 510px">
@@ -40,7 +40,7 @@
             </div>
           </mat-step>
           <mat-step label="Advanced">
-            <div>
+            <div style="padding-bottom: 15px;">
               <mat-checkbox name="requiresDuo" [(ngModel)]="requiresDuo" (change)="changeDuo()">
                 <ng-container i18n>Requires Duo</ng-container>
                 <mat-icon style="font-size: medium"
@@ -49,8 +49,8 @@
                 </mat-icon>
               </mat-checkbox>
             </div>
-            <app-logout></app-logout>
             <app-logouttypeeval></app-logouttypeeval>
+            <app-logout></app-logout>
             <div style="display: flex; flex-direction: row; margin-top: 20px; width: 510px;">
               <button mat-icon-button matStepperPrevious type="button">
                 <mat-icon>arrow_back</mat-icon>

@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Messages} from '../../app/messages';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {MatSnackBar} from '@angular/material';
+import {Messages} from '../../app/messages';
 
 @Component({
   selector: 'register-header',

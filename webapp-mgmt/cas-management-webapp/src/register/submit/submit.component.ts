@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Messages} from '../../app/messages';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ControlsService} from '../../app/controls/controls.service';
+import {Messages} from '../../app/messages';
 
 @Component({
   selector: 'register-submit',

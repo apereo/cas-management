@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceItem} from '../../domain/service-item';
-import {Messages} from '../../app/messages';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
 import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {Messages} from '../../app/messages';
 
 @Component({
   selector: 'register-services',

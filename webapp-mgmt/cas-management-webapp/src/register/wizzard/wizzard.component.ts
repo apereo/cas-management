@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Messages} from '../../app/messages';
 import {Data} from '../../app/form/data';
 import {RegexRegisteredService} from '../../domain/registered-service';
 import {UserService} from '../../app/user.service';
@@ -9,10 +8,9 @@ import {MatDialog, MatHorizontalStepper, MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';
 import {FormService} from '../../app/form/form.service';
 import {DefaultRegisteredServiceMultifactorPolicy} from '../../domain/multifactor';
-import {UserProfile} from '../../domain/user-profile';
 import {NgForm} from '@angular/forms';
-import {RejectComponent} from '../../app/reject/reject.component';
 import {SubmitComponent} from '../submit/submit.component';
+import {Messages} from '../../app/messages';
 
 @Component({
   selector: 'register-wizzard',

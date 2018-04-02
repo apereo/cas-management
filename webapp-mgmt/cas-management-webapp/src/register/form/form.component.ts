@@ -2,16 +2,11 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Messages} from '../../app/messages';
 import {Data} from '../../app/form/data';
 import {AbstractRegisteredService, RegexRegisteredService} from '../../domain/registered-service';
-import {UserService} from '../../app/user.service';
-import {DefaultRegisteredServiceContact, RegisteredServiceContact} from '../../domain/contact';
 import {RegisterService} from '../register.servivce';
 import {MatDialog, MatSnackBar, MatTabGroup} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormService} from '../../app/form/form.service';
 import {DefaultRegisteredServiceMultifactorPolicy} from '../../domain/multifactor';
-import {ServiceidComponent} from '../../app/form/serviceid/serviceid.component';
-import {AbstractControl, NgForm} from '@angular/forms';
-import {UserProfile} from '../../domain/user-profile';
+import {NgForm} from '@angular/forms';
 import {SubmitComponent} from '../submit/submit.component';
 
 @Component({
@@ -30,9 +25,7 @@ export class RegisterFormComponent implements OnInit {
 
   constructor(public messages: Messages,
               public data: Data,
-              public userService: UserService,
               public registerService: RegisterService,
-              public formService: FormService,
               public router: Router,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,

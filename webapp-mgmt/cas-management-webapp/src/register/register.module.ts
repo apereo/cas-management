@@ -9,7 +9,7 @@ import {RegisterComponent} from './register.component';
 import {HeaderComponent} from './header/header.component';
 import {RegisterFormComponent} from './form/form.component';
 import {RegisterRoutingModule} from './register-routing.module';
-import {Messages} from '../app/messages';
+import {RegisterMessages} from './messages';
 import {FooterService} from '../app/footer/footer.service';
 import {FormModule} from '../app/form/form.module';
 import {Data} from '../app/form/data';
@@ -22,6 +22,7 @@ import {ServicesResolve} from './services/services.resolover';
 import {ServiceViewService} from './services/service.service';
 import {WizzardComponent} from './wizzard/wizzard.component';
 import {RegisterFormResolve} from './form/form.resolve';
+import {Messages} from '../app/messages';
 
 @NgModule({
   imports: [
@@ -47,7 +48,7 @@ import {RegisterFormResolve} from './form/form.resolve';
     SubmitComponent
   ],
   providers: [
-    Messages,
+    {provide: Messages, useClass: RegisterMessages},
     FooterService,
     Data,
     UserService,

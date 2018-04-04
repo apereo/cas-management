@@ -7,6 +7,7 @@ import {RevertComponent} from '../revert/revert.component';
 import {ServiceViewService} from '../services/service.service';
 import {Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-local-changes',
@@ -20,8 +21,8 @@ export class LocalChangesComponent implements OnInit {
   displayedColumns = ['actions', 'serviceName', 'changeType'];
   datasource: MatTableDataSource<Change>;
 
-  @ViewChild('paginator')
-  paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   constructor(public messages: Messages,
               private router: Router,
@@ -33,7 +34,7 @@ export class LocalChangesComponent implements OnInit {
 
   ngOnInit() {
     this.datasource = new MatTableDataSource([]);
-    this.datasource.paginator = this.paginator;
+    this.datasource.paginator = this.paginator.paginator;
     this.refresh();
   }
 
@@ -60,6 +61,8 @@ export class LocalChangesComponent implements OnInit {
     if (this.revertItem.changeType === 'DELETED') {
       this.service.revertDelete(fileName)
         .then(resp => this.refresh());
+    } else if (this.revertItem.changeType === 'ADD') {
+      this.service.delete(+this.revertItem.id)
     } else {
       this.service.revert(fileName)
         .then(resp => this.refresh());

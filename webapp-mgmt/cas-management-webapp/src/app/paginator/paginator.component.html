@@ -1,0 +1,4 @@
+<mat-paginator [pageSize]="appService.pageSize"
+               [pageSizeOptions]="[5, 10, 25, 100]"
+               (page)="pageEvent($event)">
+</mat-paginator>

@@ -10,6 +10,7 @@ import {DiffEntry} from '../../domain/diff-entry';
 import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {AcceptComponent} from '../accept/accept.component';
 import {RejectComponent} from '../reject/reject.component';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
 
@@ -23,7 +24,8 @@ export class PullComponent implements OnInit {
   displayedColumns = ['actions', 'branch', 'status', 'message'];
   dataSource: MatTableDataSource<Branch>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   rejectBranch: Branch;
   acceptBranch: Branch;
@@ -45,7 +47,7 @@ export class PullComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.refresh();
   }
 

@@ -5,6 +5,7 @@ import {Messages} from '../messages';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {SearchService} from './SearchService';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-search',
@@ -16,7 +17,8 @@ export class SearchComponent implements OnInit {
   dataSource: MatTableDataSource<ServiceItem>;
   query: String;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   constructor(public messages: Messages,
               public router: Router,
@@ -27,7 +29,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.route.paramMap
         .switchMap((params: ParamMap) => this.service.search(params.get('query')))
         .subscribe(resp => this.dataSource.data = resp);

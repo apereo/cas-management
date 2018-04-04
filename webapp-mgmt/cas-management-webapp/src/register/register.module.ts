@@ -23,6 +23,7 @@ import {ServiceViewService} from './services/service.service';
 import {WizzardComponent} from './wizzard/wizzard.component';
 import {RegisterFormResolve} from './form/form.resolve';
 import {Messages} from '../app/messages';
+import {InitComponent} from './init.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import {Messages} from '../app/messages';
     RegisterFormComponent,
     WizzardComponent,
     SubmitComponent,
-    ServicesComponent
+    ServicesComponent,
+    InitComponent
   ],
   entryComponents: [
     SubmitComponent

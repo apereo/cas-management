@@ -9,10 +9,10 @@ export abstract class RegisteredServiceAccessStrategy {
 
   constructor(strat?: RegisteredServiceAccessStrategy) {
     this.enabled = (strat && strat.enabled) || true;
-    this.ssoEnabled = strat && strat.ssoEnabled;
+    this.ssoEnabled = strat && strat.ssoEnabled || true;
     this.unauthorizedRedirectUrl = strat && strat.unauthorizedRedirectUrl;
     this.requiredAttributes = strat && strat.requiredAttributes;
-    this.requireAllAttributes = strat && strat.requireAllAttributes;
+    this.requireAllAttributes = strat && strat.requireAllAttributes || true;
     this.rejectedAttributes = strat && strat.rejectedAttributes;
     this.caseInsensitive = strat && strat.caseInsensitive;
   }

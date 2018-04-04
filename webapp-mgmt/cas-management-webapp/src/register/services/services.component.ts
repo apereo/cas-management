@@ -14,7 +14,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   domain: String;
   selectedItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
-  displayedColumns = ['actions', 'name', 'serviceId', 'description', 'duo', 'expires'];
+  displayedColumns = ['actions', 'name', 'serviceId', 'description', 'duo', 'sso', 'expires'];
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;

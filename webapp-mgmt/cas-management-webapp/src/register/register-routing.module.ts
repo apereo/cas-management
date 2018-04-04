@@ -10,6 +10,7 @@ import {ServicesComponent} from './services/services.component';
 import {ServicesResolve} from './services/services.resolover';
 import {WizzardComponent} from './wizzard/wizzard.component';
 import {RegisterFormResolve} from './form/form.resolve';
+import {InitComponent} from './init.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,7 @@ import {RegisterFormResolve} from './form/form.resolve';
       },
       {
         path: 'register.html',
-        component: RegisterComponent
+        component: InitComponent
       }
     ])
   ],

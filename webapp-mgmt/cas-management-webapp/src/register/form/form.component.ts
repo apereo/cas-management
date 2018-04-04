@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DefaultRegisteredServiceMultifactorPolicy} from '../../domain/multifactor';
 import {NgForm} from '@angular/forms';
 import {SubmitComponent} from '../submit/submit.component';
+import {FormService} from '../../app/form/form.service';
 
 @Component({
   selector: 'register-form',
@@ -26,6 +27,7 @@ export class RegisterFormComponent implements OnInit {
   constructor(public messages: Messages,
               public data: Data,
               public registerService: RegisterService,
+              public formService: FormService,
               public router: Router,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
@@ -34,6 +36,9 @@ export class RegisterFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.formService.formData().then(resp => {
+      this.data.formData = resp;
+    });
     this.route.data
       .subscribe((data: { resp: AbstractRegisteredService }) => {
         if (data.resp) {

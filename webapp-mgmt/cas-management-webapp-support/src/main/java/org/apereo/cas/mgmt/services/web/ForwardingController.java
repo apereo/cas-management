@@ -22,7 +22,9 @@ public class ForwardingController {
      * @return - String manage.html
      */
     @RequestMapping({
+            "services",
             "services/{id:.*}",
+            "registerForm/{id:.*}",
             "form/{id:.*}",
             "domains",
             "duplicate/{id:.*}",
@@ -30,7 +32,9 @@ public class ForwardingController {
             "search/{query:.*}",
             "history/{fileName:.*}",
             "json/{fileId:.*}",
-            "localChanges"})
+            "localChanges",
+            "wizzard",
+            "pulls"})
     public String forward(final HttpServletRequest request) {
         if (request.getSession().getAttribute("register").equals("true")) {
             return "register.html";

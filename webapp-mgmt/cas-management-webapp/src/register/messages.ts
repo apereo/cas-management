@@ -26,4 +26,7 @@ export class RegisterMessages extends Messages {
                                       cas will send a request through the browser.  You can then set your custom logout URL \
                                       in the field below.  You can also set this field to NONE to opt out participating in \
                                       SLO all together.';
+
+  services_form_tooltip_sas_ssoEnabled = 'Uncheck this field if this service should always prompt for login regardless if \
+                                          the user is currently logged into any other CAS protected service.'
 }

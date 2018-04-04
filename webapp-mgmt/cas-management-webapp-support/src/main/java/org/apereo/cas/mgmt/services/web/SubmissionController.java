@@ -242,8 +242,8 @@ public class SubmissionController {
         final String[] splitSub = id.split("-");
         final RawText gitPath = new RawText(
                 FileUtils.readFileToByteArray(
-                        new File(casProperties.getMgmt().getServicesRepo() + "service-" + splitSub[1])));
-        response.getOutputStream().write(git.getFormatter(subPath, gitPath));
+                        new File(casProperties.getMgmt().getServicesRepo() + "/service-" + splitSub[1])));
+        response.getOutputStream().write(git.getFormatter(gitPath, subPath));
     }
 
     /**

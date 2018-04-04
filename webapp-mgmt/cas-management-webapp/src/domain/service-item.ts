@@ -6,5 +6,6 @@ export class ServiceItem {
   description: String;
   status: String;
   duo: boolean;
+  sso: boolean;
   expires: String;
 }

@@ -44,6 +44,17 @@
                   </mat-icon>
                 </mat-checkbox>
               </div>
+              <div style="padding-bottom: 15px;">
+                <mat-checkbox name="ssoEnabled" [(ngModel)]="data.service.accessStrategy.ssoEnabled">
+                  <ng-container i18n="services.form.label.sas.ssoEnabled">
+                    {{ messages.services_form_label_sas_ssoEnabled }}
+                  </ng-container>
+                </mat-checkbox>
+                <mat-icon style="font-size: medium"
+                          i18n-matTooltip="services.form.tooltip.sas.ssoEnabled"
+                          [matTooltip]="messages.services_form_tooltip_sas_ssoEnabled">help
+                </mat-icon>
+              </div>
               <app-logouttypeeval></app-logouttypeeval>
               <app-logout></app-logout>
             </div>

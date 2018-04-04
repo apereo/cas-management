@@ -75,6 +75,16 @@
       </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="sso">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'duoWidth'">
+        <ng-container i18n>SSO</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'duoWidth'">
+        <mat-icon *ngIf="row.sso">check_box</mat-icon>
+        <mat-icon *ngIf="!row.sso">check_box_outline_blank</mat-icon>
+      </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="expires">
       <mat-header-cell *matHeaderCellDef [ngClass]="'expiresWidth'">
         <ng-container i18n>Renewal</ng-container>

@@ -7,6 +7,7 @@ import {
   RegisteredServiceUsernameAttributeProvider
 } from './attribute-provider';
 import {
+  DenyAllAttributeReleasePolicy,
   RegisteredServiceAttributeReleasePolicy,
   ReturnAllowedAttributeReleasePolicy
 } from './attribute-release';
@@ -50,7 +51,7 @@ export abstract class RegisteredService {
     this.evaluationOrder = (service && service.evaluationOrder) || -1;
     this.usernameAttributeProvider = (service && service.usernameAttributeProvider) || new DefaultRegisteredServiceUsernameProvider();
     this.requiredHandlers = service && service.requiredHandlers;
-    this.attributeReleasePolicy = (service && service.attributeReleasePolicy) || new ReturnAllowedAttributeReleasePolicy();
+    this.attributeReleasePolicy = (service && service.attributeReleasePolicy) || new DenyAllAttributeReleasePolicy();
     this.multifactorPolicy = (service && service.multifactorPolicy) || new DefaultRegisteredServiceMultifactorPolicy();
     this.logo = service && service.logo;
     this.logoutUrl = service && service.logoutUrl;

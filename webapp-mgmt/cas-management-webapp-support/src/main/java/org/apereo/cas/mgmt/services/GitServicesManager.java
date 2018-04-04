@@ -113,6 +113,7 @@ public class GitServicesManager implements ServicesManager {
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
         serviceItem.setDuo(service.getMultifactorPolicy().getMultifactorAuthenticationProviders().contains("mfa-duo"));
+        serviceItem.setSSO(service.getAccessStrategy().isServiceAccessAllowedForSso());
         serviceItem.setExpires(getExpires(service.getExpirationPolicy().getExpirationDate()));
         if (uncommitted != null && uncommitted.containsKey(service.getId())) {
             serviceItem.setStatus(uncommitted.get(service.getId()));

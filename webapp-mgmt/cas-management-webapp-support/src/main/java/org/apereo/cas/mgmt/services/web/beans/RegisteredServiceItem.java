@@ -20,6 +20,7 @@ public class RegisteredServiceItem implements Serializable {
     private String description;
     private String status;
     private boolean duo;
+    private boolean sso;
     private String expires;
 
     public int getEvalOrder() {
@@ -76,6 +77,14 @@ public class RegisteredServiceItem implements Serializable {
 
     public void setDuo(final boolean duo) {
         this.duo = duo;
+    }
+
+    public boolean isSSO() {
+        return sso;
+    }
+
+    public void setSSO(final boolean sso) {
+        this.sso = sso;
     }
 
     public String getExpires() {

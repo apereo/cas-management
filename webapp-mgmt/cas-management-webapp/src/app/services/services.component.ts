@@ -8,6 +8,7 @@ import {DeleteComponent} from '../delete/delete.component';
 import {ControlsService} from '../controls/controls.service';
 import {RevertComponent} from '../revert/revert.component';
 import {AppConfigService} from '../app-config.service';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-services',
@@ -22,8 +23,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'description'];
 
-  @ViewChild('paginator')
-  paginator: MatPaginator;
+  @ViewChild(PaginatorComponent)
+  paginator: PaginatorComponent;
 
   constructor(public messages: Messages,
               private route: ActivatedRoute,
@@ -37,7 +38,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: ServiceItem[]}) => {
         if (!data.resp) {

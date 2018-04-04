@@ -73,10 +73,9 @@ import {CommitHistoryModule} from './commit-history/commit-history.module';
     RejectComponent,
     InitComponent,
     LocalChangesComponent,
-    FooterComponent,
     YamlComponent,
     ImportComponent,
-    RepoHistoryComponent
+    RepoHistoryComponent,
   ],
   entryComponents: [
     DeleteComponent,

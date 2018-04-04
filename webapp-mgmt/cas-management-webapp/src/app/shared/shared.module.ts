@@ -34,6 +34,8 @@ import {ControlsService} from '../controls/controls.service';
 import {EditorComponent} from '../editor.component';
 import {CommitComponent} from '../commit/commit.component';
 import {PublishComponent} from '../publish/publish.component';
+import {FooterComponent} from '../footer/footer.component';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @NgModule({
   imports: [
@@ -67,7 +69,9 @@ import {PublishComponent} from '../publish/publish.component';
     EditorComponent,
     ControlsComponent,
     CommitComponent,
-    PublishComponent
+    PublishComponent,
+    FooterComponent,
+    PaginatorComponent
   ],
   entryComponents: [
     CommitComponent,
@@ -102,7 +106,9 @@ import {PublishComponent} from '../publish/publish.component';
     MatPaginatorModule,
     EditorComponent,
     ControlsComponent,
-    CommitComponent
+    CommitComponent,
+    FooterComponent,
+    PaginatorComponent
   ]
 })
 export class SharedModule {}

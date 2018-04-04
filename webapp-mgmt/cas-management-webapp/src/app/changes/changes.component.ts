@@ -5,6 +5,7 @@ import {DiffEntry} from '../../domain/diff-entry';
 import {Location} from '@angular/common';
 import {Messages} from '../messages';
 import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-changes',
@@ -16,7 +17,8 @@ export class ChangesComponent implements OnInit {
     displayedColumns = ['actions', 'file', 'change'];
     dataSource: MatTableDataSource<DiffEntry>;
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(PaginatorComponent)
+    paginator: PaginatorComponent;
 
     selectedItem: DiffEntry;
 
@@ -29,7 +31,7 @@ export class ChangesComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: DiffEntry[]}) => {
       setTimeout(() => {

@@ -27,6 +27,12 @@ export class ControlsComponent implements OnInit {
   @Input()
   showOpen: boolean;
 
+  @Input()
+  showVersionControl: boolean = true;
+
+  @Input()
+  saveEnabled: boolean = false;
+
   @ViewChild('publishModal')
   submitComp: PublishComponent;
 
@@ -48,7 +54,7 @@ export class ControlsComponent implements OnInit {
               public location: Location) { }
 
   ngOnInit() {
-    if (this.appService.config.versionControl) {
+    if (this.appService.config.versionControl && this.showVersionControl) {
       this.service.gitStatus();
     }
   }

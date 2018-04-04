@@ -20,6 +20,7 @@ dependencies {
         transitive = false
     }
     api project(":webapp-mgmt:cas-management-webapp-configuration")
+
     implementation ("org.apereo.cas:cas-server-core-util:$casVersion") {
         transitive = false
     }

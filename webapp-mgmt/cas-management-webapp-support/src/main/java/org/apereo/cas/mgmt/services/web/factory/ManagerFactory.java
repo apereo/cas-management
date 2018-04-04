@@ -8,7 +8,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.services.MgmtServicesManager;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.DomainServicesManager;
-import org.apereo.cas.services.JsonServiceRegistryDao;
+import org.apereo.cas.services.JsonServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
 import org.eclipse.jgit.api.Git;
 
@@ -117,7 +117,7 @@ public class ManagerFactory {
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {
         final ServicesManager manager;
-        final JsonServiceRegistryDao serviceRegistryDAO = new JsonServiceRegistryDao(Paths.get(git.repoPath()),
+        final JsonServiceRegistry serviceRegistryDAO = new JsonServiceRegistry(Paths.get(git.repoPath()),
                 false,
                 null, null);
         if (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN) {

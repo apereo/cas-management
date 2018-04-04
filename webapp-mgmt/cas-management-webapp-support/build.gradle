@@ -22,10 +22,8 @@ dependencies {
 
     implementation libraries.thymeleaf
 
-    implementation ("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
-        transitive = false
-    }
-    api project(":webapp-mgmt:cas-management-webapp-configuration")
+    implementation project(":webapp-mgmt:cas-management-webapp-configuration")
+
 
     implementation ("org.apereo.cas:cas-server-core-configuration-api:$casVersion") {
         transitive = false
@@ -125,6 +123,14 @@ dependencies {
         transitive = false
     }
     implementation ("org.apereo.cas:cas-server-support-discovery-profile:$casVersion") {
+        transitive = false
+    }
+
+    implementation ("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
+        transitive = false
+    }
+
+    implementation ("org.apereo.cas:cas-server-core-api-audit:$casVersion") {
         transitive = false
     }
 }

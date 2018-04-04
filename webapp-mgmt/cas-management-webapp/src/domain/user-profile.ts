@@ -9,6 +9,8 @@ export class UserProfile {
   clientName: String;
   linkedId: String;
   email: String;
+  phone: String;
+  department: String;
   firstName: String;
   familyName: String;
   displayName: String;

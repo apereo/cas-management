@@ -42,6 +42,6 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
 
     private boolean isStaffOrFaculty(CommonProfile profile) {
         final String aff = (String)profile.getAttribute("eduPersonAffiliation");
-        return aff.contains("staff") || aff.contains("faculty");
+        return aff != null && (aff.contains("staff") || aff.contains("faculty"));
     }
 }

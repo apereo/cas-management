@@ -334,8 +334,9 @@ public class ServiceRepsositoryController {
      * @throws Exception - failed.
      */
     private List<Diff> createDiffs(final String ref) throws Exception {
-        return repositoryFactory.masterRepository().getDiffs("refs/heads/" + ref).stream()
-                .map(this::createDiff)
+        final GitUtil git = repositoryFactory.masterRepository();
+        return git.getDiffs("refs/heads/" + ref).stream()
+                .map(d -> createDiff(d, git))
                 .collect(toList());
     }
 
@@ -489,7 +490,7 @@ public class ServiceRepsositoryController {
 
         final GitUtil git = repositoryFactory.masterRepository();
         final List<Diff> changes = git.getDiffs(branch).stream()
-                .map(this::createDiff)
+                .map(d -> createDiff(d, git))
                 .collect(toList());
         git.close();
         return new ResponseEntity<>(changes, HttpStatus.OK);
@@ -507,7 +508,7 @@ public class ServiceRepsositoryController {
         final GitUtil git = repositoryFactory.masterRepository();
         final RevCommit r = git.getCommit(id);
         final List<Diff> diffs = git.getDiffs(id).stream()
-                .map(this::createDiff)
+                .map(d -> createDiff(d, git))
                 .map(d -> {d.setCommitter(r.getCommitterIdent().getName());
                            d.setCommitTime(formatCommitTime(r.getCommitTime()));
                            d.setCommit(id);
@@ -786,30 +787,6 @@ public class ServiceRepsositoryController {
     }
 
     /**
-     * Method will restore a deleted file to the working dir.
-     *
-     * @param request  - HttpServletRequest
-     * @param response - HttpServletResponse
-     * @param path     - path of the file
-     * @return - status message
-     * @throws Exception - failed
-     */
-    @GetMapping(value = "/revertDelete")
-    public ResponseEntity<String> revertDelete(final HttpServletRequest request,
-                                               final HttpServletResponse response,
-                                               final @RequestParam String path) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
-        final GitUtil git = repositoryFactory.from(user);
-        if (git.isNull()) {
-            throw new Exception("No changes to revert");
-        }
-        final ServicesManager manager = managerFactory.from(request, user);
-        insertService(git, path, manager);
-        git.checkoutFile(path);
-        return new ResponseEntity<>("File Reverted", HttpStatus.OK);
-    }
-
-    /**
      * Method will checkout a file from a specific commit.
      *
      * @param request  - HttpServletRequest
@@ -1022,11 +999,18 @@ public class ServiceRepsositoryController {
      * @param d - DiffEntry
      * @return - Diff
      */
-    private Diff createDiff(final DiffEntry d) {
-        return new Diff(d.getNewPath(),
-                d.getOldId().toObjectId(),
-                d.getNewId().toObjectId(),
-                d.getChangeType().toString());
+    private Diff createDiff(final DiffEntry d, final GitUtil git) {
+        try {
+            final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+            return new Diff(d.getNewPath(),
+                    d.getOldId().toObjectId(),
+                    d.getNewId().toObjectId(),
+                    d.getChangeType().toString(),
+                    ser.from(git.readObject(d.getOldId().toObjectId())).getName());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
     }
 
     /**

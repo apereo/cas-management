@@ -40,6 +40,7 @@ export class LocalChangesComponent implements OnInit {
 
   refresh() {
     this.controlsService.untracked().then(resp => this.datasource.data = resp ? resp : []);
+    this.controlsService.gitStatus();
   }
 
   openModalRevert() {
@@ -58,15 +59,20 @@ export class LocalChangesComponent implements OnInit {
 
   revert() {
     const fileName: string = (this.revertItem.fileName).replace(/ /g, '');
-    if (this.revertItem.changeType === 'DELETED') {
-      this.service.revertDelete(fileName)
-        .then(resp => this.refresh());
-    } else if (this.revertItem.changeType === 'ADD') {
+    if (this.revertItem.changeType === 'ADD') {
       this.service.delete(+this.revertItem.id)
+        .then(resp => this.handleRevert());
     } else {
       this.service.revert(fileName)
-        .then(resp => this.refresh());
+        .then(resp => this.handleRevert());
     }
+  }
+
+  handleRevert() {
+    this.refresh();
+    this.snackBar.open("Change has been reverted", "Dismiss", {
+      duration: 5000
+    });
   }
 
   viewDiff() {

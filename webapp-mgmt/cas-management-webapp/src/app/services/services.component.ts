@@ -123,19 +123,21 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   history() {
-    const fileName: string = (this.selectedItem.name + '-' + this.selectedItem.assignedId + '.json').replace(/ /g, '');
+    const fileName: string = ('service-' + this.selectedItem.assignedId + '.json').replace(/ /g, '');
     this.router.navigate(['/history', fileName]);
   }
 
   revert() {
-    const fileName: string = (this.revertItem.name + '-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
-    if (this.revertItem.status === 'deleted') {
-      this.service.revertDelete(fileName)
-          .then(resp => this.refresh());
-    } else {
-      this.service.revert(fileName)
-          .then(resp => this.refresh());
-    }
+    const fileName: string = ('service-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
+    this.service.revert(fileName)
+      .then(resp => this.handleRevert());
+  }
+
+  handleRevert() {
+    this.refresh();
+    this.snackBar.open("Change has been reverted", "Dismiss", {
+      duration: 5000
+    });
   }
 
 
@@ -177,9 +179,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       return false;
     }
     const index = this.dataSource.data.indexOf(this.selectedItem);
-    return index < this.dataSource.data.length - 1
-           && this.dataSource.data[index + 1].status !== 'DELETE'
-           && this.selectedItem && this.selectedItem.status !== 'DELETE';
+    return index < this.dataSource.data.length - 1;
   }
   showMoveUp(): boolean {
     if (!this.selectedItem) {
@@ -198,7 +198,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   showRevert(): boolean {
     return this.appService.config.versionControl &&
            this.selectedItem &&
-           this.selectedItem.status !== 'ADD';
+           this.selectedItem.status == 'MODIFY';
   }
 
   added(row: ServiceItem): boolean {
@@ -208,12 +208,12 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   modified(row: ServiceItem): boolean {
     return this.appService.config.versionControl &&
-           row.status === 'MODIFIED';
+           row.status === 'MODIFY';
   }
 
   deleted(row: ServiceItem): boolean {
     return this.appService.config.versionControl &&
-           row.status === 'DELETED';
+           row.status === 'DELETE';
   }
 
   status(row: ServiceItem): String {

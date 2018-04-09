@@ -397,7 +397,7 @@ public class GitUtil {
      * @throws Exception - failed.
      */
     public Stream<RevCommit> logs(final String path) throws Exception {
-        return StreamSupport.stream(git.log().all().call().spliterator(), false);
+        return StreamSupport.stream(git.log().addPath(path).call().spliterator(), false);
     }
 
     /**
@@ -564,9 +564,7 @@ public class GitUtil {
         }
         @Override
         public boolean include(final TreeWalk treeWalk) throws MissingObjectException, IncorrectObjectTypeException, IOException {
-            final String[] id0 = path.split("-");
-            final String[] id1 = treeWalk.getPathString().split("-");
-            return id0[id0.length-1].equals(id1[id1.length -1]);
+           return treeWalk.getPathString().equals(path);
         }
 
         @Override

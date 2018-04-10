@@ -162,6 +162,15 @@ public class GitUtil {
                 .call();
     }
 
+    /**
+     * Method to commit a single file into the repository.
+     *
+     * @param user - logged in user
+     * @param file - file to commit
+     * @param msg - commit message
+     * @return - RevCommit
+     * @throws Exception - failed
+     */
     public RevCommit commitSingleFile(final CasUserProfile user, final String file, final String msg) throws Exception {
         git.add().addFilepattern(file).call();
         return git.commit()

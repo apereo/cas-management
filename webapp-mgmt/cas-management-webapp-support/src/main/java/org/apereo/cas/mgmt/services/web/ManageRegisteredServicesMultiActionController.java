@@ -201,8 +201,8 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
             data = data.stream()
-                    .filter(d -> casUserProfile.getPermissions().contains(d) ||
-                            casUserProfile.getPermissions().contains("*"))
+                    .filter(d -> casUserProfile.getPermissions().contains(d)
+                            || casUserProfile.getPermissions().contains("*"))
                     .collect(Collectors.toList());
         }
         return new ResponseEntity<>(data, HttpStatus.OK);

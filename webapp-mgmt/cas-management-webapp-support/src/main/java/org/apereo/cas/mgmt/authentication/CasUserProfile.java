@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.authentication;
 
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.UserProfile;
+import org.pac4j.core.profile.definition.CommonProfileDefinition;
 
 import java.util.Collection;
 
@@ -37,6 +38,14 @@ public class CasUserProfile extends CommonProfile {
 
     public String getPhone() {
         return findFirstMatchingAttribute("phone|phoneNumber|telephoneNumber|primaryPhone|primaryPhoneNumber");
+    }
+
+    public String getFamilyName() {
+        return findFirstMatchingAttribute(CommonProfileDefinition.FAMILY_NAME + "|familyName");
+    }
+
+    public String getFirstName() {
+        return findFirstMatchingAttribute(CommonProfileDefinition.FIRST_NAME + "|firstName");
     }
 
     @Override

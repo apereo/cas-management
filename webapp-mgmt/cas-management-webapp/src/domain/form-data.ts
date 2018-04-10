@@ -1,5 +1,3 @@
-import {ProtractorError} from 'protractor/built/exitCodes';
-
 export class FormData {
     availableAttributes: String[] = [];
     registeredServiceProperties: PropertyEnum[];

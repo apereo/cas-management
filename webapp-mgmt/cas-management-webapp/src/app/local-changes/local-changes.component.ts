@@ -8,6 +8,7 @@ import {ServiceViewService} from '../services/service.service';
 import {Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {AppConfigService} from '../app-config.service';
 
 @Component({
   selector: 'app-local-changes',
@@ -28,7 +29,7 @@ export class LocalChangesComponent implements OnInit {
               private router: Router,
               private controlsService: ControlsService,
               private service: ServiceViewService,
-              private changeService: ChangesService,
+              private appConfig: AppConfigService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) { }
 
@@ -40,6 +41,9 @@ export class LocalChangesComponent implements OnInit {
 
   refresh() {
     this.controlsService.untracked().then(resp => this.datasource.data = resp ? resp : []);
+    if (this.appConfig.config.versionControl) {
+      this.controlsService.gitStatus();
+    }
   }
 
   openModalRevert() {
@@ -58,15 +62,20 @@ export class LocalChangesComponent implements OnInit {
 
   revert() {
     const fileName: string = (this.revertItem.fileName).replace(/ /g, '');
-    if (this.revertItem.changeType === 'DELETED') {
-      this.service.revertDelete(fileName)
-        .then(resp => this.refresh());
-    } else if (this.revertItem.changeType === 'ADD') {
+    if (this.revertItem.changeType === 'ADD') {
       this.service.delete(+this.revertItem.id)
+        .then(resp => this.handleRevert());
     } else {
       this.service.revert(fileName)
-        .then(resp => this.refresh());
+        .then(resp => this.handleRevert());
     }
+  }
+
+  handleRevert() {
+    this.refresh();
+    this.snackBar.open("Change has been reverted", "Dismiss", {
+      duration: 5000
+    });
   }
 
   viewDiff() {

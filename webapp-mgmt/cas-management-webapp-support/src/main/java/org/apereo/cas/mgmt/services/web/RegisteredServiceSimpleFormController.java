@@ -77,7 +77,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<String> saveService(final HttpServletRequest request,
                                               final HttpServletResponse response,
                                               @RequestBody final RegisteredService service) throws Exception {
-        checkForAdmin(request, response);
+        checkForManager(request);
         final GitServicesManager manager = managerFactory.from(request, response);
         if (service.getEvaluationOrder() < 0) {
             service.setEvaluationOrder(manager.getAllServices().size());
@@ -172,9 +172,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     }
 
 
-    private void checkForAdmin(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        if (!casUserProfile.isAdministrator()) {
+    private void checkForManager(final HttpServletRequest request) throws Exception {
+        if (request.getSession().getAttribute("register").equals("true")) {
             throw new IllegalAccessException("You are not authorized for this request");
         }
     }

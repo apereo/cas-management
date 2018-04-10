@@ -1,5 +1,4 @@
 import {Component, OnInit, Output, EventEmitter, ViewChild, Input} from '@angular/core';
-import { Router } from '@angular/router';
 import {Messages} from '../messages';
 import {ControlsService} from './controls.service';
 import {Location} from '@angular/common';
@@ -152,6 +151,7 @@ export class ControlsComponent implements OnInit {
     this.snackBar.open('Your commit has been submitted for review', 'Dismiss', {
         duration: 5000
     });
+    this.refresh.emit();
   }
 
   handleNotSubmitted(e: any) {

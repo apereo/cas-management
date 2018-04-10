@@ -112,6 +112,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * Ensure default service exists.
      */
     private void ensureDefaultServiceExists() {
+        this.servicesManager.load();
         final Collection<RegisteredService> c = this.servicesManager.getAllServices();
         if (c == null) {
             throw new IllegalStateException("Services cannot be empty");
@@ -200,7 +201,8 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
             data = data.stream()
-                    .filter(d -> casUserProfile.getPermissions().contains(d))
+                    .filter(d -> casUserProfile.getPermissions().contains(d) ||
+                            casUserProfile.getPermissions().contains("*"))
                     .collect(Collectors.toList());
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
@@ -237,7 +239,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         ensureDefaultServiceExists();
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator()) {
-            if (!casUserProfile.getPermissions().contains(domain)) {
+            if (!casUserProfile.getPermissions().contains("*") && !casUserProfile.getPermissions().contains(domain)) {
                 throw new IllegalAccessException("You do not have permission to the domain '"+domain+"'");
             }
         }

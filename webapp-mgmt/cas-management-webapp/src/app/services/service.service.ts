@@ -33,10 +33,6 @@ export class ServiceViewService extends Service {
     return this.getText('revert?path=' + fileName);
   }
 
-  revertDelete(fileName: string): Promise<String> {
-    return this.getText('revertDelete?path=' + fileName);
-  }
-
   updateOrder(a: ServiceItem, b: ServiceItem): Promise<String> {
     return this.postText('updateOrder', [a, b]);
   }

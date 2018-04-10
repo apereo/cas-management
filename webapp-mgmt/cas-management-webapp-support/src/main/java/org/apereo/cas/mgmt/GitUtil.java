@@ -162,6 +162,14 @@ public class GitUtil {
                 .call();
     }
 
+    public RevCommit commitSingleFile(final CasUserProfile user, final String file, final String msg) throws Exception {
+        git.add().addFilepattern(file).call();
+        return git.commit()
+                .setCommitter(getCommitterId(user))
+                .setMessage(msg)
+                .call();
+    }
+
     /**
      * Checks out the passed ref to be the current branch of the repository.
      *
@@ -390,7 +398,7 @@ public class GitUtil {
      * @throws Exception - failed.
      */
     public Stream<RevCommit> logs(final String path) throws Exception {
-        return StreamSupport.stream(git.log().all().call().spliterator(), false);
+        return StreamSupport.stream(git.log().addPath(path).call().spliterator(), false);
     }
 
     /**

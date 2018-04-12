@@ -41,14 +41,6 @@ export class WizzardComponent implements OnInit {
     this.formService.formData().then(resp => {
       this.data.formData = resp;
     });
-    const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
-    contact.id = 0;
-    contact.name = this.userService.user.firstName + " " + this.userService.user.familyName;
-    contact.email = this.userService.user.email;
-    contact.phone = this.userService.user.phone;
-    contact.department = this.userService.user.department;
-    this.data.service.contacts = [];
-    this.data.service.contacts.push(contact);
   }
 
   changeDuo(){

@@ -3,6 +3,7 @@ import {Data} from '../data';
 import {Messages} from '../../messages';
 import {DefaultRegisteredServiceContact} from '../../../domain/contact';
 import {ControlContainer, NgForm} from '@angular/forms';
+import {UserService} from '../../user.service';
 
 @Component({
   selector: 'app-contacts',
@@ -18,11 +19,19 @@ export class ContactsComponent implements OnInit {
   selectedTab: number;
 
   constructor(public messages: Messages,
+              private userService: UserService,
               public data: Data) { }
 
   ngOnInit() {
-    if (!this.data.service.contacts) {
+    if (!this.data.service.contacts || this.data.service.contacts.length == 0) {
+      const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
+      contact.id = 0;
+      contact.name = this.userService.user.firstName + " " + this.userService.user.familyName;
+      contact.email = this.userService.user.email;
+      contact.phone = this.userService.user.phone;
+      contact.department = this.userService.user.department;
       this.data.service.contacts = [];
+      this.data.service.contacts.push(contact);
     }
   }
 

@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Data} from '../../app/form/data';
 import {RegexRegisteredService} from '../../domain/registered-service';
 import {UserService} from '../../app/user.service';
-import {DefaultRegisteredServiceContact} from '../../domain/contact';
 import {RegisterService} from '../register.servivce';
 import {MatDialog, MatHorizontalStepper, MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';

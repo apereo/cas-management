@@ -25,6 +25,7 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -356,9 +357,12 @@ public class ServiceRepsositoryController {
             final GitStatus gitStatus = new GitStatus();
             final Status status = git.getGit().status().call();
             gitStatus.setHasChanges(!status.isClean());
-            gitStatus.setAdded(status.getUntracked());
-            gitStatus.setModified(status.getModified());
-            gitStatus.setDeleted(status.getRemoved());
+            gitStatus.setAdded(status.getUntracked().stream()
+                .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
+            gitStatus.setModified(status.getModified().stream()
+                .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
+            gitStatus.setDeleted(status.getMissing().stream()
+                .map(s -> getDeletedServiceName(git,s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(getPublishBehindCount() > 0);
             gitStatus.setPendingSubmits(pendingSubmits(request, response));
             return new ResponseEntity<>(gitStatus, HttpStatus.OK);
@@ -367,6 +371,33 @@ public class ServiceRepsositoryController {
         }
         return new ResponseEntity<>(new GitStatus(), HttpStatus.OK);
     }
+
+    private String getServiceName(final GitUtil git, final String path) {
+        DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        try {
+            return serializer.from(Paths.get(git.repoPath()+"/" + path).toFile()).getName() + " - " + path;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return path;
+    }
+
+    private String getDeletedServiceName(final GitUtil git, final String path) {
+        DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        try {
+            TreeWalk treeWalk = new TreeWalk(git.getGit().getRepository());
+            treeWalk.addTree(git.getLastNCommits(1).findFirst().get().getTree());
+            while(treeWalk.next()) {
+                if(treeWalk.getPathString().endsWith(path)) {
+                    return serializer.from(git.readObject(treeWalk.getObjectId(0))).getName() + " - " + path;
+                }
+            }
+        }catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return path;
+    }
+
 
     /**
      * Method returns a list of changes to the client of work that has not been committed to the repo.

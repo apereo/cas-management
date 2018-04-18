@@ -380,6 +380,9 @@ export class FormComponent implements OnInit {
     }
 
     if (data.contacts) {
+      if (data.contacts.length == 0) {
+        return Tabs.CONTACTS;
+      }
       for (const contact of data.contacts) {
         if (!contact.name || !contact.email) {
           return Tabs.CONTACTS;

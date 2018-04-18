@@ -81,7 +81,7 @@ export class LocalChangesComponent implements OnInit {
 
   viewJSON() {
     const id = this.selectedItem.changeType === 'DELETE' ? this.selectedItem.oldId : this.selectedItem.newId;
-    this.router.navigate(['/json', id]);
+    this.router.navigate(['/viewJson', id]);
   }
 
 }

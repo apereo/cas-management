@@ -33,6 +33,7 @@ export class ContactsComponent implements OnInit {
       this.data.service.contacts = [];
       this.data.service.contacts.push(contact);
     }
+    this.selectedTab = 0;
   }
 
   addContact() {

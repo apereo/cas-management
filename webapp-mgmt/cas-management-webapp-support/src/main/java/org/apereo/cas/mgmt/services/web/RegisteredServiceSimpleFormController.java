@@ -80,7 +80,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
         checkForManager(request);
         final GitServicesManager manager = managerFactory.from(request, response);
         if (service.getEvaluationOrder() < 0) {
-            service.setEvaluationOrder(manager.getAllServices().size());
+            final String domain = manager.extractDomain(service.getServiceId());
+            service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
         }
 
         if (service.getId() < 0) {

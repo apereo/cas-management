@@ -64,7 +64,7 @@
     <mat-icon>visibility</mat-icon>
     <ng-container i18n>View</ng-container>
   </button>
-  <button mat-menu-item (click)="viewDiff()">
+  <button mat-menu-item (click)="viewDiff()" *ngIf="selectedItem && selectedItem.changeType !== 'ADD'">
     <mat-icon>compare_arrows</mat-icon>
     <ng-container i18n>Diff</ng-container>
   </button>

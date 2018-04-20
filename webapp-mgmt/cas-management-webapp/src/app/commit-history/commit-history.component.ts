@@ -15,7 +15,7 @@ import {PaginatorComponent} from '../paginator/paginator.component';
 })
 export class CommitHistoryComponent implements OnInit {
 
-  displayedColumns = ['actions', 'path', 'message', 'committer', 'time'];
+  displayedColumns = ['actions', 'name', 'message', 'committer', 'time'];
   dataSource: MatTableDataSource<DiffEntry>;
 
   @ViewChild(PaginatorComponent)

@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
@@ -9,6 +10,7 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.util.DigestUtils;
+import org.apereo.cas.util.RegexUtils;
 import org.eclipse.jgit.diff.DiffEntry;
 
 import java.io.File;
@@ -18,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +38,10 @@ public class MgmtServicesManager implements ServicesManager {
     private final GitUtil git;
 
     private Map<Long, String> uncommitted;
+
+
+    private final Pattern domainExtractor = RegexUtils.createPattern("^\\^?https?\\??://([^:/]+)");
+    private final Pattern domainPattern = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     /**
      * Loads Services form an existing ServiceManger to initialize a new repository.
@@ -211,5 +219,16 @@ public class MgmtServicesManager implements ServicesManager {
 
     public GitUtil getGit() {
         return git;
+    }
+
+    public String extractDomain(final String service) {
+        final Matcher extractor = this.domainExtractor.matcher(service.toLowerCase());
+        return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
+    }
+
+    public String validateDomain(final String providedDomain) {
+        final String domain = StringUtils.remove(providedDomain, "\\");
+        final Matcher match = domainPattern.matcher(StringUtils.remove(domain, "\\"));
+        return match.matches() ? domain : "default";
     }
 }

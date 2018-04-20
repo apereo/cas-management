@@ -16,14 +16,14 @@
 <div style="display: flex; flex-direction: column;margin-right:25px;margin-left:25px;">
   <mat-table #table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="path">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'pathWidth'">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
         <ng-container i18n>
           Service
         </ng-container>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row" [ngClass]="'pathWidth'">
-        {{ row.path }}
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        {{ row.name }}
       </mat-cell>
     </ng-container>
 

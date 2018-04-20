@@ -8,7 +8,6 @@ import {ServiceViewService} from '../services/service.service';
 import {Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
 import {PaginatorComponent} from '../paginator/paginator.component';
-import {AppConfigService} from '../app-config.service';
 
 @Component({
   selector: 'app-local-changes',
@@ -29,7 +28,7 @@ export class LocalChangesComponent implements OnInit {
               private router: Router,
               private controlsService: ControlsService,
               private service: ServiceViewService,
-              private appConfig: AppConfigService,
+              private changeService: ChangesService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) { }
 
@@ -41,9 +40,7 @@ export class LocalChangesComponent implements OnInit {
 
   refresh() {
     this.controlsService.untracked().then(resp => this.datasource.data = resp ? resp : []);
-    if (this.appConfig.config.versionControl) {
-      this.controlsService.gitStatus();
-    }
+    this.controlsService.gitStatus();
   }
 
   openModalRevert() {
@@ -84,7 +81,7 @@ export class LocalChangesComponent implements OnInit {
 
   viewJSON() {
     const id = this.selectedItem.changeType === 'DELETE' ? this.selectedItem.oldId : this.selectedItem.newId;
-    this.router.navigate(['/json', id]);
+    this.router.navigate(['/viewJson', id]);
   }
 
 }

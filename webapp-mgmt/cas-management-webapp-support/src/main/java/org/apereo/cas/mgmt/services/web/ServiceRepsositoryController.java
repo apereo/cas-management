@@ -27,6 +27,7 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -65,8 +67,6 @@ import static java.util.stream.Collectors.toList;
 public class ServiceRepsositoryController {
 
     private static final int MAX_COMMITS = 100;
-
-    private static final Pattern DOAMIN_PATTERN = Pattern.compile("^https?\\??://([^:/]+)");
 
     private final RepositoryFactory repositoryFactory;
     private final ManagerFactory managerFactory;
@@ -289,13 +289,13 @@ public class ServiceRepsositoryController {
         git.commit(user, msg);
         git.createPullRequest(commit, submitName);
         git.checkout("master");
-        sendSubmitMessage(submitName, createDiffs(submitName), user);
+        sendSubmitMessage(submitName, user);
         git.close();
 
         return new ResponseEntity<>("Request Submitted", HttpStatus.OK);
     }
 
-    private void sendSubmitMessage(final String submitName, final List<Diff> diffs, final CasUserProfile user) {
+    private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
             final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getSubmit();
             communicationsManager.email(
@@ -316,8 +316,9 @@ public class ServiceRepsositoryController {
      * @throws Exception - failed.
      */
     private List<Diff> createDiffs(final String ref) throws Exception {
-        return repositoryFactory.masterRepository().getDiffs("refs/heads/" + ref).stream()
-                .map(this::createDiff)
+        final GitUtil git = repositoryFactory.masterRepository();
+        return git.getDiffs("refs/heads/" + ref).stream()
+                .map(d -> createDiff(d, git))
                 .collect(toList());
     }
 
@@ -337,17 +338,47 @@ public class ServiceRepsositoryController {
             final GitStatus gitStatus = new GitStatus();
             final Status status = git.getGit().status().call();
             gitStatus.setHasChanges(!status.isClean());
-            gitStatus.setAdded(status.getUntracked());
-            gitStatus.setModified(status.getModified());
-            gitStatus.setDeleted(status.getRemoved());
+            gitStatus.setAdded(status.getUntracked().stream()
+                .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
+            gitStatus.setModified(status.getModified().stream()
+                .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
+            gitStatus.setDeleted(status.getMissing().stream()
+                .map(s -> getDeletedServiceName(git,s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(getPublishBehindCount() > 0);
             gitStatus.setPendingSubmits(pendingSubmits(request, response));
             return new ResponseEntity<>(gitStatus, HttpStatus.OK);
-        }catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
         return new ResponseEntity<>(new GitStatus(), HttpStatus.OK);
     }
+
+    private String getServiceName(final GitUtil git, final String path) {
+        DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        try {
+            return serializer.from(Paths.get(git.repoPath()+"/" + path).toFile()).getName() + " - " + path;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return path;
+    }
+
+    private String getDeletedServiceName(final GitUtil git, final String path) {
+        DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        try {
+            TreeWalk treeWalk = new TreeWalk(git.getGit().getRepository());
+            treeWalk.addTree(git.getLastNCommits(1).findFirst().get().getTree());
+            while(treeWalk.next()) {
+                if(treeWalk.getPathString().endsWith(path)) {
+                    return serializer.from(git.readObject(treeWalk.getObjectId(0))).getName() + " - " + path;
+                }
+            }
+        }catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return path;
+    }
+
 
     /**
      * Method returns a list of changes to the client of work that has not been committed to the repo.
@@ -471,7 +502,7 @@ public class ServiceRepsositoryController {
 
         final GitUtil git = repositoryFactory.masterRepository();
         final List<Diff> changes = git.getDiffs(branch).stream()
-                .map(this::createDiff)
+                .map(d -> createDiff(d, git))
                 .collect(toList());
         git.close();
         return new ResponseEntity<>(changes, HttpStatus.OK);
@@ -498,12 +529,11 @@ public class ServiceRepsositoryController {
         final GitUtil git = repositoryFactory.masterRepository();
         final RevCommit r = git.getCommit(id);
         final List<Diff> diffs = git.getDiffs(id).stream()
-                .map(this::createDiff)
-                .map(d -> {
-                    d.setCommitter(r.getCommitterIdent().getName());
-                    d.setCommitTime(formatCommitTime(r.getCommitTime()));
-                    d.setCommit(id);
-                    return d;
+                .map(d -> createDiff(d, git))
+                .map(d -> {d.setCommitter(r.getCommitterIdent().getName());
+                           d.setCommitTime(formatCommitTime(r.getCommitTime()));
+                           d.setCommit(id);
+                           return d;
                 })
                 .collect(toList());
         return new ResponseEntity<>(diffs, HttpStatus.OK);
@@ -898,8 +928,6 @@ public class ServiceRepsositoryController {
     private void insertService(final GitUtil git, final String path, final ServicesManager manager) throws Exception {
         final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
         final RegisteredService svc = ser.from(git.readObject(git.history(path).get(0).getId()));
-        final String domain = getDomain(svc.getServiceId());
-        //from.insertService(domain,svc.getEvaluationOrder());
     }
 
     /**
@@ -1053,21 +1081,17 @@ public class ServiceRepsositoryController {
      * @param d - DiffEntry
      * @return - Diff
      */
-    private Diff createDiff(final DiffEntry d) {
-        return new Diff(d.getNewPath(),
-                d.getOldId().toObjectId(),
-                d.getNewId().toObjectId(),
-                d.getChangeType().toString());
-    }
-
-    /**
-     * Pulls the domain for the service url.
-     *
-     * @param service - Service url string
-     * @return - domain extracted
-     */
-    private String getDomain(final String service) {
-        final Matcher match = DOAMIN_PATTERN.matcher(service.toLowerCase());
-        return match.lookingAt() && !match.group(1).contains("*") ? match.group(1) : "default";
+    private Diff createDiff(final DiffEntry d, final GitUtil git) {
+        try {
+            final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+            return new Diff(d.getNewPath(),
+                    d.getOldId().toObjectId(),
+                    d.getNewId().toObjectId(),
+                    d.getChangeType().toString(),
+                    ser.from(git.readObject(d.getOldId().toObjectId())).getName());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
     }
 }

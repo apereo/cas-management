@@ -332,7 +332,7 @@ public class ServiceRepsositoryController {
      */
     @GetMapping("/gitStatus")
     public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
-                                               final HttpServletResponse response) throws Exception{
+                                               final HttpServletResponse response) {
         try {
             final GitUtil git = repositoryFactory.from(request, response);
             final GitStatus gitStatus = new GitStatus();
@@ -347,8 +347,8 @@ public class ServiceRepsositoryController {
             gitStatus.setUnpublished(getPublishBehindCount() > 0);
             gitStatus.setPendingSubmits(pendingSubmits(request, response));
             return new ResponseEntity<>(gitStatus, HttpStatus.OK);
-        }catch (Exception e) {
-            e.printStackTrace();
+        }catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return new ResponseEntity<>(new GitStatus(), HttpStatus.OK);
     }

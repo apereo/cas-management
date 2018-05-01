@@ -40,7 +40,7 @@ public class MgmtServicesManager implements ServicesManager {
     private Map<Long, String> uncommitted;
 
 
-    private final Pattern domainExtractor = RegexUtils.createPattern("^\\^?https?\\??://([^:/]+)");
+    private final Pattern domainExtractor = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
     private final Pattern domainPattern = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     /**

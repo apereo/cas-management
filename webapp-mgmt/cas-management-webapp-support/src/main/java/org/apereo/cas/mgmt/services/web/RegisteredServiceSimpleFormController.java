@@ -74,7 +74,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
                                               @RequestBody final RegisteredService service) throws Exception {
         final MgmtServicesManager manager = managerFactory.from(request, response);
         if (service.getEvaluationOrder() < 0) {
-            service.setEvaluationOrder(manager.getAllServices().size());
+            final String domain = manager.extractDomain(service.getServiceId());
+            service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
         }
 
         if (service.getId() > -1) {

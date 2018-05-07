@@ -11,6 +11,7 @@ import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular
 import {AcceptComponent} from '../accept/accept.component';
 import {RejectComponent} from '../reject/reject.component';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {ControlsService} from '../controls/controls.service';
 
 @Component({
 
@@ -40,7 +41,7 @@ export class PullComponent implements OnInit {
               private router: Router,
               private service: PullService,
               private location: Location,
-              private notesService: NotesService,
+              private controlsService: ControlsService,
               private changeService: ChangesService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) { }
@@ -54,6 +55,7 @@ export class PullComponent implements OnInit {
   refresh() {
     this.service.getBranches([this.showPending, this.showAccepted, this.showRejected])
       .then(resp => this.dataSource.data = resp);
+    this.controlsService.gitStatus();
   }
 
   viewChanges(branch?: Branch) {

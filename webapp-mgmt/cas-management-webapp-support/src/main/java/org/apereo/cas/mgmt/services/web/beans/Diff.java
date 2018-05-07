@@ -53,13 +53,20 @@ public class Diff implements Serializable {
      */
     private String commit;
 
+    /**
+     * Name of the service.
+     */
+    private String name;
+
     public Diff(final String path,
                 final ObjectId oldId,
                 final ObjectId newId,
-                final String changeType) {
+                final String changeType,
+                final String name) {
         this.path = path;
         this.oldId = ObjectId.toString(oldId);
         this.newId = ObjectId.toString(newId);
         this.changeType = changeType;
+        this.name = name;
     }
 }

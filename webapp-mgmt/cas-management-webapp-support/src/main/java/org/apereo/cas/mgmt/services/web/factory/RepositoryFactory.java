@@ -51,7 +51,7 @@ public class RepositoryFactory {
         if (user.isAdministrator()) {
             return masterRepository();
         }
-        final Path path = Paths.get(casProperties.getMgmt().getUserReposDir() + "/" + user.getId());
+        final Path path = Paths.get(casProperties.getMgmt().getUserReposDir() + '/' + user.getId());
         if (!Files.exists(path)) {
             clone(path.toString());
         }
@@ -75,7 +75,7 @@ public class RepositoryFactory {
 
 
     private GitUtil userRepository(final String user) throws Exception {
-        final String path = casProperties.getMgmt().getUserReposDir() + "/" + user + "/.git";
+        final String path = casProperties.getMgmt().getUserReposDir() + '/' + user + "/.git";
         return new GitUtil(new Git(new FileRepositoryBuilder()
                 .setGitDir(new File(path))
                 .setMustExist(true)

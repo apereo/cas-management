@@ -85,76 +85,72 @@ public class FormDataFactory {
     }
 
     private void loadServiceTypes(final FormData formData) {
-        profile.ifPresent(p -> {
-            if (!p.getRegisteredServiceTypes().isEmpty()) {
-                final List<FormData.Option> types = p.getRegisteredServiceTypes().entrySet().stream()
-                    .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
-                    .collect(Collectors.toList());
-                formData.setServiceTypes(types);
-            } else {
-                final List<FormData.Option> serviceTypes = new ArrayList<>();
-                serviceTypes.add(new FormData.Option("CAS Client", RegexRegisteredService.class.getTypeName()));
-                serviceTypes.add(new FormData.Option("OAuth2 Client", OAuthRegisteredService.class.getTypeName()));
-                serviceTypes.add(new FormData.Option("SAML2 Service Provider", SamlRegisteredService.class.getTypeName()));
-                serviceTypes.add(new FormData.Option("OpenID Connect Relying Party", OidcRegisteredService.class.getTypeName()));
-                serviceTypes.add(new FormData.Option("WS Federation Relying Party", WSFederationRegisteredService.class.getTypeName()));
-                formData.setServiceTypes(serviceTypes);
-            }
-        });
+        if (profile.isPresent() && !profile.get().getRegisteredServiceTypes().isEmpty()) {
+            final CasServerProfile p = profile.get();
 
+            final List<FormData.Option> types = p.getRegisteredServiceTypes().entrySet().stream()
+                .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
+                .collect(Collectors.toList());
+            formData.setServiceTypes(types);
+        } else {
+            final List<FormData.Option> serviceTypes = new ArrayList<>();
+            serviceTypes.add(new FormData.Option("CAS Client", RegexRegisteredService.class.getTypeName()));
+            serviceTypes.add(new FormData.Option("OAuth2 Client", OAuthRegisteredService.class.getTypeName()));
+            serviceTypes.add(new FormData.Option("SAML2 Service Provider", SamlRegisteredService.class.getTypeName()));
+            serviceTypes.add(new FormData.Option("OpenID Connect Relying Party", OidcRegisteredService.class.getTypeName()));
+            serviceTypes.add(new FormData.Option("WS Federation Relying Party", WSFederationRegisteredService.class.getTypeName()));
+            formData.setServiceTypes(serviceTypes);
+        }
     }
 
     private void loadMfaProviders(final FormData formData) {
-        profile.ifPresent(p -> {
-            if (!p.getMultifactorAuthenticationProviderTypes().isEmpty()) {
-                final List<FormData.Option> mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
-                    .map(e -> new FormData.Option(e.getKey(), e.getValue()))
-                    .collect(Collectors.toList());
-                formData.setMfaProviders(mfas);
-            } else {
-                final List<FormData.Option> mfaProviders = new ArrayList<>();
-                mfaProviders.add(new FormData.Option("Duo Security", "mfa-duo"));
-                mfaProviders.add(new FormData.Option("Authy Authenticator", "mfa-authy"));
-                mfaProviders.add(new FormData.Option("YubiKey", "mfa-yubikey"));
-                mfaProviders.add(new FormData.Option("RSA/RADIUS", "mfa-radius"));
-                mfaProviders.add(new FormData.Option("WiKID", "mfa-wikid"));
-                mfaProviders.add(new FormData.Option("Google Authenitcator", "mfa-gauth"));
-                mfaProviders.add(new FormData.Option("Microsoft Azure", "mfa-azure"));
-                mfaProviders.add(new FormData.Option("FIDO U2F", "mfa-u2f"));
-                mfaProviders.add(new FormData.Option("Swivel Secure", "mfa-swivel"));
-                formData.setMfaProviders(mfaProviders);
-            }
-        });
+        if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypes().isEmpty()) {
+            final CasServerProfile p = profile.get();
+            final List<FormData.Option> mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
+                .map(e -> new FormData.Option(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+            formData.setMfaProviders(mfas);
+        } else {
+            final List<FormData.Option> mfaProviders = new ArrayList<>();
+            mfaProviders.add(new FormData.Option("Duo Security", "mfa-duo"));
+            mfaProviders.add(new FormData.Option("Authy Authenticator", "mfa-authy"));
+            mfaProviders.add(new FormData.Option("YubiKey", "mfa-yubikey"));
+            mfaProviders.add(new FormData.Option("RSA/RADIUS", "mfa-radius"));
+            mfaProviders.add(new FormData.Option("WiKID", "mfa-wikid"));
+            mfaProviders.add(new FormData.Option("Google Authenitcator", "mfa-gauth"));
+            mfaProviders.add(new FormData.Option("Microsoft Azure", "mfa-azure"));
+            mfaProviders.add(new FormData.Option("FIDO U2F", "mfa-u2f"));
+            mfaProviders.add(new FormData.Option("Swivel Secure", "mfa-swivel"));
+            formData.setMfaProviders(mfaProviders);
+        }
     }
 
     private void loadDelegatedClientTypes(final FormData formData) {
-        profile.ifPresent(p -> {
-            if (!p.getDelegatedClientTypes().isEmpty()) {
-                formData.setDelegatedAuthnProviders(p.getDelegatedClientTypes());
-            } else {
-                final Set<String> delegatedAuthnProviders = new HashSet<>();
-                delegatedAuthnProviders.add("Twitter");
-                delegatedAuthnProviders.add("Paypal");
-                delegatedAuthnProviders.add("Wordpress");
-                delegatedAuthnProviders.add("Yahoo");
-                delegatedAuthnProviders.add("Orcid");
-                delegatedAuthnProviders.add("Dropbox");
-                delegatedAuthnProviders.add("Github");
-                delegatedAuthnProviders.add("Foursquare");
-                delegatedAuthnProviders.add("WindowsLive");
-                delegatedAuthnProviders.add("Google");
-                formData.setDelegatedAuthnProviders(delegatedAuthnProviders);
-            }
-        });
+        if (profile.isPresent() && !profile.get().getDelegatedClientTypes().isEmpty()) {
+            final CasServerProfile p = profile.get();
+            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypes());
+        } else {
+            final Set<String> delegatedAuthnProviders = new HashSet<>();
+            delegatedAuthnProviders.add("Twitter");
+            delegatedAuthnProviders.add("Paypal");
+            delegatedAuthnProviders.add("Wordpress");
+            delegatedAuthnProviders.add("Yahoo");
+            delegatedAuthnProviders.add("Orcid");
+            delegatedAuthnProviders.add("Dropbox");
+            delegatedAuthnProviders.add("Github");
+            delegatedAuthnProviders.add("Foursquare");
+            delegatedAuthnProviders.add("WindowsLive");
+            delegatedAuthnProviders.add("Google");
+            formData.setDelegatedAuthnProviders(delegatedAuthnProviders);
+        }
     }
 
     private void loadAvailableAttributes(final FormData formData) {
-        profile.ifPresent(p -> {
-            if (!p.getAvailableAttributes().isEmpty()) {
-                formData.setAvailableAttributes(p.getAvailableAttributes());
-            } else {
-                formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames());
-            }
-        });
+        if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
+            final CasServerProfile p = profile.get();
+            formData.setAvailableAttributes(p.getAvailableAttributes());
+        } else {
+            formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames());
+        }
     }
 }

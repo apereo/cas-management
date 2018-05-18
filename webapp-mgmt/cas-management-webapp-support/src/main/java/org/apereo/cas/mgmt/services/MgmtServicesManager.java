@@ -121,7 +121,7 @@ public class MgmtServicesManager implements ServicesManager {
             if (entry.getChangeType() == DiffEntry.ChangeType.DELETE) {
                 svc = ser.from(git.readObject(entry.getOldId().toObjectId()));
             } else {
-                svc = ser.from(new File(git.repoPath() + "/" + entry.getNewPath()));
+                svc = ser.from(new File(git.repoPath() + '/' + entry.getNewPath()));
             }
             if (this.uncommitted.containsKey(svc.getId())) {
                 this.uncommitted.replace(svc.getId(), "MODIFY");

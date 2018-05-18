@@ -4,11 +4,11 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.services.web.beans.BranchActionData;
 import org.apereo.cas.mgmt.services.web.beans.BranchData;
 import org.apereo.cas.mgmt.services.web.beans.CNote;
@@ -64,7 +64,7 @@ import static java.util.stream.Collectors.toList;
 @Controller("publish")
 @Slf4j
 @RequiredArgsConstructor
-public class ServiceRepsositoryController {
+public class ServiceRepositoryController {
 
     private static final int MAX_COMMITS = 100;
 
@@ -97,7 +97,7 @@ public class ServiceRepsositoryController {
         git.addWorkingChanges();
         git.commit(user, msg);
         git.close();
-        return new ResponseEntity<String>("Changes committed", HttpStatus.OK);
+        return new ResponseEntity<>("Changes committed", HttpStatus.OK);
     }
 
     /**
@@ -214,10 +214,10 @@ public class ServiceRepsositoryController {
             .collect(toList());
         git.close();
         //commits.remove(0);
-        return new ResponseEntity<List<Commit>>(commits, HttpStatus.OK);
+        return new ResponseEntity<>(commits, HttpStatus.OK);
     }
 
-    private String formatCommitTime(final int ctime) {
+    private static String formatCommitTime(final int ctime) {
         return LocalDateTime.ofInstant(new Date(ctime * 1000L).toInstant(),
             ZoneId.systemDefault())
             .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -247,7 +247,7 @@ public class ServiceRepsositoryController {
                 formatCommitTime(c.getCommitTime())))
             .collect(toList());
         git.close();
-        return new ResponseEntity<List<Commit>>(commits, HttpStatus.OK);
+        return new ResponseEntity<>(commits, HttpStatus.OK);
     }
 
     /**
@@ -273,7 +273,7 @@ public class ServiceRepsositoryController {
     @PostMapping(value = "/submit", consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> submitPull(final HttpServletResponse response,
                                              final HttpServletRequest request,
-                                             final @RequestBody String msg) throws Exception {
+                                             @RequestBody final String msg) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         final GitUtil git = repositoryFactory.from(user);
         if (git.isNull()) {
@@ -281,7 +281,7 @@ public class ServiceRepsositoryController {
         }
         final long timestamp = new Date().getTime();
         final String branchName = "submit-" + timestamp;
-        final String submitName = user.getId() + "_" + timestamp;
+        final String submitName = user.getId() + '_' + timestamp;
 
         git.addWorkingChanges();
         final RevCommit commit = git.commit(user, msg);
@@ -330,7 +330,6 @@ public class ServiceRepsositoryController {
      * @param request  - the request
      * @param response - the response
      * @return - GitStatus
-     * @throws Exception - failed
      */
     @GetMapping("/gitStatus")
     public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
@@ -355,27 +354,27 @@ public class ServiceRepsositoryController {
         return new ResponseEntity<>(new GitStatus(), HttpStatus.OK);
     }
 
-    private String getServiceName(final GitUtil git, final String path) {
-        DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+    private static String getServiceName(final GitUtil git, final String path) {
+        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
         try {
-            return serializer.from(Paths.get(git.repoPath() + "/" + path).toFile()).getName() + " - " + path;
-        } catch (Exception e) {
+            return serializer.from(Paths.get(git.repoPath() + '/' + path).toFile()).getName() + " - " + path;
+        } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
         return path;
     }
 
-    private String getDeletedServiceName(final GitUtil git, final String path) {
-        DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+    private static String getDeletedServiceName(final GitUtil git, final String path) {
+        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
         try {
-            TreeWalk treeWalk = new TreeWalk(git.getGit().getRepository());
+            final TreeWalk treeWalk = new TreeWalk(git.getGit().getRepository());
             treeWalk.addTree(git.getLastNCommits(1).findFirst().get().getTree());
             while (treeWalk.next()) {
                 if (treeWalk.getPathString().endsWith(path)) {
                     return serializer.from(git.readObject(treeWalk.getObjectId(0))).getName() + " - " + path;
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
         return path;
@@ -476,7 +475,7 @@ public class ServiceRepsositoryController {
         final GitUtil git = repositoryFactory.masterRepository();
 
         final List<BranchData> names = git.branches()
-            .filter(r -> r.getName().contains("/" + user.getId() + "_"))
+            .filter(r -> r.getName().contains('/' + user.getId() + '_'))
             .map(git::mapBranches)
             .map(r -> createBranch(r))
             .collect(toList());
@@ -614,7 +613,7 @@ public class ServiceRepsositoryController {
                                            final HttpServletResponse response,
                                            final @RequestParam String id) throws Exception {
         final GitUtil git = repositoryFactory.from(request, response);
-        return new ResponseEntity<String>(git.readObject(id), HttpStatus.OK);
+        return new ResponseEntity<>(git.readObject(id), HttpStatus.OK);
     }
 
     /**
@@ -636,7 +635,7 @@ public class ServiceRepsositoryController {
         final RegisteredServiceYamlSerializer yamlSerializer = new RegisteredServiceYamlSerializer();
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         yamlSerializer.to(output, service);
-        return new ResponseEntity<String>(output.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(output.toString(), HttpStatus.OK);
     }
 
 
@@ -1068,7 +1067,7 @@ public class ServiceRepsositoryController {
      */
     @SuppressWarnings("DefaultCharset")
     private Change createModifyChange(final GitUtil git, final DiffEntry entry) throws Exception {
-        final String file = git.repoPath() + "/" + entry.getNewPath();
+        final String file = git.repoPath() + '/' + entry.getNewPath();
         final String json = new String(Files.readAllBytes(Paths.get(file)));
         final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
         final RegisteredService svc = ser.from(json);
@@ -1094,7 +1093,7 @@ public class ServiceRepsositoryController {
                 d.getNewId().toObjectId(),
                 d.getChangeType().toString(),
                 ser.from(git.readObject(d.getOldId().toObjectId())).getName());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }

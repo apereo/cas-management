@@ -13,7 +13,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.web.ForwardingController;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
-import org.apereo.cas.mgmt.services.web.ServiceRepsositoryController;
+import org.apereo.cas.mgmt.services.web.ServiceRepositoryController;
 import org.apereo.cas.mgmt.services.web.factory.FormDataFactory;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
@@ -204,8 +204,8 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public ServiceRepsositoryController serviceRepsositoryController() {
-        return new ServiceRepsositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
+    public ServiceRepositoryController serviceRepsositoryController() {
+        return new ServiceRepositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
                 casProperties, servicesManager, communicationsManager);
     }
 

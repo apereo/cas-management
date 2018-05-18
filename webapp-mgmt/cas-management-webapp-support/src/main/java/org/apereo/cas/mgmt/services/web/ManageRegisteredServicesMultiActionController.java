@@ -182,7 +182,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
 
     @GetMapping(value = "managerType")
     public ResponseEntity<String> getManagerType() {
-        return new ResponseEntity<String>(casProperties.getServiceRegistry().getManagementType().toString(), HttpStatus.OK);
+        return new ResponseEntity<>(casProperties.getServiceRegistry().getManagementType().toString(), HttpStatus.OK);
     }
 
     /**
@@ -240,7 +240,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator()) {
             if (!casUserProfile.getPermissions().contains("*") && !casUserProfile.getPermissions().contains(domain)) {
-                throw new IllegalAccessException("You do not have permission to the domain '"+domain+"'");
+                throw new IllegalAccessException("You do not have permission to the domain '"+domain+ '\'');
             }
         }
         final MgmtServicesManager manager = managerFactory.from(request, response);

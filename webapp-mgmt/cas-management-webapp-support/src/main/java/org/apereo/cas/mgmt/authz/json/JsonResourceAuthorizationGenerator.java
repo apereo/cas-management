@@ -50,7 +50,7 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
     }
 
     private void loadResource(final Resource res) {
-        try (Reader reader = new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8)) {
+        try (final Reader reader = new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8)) {
             final TypeReference<Map<String, UserAuthorizationDefinition>> personList =
                     new TypeReference<Map<String, UserAuthorizationDefinition>>() {
                 };

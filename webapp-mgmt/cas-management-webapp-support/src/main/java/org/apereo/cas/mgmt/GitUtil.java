@@ -267,7 +267,7 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public RawText raw(final Repository repo, final String path) throws Exception {
-        final File file = new File(repo.getWorkTree().getAbsolutePath() + "/" + path);
+        final File file = new File(repo.getWorkTree().getAbsolutePath() + '/' + path);
         return new RawText(FileUtils.readFileToByteArray(file));
     }
 
@@ -799,7 +799,7 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public RawText rawText(final String path) throws Exception {
-        final File file = new File(git.getRepository().getWorkTree().getAbsolutePath() + "/" + path);
+        final File file = new File(git.getRepository().getWorkTree().getAbsolutePath() + '/' + path);
         return new RawText(FileUtils.readFileToByteArray(file));
     }
 
@@ -869,7 +869,7 @@ public class GitUtil implements AutoCloseable {
     }
 
     private Collection<String> attemptRebase() throws Exception {
-        final Collection<String> conflicts = new HashSet<String>();
+        final Collection<String> conflicts = new HashSet<>();
         createStashIfNeeded();
         final PullResult pr = git.pull().setStrategy(MergeStrategy.RESOLVE).setRebase(true).call();
         if (pr.getRebaseResult().getConflicts() != null) {
@@ -974,8 +974,8 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public void move(final String oldName, final String newName) throws Exception {
-        Files.move(Paths.get(repoPath() + "/" + oldName),
-            Paths.get(repoPath() + "/" + newName));
+        Files.move(Paths.get(repoPath() + '/' + oldName),
+            Paths.get(repoPath() + '/' + newName));
         git.add().addFilepattern(newName).call();
         git.rm().addFilepattern(oldName).call();
     }

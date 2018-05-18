@@ -121,7 +121,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
         final RegisteredServiceYamlSerializer yamlSerializer = new RegisteredServiceYamlSerializer();
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         yamlSerializer.to(output, service);
-        return new ResponseEntity<String>(output.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(output.toString(), HttpStatus.OK);
     }
 
     /**
@@ -141,7 +141,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
         final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         serializer.to(output, service);
-        return new ResponseEntity<String>(output.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(output.toString(), HttpStatus.OK);
     }
 
     private RegisteredService getService(final HttpServletRequest request,
@@ -174,6 +174,6 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     }
 
     private String makeFileName(final RegisteredService service) throws Exception{
-        return StringUtils.remove(service.getName()+ "-" + service.getId() + ".json", " ");
+        return StringUtils.remove(service.getName()+ '-' + service.getId() + ".json", " ");
     }
 }

@@ -75,9 +75,6 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     private ServerProperties serverProperties;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
     private ApplicationContext context;
 
     @Autowired
@@ -90,6 +87,10 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
     @Qualifier("webApplicationServiceFactory")
     private ServiceFactory<WebApplicationService> webApplicationServiceFactory;
+
+    @Autowired
+    @Qualifier("communicationsManager")
+    private CommunicationsManager communicationsManager;
 
     @Autowired
     @Qualifier("casUserProfileFactory")
@@ -206,7 +207,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public ServiceRepsositoryController serviceRepsositoryController() {
         return new ServiceRepsositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
-                casProperties, servicesManager, communicationsManager());
+                casProperties, servicesManager, communicationsManager);
     }
 
     @RefreshScope
@@ -236,11 +237,6 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
         resolver.setOrder(0);
         resolver.setCheckExistence(true);
         return resolver;
-    }
-
-    @Bean
-    public CommunicationsManager communicationsManager() {
-        return new CommunicationsManager();
     }
 
     @Override

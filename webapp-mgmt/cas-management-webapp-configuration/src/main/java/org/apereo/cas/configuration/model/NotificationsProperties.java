@@ -18,6 +18,7 @@ import java.io.Serializable;
 @Setter
 @Slf4j
 public class NotificationsProperties implements Serializable {
+    private static final long serialVersionUID = -7616426966125636166L;
 
     /**
      * Sumbit Notification.

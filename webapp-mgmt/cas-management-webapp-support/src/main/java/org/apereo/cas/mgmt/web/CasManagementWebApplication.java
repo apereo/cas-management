@@ -25,18 +25,19 @@ import org.springframework.context.annotation.Import;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-@SpringBootApplication(
-        exclude = {HibernateJpaAutoConfiguration.class,
-                JerseyAutoConfiguration.class,
-                GroovyTemplateAutoConfiguration.class,
-                DataSourceAutoConfiguration.class,
-                JmxAutoConfiguration.class,
-                CasCoreWebConfiguration.class,
-                CasCoreViewsConfiguration.class,
-                CasCoreHttpConfiguration.class,
-                CasPersonDirectoryConfiguration.class,
-                CasDiscoveryProfileConfiguration.class,
-                MetricsDropwizardAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+    HibernateJpaAutoConfiguration.class,
+    JerseyAutoConfiguration.class,
+    GroovyTemplateAutoConfiguration.class,
+    DataSourceAutoConfiguration.class,
+    JmxAutoConfiguration.class,
+    CasCoreWebConfiguration.class,
+    CasCoreViewsConfiguration.class,
+    CasCoreHttpConfiguration.class,
+    CasPersonDirectoryConfiguration.class,
+    CasDiscoveryProfileConfiguration.class,
+    MetricsDropwizardAutoConfiguration.class
+})
 @Import(value = AopAutoConfiguration.class)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -53,6 +54,10 @@ public class CasManagementWebApplication {
      * @param args the args
      */
     public static void main(final String[] args) {
-        new SpringApplicationBuilder(CasManagementWebApplication.class).banner(new CasManagementBanner()).run(args);
+        new SpringApplicationBuilder(CasManagementWebApplication.class)
+            .banner(new CasManagementBanner())
+            .web(true)
+            .logStartupInfo(true)
+            .run(args);
     }
 }

@@ -35,10 +35,12 @@ public class ManagementWebappProperties implements Serializable {
      * List of roles that allow a non-admin access to the web application.
      */
     private List<String> userRoles = CollectionUtils.wrap("ROLE_USER");
+
     /**
      * The server name/address of the management web application.
      */
     private String serverName = "https://localhost:8443";
+
     /**
      * Default locale to use when displaying UI components and views.
      */
@@ -111,9 +113,11 @@ public class ManagementWebappProperties implements Serializable {
     /**
      * Notifications.
      */
+    @NestedConfigurationProperty
     private NotificationsProperties notifications = new NotificationsProperties();
-    
 
+    @Getter
+    @Setter
     @RequiresModule(name = "cas-management-webapp-support-ldap")
     public static class Ldap extends AbstractLdapProperties {
         private static final long serialVersionUID = -8129280052479631538L;
@@ -122,14 +126,6 @@ public class ManagementWebappProperties implements Serializable {
          */
         @NestedConfigurationProperty
         private LdapAuthorizationProperties ldapAuthz = new LdapAuthorizationProperties();
-
-        public LdapAuthorizationProperties getLdapAuthz() {
-            return ldapAuthz;
-        }
-
-        public void setLdapAuthz(final LdapAuthorizationProperties ldapAuthz) {
-            this.ldapAuthz = ldapAuthz;
-        }
     }
 
 }

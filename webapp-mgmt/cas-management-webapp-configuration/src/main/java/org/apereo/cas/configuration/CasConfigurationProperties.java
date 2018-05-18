@@ -26,6 +26,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class CasConfigurationProperties implements Serializable {
+    private static final long serialVersionUID = -2686426966125636166L;
+
     /**
        Authentication.
      */

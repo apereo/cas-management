@@ -30,12 +30,12 @@ public class CasManagementConfigurationProperties implements Serializable {
     /**
      * List of roles that allow admin access to the web application.
      */
-    private List<String> adminRoles = CollectionUtils.wrap("ROLE_ADMIN");
+    private List<String> adminRoles = CollectionUtils.wrapList("ROLE_ADMIN");
 
     /**
      * List of roles that allow a non-admin access to the web application.
      */
-    private List<String> userRoles = CollectionUtils.wrap("ROLE_USER");
+    private List<String> userRoles = CollectionUtils.wrapList("ROLE_USER");
 
     /**
      * The server name/address of the management web application.

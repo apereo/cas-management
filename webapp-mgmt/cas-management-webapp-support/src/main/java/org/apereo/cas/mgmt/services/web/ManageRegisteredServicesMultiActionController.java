@@ -76,6 +76,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param casUserProfileFactory        the cas user profile factory
      * @param managerFactory               the manager factory
      * @param repositoryFactory            the repository factory
+     * @param casProperties                the cas properties
      */
     public ManageRegisteredServicesMultiActionController(
         final ServicesManager servicesManager,

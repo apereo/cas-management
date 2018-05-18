@@ -70,7 +70,6 @@ public class ManagerFactory {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return - GitServicesManager for the logged in user
-     * @throws Exception - failed
      */
     public MgmtServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
         return from(request, casUserProfileFactory.from(request, response));
@@ -82,7 +81,6 @@ public class ManagerFactory {
      * @param request - HttpServletRequest
      * @param user    - CasUserProfile of logged in user
      * @return - GitServicesManager for the logged in user
-     * @throws Exception - failed
      */
     public MgmtServicesManager from(final HttpServletRequest request, final CasUserProfile user) {
         if (managementProperties.isEnableVersionControl()) {

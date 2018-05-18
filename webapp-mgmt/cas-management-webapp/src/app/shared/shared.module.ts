@@ -26,7 +26,7 @@ import {
   MatChipsModule,
   MatAutocompleteModule,
   MatSnackBarModule,
-  MatPaginatorModule
+  MatPaginatorModule, MatProgressSpinnerModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ControlsComponent} from '../controls/controls.component';
@@ -64,6 +64,7 @@ import {PaginatorComponent} from '../paginator/paginator.component';
     MatAutocompleteModule,
     MatSnackBarModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     EditorComponent,
@@ -108,7 +109,8 @@ import {PaginatorComponent} from '../paginator/paginator.component';
     ControlsComponent,
     CommitComponent,
     FooterComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule {}

@@ -27,10 +27,13 @@ export class ControlsComponent implements OnInit {
   showOpen: boolean;
 
   @Input()
-  showVersionControl: boolean = true;
+  showVersionControl = true;
 
   @Input()
-  saveEnabled: boolean = false;
+  saveEnabled = false;
+
+  @Input()
+  showSpinner = false;
 
   @ViewChild('publishModal')
   submitComp: PublishComponent;

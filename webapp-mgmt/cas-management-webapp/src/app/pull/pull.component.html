@@ -9,7 +9,7 @@
   </div>
   <div style="flex: 1 1 auto"></div>
   <div>
-    <app-controls [showRefresh]="true" (refresh)="refresh()"></app-controls>
+    <app-controls [showRefresh]="true" (refresh)="refresh()" [showSpinner]="loading"></app-controls>
   </div>
 </div>
 

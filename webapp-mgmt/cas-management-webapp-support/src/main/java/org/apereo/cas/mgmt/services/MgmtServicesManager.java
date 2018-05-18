@@ -60,10 +60,11 @@ public class MgmtServicesManager implements ServicesManager {
      * @throws Exception -failed
      */
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
-        if (git != null) {
-            this.uncommitted = new HashMap<>();
-            git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
+        if (git.isNull()) {
+            return new ArrayList<>();
         }
+        this.uncommitted = new HashMap<>();
+        git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
         final List<RegisteredServiceItem> serviceItems = new ArrayList<>();
         final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
         serviceItems.addAll(services.stream().map(this::createServiceItem).collect(Collectors.toList()));

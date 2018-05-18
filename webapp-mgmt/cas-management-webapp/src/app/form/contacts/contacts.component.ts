@@ -28,7 +28,8 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.contacts || this.contacts.length == 0) {
+    if (!this.userService.user.administrator
+        && (!this.data.service.contacts || this.data.service.contacts.length == 0)) {
       const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
       contact.id = 0;
       contact.name = this.userService.user.firstName + " " + this.userService.user.familyName;

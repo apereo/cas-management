@@ -29,7 +29,9 @@ public class ForwardingController {
             "history/{fileName:.*}",
             "json/{fileId:.*}",
             "localChanges",
-            "import"})
+            "import",
+            "submissions",
+            "repo-history"})
     public String forward() {
         return "manage.html";
     }

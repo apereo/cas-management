@@ -249,7 +249,10 @@ export class FormComponent implements OnInit {
   }
 
   validateDomain(service: string): boolean {
-    const domainPattern = new RegExp('^https?://([^:/]+)');
+    const domainPattern = new RegExp('^\\\\^?https?\\\\??://(.*?)(?:[(]?[:/]|$)');
+    if (this.userService.user.permissions.indexOf("*") > -1) {
+      return true;
+    }
     try {
       const domain = domainPattern.exec(service);
       if (domain != null) {
@@ -370,7 +373,7 @@ export class FormComponent implements OnInit {
     }
 
     if (data.contacts) {
-      if (data.contacts.length == 0) {
+      if (data.contacts.length == 0 && !this.userService.user.administrator) {
         return Tabs.CONTACTS;
       }
       for (const contact of data.contacts) {

@@ -10,4 +10,5 @@ export class DiffEntry {
   committer: String;
   commitTime: String;
   commit: String;
+  name: String;
 }

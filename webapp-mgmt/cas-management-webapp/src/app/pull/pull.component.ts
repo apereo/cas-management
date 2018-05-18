@@ -4,10 +4,9 @@ import {Router} from '@angular/router';
 import { Branch } from '../../domain/branch';
 import {PullService} from './pull.service';
 import { Location } from '@angular/common';
-import {NotesService} from '../notes/notes.service';
 import {ChangesService} from '../changes/changes.service';
 import {DiffEntry} from '../../domain/diff-entry';
-import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {AcceptComponent} from '../accept/accept.component';
 import {RejectComponent} from '../reject/reject.component';
 import {PaginatorComponent} from '../paginator/paginator.component';
@@ -36,6 +35,7 @@ export class PullComponent implements OnInit {
   showPending = true;
   showAccepted: boolean;
   showRejected: boolean;
+  loading: boolean;
 
   constructor(public messages: Messages,
               private router: Router,
@@ -53,8 +53,13 @@ export class PullComponent implements OnInit {
   }
 
   refresh() {
+    this.loading = true;
     this.service.getBranches([this.showPending, this.showAccepted, this.showRejected])
-      .then(resp => this.dataSource.data = resp);
+      .then(resp => {
+        this.loading = false;
+        this.dataSource.data = resp
+      })
+      .catch(e => this.loading = false);
     this.controlsService.gitStatus();
   }
 

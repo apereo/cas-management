@@ -115,6 +115,11 @@ public class ManagerFactory {
         }
     }
 
+    public MgmtServicesManager master() throws Exception {
+        final GitUtil git = repositoryFactory.masterRepository();
+        return new MgmtServicesManager(createJSONServiceManager(git), git);
+    }
+
     private ServicesManager createJSONServiceManager(final GitUtil git) {
         final ServicesManager manager;
         final JsonServiceRegistry serviceRegistryDAO = new JsonServiceRegistry(Paths.get(git.repoPath()),

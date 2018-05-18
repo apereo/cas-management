@@ -201,8 +201,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
             data = data.stream()
-                    .filter(d -> casUserProfile.getPermissions().contains(d)
-                            || casUserProfile.getPermissions().contains("*"))
+                    .filter(d -> hasPermission(d, casUserProfile))
                     .collect(Collectors.toList());
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
@@ -239,7 +238,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         ensureDefaultServiceExists();
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator()) {
-            if (!casUserProfile.getPermissions().contains("*") && !casUserProfile.getPermissions().contains(domain)) {
+            if (!hasPermission(domain,casUserProfile)) {
                 throw new IllegalAccessException("You do not have permission to the domain '"+domain+"'");
             }
         }
@@ -380,6 +379,11 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         config.setDelegatedMgmt(casProperties.getMgmt().isEnableDelegatedMgmt());
         config.setSyncScript(casProperties.getMgmt().getSyncScript() != null);
         return new ResponseEntity<>(config, HttpStatus.OK);
+    }
+
+    private boolean hasPermission(final String domain, final CasUserProfile casUserProfile) {
+        return casUserProfile.getPermissions().contains("*")
+               || casUserProfile.getPermissions().stream().anyMatch(s -> domain.endsWith(s));
     }
 }
 

@@ -20,6 +20,7 @@ export class LocalChangesComponent implements OnInit {
   revertItem: Change;
   displayedColumns = ['actions', 'serviceName', 'changeType'];
   datasource: MatTableDataSource<Change>;
+  loading: boolean;
 
   @ViewChild(PaginatorComponent)
   paginator: PaginatorComponent;
@@ -39,7 +40,13 @@ export class LocalChangesComponent implements OnInit {
   }
 
   refresh() {
-    this.controlsService.untracked().then(resp => this.datasource.data = resp ? resp : []);
+    this.loading = true;
+    this.controlsService.untracked()
+      .then(resp => {
+        this.datasource.data = resp ? resp : []
+        this.loading = false;
+      })
+      .catch(e => this.loading = false);
     this.controlsService.gitStatus();
   }
 

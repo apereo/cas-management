@@ -1,4 +1,7 @@
 <div>
+  <div style="display:inline-block;position: relative;top: 5px;" *ngIf="showSpinner">
+      <mat-spinner mode="indeterminate" diameter="20"></mat-spinner>
+  </div>
   <div style="display: inline" *ngIf="showOpen">
     <button mat-button (click)="open.click();">
       <mat-icon>file_upload</mat-icon>

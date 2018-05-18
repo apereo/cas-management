@@ -2,7 +2,6 @@ package org.apereo.cas.configuration.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
@@ -23,7 +22,6 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Slf4j
 public class ManagementWebappProperties implements Serializable {
     private static final long serialVersionUID = -7686426966125636166L;
     /**
@@ -51,7 +49,7 @@ public class ManagementWebappProperties implements Serializable {
      * When defined, extracts the IP address from the request and compares with the pattern.
      */
     private String authzIpRegex;
-    
+
     /**
      * Collection of attributes the authorized user must have in order to authenticate into the app.
      * Th attribute value(s) must match the expected role. To permit everything, you may use {@code *}.
@@ -68,19 +66,19 @@ public class ManagementWebappProperties implements Serializable {
      * This file lists the set of users that are allowed access to the CAS sensitive/admin endpoints.
      * The syntax of each entry should be in the form of:
      * {@code username=notused,grantedAuthority[,grantedAuthority][,enabled|disabled]}
-     * 
+     *
      * <p>
      * The file may also be specified in form of JSON or YAML. In either case, the contents should be a map
      * of user records with key being the username whose authorization rules are defined as the value linked to that key.
-     * 
+     * <p>
      * Example:
      * <pre>
-{
-    "casuser" : {
-        "roles" : [ "ROLE_ADMIN" ],
-        "permissions" : [ "PERMISSION_EXAMPLE" ]
-    }
-}
+     * {
+     * "casuser" : {
+     * "roles" : [ "ROLE_ADMIN" ],
+     * "permissions" : [ "PERMISSION_EXAMPLE" ]
+     * }
+     * }
      * </pre>
      */
     private Resource userPropertiesFile = new ClassPathResource("user-details.properties");

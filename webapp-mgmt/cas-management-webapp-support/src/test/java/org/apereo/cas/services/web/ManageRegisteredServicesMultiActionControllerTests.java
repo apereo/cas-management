@@ -8,13 +8,14 @@ import org.apereo.cas.config.CasCoreUtilConfiguration;
 import org.apereo.cas.config.CasServiceRegistryInitializationConfiguration;
 import org.apereo.cas.config.JsonServiceRegistryConfiguration;
 import org.apereo.cas.config.support.CasWebApplicationServiceFactoryConfiguration;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementWebAppConfiguration;
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
@@ -48,7 +49,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -82,8 +82,11 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     private ServicesManager servicesManager;
 
     @Autowired
-    private CasConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties managementProperties;
 
+    @Autowired
+    private CasConfigurationProperties casProperties;
+    
     @Autowired
     @Qualifier("webApplicationServiceFactory")
     private ServiceFactory<WebApplicationService> webApplicationServiceFactory;
@@ -107,11 +110,13 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
-        final RepositoryFactory repositoryFactory = new RepositoryFactory(casProperties, casUserProfileFactory);
-        final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager, casProperties, repositoryFactory, casUserProfileFactory);
+        final RepositoryFactory repositoryFactory = new RepositoryFactory(managementProperties, casUserProfileFactory);
+        final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager, managementProperties,
+            repositoryFactory, casUserProfileFactory, casProperties);
+        managerFactory.initRepository();
         this.controller = new ManageRegisteredServicesMultiActionController(this.servicesManager,
                 null, webApplicationServiceFactory, "https://.*",
-                 casProperties, casUserProfileFactory, managerFactory, repositoryFactory);
+            managementProperties, casUserProfileFactory, managerFactory, repositoryFactory, casProperties);
     }
 
     @After

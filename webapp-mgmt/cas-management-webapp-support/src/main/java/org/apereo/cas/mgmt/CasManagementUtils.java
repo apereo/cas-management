@@ -11,9 +11,10 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
  * @since 5.2.0
  */
 public final class CasManagementUtils {
-    
-    private CasManagementUtils() {}
-    
+
+    private CasManagementUtils() {
+    }
+
     /**
      * Gets default callback url.
      *
@@ -23,7 +24,7 @@ public final class CasManagementUtils {
      */
     public static String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            return casProperties.getMgmt().getServerName().concat(serverProperties.getContextPath()).concat("/manage.html");
+            return casProperties.getServer().getName().concat(serverProperties.getContextPath()).concat("/manage.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }

@@ -9,25 +9,9 @@ repositories {
 
 dependencies {
     implementation libraries.springcloudconfigclient
-
+    implementation libraries.casServer
+    
     //optional libraries.springbootconfigmetadata
-
-    runtime ("org.apereo.cas:cas-server-core-configuration:$casVersion") {
-        transitive = false;
-    }
-    implementation ("org.apereo.cas:cas-server-core-configuration-api:$casVersion") {
-        transitive = false;
-    }
-    implementation ("org.apereo.cas:cas-server-core-api-util:$casVersion") {
-        transitive = false;
-    }
-    implementation ("org.apereo.cas:cas-server-core-util-api:$casVersion") {
-        transitive = false;
-    }
-    implementation ("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
-        transitive = false
-    }
-
 }
 /*
 task generateConfigurationMetadata(type: JavaExec) {

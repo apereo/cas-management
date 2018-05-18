@@ -26,6 +26,7 @@ export class SamlRegisteredService extends RegexRegisteredService {
   skipGeneratingSubjectConfirmationNotOnOrAfter: boolean;
   skipGeneratingSubjectConfirmationRecipient: boolean;
   skipGeneratingSubjectConfirmationNotBefore: boolean;
+  assertionAudiences: String;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === SamlRegisteredService.cName;

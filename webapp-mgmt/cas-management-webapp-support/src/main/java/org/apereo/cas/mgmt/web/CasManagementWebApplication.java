@@ -1,11 +1,9 @@
 package org.apereo.cas.mgmt.web;
 
-import org.apereo.cas.config.CasCoreHttpConfiguration;
-import org.apereo.cas.config.CasCoreViewsConfiguration;
-import org.apereo.cas.config.CasCoreWebConfiguration;
 import org.apereo.cas.config.CasDiscoveryProfileConfiguration;
 import org.apereo.cas.config.CasPersonDirectoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.springframework.boot.actuate.autoconfigure.MetricsDropwizardAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
@@ -25,25 +23,21 @@ import org.springframework.context.annotation.Import;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-@SpringBootApplication(
-        exclude = {HibernateJpaAutoConfiguration.class,
-                JerseyAutoConfiguration.class,
-                GroovyTemplateAutoConfiguration.class,
-                DataSourceAutoConfiguration.class,
-                JmxAutoConfiguration.class,
-                CasCoreWebConfiguration.class,
-                CasCoreViewsConfiguration.class,
-                CasCoreHttpConfiguration.class,
-                CasPersonDirectoryConfiguration.class,
-                CasDiscoveryProfileConfiguration.class,
-                MetricsDropwizardAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+    HibernateJpaAutoConfiguration.class,
+    JerseyAutoConfiguration.class,
+    GroovyTemplateAutoConfiguration.class,
+    DataSourceAutoConfiguration.class,
+    JmxAutoConfiguration.class,
+    CasPersonDirectoryConfiguration.class,
+    CasDiscoveryProfileConfiguration.class,
+    MetricsDropwizardAutoConfiguration.class
+})
 @Import(value = AopAutoConfiguration.class)
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasManagementConfigurationProperties.class, CasConfigurationProperties.class})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class CasManagementWebApplication {
-    /**
-     * Instantiates a new web application.
-     */
+
     protected CasManagementWebApplication() {
     }
 
@@ -53,6 +47,10 @@ public class CasManagementWebApplication {
      * @param args the args
      */
     public static void main(final String[] args) {
-        new SpringApplicationBuilder(CasManagementWebApplication.class).banner(new CasManagementBanner()).run(args);
+        new SpringApplicationBuilder(CasManagementWebApplication.class)
+            .banner(new CasManagementBanner())
+            .web(true)
+            .logStartupInfo(true)
+            .run(args);
     }
 }

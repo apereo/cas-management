@@ -76,8 +76,8 @@ public class MgmtServicesManager implements ServicesManager {
         if (git != null) {
             try {
                 return git.checkForDeletes()
-                        .map(d -> getService(d))
-                        .collect(Collectors.toList());
+                    .map(d -> getService(d))
+                    .collect(Collectors.toList());
             } catch (final Exception e) {
             }
         }
@@ -122,7 +122,7 @@ public class MgmtServicesManager implements ServicesManager {
             if (entry.getChangeType() == DiffEntry.ChangeType.DELETE) {
                 svc = ser.from(git.readObject(entry.getOldId().toObjectId()));
             } else {
-                svc = ser.from(new File(git.repoPath() + "/" + entry.getNewPath()));
+                svc = ser.from(new File(git.repoPath() + '/' + entry.getNewPath()));
             }
             if (this.uncommitted.containsKey(svc.getId())) {
                 this.uncommitted.replace(svc.getId(), "MODIFY");
@@ -222,11 +222,23 @@ public class MgmtServicesManager implements ServicesManager {
         return git;
     }
 
+    /**
+     * Extract domain string.
+     *
+     * @param service the service
+     * @return the string
+     */
     public String extractDomain(final String service) {
         final Matcher extractor = this.domainExtractor.matcher(service.toLowerCase());
         return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
     }
 
+    /**
+     * Validate domain string.
+     *
+     * @param providedDomain the provided domain
+     * @return the string
+     */
     public String validateDomain(final String providedDomain) {
         final String domain = StringUtils.remove(providedDomain, "\\");
         final Matcher match = domainPattern.matcher(StringUtils.remove(domain, "\\"));

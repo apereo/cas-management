@@ -1,11 +1,11 @@
 package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authz.CasRoleBasedAuthorizer;
 import org.apereo.cas.mgmt.authz.CasSpringSecurityAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.json.JsonResourceAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.yaml.YamlResourceAuthorizationGenerator;
-import org.apereo.cas.configuration.model.ManagementWebappProperties;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.FromAttributesAuthorizationGenerator;
@@ -27,34 +27,34 @@ import java.util.List;
  * @since 5.2.0
  */
 @Configuration("casManagementAuthorizationConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasManagementConfigurationProperties.class, CasConfigurationProperties.class})
 public class CasManagementAuthorizationConfiguration {
 
     @Autowired
-    private CasConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties casProperties;
 
     @ConditionalOnMissingBean(name = "authorizationGenerator")
     @Bean
     @RefreshScope
     public AuthorizationGenerator authorizationGenerator() {
-        final List<String> authzAttributes = casProperties.getMgmt().getAuthzAttributes();
+        final List<String> authzAttributes = casProperties.getAuthzAttributes();
         if (!authzAttributes.isEmpty()) {
             if (authzAttributes.stream().anyMatch(a -> a.equals("*"))) {
                 return staticAdminRolesAuthorizationGenerator();
             }
             return new FromAttributesAuthorizationGenerator(authzAttributes.toArray(new String[]{}), new String[]{});
         }
-        
+
         return springSecurityPropertiesAuthorizationGenerator();
     }
-    
+
     @RefreshScope
     @Bean
     @ConditionalOnMissingBean(name = "staticAdminRolesAuthorizationGenerator")
     public AuthorizationGenerator staticAdminRolesAuthorizationGenerator() {
         return (context, profile) -> {
-            profile.addRoles(casProperties.getMgmt().getAdminRoles());
-            profile.addRoles(casProperties.getMgmt().getUserRoles());
+            profile.addRoles(casProperties.getAdminRoles());
+            profile.addRoles(casProperties.getUserRoles());
             return profile;
         };
     }
@@ -64,8 +64,8 @@ public class CasManagementAuthorizationConfiguration {
     @RefreshScope
     public Authorizer managementWebappAuthorizer() {
         final List<String> roles = new ArrayList<>();
-        roles.addAll(casProperties.getMgmt().getAdminRoles());
-        roles.addAll(casProperties.getMgmt().getUserRoles());
+        roles.addAll(casProperties.getAdminRoles());
+        roles.addAll(casProperties.getUserRoles());
         return new CasRoleBasedAuthorizer(roles);
     }
 
@@ -74,8 +74,7 @@ public class CasManagementAuthorizationConfiguration {
     @ConditionalOnMissingBean(name = "springSecurityPropertiesAuthorizationGenerator")
     public AuthorizationGenerator springSecurityPropertiesAuthorizationGenerator() {
         try {
-            final ManagementWebappProperties mgmt = casProperties.getMgmt();
-            final Resource userPropertiesFile = mgmt.getUserPropertiesFile();
+            final Resource userPropertiesFile = casProperties.getUserPropertiesFile();
             if (userPropertiesFile.getFilename().endsWith("json")) {
                 return new JsonResourceAuthorizationGenerator(userPropertiesFile);
             }

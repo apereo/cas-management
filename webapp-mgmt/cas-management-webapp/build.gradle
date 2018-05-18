@@ -22,7 +22,11 @@ node {
     download = true
 }
 
-npm_install.dependsOn(npm_cache_clean)
+if (!Boolean.getBoolean("skipNpmCache")) {
+    npm_install.dependsOn(npm_cache_clean)
+}  else {
+    npm_install.enabled = false
+}
 
 task buildClientDev(type: NpmTask, dependsOn: "npm_install", group: "bootRun",
         description: "Compile client side folder for development") {
@@ -43,7 +47,9 @@ task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
     args = ['run', 'lint']
 }
 
-check.dependsOn(ngLint)
+if (!rootProject.publishingRelease && !Boolean.getBoolean("skipNpmLint")) {
+    check.dependsOn(ngLint)
+}
 
 bootRun {
     addResources = true
@@ -101,8 +107,10 @@ task angularTest(type: NpmTask, dependsOn: 'npm_install', group: 'test', descrip
 dependencies {
     runtimeOnly project(":webapp-mgmt:cas-management-webapp-configuration")
     runtimeOnly project(":webapp-mgmt:cas-management-webapp-support")
+    
     providedRuntime libraries.springboottomcat
     runtimeOnly libraries.groovy
+
     implementation libraries.thymeleaf
     implementation libraries.thymeleafdialect
 }

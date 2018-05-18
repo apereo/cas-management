@@ -1,10 +1,12 @@
 package org.apereo.cas.mgmt.services.web.factory;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
@@ -22,21 +24,21 @@ import java.nio.file.Paths;
  * @since 5.2.0
  */
 @RequiredArgsConstructor
+@Slf4j
 public class RepositoryFactory {
 
     private final CasConfigurationProperties casProperties;
     private final CasUserProfileFactory casUserProfileFactory;
 
-
     /**
      * Method looks up user from servlet request to return correct repository.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return - GitUtil wrappinng the user's repository
      * @throws Exception - failed
      */
-    public GitUtil from(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public GitUtil from(final HttpServletRequest request, final HttpServletResponse response) {
         return from(casUserProfileFactory.from(request, response));
     }
 
@@ -47,7 +49,8 @@ public class RepositoryFactory {
      * @return - GitUtil wrapping the user's repository
      * @throws Exception -failed
      */
-    public GitUtil from(final CasUserProfile user) throws Exception {
+    @SneakyThrows
+    public GitUtil from(final CasUserProfile user) {
         if (user.isAdministrator()) {
             return masterRepository();
         }
@@ -64,24 +67,37 @@ public class RepositoryFactory {
      * @return - GitUtil
      * @throws Exception - failed
      */
-    public GitUtil masterRepository() throws Exception {
-        return new GitUtil(new Git(new FileRepositoryBuilder()
-                .setGitDir(new File(casProperties.getMgmt().getServicesRepo() + "/.git"))
-                .setMustExist(true)
-                .readEnvironment()
-                .findGitDir()
-                .build()));
+    @SneakyThrows
+    public GitUtil masterRepository() {
+        final String path = casProperties.getMgmt().getServicesRepo() + "/.git";
+        return buildGitUtil(path);
     }
 
-
-    private GitUtil userRepository(final String user) throws Exception {
+    @SneakyThrows
+    private GitUtil userRepository(final String user) {
         final String path = casProperties.getMgmt().getUserReposDir() + '/' + user + "/.git";
+        return buildGitUtil(path);
+    }
+
+    @SneakyThrows
+    private static GitUtil buildGitUtil(final String path) {
+        boolean repositoryMustExist = true;
+        final File gitDir = new File(path);
+        if (!gitDir.exists()) {
+            LOGGER.debug("Creating git repository directory at [{}]", gitDir);
+            final boolean result = gitDir.mkdirs();
+            if (!result) {
+                LOGGER.warn("Failed to create git repository directory at [{}]", gitDir);
+                repositoryMustExist = false;
+            }
+        }
+
         return new GitUtil(new Git(new FileRepositoryBuilder()
-                .setGitDir(new File(path))
-                .setMustExist(true)
-                .readEnvironment()
-                .findGitDir()
-                .build()));
+            .setGitDir(new File(path))
+            .setMustExist(repositoryMustExist)
+            .readEnvironment()
+            .findGitDir()
+            .build()));
     }
 
     /**
@@ -92,10 +108,11 @@ public class RepositoryFactory {
     public void clone(final String clone) {
         try {
             Git.cloneRepository()
-                    .setURI(casProperties.getMgmt().getServicesRepo() + "/.git")
-                    .setDirectory(new File(clone))
-                    .call();
+                .setURI(casProperties.getMgmt().getServicesRepo() + "/.git")
+                .setDirectory(new File(clone))
+                .call();
         } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 }

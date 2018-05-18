@@ -2,7 +2,9 @@ package org.apereo.cas.mgmt;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -68,7 +70,7 @@ import java.util.stream.StreamSupport;
 public class GitUtil implements AutoCloseable {
 
     /**
-     * Constant representing lenght of Object ID to return.
+     * Constant representing length of Object ID to return.
      */
     public static final int NAME_LENGTH = 40;
 
@@ -762,10 +764,8 @@ public class GitUtil implements AutoCloseable {
      */
     public byte[] getFormatter(final RawText oldText, final RawText newText) throws Exception {
         final DiffAlgorithm diffAlgorithm = DiffAlgorithm.getAlgorithm(
-            (DiffAlgorithm.SupportedAlgorithm) git.getRepository().getConfig().getEnum("diff",
-                (String) null,
-                "algorithm",
-                DiffAlgorithm.SupportedAlgorithm.HISTOGRAM));
+            git.getRepository().getConfig().getEnum("diff",
+                null, "algorithm", DiffAlgorithm.SupportedAlgorithm.HISTOGRAM));
         final EditList editList = diffAlgorithm.diff(RawTextComparator.DEFAULT, oldText, newText);
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         final DiffFormatter df = new DiffFormatter(bytes);
@@ -917,6 +917,7 @@ public class GitUtil implements AutoCloseable {
         try {
             return noteText(com).contains("REJECTED");
         } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }
@@ -983,34 +984,17 @@ public class GitUtil implements AutoCloseable {
     /**
      * Object used to represent the history of a branch.
      */
+    @RequiredArgsConstructor
+    @Getter
+    @Setter
     public static class BranchMap {
         private Ref ref;
         private RevCommit revCommit;
-        private GitUtil git;
-
-        public BranchMap(final GitUtil git) {
-            this.git = git;
-        }
+        private final GitUtil git;
 
         public BranchMap(final GitUtil git, final Ref ref, final RevCommit revCommit) {
             this(git);
             this.ref = ref;
-            this.revCommit = revCommit;
-        }
-
-        public Ref getRef() {
-            return ref;
-        }
-
-        public void setRef(final Ref ref) {
-            this.ref = ref;
-        }
-
-        public RevCommit getRevCommit() {
-            return revCommit;
-        }
-
-        public void setRevCommit(final RevCommit revCommit) {
             this.revCommit = revCommit;
         }
 

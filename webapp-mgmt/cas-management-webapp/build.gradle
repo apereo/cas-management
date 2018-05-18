@@ -107,8 +107,10 @@ task angularTest(type: NpmTask, dependsOn: 'npm_install', group: 'test', descrip
 dependencies {
     runtimeOnly project(":webapp-mgmt:cas-management-webapp-configuration")
     runtimeOnly project(":webapp-mgmt:cas-management-webapp-support")
+    
     providedRuntime libraries.springboottomcat
     runtimeOnly libraries.groovy
+
     implementation libraries.thymeleaf
     implementation libraries.thymeleafdialect
 }

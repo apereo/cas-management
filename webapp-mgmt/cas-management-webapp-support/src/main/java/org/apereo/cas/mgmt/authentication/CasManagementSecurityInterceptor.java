@@ -6,6 +6,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
+import org.pac4j.core.engine.decision.AlwaysUseSessionProfileStorageDecision;
 import org.pac4j.core.exception.HttpAction;
 import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.util.StringUtils;
@@ -33,7 +34,6 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
     public CasManagementSecurityInterceptor(final Config config) {
         super(config, getClientNames(config), getAuthorizerNames(config));
         final CasManagementSecurityLogic logic = new CasManagementSecurityLogic();
-        logic.setSaveProfileInSession(true);
         setSecurityLogic(logic);
     }
 
@@ -60,14 +60,13 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
      * The Cas management security logic.
      */
     public static class CasManagementSecurityLogic extends DefaultSecurityLogic {
-        @Override
-        protected HttpAction forbidden(final WebContext context, final List currentClients, final List list, final String authorizers) {
-            return HttpAction.redirect("Authorization failed", context, "authorizationFailure");
+        public CasManagementSecurityLogic() {
+            setProfileStorageDecision(new AlwaysUseSessionProfileStorageDecision());
         }
 
         @Override
-        protected boolean loadProfilesFromSession(final WebContext context, final List currentClients) {
-            return true;
+        protected HttpAction forbidden(final WebContext context, final List currentClients, final List list, final String authorizers) {
+            return HttpAction.redirect(context, "authorizationFailure");
         }
     }
 }

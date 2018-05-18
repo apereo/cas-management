@@ -1,5 +1,5 @@
 ext.libraries = [
-        kotlin                  : [
+        kotlin                 : [
                 dependencies.create("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion") {
                     force = true
                 },
@@ -7,7 +7,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        aspectj                 : [
+        aspectj                : [
                 dependencies.create("org.aspectj:aspectjrt:$aspectjVersion") {
                     force = true
                 },
@@ -15,7 +15,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        bouncycastle            : [
+        bouncycastle           : [
                 dependencies.create("org.bouncycastle:bcpkix-jdk15on:$bouncyCastleVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")
                     force = true
@@ -30,7 +30,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        casclient               : dependencies.create("org.jasig.cas.client:cas-client-core:$casClientVersion") {
+        casclient              : dependencies.create("org.jasig.cas.client:cas-client-core:$casClientVersion") {
             exclude(group: "javax.servlet", module: "servlet-api")
             exclude(group: "org.slf4j", module: "log4j-over-slf4j")
             exclude(group: "org.bouncycastle", module: "bcprov-jdk15")
@@ -39,7 +39,7 @@ ext.libraries = [
             exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
             force = true
         },
-        commons                 : [
+        commons                : [
                 dependencies.create("commons-io:commons-io:$commonsIoVersion") {
                     force = true
                 },
@@ -108,12 +108,12 @@ ext.libraries = [
                     force = true
                 }
         ],
-        findbugscontrib         : dependencies.create("com.mebigfatguy.fb-contrib:fb-contrib:$findbugsContribVersion"),
-        findbugs                : dependencies.create("com.google.code.findbugs:findbugs:$findbugsVersion") {
+        findbugscontrib        : dependencies.create("com.mebigfatguy.fb-contrib:fb-contrib:$findbugsContribVersion"),
+        findbugs               : dependencies.create("com.google.code.findbugs:findbugs:$findbugsVersion") {
             force = true
         },
-        findbugssec             : dependencies.create("com.h3xstream.findsecbugs:findsecbugs-plugin:$findbugsSecVersion"),
-        groovy                  : [
+        findbugssec            : dependencies.create("com.h3xstream.findsecbugs:findsecbugs-plugin:$findbugsSecVersion"),
+        groovy                 : [
                 dependencies.create("org.codehaus.groovy:groovy-jsr223:$groovyVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")
                     force = true
@@ -126,7 +126,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        caffein                 : [
+        caffein                : [
                 dependencies.create("com.github.ben-manes.caffeine:caffeine:$caffeinVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     force = true
@@ -137,7 +137,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        guava                   : [
+        guava                  : [
                 dependencies.create("com.google.guava:guava:$guavaVersion") {
                     force = true
                 },
@@ -180,11 +180,11 @@ ext.libraries = [
                     force = true
                 }
         ],
-        jasypt                  : dependencies.create("org.jasypt:jasypt:$jasyptVersion") {
+        jasypt                 : dependencies.create("org.jasypt:jasypt:$jasyptVersion") {
             exclude(group: "commons-cli", module: "commons-cli")
             force = true
         },
-        inspektr                : [
+        inspektr               : [
                 dependencies.create("org.apereo.inspektr:inspektr-audit:$inspektrVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "javax.validation", module: "validation-api")
@@ -206,16 +206,16 @@ ext.libraries = [
                     force = true
                 }
         ],
-        javax                   : [
+        javax                  : [
                 dependencies.create("javax.servlet:javax.servlet-api:$javaxServletVersion") {
                     force = true
                 }
         ],
-        javaximpl               : [
+        javaximpl              : [
                 dependencies.create("javax.servlet:jstl:$javaxJstlVersion"),
                 dependencies.create("javax.transaction:jta:$jtaVersion")
         ],
-        thymeleafdialect        : [
+        thymeleafdialect       : [
                 dependencies.create("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:$thymeleafDialectVersion") {
                     exclude(group: "org.javassist", module: "javassist")
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -224,7 +224,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        thymeleaf               : [
+        thymeleaf              : [
                 dependencies.create("org.thymeleaf:thymeleaf-spring4:$thymeleafVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.javassist", module: "javassist")
@@ -241,7 +241,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        jackson                 : [
+        jackson                : [
                 dependencies.create("com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     force = true
@@ -274,15 +274,15 @@ ext.libraries = [
                     force = true
                 }
         ],
-        jodatime                : dependencies.create("joda-time:joda-time:$jodaTimeVersion") {
+        jodatime               : dependencies.create("joda-time:joda-time:$jodaTimeVersion") {
             force = true
         },
 
-        jose4j                  : dependencies.create("org.bitbucket.b_c:jose4j:$jose4jVersion") {
+        jose4j                 : dependencies.create("org.bitbucket.b_c:jose4j:$jose4jVersion") {
             exclude(group: "org.slf4j", module: "slf4j-api")
             force = true
         },
-        tests                   : [
+        tests                  : [
                 dependencies.create("org.jetbrains.kotlin:kotlin-test:$kotlinVersion") {
                     force = true
                 },
@@ -335,7 +335,7 @@ ext.libraries = [
                 },
                 dependencies.create("net.bytebuddy:byte-buddy:1.7.9")
         ],
-        ldaptive                : [
+        ldaptive               : [
                 dependencies.create("org.ldaptive:ldaptive:$ldaptiveVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "commons-cli", module: "commons-cli")
@@ -366,7 +366,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        log4j                   : [
+        log4j                  : [
                 dependencies.create("org.apache.logging.log4j:log4j-api:$log4jVersion") {
                     force = true
                 },
@@ -385,7 +385,7 @@ ext.libraries = [
                 dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion"),
                 dependencies.create("com.lmax:disruptor:$disruptorVersion")
         ],
-        opensaml                : [
+        opensaml               : [
                 dependencies.create("org.opensaml:opensaml-core:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
                     exclude(group: "commons-collections", module: "commons-collections")
@@ -556,7 +556,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        pac4j                   : [
+        pac4j                  : [
                 dependencies.create("org.pac4j:pac4j-cas:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
@@ -731,7 +731,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        persondirectory         : dependencies.create("org.apereo.service.persondir:person-directory-impl:$personDirectoryVersion") {
+        persondirectory        : dependencies.create("org.apereo.service.persondir:person-directory-impl:$personDirectoryVersion") {
             exclude(group: "commons-logging", module: "commons-logging")
             exclude(group: "org.slf4j", module: "slf4j-api")
             exclude(group: "org.apache.httpcomponents", module: "httpclient")
@@ -747,7 +747,7 @@ ext.libraries = [
             exclude(group: "com.sun.xml.bind", module: "jaxb-impl")
             force = true
         },
-        springboot              : [
+        springboot             : [
                 dependencies.create("org.springframework.boot:spring-boot-starter-websocket:$springBootVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "log4j-over-slf4j")
@@ -873,7 +873,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        springboottomcat        : [
+        springboottomcat       : [
                 dependencies.create("org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion") {
                     force = true
                 },
@@ -882,7 +882,7 @@ ext.libraries = [
                 }
 
         ],
-        springcloudconfigclient : [
+        springcloudconfigclient: [
                 dependencies.create("org.springframework.cloud:spring-cloud-config-client:$springCloudConfigVersion") {
                     exclude(group: "org.springframework", module: "spring-web")
                     exclude(group: "org.springframework.security", module: "spring-security-crypto")
@@ -909,7 +909,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-        springcloud             : [
+        springcloud            : [
                 dependencies.create("org.springframework.cloud:spring-cloud-commons:$springCloudCommonsVersion") {
                     exclude(group: "org.springframework.cloud", module: "spring-cloud-context")
                     exclude(group: "org.objenesis", module: "objenesis")
@@ -958,7 +958,103 @@ ext.libraries = [
                     force = true
                 }
         ],
-        spring                  : [
+        casServer              : [
+                dependencies.create("org.apereo.cas:cas-server-support-ldap-core:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-util:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-util:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-util-api:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-configuration-api:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-events:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-authentication:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-services:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-services-registry:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-logging-config:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-person-directory:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-oidc-services:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-protocol:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-support-discovery-profile:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.apereo.cas:cas-server-core-api-audit:$casVersion") {
+                    force = true
+                }
+        ],
+
+        spring                 : [
                 dependencies.create("org.springframework:spring-aop:$springVersion") {
                     force = true
                 },
@@ -999,8 +1095,8 @@ ext.libraries = [
                     force = true
                 }
         ],
-        classmate               : dependencies.create("com.fasterxml:classmate:$classmateVersion"),
-        jgit                    :
+        classmate              : dependencies.create("com.fasterxml:classmate:$classmateVersion"),
+        jgit                   :
                 dependencies.create("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion") {
                     exclude group: 'org.apache.httpcomponents', module: 'httpclient'
                     exclude group: 'org.slf4j', module: 'slf4j'

@@ -5,6 +5,7 @@ import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.MgmtServicesManager;
@@ -61,6 +62,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     private final Service defaultService;
     private final ManagerFactory managerFactory;
     private final RepositoryFactory repositoryFactory;
+    private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
 
     /**
@@ -70,27 +72,29 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param formDataFactory              the form data factory
      * @param webApplicationServiceFactory the web application service factory
      * @param defaultServiceUrl            the default service url
-     * @param casProperties                the cas properties
+     * @param managementProperties         the cas properties
      * @param casUserProfileFactory        the cas user profile factory
      * @param managerFactory               the manager factory
      * @param repositoryFactory            the repository factory
      */
     public ManageRegisteredServicesMultiActionController(
-            final ServicesManager servicesManager,
-            final FormDataFactory formDataFactory,
-            final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
-            final String defaultServiceUrl,
-            final CasConfigurationProperties casProperties,
-            final CasUserProfileFactory casUserProfileFactory,
-            final ManagerFactory managerFactory,
-            final RepositoryFactory repositoryFactory) {
+        final ServicesManager servicesManager,
+        final FormDataFactory formDataFactory,
+        final ServiceFactory<WebApplicationService> webApplicationServiceFactory,
+        final String defaultServiceUrl,
+        final CasManagementConfigurationProperties managementProperties,
+        final CasUserProfileFactory casUserProfileFactory,
+        final ManagerFactory managerFactory,
+        final RepositoryFactory repositoryFactory,
+        final CasConfigurationProperties casProperties) {
         super(servicesManager);
         this.formDataFactory = formDataFactory;
         this.defaultService = webApplicationServiceFactory.createService(defaultServiceUrl);
-        this.casProperties = casProperties;
+        this.managementProperties = managementProperties;
         this.casUserProfileFactory = casUserProfileFactory;
         this.managerFactory = managerFactory;
         this.repositoryFactory = repositoryFactory;
+        this.casProperties = casProperties;
     }
 
     /**
@@ -157,7 +161,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * the default service that is the management app itself cannot be deleted
      * or the user will be locked out.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param idAsLong the id
      * @return the response entity
@@ -174,7 +178,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         }
         if (svc.getServiceId().equals(this.defaultService.getId())) {
             return new ResponseEntity<>("The default service " + this.defaultService.getId() + " cannot be deleted. "
-                    + "The definition is required for accessing the application.", HttpStatus.BAD_REQUEST);
+                + "The definition is required for accessing the application.", HttpStatus.BAD_REQUEST);
         }
         manager.delete(idAsLong);
         return new ResponseEntity<>(svc.getName(), HttpStatus.OK);
@@ -188,7 +192,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     /**
      * Gets domains.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return the domains
      * @throws Exception the exception
@@ -201,9 +205,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
             data = data.stream()
-                    .filter(d -> casUserProfile.getPermissions().contains(d)
-                            || casUserProfile.getPermissions().contains("*"))
-                    .collect(Collectors.toList());
+                .filter(d -> casUserProfile.getPermissions().contains(d)
+                    || casUserProfile.getPermissions().contains("*"))
+                .collect(Collectors.toList());
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -226,9 +230,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     /**
      * Gets services.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @param domain the domain for which services will be retrieved
+     * @param domain   the domain for which services will be retrieved
      * @return the services
      * @throws Exception - failed
      */
@@ -240,7 +244,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator()) {
             if (!casUserProfile.getPermissions().contains("*") && !casUserProfile.getPermissions().contains(domain)) {
-                throw new IllegalAccessException("You do not have permission to the domain '"+domain+ '\'');
+                throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
             }
         }
         final MgmtServicesManager manager = managerFactory.from(request, response);
@@ -251,9 +255,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * Method will filter all services in the register using the passed string a regular expression against the
      * service name, service id, and service description.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @param query - a string representing text to search for
+     * @param query    - a string representing text to search for
      * @return - the resulting services
      * @throws Exception - failed
      */
@@ -268,17 +272,17 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         List<RegisteredService> services;
         if (!casUserProfile.isAdministrator()) {
             services = casUserProfile.getPermissions()
-                    .stream()
-                    .flatMap(d -> manager.getServicesForDomain(d).stream())
-                    .collect(Collectors.toList());
+                .stream()
+                .flatMap(d -> manager.getServicesForDomain(d).stream())
+                .collect(Collectors.toList());
         } else {
             services = (List<RegisteredService>) manager.getAllServices();
         }
         services = services.stream()
-                .filter(service -> pattern.matcher(service.getServiceId()).lookingAt()
-                        || pattern.matcher(service.getName()).lookingAt()
-                       || pattern.matcher(service.getDescription() != null ? service.getDescription() : "").lookingAt())
-                .collect(Collectors.toList());
+            .filter(service -> pattern.matcher(service.getServiceId()).lookingAt()
+                || pattern.matcher(service.getName()).lookingAt()
+                || pattern.matcher(service.getDescription() != null ? service.getDescription() : "").lookingAt())
+            .collect(Collectors.toList());
         serviceBeans.addAll(services.stream().map(manager::createServiceItem).collect(Collectors.toList()));
         return new ResponseEntity<>(serviceBeans, HttpStatus.OK);
     }
@@ -325,31 +329,31 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
 
     /**
      * Returns the versions this instance was compiled against.
-
+     *
      * @return - cas versions
      * @throws Exception - failed
      */
     @GetMapping("footer")
     public ResponseEntity<String[]> footer() throws Exception {
         return new ResponseEntity<>(new String[]{CasVersion.getVersion(),
-                                    this.getClass().getPackage().getImplementationVersion()},
-                                    HttpStatus.OK);
+            this.getClass().getPackage().getImplementationVersion()},
+            HttpStatus.OK);
     }
 
     /**
      * Parses the passes json or yaml string into a Registered Service object and returns to the client.
      * The id of the service will be set to -1 to force adding a new assigned id if saved.
      *
-     * @param request - the request
+     * @param request  - the request
      * @param response - the response
-     * @param service - the json/yaml string of the service.
+     * @param service  - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
      * @throws Exception - failed
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<RegisteredService> importService(final HttpServletRequest request,
                                                            final HttpServletResponse response,
-                                                           final @RequestBody String service) throws Exception {
+                                                           @RequestBody final String service) throws Exception {
         try {
             final RegisteredService svc;
             if (service.startsWith("{")) {
@@ -376,9 +380,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<AppConfig> appConfig() {
         final AppConfig config = new AppConfig();
         config.setMgmtType(casProperties.getServiceRegistry().getManagementType().toString());
-        config.setVersionControl(casProperties.getMgmt().isEnableVersionControl());
-        config.setDelegatedMgmt(casProperties.getMgmt().isEnableDelegatedMgmt());
-        config.setSyncScript(casProperties.getMgmt().getSyncScript() != null);
+        config.setVersionControl(managementProperties.isEnableVersionControl());
+        config.setDelegatedMgmt(managementProperties.isEnableDelegatedMgmt());
+        config.setSyncScript(managementProperties.getSyncScript() != null);
         return new ResponseEntity<>(config, HttpStatus.OK);
     }
 }

@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.CasManagementUtils;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.pac4j.cas.client.direct.DirectCasClient;
@@ -33,7 +34,7 @@ import java.util.List;
  * @since 5.2.0
  */
 @Configuration("casManagementAuthenticationConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @Slf4j
 public class CasManagementAuthenticationConfiguration {
 
@@ -42,6 +43,9 @@ public class CasManagementAuthenticationConfiguration {
 
     @Autowired
     private CasConfigurationProperties casProperties;
+
+    @Autowired
+    private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
     @Qualifier("managementWebappAuthorizer")
@@ -72,9 +76,9 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.debug("Skipping CAS authentication strategy configuration; no CAS server name is defined");
         }
 
-        if (StringUtils.hasText(casProperties.getMgmt().getAuthzIpRegex())) {
-            LOGGER.info("Configuring an authentication strategy based on authorized IP addresses matching [{}]", casProperties.getMgmt().getAuthzIpRegex());
-            final IpClient ipClient = new IpClient(new IpRegexpAuthenticator(casProperties.getMgmt().getAuthzIpRegex()));
+        if (StringUtils.hasText(managementProperties.getAuthzIpRegex())) {
+            LOGGER.info("Configuring an authentication strategy based on authorized IP addresses matching [{}]", managementProperties.getAuthzIpRegex());
+            final IpClient ipClient = new IpClient(new IpRegexpAuthenticator(managementProperties.getAuthzIpRegex()));
             ipClient.setName("IpClient");
             ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
             clients.add(ipClient);
@@ -105,6 +109,6 @@ public class CasManagementAuthenticationConfiguration {
     @Bean
     @RefreshScope
     public CasUserProfileFactory casUserProfileFactory() {
-        return new CasUserProfileFactory(casProperties);
+        return new CasUserProfileFactory(managementProperties);
     }
 }

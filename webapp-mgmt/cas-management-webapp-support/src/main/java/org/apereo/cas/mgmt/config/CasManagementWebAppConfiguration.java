@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.support.oidc.OidcProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.CasManagementUtils;
@@ -66,7 +67,7 @@ import java.util.stream.Collectors;
  * @since 5.0.0
  */
 @Configuration("casManagementWebAppConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @Slf4j
 public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
@@ -82,6 +83,9 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Autowired
     private CasConfigurationProperties casProperties;
+
+    @Autowired
+    private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
     @Qualifier("webApplicationServiceFactory")
@@ -112,16 +116,16 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public Controller rootController() {
+    public Controller casManagementRootController() {
         return new CasManagementRootController();
     }
 
     @Bean
-    public SimpleUrlHandlerMapping handlerMappingC() {
+    public SimpleUrlHandlerMapping casManagementHandlerMappingC() {
         final SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
         mapping.setOrder(1);
         mapping.setAlwaysUseFullPath(true);
-        mapping.setRootHandler(rootController());
+        mapping.setRootHandler(casManagementRootController());
 
         final Properties properties = new Properties();
         properties.put("/*.html", new UrlFilenameViewController());
@@ -136,23 +140,23 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @ConditionalOnMissingBean(name = "localeResolver")
     @Bean
-    public LocaleResolver localeResolver() {
+    public LocaleResolver casManagementLocaleResolver() {
         return new CookieLocaleResolver() {
             @Override
             protected Locale determineDefaultLocale(final HttpServletRequest request) {
                 final Locale locale = request.getLocale();
-                if (StringUtils.isEmpty(casProperties.getMgmt().getDefaultLocale())
-                        || !locale.getLanguage().equals(casProperties.getMgmt().getDefaultLocale())) {
+                if (StringUtils.isEmpty(managementProperties.getDefaultLocale())
+                    || !locale.getLanguage().equals(managementProperties.getDefaultLocale())) {
                     return locale;
                 }
-                return new Locale(casProperties.getMgmt().getDefaultLocale());
+                return new Locale(managementProperties.getDefaultLocale());
             }
         };
     }
 
     @RefreshScope
     @Bean
-    public HandlerInterceptor localeChangeInterceptor() {
+    public HandlerInterceptor casManagementLocaleChangeInterceptor() {
         final LocaleChangeInterceptor bean = new LocaleChangeInterceptor();
         bean.setParamName(this.casProperties.getLocale().getParamName());
         return bean;
@@ -160,27 +164,28 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(casManagementLocaleChangeInterceptor());
         registry.addInterceptor(casManagementSecurityInterceptor())
-                .addPathPatterns("/**").excludePathPatterns("/callback*", "/logout*", "/authorizationFailure");
+            .addPathPatterns("/**").excludePathPatterns("/callback*", "/logout*", "/authorizationFailure");
     }
 
     @Bean
-    public SimpleControllerHandlerAdapter simpleControllerHandlerAdapter() {
+    public SimpleControllerHandlerAdapter casManagementSimpleControllerHandlerAdapter() {
         return new SimpleControllerHandlerAdapter();
     }
 
     @Bean
-    public ForwardingController forwardingController() {
+    public ForwardingController casManagementForwardingController() {
         return new ForwardingController();
     }
 
     @Bean
     public ManageRegisteredServicesMultiActionController manageRegisteredServicesMultiActionController(
-            @Qualifier("servicesManager") final ServicesManager servicesManager) {
+        @Qualifier("servicesManager") final ServicesManager servicesManager) {
         final String defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
         return new ManageRegisteredServicesMultiActionController(servicesManager, formDataFactory(),
-                webApplicationServiceFactory, defaultCallbackUrl, casProperties, casUserProfileFactory, managerFactory(), repositoryFactory());
+            webApplicationServiceFactory, defaultCallbackUrl, managementProperties,
+            casUserProfileFactory, managerFactory(), repositoryFactory(), casProperties);
     }
 
     @Bean
@@ -188,14 +193,17 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
         return new RegisteredServiceSimpleFormController(servicesManager, managerFactory(), casUserProfileFactory, repositoryFactory());
     }
 
+    @RefreshScope
     @Bean
     public RepositoryFactory repositoryFactory() {
-        return new RepositoryFactory(casProperties, casUserProfileFactory);
+        return new RepositoryFactory(managementProperties, casUserProfileFactory);
     }
 
+    @RefreshScope
     @Bean
     public ManagerFactory managerFactory() {
-        return new ManagerFactory(servicesManager, casProperties, repositoryFactory(), casUserProfileFactory);
+        return new ManagerFactory(servicesManager, managementProperties, repositoryFactory(),
+            casUserProfileFactory, casProperties);
     }
 
     @Bean
@@ -204,9 +212,9 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public ServiceRepositoryController serviceRepsositoryController() {
+    public ServiceRepositoryController serviceRepositoryController() {
         return new ServiceRepositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
-                casProperties, servicesManager, communicationsManager);
+            managementProperties, servicesManager, communicationsManager);
     }
 
     @RefreshScope
@@ -214,9 +222,9 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     public Collection<BaseOidcScopeAttributeReleasePolicy> userDefinedScopeBasedAttributeReleasePolicies() {
         final OidcProperties oidc = casProperties.getAuthn().getOidc();
         return oidc.getUserDefinedScopes().entrySet()
-                .stream()
-                .map(k -> new OidcCustomScopeAttributeReleasePolicy(k.getKey(), CollectionUtils.wrapList(k.getValue().split(","))))
-                .collect(Collectors.toSet());
+            .stream()
+            .map(k -> new OidcCustomScopeAttributeReleasePolicy(k.getKey(), CollectionUtils.wrapList(k.getValue().split(","))))
+            .collect(Collectors.toSet());
     }
 
     @Bean
@@ -225,7 +233,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public SpringResourceTemplateResolver staticTemplateResolver() {
+    public SpringResourceTemplateResolver casManagementStaticTemplateResolver() {
         final SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
         resolver.setPrefix("classpath:/dist/");

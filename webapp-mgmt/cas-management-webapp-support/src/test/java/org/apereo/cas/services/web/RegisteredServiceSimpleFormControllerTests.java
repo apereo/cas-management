@@ -6,6 +6,7 @@ import org.apereo.cas.config.CasCoreUtilConfiguration;
 import org.apereo.cas.config.CasServiceRegistryInitializationConfiguration;
 import org.apereo.cas.config.JsonServiceRegistryConfiguration;
 import org.apereo.cas.config.support.CasWebApplicationServiceFactoryConfiguration;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
@@ -79,6 +80,9 @@ public class RegisteredServiceSimpleFormControllerTests {
     @Autowired
     private CasConfigurationProperties casProperties;
 
+    @Autowired
+    private CasManagementConfigurationProperties managementProperties;
+
     @Before
     public void setUp() throws Exception {
         this.servicesManager = new DefaultServicesManager(new InMemoryServiceRegistry(), null);
@@ -97,8 +101,10 @@ public class RegisteredServiceSimpleFormControllerTests {
         final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
-        final RepositoryFactory repositoryFactory = new RepositoryFactory(casProperties, casUserProfileFactory);
-        final ManagerFactory managerFactory = new ManagerFactory(servicesManager, casProperties, repositoryFactory, casUserProfileFactory);
+        final RepositoryFactory repositoryFactory = new RepositoryFactory(managementProperties, casUserProfileFactory);
+        final ManagerFactory managerFactory = new ManagerFactory(servicesManager, managementProperties,
+            repositoryFactory, casUserProfileFactory, casProperties);
+        managerFactory.initRepository();
         this.controller = new RegisteredServiceSimpleFormController(servicesManager, managerFactory, casUserProfileFactory, repositoryFactory);
     }
 

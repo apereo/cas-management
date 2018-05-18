@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.services.web.factory;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
@@ -27,7 +27,7 @@ import java.nio.file.Paths;
 @Slf4j
 public class RepositoryFactory {
 
-    private final CasConfigurationProperties casProperties;
+    private final CasManagementConfigurationProperties casProperties;
     private final CasUserProfileFactory casUserProfileFactory;
 
     /**
@@ -35,8 +35,7 @@ public class RepositoryFactory {
      *
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @return - GitUtil wrappinng the user's repository
-     * @throws Exception - failed
+     * @return - GitUtil wrapping the user's repository
      */
     public GitUtil from(final HttpServletRequest request, final HttpServletResponse response) {
         return from(casUserProfileFactory.from(request, response));
@@ -47,14 +46,13 @@ public class RepositoryFactory {
      *
      * @param user - CasUserProfile of logged in user
      * @return - GitUtil wrapping the user's repository
-     * @throws Exception -failed
      */
     @SneakyThrows
     public GitUtil from(final CasUserProfile user) {
         if (user.isAdministrator()) {
             return masterRepository();
         }
-        final Path path = Paths.get(casProperties.getMgmt().getUserReposDir() + '/' + user.getId());
+        final Path path = Paths.get(casProperties.getUserReposDir() + '/' + user.getId());
         if (!Files.exists(path)) {
             clone(path.toString());
         }
@@ -65,17 +63,16 @@ public class RepositoryFactory {
      * Method returns a GitUtil wrapping the master repository.
      *
      * @return - GitUtil
-     * @throws Exception - failed
      */
     @SneakyThrows
     public GitUtil masterRepository() {
-        final String path = casProperties.getMgmt().getServicesRepo() + "/.git";
+        final String path = casProperties.getServicesRepo() + "/.git";
         return buildGitUtil(path);
     }
 
     @SneakyThrows
     private GitUtil userRepository(final String user) {
-        final String path = casProperties.getMgmt().getUserReposDir() + '/' + user + "/.git";
+        final String path = casProperties.getUserReposDir() + '/' + user + "/.git";
         return buildGitUtil(path);
     }
 
@@ -108,7 +105,7 @@ public class RepositoryFactory {
     public void clone(final String clone) {
         try {
             Git.cloneRepository()
-                .setURI(casProperties.getMgmt().getServicesRepo() + "/.git")
+                .setURI(casProperties.getServicesRepo() + "/.git")
                 .setDirectory(new File(clone))
                 .call();
         } catch (final Exception e) {

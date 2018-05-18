@@ -4,7 +4,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
@@ -71,7 +71,7 @@ public class ServiceRepositoryController {
     private final RepositoryFactory repositoryFactory;
     private final ManagerFactory managerFactory;
     private final CasUserProfileFactory casUserProfileFactory;
-    private final CasConfigurationProperties casProperties;
+    private final CasManagementConfigurationProperties managementProperties;
     private final ServicesManager servicesManager;
     private final CommunicationsManager communicationsManager;
 
@@ -181,8 +181,8 @@ public class ServiceRepositoryController {
      * @throws Exception - failed.
      */
     private void runSyncScript() throws Exception {
-        if (casProperties.getMgmt().getSyncScript() != null) {
-            final int status = Runtime.getRuntime().exec(casProperties.getMgmt().getSyncScript()).waitFor();
+        if (managementProperties.getSyncScript() != null) {
+            final int status = Runtime.getRuntime().exec(managementProperties.getSyncScript()).waitFor();
             if (status > 0) {
                 throw new Exception("Services Sync Failed");
             }
@@ -298,7 +298,7 @@ public class ServiceRepositoryController {
 
     private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
-            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getSubmit();
+            final EmailProperties emailProps = managementProperties.getNotifications().getSubmit();
             communicationsManager.email(
                 emailProps.getText(),
                 emailProps.getFrom(),
@@ -671,7 +671,7 @@ public class ServiceRepositoryController {
 
     private void sendAcceptMessage(final String submitName, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
-            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getAccept();
+            final EmailProperties emailProps = managementProperties.getNotifications().getAccept();
             communicationsManager.email(
                 MessageFormat.format(emailProps.getText(), submitName),
                 emailProps.getFrom(),
@@ -715,7 +715,7 @@ public class ServiceRepositoryController {
 
     private void sendRejectMessage(final String submitName, final String note, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
-            final EmailProperties emailProps = casProperties.getMgmt().getNotifications().getReject();
+            final EmailProperties emailProps = managementProperties.getNotifications().getReject();
             communicationsManager.email(
                 MessageFormat.format(emailProps.getText(), submitName, note),
                 emailProps.getFrom(),

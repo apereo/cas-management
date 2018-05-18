@@ -117,7 +117,7 @@ public class FormDataFactory {
             mfaProviders.add(new FormData.Option("YubiKey", "mfa-yubikey"));
             mfaProviders.add(new FormData.Option("RSA/RADIUS", "mfa-radius"));
             mfaProviders.add(new FormData.Option("WiKID", "mfa-wikid"));
-            mfaProviders.add(new FormData.Option("Google Authenitcator", "mfa-gauth"));
+            mfaProviders.add(new FormData.Option("Google Authenticator", "mfa-gauth"));
             mfaProviders.add(new FormData.Option("Microsoft Azure", "mfa-azure"));
             mfaProviders.add(new FormData.Option("FIDO U2F", "mfa-u2f"));
             mfaProviders.add(new FormData.Option("Swivel Secure", "mfa-swivel"));

@@ -15,6 +15,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.apereo.cas.configuration.CasConfigurationProperties
+import org.apereo.cas.configuration.CasManagementConfigurationProperties
 import java.util.ArrayList
 
 /**
@@ -24,17 +25,17 @@ import java.util.ArrayList
  * @since 5.0.0
  */
 @Configuration("casManagementLdapAuthorizationConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties::class)
+@EnableConfigurationProperties(CasManagementConfigurationProperties::class, CasConfigurationProperties::class)
 class CasManagementLdapAuthorizationConfiguration {
 
     @Autowired
-    private val casProperties: CasConfigurationProperties? = null
+    private val casProperties: CasManagementConfigurationProperties? = null
 
     @RefreshScope
     @Bean
     fun authorizationGenerator(): AuthorizationGenerator<*> {
-        val ldapAuthz = casProperties!!.mgmt.ldap.ldapAuthz
-        val connectionFactory = LdapUtils.newLdaptivePooledConnectionFactory(casProperties.mgmt.ldap)
+        val ldapAuthz = casProperties!!.ldap.ldapAuthz
+        val connectionFactory = LdapUtils.newLdaptivePooledConnectionFactory(casProperties.ldap)
 
         return if (StringUtils.isNotBlank(ldapAuthz.groupFilter) && StringUtils.isNotBlank(ldapAuthz.groupAttribute)) {
             LdapUserGroupsToRolesAuthorizationGenerator(connectionFactory,
@@ -51,13 +52,13 @@ class CasManagementLdapAuthorizationConfiguration {
     }
 
     private fun ldapAuthorizationGeneratorUserSearchExecutor(): SearchExecutor {
-        val ldapAuthz = casProperties!!.mgmt.ldap.ldapAuthz
+        val ldapAuthz = casProperties!!.ldap.ldapAuthz
         return LdapUtils.newLdaptiveSearchExecutor(ldapAuthz.baseDn, ldapAuthz.searchFilter,
                 ArrayList(0), CollectionUtils.wrap(ldapAuthz.roleAttribute))
     }
 
     private fun ldapAuthorizationGeneratorGroupSearchExecutor(): SearchExecutor {
-        val ldapAuthz = casProperties!!.mgmt.ldap.ldapAuthz
+        val ldapAuthz = casProperties!!.ldap.ldapAuthz
         return LdapUtils.newLdaptiveSearchExecutor(ldapAuthz.groupBaseDn, ldapAuthz.groupFilter,
                 ArrayList(0), CollectionUtils.wrap(ldapAuthz.groupAttribute))
     }

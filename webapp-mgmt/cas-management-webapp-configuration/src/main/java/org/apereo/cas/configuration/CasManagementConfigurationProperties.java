@@ -1,11 +1,13 @@
-package org.apereo.cas.configuration.model;
+package org.apereo.cas.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apereo.cas.configuration.model.NotificationsProperties;
 import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
 import org.apereo.cas.util.CollectionUtils;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -15,14 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is {@link ManagementWebappProperties}.
+ * This is {@link CasManagementConfigurationProperties}.
  *
  * @author Misagh Moayyed
  * @since 5.0.0
  */
 @Getter
 @Setter
-public class ManagementWebappProperties implements Serializable {
+@ConfigurationProperties(value = "mgmt", ignoreUnknownFields = false)
+public class CasManagementConfigurationProperties implements Serializable {
     private static final long serialVersionUID = -7686426966125636166L;
     /**
      * List of roles that allow admin access to the web application.

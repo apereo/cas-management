@@ -107,6 +107,12 @@ public class ManagerFactory {
         }
     }
 
+    /**
+     * Master mgmt services manager.
+     *
+     * @return the mgmt services manager
+     * @throws Exception the exception
+     */
     public MgmtServicesManager master() throws Exception {
         final GitUtil git = repositoryFactory.masterRepository();
         return new MgmtServicesManager(createJSONServiceManager(git), git);

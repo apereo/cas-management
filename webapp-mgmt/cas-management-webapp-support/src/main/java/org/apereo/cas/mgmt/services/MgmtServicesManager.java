@@ -65,9 +65,8 @@ public class MgmtServicesManager implements ServicesManager {
         }
         this.uncommitted = new HashMap<>();
         git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
-        final List<RegisteredServiceItem> serviceItems = new ArrayList<>();
         final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
-        serviceItems.addAll(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
+        final List<RegisteredServiceItem> serviceItems = new ArrayList<>(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
         return serviceItems;
 
     }

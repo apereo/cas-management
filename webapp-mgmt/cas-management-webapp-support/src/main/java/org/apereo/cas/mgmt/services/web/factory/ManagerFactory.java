@@ -103,7 +103,7 @@ public class ManagerFactory {
             request.getSession().setAttribute("servicesManager", manager);
             return manager;
         } else {
-            return new MgmtServicesManager(servicesManager, null);
+            return new MgmtServicesManager(servicesManager, new GitUtil(null));
         }
     }
 

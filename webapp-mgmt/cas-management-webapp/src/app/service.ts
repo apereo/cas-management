@@ -3,6 +3,8 @@
  */
 
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/internal/Observable';
+import {catchError} from 'rxjs/operators';
 
 export abstract class Service {
 
@@ -10,32 +12,32 @@ export abstract class Service {
 
   }
 
-  post<T>(url: string , data: any): Promise<T> {
+  post<T>(url: string , data: any): Observable<T> {
     return this.http.post<T>(url, data)
-      .toPromise()
-      .then(resp => resp)
-      .catch(this.handleError);
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  postText(url: string , data: any): Promise<String> {
+  postText(url: string , data: any): Observable<String> {
     return this.http.post(url, data, {responseType: 'text'})
-      .toPromise()
-      .then(resp => resp)
-      .catch(this.handleError);
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  get<T>(url: string): Promise<T> {
+  get<T>(url: string): Observable<T> {
     return this.http.get(url)
-      .toPromise()
-      .then(resp => resp)
-      .catch(this.handleError);
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  getText(url: string): Promise<String> {
+  getText(url: string): Observable<String> {
     return this.http.get(url, {responseType: 'text'})
-      .toPromise()
-      .then(resp => resp)
-      .catch(this.handleError);
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   handleError(e: any): Promise<any> {

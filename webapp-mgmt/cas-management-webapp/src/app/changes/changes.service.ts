@@ -6,6 +6,7 @@ import {DiffEntry} from '../../domain/diff-entry';
 import {Service} from '../service';
 import {HttpClient} from '@angular/common/http';
 import {AbstractRegisteredService} from '../../domain/registered-service';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class ChangesService extends Service {
@@ -14,28 +15,28 @@ export class ChangesService extends Service {
     super(http);
   }
 
-  getChanges(branch: String): Promise<DiffEntry[]> {
+  getChanges(branch: String): Observable<DiffEntry[]> {
     return this.get<DiffEntry[]>('changes?branch=' + branch);
   }
 
-  viewJson(id: String): Promise<String> {
+  viewJson(id: String): Observable<String> {
     return this.getText('viewJSON?id=' + id);
   }
 
-  viewYaml(id: String): Promise<String> {
+  viewYaml(id: String): Observable<String> {
     return this.getText('viewYaml?id=' + id);
   }
 
-  viewDiff(oldId: String, newId: String): Promise<String> {
+  viewDiff(oldId: String, newId: String): Observable<String> {
     const data = [oldId, newId];
     return this.postText('viewDiff', data);
   }
 
-  getChange(change: String): Promise<AbstractRegisteredService> {
+  getChange(change: String): Observable<AbstractRegisteredService> {
     return this.get<AbstractRegisteredService>('viewChange?id=' + change);
   }
 
-  getChangePair(change: String): Promise<AbstractRegisteredService[]> {
+  getChangePair(change: String): Observable<AbstractRegisteredService[]> {
     return this.get<AbstractRegisteredService[]>('changePair?id=' + change);
   }
 

@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import 'rxjs/add/operator/switchMap';
 import {Data} from './data';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-tab-base',

@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {ChangesService} from './changes.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DiffEntry} from '../../domain/diff-entry';
 import {Location} from '@angular/common';
 import {Messages} from '../messages';
-import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatSnackBar, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
@@ -26,7 +25,6 @@ export class ChangesComponent implements OnInit {
                 public router: Router,
                 public route: ActivatedRoute,
                 public location: Location,
-                private service: ChangesService,
                 public snackBar: MatSnackBar) { }
 
   ngOnInit() {

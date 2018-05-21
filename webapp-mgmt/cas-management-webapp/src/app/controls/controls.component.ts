@@ -86,8 +86,10 @@ export class ControlsComponent implements OnInit {
     } else {
       if (msg !== null && msg !== '') {
         this.service.commit(msg)
-          .then(resp => this.handleCommit(resp))
-          .catch(e => this.handleNotCommitted(e));
+          .subscribe(
+            (resp: String) => {this.handleCommit(resp)},
+            error => this.handleNotCommitted(error)
+          );
       }
     }
   }
@@ -121,8 +123,10 @@ export class ControlsComponent implements OnInit {
   publish(commits: Commit[]) {
     if (commits.length > 0 ) {
       this.service.publish()
-        .then(resp => this.handlePublish())
-        .catch(e => this.handleNotPublished(e));
+        .subscribe(
+          (resp: String) => this.handlePublish(),
+           error => this.handleNotPublished(error)
+        );
     }
   }
 
@@ -145,8 +149,9 @@ export class ControlsComponent implements OnInit {
 
   submit(msg: String) {
     this.service.submit(msg)
-      .then(resp => this.handleSubmit())
-      .catch(e => this.handleNotSubmitted(e));
+      .subscribe(
+        () => this.handleSubmit(),
+        error => this.handleNotSubmitted(error));
   }
 
   handleSubmit() {

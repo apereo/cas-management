@@ -3,7 +3,7 @@
     <mat-select
              placeholder="Policy"
              [(ngModel)]="type"
-             (change)="changeType()">
+             (selectionChange)="changeType()">
       <mat-option *ngFor="let opt of types; let i = index" [value]="opt">
         {{ display[i] }}
       </mat-option>

@@ -28,8 +28,12 @@ export class DomainsComponent implements OnInit {
     this.dataSource = new MatTableDataSource([]);
     this.dataSource.paginator = this.paginator.paginator;
     this.domainService.getDomains()
-      .then(resp => this.dataSource.data = resp)
-      .catch(e => {console.log(e); this.snackBar.open('Failed to load domains', 'Dismiss'); });
+      .subscribe(
+        (resp: String[]) => this.dataSource.data = resp,
+        error => {console.log(error);
+                         this.snackBar.open('Failed to load domains', 'Dismiss');
+                        }
+      );
   }
 
   doFilter(val: string) {

@@ -29,8 +29,6 @@ export class CommitHistoryComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: CommitHistoryService,
-              private changeService: ChangesService,
-              private location: Location,
               public  snackBar: MatSnackBar) {
   }
 
@@ -57,14 +55,14 @@ export class CommitHistoryComponent implements OnInit {
 
   checkout() {
     this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
-      .then(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
+      .subscribe(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
         duration: 5000
       }));
   }
 
   revert() {
     this.service.revertRepo(this.selectedItem.oldId as string)
-      .then(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
+      .subscribe(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
         duration: 5000
       }));
   }

@@ -109,8 +109,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     const myData = {id: this.deleteItem.assignedId};
 
     this.service.delete(Number.parseInt(this.deleteItem.assignedId as string))
-      .then(resp => this.handleDelete(resp))
-      .catch((e: any) => this.snackBar.open(e.message || e.text(), 'Dismiss', {
+      .subscribe(resp => this.handleDelete(resp),
+       (e: any) => this.snackBar.open(e.message || e.text(), 'Dismiss', {
         duration: 5000
       }));
   };
@@ -130,12 +130,12 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   revert() {
     const fileName: string = (this.revertItem.name + '-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
     this.service.revert(fileName)
-      .then(resp => this.handleRevert());
+      .subscribe(resp => this.handleRevert());
   }
 
   handleRevert() {
     this.refresh();
-    this.snackBar.open("Change has been reverted", "Dismiss", {
+    this.snackBar.open('Change has been reverted', 'Dismiss', {
       duration: 5000
     });
   }
@@ -148,8 +148,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   getServices() {
     this.service.getServices(this.domain)
-      .then(resp => this.dataSource.data = resp)
-      .catch((e: any) => this.snackBar.open(this.messages.management_services_status_listfail, 'Dismiss', {
+      .subscribe(resp => this.dataSource.data = resp,
+       (e: any) => this.snackBar.open(this.messages.management_services_status_listfail, 'Dismiss', {
         duration: 5000
       }));
   }
@@ -160,7 +160,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       const b: ServiceItem = this.dataSource.data[index - 1];
       a.evalOrder = index - 1;
       b.evalOrder = index;
-      this.service.updateOrder(a, b).then(resp => this.refresh());
+      this.service.updateOrder(a, b).subscribe(resp => this.refresh());
     }
   }
 
@@ -170,7 +170,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       const b: ServiceItem = this.dataSource.data[index + 1];
       a.evalOrder = index + 1;
       b.evalOrder = index;
-      this.service.updateOrder(a, b).then(resp => this.refresh());
+      this.service.updateOrder(a, b).subscribe(resp => this.refresh());
     }
   }
 
@@ -198,7 +198,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   showRevert(): boolean {
     return this.appService.config.versionControl &&
            this.selectedItem &&
-           this.selectedItem.status == 'MODIFY';
+           this.selectedItem.status === 'MODIFY';
   }
 
   added(row: ServiceItem): boolean {

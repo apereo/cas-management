@@ -57,9 +57,14 @@ export class HistoryComponent implements OnInit {
 
   checkout() {
     this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
-      .then(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
-        duration: 5000
-      }));
+      .subscribe(
+        () => this.snackBar.open('Service successfully restored from history.',
+          'dismiss',
+          {
+            duration: 5000
+          }
+        )
+      );
   }
 
   viewDiff() {

@@ -19,6 +19,6 @@ export class PublishComponent implements OnInit {
                 public controlsService: ControlsService) { }
 
     ngOnInit() {
-        this.controlsService.getCommits().then(resp => this.commits = resp);
+        this.controlsService.getCommits().subscribe(resp => this.commits = resp);
     }
 }

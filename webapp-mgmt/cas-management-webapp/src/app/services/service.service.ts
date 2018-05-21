@@ -5,6 +5,7 @@ import {Injectable} from '@angular/core';
 import {ServiceItem} from '../../domain/service-item';
 import {Service} from '../service';
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class ServiceViewService extends Service {
@@ -13,27 +14,27 @@ export class ServiceViewService extends Service {
     super(http);
   }
 
-  getServices(domain: String): Promise<ServiceItem[]> {
+  getServices(domain: String): Observable<ServiceItem[]> {
     return this.get<ServiceItem[]>('getServices?domain=' + domain);
   }
 
-  getYaml(id: number): Promise<String> {
+  getYaml(id: number): Observable<String> {
     return this.getText('getYaml?id=' + id);
   }
 
-  getJson(id: number): Promise<String> {
+  getJson(id: number): Observable<String> {
     return this.getText('getJson?id=' + id);
   }
 
-  delete(id: number): Promise<String> {
+  delete(id: number): Observable<String> {
     return this.getText('deleteRegisteredService?id=' + id);
   }
 
-  revert(fileName: string): Promise<String> {
+  revert(fileName: string): Observable<String> {
     return this.getText('revert?path=' + fileName);
   }
 
-  updateOrder(a: ServiceItem, b: ServiceItem): Promise<String> {
+  updateOrder(a: ServiceItem, b: ServiceItem): Observable<String> {
     return this.postText('updateOrder', [a, b]);
   }
 

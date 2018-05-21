@@ -16,7 +16,7 @@ export class InitComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.appService.getConfig().then(resp => {
+    this.appService.getConfig().subscribe(resp => {
       if (this.appService.config.mgmtType === 'DOMAIN') {
         this.router.navigate(['/domains']);
       } else {

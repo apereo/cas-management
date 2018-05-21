@@ -99,9 +99,7 @@ export class FormComponent implements OnInit {
     this.data.submitted = false;
     this.data.form = this;
 
-    this.service.formData().then(resp => {
-      this.data.formData = resp;
-    });
+    this.service.formData().subscribe(resp => this.data.formData = resp);
   }
 
   isOidc(): boolean {
@@ -201,8 +199,10 @@ export class FormComponent implements OnInit {
         this.goto(( formErrors > 0 && this.isCas() ) ? formErrors - 1 : formErrors ) }, 10);
     } else {
       this.service.saveService(this.data.service)
-        .then(resp => this.handleSave(resp))
-        .catch(e => this.handleNotSaved(e));
+        .subscribe(
+          resp => this.handleSave(resp),
+          error => this.handleNotSaved(error)
+        );
     }
   };
 
@@ -250,7 +250,7 @@ export class FormComponent implements OnInit {
 
   validateDomain(service: string): boolean {
     const domainPattern = new RegExp('^\\\\^?https?\\\\??://(.*?)(?:[(]?[:/]|$)');
-    if (this.userService.user.permissions.indexOf("*") > -1) {
+    if (this.userService.user.permissions.indexOf('*') > -1) {
       return true;
     }
     try {
@@ -373,7 +373,7 @@ export class FormComponent implements OnInit {
     }
 
     if (data.contacts) {
-      if (data.contacts.length == 0 && !this.userService.user.administrator) {
+      if (data.contacts.length === 0 && !this.userService.user.administrator) {
         return Tabs.CONTACTS;
       }
       for (const contact of data.contacts) {

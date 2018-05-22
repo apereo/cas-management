@@ -30,9 +30,9 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
     this.dataSource.paginator = this.paginator.paginator;
-    this.route.paramMap
-        .switchMap((params: ParamMap) => this.service.search(params.get('query')))
-        .subscribe(resp => this.dataSource.data = resp);
+    this.route.queryParamMap
+        .subscribe((params: ParamMap) => this.service.search(params.get('query'))
+          .then(resp => this.dataSource.data = resp));
   }
 
   serviceEdit(id: number) {

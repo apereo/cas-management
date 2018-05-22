@@ -16,7 +16,7 @@
     <h5 *ngIf="delegatedAuthn.length > 0">Allowed Providers</h5>
     <mat-chip-list #chipList [selectable]="false">
         <mat-chip *ngFor="let provider of delegatedAuthn" [selectable]="false"
-                  removable="true" (remove)="remove(provider)">
+                  removable="true" (removed)="remove(provider)">
             {{ provider }}
             <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

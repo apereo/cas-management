@@ -13,7 +13,6 @@ branches:
 jdk:
 - oraclejdk8
 # - oraclejdk9
-before_script: npm rebuild node-sass;
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -41,6 +40,9 @@ env:
 before_install:
 - chmod -R 777 ./ci/init-travis-build.sh
 - ./ci/init-travis-build.sh
+- sudo mkdir ~/.npm-global
+- export NPM_CONFIG_PREFIX=~/.npm-global
+- sudo npm rebuild node-sass;
 - chmod -R 777 ./ci/push-docs-ghpages.sh
 - ./ci/push-docs-ghpages.sh
 install: 

@@ -34,6 +34,11 @@ chmod -R 777 ./gradlew
 # sudo apt-get install -y nodejs -qq > /dev/null
 
 echo -e "Installing NPM...\n"
-sudo ./gradlew npmInstall --stacktrace -q
+mkdir ~/.npm-global
+export NPM_CONFIG_PREFIX=~/.npm-global
+echo "NPM config environment variable: $NPM_CONFIG_PREFIX"
+./gradlew npmInstall --stacktrace
+echo "Rebuilding using node-sass"
+npm rebuild node-sass
 
 echo -e "Configured build environment\n"

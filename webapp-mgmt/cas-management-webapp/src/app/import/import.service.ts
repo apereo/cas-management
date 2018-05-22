@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {AbstractRegisteredService} from '../../domain/registered-service';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map, take} from 'rxjs/operators';
+import {Observable} from 'rxjs/internal/Observable';
+import {throwError} from 'rxjs/internal/observable/throwError';
 
 @Injectable()
 export class ImportService {
@@ -23,8 +24,8 @@ export class ImportService {
       );
   }
 
-  handleError(e: any): Promise<any> {
+  handleError(e: HttpErrorResponse): Observable<any> {
     console.log('An error occurred : ' + e.message);
-    return Promise.reject(e.message || e);
+    return throwError(e.message);
   }
 }

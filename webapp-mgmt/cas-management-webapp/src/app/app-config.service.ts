@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AppConfig} from '../domain/app-config';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class AppConfigService {

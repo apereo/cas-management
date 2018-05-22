@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Service} from '../service';
 import {Commit} from '../../domain/commit';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class RepoHistoryService extends Service {

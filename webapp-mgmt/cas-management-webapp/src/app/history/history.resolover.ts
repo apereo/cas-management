@@ -7,7 +7,7 @@ import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
 import { History } from '../../domain/history';
 import {HistoryService} from './history.service';
 import {map, take} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class HistoryResolve implements Resolve<History[]> {
@@ -18,7 +18,11 @@ export class HistoryResolve implements Resolve<History[]> {
     const param: string = route.params['fileName'];
 
     if (!param) {
-      return new Observable();
+      return Observable.create((obsever) => obsever.next([]))
+        .pipe(
+          take(1),
+          map(data => data)
+        );
     } else {
       return this.service.history(param)
         .pipe(

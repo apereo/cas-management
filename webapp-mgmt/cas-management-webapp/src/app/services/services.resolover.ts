@@ -7,7 +7,7 @@ import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
 import {ServiceItem} from '../../domain/service-item';
 import {ServiceViewService} from './service.service';
 import {map, take} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class ServicesResolve implements Resolve<ServiceItem[]> {
@@ -18,7 +18,11 @@ export class ServicesResolve implements Resolve<ServiceItem[]> {
     const param: String = route.params['domain'];
 
     if (!param) {
-      return new Observable<ServiceItem[]>();
+      return Observable.create((observer) => observer.next([]))
+        .pipe(
+          take(1),
+          map(data => data)
+        );
     } else {
       return this.service.getServices(param)
         .pipe(

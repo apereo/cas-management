@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 import { Branch } from '../../domain/branch';
 import {Service} from '../service';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class SubmitService extends Service {

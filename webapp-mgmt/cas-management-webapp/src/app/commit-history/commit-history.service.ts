@@ -2,12 +2,10 @@
  * Created by tschmidt on 2/13/17.
  */
 import {Injectable} from '@angular/core';
-import {History} from '../../domain/history';
 import {Service} from '../service';
-import {Http} from '@angular/http';
 import {HttpClient} from '@angular/common/http';
 import {DiffEntry} from '../../domain/diff-entry';
-import {Observable} from "rxjs/internal/Observable";
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class CommitHistoryService extends Service {

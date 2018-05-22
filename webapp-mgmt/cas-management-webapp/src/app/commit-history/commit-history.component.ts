@@ -2,8 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Messages} from '../messages';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommitHistoryService} from './commit-history.service';
-import {Location} from '@angular/common';
-import {ChangesService} from '../changes/changes.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry} from '../../domain/diff-entry';
 import {PaginatorComponent} from '../paginator/paginator.component';

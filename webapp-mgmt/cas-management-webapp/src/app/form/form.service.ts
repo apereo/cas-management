@@ -1,14 +1,13 @@
 /**
  * Created by tschmidt on 2/14/17.
  */
-import {Headers} from '@angular/http'
 import {Injectable} from '@angular/core';
 import {AbstractRegisteredService} from '../../domain/registered-service';
 import {FormData} from '../../domain/form-data';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map, take} from 'rxjs/operators';
-import {error} from 'util';
+import {throwError} from 'rxjs/internal/observable/throwError';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class FormService {
@@ -41,9 +40,9 @@ export class FormService {
       );
   }
 
-  handleError(e: any): Observable<any> {
-    console.log('An error occurred : ' + e);
-    return Observable.create((observer) => observer.next(e.message || e)).subscribe();
+  handleError(e: HttpErrorResponse): Observable<any> {
+    console.log('An error occurred : ' + e.message);
+    return throwError(e.message);
   }
 
 }

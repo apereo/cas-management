@@ -18,7 +18,11 @@ export class ChangesResolve implements Resolve<DiffEntry[]> {
     const param: String = route.params['branch'];
 
     if (!param) {
-      return new Observable<DiffEntry[]>();
+      return Observable.create((observer) => observer.next([]))
+        .pipe(
+          take(1),
+          map(data => data)
+        );
     } else {
       this.service.getChanges(param).pipe(
         take(1),

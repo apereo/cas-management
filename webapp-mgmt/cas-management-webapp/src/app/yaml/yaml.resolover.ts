@@ -5,10 +5,9 @@
 import {Injectable} from '@angular/core';
 import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
-import {AbstractRegisteredService} from '../../domain/registered-service';
 import {ServiceViewService} from '../services/service.service';
 import {map, take} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class YamlResolver implements Resolve<String> {
@@ -22,7 +21,11 @@ export class YamlResolver implements Resolve<String> {
     const param: string = route.params['id'];
 
     if (!param) {
-      return new Observable<String>();
+      return Observable.create((observer) => observer.next(null))
+        .pipe(
+          take(1),
+          map(resp => resp)
+        );
     } else {
       if (history) {
         return this.changeService.viewYaml(param)

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
-import { History } from '../../domain/history';
 import {CommitHistoryService} from './commit-history.service';
 import {DiffEntry} from '../../domain/diff-entry';
 import {Observable} from 'rxjs/internal/Observable';
@@ -15,7 +14,11 @@ export class CommitHistoryResolve implements Resolve<DiffEntry[]> {
     const param: string = route.params['id'];
 
     if (!param) {
-      return new Observable<DiffEntry[]>();
+      return Observable.create((observer) => observer.next([]))
+        .pipe(
+          take(1),
+          map(data => data)
+        );
     } else {
       this.service.history(param).pipe(
         take(1),

@@ -5,6 +5,7 @@ import {Injectable} from '@angular/core';
 import { Branch } from '../../domain/branch';
 import {Service} from '../service';
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class SubmitService extends Service {
@@ -13,11 +14,11 @@ export class SubmitService extends Service {
     super(http);
   }
 
-  getSubmits(): Promise<Branch[]> {
+  getSubmits(): Observable<Branch[]> {
     return this.get<Branch[]>('submitRequests');
   }
 
-  revert(name: string): Promise<String> {
+  revert(name: string): Observable<String> {
     return this.getText('revertSubmit?branchName=' + name);
   }
 

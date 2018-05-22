@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceItem} from '../../domain/service-item';
-import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {Messages} from '../messages';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Location} from '@angular/common';
@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
     this.dataSource.paginator = this.paginator.paginator;
     this.route.queryParamMap
         .subscribe((params: ParamMap) => this.service.search(params.get('query'))
-          .then(resp => this.dataSource.data = resp));
+          .subscribe(resp => this.dataSource.data = resp));
   }
 
   serviceEdit(id: number) {

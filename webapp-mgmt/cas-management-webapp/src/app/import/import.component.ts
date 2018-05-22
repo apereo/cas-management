@@ -26,9 +26,11 @@ export class ImportComponent implements OnInit {
   }
 
   save() {
-    this.service.import(this.editor.getFile()).then(resp => {
-      this.router.navigate(['importService']);
-    }).catch(e => alert('The system was not able to parse your imported service as a valid Registered Service.'));
+    this.service.import(this.editor.getFile())
+      .subscribe(
+        () => this.router.navigate(['importService']),
+        error => alert('The system was not able to parse your imported service as a valid Registered Service.')
+      );
   }
 
   getFile(evt: Event) {

@@ -55,11 +55,12 @@ export class PullComponent implements OnInit {
   refresh() {
     this.loading = true;
     this.service.getBranches([this.showPending, this.showAccepted, this.showRejected])
-      .then(resp => {
+      .subscribe(resp => {
         this.loading = false;
         this.dataSource.data = resp
-      })
-      .catch(e => this.loading = false);
+       },
+      error => this.loading = false
+      );
     this.controlsService.gitStatus();
   }
 
@@ -87,12 +88,13 @@ export class PullComponent implements OnInit {
 
   accept(note: String) {
     this.service.accept(this.acceptBranch, note)
-        .then(resp => {
+      .subscribe(resp => {
           this.snackBar.open('Branch has been merged', 'Dismiss', {
             duration: 5000
           });
           this.refresh();
-        });
+        }
+      );
 
   }
 
@@ -112,12 +114,13 @@ export class PullComponent implements OnInit {
 
   reject(note: String) {
     this.service.reject(this.rejectBranch, note)
-        .then(resp => {
-          this.snackBar.open('Branch has beem marked as rejected', 'Dismiss', {
-            duration: 5000
-          });
-          this.refresh();
-        });
+        .subscribe(resp => {
+            this.snackBar.open('Branch has beem marked as rejected', 'Dismiss', {
+              duration: 5000
+            });
+            this.refresh();
+          }
+        );
   }
 
   addNote() {

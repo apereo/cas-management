@@ -28,7 +28,7 @@ export class RepoHistoryComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new MatTableDataSource<Commit>([]);
     this.dataSource.paginator = this.paginator.paginator;
-    this.service.commitLogs().then(resp => this.dataSource.data = resp);
+    this.service.commitLogs().subscribe(resp => this.dataSource.data = resp);
   }
 
   viewChanges(commit?: Commit) {
@@ -40,7 +40,7 @@ export class RepoHistoryComponent implements OnInit {
   }
 
   checkout() {
-    this.service.checkout(this.selectedItem.id).then(resp => {
+    this.service.checkout(this.selectedItem.id).subscribe(resp => {
       this.snackBar.open('Commit has been checked out', 'Dismiss', {
         duration: 5000
       });

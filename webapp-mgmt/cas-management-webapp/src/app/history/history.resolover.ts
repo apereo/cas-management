@@ -6,19 +6,29 @@ import {Injectable} from '@angular/core';
 import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
 import { History } from '../../domain/history';
 import {HistoryService} from './history.service';
+import {map, take} from 'rxjs/operators';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class HistoryResolve implements Resolve<History[]> {
 
   constructor(private service: HistoryService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Promise<History[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<History[]> {
     const param: string = route.params['fileName'];
 
     if (!param) {
-      return new Promise((resolve, reject) => resolve([]));
+      return Observable.create((obsever) => obsever.next([]))
+        .pipe(
+          take(1),
+          map(data => data)
+        );
     } else {
-      return this.service.history(param).then(resp => resp ? resp : null);
+      return this.service.history(param)
+        .pipe(
+          take(1),
+          map(resp => resp ? resp : null)
+        );
     }
   }
 }

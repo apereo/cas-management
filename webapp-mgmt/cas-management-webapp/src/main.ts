@@ -1,5 +1,3 @@
-import 'rxjs/add/operator/toPromise';
-import 'rxjs-compat';
 import 'hammerjs';
 import 'ace-builds/src-min-noconflict/ace';
 import 'ace-builds/src-min-noconflict/keybinding-vim';

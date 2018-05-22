@@ -4,6 +4,7 @@
 import {Injectable} from '@angular/core';
 import {Service} from '../service';
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class FooterService extends Service {
@@ -12,7 +13,7 @@ export class FooterService extends Service {
     super(http);
   }
 
-  getVersions(): Promise<String[]> {
+  getVersions(): Observable<String[]> {
     return this.get<String[]>('footer');
   }
 

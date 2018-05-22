@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import {ChangesService} from '../changes/changes.service';
-import { Location } from '@angular/common';
 import {Messages} from '../messages';
 import { EditorComponent } from '../editor.component';
 import {ActivatedRoute} from '@angular/router';
@@ -23,7 +22,7 @@ export class DiffComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.service.viewDiff(this.route.snapshot.params['oldId'], this.route.snapshot.params['newId'])
-      .then(diff => this.file = diff);
+      .subscribe((diff: String) => this.file = diff);
   }
 
   ngOnInit() {

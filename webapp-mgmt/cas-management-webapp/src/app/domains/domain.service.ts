@@ -4,6 +4,7 @@
 import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core';
 import {Service} from '../service';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class DomainService extends Service {
@@ -12,7 +13,7 @@ export class DomainService extends Service {
     super(http);
   }
 
-  getDomains(): Promise<String[]> {
+  getDomains(): Observable<String[]> {
     return this.get<String[]>('domainList');
   }
 

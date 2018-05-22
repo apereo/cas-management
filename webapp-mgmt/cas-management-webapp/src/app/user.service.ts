@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Service} from './service';
 import {UserProfile} from '../domain/user-profile';
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class UserService extends Service {
@@ -10,11 +11,10 @@ export class UserService extends Service {
 
     constructor(protected http: HttpClient) {
         super(http);
-        this.getUser();
+        this.getUser().subscribe(resp => this.user = resp);
     }
 
-    getUser(): Promise<UserProfile> {
-        return this.get<UserProfile>('user')
-          .then(resp => this.user = resp);
+    getUser(): Observable<UserProfile> {
+        return this.get<UserProfile>('user');
     }
 }

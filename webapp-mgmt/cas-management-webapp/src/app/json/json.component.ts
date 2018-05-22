@@ -3,7 +3,6 @@ import {ChangesService} from '../changes/changes.service';
 import { Location } from '@angular/common';
 import {Messages} from '../messages';
 import {ActivatedRoute} from '@angular/router';
-import {AbstractRegisteredService} from '../../domain/registered-service';
 
 @Component({
   selector: 'app-json',

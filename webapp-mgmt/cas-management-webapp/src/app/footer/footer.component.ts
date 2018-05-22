@@ -15,7 +15,8 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.service.getVersions()
-        .then(resp => {
+      .subscribe(
+        resp => {
             this.casVersion = resp[0];
             this.mgmtVersion = resp[1];
         });

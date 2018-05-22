@@ -2,8 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Messages} from '../messages';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommitHistoryService} from './commit-history.service';
-import {Location} from '@angular/common';
-import {ChangesService} from '../changes/changes.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry} from '../../domain/diff-entry';
 import {PaginatorComponent} from '../paginator/paginator.component';
@@ -29,8 +27,6 @@ export class CommitHistoryComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: CommitHistoryService,
-              private changeService: ChangesService,
-              private location: Location,
               public  snackBar: MatSnackBar) {
   }
 
@@ -57,14 +53,14 @@ export class CommitHistoryComponent implements OnInit {
 
   checkout() {
     this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
-      .then(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
+      .subscribe(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
         duration: 5000
       }));
   }
 
   revert() {
     this.service.revertRepo(this.selectedItem.oldId as string)
-      .then(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
+      .subscribe(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
         duration: 5000
       }));
   }

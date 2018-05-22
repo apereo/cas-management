@@ -2,7 +2,7 @@
  * Created by tsschmi on 3/13/17.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 
 @Injectable()
 export class ActivatedRouteStub {

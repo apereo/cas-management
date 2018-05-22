@@ -1,9 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Messages} from '../../messages';
 import {Data} from '../data';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import {Row, RowDataSource} from '../row';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
 

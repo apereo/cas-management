@@ -7,30 +7,43 @@ import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
 import {FormService} from './form.service';
 import {AbstractRegisteredService, RegexRegisteredService} from '../../domain/registered-service';
 import {ChangesService} from '../changes/changes.service';
+import {map, take} from 'rxjs/operators';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class FormResolve implements Resolve<AbstractRegisteredService[]> {
 
   constructor(private service: FormService, private changeService: ChangesService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Promise<AbstractRegisteredService[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<AbstractRegisteredService[]> {
     const param: string = route.params['id'];
 
     if (!param || param === '-1') {
-      return new Promise((resolve, reject) => resolve([new RegexRegisteredService()]));
+      return Observable.create((observer) => observer.next([new RegexRegisteredService()])).pipe(
+        take(1),
+        map(resp => resp)
+      );
     } else if (route.data.view) {
-      return this.changeService.getChangePair(param).then(resp => { return resp; });
+      return this.changeService.getChangePair(param)
+        .pipe(
+          take(1),
+          map(resp => resp)
+        );
     } else {
-      return this.service.getService(param).then(resp => {
-        if (resp) {
-          if (route.data.duplicate) {
-            resp.id = -1;
-          }
-          return [resp];
-        } else {
-          return [];
-        }
-      });
+      return this.service.getService(param)
+        .pipe(
+          take(1),
+          map(resp => {
+            if (resp) {
+              if (route.data.duplicate) {
+                resp.id = -1;
+              }
+              return [resp];
+            } else {
+              return [];
+            }
+          })
+        );
     }
   }
 }

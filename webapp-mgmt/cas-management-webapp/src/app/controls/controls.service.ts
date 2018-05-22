@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {Change} from '../../domain/change';
 import {Commit} from '../../domain/commit';
 import {GitStatus} from '../../domain/git-status';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class ControlsService extends Service {
@@ -18,34 +19,33 @@ export class ControlsService extends Service {
     super(http);
   }
 
-  commit(msg: String): Promise<String> {
+  commit(msg: String): Observable<String> {
     return this.getText('commit?msg=' + msg);
   }
 
-  publish(): Promise<String> {
+  publish(): Observable<String> {
     return this.getText('publish');
   }
 
-  submit(msg): Promise<String> {
+  submit(msg): Observable<String> {
     return this.postText('submit', msg);
   }
 
 
-  untracked(): Promise<Change[]> {
+  untracked(): Observable<Change[]> {
     return this.get<Change[]>('untracked')
-      .then(resp => resp);
   }
 
-  getCommits(): Promise<Commit[]> {
+  getCommits(): Observable<Commit[]> {
     return this.get<Commit[]>('commitList')
-      .then(resp => resp);
   }
 
   gitStatus() {
-    this.get<GitStatus>('gitStatus').then(resp => this.status = resp);
+    this.get<GitStatus>('gitStatus')
+      .subscribe((resp: GitStatus) => this.status = resp);
   }
 
-  sync(): Promise<String> {
+  sync(): Observable<String> {
     return this.getText('sync');
   }
 

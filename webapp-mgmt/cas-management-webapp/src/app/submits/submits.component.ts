@@ -35,7 +35,7 @@ export class SubmitsComponent implements OnInit {
   }
 
   refresh() {
-    this.service.getSubmits().then(resp => this.dataSource.data = resp);
+    this.service.getSubmits().subscribe(resp => this.dataSource.data = resp);
   }
 
 
@@ -75,7 +75,7 @@ export class SubmitsComponent implements OnInit {
 
   revert() {
     this.service.revert(this.revertBranch.name as string)
-      .then(resp => {
+      .subscribe(resp => {
         this.snackBar.open('Branch has been reverted', 'Dismiss', {
           duration: 5000
         });

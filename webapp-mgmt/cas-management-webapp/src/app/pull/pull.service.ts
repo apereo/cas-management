@@ -5,6 +5,7 @@ import {Injectable} from '@angular/core';
 import { Branch } from '../../domain/branch';
 import {Service} from '../service';
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class PullService extends Service {
@@ -13,15 +14,15 @@ export class PullService extends Service {
     super(http);
   }
 
-  getBranches(options: boolean[]): Promise<Branch[]> {
+  getBranches(options: boolean[]): Observable<Branch[]> {
     return this.post<Branch[]>('pullRequests', options);
   }
 
-  accept(branch: Branch, note: String): Promise<String> {
+  accept(branch: Branch, note: String): Observable<String> {
     return this.postText('acceptBranch', { branch: branch, note: note});
   }
 
-  reject(branch: Branch, note: String): Promise<String> {
+  reject(branch: Branch, note: String): Observable<String> {
     return this.postText('rejectBranch', { branch: branch, note: note});
   }
 

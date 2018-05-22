@@ -40,9 +40,6 @@ env:
 before_install:
 - chmod -R 777 ./ci/init-travis-build.sh
 - ./ci/init-travis-build.sh
-- sudo mkdir ~/.npm-global
-- export NPM_CONFIG_PREFIX=~/.npm-global
-- sudo npm rebuild node-sass;
 - chmod -R 777 ./ci/push-docs-ghpages.sh
 - ./ci/push-docs-ghpages.sh
 install: 

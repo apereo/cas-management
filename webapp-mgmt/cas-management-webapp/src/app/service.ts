@@ -2,9 +2,10 @@
  * Created by tsschmi on 4/25/17.
  */
 
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 import {catchError} from 'rxjs/operators';
+import {throwError} from 'rxjs/internal/observable/throwError';
 
 export abstract class Service {
 
@@ -40,9 +41,9 @@ export abstract class Service {
       );
   }
 
-  handleError(e: any): Promise<any> {
-    console.log('An error Occurred: ' + e);
-    return Promise.reject(e.message || e);
+  handleError(e: HttpErrorResponse): Observable<any> {
+    console.log('An error Occurred: ' + e.message);
+    return throwError(e.message || e);
   }
 }
 

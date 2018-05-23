@@ -14,21 +14,8 @@ export class ServicesResolve implements Resolve<ServiceItem[]> {
 
   constructor(private service: ServiceViewService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<ServiceItem[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<ServiceItem[]> | ServiceItem[] {
     const param: String = route.params['domain'];
-
-    if (!param) {
-      return Observable.create((observer) => observer.next([]))
-        .pipe(
-          take(1),
-          map(data => data)
-        );
-    } else {
-      return this.service.getServices(param)
-        .pipe(
-          take(1),
-          map(resp => resp ? resp : null)
-        );
-    }
+    return param ? this.service.getServices(param) : [];
   }
 }

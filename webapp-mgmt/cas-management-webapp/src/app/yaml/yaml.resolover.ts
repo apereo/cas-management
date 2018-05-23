@@ -16,29 +16,17 @@ export class YamlResolver implements Resolve<String> {
               private changeService: ChangesService,
               private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<String> {
+  resolve(route: ActivatedRouteSnapshot): Observable<String> | String {
     const history: boolean = route.data.history;
     const param: string = route.params['id'];
 
     if (!param) {
-      return Observable.create((observer) => observer.next(null))
-        .pipe(
-          take(1),
-          map(resp => resp)
-        );
+      return '';
     } else {
       if (history) {
-        return this.changeService.viewYaml(param)
-          .pipe(
-            take(1),
-            map(resp => resp ? resp : null)
-          );
+        return this.changeService.viewYaml(param).pipe(take(1));
       } else {
-        return this.service.getYaml(+param)
-          .pipe(
-            take(1),
-            map(resp => resp ? resp : null)
-          );
+        return this.service.getYaml(+param).pipe(take(1));
       }
     }
   }

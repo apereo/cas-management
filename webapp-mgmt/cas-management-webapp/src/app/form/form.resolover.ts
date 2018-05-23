@@ -15,20 +15,13 @@ export class FormResolve implements Resolve<AbstractRegisteredService[]> {
 
   constructor(private service: FormService, private changeService: ChangesService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<AbstractRegisteredService[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<AbstractRegisteredService[]> | AbstractRegisteredService[] {
     const param: string = route.params['id'];
 
     if (!param || param === '-1') {
-      return Observable.create((observer) => observer.next([new RegexRegisteredService()])).pipe(
-        take(1),
-        map(resp => resp)
-      );
+      return [new RegexRegisteredService()];
     } else if (route.data.view) {
-      return this.changeService.getChangePair(param)
-        .pipe(
-          take(1),
-          map(resp => resp)
-        );
+      return this.changeService.getChangePair(param).pipe(take(1));
     } else {
       return this.service.getService(param)
         .pipe(

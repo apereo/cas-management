@@ -14,21 +14,8 @@ export class HistoryResolve implements Resolve<History[]> {
 
   constructor(private service: HistoryService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<History[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<History[]> | History[] {
     const param: string = route.params['fileName'];
-
-    if (!param) {
-      return Observable.create((obsever) => obsever.next([]))
-        .pipe(
-          take(1),
-          map(data => data)
-        );
-    } else {
-      return this.service.history(param)
-        .pipe(
-          take(1),
-          map(resp => resp ? resp : null)
-        );
-    }
+    return param ? this.service.history(param) : [];
   }
 }

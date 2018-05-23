@@ -10,26 +10,8 @@ export class CommitHistoryResolve implements Resolve<DiffEntry[]> {
 
   constructor(private service: CommitHistoryService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<DiffEntry[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<DiffEntry[]> | DiffEntry[] {
     const param: string = route.params['id'];
-
-    if (!param) {
-      return Observable.create((observer) => observer.next([]))
-        .pipe(
-          take(1),
-          map(data => data)
-        );
-    } else {
-      this.service.history(param).pipe(
-        take(1),
-        map(resp => {
-          if (resp) {
-            return resp;
-          } else {
-            return null;
-          }
-        })
-      );
-    }
+    return param ? this.service.history(param).pipe(take(1)) : [];
   }
 }

@@ -14,26 +14,8 @@ export class ChangesResolve implements Resolve<DiffEntry[]> {
 
   constructor(private service: ChangesService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<DiffEntry[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<DiffEntry[]> | DiffEntry[] {
     const param: String = route.params['branch'];
-
-    if (!param) {
-      return Observable.create((observer) => observer.next([]))
-        .pipe(
-          take(1),
-          map(data => data)
-        );
-    } else {
-      this.service.getChanges(param).pipe(
-        take(1),
-        map(resp => {
-          if (resp) {
-            return resp;
-          } else {
-            return null;
-          }
-        })
-      );
-    }
+    return param ? this.service.getChanges(param).pipe(take(1)) : [];
   }
 }

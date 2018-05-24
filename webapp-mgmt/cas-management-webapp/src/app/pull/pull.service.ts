@@ -10,10 +10,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class PullService extends Service {
 
-  constructor(protected http: HttpClient) {
-    super(http);
-  }
-
   getBranches(options: boolean[]): Observable<Branch[]> {
     return this.post<Branch[]>('pullRequests', options);
   }

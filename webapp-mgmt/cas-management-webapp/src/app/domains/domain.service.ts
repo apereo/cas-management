@@ -9,10 +9,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class DomainService extends Service {
 
-  constructor(http: HttpClient) {
-    super(http);
-  }
-
   getDomains(): Observable<String[]> {
     return this.get<String[]>('domainList');
   }

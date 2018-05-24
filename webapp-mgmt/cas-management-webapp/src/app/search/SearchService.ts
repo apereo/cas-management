@@ -7,10 +7,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class SearchService extends Service {
 
-  constructor(http: HttpClient) {
-    super(http);
-  }
-
   search(query: String): Observable<ServiceItem[]> {
     return this.get('search?query=' + query);
   }

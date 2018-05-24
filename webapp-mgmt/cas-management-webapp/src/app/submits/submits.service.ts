@@ -10,10 +10,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class SubmitService extends Service {
 
-  constructor(protected http: HttpClient) {
-    super(http);
-  }
-
   getSubmits(): Observable<Branch[]> {
     return this.get<Branch[]>('submitRequests');
   }

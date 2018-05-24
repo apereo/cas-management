@@ -7,10 +7,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class RepoHistoryService extends Service {
 
-  constructor(http: HttpClient) {
-    super(http);
-  }
-
   commitLogs(): Observable<Commit[]> {
     return this.get<Commit[]>('commits');
   }

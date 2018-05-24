@@ -3,7 +3,7 @@ import {SubmitService} from './submits.service';
 import { Branch } from '../../domain/branch';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {RevertComponent} from '../revert/revert.component';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
@@ -26,12 +26,14 @@ export class SubmitsComponent implements OnInit {
   constructor(private service: SubmitService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              public router: Router) { }
+              public router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator.paginator;
-    this.refresh();
+    this.route.data.subscribe((data: { resp: Branch[]}) => {
+      this.dataSource = new MatTableDataSource(data.resp);
+      this.dataSource.paginator = this.paginator.paginator;
+    });
   }
 
   refresh() {

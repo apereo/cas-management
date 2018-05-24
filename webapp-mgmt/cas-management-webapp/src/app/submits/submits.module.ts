@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import {SubmitsComponent} from './submits.component';
 import {SubmitService} from './submits.service';
 import {SharedModule} from '../shared/shared.module';
+import {SubmitsResolver} from './submits.resolver';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {SharedModule} from '../shared/shared.module';
     SubmitsComponent,
   ],
   providers: [
-    SubmitService
+    SubmitService,
+    SubmitsResolver
   ]
 })
 

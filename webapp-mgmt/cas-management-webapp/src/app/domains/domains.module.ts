@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { DomainsComponent } from './domains.component';
 import { DomainService } from './domain.service';
 import { SharedModule } from '../shared/shared.module';
+import {DomainsResolver} from './domains.resolver';
 
 @NgModule ({
   imports: [
@@ -18,7 +19,8 @@ import { SharedModule } from '../shared/shared.module';
     DomainsComponent
   ],
   providers: [
-    DomainService
+    DomainService,
+    DomainsResolver
   ],
   exports: [
     DomainsComponent

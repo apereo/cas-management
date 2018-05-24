@@ -3,7 +3,7 @@ import {Messages} from '../messages';
 import {RepoHistoryService} from './repo-history.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {Commit} from '../../domain/commit';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
@@ -16,6 +16,7 @@ export class RepoHistoryComponent implements OnInit {
   dataSource: MatTableDataSource<Commit>;
   displayedColumns = ['actions', 'id', 'message', 'time'];
   selectedItem: Commit;
+  looking = false;
 
   @ViewChild(PaginatorComponent)
   paginator: PaginatorComponent;
@@ -23,12 +24,23 @@ export class RepoHistoryComponent implements OnInit {
   constructor(public messages: Messages,
               private service: RepoHistoryService,
               private router: Router,
+              private route: ActivatedRoute,
               private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource<Commit>([]);
-    this.dataSource.paginator = this.paginator.paginator;
-    this.service.commitLogs().subscribe(resp => this.dataSource.data = resp);
+    this.route.data.subscribe((data: {resp: Commit[]}) => {
+      this.dataSource = new MatTableDataSource<Commit>(data.resp);
+      this.dataSource.paginator = this.paginator.paginator;
+    });
+  }
+
+  refresh() {
+    this.looking = true;
+    this.service.commitLogs().subscribe(resp => {
+      this.looking = false
+      this.dataSource.data = resp
+    },
+      error => this.looking = false);
   }
 
   viewChanges(commit?: Commit) {

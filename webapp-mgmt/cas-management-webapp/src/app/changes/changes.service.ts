@@ -11,10 +11,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class ChangesService extends Service {
 
-  constructor(protected http: HttpClient) {
-    super(http);
-  }
-
   getChanges(branch: String): Observable<DiffEntry[]> {
     return this.get<DiffEntry[]>('changes?branch=' + branch);
   }

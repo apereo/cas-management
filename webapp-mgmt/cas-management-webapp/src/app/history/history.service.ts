@@ -10,10 +10,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class HistoryService extends Service {
 
-  constructor(protected http: HttpClient) {
-    super(http);
-  }
-
   history(fileName: string): Observable<History[]> {
     return this.get<History[]>('history?path=' + fileName);
   }

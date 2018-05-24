@@ -10,10 +10,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class ServiceViewService extends Service {
 
-  constructor(http: HttpClient) {
-    super(http);
-  }
-
   getServices(domain: String): Observable<ServiceItem[]> {
     return this.get<ServiceItem[]>('getServices?domain=' + domain);
   }

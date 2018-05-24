@@ -15,10 +15,6 @@ export class ControlsService extends Service {
 
   status: GitStatus;
 
-  constructor(http: HttpClient) {
-    super(http);
-  }
-
   commit(msg: String): Observable<String> {
     return this.getText('commit?msg=' + msg);
   }

@@ -10,10 +10,6 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class CommitHistoryService extends Service {
 
-  constructor(protected http: HttpClient) {
-    super(http);
-  }
-
   history(id: string): Observable<DiffEntry[]> {
     return this.get<DiffEntry[]>('commitHistoryList?id=' + id);
   }

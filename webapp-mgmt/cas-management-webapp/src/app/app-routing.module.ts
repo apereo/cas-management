@@ -25,6 +25,11 @@ import {ImportComponent} from './import/import.component';
 import {RepoHistoryComponent} from './repo-history/repo-history.component';
 import {CommitHistoryComponent} from './commit-history/commit-history.component';
 import {CommitHistoryResolve} from './commit-history/commit-history.resolver';
+import {DomainsResolver} from './domains/domains.resolver';
+import {LocalChangesResolver} from './local-changes/local-changes.resolver';
+import {PullResolver} from './pull/pull.resolver';
+import {SubmitsResolver} from './submits/submits.resolver';
+import {RepoHistoryResolver} from './repo-history/repo-history.resolver';
 
 @NgModule({
   imports: [
@@ -32,6 +37,9 @@ import {CommitHistoryResolve} from './commit-history/commit-history.resolver';
       {
         path: 'domains',
         component: DomainsComponent,
+        resolve: {
+          resp: DomainsResolver
+        }
       },
       {
         path: 'services/:domain',
@@ -91,7 +99,10 @@ import {CommitHistoryResolve} from './commit-history/commit-history.resolver';
       },
       {
         path: 'localChanges',
-        component: LocalChangesComponent
+        component: LocalChangesComponent,
+        resolve: {
+          resp: LocalChangesResolver
+        }
       },
       {
         path: 'manage.html',
@@ -99,11 +110,17 @@ import {CommitHistoryResolve} from './commit-history/commit-history.resolver';
       },
       {
         path: 'pulls',
-        component: PullComponent
+        component: PullComponent,
+        resolve: {
+          resp: PullResolver
+        }
       },
       {
         path: 'submits',
-        component: SubmitsComponent
+        component: SubmitsComponent,
+        resolve: {
+          resp: SubmitsResolver
+        }
       },
       {
         path: 'changes/:branch',
@@ -122,7 +139,10 @@ import {CommitHistoryResolve} from './commit-history/commit-history.resolver';
       },
       {
         path: 'repo-history',
-        component: RepoHistoryComponent
+        component: RepoHistoryComponent,
+        resolve: {
+          resp: RepoHistoryResolver
+        }
       },
       {
         path: 'commit-history/:id',

@@ -5,7 +5,7 @@ import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {Change} from '../../domain/change';
 import {RevertComponent} from '../revert/revert.component';
 import {ServiceViewService} from '../services/service.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
@@ -26,15 +26,17 @@ export class LocalChangesComponent implements OnInit {
 
   constructor(public messages: Messages,
               private router: Router,
+              private route: ActivatedRoute,
               private controlsService: ControlsService,
               private service: ServiceViewService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.datasource = new MatTableDataSource([]);
-    this.datasource.paginator = this.paginator.paginator;
-    this.refresh();
+    this.route.data.subscribe((data: {resp: Change[]}) => {
+      this.datasource = new MatTableDataSource(data.resp);
+      this.datasource.paginator = this.paginator.paginator;
+    });
   }
 
   refresh() {

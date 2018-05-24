@@ -38,7 +38,8 @@ import {AppConfigService} from './app-config.service';
 import { RepoHistoryComponent } from './repo-history/repo-history.component';
 import {RepoHistoryService} from './repo-history/repo-history.service';
 import {CommitHistoryModule} from './commit-history/commit-history.module';
-
+import {LocalChangesResolver} from './local-changes/local-changes.resolver';
+import {RepoHistoryResolver} from './repo-history/repo-history.resolver';
 
 @NgModule({
   imports: [
@@ -88,7 +89,9 @@ import {CommitHistoryModule} from './commit-history/commit-history.module';
     FooterService,
     ImportService,
     AppConfigService,
-    RepoHistoryService
+    RepoHistoryService,
+    LocalChangesResolver,
+    RepoHistoryResolver
   ],
   bootstrap: [AppComponent]
 })

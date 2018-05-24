@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import {PullComponent} from './pull.component';
 import {PullService} from './pull.service';
 import {SharedModule} from '../shared/shared.module';
+import {PullResolver} from './pull.resolver';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {SharedModule} from '../shared/shared.module';
     PullComponent,
   ],
   providers: [
-    PullService
+    PullService,
+    PullResolver
   ]
 })
 

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild } from '@angular/core';
 import {Messages} from '../messages';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Branch } from '../../domain/branch';
 import {PullService} from './pull.service';
 import { Location } from '@angular/common';
@@ -38,6 +38,7 @@ export class PullComponent implements OnInit {
 
   constructor(public messages: Messages,
               private router: Router,
+              private route: ActivatedRoute,
               private service: PullService,
               private location: Location,
               private controlsService: ControlsService,
@@ -45,9 +46,10 @@ export class PullComponent implements OnInit {
               public snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator.paginator;
-    this.refresh();
+    this.route.data.subscribe((data: {resp: Branch[]}) => {
+      this.dataSource = new MatTableDataSource(data.resp);
+      this.dataSource.paginator = this.paginator.paginator;
+    });
   }
 
   refresh() {

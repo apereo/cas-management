@@ -3,19 +3,19 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
+import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {ServiceItem} from '../../domain/service-item';
 import {ServiceViewService} from './service.service';
-import {map, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class ServicesResolve implements Resolve<ServiceItem[]> {
 
-  constructor(private service: ServiceViewService, private router: Router) {}
+  constructor(private service: ServiceViewService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ServiceItem[]> | ServiceItem[] {
     const param: String = route.params['domain'];
-    return param ? this.service.getServices(param) : [];
+    return param ? this.service.getServices(param).pipe(take(1)) : [];
   }
 }

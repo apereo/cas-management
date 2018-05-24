@@ -6,7 +6,6 @@ import {Change} from '../../domain/change';
 import {RevertComponent} from '../revert/revert.component';
 import {ServiceViewService} from '../services/service.service';
 import {Router} from '@angular/router';
-import {ChangesService} from '../changes/changes.service';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
@@ -29,7 +28,6 @@ export class LocalChangesComponent implements OnInit {
               private router: Router,
               private controlsService: ControlsService,
               private service: ServiceViewService,
-              private changeService: ChangesService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) { }
 
@@ -44,10 +42,10 @@ export class LocalChangesComponent implements OnInit {
     this.controlsService.untracked()
       .subscribe(
         resp => {
-          this.datasource.data = resp ? resp : []
+          this.datasource.data = resp ? resp : [];
           this.loading = false;
         },
-       error => this.loading = false
+        () => this.loading = false
       );
     this.controlsService.gitStatus();
   }
@@ -70,18 +68,20 @@ export class LocalChangesComponent implements OnInit {
     const fileName: string = (this.revertItem.fileName).replace(/ /g, '');
     if (this.revertItem.changeType === 'ADD') {
       this.service.delete(+this.revertItem.id)
-        .subscribe(() => this.handleRevert());
+        .subscribe(this.handleRevert);
     } else {
       this.service.revert(fileName)
-        .subscribe(() => this.handleRevert());
+        .subscribe( this.handleRevert);
     }
   }
 
   handleRevert() {
     this.refresh();
-    this.snackBar.open('Change has been reverted', 'Dismiss', {
-      duration: 5000
-    });
+    this.snackBar
+      .open('Change has been reverted',
+        'Dismiss',
+        {duration: 5000}
+      );
   }
 
   viewDiff() {

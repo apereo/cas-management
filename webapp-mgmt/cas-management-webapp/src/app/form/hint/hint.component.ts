@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatHint} from '@angular/material';
 
 @Component({
   selector: 'app-hint',

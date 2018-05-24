@@ -3,18 +3,17 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
+import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
 import {ServiceViewService} from '../services/service.service';
-import {map, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()
 export class JSONResolver implements Resolve<String> {
 
   constructor(private service: ServiceViewService,
-              private changeService: ChangesService,
-              private router: Router) {}
+              private changeService: ChangesService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<String> | String {
     const history: boolean = route.data.history;

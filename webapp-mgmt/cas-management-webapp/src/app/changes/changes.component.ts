@@ -28,13 +28,10 @@ export class ChangesComponent implements OnInit {
                 public snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: DiffEntry[]}) => {
-      setTimeout(() => {
-        this.dataSource.data = data.resp;
-      }, 10);
+        this.dataSource = new MatTableDataSource(data.resp);
+        this.dataSource.paginator = this.paginator.paginator;
       });
   }
 

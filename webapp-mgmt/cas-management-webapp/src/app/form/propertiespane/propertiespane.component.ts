@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../messages';
 import {Data } from '../data';
 import {Util} from '../../util/util';
@@ -19,8 +19,7 @@ export class PropertiespaneComponent implements OnInit {
   formData: FormData;
 
   constructor(public messages: Messages,
-              public data: Data,
-              private changeRef: ChangeDetectorRef) {
+              public data: Data) {
     this.formData = data.formData;
   }
 
@@ -56,7 +55,7 @@ export class PropertiespaneComponent implements OnInit {
 
   selection(val: MatAutocompleteSelectedEvent) {
     const opt =  val.option.value;
-    this.doChange(this.selectedRow, opt.propertyName)
+    this.doChange(this.selectedRow, opt.propertyName);
     if (val) {
       this.data.service.properties[opt.propertyName].values = [opt.defaultValue];
     }

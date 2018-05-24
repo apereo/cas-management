@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Messages} from '../messages';
 import {RepoHistoryService} from './repo-history.service';
-import {MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {Commit} from '../../domain/commit';
 import {Router} from '@angular/router';
 import {PaginatorComponent} from '../paginator/paginator.component';
@@ -40,10 +40,13 @@ export class RepoHistoryComponent implements OnInit {
   }
 
   checkout() {
-    this.service.checkout(this.selectedItem.id).subscribe(resp => {
-      this.snackBar.open('Commit has been checked out', 'Dismiss', {
-        duration: 5000
+    this.service.checkout(this.selectedItem.id)
+      .subscribe(() => {
+        this.snackBar
+          .open('Commit has been checked out',
+            'Dismiss',
+            {duration: 5000}
+          );
       });
-    })
   }
 }

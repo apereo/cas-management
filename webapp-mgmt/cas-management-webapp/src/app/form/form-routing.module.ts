@@ -103,7 +103,8 @@ const childRoutes: Routes = [
     component: TabBaseComponent,
     outlet: 'form'
   }
-]
+];
+
 @NgModule({
   imports: [
     RouterModule.forChild([

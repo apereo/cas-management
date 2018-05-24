@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Service} from '../service';
 import {ServiceItem} from '../../domain/service-item';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()

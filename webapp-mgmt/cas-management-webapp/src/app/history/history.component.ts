@@ -3,8 +3,6 @@ import {Messages} from '../messages';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HistoryService} from './history.service';
 import {History} from '../../domain/history';
-import {Location} from '@angular/common';
-import {ChangesService} from '../changes/changes.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
@@ -29,24 +27,14 @@ export class HistoryComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: HistoryService,
-              private changeService: ChangesService,
-              private location: Location,
               public  snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: History[]}) => {
-        if (!data.resp) {
-          this.snackBar.open(this.messages.management_services_status_listfail, 'dismiss', {
-              duration: 5000
-          });
-        }
-        setTimeout(() => {
-          this.dataSource.data = data.resp;
-        }, 10);
+        this.dataSource = new MatTableDataSource(data.resp);
+        this.dataSource.paginator = this.paginator.paginator;
       });
     this.route.params.subscribe((params) => this.fileName = params['fileName']);
   }
@@ -58,11 +46,10 @@ export class HistoryComponent implements OnInit {
   checkout() {
     this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
       .subscribe(
-        () => this.snackBar.open('Service successfully restored from history.',
-          'dismiss',
-          {
-            duration: 5000
-          }
+        () => this.snackBar
+          .open('Service successfully restored from history.',
+            'dismiss',
+            {duration: 5000}
         )
       );
   }
@@ -79,5 +66,3 @@ export class HistoryComponent implements OnInit {
     this.router.navigate(['/viewYaml', this.selectedItem.id]);
   }
 }
-
-

@@ -87,25 +87,29 @@ export class ControlsComponent implements OnInit {
       if (msg !== null && msg !== '') {
         this.service.commit(msg)
           .subscribe(
-            (resp: String) => {this.handleCommit(resp)},
-            error => this.handleNotCommitted(error)
+            this.handleCommit,
+            this.handleNotCommitted
           );
       }
     }
   }
 
-  handleCommit(resp: String) {
+  handleCommit() {
     this.service.gitStatus();
-    this.snackBar.open(this.messages.management_services_status_committed, 'Dismiss', {
-        duration: 5000
-    });
+    this.snackBar
+      .open(this.messages.management_services_status_committed,
+        'Dismiss',
+        {duration: 5000}
+      );
     this.refresh.emit();
   }
 
-  handleNotCommitted(e: any) {
-    this.snackBar.open(this.messages.management_services_status_notcommitted, 'Dismiss', {
-        duration: 5000
-    });
+  handleNotCommitted() {
+    this.snackBar
+      .open(this.messages.management_services_status_notcommitted,
+        'Dismiss',
+        {duration: 5000}
+      );
   }
 
   openModalPublish() {
@@ -124,23 +128,27 @@ export class ControlsComponent implements OnInit {
     if (commits.length > 0 ) {
       this.service.publish()
         .subscribe(
-          (resp: String) => this.handlePublish(),
-           error => this.handleNotPublished(error)
+          this.handlePublish,
+          this.handleNotPublished
         );
     }
   }
 
   handlePublish() {
     this.service.gitStatus();
-    this.snackBar.open(this.messages.management_services_status_published, 'Dismiss', {
-        duration: 5000
-    });
+    this.snackBar
+      .open(this.messages.management_services_status_published,
+        'Dismiss',
+        {duration: 5000}
+      );
   }
 
-  handleNotPublished(e: any) {
-    this.snackBar.open(this.messages.management_services_status_notpublished, 'Dismiss', {
-        duration: 5000
-    });
+  handleNotPublished() {
+    this.snackBar
+      .open(this.messages.management_services_status_notpublished,
+        'Dismiss',
+        {duration: 5000}
+      );
   }
 
   callSubmit() {
@@ -150,22 +158,27 @@ export class ControlsComponent implements OnInit {
   submit(msg: String) {
     this.service.submit(msg)
       .subscribe(
-        () => this.handleSubmit(),
-        error => this.handleNotSubmitted(error));
+        this.handleSubmit,
+        this.handleNotSubmitted
+      );
   }
 
   handleSubmit() {
     this.service.gitStatus();
-    this.snackBar.open('Your commit has been submitted for review', 'Dismiss', {
-        duration: 5000
-    });
+    this.snackBar
+      .open('Your commit has been submitted for review',
+        'Dismiss',
+        {duration: 5000}
+      );
     this.refresh.emit();
   }
 
-  handleNotSubmitted(e: any) {
-    this.snackBar.open('Something went wrong and your commit was not able to be submitted', 'Dismiss', {
-        duration: 5000
-    });
+  handleNotSubmitted() {
+    this.snackBar
+      .open('Something went wrong and your commit was not able to be submitted',
+        'Dismiss',
+        {duration: 5000}
+      );
   }
 
   isAdmin(): boolean {

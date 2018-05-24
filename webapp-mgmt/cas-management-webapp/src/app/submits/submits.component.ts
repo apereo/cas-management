@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {SubmitService} from './submits.service';
 import { Branch } from '../../domain/branch';
-import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {RevertComponent} from '../revert/revert.component';
 import {Router} from '@angular/router';
 import {PaginatorComponent} from '../paginator/paginator.component';
@@ -59,7 +59,7 @@ export class SubmitsComponent implements OnInit {
     }
   }
 
-  openModalRevert(branch: Branch) {
+  openModalRevert() {
     const dialogRef = this.dialog.open(RevertComponent, {
       data: this.selectedItem,
       width: '500px',
@@ -75,10 +75,12 @@ export class SubmitsComponent implements OnInit {
 
   revert() {
     this.service.revert(this.revertBranch.name as string)
-      .subscribe(resp => {
-        this.snackBar.open('Branch has been reverted', 'Dismiss', {
-          duration: 5000
-        });
+      .subscribe(() => {
+        this.snackBar
+          .open('Branch has been reverted',
+            'Dismiss',
+            {duration: 5000}
+          );
         this.refresh()
       });
   }

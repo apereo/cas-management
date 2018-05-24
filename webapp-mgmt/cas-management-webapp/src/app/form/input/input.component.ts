@@ -1,5 +1,5 @@
 import {
-  AfterContentInit, Component, ContentChild, ContentChildren, ElementRef, Input, OnChanges,
+  AfterContentInit, Component, ContentChildren, Input, OnChanges,
   QueryList
 } from '@angular/core';
 import {HintComponent} from '../hint/hint.component';

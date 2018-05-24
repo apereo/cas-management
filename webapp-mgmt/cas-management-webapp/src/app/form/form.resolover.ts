@@ -3,7 +3,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
+import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {FormService} from './form.service';
 import {AbstractRegisteredService, RegexRegisteredService} from '../../domain/registered-service';
 import {ChangesService} from '../changes/changes.service';
@@ -13,7 +13,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class FormResolve implements Resolve<AbstractRegisteredService[]> {
 
-  constructor(private service: FormService, private changeService: ChangesService, private router: Router) {}
+  constructor(private service: FormService, private changeService: ChangesService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<AbstractRegisteredService[]> | AbstractRegisteredService[] {
     const param: string = route.params['id'];

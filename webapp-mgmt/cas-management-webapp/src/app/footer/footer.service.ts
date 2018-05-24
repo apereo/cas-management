@@ -3,7 +3,6 @@
  */
 import {Injectable} from '@angular/core';
 import {Service} from '../service';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable()

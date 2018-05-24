@@ -4,7 +4,6 @@
 import {Injectable} from '@angular/core';
 import {DiffEntry} from '../../domain/diff-entry';
 import {Service} from '../service';
-import {HttpClient} from '@angular/common/http';
 import {AbstractRegisteredService} from '../../domain/registered-service';
 import {Observable} from 'rxjs/internal/Observable';
 

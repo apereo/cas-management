@@ -3,7 +3,7 @@ import {ServiceItem} from '../../domain/service-item';
 import {Messages} from '../messages';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
-import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
 import {ControlsService} from '../controls/controls.service';
 import {RevertComponent} from '../revert/revert.component';
@@ -37,18 +37,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: ServiceItem[]}) => {
-        if (!data.resp) {
-          this.snackBar.open(this.messages.management_services_status_listfail, 'dismiss', {
-            duration: 5000
-          });
-        }
-        setTimeout(() => {
-          this.dataSource.data = data.resp;
-        }, 10);
+        this.dataSource = new MatTableDataSource(data.resp);
+        this.dataSource.paginator = this.paginator.paginator;
       }
     );
     this.route.params.subscribe((params) => this.domain = params['domain']);
@@ -106,19 +98,22 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   };
 
   delete() {
-    const myData = {id: this.deleteItem.assignedId};
-
     this.service.delete(Number.parseInt(this.deleteItem.assignedId as string))
       .subscribe(resp => this.handleDelete(resp),
-       (e: any) => this.snackBar.open(e.message || e.text(), 'Dismiss', {
-        duration: 5000
-      }));
+       (e: any) => this.snackBar
+         .open(e.message || e.text(),
+           'Dismiss',
+           {duration: 5000}
+         )
+      );
   };
 
   handleDelete(name: String) {
-    this.snackBar.open(name + ' ' + this.messages.management_services_status_deleted, 'Dismiss', {
-      duration: 5000
-    });
+    this.snackBar
+      .open(name + ' ' + this.messages.management_services_status_deleted,
+        'Dismiss',
+        {duration: 5000}
+      );
     this.refresh();
   }
 
@@ -130,14 +125,16 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   revert() {
     const fileName: string = (this.revertItem.name + '-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
     this.service.revert(fileName)
-      .subscribe(resp => this.handleRevert());
+      .subscribe( this.handleRevert);
   }
 
   handleRevert() {
     this.refresh();
-    this.snackBar.open('Change has been reverted', 'Dismiss', {
-      duration: 5000
-    });
+    this.snackBar
+      .open('Change has been reverted',
+        'Dismiss',
+        {duration: 5000}
+      );
   }
 
 
@@ -149,9 +146,12 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   getServices() {
     this.service.getServices(this.domain)
       .subscribe(resp => this.dataSource.data = resp,
-       (e: any) => this.snackBar.open(this.messages.management_services_status_listfail, 'Dismiss', {
-        duration: 5000
-      }));
+       () => this.snackBar
+         .open(this.messages.management_services_status_listfail,
+           'Dismiss',
+           {duration: 5000}
+         )
+      );
   }
 
   moveUp(a: ServiceItem) {
@@ -170,7 +170,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       const b: ServiceItem = this.dataSource.data[index + 1];
       a.evalOrder = index + 1;
       b.evalOrder = index;
-      this.service.updateOrder(a, b).subscribe(resp => this.refresh());
+      this.service.updateOrder(a, b).subscribe(this.refresh);
     }
   }
 
@@ -181,6 +181,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     const index = this.dataSource.data.indexOf(this.selectedItem);
     return index < this.dataSource.data.length - 1;
   }
+
   showMoveUp(): boolean {
     if (!this.selectedItem) {
       return false;

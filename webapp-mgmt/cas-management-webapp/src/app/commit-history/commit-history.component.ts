@@ -31,18 +31,10 @@ export class CommitHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
-    this.dataSource.paginator = this.paginator.paginator;
     this.route.data
       .subscribe((data: { resp: DiffEntry[]}) => {
-        if (!data.resp) {
-          this.snackBar.open(this.messages.management_services_status_listfail, 'dismiss', {
-              duration: 5000
-          });
-        }
-        setTimeout(() => {
-          this.dataSource.data = data.resp;
-        }, 10);
+        this.dataSource = new MatTableDataSource(data.resp);
+        this.dataSource.paginator = this.paginator.paginator;
       });
     this.route.params.subscribe((params) => this.fileName = params['fileName']);
   }
@@ -53,16 +45,24 @@ export class CommitHistoryComponent implements OnInit {
 
   checkout() {
     this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
-      .subscribe(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
-        duration: 5000
-      }));
+      .subscribe(
+        resp => this.snackBar
+          .open('Service successfully restored from history.',
+                'dismiss',
+                {duration: 5000}
+          )
+      );
   }
 
   revert() {
     this.service.revertRepo(this.selectedItem.oldId as string)
-      .subscribe(resp => this.snackBar.open('Service successfully restored from history.', 'dismiss', {
-        duration: 5000
-      }));
+      .subscribe(
+        resp => this.snackBar
+          .open('Service successfully restored from history.',
+            'dismiss',
+            {duration: 5000}
+          )
+      );
   }
 
   viewDiff() {

@@ -163,7 +163,7 @@ export class FormComponent implements OnInit {
       case Tabs.ATTRIBUTE_RELEASE :
         return 'attrRelease';
       case Tabs.PROPERTIES :
-        return 'properties'
+        return 'properties';
       case Tabs.ADVANCED :
         return 'advanced';
     }
@@ -191,9 +191,11 @@ export class FormComponent implements OnInit {
     this.clearErrors();
     formErrors = this.validateForm();
     if (formErrors > -1) {
-      this.snackBar.open(this.messages.services_form_alert_formHasErrors, 'Dismiss', {
-        duration: 5000
-      });
+      this.snackBar
+        .open(this.messages.services_form_alert_formHasErrors,
+          'Dismiss',
+          {duration: 5000}
+        );
       this.goto(-1);
       setTimeout(() => {
         this.goto(( formErrors > 0 && this.isCas() ) ? formErrors - 1 : formErrors ) }, 10);
@@ -201,7 +203,7 @@ export class FormComponent implements OnInit {
       this.service.saveService(this.data.service)
         .subscribe(
           resp => this.handleSave(resp),
-          error => this.handleNotSaved(error)
+          () => this.handleNotSaved()
         );
     }
   };
@@ -216,23 +218,29 @@ export class FormComponent implements OnInit {
 
     if (!hasIdAssignedAlready && id && id !== -1) {
       this.data.service.id = id;
-      this.snackBar.open(this.messages.services_form_alert_serviceAdded, 'Dismiss', {
-        duration: 5000
-      });
+      this.snackBar
+        .open(this.messages.services_form_alert_serviceAdded,
+          'Dismiss',
+          {duration: 5000}
+        );
     } else {
-      this.snackBar.open(this.messages.services_form_alert_serviceUpdated, 'Dismiss', {
-        duration: 5000
-      });
+      this.snackBar
+        .open(this.messages.services_form_alert_serviceUpdated,
+          'Dismiss',
+          {duration: 5000}
+        );
     }
 
     this.data.service.id = id;
     this.location.back();
   }
 
-  handleNotSaved(e: any) {
-    this.snackBar.open(this.messages.services_form_alert_unableToSave, 'Dismiss', {
-      duration: 5000
-    });
+  handleNotSaved() {
+    this.snackBar
+      .open(this.messages.services_form_alert_unableToSave,
+        'Dismiss',
+        {duration: 5000}
+      );
   }
 
   validateRegex(pattern): boolean {
@@ -249,7 +257,7 @@ export class FormComponent implements OnInit {
   }
 
   validateDomain(service: string): boolean {
-    const domainPattern = new RegExp('^\\\\^?https?\\\\??://(.*?)(?:[(]?[:/]|$)');
+    const domainPattern = new RegExp('^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)');
     if (this.userService.user.permissions.indexOf('*') > -1) {
       return true;
     }

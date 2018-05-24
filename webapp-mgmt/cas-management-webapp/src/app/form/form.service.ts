@@ -22,8 +22,7 @@ export class FormService {
       .pipe(
         take(1),
         map(resp => {
-          const as: AbstractRegisteredService = resp as AbstractRegisteredService;
-          return as;
+          return resp as AbstractRegisteredService;
         }),
         catchError(e => this.handleError(e, this.dialog))
       );

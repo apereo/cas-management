@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import { Branch } from '../../domain/branch';
 import {PullService} from './pull.service';
 import { Location } from '@angular/common';
-import {ChangesService} from '../changes/changes.service';
 import {DiffEntry} from '../../domain/diff-entry';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {AcceptComponent} from '../accept/accept.component';
@@ -42,7 +41,6 @@ export class PullComponent implements OnInit {
               private service: PullService,
               private location: Location,
               private controlsService: ControlsService,
-              private changeService: ChangesService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) { }
 
@@ -59,7 +57,7 @@ export class PullComponent implements OnInit {
         this.loading = false;
         this.dataSource.data = resp
        },
-      error => this.loading = false
+        () => this.loading = false
       );
     this.controlsService.gitStatus();
   }
@@ -88,10 +86,12 @@ export class PullComponent implements OnInit {
 
   accept(note: String) {
     this.service.accept(this.acceptBranch, note)
-      .subscribe(resp => {
-          this.snackBar.open('Branch has been merged', 'Dismiss', {
-            duration: 5000
-          });
+      .subscribe(() => {
+          this.snackBar
+            .open('Branch has been merged',
+              'Dismiss',
+              {duration: 5000}
+            );
           this.refresh();
         }
       );
@@ -114,10 +114,12 @@ export class PullComponent implements OnInit {
 
   reject(note: String) {
     this.service.reject(this.rejectBranch, note)
-        .subscribe(resp => {
-            this.snackBar.open('Branch has beem marked as rejected', 'Dismiss', {
-              duration: 5000
-            });
+        .subscribe(() => {
+            this.snackBar
+              .open('Branch has beem marked as rejected',
+                'Dismiss',
+                {duration: 5000}
+              );
             this.refresh();
           }
         );

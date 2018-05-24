@@ -3,7 +3,6 @@ import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DomainService} from './domain.service';
 import {Messages} from 'app/messages';
 import {Router} from '@angular/router';
-import {Location} from '@angular/common';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({
@@ -21,8 +20,7 @@ export class DomainsComponent implements OnInit {
   constructor(public messages: Messages,
               private router: Router,
               private domainService: DomainService,
-              public snackBar: MatSnackBar,
-              private location: Location) { }
+              public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
@@ -31,7 +29,11 @@ export class DomainsComponent implements OnInit {
       .subscribe(
         (resp: String[]) => this.dataSource.data = resp,
         error => {console.log(error);
-                         this.snackBar.open('Failed to load domains', 'Dismiss');
+                         this.snackBar
+                           .open('Failed to load domains',
+                             'Dismiss',
+                             {duration: 5000}
+                           );
                         }
       );
   }

@@ -4,7 +4,6 @@
 
 import {Injectable} from '@angular/core';
 import {Service} from '../service';
-import {HttpClient} from '@angular/common/http';
 import {Change} from '../../domain/change';
 import {Commit} from '../../domain/commit';
 import {GitStatus} from '../../domain/git-status';

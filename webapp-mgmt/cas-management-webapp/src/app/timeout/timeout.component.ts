@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from '@angular/material';
-import {RejectComponent} from '../reject/reject.component';
 import {Messages} from '../messages';
 
 @Component({

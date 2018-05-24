@@ -29,10 +29,10 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit() {
     if (!this.userService.user.administrator
-        && (!this.data.service.contacts || this.data.service.contacts.length == 0)) {
+        && (!this.data.service.contacts || this.data.service.contacts.length === 0)) {
       const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
       contact.id = 0;
-      contact.name = this.userService.user.firstName + " " + this.userService.user.familyName;
+      contact.name = this.userService.user.firstName + ' ' + this.userService.user.familyName;
       contact.email = this.userService.user.email;
       contact.phone = this.userService.user.phone;
       contact.department = this.userService.user.department;

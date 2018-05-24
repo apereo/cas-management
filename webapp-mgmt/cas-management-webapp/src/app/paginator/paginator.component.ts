@@ -10,7 +10,7 @@ import {MatPaginator, PageEvent} from '@angular/material';
 export class PaginatorComponent implements OnInit {
 
   @ViewChild(MatPaginator)
-  paginator: MatPaginator
+  paginator: MatPaginator;
 
   constructor(public appService: AppConfigService) {
 

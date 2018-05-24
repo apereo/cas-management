@@ -1,9 +1,8 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../messages';
-import {AbstractRegisteredService} from '../../../domain/registered-service';
 import {
   RefuseRegisteredServiceProxyPolicy,
-  RegexMatchingRegisteredServiceProxyPolicy, RegisteredServiceProxyPolicy
+  RegexMatchingRegisteredServiceProxyPolicy
 } from '../../../domain/proxy-policy,ts';
 import {Data} from '../data';
 

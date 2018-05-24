@@ -1,7 +1,6 @@
 /**
  * Created by tschmidt on 2/13/17.
  */
-import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core';
 import {Service} from '../service';
 import {Observable} from 'rxjs/internal/Observable';

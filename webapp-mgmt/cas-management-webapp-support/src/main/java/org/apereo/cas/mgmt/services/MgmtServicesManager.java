@@ -198,8 +198,8 @@ public class MgmtServicesManager implements ServicesManager {
     }
 
     @Override
-    public void load() {
-        this.manager.load();
+    public Collection<RegisteredService> load() {
+        return this.manager.load();
     }
 
     @Override

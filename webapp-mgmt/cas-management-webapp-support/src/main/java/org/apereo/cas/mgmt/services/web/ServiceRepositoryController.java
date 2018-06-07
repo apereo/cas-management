@@ -811,7 +811,7 @@ public class ServiceRepositoryController {
             throw new Exception("No changes to revert");
         }
 
-        git.checkoutFile(path);
+        git.checkout(path, "HEAD");
         git.close();
         return new ResponseEntity<>("File Reverted", HttpStatus.OK);
     }
@@ -911,7 +911,7 @@ public class ServiceRepositoryController {
                 if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
                     git.getGit().rm().addFilepattern(d.getNewPath()).call();
                 } else {
-                    git.checkout(d.getOldPath(), id);
+                    git.checkout(d.getOldPath(), id + "~1");
                 }
             } catch (final Exception e) {
                 LOGGER.error(e.getMessage(), e);

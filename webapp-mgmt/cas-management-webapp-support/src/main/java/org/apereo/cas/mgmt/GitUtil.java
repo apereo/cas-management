@@ -714,7 +714,7 @@ public class GitUtil implements AutoCloseable {
         final ObjectReader reader = git.getRepository().newObjectReader();
         oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
         final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-        newTreeIter.reset(reader, git.getRepository().resolve("HEAD^{tree}"));
+        newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
         return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
     }
 

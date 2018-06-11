@@ -8,7 +8,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.MgmtServicesManager;
+import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.AppConfig;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
@@ -173,7 +173,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
                                                           final HttpServletResponse response,
                                                           @RequestParam("id") final long idAsLong) {
-        final MgmtServicesManager manager = managerFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, response);
         final RegisteredService svc = manager.findServiceBy(idAsLong);
         if (svc == null) {
             return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
@@ -203,7 +203,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final MgmtServicesManager manager = managerFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, response);
         Collection<String> data = manager.getDomains();
         if (!casUserProfile.isAdministrator()) {
             data = data.stream()
@@ -248,7 +248,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                 throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
             }
         }
-        final MgmtServicesManager manager = managerFactory.from(request, casUserProfile);
+        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
         final List<RegisteredServiceItem> serviceItemsForDomain = manager.getServiceItemsForDomain(domain);
         return new ResponseEntity<>(serviceItemsForDomain, HttpStatus.OK);
     }
@@ -268,7 +268,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                               final HttpServletResponse response,
                                                               @RequestParam final String query) throws Exception {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final MgmtServicesManager manager = managerFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, response);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
         final List<RegisteredServiceItem> serviceBeans = new ArrayList<>();
         List<RegisteredService> services;
@@ -312,7 +312,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
                             @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
-        final MgmtServicesManager manager = managerFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, response);
         final String id = svcs[0].getAssignedId();
         final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {

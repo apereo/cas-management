@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class MgmtServicesManager implements ServicesManager {
+public class ManagementServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
     private final GitUtil git;
@@ -111,6 +111,11 @@ public class MgmtServicesManager implements ServicesManager {
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void deleteAll() {
+        this.manager.deleteAll();
     }
 
     @Override

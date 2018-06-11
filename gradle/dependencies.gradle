@@ -1040,6 +1040,10 @@ ext.libraries = [
                 dependencies.create("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
                     force = true
                 },
+                dependencies.create("org.apereo.cas:cas-server-support-jpa-service-registry:$casVersion") {
+                    force = true
+                },
+                dependencies.create("org.hsqldb:hsqldb:2.4.0"),
                 dependencies.create("org.apereo.cas:cas-server-core-api-protocol:$casVersion") {
                     force = true
                 },

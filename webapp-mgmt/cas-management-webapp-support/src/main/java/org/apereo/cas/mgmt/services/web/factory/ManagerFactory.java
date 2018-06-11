@@ -8,7 +8,7 @@ import org.apereo.cas.configuration.model.core.services.ServiceRegistryPropertie
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.MgmtServicesManager;
+import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.DomainServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
@@ -52,7 +52,7 @@ public class ManagerFactory {
                 return;
             }
             try (GitUtil git = repositoryFactory.masterRepository()) {
-                final MgmtServicesManager manager = new MgmtServicesManager(createJSONServiceManager(git), git);
+                final ManagementServicesManager manager = new ManagementServicesManager(createJSONServiceManager(git), git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();
                 git.getGit().commit().setAll(true).setMessage("Initial commit").call();
@@ -71,7 +71,7 @@ public class ManagerFactory {
      * @param response - HttpServletResponse
      * @return - GitServicesManager for the logged in user
      */
-    public MgmtServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
+    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
         return from(request, casUserProfileFactory.from(request, response));
     }
 
@@ -82,11 +82,11 @@ public class ManagerFactory {
      * @param user    - CasUserProfile of logged in user
      * @return - GitServicesManager for the logged in user
      */
-    public MgmtServicesManager from(final HttpServletRequest request, final CasUserProfile user) {
+    public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) {
         if (!managementProperties.isEnableVersionControl()) {
-            return new MgmtServicesManager(servicesManager, new GitUtil(null));
+            return new ManagementServicesManager(servicesManager, new GitUtil(null));
         }
-        MgmtServicesManager manager = (MgmtServicesManager) request.getSession().getAttribute("servicesManager");
+        ManagementServicesManager manager = (ManagementServicesManager) request.getSession().getAttribute("servicesManager");
         if (manager != null) {
             if (!user.isAdministrator()) {
                 manager.getGit().rebase();
@@ -100,7 +100,7 @@ public class ManagerFactory {
             } else {
                 git = repositoryFactory.masterRepository();
             }
-            manager = new MgmtServicesManager(createJSONServiceManager(git), git);
+            manager = new ManagementServicesManager(createJSONServiceManager(git), git);
         }
         request.getSession().setAttribute("servicesManager", manager);
         return manager;

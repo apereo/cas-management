@@ -467,7 +467,7 @@ public class GitUtil implements AutoCloseable {
                 return history;
             }
         } catch (final Exception e) {
-
+            LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
@@ -682,6 +682,7 @@ public class GitUtil implements AutoCloseable {
             final RevWalk revWalk = new RevWalk(git.getRepository());
             return new BranchMap(this, r, revWalk.parseCommit(git.getRepository().resolve(r.getName())));
         } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
@@ -932,6 +933,7 @@ public class GitUtil implements AutoCloseable {
         try {
             return noteText(com).contains("REVERTED");
         } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }
@@ -946,6 +948,7 @@ public class GitUtil implements AutoCloseable {
         try {
             return noteText(com).contains("ACCEPTED");
         } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }

@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authentication;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
@@ -18,6 +19,7 @@ import java.util.Optional;
  * @since 5.2.0
  */
 @RequiredArgsConstructor
+@Slf4j
 public class CasUserProfileFactory {
     private final CasManagementConfigurationProperties casProperties;
 
@@ -33,7 +35,9 @@ public class CasUserProfileFactory {
         final Optional<UserProfile> profile = manager.get(true);
         if (profile.isPresent()) {
             final UserProfile up = profile.get();
-            return new CasUserProfile(up, this.casProperties.getAdminRoles());
+            final CasUserProfile cas = new CasUserProfile(up, this.casProperties.getAdminRoles());
+            LOGGER.debug("Located CAS user profile [{}]", cas);
+            return cas;
         }
         throw new IllegalArgumentException("Could not determine authenticated profile");
     }

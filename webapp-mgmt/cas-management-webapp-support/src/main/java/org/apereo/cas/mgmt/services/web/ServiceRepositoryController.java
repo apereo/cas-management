@@ -1033,6 +1033,7 @@ public class ServiceRepositoryController {
                 return createModifyChange(git, entry);
             }
         } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return null;
     }

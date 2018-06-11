@@ -83,39 +83,27 @@ public class ManagerFactory {
      * @return - GitServicesManager for the logged in user
      */
     public MgmtServicesManager from(final HttpServletRequest request, final CasUserProfile user) {
-        if (managementProperties.isEnableVersionControl()) {
-            MgmtServicesManager manager = (MgmtServicesManager) request.getSession().getAttribute("servicesManager");
-            if (manager != null) {
-                if (!user.isAdministrator()) {
-                    manager.getGit().rebase();
-                }
-                manager.load();
-            } else {
-                final GitUtil git;
-                if (!user.isAdministrator()) {
-                    git = repositoryFactory.from(user);
-                    git.rebase();
-                } else {
-                    git = repositoryFactory.masterRepository();
-                }
-                manager = new MgmtServicesManager(createJSONServiceManager(git), git);
-            }
-            request.getSession().setAttribute("servicesManager", manager);
-            return manager;
-        } else {
+        if (!managementProperties.isEnableVersionControl()) {
             return new MgmtServicesManager(servicesManager, new GitUtil(null));
         }
-    }
-
-    /**
-     * Master mgmt services manager.
-     *
-     * @return the mgmt services manager
-     * @throws Exception the exception
-     */
-    public MgmtServicesManager master() throws Exception {
-        final GitUtil git = repositoryFactory.masterRepository();
-        return new MgmtServicesManager(createJSONServiceManager(git), git);
+        MgmtServicesManager manager = (MgmtServicesManager) request.getSession().getAttribute("servicesManager");
+        if (manager != null) {
+            if (!user.isAdministrator()) {
+                manager.getGit().rebase();
+            }
+            manager.load();
+        } else {
+            final GitUtil git;
+            if (!user.isAdministrator()) {
+                git = repositoryFactory.from(user);
+                git.rebase();
+            } else {
+                git = repositoryFactory.masterRepository();
+            }
+            manager = new MgmtServicesManager(createJSONServiceManager(git), git);
+        }
+        request.getSession().setAttribute("servicesManager", manager);
+        return manager;
     }
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {

@@ -22,6 +22,8 @@ import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.RegexUtils;
+import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.profile.ProfileManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -101,11 +102,10 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     /**
      * Mapped method to return the manage.html.
      *
-     * @param response - HttpServletResponse
      * @return - ModelAndView
      */
     @GetMapping("/manage.html")
-    public ModelAndView manage(final HttpServletResponse response) {
+    public ModelAndView manage() {
         ensureDefaultServiceExists();
         final Map<String, Object> model = new HashMap<>();
         model.put(STATUS, HttpServletResponse.SC_OK);
@@ -124,6 +124,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         }
 
         if (!this.servicesManager.matchesExistingService(this.defaultService)) {
+            LOGGER.debug("Default service [{}] does not exist. Creating...", this.defaultService);
             final RegexRegisteredService svc = new RegexRegisteredService();
             svc.setServiceId('^' + this.defaultService.getId());
             svc.setName("Services Management Web Application");
@@ -146,14 +147,15 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     /**
      * Logout handling. Simply returns the view name.
      *
-     * @param request the request
-     * @param session the session
+     * @param request  the request
+     * @param response the response
      * @return the view name.
      */
     @GetMapping(value = "/logout.html")
-    public String logoutView(final HttpServletRequest request, final HttpSession session) {
+    public String logoutView(final HttpServletRequest request, final HttpServletResponse response) {
         LOGGER.debug("Invalidating application session...");
-        session.invalidate();
+        new ProfileManager(new J2EContext(request, response)).logout();
+        request.getSession(false).invalidate();
         return "logout";
     }
 
@@ -166,12 +168,11 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param response - HttpServletResponse
      * @param idAsLong the id
      * @return the response entity
-     * @throws Exception - failed
      */
     @GetMapping(value = "/deleteRegisteredService")
     public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
                                                           final HttpServletResponse response,
-                                                          @RequestParam("id") final long idAsLong) throws Exception {
+                                                          @RequestParam("id") final long idAsLong) {
         final MgmtServicesManager manager = managerFactory.from(request, response);
         final RegisteredService svc = manager.findServiceBy(idAsLong);
         if (svc == null) {
@@ -247,8 +248,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                 throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
             }
         }
-        final MgmtServicesManager manager = managerFactory.from(request, response);
-        return new ResponseEntity<>(manager.getServiceItemsForDomain(domain), HttpStatus.OK);
+        final MgmtServicesManager manager = managerFactory.from(request, casUserProfile);
+        final List<RegisteredServiceItem> serviceItemsForDomain = manager.getServiceItemsForDomain(domain);
+        return new ResponseEntity<>(serviceItemsForDomain, HttpStatus.OK);
     }
 
     /**

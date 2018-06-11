@@ -29,4 +29,22 @@ public final class CasManagementUtils {
             throw new BeanCreationException(e.getMessage(), e);
         }
     }
+
+    /**
+     * @return Return the full CAS mgmt version string.
+     * @see java.lang.Package#getImplementationVersion
+     */
+    public static String getVersion() {
+        return CasManagementUtils.class.getPackage().getImplementationVersion();
+    }
+
+    /**
+     * Gets specification version from the manifest package.
+     *
+     * @return the specification version
+     */
+    public static String getSpecificationVersion() {
+        return CasManagementUtils.class.getPackage().getSpecificationVersion();
+    }
+
 }

@@ -1044,6 +1044,7 @@ ext.libraries = [
                     force = true
                 },
                 dependencies.create("org.apereo.cas:cas-server-support-discovery-profile:$casVersion") {
+                    exclude(group: "com.github.coova", module: "jradius")
                     force = true
                 },
                 dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {

@@ -39,7 +39,6 @@ public class MgmtServicesManager implements ServicesManager {
 
     private Map<Long, String> uncommitted;
 
-
     private final Pattern domainExtractor = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
     private final Pattern domainPattern = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
@@ -60,37 +59,18 @@ public class MgmtServicesManager implements ServicesManager {
      * @throws Exception -failed
      */
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
+        LOGGER.debug("Loading services for domain [{}]", domain);
         if (git.isNull()) {
             return new ArrayList<>();
         }
         this.uncommitted = new HashMap<>();
         git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
         final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
-        final List<RegisteredServiceItem> serviceItems = new ArrayList<>(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
+        final List<RegisteredServiceItem> serviceItems = new ArrayList<>(services.stream()
+            .map(this::createServiceItem)
+            .collect(Collectors.toList()));
         return serviceItems;
 
-    }
-
-    private List<RegisteredServiceItem> checkForDeleted() {
-        if (git != null) {
-            try {
-                return git.checkForDeletes()
-                    .map(d -> getService(d))
-                    .collect(Collectors.toList());
-            } catch (final Exception e) {
-            }
-        }
-        return new ArrayList<>();
-    }
-
-    private RegisteredServiceItem getService(final DiffEntry d) {
-        try {
-            final String json = git.readObject(d.getOldId().toObjectId());
-            final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
-            return createServiceItem(serializer.from(json));
-        } catch (final Exception e) {
-            return null;
-        }
     }
 
     /**
@@ -129,6 +109,7 @@ public class MgmtServicesManager implements ServicesManager {
                 this.uncommitted.put(svc.getId(), entry.getChangeType().toString());
             }
         } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

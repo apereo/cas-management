@@ -18,7 +18,7 @@ import org.eclipse.jgit.api.Git;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,29 +64,22 @@ public class ManagerFactory {
     }
 
     /**
-     * Method will look up the CasUserProfile for the logged in user and the return the GitServicesManager for
-     * that user.
-     *
-     * @param request  - HttpServletRequest
-     * @param response - HttpServletResponse
-     * @return - GitServicesManager for the logged in user
-     */
-    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
-        return from(request, casUserProfileFactory.from(request, response));
-    }
-
-    /**
      * Method will create the GitServicesManager for the user passed in the CasUserProfile.
      *
      * @param request - HttpServletRequest
      * @param user    - CasUserProfile of logged in user
      * @return - GitServicesManager for the logged in user
+     * @throws Exception the exception
      */
-    public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) {
+    public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
         if (!managementProperties.isEnableVersionControl()) {
-            return new ManagementServicesManager(servicesManager, new GitUtil());
+            final GitUtil git = new GitUtil();
+            LOGGER.debug("Version control is disabled in CAS configuration; Change management is based off of repository at [{}]",
+                git.getRepositoryDirectory());
+            return new ManagementServicesManager(servicesManager, git);
         }
-        ManagementServicesManager manager = (ManagementServicesManager) request.getSession().getAttribute("servicesManager");
+        final HttpSession session = request.getSession();
+        ManagementServicesManager manager = (ManagementServicesManager) session.getAttribute("servicesManager");
         if (manager != null) {
             if (!user.isAdministrator()) {
                 manager.getGit().rebase();
@@ -102,7 +95,7 @@ public class ManagerFactory {
             }
             manager = new ManagementServicesManager(createJSONServiceManager(git), git);
         }
-        request.getSession().setAttribute("servicesManager", manager);
+        session.setAttribute("servicesManager", manager);
         return manager;
     }
 

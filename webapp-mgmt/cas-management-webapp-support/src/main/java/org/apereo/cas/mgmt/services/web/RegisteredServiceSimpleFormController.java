@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.services.web;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.mgmt.GitUtil;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
@@ -44,10 +45,10 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     /**
      * Instantiates a new registered service simple form controller.
      *
-     * @param servicesManager          the services from
-     * @param managerFactory           the manager factory
-     * @param casUserProfileFactory    the cas user factory
-     * @param repositoryFactory        the git repository factory
+     * @param servicesManager       the services from
+     * @param managerFactory        the manager factory
+     * @param casUserProfileFactory the cas user factory
+     * @param repositoryFactory     the git repository factory
      */
     public RegisteredServiceSimpleFormController(final ServicesManager servicesManager,
                                                  final ManagerFactory managerFactory,
@@ -62,9 +63,9 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     /**
      * Adds the service to the Service Registry.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @param service the edit bean
+     * @param service  the edit bean
      * @return the response entity
      * @throws Exception - failed
      */
@@ -72,7 +73,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<String> saveService(final HttpServletRequest request,
                                               final HttpServletResponse response,
                                               @RequestBody final RegisteredService service) throws Exception {
-        final ManagementServicesManager manager = managerFactory.from(request, response);
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
         if (service.getEvaluationOrder() < 0) {
             final String domain = manager.extractDomain(service.getServiceId());
             service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
@@ -90,9 +92,9 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     /**
      * Gets service by id.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @param id the id
+     * @param id       the id
      * @return the service by id
      * @throws Exception the exception
      */
@@ -107,9 +109,9 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     /**
      * Method will return a YAML representation of the service.
      *
-     * @param request - HttpServletRequet
+     * @param request  - HttpServletRequet
      * @param response - HttpServletResponse
-     * @param id - Long representing id of the service
+     * @param id       - Long representing id of the service
      * @return - String representing the service in Yaml notation.
      * @throws Exception - failed
      */
@@ -127,9 +129,9 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     /**
      * Method that will return the service as an HJson string.
      *
-     * @param request - HttpServletRequest
+     * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @param id - Long representing the id of the service
+     * @param id       - Long representing the id of the service
      * @return - String representing the service in HJson
      * @throws Exception -failed
      */
@@ -147,7 +149,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     private RegisteredService getService(final HttpServletRequest request,
                                          final HttpServletResponse response,
                                          final Long id) throws Exception {
-        final ManagementServicesManager manager = managerFactory.from(request, response);
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
         final RegisteredService service;
         if (id == -1) {
             service = new RegexRegisteredService();
@@ -164,7 +167,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     private void checkForRename(final RegisteredService service,
                                 final HttpServletRequest request,
                                 final HttpServletResponse response) throws Exception {
-        final RegisteredService oldSvc = managerFactory.from(request, response).findServiceBy(service.getId());
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        final RegisteredService oldSvc = managerFactory.from(request, casUserProfile).findServiceBy(service.getId());
         if (oldSvc != null) {
             if (!service.getName().equals(oldSvc.getName())) {
                 final GitUtil git = repositoryFactory.from(request, response);
@@ -173,7 +177,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
         }
     }
 
-    private String makeFileName(final RegisteredService service) throws Exception{
-        return StringUtils.remove(service.getName()+ '-' + service.getId() + ".json", " ");
+    private String makeFileName(final RegisteredService service) throws Exception {
+        return StringUtils.remove(service.getName() + '-' + service.getId() + ".json", " ");
     }
 }

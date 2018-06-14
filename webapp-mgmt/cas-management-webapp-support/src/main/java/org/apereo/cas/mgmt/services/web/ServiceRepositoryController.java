@@ -9,6 +9,7 @@ import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.BranchActionData;
 import org.apereo.cas.mgmt.services.web.beans.BranchData;
 import org.apereo.cas.mgmt.services.web.beans.CNote;
@@ -91,7 +92,7 @@ public class ServiceRepositoryController {
                                          @RequestParam final String msg) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         final GitUtil git = repositoryFactory.from(user);
-        if (git.isNull()) {
+        if (git.isUndefined()) {
             throw new Exception("No changes to commit");
         }
         git.addWorkingChanges();
@@ -276,7 +277,7 @@ public class ServiceRepositoryController {
                                              @RequestBody final String msg) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         final GitUtil git = repositoryFactory.from(user);
-        if (git.isNull()) {
+        if (git.isUndefined()) {
             throw new Exception("No changes to submit");
         }
         final long timestamp = new Date().getTime();
@@ -393,7 +394,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<List<Change>> untracked(final HttpServletResponse response,
                                                   final HttpServletRequest request) throws Exception {
         final GitUtil git = repositoryFactory.from(request, response);
-        if (git.isNull()) {
+        if (git.isUndefined()) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         }
         final List<Change> changes = git.scanWorkingDiffs().stream()
@@ -434,7 +435,7 @@ public class ServiceRepositoryController {
         final List<BranchData> names = git.branches()
             .map(git::mapBranches)
             .filter(r -> filterPulls(r, options))
-            .map(r -> createBranch(r))
+            .map(this::createBranch)
             .collect(toList());
 
         return new ResponseEntity<>(names, HttpStatus.OK);
@@ -477,7 +478,7 @@ public class ServiceRepositoryController {
         final List<BranchData> names = git.branches()
             .filter(r -> r.getName().contains('/' + user.getId() + '_'))
             .map(git::mapBranches)
-            .map(r -> createBranch(r))
+            .map(this::createBranch)
             .collect(toList());
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
@@ -591,10 +592,11 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/changePair")
     public ResponseEntity<RegisteredService[]> changePair(final HttpServletResponse response,
                                                           final HttpServletRequest request,
-                                                          final @RequestParam String id) throws Exception {
+                                                          @RequestParam final String id) throws Exception {
         final GitUtil git = repositoryFactory.from(request, response);
         final RegisteredService change = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
-        final RegisteredService orig = managerFactory.from(request, response).findServiceBy(change.getId());
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        final RegisteredService orig = managerFactory.from(request, casUserProfile).findServiceBy(change.getId());
         final RegisteredService[] resp = {change, orig};
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
@@ -784,7 +786,7 @@ public class ServiceRepositoryController {
                                                  final HttpServletResponse response,
                                                  final @RequestParam String path) throws Exception {
         GitUtil git = repositoryFactory.from(request, response);
-        if (git.isNull()) {
+        if (git.isUndefined()) {
             git = repositoryFactory.masterRepository();
         }
 
@@ -807,7 +809,7 @@ public class ServiceRepositoryController {
                                          final HttpServletResponse response,
                                          final @RequestParam String path) throws Exception {
         final GitUtil git = repositoryFactory.from(request, response);
-        if (git.isNull()) {
+        if (git.isUndefined()) {
             throw new Exception("No changes to revert");
         }
 
@@ -835,7 +837,8 @@ public class ServiceRepositoryController {
         }
         final GitUtil git = repositoryFactory.masterRepository();
         final RegisteredService svc = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
-        managerFactory.from(request, response).save(svc);
+        final ManagementServicesManager mgmtServicesManager = managerFactory.from(request, user);
+        mgmtServicesManager.save(svc);
         git.close();
         return new ResponseEntity<>("File Reverted", HttpStatus.OK);
     }
@@ -855,7 +858,7 @@ public class ServiceRepositoryController {
                                                final @RequestParam String path) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         final GitUtil git = repositoryFactory.from(user);
-        if (git.isNull()) {
+        if (git.isUndefined()) {
             throw new Exception("No changes to revert");
         }
         final ServicesManager manager = managerFactory.from(request, user);
@@ -949,7 +952,7 @@ public class ServiceRepositoryController {
                                                final @RequestParam String branchName) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         final GitUtil git = repositoryFactory.from(user);
-        if (git.isNull()) {
+        if (git.isUndefined()) {
             throw new Exception("No changes to revert");
         }
 

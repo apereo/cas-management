@@ -49,6 +49,7 @@ public class RepositoryFactory {
     @SneakyThrows
     public GitUtil from(final CasUserProfile user) {
         if (user.isAdministrator()) {
+            LOGGER.debug("User [{}] is not an administrator. Loading objects from master repository", user);
             return masterRepository();
         }
         final Path path = Paths.get(casProperties.getUserReposDir() + '/' + user.getId());
@@ -77,17 +78,7 @@ public class RepositoryFactory {
 
     @SneakyThrows
     private static GitUtil buildGitUtil(final String path) {
-        boolean repositoryMustExist = true;
-        final File gitDir = new File(path);
-        if (!gitDir.exists()) {
-            LOGGER.debug("Creating git repository directory at [{}]", gitDir);
-            final boolean result = gitDir.mkdirs();
-            if (!result) {
-                LOGGER.warn("Failed to create git repository directory at [{}]", gitDir);
-                repositoryMustExist = false;
-            }
-        }
-        return new GitUtil(gitDir, repositoryMustExist);
+        return new GitUtil(path);
     }
 
     /**
@@ -97,8 +88,10 @@ public class RepositoryFactory {
      */
     public void clone(final String clone) {
         try {
+            final String uri = casProperties.getServicesRepo() + "/.git";
+            LOGGER.debug("Cloning repository [{}] to path [{}]", uri, clone);
             Git.cloneRepository()
-                .setURI(casProperties.getServicesRepo() + "/.git")
+                .setURI(uri)
                 .setDirectory(new File(clone))
                 .call();
         } catch (final Exception e) {

@@ -138,6 +138,7 @@ public class FormDataFactory {
             delegatedAuthnProviders.add("Orcid");
             delegatedAuthnProviders.add("Dropbox");
             delegatedAuthnProviders.add("Github");
+            delegatedAuthnProviders.add("Facebook");
             delegatedAuthnProviders.add("Foursquare");
             delegatedAuthnProviders.add("WindowsLive");
             delegatedAuthnProviders.add("Google");

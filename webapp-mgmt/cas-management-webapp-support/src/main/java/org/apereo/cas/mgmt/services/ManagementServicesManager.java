@@ -48,7 +48,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @param manager - ServicesManger to load from
      */
     public void loadFrom(final ServicesManager manager) {
-        manager.getAllServices().stream().forEach(svc -> save(svc));
+        manager.getAllServices().stream().forEach(this::save);
     }
 
     /**
@@ -60,18 +60,16 @@ public class ManagementServicesManager implements ServicesManager {
      */
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
         LOGGER.debug("Loading services for domain [{}]", domain);
-        if (git.isNull()) {
-            LOGGER.warn("Git repository is undefined");
+        if (git.isUndefined()) {
+            LOGGER.warn("Git repository location is not configured; No services may be loaded");
             return new ArrayList<>();
         }
         this.uncommitted = new HashMap<>();
-        git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
+        git.scanWorkingDiffs().stream().forEach(this::createChange);
         final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
-        final List<RegisteredServiceItem> serviceItems = new ArrayList<>(services.stream()
+        return services.stream()
             .map(this::createServiceItem)
-            .collect(Collectors.toList()));
-        return serviceItems;
-
+            .collect(Collectors.toList());
     }
 
     /**
@@ -87,11 +85,12 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        if (!git.isNull()) {
+        if (!git.isUndefined()) {
             if (uncommitted != null && uncommitted.containsKey(service.getId())) {
                 serviceItem.setStatus(uncommitted.get(service.getId()));
             }
         }
+        LOGGER.debug("Created service item [{}] based on registered service [{}]", serviceItem, service.getServiceId());
         return serviceItem;
     }
 
@@ -104,6 +103,8 @@ public class ManagementServicesManager implements ServicesManager {
             } else {
                 svc = ser.from(new File(git.repoPath() + '/' + entry.getNewPath()));
             }
+            LOGGER.debug("Created change entry for service [{}]", svc.getServiceId());
+
             if (this.uncommitted.containsKey(svc.getId())) {
                 this.uncommitted.replace(svc.getId(), "MODIFY");
             } else {
@@ -186,6 +187,7 @@ public class ManagementServicesManager implements ServicesManager {
 
     @Override
     public Collection<RegisteredService> load() {
+        LOGGER.debug("Loading registered services from CAS service registry...");
         return this.manager.load();
     }
 

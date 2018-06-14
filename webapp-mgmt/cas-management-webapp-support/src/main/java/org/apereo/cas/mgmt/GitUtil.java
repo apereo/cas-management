@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.services.web.beans.Commit;
 import org.apereo.cas.mgmt.services.web.beans.History;
@@ -27,7 +28,6 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -46,12 +46,14 @@ import java.io.File;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -73,18 +75,22 @@ public class GitUtil implements AutoCloseable {
 
     private final Git git;
 
-    public GitUtil() {
-        this(FileUtils.getTempDirectory(), false);
+    public GitUtil() throws Exception {
+        this(FileUtils.getTempDirectory().getCanonicalPath());
     }
 
-    @SneakyThrows
-    public GitUtil(final File path, final boolean mustExist) {
-        this.git = new Git(new FileRepositoryBuilder()
-            .setGitDir(path)
-            .setMustExist(mustExist)
-            .readEnvironment()
-            .findGitDir()
-            .build());
+    public GitUtil(final String path) {
+        boolean repositoryMustExist = true;
+        final File gitDir = new File(path);
+        if (!gitDir.exists()) {
+            LOGGER.debug("Creating git repository directory at [{}]", gitDir);
+            final boolean result = gitDir.mkdirs();
+            if (!result) {
+                LOGGER.warn("Failed to create git repository directory at [{}]", gitDir);
+                repositoryMustExist = false;
+            }
+        }
+        this.git = initializeGitRepository(gitDir, repositoryMustExist);
     }
 
     /**
@@ -106,8 +112,11 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed
      */
     public List<Commit> getUnpublishedCommits() throws Exception {
-        final List<Commit> commits = StreamSupport.stream(git.log().addRange(getPublished().getPeeledObjectId(), git.getRepository().resolve("HEAD"))
-            .call().spliterator(), false).map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage(), null))
+        final List<Commit> commits = StreamSupport
+            .stream(git.log()
+                .addRange(getPublished().getPeeledObjectId(), git.getRepository().resolve("HEAD"))
+                .call().spliterator(), false)
+            .map(c -> new Commit(c.abbreviate(NAME_LENGTH).name(), c.getFullMessage(), null))
             .collect(Collectors.toList());
         Collections.reverse(commits);
         return commits;
@@ -174,23 +183,6 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
-     * Method to commit a single file into the repository.
-     *
-     * @param user - logged in user
-     * @param file - file to commit
-     * @param msg  - commit message
-     * @return - RevCommit
-     * @throws Exception - failed
-     */
-    public RevCommit commitSingleFile(final CasUserProfile user, final String file, final String msg) throws Exception {
-        git.add().addFilepattern(file).call();
-        return git.commit()
-            .setCommitter(getCommitterId(user))
-            .setMessage(msg)
-            .call();
-    }
-
-    /**
      * Checks out the passed ref to be the current branch of the repository.
      *
      * @param ref - String representing a commit in the repository.
@@ -224,7 +216,7 @@ public class GitUtil implements AutoCloseable {
     public void addWorkingChanges() throws Exception {
         final Status status = git.status().call();
         status.getUntracked()
-            .forEach(f -> addFile(f));
+            .forEach(this::addFile);
     }
 
     /**
@@ -245,18 +237,6 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
-     * Returns the content of the file as a String that is represented by the passed object Id
-     * as a string.
-     *
-     * @param id - String representing Id of the object
-     * @return - Contents of the object as String.
-     * @throws Exception - failed.
-     */
-    public String readFromWorkingTree(final String id) throws Exception {
-        return readFormWorkingTree(ObjectId.fromString(id));
-    }
-
-    /**
      * Returns the content of the file as a String that is represented by the passed object id.
      *
      * @param id - ObjectId of the file in the repository
@@ -269,19 +249,6 @@ public class GitUtil implements AutoCloseable {
             workTreeIterator.next(1);
         }
         return IOUtils.toString(workTreeIterator.openEntryStream(), Charset.defaultCharset());
-    }
-
-    /**
-     * Returns a RawText representation of a file in the passed repository.  Used in creating diffs.
-     *
-     * @param repo - The repository to pull the change.
-     * @param path - The path to the file.
-     * @return - RawText representation of the file.
-     * @throws Exception - failed.
-     */
-    public RawText raw(final Repository repo, final String path) throws Exception {
-        final File file = new File(repo.getWorkTree().getAbsolutePath() + '/' + path);
-        return new RawText(FileUtils.readFileToByteArray(file));
     }
 
     /**
@@ -347,11 +314,12 @@ public class GitUtil implements AutoCloseable {
      */
     public void appendNote(final RevObject com, final String msg) throws Exception {
         final Note note = note(com);
-        final StringBuilder buffer = new StringBuilder();
+        final StringBuilder buffer = new StringBuilder(msg.length());
         if (note != null) {
-            final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            git.getRepository().open(note.getData()).copyTo(bytes);
-            buffer.append(bytes.toString().concat("\n\n"));
+            try (OutputStream bytes = new ByteArrayOutputStream()) {
+                git.getRepository().open(note.getData()).copyTo(bytes);
+                buffer.append(bytes.toString().concat("\n\n"));
+            }
         }
         buffer.append(msg);
         addNote(com, buffer.toString());
@@ -406,7 +374,7 @@ public class GitUtil implements AutoCloseable {
     public List<History> history(final String path) throws Exception {
         return logs(path)
             .map(r -> createHistory(r, path))
-            .filter(h -> h != null)
+            .filter(Objects::nonNull)
             .collect(Collectors.toList());
     }
 
@@ -569,6 +537,10 @@ public class GitUtil implements AutoCloseable {
         }
     }
 
+    public File getRepositoryDirectory() {
+        return git.getRepository().getDirectory();
+    }
+
     /**
      * Class used to define a TreeFilter to only pull history for a single path.
      */
@@ -608,7 +580,7 @@ public class GitUtil implements AutoCloseable {
      *
      * @return - true if no git repository is present.
      */
-    public boolean isNull() {
+    public boolean isUndefined() {
         return git == null;
     }
 
@@ -667,15 +639,6 @@ public class GitUtil implements AutoCloseable {
      */
     public void pull() throws Exception {
         git.pull().call();
-    }
-
-    /**
-     * Fetches changed form the default remote repository into the wrapped repository.
-     *
-     * @throws Exception - failed.
-     */
-    public void fetch() throws Exception {
-        git.fetch().call();
     }
 
     /**
@@ -739,30 +702,6 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
-     * Overloaded method to return a formatted diff by using a RawText and an ObjectId.
-     *
-     * @param oldText - RawText.
-     * @param newId   - ObjectId.
-     * @return - Formatted diff in a byte[].
-     * @throws Exception -failed.
-     */
-    public byte[] getFormatter(final RawText oldText, final ObjectId newId) throws Exception {
-        return getFormatter(oldText, rawText(newId));
-    }
-
-    /**
-     * Overloaded method to return a formatted diff by using a RawText and an ObjectId.
-     *
-     * @param oldId   - ObjectId.
-     * @param newText - RawText.
-     * @return - Formatted diff in a byte[].
-     * @throws Exception - failed.
-     */
-    public byte[] getFormatter(final ObjectId oldId, final RawText newText) throws Exception {
-        return getFormatter(rawText(oldId), newText);
-    }
-
-    /**
      * Compares the RawText of two files and creates a formateted diff to return.
      *
      * @param oldText - RawText.
@@ -800,18 +739,6 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
-     * Returns the RawText of a file specified by its path.
-     *
-     * @param path - File path.
-     * @return - RawText.
-     * @throws Exception - failed.
-     */
-    public RawText rawText(final String path) throws Exception {
-        final File file = new File(git.getRepository().getWorkTree().getAbsolutePath() + '/' + path);
-        return new RawText(FileUtils.readFileToByteArray(file));
-    }
-
-    /**
      * Returns the last commit before the commit that was submitted as a pull request.
      *
      * @param branchName - Name given to the branch when submitted.
@@ -833,7 +760,7 @@ public class GitUtil implements AutoCloseable {
      */
     public RevCommit findSubmitCommit(final String branchName) throws Exception {
         return git.branchList().call().stream()
-            .map(r -> mapBranches(r))
+            .map(this::mapBranches)
             .filter(r -> r.getRef().getName().contains(Iterables.get(Splitter.on('_').split(branchName), 1)))
             .findFirst().get().revCommit;
     }
@@ -961,23 +888,6 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
-     * Checks if the repository contains any deleted files in working directory that have not been committed.
-     *
-     * @return - Stream of DiffEntry
-     * @throws Exception - failed.
-     */
-    public Stream<DiffEntry> checkForDeletes() throws Exception {
-        final FileTreeIterator workTreeIterator = new FileTreeIterator(git.getRepository());
-        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        final ObjectReader reader = git.getRepository().newObjectReader();
-        oldTreeIter.reset(reader, git.getRepository().resolve("HEAD^{tree}"));
-        final DiffFormatter formatter = new DiffFormatter(new ByteArrayOutputStream());
-        formatter.setRepository(git.getRepository());
-        return formatter.scan(oldTreeIter, workTreeIterator).stream()
-            .filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE);
-    }
-
-    /**
      * This methods moves the file when it has been renamed.
      *
      * @param oldName - the old name
@@ -985,8 +895,12 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public void move(final String oldName, final String newName) throws Exception {
-        Files.move(Paths.get(repoPath() + '/' + oldName),
-            Paths.get(repoPath() + '/' + newName));
+        LOGGER.debug("Attempting to move [{}] to [{}]", oldName, newName);
+        final Path oldPath = Paths.get(repoPath() + '/' + oldName);
+        final Path target = Paths.get(repoPath() + '/' + newName);
+
+        LOGGER.debug("Moving [{}] to [{}]", oldPath, target);
+        Files.move(oldPath, target);
         git.add().addFilepattern(newName).call();
         git.rm().addFilepattern(oldName).call();
     }
@@ -1039,5 +953,16 @@ public class GitUtil implements AutoCloseable {
         public boolean isReverted() {
             return git.isReverted(revCommit);
         }
+    }
+
+    @SneakyThrows
+    private static Git initializeGitRepository(final File path, final boolean mustExist) {
+        LOGGER.debug("Initializing git repository directory at [{}] with strict path checking [{}]", path, BooleanUtils.toStringOnOff(mustExist));
+        return new Git(new FileRepositoryBuilder()
+            .setGitDir(path)
+            .setMustExist(mustExist)
+            .readEnvironment()
+            .findGitDir()
+            .build());
     }
 }

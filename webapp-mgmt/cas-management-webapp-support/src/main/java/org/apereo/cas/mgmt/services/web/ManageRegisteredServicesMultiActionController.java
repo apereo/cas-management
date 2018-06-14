@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -168,12 +169,14 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param response - HttpServletResponse
      * @param idAsLong the id
      * @return the response entity
+     * @throws Exception the exception
      */
     @GetMapping(value = "/deleteRegisteredService")
     public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
                                                           final HttpServletResponse response,
-                                                          @RequestParam("id") final long idAsLong) {
-        final ManagementServicesManager manager = managerFactory.from(request, response);
+                                                          @RequestParam("id") final long idAsLong) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
         final RegisteredService svc = manager.findServiceBy(idAsLong);
         if (svc == null) {
             return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
@@ -182,6 +185,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
             return new ResponseEntity<>("The default service " + this.defaultService.getId() + " cannot be deleted. "
                 + "The definition is required for accessing the application.", HttpStatus.BAD_REQUEST);
         }
+        LOGGER.debug("Deleting service [{}]", idAsLong);
         manager.delete(idAsLong);
         return new ResponseEntity<>(svc.getName(), HttpStatus.OK);
     }
@@ -203,12 +207,16 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, response);
-        Collection<String> data = manager.getDomains();
+        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
+
+        final Collection<String> data;
         if (!casUserProfile.isAdministrator()) {
-            data = data.stream()
+            data = manager.getDomains()
+                .stream()
                 .filter(d -> hasPermission(d, casUserProfile))
                 .collect(Collectors.toList());
+        } else {
+            data = manager.getDomains();
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -261,15 +269,15 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param response - HttpServletResponse
      * @param query    - a string representing text to search for
      * @return - the resulting services
+     * @throws Exception the exception
      */
     @GetMapping(value = "/search")
     public ResponseEntity<List<RegisteredServiceItem>> search(final HttpServletRequest request,
                                                               final HttpServletResponse response,
-                                                              @RequestParam final String query) {
+                                                              @RequestParam final String query) throws Exception {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
-        final List<RegisteredServiceItem> serviceBeans = new ArrayList<>();
         List<RegisteredService> services;
         if (!casUserProfile.isAdministrator()) {
             services = casUserProfile.getPermissions()
@@ -284,7 +292,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                 || pattern.matcher(service.getName()).lookingAt()
                 || pattern.matcher(service.getDescription() != null ? service.getDescription() : "").lookingAt())
             .collect(Collectors.toList());
-        serviceBeans.addAll(services.stream().map(manager::createServiceItem).collect(Collectors.toList()));
+        final List<RegisteredServiceItem> serviceBeans = new ArrayList<>(services.stream()
+            .map(manager::createServiceItem)
+            .collect(Collectors.toList()));
         return new ResponseEntity<>(serviceBeans, HttpStatus.OK);
     }
 
@@ -304,12 +314,14 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param request  the request
      * @param response the response
      * @param svcs     the services to be updated
+     * @throws Exception the exception
      */
     @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
-                            @RequestBody final RegisteredServiceItem[] svcs) {
-        final ManagementServicesManager manager = managerFactory.from(request, response);
+                            @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
+        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
         final String id = svcs[0].getAssignedId();
         final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {
@@ -385,8 +397,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     }
 
     private static boolean hasPermission(final String domain, final CasUserProfile casUserProfile) {
-        return casUserProfile.getPermissions().contains("*")
-            || casUserProfile.getPermissions().stream().anyMatch(s -> domain.endsWith(s));
+        final Set<String> permissions = casUserProfile.getPermissions();
+        LOGGER.debug("Current permissions for [{}] matched against domain [{}] are [{}]", casUserProfile, domain, permissions);
+        return permissions.contains("*") || permissions.stream().anyMatch(domain::endsWith);
     }
 }
 

@@ -223,7 +223,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      */
     @GetMapping(value = "/user")
     public ResponseEntity<CasUserProfile> getUser(final HttpServletRequest request,
-                                                  final HttpServletResponse response) throws Exception {
+                                                  final HttpServletResponse response) {
         final CasUserProfile data = casUserProfileFactory.from(request, response);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -261,12 +261,11 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param response - HttpServletResponse
      * @param query    - a string representing text to search for
      * @return - the resulting services
-     * @throws Exception - failed
      */
     @GetMapping(value = "/search")
     public ResponseEntity<List<RegisteredServiceItem>> search(final HttpServletRequest request,
                                                               final HttpServletResponse response,
-                                                              @RequestParam final String query) throws Exception {
+                                                              @RequestParam final String query) {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         final ManagementServicesManager manager = managerFactory.from(request, response);
         final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
@@ -293,10 +292,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * Gets form data.
      *
      * @return the form data
-     * @throws Exception the exception
      */
     @GetMapping(value = "formData")
-    public ResponseEntity<FormData> getFormData() throws Exception {
+    public ResponseEntity<FormData> getFormData() {
         return new ResponseEntity<>(formDataFactory.create(), HttpStatus.OK);
     }
 
@@ -306,12 +304,11 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param request  the request
      * @param response the response
      * @param svcs     the services to be updated
-     * @throws Exception - failed
      */
     @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
-                            @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
+                            @RequestBody final RegisteredServiceItem[] svcs) {
         final ManagementServicesManager manager = managerFactory.from(request, response);
         final String id = svcs[0].getAssignedId();
         final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
@@ -333,10 +330,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * Returns the versions this instance was compiled against.
      *
      * @return - cas versions
-     * @throws Exception - failed
      */
     @GetMapping("footer")
-    public ResponseEntity<String[]> footer() throws Exception {
+    public ResponseEntity<String[]> footer() {
         return new ResponseEntity<>(new String[]{CasVersion.getVersion(),
             this.getClass().getPackage().getImplementationVersion()},
             HttpStatus.OK);
@@ -388,7 +384,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         return new ResponseEntity<>(config, HttpStatus.OK);
     }
 
-    private boolean hasPermission(final String domain, final CasUserProfile casUserProfile) {
+    private static boolean hasPermission(final String domain, final CasUserProfile casUserProfile) {
         return casUserProfile.getPermissions().contains("*")
             || casUserProfile.getPermissions().stream().anyMatch(s -> domain.endsWith(s));
     }

@@ -74,7 +74,7 @@ public class GitUtil implements AutoCloseable {
     private final Git git;
 
     public GitUtil() {
-        this(FileUtils.getTempDirectory(), true);
+        this(FileUtils.getTempDirectory(), false);
     }
 
     @SneakyThrows

@@ -55,7 +55,7 @@ public class ManagerFactory {
                 final ManagementServicesManager manager = new ManagementServicesManager(createJSONServiceManager(git), git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();
-                git.getGit().commit().setAll(true).setMessage("Initial commit").call();
+                git.commit("Initial commit");
                 git.setPublished();
             } catch (final Exception e) {
                 LOGGER.error(e.getMessage(), e);
@@ -74,10 +74,13 @@ public class ManagerFactory {
     public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
         if (!managementProperties.isEnableVersionControl()) {
             final GitUtil git = new GitUtil();
-            LOGGER.debug("Version control is disabled in CAS configuration; Change management is based off of repository at [{}]",
-                git.getRepositoryDirectory());
+            LOGGER.info("Version control & change management is disabled in CAS configuration");
             return new ManagementServicesManager(servicesManager, git);
         }
+        return getManagementServicesManager(request, user);
+    }
+
+    private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final CasUserProfile user) {
         final HttpSession session = request.getSession();
         ManagementServicesManager manager = (ManagementServicesManager) session.getAttribute("servicesManager");
         if (manager != null) {

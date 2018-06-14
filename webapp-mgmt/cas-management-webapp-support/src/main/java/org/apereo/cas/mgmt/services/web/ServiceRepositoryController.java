@@ -259,7 +259,7 @@ public class ServiceRepositoryController {
      */
     private int getPublishBehindCount() throws Exception {
         final GitUtil git = repositoryFactory.masterRepository();
-        return git.getGit().getRepository().resolve("HEAD").equals(git.getPublished().getPeeledObjectId()) ? 0 : 1;
+        return git.getRepository().resolve("HEAD").equals(git.getPublished().getPeeledObjectId()) ? 0 : 1;
     }
 
     /**
@@ -338,7 +338,7 @@ public class ServiceRepositoryController {
         try {
             final GitUtil git = repositoryFactory.from(request, response);
             final GitStatus gitStatus = new GitStatus();
-            final Status status = git.getGit().status().call();
+            final Status status = git.status();
             gitStatus.setHasChanges(!status.isClean());
             gitStatus.setAdded(status.getUntracked().stream()
                 .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
@@ -368,7 +368,7 @@ public class ServiceRepositoryController {
     private static String getDeletedServiceName(final GitUtil git, final String path) {
         final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
         try {
-            final TreeWalk treeWalk = new TreeWalk(git.getGit().getRepository());
+            final TreeWalk treeWalk = new TreeWalk(git.getRepository());
             treeWalk.addTree(git.getLastNCommits(1).findFirst().get().getTree());
             while (treeWalk.next()) {
                 if (treeWalk.getPathString().endsWith(path)) {
@@ -426,7 +426,7 @@ public class ServiceRepositoryController {
     @PostMapping(value = "/pullRequests", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BranchData>> branches(final HttpServletResponse response,
                                                      final HttpServletRequest request,
-                                                     final @RequestBody boolean[] options) throws Exception {
+                                                     @RequestBody final boolean[] options) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
@@ -435,7 +435,7 @@ public class ServiceRepositoryController {
         final List<BranchData> names = git.branches()
             .map(git::mapBranches)
             .filter(r -> filterPulls(r, options))
-            .map(this::createBranch)
+            .map(ServiceRepositoryController::createBranch)
             .collect(toList());
 
         return new ResponseEntity<>(names, HttpStatus.OK);
@@ -448,7 +448,7 @@ public class ServiceRepositoryController {
      * @param options - 0:Submitted, 1:Accepted, 2:Rejected
      * @return - true of the pull should be included
      */
-    private boolean filterPulls(final GitUtil.BranchMap r, final boolean[] options) {
+    private static boolean filterPulls(final GitUtil.BranchMap r, final boolean[] options) {
         if (r.getName().equals("refs/heads/master")) {
             return false;
         }
@@ -478,7 +478,7 @@ public class ServiceRepositoryController {
         final List<BranchData> names = git.branches()
             .filter(r -> r.getName().contains('/' + user.getId() + '_'))
             .map(git::mapBranches)
-            .map(this::createBranch)
+            .map(ServiceRepositoryController::createBranch)
             .collect(toList());
         return new ResponseEntity<>(names, HttpStatus.OK);
     }
@@ -862,7 +862,7 @@ public class ServiceRepositoryController {
             throw new Exception("No changes to revert");
         }
         final ServicesManager manager = managerFactory.from(request, user);
-        insertService(git, path, manager);
+        insertService(git, path);
         git.checkoutFile(path);
         return new ResponseEntity<>("File Reverted", HttpStatus.OK);
     }
@@ -880,11 +880,11 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/checkout")
     public ResponseEntity<String> checkout(final HttpServletRequest request,
                                            final HttpServletResponse response,
-                                           final @RequestParam String id,
-                                           final @RequestParam String path) throws Exception {
+                                           @RequestParam final String id,
+                                           @RequestParam final String path) throws Exception {
         final GitUtil git = repositoryFactory.from(request, response);
         git.checkout(path, id);
-        git.getGit().reset().addPath(path).call();
+        git.reset(path);
         git.close();
         return new ResponseEntity<>("File Checked Out", HttpStatus.OK);
     }
@@ -901,7 +901,7 @@ public class ServiceRepositoryController {
     @GetMapping("/checkoutCommit")
     public ResponseEntity<String> checkoutCommit(final HttpServletResponse response,
                                                  final HttpServletRequest request,
-                                                 final @RequestParam String id) throws Exception {
+                                                 @RequestParam final String id) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
@@ -912,7 +912,7 @@ public class ServiceRepositoryController {
         git.getDiffsToRevert(id).stream().forEach(d -> {
             try {
                 if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
-                    git.getGit().rm().addFilepattern(d.getNewPath()).call();
+                    git.rm(d.getNewPath());
                 } else {
                     git.checkout(d.getOldPath(), id + "~1");
                 }
@@ -927,14 +927,13 @@ public class ServiceRepositoryController {
     /**
      * Restores a service into the service from at its original location.
      *
-     * @param git     - GitUtil
-     * @param path    - path of the file
-     * @param manager - ServicesManager
+     * @param git  - GitUtil
+     * @param path - path of the file
      * @throws Exception - failed
      */
-    private void insertService(final GitUtil git, final String path, final ServicesManager manager) throws Exception {
+    private static void insertService(final GitUtil git, final String path) throws Exception {
         final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
-        final RegisteredService svc = ser.from(git.readObject(git.history(path).get(0).getId()));
+        ser.from(git.readObject(git.history(path).get(0).getId()));
     }
 
     /**
@@ -949,7 +948,7 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/revertSubmit")
     public ResponseEntity<String> revertSubmit(final HttpServletRequest request,
                                                final HttpServletResponse response,
-                                               final @RequestParam String branchName) throws Exception {
+                                               @RequestParam final String branchName) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
         final GitUtil git = repositoryFactory.from(user);
         if (git.isUndefined()) {
@@ -1008,7 +1007,7 @@ public class ServiceRepositoryController {
      * @param r - BranchMap
      * @return - BranchData
      */
-    private BranchData createBranch(final GitUtil.BranchMap r) {
+    private static BranchData createBranch(final GitUtil.BranchMap r) {
         final BranchData branch = new BranchData();
         branch.setName(r.getName());
         branch.setMsg(r.getFullMessage());
@@ -1049,7 +1048,7 @@ public class ServiceRepositoryController {
      * @return - Change
      * @throws Exception - failed
      */
-    private Change createDeleteChange(final GitUtil git, final DiffEntry entry) throws Exception {
+    private static Change createDeleteChange(final GitUtil git, final DiffEntry entry) throws Exception {
         final String json = git.readObject(entry.getOldId().toObjectId());
         final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
         final RegisteredService svc = ser.from(json);
@@ -1070,7 +1069,7 @@ public class ServiceRepositoryController {
      * @throws Exception - failed
      */
     @SuppressWarnings("DefaultCharset")
-    private Change createModifyChange(final GitUtil git, final DiffEntry entry) throws Exception {
+    private static Change createModifyChange(final GitUtil git, final DiffEntry entry) throws Exception {
         final String file = git.repoPath() + '/' + entry.getNewPath();
         final String json = new String(Files.readAllBytes(Paths.get(file)));
         final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
@@ -1089,7 +1088,7 @@ public class ServiceRepositoryController {
      * @param d - DiffEntry
      * @return - Diff
      */
-    private Diff createDiff(final DiffEntry d, final GitUtil git) {
+    private static Diff createDiff(final DiffEntry d, final GitUtil git) {
         try {
             final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
             return new Diff(d.getNewPath(),

@@ -58,18 +58,15 @@ public class ManagementServicesManager implements ServicesManager {
      * @return - List of RegisteredServiceItems
      * @throws Exception -failed
      */
-    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
+    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
         LOGGER.debug("Loading services for domain [{}]", domain);
-        if (git.isUndefined()) {
-            LOGGER.warn("Git repository location is not configured; No services may be loaded");
-            return new ArrayList<>();
-        }
-        this.uncommitted = new HashMap<>();
-        git.scanWorkingDiffs().stream().forEach(this::createChange);
         final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
-        return services.stream()
+        final List<RegisteredServiceItem> items = services.stream()
             .map(this::createServiceItem)
             .collect(Collectors.toList());
+        this.uncommitted = new HashMap<>();
+        git.scanWorkingDiffs().stream().forEach(this::createChange);
+        return items;
     }
 
     /**

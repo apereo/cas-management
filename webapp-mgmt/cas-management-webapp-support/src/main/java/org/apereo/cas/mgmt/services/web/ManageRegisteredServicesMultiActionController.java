@@ -227,7 +227,6 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param request  the request
      * @param response the response
      * @return the user
-     * @throws Exception the exception
      */
     @GetMapping(value = "/user")
     public ResponseEntity<CasUserProfile> getUser(final HttpServletRequest request,

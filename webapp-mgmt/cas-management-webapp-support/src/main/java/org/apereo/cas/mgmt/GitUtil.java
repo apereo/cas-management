@@ -73,7 +73,6 @@ public class GitUtil implements AutoCloseable {
 
     private final Git git;
 
-    @SneakyThrows
     public GitUtil() {
         this(FileUtils.getTempDirectory(), true);
     }

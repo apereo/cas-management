@@ -25,9 +25,7 @@ ext["groovyVersion"] = "2.4.15"
 ext["log4jVersion"] = "2.11.0"
 ext["commonsBeansVersion"] = "1.9.3"
 ext["dropwizardMetricsVersion"] = "3.2.5"
-ext["caffeinVersion"] = "2.6.2"
 
-ext["caffeine.version"] = ext["caffeinVersion"]
 ext["commons-beanutils.version"] = "1.8.3"
 ext["hazelcast.version"] = ext["hazelcastVersion"]
 ext["hibernate.version"] = ext["hibernateVersion"]

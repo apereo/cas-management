@@ -12,20 +12,12 @@ import org.apereo.cas.services.OidcSubjectTypes;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceMultifactorPolicy;
 import org.apereo.cas.services.RegisteredServiceProperty;
+import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.ws.idp.WSFederationClaims;
 import org.apereo.services.persondir.util.CaseCanonicalizationMode;
-import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
-import org.jose4j.jwe.KeyManagementAlgorithmIdentifiers;
-import org.opensaml.saml.metadata.resolver.filter.impl.PredicateFilter;
-import org.opensaml.saml.saml2.core.Attribute;
-import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
-import org.reflections.ReflectionUtils;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -49,15 +41,19 @@ public class FormData implements Serializable {
 
     private List<Integer> remoteCodes = Arrays.stream(HttpStatus.values()).map(HttpStatus::value).collect(Collectors.toList());
 
-    private String[] samlMetadataRoles = {SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME};
+    private String[] samlMetadataRoles = {"SPSSODescriptor", "IDPSSODescriptor"};
 
-    private List<String> samlDirections = Arrays.stream(PredicateFilter.Direction.values()).map(s -> s.name().toUpperCase()).collect(Collectors.toList());
+    private List<String> samlDirections = CollectionUtils.wrapList("INCLUDE", "EXCLUDE");
 
-    private String[] samlAttributeNameFormats = {Attribute.BASIC, Attribute.UNSPECIFIED, Attribute.URI_REFERENCE};
+    private String[] samlAttributeNameFormats = {
+        "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
+        "urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified",
+        "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+    };
 
     private List<String> samlCredentialTypes = Arrays.stream(SamlIdPResponseProperties.SignatureCredentialTypes.values())
-            .map(s -> s.name().toUpperCase())
-            .collect(Collectors.toList());
+        .map(s -> s.name().toUpperCase())
+        .collect(Collectors.toList());
 
     private List<String> encryptAlgOptions = locateKeyAlgorithmsSupported();
 
@@ -113,8 +109,8 @@ public class FormData implements Serializable {
      */
     public List<Option> getOidcScopes() {
         final List<Option> scopes = Arrays.stream(OidcConstants.StandardScopes.values())
-                .map(scope -> new Option(scope.getFriendlyName(), scope.getScope()))
-                .collect(Collectors.toList());
+            .map(scope -> new Option(scope.getFriendlyName(), scope.getScope()))
+            .collect(Collectors.toList());
         scopes.add(new Option("User Defined", "user_defined"));
         return scopes;
     }
@@ -127,24 +123,17 @@ public class FormData implements Serializable {
         return CaseCanonicalizationMode.values();
     }
 
-    private List<String> locateKeyAlgorithmsSupported() {
-        return ReflectionUtils.getFields(KeyManagementAlgorithmIdentifiers.class,
-            field -> Modifier.isFinal(field.getModifiers()) && Modifier.isStatic(field.getModifiers())
-                    && field.getType().equals(String.class))
-            .stream()
-            .map(Field::getName)
-            .sorted()
-            .collect(Collectors.toList());
+    private static List<String> locateKeyAlgorithmsSupported() {
+        return CollectionUtils.wrapList(
+            "RSA1_5", "RSA-OAEP",
+            "RSA-OAEP-256", "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW",
+            "ECDH-ES+A256KW", "A128KW", "A192KW", "A256KW", "A128GCMKW",
+            "A192GCMKW", "A256GCMKW", "PBES2-HS256+A128KW",
+            "PBES2-HS384+A192KW", "PBES2-HS512+A256KW", "dir");
     }
 
-    private List<String> locateContentEncryptionAlgorithmsSupported() {
-        return ReflectionUtils.getFields(ContentEncryptionAlgorithmIdentifiers.class,
-            field -> Modifier.isFinal(field.getModifiers()) && Modifier.isStatic(field.getModifiers())
-                    && field.getType().equals(String.class))
-            .stream()
-            .map(Field::getName)
-            .sorted()
-            .collect(Collectors.toList());
+    private static List<String> locateContentEncryptionAlgorithmsSupported() {
+        return CollectionUtils.wrapList("A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512", "A128GCM", "A192GCM", "A256GCM");
     }
 
     /**

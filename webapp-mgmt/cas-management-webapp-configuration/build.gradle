@@ -1,12 +1,5 @@
 description = "Apereo CAS Management Web Application Configuration"
 
-repositories {
-    mavenLocal()
-    jcenter()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases/' }
-}
-
 dependencies {
     implementation libraries.springcloudconfigclient
     implementation libraries.casServer

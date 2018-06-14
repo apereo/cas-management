@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.config;
 
+import org.apereo.cas.audit.spi.ShortenedReturnValueAsStringResourceResolver;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.services.audit.Pac4jAuditablePrincipalResolver;
@@ -15,6 +16,7 @@ import org.apereo.inspektr.audit.spi.support.ParametersAsStringResourceResolver;
 import org.apereo.inspektr.audit.support.Slf4jLoggingAuditTrailManager;
 import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.apereo.inspektr.common.web.ClientInfoThreadLocalFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -37,21 +39,25 @@ public class CasManagementAuditConfiguration {
     private static final String AUDIT_ACTION_SUFFIX_SUCCESS = "_SUCCESS";
 
     @Bean
+    @ConditionalOnMissingBean(name = "saveServiceResourceResolver")
     public AuditResourceResolver saveServiceResourceResolver() {
-        return new ParametersAsStringResourceResolver();
+        return new ShortenedReturnValueAsStringResourceResolver();
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "deleteServiceResourceResolver")
     public AuditResourceResolver deleteServiceResourceResolver() {
         return new ServiceManagementResourceResolver();
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "saveServiceActionResolver")
     public AuditActionResolver saveServiceActionResolver() {
         return new DefaultAuditActionResolver(AUDIT_ACTION_SUFFIX_SUCCESS, AUDIT_ACTION_SUFFIX_FAILED);
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = "deleteServiceActionResolver")
     public AuditActionResolver deleteServiceActionResolver() {
         return new ObjectCreationAuditActionResolver(AUDIT_ACTION_SUFFIX_SUCCESS, AUDIT_ACTION_SUFFIX_FAILED);
     }
@@ -64,9 +70,9 @@ public class CasManagementAuditConfiguration {
     @Bean
     public AuditTrailManagementAspect auditTrailManagementAspect() {
         return new AuditTrailManagementAspect("CAS_Management",
-                auditablePrincipalResolver(), CollectionUtils.wrap(auditTrailManager()),
-                auditActionResolverMap(),
-                auditResourceResolverMap());
+            auditablePrincipalResolver(), CollectionUtils.wrap(auditTrailManager()),
+            auditActionResolverMap(),
+            auditResourceResolverMap());
     }
 
     @Bean

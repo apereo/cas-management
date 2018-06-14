@@ -35,13 +35,10 @@ public class ServiceManagementResourceResolver implements AuditResourceResolver 
      */
     private static String[] findService(final JoinPoint joinPoint) {
         final JoinPoint j = AopUtils.unWrapJoinPoint(joinPoint);
-
         final Long id = (Long) j.getArgs()[0];
-
         if (id == null) {
             return new String[] {StringUtils.EMPTY};
         }
-
         return new String[] {"id=" + id};
     }
 }

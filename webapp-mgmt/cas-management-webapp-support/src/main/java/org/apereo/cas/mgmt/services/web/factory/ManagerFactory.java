@@ -84,7 +84,7 @@ public class ManagerFactory {
      */
     public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) {
         if (!managementProperties.isEnableVersionControl()) {
-            return new ManagementServicesManager(servicesManager, new GitUtil(null));
+            return new ManagementServicesManager(servicesManager, new GitUtil());
         }
         ManagementServicesManager manager = (ManagementServicesManager) request.getSession().getAttribute("servicesManager");
         if (manager != null) {

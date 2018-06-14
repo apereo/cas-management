@@ -61,6 +61,7 @@ public class ManagementServicesManager implements ServicesManager {
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
         LOGGER.debug("Loading services for domain [{}]", domain);
         if (git.isNull()) {
+            LOGGER.warn("Git repository is undefined");
             return new ArrayList<>();
         }
         this.uncommitted = new HashMap<>();
@@ -86,7 +87,7 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        if (git != null) {
+        if (!git.isNull()) {
             if (uncommitted != null && uncommitted.containsKey(service.getId())) {
                 serviceItem.setStatus(uncommitted.get(service.getId()));
             }

@@ -8,7 +8,6 @@ import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,13 +87,7 @@ public class RepositoryFactory {
                 repositoryMustExist = false;
             }
         }
-
-        return new GitUtil(new Git(new FileRepositoryBuilder()
-            .setGitDir(new File(path))
-            .setMustExist(repositoryMustExist)
-            .readEnvironment()
-            .findGitDir()
-            .build()));
+        return new GitUtil(gitDir, repositoryMustExist);
     }
 
     /**

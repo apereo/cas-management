@@ -23,8 +23,6 @@ import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.EditList;
 import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.diff.RawTextComparator;
-import org.eclipse.jgit.errors.IncorrectObjectTypeException;
-import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.PersonIdent;
@@ -35,6 +33,7 @@ import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevObject;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
@@ -44,7 +43,6 @@ import org.eclipse.jgit.treewalk.filter.TreeFilter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -66,7 +64,6 @@ import java.util.stream.StreamSupport;
  * @since 5.2
  */
 @Slf4j
-@RequiredArgsConstructor
 public class GitUtil implements AutoCloseable {
 
     /**
@@ -75,6 +72,21 @@ public class GitUtil implements AutoCloseable {
     public static final int NAME_LENGTH = 40;
 
     private final Git git;
+
+    @SneakyThrows
+    public GitUtil() {
+        this(FileUtils.getTempDirectory(), true);
+    }
+
+    @SneakyThrows
+    public GitUtil(final File path, final boolean mustExist) {
+        this.git = new Git(new FileRepositoryBuilder()
+            .setGitDir(path)
+            .setMustExist(mustExist)
+            .readEnvironment()
+            .findGitDir()
+            .build());
+    }
 
     /**
      * Returns Commit objects for the last n commits.
@@ -561,16 +573,12 @@ public class GitUtil implements AutoCloseable {
     /**
      * Class used to define a TreeFilter to only pull history for a single path.
      */
+    @RequiredArgsConstructor
     public static class HistoryTreeFilter extends TreeFilter {
-        private String path;
-
-        public HistoryTreeFilter(final String path) {
-            this.path = path;
-
-        }
+        private final String path;
 
         @Override
-        public boolean include(final TreeWalk treeWalk) throws MissingObjectException, IncorrectObjectTypeException, IOException {
+        public boolean include(final TreeWalk treeWalk) {
             final List<String> pathSplit = Splitter.on("-").splitToList(path);
             final List<String> treePathSplit = Splitter.on("-").splitToList(treeWalk.getPathString());
             return pathSplit.get(pathSplit.size() - 1).equals(treePathSplit.get(treePathSplit.size() - 1));

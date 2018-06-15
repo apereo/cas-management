@@ -56,7 +56,6 @@ public class ManagementServicesManager implements ServicesManager {
      *
      * @param domain - Name of the domain to lookup.
      * @return - List of RegisteredServiceItems
-     * @throws Exception -failed
      */
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
         LOGGER.debug("Loading services for domain [{}]", domain);

@@ -104,7 +104,9 @@ public class ManagerFactory {
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {
         final ServicesManager manager;
-        final JsonServiceRegistry serviceRegistryDAO = new JsonServiceRegistry(Paths.get(git.repoPath()), false, null, null,
+        final Path path = Paths.get(git.repoPath());
+        final JsonServiceRegistry serviceRegistryDAO = new JsonServiceRegistry(path,
+            false, null, null,
             new DefaultRegisteredServiceResourceNamingStrategy());
         if (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN) {
             manager = new DomainServicesManager(serviceRegistryDAO, null);

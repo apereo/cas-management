@@ -1,11 +1,9 @@
 .footer {
     background-color: #e6e6e6;
     border-top: 5px solid #256d8d;
+    position: fixed;
     bottom: 0;
-    width: 100%;
+    width: inherit;
     font-size: 80%;
     display:flex;
-    position: absolute;
-    height: 45px;
-    line-height: 45px;
 }

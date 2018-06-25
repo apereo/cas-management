@@ -26,7 +26,7 @@ import {
   MatChipsModule,
   MatAutocompleteModule,
   MatSnackBarModule,
-  MatPaginatorModule, MatProgressSpinnerModule
+  MatPaginatorModule, MatProgressSpinnerModule, MatBadgeModule, MatSidenavModule, MatToolbarModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ControlsComponent} from '../controls/controls.component';
@@ -65,7 +65,10 @@ import {TimeoutComponent} from '../timeout/timeout.component';
     MatAutocompleteModule,
     MatSnackBarModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatBadgeModule,
+    MatSidenavModule,
+    MatToolbarModule
   ],
   declarations: [
     EditorComponent,
@@ -113,7 +116,10 @@ import {TimeoutComponent} from '../timeout/timeout.component';
     CommitComponent,
     FooterComponent,
     PaginatorComponent,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatBadgeModule,
+    MatSidenavModule,
+    MatToolbarModule
   ]
 })
 export class SharedModule {}

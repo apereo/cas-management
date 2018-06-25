@@ -21,6 +21,9 @@ import {GrouperRegisteredServiceAccessStrategy} from '../../domain/access-strate
 import {RegisteredServiceRegexAttributeFilter} from '../../domain/attribute-filter';
 import {UserService} from '../user.service';
 import {ImportService} from '../import/import.service';
+import {Observable} from 'rxjs/index';
+import {map} from 'rxjs/operators';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 enum Tabs {
   BASICS,
@@ -51,6 +54,11 @@ export class FormComponent implements OnInit {
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
 
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches)
+    );
+
   constructor(public messages: Messages,
               private route: ActivatedRoute,
               private router: Router,
@@ -59,7 +67,8 @@ export class FormComponent implements OnInit {
               public data: Data,
               private location: Location,
               public snackBar: MatSnackBar,
-              public userService: UserService) {
+              public userService: UserService,
+              private breakpointObserver: BreakpointObserver) {
   }
 
   ngOnInit() {

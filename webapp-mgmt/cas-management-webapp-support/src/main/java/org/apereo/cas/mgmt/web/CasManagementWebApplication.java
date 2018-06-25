@@ -31,7 +31,6 @@ import org.springframework.context.annotation.Import;
     DataSourceAutoConfiguration.class,
     JmxAutoConfiguration.class,
     CasPersonDirectoryConfiguration.class,
-    JsonServiceRegistryConfiguration.class,
     CasDiscoveryProfileConfiguration.class,
     MetricsDropwizardAutoConfiguration.class
 })

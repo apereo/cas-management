@@ -54,7 +54,8 @@
       <mat-icon>refresh</mat-icon>
     </button>
   </div>
-  <div style="display:inline;" *ngIf="!showEdit">
+
+  <div style="display:inline;" *ngIf="!showEdit && showBack">
     <button mat-icon-button (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
     </button>

@@ -7,8 +7,8 @@ import {Observable} from 'rxjs/internal/Observable';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
 import {MatDialog} from '@angular/material';
-import {TimeoutComponent} from './timeout/timeout.component';
 import {Injectable} from '@angular/core';
+import {UnknownComponent} from './unknown/unknown.component';
 
 @Injectable()
 export class Service {
@@ -48,7 +48,7 @@ export class Service {
 
   handleError(e: HttpErrorResponse, dialog: MatDialog): Observable<any> {
     if (e.status === 0) {
-      dialog.open(TimeoutComponent, {
+      dialog.open(UnknownComponent, {
         width: '500px',
         position: {top: '100px'}
       })

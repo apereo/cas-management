@@ -57,15 +57,16 @@ public class ManagementServicesManager implements ServicesManager {
      * @param domain - Name of the domain to lookup.
      * @return - List of RegisteredServiceItems
      */
-    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
-        LOGGER.debug("Loading services for domain [{}]", domain);
-        final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
-        final List<RegisteredServiceItem> items = services.stream()
-            .map(this::createServiceItem)
-            .collect(Collectors.toList());
+    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
+        if (git.isUndefined()) {
+            return new ArrayList<>();
+        }
         this.uncommitted = new HashMap<>();
-        git.scanWorkingDiffs().stream().forEach(this::createChange);
-        return items;
+        git.scanWorkingDiffs().stream().forEach(d -> createChange(d));
+        final List<RegisteredServiceItem> serviceItems = new ArrayList<>();
+        final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
+        serviceItems.addAll(services.stream().map(this::createServiceItem).collect(Collectors.toList()));
+        return serviceItems;
     }
 
     /**

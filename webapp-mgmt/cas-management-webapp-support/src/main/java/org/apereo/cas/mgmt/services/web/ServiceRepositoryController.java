@@ -347,7 +347,7 @@ public class ServiceRepositoryController {
             gitStatus.setDeleted(status.getMissing().stream()
                 .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(getPublishBehindCount() > 0);
-            gitStatus.setPendingSubmits(pendingSubmits(request, response));
+            gitStatus.setPullRequests(pendingSubmits(request, response));
             return new ResponseEntity<>(gitStatus, HttpStatus.OK);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -558,7 +558,7 @@ public class ServiceRepositoryController {
         final GitUtil git = repositoryFactory.from(request, response);
         final ObjectId oldId = ObjectId.fromString(ids[0]);
         final ObjectId newId = ObjectId.fromString(ids[1]);
-        response.getOutputStream().write(git.getFormatter(oldId, newId));
+        response.getOutputStream().write(git.getFormatter(newId, oldId));
     }
 
     /**
@@ -987,17 +987,17 @@ public class ServiceRepositoryController {
         return new ResponseEntity(resp, HttpStatus.OK);
     }
 
-    private boolean pendingSubmits(final HttpServletRequest request,
+    private int pendingSubmits(final HttpServletRequest request,
                                    final HttpServletResponse response) throws Exception {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         if (casUserProfile.isAdministrator()) {
             final GitUtil git = repositoryFactory.masterRepository();
-            return git.branches()
-                .map(git::mapBranches)
-                .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
-                .findAny().isPresent();
+            return (int)git.branches()
+                    .map(git::mapBranches)
+                    .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
+                    .count();
         } else {
-            return false;
+            return 0;
         }
     }
 
@@ -1091,12 +1091,18 @@ public class ServiceRepositoryController {
     private static Diff createDiff(final DiffEntry d, final GitUtil git) {
         try {
             final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+            final RegisteredService service;
+            if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
+                service = ser.from(git.readObject(d.getNewId().toObjectId()));
+            } else {
+                service = ser.from(git.readObject(d.getOldId().toObjectId()));
+            }
             return new Diff(d.getNewPath(),
-                d.getOldId().toObjectId(),
-                d.getNewId().toObjectId(),
-                d.getChangeType().toString(),
-                ser.from(git.readObject(d.getOldId().toObjectId())).getName());
-        } catch (final Exception e) {
+                    d.getOldId().toObjectId(),
+                    d.getNewId().toObjectId(),
+                    d.getChangeType().toString(),
+                    service.getName());
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }

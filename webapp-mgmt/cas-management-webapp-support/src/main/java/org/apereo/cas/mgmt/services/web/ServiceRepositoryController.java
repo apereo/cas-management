@@ -556,9 +556,9 @@ public class ServiceRepositoryController {
                          final HttpServletResponse response,
                          final @RequestBody String[] ids) throws Exception {
         final GitUtil git = repositoryFactory.from(request, response);
-        final ObjectId oldId = ObjectId.fromString(ids[0]);
-        final ObjectId newId = ObjectId.fromString(ids[1]);
-        response.getOutputStream().write(git.getFormatter(newId, oldId));
+        final ObjectId newId = ObjectId.fromString(ids[0]);
+        final ObjectId oldId = ObjectId.fromString(ids[1]);
+        response.getOutputStream().write(git.getFormatter(oldId, newId));
     }
 
     /**

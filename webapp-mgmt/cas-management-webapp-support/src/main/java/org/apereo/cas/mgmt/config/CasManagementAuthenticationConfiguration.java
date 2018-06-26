@@ -4,13 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.CasManagementUtils;
-import org.apereo.cas.mgmt.authentication.CasAnonymousClient;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.pac4j.cas.client.direct.DirectCasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
+import org.pac4j.core.client.direct.AnonymousClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
@@ -89,7 +89,7 @@ public class CasManagementAuthenticationConfiguration {
         if (clients.isEmpty()) {
             LOGGER.warn("No authentication strategy is defined, CAS will establish an anonymous authentication mode whereby access is immediately granted. "
                 + "This may NOT be relevant for production purposes. Consider configuring alternative authentication strategies for maximum security.");
-            final CasAnonymousClient anon = new CasAnonymousClient();
+            final AnonymousClient anon = new AnonymousClient();
             anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
             clients.add(anon);
         }

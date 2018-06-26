@@ -1,7 +1,8 @@
-<div style="position:fixed;width: 100%; z-index: 1000;background-color: #f2f2f2; top: 51px" autocomplete="off" novalidate="novalidate">
 
-  <div style="display:flex;">
-    <div style="padding-top: 3px;">
+<div style="position:fixed;margin-bottom:10px;margin-left:25px;margin-right:25px;z-index:1000;background-color: #f2f2f2;"
+     [style.width]="!(isHandset$ | async) ? 'calc(100% - 230px)' : '100%'">
+
+    <div style="display:flex;flex-direction: row;padding-top: 3px;">
       <div *ngIf="!view">
         <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
         <h4 style="display: inline;position: relative;top: -5px;">
@@ -16,13 +17,11 @@
           <ng-container i18n>View Service</ng-container>
         </h4>
       </div>
-    </div>
     <div style="flex: 1 1 auto"></div>
     <div>
       <app-controls (save)="save()" [showEdit]="!view"></app-controls>
     </div>
-  </div>
-
+</div>
   <mat-tab-group #tabGroup (selectedIndexChange)="goto($event)">
     <mat-tab>
       <ng-template mat-tab-label>
@@ -96,6 +95,6 @@
     </mat-tab>
   </mat-tab-group>
 </div>
-<div style="position:relative;top:90px;padding-bottom:75px;">
+<div style="padding-top:90px;padding-bottom:0px;">
   <router-outlet name="form"></router-outlet>
 </div>

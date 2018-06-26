@@ -21,6 +21,10 @@ import {GrouperRegisteredServiceAccessStrategy} from '../../domain/access-strate
 import {RegisteredServiceRegexAttributeFilter} from '../../domain/attribute-filter';
 import {UserService} from '../user.service';
 import {ImportService} from '../import/import.service';
+import {Observable} from 'rxjs/index';
+import {map} from 'rxjs/operators';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {AppConfigService} from '../app-config.service';
 
 enum Tabs {
   BASICS,
@@ -51,6 +55,16 @@ export class FormComponent implements OnInit {
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
 
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches)
+    );
+
+  domainPattern = new RegExp('^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)');
+  validDomain = new RegExp('^[a-z0-9-.]*$');
+
+  imported = false;
+
   constructor(public messages: Messages,
               private route: ActivatedRoute,
               private router: Router,
@@ -59,13 +73,16 @@ export class FormComponent implements OnInit {
               public data: Data,
               private location: Location,
               public snackBar: MatSnackBar,
-              public userService: UserService) {
+              public userService: UserService,
+              private breakpointObserver: BreakpointObserver,
+              public appConfig: AppConfigService) {
   }
 
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
     this.data.view = this.view;
     if (this.route.snapshot.data.import) {
+      this.imported = true;
       this.loadService(this.importService.service);
       this.goto(Tabs.BASICS);
     } else {
@@ -232,7 +249,12 @@ export class FormComponent implements OnInit {
     }
 
     this.data.service.id = id;
-    this.location.back();
+    if (this.imported) {
+      const domain = this.appConfig.config.mgmtType === 'DOMAIN' ? this.extractDomain(this.data.service.serviceId) : 'defualt'
+      this.router.navigate(['services', domain]);
+    } else {
+      this.location.back();
+    }
   }
 
   handleNotSaved() {
@@ -257,12 +279,11 @@ export class FormComponent implements OnInit {
   }
 
   validateDomain(service: string): boolean {
-    const domainPattern = new RegExp('^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)');
     if (this.userService.user.permissions.indexOf('*') > -1) {
       return true;
     }
     try {
-      const domain = domainPattern.exec(service);
+      const domain = this.domainPattern.exec(service);
       if (domain != null) {
         return this.userService.user.permissions.indexOf(domain[1]) > -1;
       }
@@ -270,6 +291,16 @@ export class FormComponent implements OnInit {
       console.log('Failed Domain parse');
     }
     return false;
+  }
+
+  extractDomain(service: String): string {
+    const domain = this.domainPattern.exec(service.toLowerCase() as string);
+    if (domain != null) {
+      if (this.validDomain.exec(domain[1]) != null) {
+        return domain[1];
+      }
+    }
+    return 'default'
   }
 
   validateForm(): Tabs {

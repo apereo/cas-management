@@ -17,7 +17,7 @@ import java.util.Set;
 public class GitStatus implements Serializable {
     private boolean hasChanges;
     private boolean unpublished;
-    private boolean pendingSubmits;
+    private int pullRequests;
     private Set<String> added;
     private Set<String> modified;
     private Set<String> deleted;

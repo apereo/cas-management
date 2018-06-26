@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {SharedModule} from './shared/shared.module';
 import {AppRoutingModule} from './app-routing.module';
-import {HeaderComponent} from './header/header.component';
 import { FormsModule } from '@angular/forms';
 import {Messages} from './messages';
 
@@ -26,7 +25,6 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        HeaderComponent
       ],
       providers: [
         Messages

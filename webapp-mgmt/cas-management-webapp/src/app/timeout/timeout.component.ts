@@ -13,6 +13,9 @@ export class TimeoutComponent implements OnInit {
               public messages: Messages) { }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.dialogRef.close(true);
+    }, 18000);
   }
 
 }

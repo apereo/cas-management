@@ -35,6 +35,9 @@ export class ControlsComponent implements OnInit {
   @Input()
   showSpinner = false;
 
+  @Input()
+  showBack = true;
+
   @ViewChild('publishModal')
   submitComp: PublishComponent;
 

@@ -4,5 +4,5 @@ export class GitStatus {
   modified: String[];
   deleted: String[];
   unpublished: boolean;
-  pendingSubmits: boolean;
+  pullRequests: number;
 }

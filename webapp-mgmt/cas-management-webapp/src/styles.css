@@ -1,15 +1,11 @@
 html {
-  position: relative;
-  min-height: 100%;
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
 body {
   margin: 0;
-  background-color: #f2f2f2;
-  min-width: 700px;
-  margin-bottom: 120px;
+  height: 100%;
 }
 
 a {

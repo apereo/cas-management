@@ -4,15 +4,31 @@
 
 import {Injectable} from '@angular/core';
 import {Service} from '../service';
+import {HttpClient} from '@angular/common/http';
 import {Change} from '../../domain/change';
 import {Commit} from '../../domain/commit';
 import {GitStatus} from '../../domain/git-status';
 import {Observable} from 'rxjs/internal/Observable';
+import {tap} from 'rxjs/operators';
+import {MatDialog} from '@angular/material';
 
 @Injectable()
 export class ControlsService extends Service {
 
   status: GitStatus;
+
+  constructor(public http: HttpClient,
+              public dialog: MatDialog) {
+    super(http, dialog);
+    // this.callStatus();
+  }
+
+  callStatus() {
+    setTimeout(() => {
+      this.gitStatus();
+      this.callStatus();
+    }, 60 * 1000)
+  }
 
   commit(msg: String): Observable<String> {
     return this.getText('commit?msg=' + msg);
@@ -37,7 +53,7 @@ export class ControlsService extends Service {
 
   gitStatus() {
     this.get<GitStatus>('gitStatus')
-      .subscribe((resp: GitStatus) => this.status = resp);
+      .subscribe(resp => this.status = resp);
   }
 
   sync(): Observable<String> {

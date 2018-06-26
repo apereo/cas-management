@@ -2,7 +2,6 @@ package org.apereo.cas.mgmt.web;
 
 import org.apereo.cas.config.CasDiscoveryProfileConfiguration;
 import org.apereo.cas.config.CasPersonDirectoryConfiguration;
-import org.apereo.cas.config.JsonServiceRegistryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.springframework.boot.actuate.autoconfigure.MetricsDropwizardAutoConfiguration;
@@ -31,7 +30,6 @@ import org.springframework.context.annotation.Import;
     DataSourceAutoConfiguration.class,
     JmxAutoConfiguration.class,
     CasPersonDirectoryConfiguration.class,
-    JsonServiceRegistryConfiguration.class,
     CasDiscoveryProfileConfiguration.class,
     MetricsDropwizardAutoConfiguration.class
 })

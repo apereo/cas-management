@@ -57,7 +57,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @param domain - Name of the domain to lookup.
      * @return - List of RegisteredServiceItems
      */
-    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) throws Exception {
+    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
         if (git.isUndefined()) {
             return new ArrayList<>();
         }

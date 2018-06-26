@@ -992,7 +992,7 @@ public class ServiceRepositoryController {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         if (casUserProfile.isAdministrator()) {
             final GitUtil git = repositoryFactory.masterRepository();
-            return (int)git.branches()
+            return (int) git.branches()
                     .map(git::mapBranches)
                     .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
                     .count();
@@ -1102,7 +1102,7 @@ public class ServiceRepositoryController {
                     d.getNewId().toObjectId(),
                     d.getChangeType().toString(),
                     service.getName());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             return null;
         }

@@ -1,10 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
-import {DomainService} from './domain.service';
 import {Messages} from 'app/messages';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Location} from '@angular/common';
-import {AppConfigService} from '../app-config.service';
 import {PaginatorComponent} from '../paginator/paginator.component';
 
 @Component({

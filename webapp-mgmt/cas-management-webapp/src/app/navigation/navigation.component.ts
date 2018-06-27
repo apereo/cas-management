@@ -60,8 +60,7 @@ export class NavigationComponent {
     }
 
     pullRequests(): number {
-        return 0;
-        // return this.controlsService.status && this.controlsService.status.pullRequests;
+        return this.controlsService.status ? this.controlsService.status.pullRequests : 0;
     }
 
 }

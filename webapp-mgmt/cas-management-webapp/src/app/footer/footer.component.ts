@@ -20,7 +20,7 @@ export class FooterComponent implements OnInit {
     );
 
   constructor(private service: FooterService,
-              private breakpointObserver: BreakpointObserver,) { }
+              private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit() {
     this.service.getVersions()

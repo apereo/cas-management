@@ -91,7 +91,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> commit(final HttpServletResponse response, final HttpServletRequest request,
                                          @RequestParam final String msg) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
-        try(final GitUtil git = repositoryFactory.from(user)) {
+        try(GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to commit");
             }
@@ -115,7 +115,7 @@ public class ServiceRepositoryController {
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             this.publishError = false;
             git.getUnpublishedCommits().forEach(commit -> {
                 try {
@@ -207,7 +207,7 @@ public class ServiceRepositoryController {
             throw new Exception("Permission denied");
         }
 
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final List<Commit> commits = git.getLastNCommits(MAX_COMMITS)
                     .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
@@ -241,7 +241,7 @@ public class ServiceRepositoryController {
         }
 
         final int behind = getPublishBehindCount();
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final List<Commit> commits = git.getLastNCommits(behind)
                     .map(c -> new Commit(c.getId().abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
@@ -258,7 +258,7 @@ public class ServiceRepositoryController {
      * @throws Exception - failed.
      */
     private int getPublishBehindCount() throws Exception {
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.getRepository().resolve("HEAD").equals(git.getPublished().getPeeledObjectId()) ? 0 : 1;
         }
     }
@@ -277,7 +277,7 @@ public class ServiceRepositoryController {
                                              final HttpServletRequest request,
                                              @RequestBody final String msg) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
-        try (final GitUtil git = repositoryFactory.from(user)) {
+        try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to submit");
             }
@@ -322,7 +322,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
                                                final HttpServletResponse response) {
         final GitStatus gitStatus = new GitStatus();
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             final Status status = git.status();
             gitStatus.setHasChanges(!status.isClean());
             gitStatus.setAdded(status.getUntracked().stream()
@@ -378,7 +378,7 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/untracked")
     public ResponseEntity<List<Change>> untracked(final HttpServletResponse response,
                                                   final HttpServletRequest request) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
             }
@@ -417,7 +417,7 @@ public class ServiceRepositoryController {
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final List<BranchData> names = git.branches()
                     .map(git::mapBranches)
                     .filter(r -> filterPulls(r, options))
@@ -459,7 +459,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<List<BranchData>> submits(final HttpServletRequest request,
                                                     final HttpServletResponse response) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final List<BranchData> names = git.branches()
                     .filter(r -> r.getName().contains('/' + user.getId() + '_'))
                     .map(git::mapBranches)
@@ -488,7 +488,7 @@ public class ServiceRepositoryController {
             throw new Exception("Permission Denied");
         }
 
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final List<Diff> changes = git.getDiffs(branch).stream()
                     .map(d -> createDiff(d, git))
                     .collect(toList());
@@ -514,7 +514,7 @@ public class ServiceRepositoryController {
             throw new Exception("Permission Denied");
         }
 
-        try (final GitUtil git = repositoryFactory.masterRepository()){
+        try (GitUtil git = repositoryFactory.masterRepository()){
             final RevCommit r = git.getCommit(id);
             final List<Diff> diffs = git.getDiffs(id).stream()
                     .map(d -> createDiff(d, git))
@@ -542,7 +542,7 @@ public class ServiceRepositoryController {
     public void viewDiff(final HttpServletRequest request,
                          final HttpServletResponse response,
                          final @RequestBody String[] ids) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             final ObjectId newId = ObjectId.fromString(ids[0]);
             final ObjectId oldId = ObjectId.fromString(ids[1]);
             response.getOutputStream().write(git.getFormatter(oldId, newId));
@@ -563,7 +563,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<RegisteredService> viewChange(final HttpServletResponse response,
                                                         final HttpServletRequest request,
                                                         final @RequestParam String id) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             return new ResponseEntity<>(new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id)),
                                         HttpStatus.OK);
         }
@@ -583,7 +583,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<RegisteredService[]> changePair(final HttpServletResponse response,
                                                           final HttpServletRequest request,
                                                           @RequestParam final String id) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             final RegisteredService change = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
             final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
             final RegisteredService orig = managerFactory.from(request, casUserProfile).findServiceBy(change.getId());
@@ -605,7 +605,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> viewJSON(final HttpServletRequest request,
                                            final HttpServletResponse response,
                                            final @RequestParam String id) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             return new ResponseEntity<>(git.readObject(id), HttpStatus.OK);
         }
     }
@@ -623,7 +623,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> viewYaml(final HttpServletRequest request,
                                            final HttpServletResponse response,
                                            final @RequestParam String id) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             final DefaultRegisteredServiceJsonSerializer jsonSerializer = new DefaultRegisteredServiceJsonSerializer();
             final RegisteredService service = jsonSerializer.from(git.readObject(id));
             final RegisteredServiceYamlSerializer yamlSerializer = new RegisteredServiceYamlSerializer();
@@ -654,7 +654,7 @@ public class ServiceRepositoryController {
             throw new Exception("Permission Denied");
         }
 
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             git.merge(branch.getId());
             final RevCommit com = git.getCommit(branch.getId());
             final String msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + "\n    "
@@ -699,7 +699,7 @@ public class ServiceRepositoryController {
 
         final BranchData branch = rejection.getBranch();
         final String text = rejection.getNote();
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final RevCommit com = git.getCommit(branch.getId());
             final String msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + "\n    "
                     + text.replaceAll("\\n", "\n    ");
@@ -733,13 +733,12 @@ public class ServiceRepositoryController {
      */
     @GetMapping(value = "/notes")
     public void getNotes(final HttpServletResponse response, final @RequestParam String id) throws Exception {
-        final GitUtil git = repositoryFactory.masterRepository();
-
-        final Note note = git.note(id);
-        if (note != null) {
-            git.writeNote(note, response.getOutputStream());
+        try (GitUtil git = repositoryFactory.masterRepository()) {
+            final Note note = git.note(id);
+            if (note != null) {
+                git.writeNote(note, response.getOutputStream());
+            }
         }
-        git.close();
     }
 
     /**
@@ -759,7 +758,7 @@ public class ServiceRepositoryController {
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final RevCommit com = git.getCommit(cnote.getId());
             final String msg = user.getId() + " - " + new Date().toString() + " : \n    "
                     + cnote.getText().replaceAll("\\n", "\n    ");
@@ -800,7 +799,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> revert(final HttpServletRequest request,
                                          final HttpServletResponse response,
                                          final @RequestParam String path) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to revert");
             }
@@ -826,7 +825,7 @@ public class ServiceRepositoryController {
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final RegisteredService svc = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
             final ManagementServicesManager mgmtServicesManager = managerFactory.from(request, user);
             mgmtServicesManager.save(svc);
@@ -848,7 +847,7 @@ public class ServiceRepositoryController {
                                                final HttpServletResponse response,
                                                final @RequestParam String path) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
-        try (final GitUtil git = repositoryFactory.from(user)) {
+        try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to revert");
             }
@@ -874,7 +873,7 @@ public class ServiceRepositoryController {
                                            final HttpServletResponse response,
                                            @RequestParam final String id,
                                            @RequestParam final String path) throws Exception {
-        try (final GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             git.checkout(path, id);
             git.reset(path);
             return new ResponseEntity<>("File Checked Out", HttpStatus.OK);
@@ -899,7 +898,7 @@ public class ServiceRepositoryController {
             throw new Exception("Permission denied");
         }
 
-        try (final GitUtil git = repositoryFactory.masterRepository()) {
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             final RevCommit r = git.getCommit(id);
             git.getDiffsToRevert(id).stream().forEach(d -> {
                 try {
@@ -942,14 +941,14 @@ public class ServiceRepositoryController {
                                                final HttpServletResponse response,
                                                @RequestParam final String branchName) throws Exception {
         final CasUserProfile user = casUserProfileFactory.from(request, response);
-        try (final GitUtil git = repositoryFactory.from(user)) {
+        try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to revert");
             }
 
             git.reset(git.findCommitBeforeSubmit(branchName));
         }
-        try (final GitUtil master = repositoryFactory.masterRepository()) {
+        try (GitUtil master = repositoryFactory.masterRepository()) {
             master.markAsReverted(branchName, user);
         }
         return new ResponseEntity<>("Submit reverted", HttpStatus.OK);
@@ -969,7 +968,7 @@ public class ServiceRepositoryController {
         final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
         String resp = "";
         if (casUserProfile.isAdministrator()) {
-            try (final GitUtil git = repositoryFactory.masterRepository()) {
+            try (GitUtil git = repositoryFactory.masterRepository()) {
                 final boolean pending = git.branches()
                         .map(git::mapBranches)
                         .filter(r -> filterPulls(r, new boolean[]{true, false, false}))

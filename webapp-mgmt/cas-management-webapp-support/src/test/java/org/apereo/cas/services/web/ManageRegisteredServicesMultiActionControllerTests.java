@@ -116,7 +116,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         managerFactory.initRepository();
         this.controller = new ManageRegisteredServicesMultiActionController(this.servicesManager,
                 null, webApplicationServiceFactory, "https://.*",
-            managementProperties, casUserProfileFactory, managerFactory, repositoryFactory, casProperties);
+            managementProperties, casUserProfileFactory, managerFactory, casProperties);
     }
 
     @After

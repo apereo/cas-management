@@ -14,7 +14,6 @@ import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.FormDataFactory;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
-import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -76,7 +75,6 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      * @param managementProperties         the cas properties
      * @param casUserProfileFactory        the cas user profile factory
      * @param managerFactory               the manager factory
-     * @param repositoryFactory            the repository factory
      * @param casProperties                the cas properties
      */
     public ManageRegisteredServicesMultiActionController(

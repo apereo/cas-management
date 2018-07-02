@@ -63,7 +63,6 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     private final CasUserProfileFactory casUserProfileFactory;
     private final Service defaultService;
     private final ManagerFactory managerFactory;
-    private final RepositoryFactory repositoryFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
 
@@ -88,7 +87,6 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         final CasManagementConfigurationProperties managementProperties,
         final CasUserProfileFactory casUserProfileFactory,
         final ManagerFactory managerFactory,
-        final RepositoryFactory repositoryFactory,
         final CasConfigurationProperties casProperties) {
         super(servicesManager);
         this.formDataFactory = formDataFactory;
@@ -96,7 +94,6 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         this.managementProperties = managementProperties;
         this.casUserProfileFactory = casUserProfileFactory;
         this.managerFactory = managerFactory;
-        this.repositoryFactory = repositoryFactory;
         this.casProperties = casProperties;
     }
 

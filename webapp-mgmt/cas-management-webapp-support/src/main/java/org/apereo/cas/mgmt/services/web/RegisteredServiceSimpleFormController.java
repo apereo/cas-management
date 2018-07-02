@@ -171,8 +171,9 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
         final RegisteredService oldSvc = managerFactory.from(request, casUserProfile).findServiceBy(service.getId());
         if (oldSvc != null) {
             if (!service.getName().equals(oldSvc.getName())) {
-                final GitUtil git = repositoryFactory.from(request, response);
-                git.move(makeFileName(oldSvc), makeFileName(service));
+                try (final GitUtil git = repositoryFactory.from(request, response)) {
+                    git.move(makeFileName(oldSvc), makeFileName(service));
+                }
             }
         }
     }

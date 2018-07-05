@@ -119,7 +119,7 @@ public class ServiceRepositoryController {
             this.publishError = false;
             git.getUnpublishedCommits().forEach(commit -> {
                 try {
-                    final List<DiffEntry> diffs = git.getDiffs(commit.getId());
+                    final List<DiffEntry> diffs = git.getPublishDiffs(commit.getId());
 
                     // Run through deletes first in case of name change
                     diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
@@ -516,7 +516,7 @@ public class ServiceRepositoryController {
 
         try (GitUtil git = repositoryFactory.masterRepository()){
             final RevCommit r = git.getCommit(id);
-            final List<Diff> diffs = git.getDiffs(id).stream()
+            final List<Diff> diffs = git.getPublishDiffs(id).stream()
                     .map(d -> createDiff(d, git))
                     .map(d -> {
                         d.setCommitter(r.getCommitterIdent().getName());

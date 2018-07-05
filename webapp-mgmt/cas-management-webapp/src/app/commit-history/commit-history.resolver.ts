@@ -8,7 +8,7 @@ import {map, take} from 'rxjs/operators';
 @Injectable()
 export class CommitHistoryResolve implements Resolve<DiffEntry[]> {
 
-  constructor(private service: CommitHistoryService, private router: Router) {}
+  constructor(private service: CommitHistoryService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<DiffEntry[]> | DiffEntry[] {
     const param: string = route.params['id'];

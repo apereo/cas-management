@@ -752,6 +752,22 @@ public class GitUtil implements AutoCloseable {
     public List<DiffEntry> getDiffs(final String branch) throws Exception {
         final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
         final ObjectReader reader = git.getRepository().newObjectReader();
+        oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
+        final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+        newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
+        return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+    }
+
+    /**
+     * Returns a list fo differences between the last two commits in a branch.
+     *
+     * @param branch - The branch to check for differences against.
+     * @return - List of DiffEntry.
+     * @throws Exception - failed.
+     */
+    public List<DiffEntry> getPublishDiffs(final String branch) throws Exception {
+        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+        final ObjectReader reader = git.getRepository().newObjectReader();
         oldTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
         final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
         newTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));

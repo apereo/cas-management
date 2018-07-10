@@ -2,12 +2,12 @@
 layout: null
 ---
 
-* [Installation](#casinstallation)
+* [Installation](#casmgmtinstallation)
     *   [Overview](/$version/installation/Installing-ServicesMgmt-Webapp.html)
+    *   [Configuration](/$version/installation/Configuration-Properties.html)
 
 * [Developer](#developer)
-    *   [Javadocs](http://www.javadoc.io/doc/org.apereo.cas/cas-server)
-    *   [Swagger API](/$version/integration/Swagger-Integration.html)
+    *   [Javadocs](http://www.javadoc.io/doc/org.apereo.cas/cas-management)
     *   [Security Vulnerability Response](/cas/developer/Sec-Vuln-Response.html)
     *   [PMC](/cas/developer/Project-Commitee.html)
     *   [Contributor Guidelines](/cas/developer/Contributor-Guidelines.html)

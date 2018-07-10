@@ -71,7 +71,7 @@ The following properties are applicable to notification settings given the above
 ### LDAP
 
 ```properties
-# mgmt.ldap.ldapUrl = "ldap://localhost:389";
+# mgmt.ldap.ldapUrl = ldap://localhost:389
 # mgmt.ldap.bindDn =
 # mgmt.ldap.bindCredential =
 # mgmt.ldap.useSsl = true
@@ -83,20 +83,20 @@ The following properties are applicable to notification settings given the above
 
 # mgmt.ldap.minPoolSize = 3
 # mgmt.ldap.maxPoolSize = 10
-# mgmt.ldap.poolPassivator = "BIND"
+# mgmt.ldap.poolPassivator = BIND
 # mgmt.ldap.validateOnCheckout = true
 # mgmt.ldap.validatePeriodically = true 
-# mgmt.ldap.validateTimeout = "PT5S"
-# mgmt.ldap.validatePeriod = "PT5M" 
+# mgmt.ldap.validateTimeout = PT5S
+# mgmt.ldap.validatePeriod = PT5M 
 
 # mgmt.ldap.failFast = true
-# mgmt.ldap.idleTime = "PT10M"
-# mgmt.ldap.prunePeriod = "PT2H"
-# mgmt.ldap.blockWaitTime = "PT3S"
+# mgmt.ldap.idleTime = PT10M
+# mgmt.ldap.prunePeriod = PT2H
+# mgmt.ldap.blockWaitTime = PT3S
 # mgmt.ldap.connectionStrategy =
 # mgmt.ldap.useStartTls = 
-# mgmt.ldap.connectTimeout = "PT5S"
-# mgmt.ldap.responseTimeout = "PT5S"
+# mgmt.ldap.connectTimeout = PT5S
+# mgmt.ldap.responseTimeout = PT5S
 # mgmt.ldap.providerClass = 
 # mgmt.ldap.allowMultipleDns = false
 # mgmt.ldap.saslRealm = 
@@ -110,11 +110,11 @@ The following properties are applicable to notification settings given the above
 #### LDAP Authorization
 
 ```properties
-# mgmt.ldap.ldapAuthz.roleAttribute = "uugid"
-# mgmt.ldap.ldapAuthz.rolePrefix = "ROLE_"
+# mgmt.ldap.ldapAuthz.roleAttribute = uugid
+# mgmt.ldap.ldapAuthz.rolePrefix = ROLE_
 # mgmt.ldap.ldapAuthz.allowMultipleResults
 # mgmt.ldap.ldapAuthz.groupAttribute
-# mgmt.ldap.ldapAuthz.groupPrefix = ""
+# mgmt.ldap.ldapAuthz.groupPrefix =
 # mgmt.ldap.ldapAuthz.groupFilter
 # mgmt.ldap.ldapAuthz.groupBaseDn
 # mgmt.ldap.ldapAuthz.baseDn

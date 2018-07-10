@@ -8,6 +8,12 @@ title: CAS Management Web Application
 * Manage and register [client applications and services](installation/Installing-ServicesMgmt-Webapp.html) with specific authentication policies.
 * View, edit, restore and track changes registration records in history.
 * Implement approval/review workflows when submitting client registration requests.
+    * Submit a request to add yourself as a contact to a service.
+    * Submit a request to remove yourself as a contact from a service.
+    * Submit a request to add/remove others as a contact form a service.
+    * Submit a request to add a new service to the registry.
+    * Submit a request to remove a service from the registry.
+    * View pending requests
 
 ## Contribute
 

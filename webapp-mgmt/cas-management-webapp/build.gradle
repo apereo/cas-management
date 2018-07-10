@@ -16,8 +16,6 @@ node {
 }
 
 if (!Boolean.getBoolean("skipNpmCache")) {
-    npm_install.dependsOn(npm_cache_verify)
-}  else {
     npm_install.enabled = false
 }
 

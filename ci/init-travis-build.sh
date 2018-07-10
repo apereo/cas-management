@@ -29,10 +29,10 @@ echo -e "Configuring Gradle wrapper...\n"
 chmod -R 777 ./gradlew
 
 echo -e "Installing NPM...\n"
-mkdir ~/.npm-global
-export NPM_CONFIG_PREFIX=~/.npm-global
-echo "NPM config environment variable: $NPM_CONFIG_PREFIX"
-./gradlew npmInstall --stacktrace
+#mkdir ~/.npm-global
+#export NPM_CONFIG_PREFIX=~/.npm-global
+#echo "NPM config environment variable: $NPM_CONFIG_PREFIX"
+./gradlew npmInstall --stacktrace -q
 echo "Rebuilding using node-sass"
 npm rebuild node-sass
 

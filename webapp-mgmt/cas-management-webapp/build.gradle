@@ -53,6 +53,8 @@ bootRun {
     }
     
     jvmArgs = list
+    list.add("-XX:TieredStopAtLevel=1")
+    list.add("-Xverify:none")
     if (!Boolean.getBoolean("skipClientBuild")) {
         dependsOn(buildClientDev)
     }

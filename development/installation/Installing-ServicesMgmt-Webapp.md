@@ -8,19 +8,15 @@ title: CAS - Management Web Application
 The web application is no longer part of the CAS server and
 is a standalone Spring Boot web application that ships with an embedded Apache Tomcat container.
 
-* The management webapp is used to add/edit/delete all the CAS services.
-* The CAS server loads/relies on all these defined CAS services to process all incoming requests.
-
-<div class="alert alert-warning"><strong>Synchronized Configuration</strong><p>
-You <strong>MUST</strong> keep in mind that both applications (the CAS server and the management webapp)
-share the <strong>same</strong> service registry configuration for CAS services.
-</p></div>
-
 The management web application is purely an administrative interface that may be deployed in a completely different 
 environment separate from CAS. It allows CAS administrators and application owners delegated access so they 
 can manage and modify policies associated with their applications. The operational capacity of the CAS server 
 itself is not in any way tied to the deployment status of the management web application; you may decide to 
 take the application offline for maintenance or completely remove it from your deployment scenario at any given time.
+
+<div class="alert alert-warning"><strong>Synchronized Configuration</strong><p>
+You <strong>MUST</strong> keep in mind that both applications (the CAS server and the management webapp)
+share the <strong>same</strong> service registry configuration for CAS services.</p></div>
 
 Note that for certain type of service registry backends, deploying the management web application is a 
 requirement since it acts as the interface fronting CRUD operations that deal with the storage backend. 
@@ -39,12 +35,7 @@ A template overlay for the management webapp is [provided here](https://github.c
 
 ## Configuration
 
-To see the relevant list of CAS properties, please [review this guide](Configuration-Properties.html#management-webapp).
-
-The management web application is primarily controlled by a `management.yml|properties` file. 
-However, all strategies outlined in [CAS configuration management](Configuration-Management.html) 
-equally apply here as well in the way that settings are defined, passed and resolved. 
-The primary difference of course is the name of the configuration file.
+To see the relevant list of CAS properties, please [review this guide](Configuration-Properties.html).
 
 ## Services Registry
 

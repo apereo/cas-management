@@ -28,11 +28,6 @@ fi
 echo -e "Configuring Gradle wrapper...\n"
 chmod -R 777 ./gradlew
 
-# echo -e "Installing NodeJS...\n"
-# sudo curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash - &>/dev/null
-# sudo apt-get update  -qq > /dev/null
-# sudo apt-get install -y nodejs -qq > /dev/null
-
 echo -e "Installing NPM...\n"
 mkdir ~/.npm-global
 export NPM_CONFIG_PREFIX=~/.npm-global

@@ -41,8 +41,58 @@ To see the relevant list of CAS properties, please [review this guide](Configura
 
 The [persistence storage](Service-Management.html) for services **MUST** be the same as that of the CAS server. 
 The same service registry component that is configured for the CAS server, including module and settings, 
-needs to be configured in the same exact way for the management web application.
+needs to be configured in the same exact way for the management web application. Note that the settings that control
+the specific service registry belong to the CAS server and begin with the prefix `cas`.
 
+## Service Management
+
+Service managers in CAS are components that sit on top of a given registry and act as facilitators. While each registry instance is very strongly tied
+to a storage technology, a service manager is entirely agnostic of the fact and solely interacts with a registry and may act as a caching layer.
+For the most part, the configuration and behavior of this component is entirely transparent to the CAS deployer.
+
+### Default vs. Domain 
+
+There are two types of service managers that are available to use in CAS; the default option and one that is domain-name friendly. The choice is 
+determined and controlled via CAS configuration properties. Both forms of services managers can use any of the persistence layers 
+that are available to the CAS service registry (JSON,YAML,JDBC,MongoDb,LDAP...). Their differences come in how they load and apply the service 
+registry to incoming requests.
+
+The choice of service manager is mostly a decision of preference. This size of your registry may help determine which one you use. 
+A smaller registry list of less than 100 services may seem manageable with the default manager, but a registry with hundreds 
+or even thousands of services can feel daunting, considering that order is an important factor that can affect behavior.
+
+#### Default
+
+The default manager loads the registry as a single ordered list.  The order of the list is determined by the
+`evaluationOrder` field of the registered service. When determining which service applies to the current request,
+the default manager starts at the beginning of the list and attempts to match the passed `service` parameter
+to the `serviceId` field of the registered service.  It walks the list until it finds the first match, and
+returns that service entry.  If it reaches the end of the list without finding a match, the incoming request
+is denied and the user is prompted that their application is not authorized to use CAS.
+
+There are some caveats when putting together `serviceId`  expressions that should be observed:
+- Must be a valid Java regular expression.
+- Domain separators `.` typically need to be escaped. If `.` are not escaped (`\.`) in the domain it can let unintended domains match
+- Domains can not be ended with `.*`
+
+#### Domain
+
+The domain manager loads the services into multiple lists, that are stored in a set and are indexed by the domains that they attempt to match.  
+The first step the manager takes is to extract the domain from the `service` parameter of the request. 
+It then looks up the list in the set of lists that are indexed by that domain, and applies this smaller list just like the default services manager did.
+There is a special `default` list that is created when the services are loaded. This list contains services that have a serviceUrl 
+expression that could match multiple domains.  If a request for a domain is received that does not match a list in the domain index, 
+then this default list is applied to the request.
+
+Like the default manager there are some caveats to observe:
+
+- Must be valid Java regular expression.
+- If a `serviceId` expression can match multiple domains, domain separators `.` must be escaped
+- If `.` are not escaped("\.") in the domain, it can let unintended domains match.
+- If a `serviceId` expression can match only a single domain, then `.` are not required to be escaped. This rule can be relaxed, 
+because when the domain list is looked up, is done so by an equals expression and not a matching test. This means that only that domain 
+is guaranteed to match the domains in the list.
+  
 ## Authentication
 
 Access to the management webapp can be configured via the following strategies.

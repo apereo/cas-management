@@ -3,13 +3,14 @@
 }
 
 .nameWidth {
-    flex: 0 0 350px;
+    flex: 0 1 250px;
 }
 
 .messageWidth {
-    flex: 1 1 auto;
+    flex: 1 1 300px;
+    margin-left: 10px;
 }
 
-.statusWidth {
-    flex: 0 0 200px;
+.timeWidth {
+    flex: 0 1 200px;
 }

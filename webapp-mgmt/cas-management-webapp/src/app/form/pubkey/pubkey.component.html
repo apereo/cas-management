@@ -1,4 +1,4 @@
-<div>
+<app-input field="location" [change]="data.service.publicKey" [orig]="data.original && data.original.publicKey">
   <mat-form-field class="textInput">
     <input matInput [required]="data.service.usernameAttributeProvider.encryptUserName ||
                                data.service.attributeReleasePolicy.authorizedToReleaseCredentialPassword ||
@@ -7,14 +7,17 @@
            [placeholder]="messages.services_form_label_pubKey_location"
            [(ngModel)]="location"
            (change)="changeLocation()">
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
   <mat-icon style="font-size: medium"
            i18n-matTooltip="services.form.tooltip.pubKey.location"
            [matTooltip]="messages.services_form_tooltip_pubKey_location">help
   </mat-icon>
-</div>
+</app-input>
 
-<div>
+<app-input field="algorithm" [change]="data.service.publicKey" [orig]="data.original && data.original.publicKey">
   <mat-form-field class="textInput">
     <mat-select i18n-placeholder="services.form.label.pubKey.algorithm"
                 [placeholder]="messages.services_form_label_pubKey_algorithm"
@@ -23,9 +26,12 @@
       <mat-option></mat-option>
       <mat-option value="RSA">RSA</mat-option>
     </mat-select>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
   <mat-icon style="font-size: medium"
            i18n-matTooltip="services.form.tooltip.pubKey.algorithm"
            [matTooltip]="messages.services_form_tooltip_pubKey_algorithm">help
   </mat-icon>
-</div>
+</app-input>

@@ -52,6 +52,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -499,7 +502,7 @@ public class GitUtil implements AutoCloseable {
                 history.setCommit(r.abbreviate(NAME_LENGTH).name());
                 history.setPath(treeWalk.getPathString());
                 history.setMessage(r.getFullMessage());
-                history.setTime(new Date(r.getCommitTime() * 1000L).toString());
+                history.setTime(formatCommitTime(r.getCommitTime()));
                 history.setCommitter(r.getCommitterIdent().getName());
                 return history;
             }
@@ -507,6 +510,12 @@ public class GitUtil implements AutoCloseable {
             LOGGER.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    private static String formatCommitTime(final int ctime) {
+        return LocalDateTime.ofInstant(new Date(ctime * 1000L).toInstant(),
+                ZoneId.systemDefault())
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     /**

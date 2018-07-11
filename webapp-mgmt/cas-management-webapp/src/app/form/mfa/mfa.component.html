@@ -1,4 +1,4 @@
-<div>
+<app-input>
   <mat-form-field class="textInput">
     <mat-select
             placeholder="Policy"
@@ -8,8 +8,11 @@
         {{ display[i] }}
       </mat-option>
     </mat-select>
+    <mat-hint align="end">
+      <app-hint></app-hint>
+    </mat-hint>
   </mat-form-field>
-</div>
+</app-input>
 
 <ng-container *ngIf="type === TYPE.DEFAULT">
  <app-default></app-default>

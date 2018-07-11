@@ -37,6 +37,7 @@ import {PublishComponent} from '../publish/publish.component';
 import {FooterComponent} from '../footer/footer.component';
 import {PaginatorComponent} from '../paginator/paginator.component';
 import {TimeoutComponent} from '../timeout/timeout.component';
+import {UnknownComponent} from '../unknown/unknown.component';
 
 @NgModule({
   imports: [
@@ -77,12 +78,14 @@ import {TimeoutComponent} from '../timeout/timeout.component';
     PublishComponent,
     FooterComponent,
     PaginatorComponent,
-    TimeoutComponent
+    TimeoutComponent,
+    UnknownComponent
   ],
   entryComponents: [
     CommitComponent,
     PublishComponent,
-    TimeoutComponent
+    TimeoutComponent,
+    UnknownComponent
   ],
   providers: [
     ControlsService

@@ -1,3 +1,11 @@
 .actionWidth {
     flex: 0 0 50px;
 }
+
+.fileWidth {
+    flex: 1 1 240px;
+}
+
+.changeWidth {
+    flex: 0 1 200px;
+}

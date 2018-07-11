@@ -14,7 +14,7 @@ export class FooterComponent implements OnInit {
   casVersion: String;
   mgmtVersion: String;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
     .pipe(
       map(result => result.matches)
     );

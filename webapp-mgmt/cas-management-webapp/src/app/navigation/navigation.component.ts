@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material';
+import {MatSidenav, MatSnackBar} from '@angular/material';
 import {Messages} from '../messages';
 import {UserService} from '../user.service';
 import {AppConfigService} from '../app-config.service';
@@ -17,7 +17,10 @@ import {ControlsService} from '../controls/controls.service';
 })
 export class NavigationComponent {
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  @ViewChild(MatSidenav)
+   drawer: MatSidenav;
+
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
     .pipe(
       map(result => result.matches)
     );
@@ -47,6 +50,14 @@ export class NavigationComponent {
         return this.appService.config.syncScript;
     }
 
+    isDelegated(): boolean {
+       return this.appService.config.delegatedMgmt;
+    }
+
+    isVersionControl(): boolean {
+      return this.appService.config.versionControl;
+    }
+
     sync() {
         this.controlsService.sync().subscribe(resp => {
             this.snackBar.open('Services Synchronized', 'Dismiss', {
@@ -63,4 +74,9 @@ export class NavigationComponent {
         return this.controlsService.status ? this.controlsService.status.pullRequests : 0;
     }
 
+    close() {
+      if (this.drawer.mode === 'over') {
+        this.drawer.close();
+      }
+    }
 }

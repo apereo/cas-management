@@ -134,21 +134,25 @@ a:focus {
   margin:5px;
 }
 
-.textInput.mat-form-field {
-  width:500px;
+.mat-form-field.textInput {
+  flex: 0 1 500px;
 }
 
 .tabCard {
   margin-right:auto;
   margin-left:auto;
-  width:650px;
+  max-width:650px;
   margin-top:5px
 }
 
 .cardContent {
   margin-right:auto;
   margin-left:auto;
-  width:550px;
+  max-width:550px;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .mat-select-value{

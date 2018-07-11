@@ -17,7 +17,7 @@
       <app-input field="email" [change]="contact" [orig]="original && original[i]">
         <mat-form-field class="textInput">
           <mat-placeholder i18n>EMail</mat-placeholder>
-          <input matInput required [(ngModel)]="contact.email">
+          <input matInput required [(ngModel)]="contact.email" email>
           <mat-hint align="end">
             <app-hint></app-hint>
           </mat-hint>

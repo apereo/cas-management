@@ -22,10 +22,11 @@
 }
 
 .serviceNameWidth {
+    flex: 1 1 300px;
     color: inherit !important;
 }
 
 .changeTypeWidth {
-    flex: 0 0 200px;
+    flex: 0 1 200px;
     color: inherit !important
 }

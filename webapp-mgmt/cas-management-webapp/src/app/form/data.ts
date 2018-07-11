@@ -16,8 +16,8 @@ export class Data {
   view: boolean;
   save: EventEmitter<void> = new EventEmitter<void>();
   form: FormComponent;
-  invalidRegEx: boolean;
-  invalidDomain: boolean;
+  invalidRegEx = false;
+  invalidDomain = false;
 }
 
 

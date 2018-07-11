@@ -55,7 +55,7 @@ export class FormComponent implements OnInit {
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
     .pipe(
       map(result => result.matches)
     );

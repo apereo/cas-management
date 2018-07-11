@@ -1,4 +1,4 @@
-<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
   <div style="padding-top: 10px;">
     <mat-icon style="padding-top: 3px;">visibility</mat-icon>
     <h4 style="display: inline;position: relative;top: -5px;">
@@ -13,27 +13,27 @@
   </div>
 </div>
 
-<div style="display: flex; flex-direction: column; margin-right:25px;margin-left:25px;">
+<div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="file">
-      <mat-header-cell *matHeaderCellDef>
+      <mat-header-cell *matHeaderCellDef [ngClass]="'fileWidth'">
         <ng-container i18n>
           File
         </ng-container>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <mat-cell *matCellDef="let row" [ngClass]="'fileWidth'">
           {{ row.path }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="change">
-      <mat-header-cell *matHeaderCellDef>
+      <mat-header-cell *matHeaderCellDef [ngClass]="'changeWidth'">
         <ng-container i18n>
           Change
         </ng-container>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <mat-cell *matCellDef="let row" [ngClass]="'changeWidth'">
         {{ row.changeType }}
       </mat-cell>
     </ng-container>

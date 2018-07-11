@@ -102,6 +102,7 @@ public class ManagerFactory {
         return manager;
     }
 
+
     private ServicesManager createJSONServiceManager(final GitUtil git) {
         final ServicesManager manager;
         final Path path = Paths.get(git.repoPath());

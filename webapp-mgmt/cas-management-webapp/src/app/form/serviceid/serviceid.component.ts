@@ -1,17 +1,25 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit } from '@angular/core';
 import {Messages} from '../../messages';
 import {Data} from '../data';
 import {SamlRegisteredService} from '../../../domain/saml-service';
 import {OAuthRegisteredService, OidcRegisteredService} from '../../../domain/oauth-service';
 import {WSFederationRegisterdService} from '../../../domain/wsed-service';
+import {ControlContainer, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-serviceid',
-  templateUrl: './serviceid.component.html'
+  templateUrl: './serviceid.component.html',
+  viewProviders: [{
+    provide: ControlContainer,
+    useExisting: NgForm
+  }]
 })
 export class ServiceidComponent implements OnInit {
 
   isSaml: boolean;
+
+  @Input()
+  validUrl: Function;
 
   constructor(public messages: Messages,
               public data: Data) {
@@ -34,7 +42,7 @@ export class ServiceidComponent implements OnInit {
     }
   }
 
-  tooltip() {
+  tooltip(): string {
     if (SamlRegisteredService.instanceOf(this.data.service)) {
       return this.messages.services_form_tooltip_entityId;
     } else if (OidcRegisteredService.instanceOf(this.data.service) ||
@@ -45,5 +53,9 @@ export class ServiceidComponent implements OnInit {
     } else {
       return this.messages.services_form_tooltip_serviceId;
     }
+  }
+
+  checkForSpaces() {
+    this.data.service.serviceId = this.data.service.serviceId ? this.data.service.serviceId.trim() : null;
   }
 }

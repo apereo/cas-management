@@ -1,6 +1,6 @@
 
-<div style="position:fixed;margin-bottom:10px;margin-left:25px;margin-right:25px;z-index:1000;background-color: #f2f2f2;"
-     [style.width]="!(isHandset$ | async) ? 'calc(100% - 230px)' : '100%'">
+<div style="position:fixed;margin-bottom:10px;margin-left:10px;margin-right:10px;z-index:1000;background-color: #f2f2f2;"
+     [style.width]="!(isHandset$ | async) ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">
 
     <div style="display:flex;flex-direction: row;padding-top: 3px;">
       <div *ngIf="!view">
@@ -95,6 +95,7 @@
     </mat-tab>
   </mat-tab-group>
 </div>
-<div style="padding-top:90px;padding-bottom:0px;">
+<div style="padding-top:90px;padding-bottom:0px;display:flex;flex-direction: column; margin-right: auto; margin-left: auto;"
+     [style.width]="!(isHandset$ | async) ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">
   <router-outlet name="form"></router-outlet>
 </div>

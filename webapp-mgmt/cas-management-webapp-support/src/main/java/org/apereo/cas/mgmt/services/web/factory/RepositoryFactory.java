@@ -85,17 +85,19 @@ public class RepositoryFactory {
      * Clones the master repository into the passed in directory.
      *
      * @param clone - String representing dir to create the clone
+     * @return - GitUtil
      */
-    public void clone(final String clone) {
+    public GitUtil clone(final String clone) {
         try {
             final String uri = casProperties.getServicesRepo() + "/.git";
             LOGGER.debug("Cloning repository [{}] to path [{}]", uri, clone);
-            Git.cloneRepository()
+            return new GitUtil(Git.cloneRepository()
                 .setURI(uri)
                 .setDirectory(new File(clone))
-                .call();
+                .call());
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
+            return null;
         }
     }
 }

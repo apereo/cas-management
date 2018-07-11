@@ -30,6 +30,7 @@ export class FormResolve implements Resolve<AbstractRegisteredService[]> {
             if (resp) {
               if (route.data.duplicate) {
                 resp.id = -1;
+                resp.evaluationOrder = -1;
               }
               return [resp];
             } else {

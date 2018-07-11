@@ -1,17 +1,17 @@
 .messageWidth {
-  flex: 0 0 100px;
+  flex: 0 1 100px;
 }
 
 .nameWidth {
-    flex: 1 1 auto;
+    flex: 1 1 240px;
 }
 
 .committerWidth {
-  flex: 0 0 240px;
+  flex: 0 1 240px;
 }
 
 .timeWidth {
-  flex: 0 0 240px;
+  flex: 0 1 240px;
 }
 
 .actionWidth {

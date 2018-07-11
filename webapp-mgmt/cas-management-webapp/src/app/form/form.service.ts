@@ -7,9 +7,9 @@ import {FormData} from '../../domain/form-data';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map, take} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
-import {Observable} from 'rxjs/internal/Observable';
+import {UnknownComponent} from '../unknown/unknown.component';
 import {MatDialog} from '@angular/material';
-import {TimeoutComponent} from '../timeout/timeout.component';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class FormService {
@@ -44,7 +44,7 @@ export class FormService {
 
   handleError(e: HttpErrorResponse, dialog: MatDialog): Observable<any> {
     if (e.status === 0) {
-      dialog.open(TimeoutComponent, {
+      dialog.open(UnknownComponent, {
         width: '500px',
         position: {top: '100px'}
       })

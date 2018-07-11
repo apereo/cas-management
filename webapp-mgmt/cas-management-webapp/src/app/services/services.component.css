@@ -31,17 +31,17 @@
 }
 
 .descriptionWidth {
-  flex: 1 1 auto;
+  flex: 1 1 300px;
   color: inherit;
 }
 
 .serviceIdWidth {
-  flex: 0 0 240px;
+  flex: 0 1 240px;
   color: inherit;
 }
 
 .nameWidth {
-  flex: 0 0 240px;
+  flex: 0 1 240px;
   color:inherit !important;
 }
 

@@ -5,6 +5,7 @@ import {HistoryService} from './history.service';
 import {History} from '../../domain/history';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-history',
@@ -27,7 +28,8 @@ export class HistoryComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: HistoryService,
-              public  snackBar: MatSnackBar) {
+              public  snackBar: MatSnackBar,
+              public breakObserver: BreakpointObserver) {
   }
 
   ngOnInit() {
@@ -37,6 +39,14 @@ export class HistoryComponent implements OnInit {
         this.dataSource.paginator = this.paginator.paginator;
       });
     this.route.params.subscribe((params) => this.fileName = params['fileName']);
+    this.breakObserver.observe(['(max-width: 499px)'])
+      .subscribe(r => {
+        if (r.matches) {
+          this.displayedColumns = ['actions', 'message'];
+        } else {
+          this.displayedColumns = ['actions', 'message', 'committer', 'time'];
+        }
+      });
   }
 
   viewChange() {

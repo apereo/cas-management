@@ -1,4 +1,4 @@
-<div>
+<app-input>
   <mat-form-field class="textInput">
         <mat-select i18n-placeHolder="services.form.label.sas.selecttype"
                     [placeholder]="messages.services_form_label_sas_selecttype"
@@ -10,7 +10,7 @@
               i18n-matTooltip="services.form.tooltip.sas.selecttype"
               [matTooltip]="messages.services_form_tooltip_sas_selecttype">
     </mat-icon>
-</div>
+</app-input>
 
 <ng-container *ngIf="type == TYPE.REMOTE">
     <app-remote></app-remote>

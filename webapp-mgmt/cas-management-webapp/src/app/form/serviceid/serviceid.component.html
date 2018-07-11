@@ -3,7 +3,7 @@
     <mat-placeholder>
       {{ placeholder() }}
     </mat-placeholder>
-    <input matInput id="serviceId" required
+    <input matInput #serviceId="ngModel" name="serviceId" id="serviceId" required
            appInvalidDomain [data]="data"
            [(ngModel)]="data.service.serviceId">
     <mat-error i18n *ngIf="data.invalidRegEx">The entered service id is not a valid regular expression</mat-error>

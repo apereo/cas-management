@@ -9,6 +9,7 @@ import {ControlsService} from '../controls/controls.service';
 import {RevertComponent} from '../revert/revert.component';
 import {AppConfigService} from '../app-config.service';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-services',
@@ -33,7 +34,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
               public appService: AppConfigService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              public controlsService: ControlsService) {
+              public controlsService: ControlsService,
+              public breakObserver: BreakpointObserver) {
   }
 
   ngOnInit() {
@@ -44,6 +46,14 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       }
     );
     this.route.params.subscribe((params) => this.domain = params['domain']);
+    this.breakObserver.observe(['(max-width: 499px)'])
+      .subscribe(r => {
+        if (r.matches) {
+          this.displayedColumns = ['actions', 'serviceId'];
+        } else {
+          this.displayedColumns = ['actions', 'name', 'serviceId', 'description'];
+        }
+      });
   }
 
   ngAfterViewInit() {

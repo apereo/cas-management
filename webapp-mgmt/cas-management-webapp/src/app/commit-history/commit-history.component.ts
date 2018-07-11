@@ -5,6 +5,8 @@ import {CommitHistoryService} from './commit-history.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry} from '../../domain/diff-entry';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-commit-history',
@@ -27,7 +29,8 @@ export class CommitHistoryComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private service: CommitHistoryService,
-              public  snackBar: MatSnackBar) {
+              public  snackBar: MatSnackBar,
+              public breakObserver: BreakpointObserver) {
   }
 
   ngOnInit() {
@@ -37,6 +40,14 @@ export class CommitHistoryComponent implements OnInit {
         this.dataSource.paginator = this.paginator.paginator;
       });
     this.route.params.subscribe((params) => this.fileName = params['fileName']);
+    this.breakObserver.observe(['(max-width: 499px)'])
+      .subscribe(r => {
+        if (r.matches) {
+          this.displayedColumns = ['actions', 'name', 'message'];
+        } else {
+          this.displayedColumns = ['actions', 'name', 'message', 'committer', 'time'];
+        }
+      });
   }
 
   viewChange() {

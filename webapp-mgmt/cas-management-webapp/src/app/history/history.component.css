@@ -1,13 +1,13 @@
 .messageWidth {
-  flex: 1 1 auto;
+  flex: 1 1 250px;
 }
 
 .committerWidth {
-  flex: 0 0 240px;
+  flex: 0 1 200px;
 }
 
 .timeWidth {
-  flex: 0 0 240px;
+  flex: 0 1 200px;
 }
 
 .actionWidth {

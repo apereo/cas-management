@@ -3,7 +3,8 @@
     <mat-placeholder i18n-placeholder="services.form.label.name">
       {{ messages.services_form_label_name }}
     </mat-placeholder>
-    <input matInput required [(ngModel)]="data.service.name">
+    <input matInput #serviceName="ngModel" name="serviceName" id="serviceName"
+           required [(ngModel)]="data.service.name">
     <mat-hint align="end">
       <app-hint></app-hint>
     </mat-hint>

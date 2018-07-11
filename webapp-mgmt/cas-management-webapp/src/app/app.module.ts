@@ -40,7 +40,6 @@ import {CommitHistoryModule} from './commit-history/commit-history.module';
 import {LocalChangesResolver} from './local-changes/local-changes.resolver';
 import {RepoHistoryResolver} from './repo-history/repo-history.resolver';
 import {NavigationComponent} from './navigation/navigation.component';
-import { UnknownComponent } from './unknown/unknown.component';
 
 @NgModule({
   imports: [
@@ -75,7 +74,6 @@ import { UnknownComponent } from './unknown/unknown.component';
     ImportComponent,
     RepoHistoryComponent,
     NavigationComponent,
-    UnknownComponent
   ],
   entryComponents: [
     DeleteComponent,

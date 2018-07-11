@@ -5,6 +5,7 @@ import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {Commit} from '../../domain/commit';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-repo-history',
@@ -25,13 +26,22 @@ export class RepoHistoryComponent implements OnInit {
               private service: RepoHistoryService,
               private router: Router,
               private route: ActivatedRoute,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar,
+              public breakObserver: BreakpointObserver) { }
 
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Commit[]}) => {
       this.dataSource = new MatTableDataSource<Commit>(data.resp);
       this.dataSource.paginator = this.paginator.paginator;
     });
+    this.breakObserver.observe(['(max-width: 499px)'])
+      .subscribe(r => {
+        if (r.matches) {
+          this.displayedColumns = ['actions', 'message'];
+        } else {
+          this.displayedColumns = ['actions', 'id', 'message', 'time'];
+        }
+      })
   }
 
   refresh() {

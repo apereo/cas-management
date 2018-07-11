@@ -92,7 +92,52 @@ Like the default manager there are some caveats to observe:
 - If a `serviceId` expression can match only a single domain, then `.` are not required to be escaped. This rule can be relaxed, 
 because when the domain list is looked up, is done so by an equals expression and not a matching test. This means that only that domain 
 is guaranteed to match the domains in the list.
-  
+ 
+## Version Control
+
+The management webapp is able to provide version control for the service registry.  To enable version control make sure these properties are set:
+
+```properties
+mgmt.enableVersionControl=true
+mgmt.servicesRepo=/etc/cas/services-repo
+```
+The "servicesRepo" directory must be a place where your webapp has read/write permissions.  Version control is handled by 
+storing your registry as json files in a Git repository.  When the webapp is started, it will create the repository from 
+your configured registry persistence, if one does not exist in the defined location.  
+
+### Commit
+
+When you use the management webapp without version control enabled, changes made to services are immediately put into your
+configured registry persistence, and any running CAS nodes using the same registry will pick up those changes immediately.  
+
+With version control enabled, making a change to a service marks it as a "working change" in the registry.  You can see a list
+of working changes by navigating to the "Working changes" screen.  When working changes are present, a "Commit" option will
+light up on the controls line in the upper right corner of the content portion of the screen.  
+
+Pressing "Commit" will open a dialog showing all the working changes that will be committed.  You must enter a commit message 
+before you will be allowed to finish the commit.  
+
+This lets you group related changes in a single commit and give them a meaningfull message in the repository. 
+
+### Publish 
+
+After committing changes into the repository, a "Publish" option will appear in the controls line.  Selecting publish will 
+open a dialog showing the commits that you are about to publish to your registry persistence and ask that you confirm that 
+this is the action you want to take.  It is at this point, after a successful publish that the changes will be available to 
+any running CAS nodes.
+
+### History
+
+With version control enabled all edits to services will be tracked in the repository logs.  You can navigate to the "History" 
+screen to see all commits that have been made to the repository.  Selecting a commit will show you a list of services for that 
+commit along with what type of change was made to that service("ADD","MODIFY","DELETE").  
+
+From the repository history screen you can restore your registry to any one of the commits in the list.  This is first done as a "Working Change"
+that you can then "Commit" and "Publish".  Also individual services can be restored from any point in the history, using the 
+"History" option from the services individual menu.
+
+You can also perform "diffs" on a service and compare the changes between the current service and anyone of its prior versions.
+
 ## Authentication
 
 Access to the management webapp can be configured via the following strategies.

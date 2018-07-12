@@ -15,22 +15,23 @@ node {
     download = true
 }
 
-if (!Boolean.getBoolean("skipNpmCache")) {
-    npm_install.enabled = false
-}
+npm_install.enabled = !Boolean.getBoolean("skipNpmCache")
 
 task buildClientDev(type: NpmTask, dependsOn: "npm_install", group: "bootRun",
         description: "Compile client side folder for development") {
     args = ['run', 'buildDev', mgmtUrl]
+    enabled = !Boolean.getBoolean("skipClientBuild")
 }
 
 task buildClient(type: NpmTask, dependsOn: "npm_install", group: "build",
         description: "Compile client side folder for production") {
     args = ['run', 'build', mgmtUrl]
+    enabled = !Boolean.getBoolean("skipClientBuild")
 }
 
 task buildClientWatch(type: NpmTask, dependsOn: "npm_install", group: "application", description: "Build and watches the client side assets for rebuilding") {
     args = ['run', 'buildWatch', mgmtUrl]
+    enabled = !Boolean.getBoolean("skipClientBuild")
 }
 
 task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
@@ -49,13 +50,11 @@ bootRun {
     if (rootProject.enableRemoteDebugging) {
         list.add("-Xrunjdwp:transport=dt_socket,address=5006,server=y,suspend=n")
     }
-    
+
     jvmArgs = list
     list.add("-XX:TieredStopAtLevel=1")
     list.add("-Xverify:none")
-    if (!Boolean.getBoolean("skipClientBuild")) {
-        dependsOn(buildClientDev)
-    }
+    dependsOn(buildClientDev)
 }
 
 springBoot {
@@ -100,6 +99,6 @@ task angularTest(type: NpmTask, dependsOn: 'npm_install', group: 'test', descrip
 dependencies {
     runtimeOnly project(":webapp-mgmt:cas-management-webapp-configuration")
     runtimeOnly project(":webapp-mgmt:cas-management-webapp-support")
-    
+
     providedRuntime libraries.springboottomcat
 }

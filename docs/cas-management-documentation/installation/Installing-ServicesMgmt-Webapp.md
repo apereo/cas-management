@@ -161,6 +161,32 @@ version control is enabled.
 The sync script should return a value of 0 if execution was successful, and any integer greater than 0 if an error
 was encountered.
 
+## Form Data
+
+On startup, the webapp will try and contact the configured CAS server at it's `status/discovery` endpoint.  If 
+successful, the data obtained from this endpoint will be used to populate the following field options in the form.
+
+- Registered Service Type
+- MFA Provider Type
+- Delegated Authn Client Type
+- Available Attributes for Release
+
+This will narrow the list of options only to what you current CAS deployment is configured to support.
+
+If the discovery endpoint is not enabled or the webapp was not able to connect successfully, then the form data will
+present all options available by default in CAS whether or not your current deployment supports it.
+
+### Available Attributes
+
+If you are not able to use the CAS discovery endpoint to populate the list of available attributes in your 
+deployment, you can manually set the list by defining a StubAttributeRepository in your configuration.
+
+```properties
+cas.authn.attributeRepository.stub.attributes.uid=uid
+cas.authn.attributeRepository.stub.attributes.givenName=givenName
+cas.authn.attributeRepository.stub.attributes.eppn=eppn
+```
+  
 ## Authentication
 
 Access to the management webapp can be configured via the following strategies.

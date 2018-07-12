@@ -202,7 +202,8 @@ The format of the file is as such:
 
 - `casuser`: This is the authenticated user id received from CAS
 - `notused`: This is the password field that isn't used by CAS. You could literally put any value you want in its place.
-- `ROLE_ADMIN`: Role assigned to the authorized user as an attribute, which is then cross checked against CAS configuration.
+- `ROLE_ADMIN`: Role assigned to an authorized administrator as an attribute, which is then cross checked against CAS configuration.
+- `ROLE_USER`: Role assigned to an authorized user as an attribute, which is then cross checked against CAS configuration.
 
 #### JSON & YAML
 
@@ -280,3 +281,118 @@ public class MyConfiguration {
 ```
 
 [See this guide](Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+
+## Delegated Management
+
+Delegated management is only available as a feature in the management webapp when version control is enabled(see above). Delegated 
+mangement is enabled by setting the following porperties
+
+```properties
+mgmt.enableDelegatedMgmt=true
+mgmt.userReposDir=/etc/cas/user-repos
+```
+The "userReposDir" must be a location where the webapp has read/write permissions.
+
+### User Permissions
+ 
+Delegated users are defined in the users.json as such:
+
+```json
+{
+  "casuser" : {
+    "@class" : "org.apereo.cas.mgmt.authz.json.UserAuthorizationDefinition",
+    "roles" : [ "ROLE_USER" ],
+    "permissions" : [ "DOMAIN1", "DOMAIN2"]
+  }
+}
+```  
+The above definition assigns "casuser" as delegated user that has permissions to view/edit services that belong to 
+"DOMAIN1" and "DOMAIN2" and any of their subdomains. Setting a permissions entry as "*", gives a user access to all services 
+in the registry and makes them a delegated admin.
+
+### Submitting Changes
+
+When a delegated user makes changes to services, they are done as "working changes" in a cloned repository that can be found
+under the user's login id in the "userReposDir" set in management.properties.  When working changes are present, a "Submit" option
+will light up on the controls line of the content screen.  Pressing "Submit" will open a dialog box where the user will be prompted 
+to enter a "submit message" for their changes.
+
+Submitting changes by a user commits the working changes to the user's repository and creates a "pull" to the admin repository.  
+
+Navigating to the "Submits" screen by a user will present a list of all their "submits" and the status of each("Pending","Accepted","Rejected").
+
+### Pull Requests
+
+An administrator can review all "pulls" from delegated users by navigating to the "Pull Requests" screen of the webapp.  When there 
+are pending "pulls" to be reviewed, a badge with the number of requests will be displayed as part of the navigation link in the side menu.  
+
+From the "Pull Requests" screen, an administrator will be able to review all changes in a submitted pull by clicking on the name of the pull 
+or selecting "View Changes" from the row menu.  For each change you can view a "diff" of the changes in json format.  
+The changed service can also be viewed in the webapp GUI. In this mode the form is in "view only" mode and changes can not be made.  
+A changed field will appear in italics and different color representing the type of change:
+
+- `Green` - Added value
+- `Blue` - Modified value
+- `Red` - Removed value
+
+Just below a changed field will be a "restore" icon.  Clicking this icon will change the field to it's current value in the registry 
+for comparison.  Clicking again will restore it back to the incoming changed value.
+
+After reviewing the changes, the entire pull can either be "Accepted" or "Rejected" as a whole.  When a pull is accepted it is 
+immediately committed into the repository and the "Publish" option will be lighted up in the controls line.  
+
+When rejecting a pull, you will have the opportunity to list the reasons for rejecting the change in the reject dialog.  
+The submitting user will be able to see this text, and have the option to revert their pull from their repository or make changes and 
+submit their pull again for consideration.    
+
+### Notifications 
+
+Email notifications can be created and sent if a mail server is available and defined in your deployment and the notification properties
+are set.
+
+Defining a mailserver may require adding the following to your configuration:
+
+```properties
+spring.mail.host=localhost
+spring.mail.port=25
+spring.mail.username=
+spring.mail.password=
+spring.mail.testConnection=false
+spring.mail.properties.mail.smtp.auth=false
+spring.mail.properties.mail.smtp.starttls.enable=false
+
+```
+Emails will be sent for "Submitting a pull", "Accepting a pull" and "Rejecting a pull", only if text for each is defined in 
+management.properties.
+
+```properties
+mgmt.notifications.submit.text=Your submitted changes have been forwarded to a CAS Administrator for approval. You will be notified by email once again when your request has been processed.\n\nYou can review the status of this request through the CAS Management Appication by navigating to the "Submit Requests" screen.\n\n If you have further questions or require assistance, please contact help@domain.
+mgmt.notifications.submit.from=casmanager@domain
+mgmt.notifications.submit.subject=Request {0} has been submitted for approval
+mgmt.notifications.submit.cc=admin-list@domain
+mgmt.notifications.submit.bcc=
+
+mgmt.notifications.reject.text=Your request {0} to the CAS Service Registry has been rejected for the following reason:\n\n{1}\n\n Please login into the CAS Management Application and "Revert" your submit.  You then have the option to make any recommended changes and submit your request again.\n\nIf you need further help with this request, please contact help@domain.
+mgmt.notifications.reject.from=casmanager@domain
+mgmt.notifications.reject.subject=Request {0} has been rejected
+mgmt.notifications.reject.cc=admin-list@domain
+
+mgmt.notifications.accept.text=Your request {0} has been accepted and added to the CAS Service Registry, and should be effective immediately in CAS.\n\nIf you do not see the behavior you expected, please submit a request to ithelp@ucdavis.edu.  Do not submit your request a second time.
+mgmt.notifications.accept.from=casmanager@domain
+mgmt.notifications.accept.subject=Request {0} has been accepted
+mgmt.notifications.accept.cc=admin-list@domain
+```
+The "subject" line of each message should contain "{0}" parameter.  This will be used to display the id of the submit.
+
+The "text" line of the "accept" message should contain "{0}" parameter to display the id of the submit.
+
+The "text" line of the "reject" message should contain "{0}" parameter to display the id of the submit and a "{1}"
+paramter to display the reason for rejection supplied by the administrator.
+
+In order for an email to be sent to the submitting user, you will need to ensure that "email" is released as an attribute 
+by CAS when logging into the webapp.  
+
+
+
+
+

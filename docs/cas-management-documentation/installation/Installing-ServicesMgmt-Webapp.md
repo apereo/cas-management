@@ -138,6 +138,29 @@ that you can then "Commit" and "Publish".  Also individual services can be resto
 
 You can also perform "diffs" on a service and compare the changes between the current service and anyone of its prior versions.
 
+## Sync Script
+
+An installation option maybe to configure the registry persistence for the webapp to be local to the webapp server
+itself. A common option would be use JsonServiceRegistry to persist the registry of record locally to the webapp server.
+
+```properties
+cas.serviceRegistry.json.location=file:/etc/cas/services
+```
+Then a "sync script" that is executable in the runtime of the webpp server can be set in the configuration.
+
+```properties
+mgmt.syncScript=/etc/cas/sync.sh
+```
+
+This script can then use "rsync" or any other means to sync the service registry to CAS nodes.
+
+Setting a sync script will add a "Synchronize" option to the side navigation of the webapp, and clicking it
+will run the sync script. The sync script will also be executed by the server when "Publishing" changes if
+version control is enabled.  
+
+The sync script should return a value of 0 if execution was successful, and any integer greater than 0 if an error
+was encountered.
+
 ## Authentication
 
 Access to the management webapp can be configured via the following strategies.

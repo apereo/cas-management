@@ -1,5 +1,7 @@
 apply plugin: "org.springframework.boot"
 
+apply from: rootProject.file("gradle/node.gradle")
+
 import org.apache.tools.ant.taskdefs.condition.Os
 
 sourceSets {
@@ -33,6 +35,7 @@ if (plugins.hasPlugin("war")) {
         }
         from "${buildDir}/resources/main", { into "WEB-INF/classes" }
         launchScript()
+        dependsOn(buildClient)
     }
     
 } else {
@@ -40,6 +43,7 @@ if (plugins.hasPlugin("war")) {
         mainClassName = project.ext.mainClassName
         from "${buildDir}/resources/main", { into "WEB-INF/classes" }
         launchScript()
+        dependsOn(buildClient)
     }
 }
 
@@ -51,7 +55,7 @@ bootRun {
             classpath = files("$buildDir/classes/main", "$buildDir/resources/main", pathingJar.archivePath)
         }
     }
-    
+    dependsOn(buildClientDev)
     sourceResources sourceSets.bootRun
     systemProperties = System.properties
     

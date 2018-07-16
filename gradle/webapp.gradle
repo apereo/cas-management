@@ -22,7 +22,7 @@ sourceSets {
 }
 
 apply from: rootProject.file("gradle/springboot.gradle")
-apply from: rootProject.file("gradle/node.gradle")
+
 
 dependencies {
     runtimeOnly project(":webapp-mgmt:cas-management-webapp-configuration")

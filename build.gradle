@@ -117,12 +117,12 @@ allprojects {
         jcenter()
         maven { url "https://repo.spring.io/libs-milestone" }
     }
-/*
+
     javadoc {
         options.addBooleanOption('html5', true)
         failOnError = Boolean.getBoolean("ignoreJavadocFailures")
     }
-*/
+
 }
 
 subprojects {
@@ -382,7 +382,7 @@ task aggregateJavadocsIntoJar(type: Jar, dependsOn: javadoc, description: "Aggre
     from javadoc
 }
 
-task rootSourcesJar(type: Jar, description: "Build JAR for the root CAS module") {
+task rootSourcesJar(type: Jar, description: "Build JAR for the root CAS Managment module") {
     baseName = "${project.archivesBaseName}"
     from rootProject.file("src")
 }

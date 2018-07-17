@@ -15,8 +15,8 @@ export class FormData {
     mfaProviders: PropertyEnum[];
     mfaFailureModes: String[];
     oidcScopes: PropertyEnum[];
-    oidcEncodingAlgOptions: PropertyEnum[];
-    oidcEncryptAlgOptions: PropertyEnum[];
+    encodingAlgOptions: String[];
+    encryptAlgOptions: String[];
     oidcSubjectTypes: PropertyEnum[];
     canonicalizationModes: String[];
     delegatedAuthnProviders: String[];

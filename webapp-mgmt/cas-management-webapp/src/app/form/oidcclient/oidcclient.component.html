@@ -183,7 +183,7 @@
             [matTooltip]="messages.services_form_tooltip_oidc_encryptAlg">
   </mat-icon>
   <mat-autocomplete #encryptAlgAuto="matAutocomplete">
-    <mat-option *ngFor="let opt of data.formData.oidcEncryptAlgOptions" [value]="opt">{{ opt }}</mat-option>
+    <mat-option *ngFor="let opt of data.formData.encryptAlgOptions" [value]="opt">{{ opt }}</mat-option>
   </mat-autocomplete>
 </app-input>
 
@@ -203,7 +203,7 @@
             [matTooltip]="messages.services_form_tooltip_oidc_encryptEnc">
   </mat-icon>
   <mat-autocomplete #encodingAlgAuto="matAutocomplete">
-    <mat-option *ngFor="let opt of data.formData.oidcEncodingAlgOptions" [value]="opt">{{ opt }}</mat-option>
+    <mat-option *ngFor="let opt of data.formData.encodingAlgOptions" [value]="opt">{{ opt }}</mat-option>
   </mat-autocomplete>
 </app-input>
 

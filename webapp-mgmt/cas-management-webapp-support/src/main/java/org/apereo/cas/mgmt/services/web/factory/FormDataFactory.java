@@ -85,10 +85,10 @@ public class FormDataFactory {
     }
 
     private void loadServiceTypes(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getRegisteredServiceTypes().isEmpty()) {
+        if (profile.isPresent() && !profile.get().getRegisteredServiceTypesSupported().isEmpty()) {
             final CasServerProfile p = profile.get();
 
-            final List<FormData.Option> types = p.getRegisteredServiceTypes().entrySet().stream()
+            final List<FormData.Option> types = p.getRegisteredServiceTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
                 .collect(Collectors.toList());
             formData.setServiceTypes(types);
@@ -104,9 +104,9 @@ public class FormDataFactory {
     }
 
     private void loadMfaProviders(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypes().isEmpty()) {
+        if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypesSupported().isEmpty()) {
             final CasServerProfile p = profile.get();
-            final List<FormData.Option> mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
+            final List<FormData.Option> mfas = p.getMultifactorAuthenticationProviderTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
             formData.setMfaProviders(mfas);

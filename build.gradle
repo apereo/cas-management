@@ -150,7 +150,6 @@ subprojects {
     apply plugin: "org.owasp.dependencycheck"
 
     apply from: rootProject.file("gradle/tasks.gradle")
-    apply from: rootProject.file("gradle/tests.gradle")
 
     ext.libraries = rootProject.ext.libraries
 

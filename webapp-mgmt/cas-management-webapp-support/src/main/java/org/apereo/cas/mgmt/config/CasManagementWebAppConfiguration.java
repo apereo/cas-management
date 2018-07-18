@@ -182,7 +182,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public ManageRegisteredServicesMultiActionController manageRegisteredServicesMultiActionController(
         @Qualifier("servicesManager") final ServicesManager servicesManager) {
-        final String defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
+        final String defaultCallbackUrl = managementProperties.getServerName().concat(serverProperties.getContextPath()).concat("/manage.html");
         return new ManageRegisteredServicesMultiActionController(servicesManager, formDataFactory(),
             webApplicationServiceFactory, defaultCallbackUrl, managementProperties,
             casUserProfileFactory, managerFactory(), casProperties);

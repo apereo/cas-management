@@ -107,7 +107,7 @@ public class FormDataFactory {
         if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypesSupported().isEmpty()) {
             final CasServerProfile p = profile.get();
             final List<FormData.Option> mfas = p.getMultifactorAuthenticationProviderTypesSupported().entrySet().stream()
-                .map(e -> new FormData.Option(e.getKey(), e.getValue()))
+                .map(e -> new FormData.Option(e.getValue(), e.getKey()))
                 .collect(Collectors.toList());
             formData.setMfaProviders(mfas);
         } else {

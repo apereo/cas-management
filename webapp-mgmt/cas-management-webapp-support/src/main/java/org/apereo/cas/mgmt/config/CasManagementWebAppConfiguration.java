@@ -1,11 +1,11 @@
 package org.apereo.cas.mgmt.config;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.configuration.model.support.oidc.OidcProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.CasManagementUtils;
 import org.apereo.cas.mgmt.DefaultCasManagementEventListener;
@@ -122,12 +122,12 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public SimpleUrlHandlerMapping casManagementHandlerMappingC() {
-        final SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
+        val mapping = new SimpleUrlHandlerMapping();
         mapping.setOrder(1);
         mapping.setAlwaysUseFullPath(true);
         mapping.setRootHandler(casManagementRootController());
 
-        final Properties properties = new Properties();
+        val properties = new Properties();
         properties.put("/*.html", new UrlFilenameViewController());
         mapping.setMappings(properties);
         return mapping;
@@ -144,7 +144,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
         return new CookieLocaleResolver() {
             @Override
             protected Locale determineDefaultLocale(final HttpServletRequest request) {
-                final Locale locale = request.getLocale();
+                val locale = request.getLocale();
                 if (StringUtils.isEmpty(managementProperties.getDefaultLocale())
                     || !locale.getLanguage().equals(managementProperties.getDefaultLocale())) {
                     return locale;
@@ -157,7 +157,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @RefreshScope
     @Bean
     public HandlerInterceptor casManagementLocaleChangeInterceptor() {
-        final LocaleChangeInterceptor bean = new LocaleChangeInterceptor();
+        val bean = new LocaleChangeInterceptor();
         bean.setParamName(this.casProperties.getLocale().getParamName());
         return bean;
     }
@@ -182,7 +182,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public ManageRegisteredServicesMultiActionController manageRegisteredServicesMultiActionController(
         @Qualifier("servicesManager") final ServicesManager servicesManager) {
-        final String defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
+        val defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
         return new ManageRegisteredServicesMultiActionController(servicesManager, formDataFactory(),
             webApplicationServiceFactory, defaultCallbackUrl, managementProperties,
             casUserProfileFactory, managerFactory(), casProperties);
@@ -220,7 +220,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     @RefreshScope
     @Bean
     public Collection<BaseOidcScopeAttributeReleasePolicy> userDefinedScopeBasedAttributeReleasePolicies() {
-        final OidcProperties oidc = casProperties.getAuthn().getOidc();
+        val oidc = casProperties.getAuthn().getOidc();
         return oidc.getUserDefinedScopes().entrySet()
             .stream()
             .map(k -> new OidcCustomScopeAttributeReleasePolicy(k.getKey(), CollectionUtils.wrapList(k.getValue().split(","))))
@@ -234,7 +234,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public SpringResourceTemplateResolver casManagementStaticTemplateResolver() {
-        final SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        val resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");

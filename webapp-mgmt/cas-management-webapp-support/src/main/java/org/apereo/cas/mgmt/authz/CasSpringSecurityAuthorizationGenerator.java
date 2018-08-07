@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authz;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.util.ResourceUtils;
 import org.apereo.cas.util.io.FileWatcherService;
 import org.jooq.lambda.Unchecked;
@@ -25,7 +26,7 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
     private SpringSecurityPropertiesAuthorizationGenerator generator;
 
     public CasSpringSecurityAuthorizationGenerator(final Resource usersFile) {
-        final Properties properties = new Properties();
+        val properties = new Properties();
         try {
             if (ResourceUtils.doesResourceExist(usersFile)) {
                 properties.load(usersFile.getInputStream());
@@ -39,9 +40,9 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
 
     private void watchResource(final Resource usersFile) {
         try {
-            final FileWatcherService watcher = new FileWatcherService(usersFile.getFile(),
+            val watcher = new FileWatcherService(usersFile.getFile(),
                     Unchecked.consumer(file -> {
-                        final Properties newProps = new Properties();
+                        val newProps = new Properties();
                         newProps.load(new FileInputStream(file));
                         this.generator = new SpringSecurityPropertiesAuthorizationGenerator(newProps);
                     }));

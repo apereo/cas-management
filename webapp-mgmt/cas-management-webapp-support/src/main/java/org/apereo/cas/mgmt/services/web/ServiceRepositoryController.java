@@ -4,12 +4,11 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.BranchActionData;
 import org.apereo.cas.mgmt.services.web.beans.BranchData;
 import org.apereo.cas.mgmt.services.web.beans.CNote;
@@ -25,11 +24,8 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.io.CommunicationsManager;
-import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.notes.Note;
-import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -90,7 +86,7 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/commit")
     public ResponseEntity<String> commit(final HttpServletResponse response, final HttpServletRequest request,
                                          @RequestParam final String msg) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         try(GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to commit");
@@ -111,7 +107,7 @@ public class ServiceRepositoryController {
      */
     @GetMapping(value = "/publish")
     public ResponseEntity<String> publish(final HttpServletResponse response, final HttpServletRequest request) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
@@ -119,12 +115,12 @@ public class ServiceRepositoryController {
             this.publishError = false;
             git.getUnpublishedCommits().forEach(commit -> {
                 try {
-                    final List<DiffEntry> diffs = git.getPublishDiffs(commit.getId());
+                    val diffs = git.getPublishDiffs(commit.getId());
 
                     // Run through deletes first in case of name change
                     diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
                             .forEach(c -> {
-                                final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+                                val ser = new DefaultRegisteredServiceJsonSerializer();
                                 try {
                                     this.servicesManager.delete(ser.from(git.readObject(c.getOldId().toObjectId())).getId());
                                 } catch (final Exception e) {
@@ -134,7 +130,7 @@ public class ServiceRepositoryController {
                             });
                     diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)
                             .forEach(c -> {
-                                final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+                                val ser = new DefaultRegisteredServiceJsonSerializer();
                                 try {
                                     this.servicesManager.save(ser.from(git.readObject(c.getNewId().toObjectId())));
                                 } catch (final Exception e) {
@@ -168,7 +164,7 @@ public class ServiceRepositoryController {
     @GetMapping("sync")
     public ResponseEntity<String> sync(final HttpServletRequest request,
                                        final HttpServletResponse response) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        val casUserProfile = casUserProfileFactory.from(request, response);
         if (casUserProfile.isAdministrator()) {
             runSyncScript();
             return new ResponseEntity<>("Services Synced", HttpStatus.OK);
@@ -184,7 +180,7 @@ public class ServiceRepositoryController {
      */
     private void runSyncScript() throws Exception {
         if (managementProperties.getSyncScript() != null) {
-            final int status = Runtime.getRuntime().exec(managementProperties.getSyncScript()).waitFor();
+            val status = Runtime.getRuntime().exec(managementProperties.getSyncScript()).waitFor();
             if (status > 0) {
                 throw new Exception("Services Sync Failed");
             }
@@ -202,13 +198,13 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/commits")
     public ResponseEntity<List<Commit>> commitLogs(final HttpServletRequest request,
                                                    final HttpServletResponse response) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final List<Commit> commits = git.getLastNCommits(MAX_COMMITS)
+            val commits = git.getLastNCommits(MAX_COMMITS)
                     .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
                             formatCommitTime(c.getCommitTime()))
@@ -235,14 +231,14 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/commitList")
     public ResponseEntity<List<Commit>> commits(final HttpServletRequest request,
                                                 final HttpServletResponse response) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
 
-        final int behind = getPublishBehindCount();
+        val behind = getPublishBehindCount();
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final List<Commit> commits = git.getLastNCommits(behind)
+            val commits = git.getLastNCommits(behind)
                     .map(c -> new Commit(c.getId().abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
                             formatCommitTime(c.getCommitTime())))
@@ -276,17 +272,17 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> submitPull(final HttpServletResponse response,
                                              final HttpServletRequest request,
                                              @RequestBody final String msg) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to submit");
             }
-            final long timestamp = new Date().getTime();
-            final String branchName = "submit-" + timestamp;
-            final String submitName = user.getId() + '_' + timestamp;
+            val timestamp = new Date().getTime();
+            val branchName = "submit-" + timestamp;
+            val submitName = user.getId() + '_' + timestamp;
 
             git.addWorkingChanges();
-            final RevCommit commit = git.commit(user, msg);
+            val commit = git.commit(user, msg);
             git.createBranch(branchName, "origin/master");
             git.cherryPickCommit(commit);
             git.commit(user, msg);
@@ -300,7 +296,7 @@ public class ServiceRepositoryController {
 
     private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
-            final EmailProperties emailProps = managementProperties.getNotifications().getSubmit();
+            val emailProps = managementProperties.getNotifications().getSubmit();
             communicationsManager.email(
                 emailProps.getText(),
                 emailProps.getFrom(),
@@ -321,9 +317,9 @@ public class ServiceRepositoryController {
     @GetMapping("/gitStatus")
     public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
                                                final HttpServletResponse response) {
-        final GitStatus gitStatus = new GitStatus();
+        val gitStatus = new GitStatus();
         try (GitUtil git = repositoryFactory.from(request, response)) {
-            final Status status = git.status();
+            val status = git.status();
             gitStatus.setHasChanges(!status.isClean());
             gitStatus.setAdded(status.getUntracked().stream()
                      .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
@@ -341,7 +337,7 @@ public class ServiceRepositoryController {
     }
 
     private static String getServiceName(final GitUtil git, final String path) {
-        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        val serializer = new DefaultRegisteredServiceJsonSerializer();
         try {
             return serializer.from(Paths.get(git.repoPath() + '/' + path).toFile()).getName() + " - " + path;
         } catch (final Exception e) {
@@ -351,9 +347,9 @@ public class ServiceRepositoryController {
     }
 
     private static String getDeletedServiceName(final GitUtil git, final String path) {
-        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+        val serializer = new DefaultRegisteredServiceJsonSerializer();
         try {
-            final TreeWalk treeWalk = new TreeWalk(git.getRepository());
+            val treeWalk = new TreeWalk(git.getRepository());
             treeWalk.addTree(git.getLastNCommits(1).findFirst().get().getTree());
             while (treeWalk.next()) {
                 if (treeWalk.getPathString().endsWith(path)) {
@@ -382,7 +378,7 @@ public class ServiceRepositoryController {
             if (git.isUndefined()) {
                 return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
             }
-            final List<Change> changes = git.scanWorkingDiffs().stream()
+            val changes = git.scanWorkingDiffs().stream()
                     .map(d -> createChange(d, git))
                     .collect(toList());
             return new ResponseEntity<>(changes, HttpStatus.OK);
@@ -413,12 +409,12 @@ public class ServiceRepositoryController {
     public ResponseEntity<List<BranchData>> branches(final HttpServletResponse response,
                                                      final HttpServletRequest request,
                                                      @RequestBody final boolean[] options) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final List<BranchData> names = git.branches()
+            val names = git.branches()
                     .map(git::mapBranches)
                     .filter(r -> filterPulls(r, options))
                     .map(ServiceRepositoryController::createBranch)
@@ -458,9 +454,9 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/submitRequests")
     public ResponseEntity<List<BranchData>> submits(final HttpServletRequest request,
                                                     final HttpServletResponse response) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final List<BranchData> names = git.branches()
+            val names = git.branches()
                     .filter(r -> r.getName().contains('/' + user.getId() + '_'))
                     .map(git::mapBranches)
                     .map(ServiceRepositoryController::createBranch)
@@ -483,13 +479,13 @@ public class ServiceRepositoryController {
     public ResponseEntity<List<Diff>> changes(final HttpServletResponse response,
                                               final HttpServletRequest request,
                                               @RequestParam("branch") final String branch) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final List<Diff> changes = git.getDiffs(branch).stream()
+            val changes = git.getDiffs(branch).stream()
                     .map(d -> createDiff(d, git))
                     .collect(toList());
             return new ResponseEntity<>(changes, HttpStatus.OK);
@@ -509,14 +505,14 @@ public class ServiceRepositoryController {
     public ResponseEntity<List<Diff>> commitHistoryList(final HttpServletResponse response,
                                                         final HttpServletRequest request,
                                                         @RequestParam("id") final String id) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()){
-            final RevCommit r = git.getCommit(id);
-            final List<Diff> diffs = git.getPublishDiffs(id).stream()
+            val r = git.getCommit(id);
+            val diffs = git.getPublishDiffs(id).stream()
                     .map(d -> createDiff(d, git))
                     .map(d -> {
                         d.setCommitter(r.getCommitterIdent().getName());
@@ -543,8 +539,8 @@ public class ServiceRepositoryController {
                          final HttpServletResponse response,
                          final @RequestBody String[] ids) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
-            final ObjectId newId = ObjectId.fromString(ids[0]);
-            final ObjectId oldId = ObjectId.fromString(ids[1]);
+            val newId = ObjectId.fromString(ids[0]);
+            val oldId = ObjectId.fromString(ids[1]);
             response.getOutputStream().write(git.getFormatter(oldId, newId));
         }
     }
@@ -584,9 +580,9 @@ public class ServiceRepositoryController {
                                                           final HttpServletRequest request,
                                                           @RequestParam final String id) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
-            final RegisteredService change = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
-            final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-            final RegisteredService orig = managerFactory.from(request, casUserProfile).findServiceBy(change.getId());
+            val change = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
+            val casUserProfile = casUserProfileFactory.from(request, response);
+            val orig = managerFactory.from(request, casUserProfile).findServiceBy(change.getId());
             final RegisteredService[] resp = {change, orig};
             return new ResponseEntity<>(resp, HttpStatus.OK);
         }
@@ -624,10 +620,10 @@ public class ServiceRepositoryController {
                                            final HttpServletResponse response,
                                            final @RequestParam String id) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
-            final DefaultRegisteredServiceJsonSerializer jsonSerializer = new DefaultRegisteredServiceJsonSerializer();
-            final RegisteredService service = jsonSerializer.from(git.readObject(id));
-            final RegisteredServiceYamlSerializer yamlSerializer = new RegisteredServiceYamlSerializer();
-            final ByteArrayOutputStream output = new ByteArrayOutputStream();
+            val jsonSerializer = new DefaultRegisteredServiceJsonSerializer();
+            val service = jsonSerializer.from(git.readObject(id));
+            val yamlSerializer = new RegisteredServiceYamlSerializer();
+            val output = new ByteArrayOutputStream();
             yamlSerializer.to(output, service);
             return new ResponseEntity<>(output.toString(), HttpStatus.OK);
         }
@@ -647,17 +643,17 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> acceptChange(final HttpServletRequest request,
                                                final HttpServletResponse response,
                                                final @RequestBody BranchActionData acception) throws Exception {
-        final BranchData branch = acception.getBranch();
-        final String text = acception.getNote();
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val branch = acception.getBranch();
+        val text = acception.getNote();
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.merge(branch.getId());
-            final RevCommit com = git.getCommit(branch.getId());
-            final String msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + "\n    "
+            val com = git.getCommit(branch.getId());
+            val msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + "\n    "
                     + text.replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
             sendAcceptMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), com.getCommitterIdent().getEmailAddress());
@@ -667,7 +663,7 @@ public class ServiceRepositoryController {
 
     private void sendAcceptMessage(final String submitName, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
-            final EmailProperties emailProps = managementProperties.getNotifications().getAccept();
+            val emailProps = managementProperties.getNotifications().getAccept();
             communicationsManager.email(
                 MessageFormat.format(emailProps.getText(), submitName),
                 emailProps.getFrom(),
@@ -692,16 +688,16 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> rejectChange(final HttpServletRequest request,
                                                final HttpServletResponse response,
                                                final @RequestBody BranchActionData rejection) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
 
-        final BranchData branch = rejection.getBranch();
-        final String text = rejection.getNote();
+        val branch = rejection.getBranch();
+        val text = rejection.getNote();
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final RevCommit com = git.getCommit(branch.getId());
-            final String msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + "\n    "
+            val com = git.getCommit(branch.getId());
+            val msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + "\n    "
                     + text.replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
 
@@ -712,7 +708,7 @@ public class ServiceRepositoryController {
 
     private void sendRejectMessage(final String submitName, final String note, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
-            final EmailProperties emailProps = managementProperties.getNotifications().getReject();
+            val emailProps = managementProperties.getNotifications().getReject();
             communicationsManager.email(
                 MessageFormat.format(emailProps.getText(), submitName, note),
                 emailProps.getFrom(),
@@ -734,7 +730,7 @@ public class ServiceRepositoryController {
     @GetMapping(value = "/notes")
     public void getNotes(final HttpServletResponse response, final @RequestParam String id) throws Exception {
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final Note note = git.note(id);
+            val note = git.note(id);
             if (note != null) {
                 git.writeNote(note, response.getOutputStream());
             }
@@ -754,13 +750,13 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> addNote(final HttpServletRequest request,
                                           final HttpServletResponse response,
                                           final @RequestBody CNote cnote) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final RevCommit com = git.getCommit(cnote.getId());
-            final String msg = user.getId() + " - " + new Date().toString() + " : \n    "
+            val com = git.getCommit(cnote.getId());
+            val msg = user.getId() + " - " + new Date().toString() + " : \n    "
                     + cnote.getText().replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
             return new ResponseEntity<>("Note Added", HttpStatus.OK);
@@ -781,7 +777,7 @@ public class ServiceRepositoryController {
                                                  final HttpServletResponse response,
                                                  final @RequestParam String path) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
-            final List<History> history = git.history(path);
+            val history = git.history(path);
             return new ResponseEntity<>(history, HttpStatus.OK);
         }
     }
@@ -821,13 +817,13 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> revertRepo(final HttpServletRequest request,
                                              final HttpServletResponse response,
                                              final @RequestParam String id) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final RegisteredService svc = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
-            final ManagementServicesManager mgmtServicesManager = managerFactory.from(request, user);
+            val svc = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
+            val mgmtServicesManager = managerFactory.from(request, user);
             mgmtServicesManager.save(svc);
             return new ResponseEntity<>("File Reverted", HttpStatus.OK);
         }
@@ -846,12 +842,12 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> revertDelete(final HttpServletRequest request,
                                                final HttpServletResponse response,
                                                final @RequestParam String path) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to revert");
             }
-            final ServicesManager manager = managerFactory.from(request, user);
+            val manager = managerFactory.from(request, user);
             insertService(git, path);
             git.checkoutFile(path);
             return new ResponseEntity<>("File Reverted", HttpStatus.OK);
@@ -893,13 +889,13 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> checkoutCommit(final HttpServletResponse response,
                                                  final HttpServletRequest request,
                                                  @RequestParam final String id) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final RevCommit r = git.getCommit(id);
+            val r = git.getCommit(id);
             git.getDiffsToRevert(id).stream().forEach(d -> {
                 try {
                     if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
@@ -923,7 +919,7 @@ public class ServiceRepositoryController {
      * @throws Exception - failed
      */
     private static void insertService(final GitUtil git, final String path) throws Exception {
-        final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
+        val ser = new DefaultRegisteredServiceJsonSerializer();
         ser.from(git.readObject(git.history(path).get(0).getId()));
     }
 
@@ -940,7 +936,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> revertSubmit(final HttpServletRequest request,
                                                final HttpServletResponse response,
                                                @RequestParam final String branchName) throws Exception {
-        final CasUserProfile user = casUserProfileFactory.from(request, response);
+        val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to revert");
@@ -965,11 +961,11 @@ public class ServiceRepositoryController {
     @GetMapping("notifications")
     public ResponseEntity<String> notifications(final HttpServletRequest request,
                                                 final HttpServletResponse response) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        String resp = "";
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        var resp = "";
         if (casUserProfile.isAdministrator()) {
             try (GitUtil git = repositoryFactory.masterRepository()) {
-                final boolean pending = git.branches()
+                val pending = git.branches()
                         .map(git::mapBranches)
                         .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
                         .findAny().isPresent();
@@ -984,7 +980,7 @@ public class ServiceRepositoryController {
     private int pendingSubmits(final HttpServletRequest request,
                                final HttpServletResponse response,
                                final GitUtil git) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        val casUserProfile = casUserProfileFactory.from(request, response);
         if (casUserProfile.isAdministrator()) {
             return (int) git.branches()
                     .map(git::mapBranches)
@@ -1002,7 +998,7 @@ public class ServiceRepositoryController {
      * @return - BranchData
      */
     private static BranchData createBranch(final GitUtil.BranchMap r) {
-        final BranchData branch = new BranchData();
+        val branch = new BranchData();
         branch.setName(r.getName());
         branch.setMsg(r.getFullMessage());
         branch.setCommitter(r.getCommitter());
@@ -1043,9 +1039,9 @@ public class ServiceRepositoryController {
      * @throws Exception - failed
      */
     private static Change createDeleteChange(final GitUtil git, final DiffEntry entry) throws Exception {
-        final String json = git.readObject(entry.getOldId().toObjectId());
-        final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
-        final RegisteredService svc = ser.from(json);
+        val json = git.readObject(entry.getOldId().toObjectId());
+        val ser = new DefaultRegisteredServiceJsonSerializer();
+        val svc = ser.from(json);
         return new Change(String.valueOf(svc.getId()),
             entry.getOldPath(),
             DiffEntry.ChangeType.DELETE.toString(),
@@ -1064,10 +1060,10 @@ public class ServiceRepositoryController {
      */
     @SuppressWarnings("DefaultCharset")
     private static Change createModifyChange(final GitUtil git, final DiffEntry entry) throws Exception {
-        final String file = git.repoPath() + '/' + entry.getNewPath();
-        final String json = new String(Files.readAllBytes(Paths.get(file)));
-        final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
-        final RegisteredService svc = ser.from(json);
+        val file = git.repoPath() + '/' + entry.getNewPath();
+        val json = new String(Files.readAllBytes(Paths.get(file)));
+        val ser = new DefaultRegisteredServiceJsonSerializer();
+        val svc = ser.from(json);
         return new Change(String.valueOf(svc.getId()),
             entry.getNewPath(),
             entry.getChangeType().toString(),
@@ -1084,12 +1080,10 @@ public class ServiceRepositoryController {
      */
     private static Diff createDiff(final DiffEntry d, final GitUtil git) {
         try {
-            final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
-            final RegisteredService service;
+            val ser = new DefaultRegisteredServiceJsonSerializer();
+            var service = ser.from(git.readObject(d.getOldId().toObjectId()));
             if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
                 service = ser.from(git.readObject(d.getNewId().toObjectId()));
-            } else {
-                service = ser.from(git.readObject(d.getOldId().toObjectId()));
             }
             return new Diff(d.getNewPath(),
                     d.getOldId().toObjectId(),

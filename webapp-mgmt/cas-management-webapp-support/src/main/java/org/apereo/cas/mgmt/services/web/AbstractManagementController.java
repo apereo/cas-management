@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.JsonUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,7 +46,7 @@ public abstract class AbstractManagementController {
     @ExceptionHandler
     public ModelAndView resolveException(final HttpServletRequest request, final HttpServletResponse response, final Exception ex) {
         LOGGER.error(ex.getMessage(), ex);
-        final String contentType = request.getHeader(AJAX_REQUEST_HEADER_NAME);
+        val contentType = request.getHeader(AJAX_REQUEST_HEADER_NAME);
         if (contentType != null && contentType.equals(AJAX_REQUEST_HEADER_VALUE)) {
             LOGGER.debug("Handling exception [{}] for ajax request indicated by header [{}]",
                     ex.getClass().getName(), AJAX_REQUEST_HEADER_NAME);
@@ -54,7 +55,7 @@ public abstract class AbstractManagementController {
         }
         LOGGER.trace("Unable to resolve exception [{}] for request. AJAX request header [{}] not found.",
                 ex.getClass().getName(), AJAX_REQUEST_HEADER_NAME);
-        final ModelAndView mv = new ModelAndView("error");
+        val mv = new ModelAndView("error");
         mv.addObject(ex);
         return mv;
     }

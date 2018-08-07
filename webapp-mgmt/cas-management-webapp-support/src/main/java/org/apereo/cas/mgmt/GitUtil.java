@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,13 +17,11 @@ import org.apereo.cas.mgmt.services.web.beans.Commit;
 import org.apereo.cas.mgmt.services.web.beans.History;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.diff.DiffAlgorithm;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.diff.EditList;
 import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
@@ -37,7 +36,6 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevObject;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
@@ -50,7 +48,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -62,7 +59,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -86,11 +82,11 @@ public class GitUtil implements AutoCloseable {
     private final Git git;
 
     public GitUtil(final String path) {
-        boolean repositoryMustExist = true;
-        final File gitDir = new File(path);
+        var repositoryMustExist = true;
+        val gitDir = new File(path);
         if (!gitDir.exists()) {
             LOGGER.debug("Creating git repository directory at [{}]", gitDir);
-            final boolean result = gitDir.mkdirs();
+            val result = gitDir.mkdirs();
             if (!result) {
                 LOGGER.warn("Failed to create git repository directory at [{}]", gitDir);
                 repositoryMustExist = false;
@@ -243,7 +239,7 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public void addWorkingChanges() throws Exception {
-        final Status status = git.status().call();
+        val status = git.status().call();
         status.getUntracked().forEach(this::addFile);
     }
 
@@ -270,11 +266,11 @@ public class GitUtil implements AutoCloseable {
             return new ArrayList<>();
         }
 
-        final FileTreeIterator workTreeIterator = new FileTreeIterator(git.getRepository());
-        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+        val workTreeIterator = new FileTreeIterator(git.getRepository());
+        val oldTreeIter = new CanonicalTreeParser();
         try (ObjectReader reader = git.getRepository().newObjectReader()) {
             oldTreeIter.reset(reader, git.getRepository().resolve("HEAD^{tree}"));
-            final DiffFormatter formatter = new DiffFormatter(new ByteArrayOutputStream());
+            val formatter = new DiffFormatter(new ByteArrayOutputStream());
             formatter.setRepository(git.getRepository());
             return formatter.scan(oldTreeIter, workTreeIterator);
         } catch (final Exception e) {
@@ -291,7 +287,7 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public String readFormWorkingTree(final ObjectId id) throws Exception {
-        final FileTreeIterator workTreeIterator = new FileTreeIterator(git.getRepository());
+        val workTreeIterator = new FileTreeIterator(git.getRepository());
         while (!workTreeIterator.eof() && !workTreeIterator.getEntryObjectId().equals(id)) {
             workTreeIterator.next(1);
         }
@@ -319,7 +315,7 @@ public class GitUtil implements AutoCloseable {
      */
     @SuppressWarnings("DefaultCharset")
     public String readObject(final ObjectId id) throws Exception {
-        final ObjectReader reader = git.getRepository().newObjectReader();
+        val reader = git.getRepository().newObjectReader();
         if (reader.has(id)) {
             return new String(reader.open(id).getBytes());
         } else {
@@ -360,8 +356,8 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public void appendNote(final RevObject com, final String msg) throws Exception {
-        final Note note = note(com);
-        final StringBuilder buffer = new StringBuilder(msg.length());
+        val note = note(com);
+        val buffer = new StringBuilder(msg.length());
         if (note != null) {
             try (OutputStream bytes = new ByteArrayOutputStream()) {
                 git.getRepository().open(note.getData()).copyTo(bytes);
@@ -495,9 +491,9 @@ public class GitUtil implements AutoCloseable {
      */
     public History createHistory(final RevCommit r, final String path) {
         try {
-            final TreeWalk treeWalk = historyWalk(r, path);
+            val treeWalk = historyWalk(r, path);
             if (treeWalk.next()) {
-                final History history = new History();
+                val history = new History();
                 history.setId(treeWalk.getObjectId(0).abbreviate(NAME_LENGTH).name());
                 history.setCommit(r.abbreviate(NAME_LENGTH).name());
                 history.setPath(treeWalk.getPathString());
@@ -527,7 +523,7 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public TreeWalk historyWalk(final RevCommit r, final String path) throws Exception {
-        final TreeWalk treeWalk = new TreeWalk(git.getRepository());
+        val treeWalk = new TreeWalk(git.getRepository());
         treeWalk.addTree(r.getTree());
         treeWalk.setFilter(new HistoryTreeFilter(path));
         return treeWalk;
@@ -564,9 +560,9 @@ public class GitUtil implements AutoCloseable {
      */
     public String noteText(final RevObject com) throws Exception {
         if (!isUndefined()) {
-            final Note note = note(com);
+            val note = note(com);
             if (note != null) {
-                final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                val bytes = new ByteArrayOutputStream();
                 git.getRepository().open(note.getData()).copyTo(bytes);
                 return bytes.toString();
             }
@@ -581,7 +577,7 @@ public class GitUtil implements AutoCloseable {
      * @return - PersonIden object to be added to a commit.
      */
     public static PersonIdent getCommitterId(final CasUserProfile user) {
-        final String email = user.getEmail() != null ? user.getEmail() : StringUtils.EMPTY;
+        val email = user.getEmail() != null ? user.getEmail() : StringUtils.EMPTY;
         return new PersonIdent(user.getId(), email);
     }
 
@@ -603,7 +599,7 @@ public class GitUtil implements AutoCloseable {
      */
     public Ref getPublished() {
         try {
-            final Ref ref = git.tagList().call().get(0);
+            val ref = git.tagList().call().get(0);
             return git.getRepository().peel(ref);
         } catch (final Exception e) {
             LOGGER.trace(e.getMessage(), e);
@@ -632,8 +628,8 @@ public class GitUtil implements AutoCloseable {
 
         @Override
         public boolean include(final TreeWalk treeWalk) {
-            final List<String> pathSplit = Splitter.on("-").splitToList(path);
-            final List<String> treePathSplit = Splitter.on("-").splitToList(treeWalk.getPathString());
+            val pathSplit = Splitter.on("-").splitToList(path);
+            val treePathSplit = Splitter.on("-").splitToList(treeWalk.getPathString());
             return pathSplit.get(pathSplit.size() - 1).equals(treePathSplit.get(treePathSplit.size() - 1));
         }
 
@@ -743,7 +739,7 @@ public class GitUtil implements AutoCloseable {
      */
     public BranchMap mapBranches(final Ref r) {
         try {
-            final RevWalk revWalk = new RevWalk(git.getRepository());
+            val revWalk = new RevWalk(git.getRepository());
             return new BranchMap(this, r, revWalk.parseCommit(git.getRepository().resolve(r.getName())));
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -759,10 +755,10 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public List<DiffEntry> getDiffs(final String branch) throws Exception {
-        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        final ObjectReader reader = git.getRepository().newObjectReader();
+        val oldTreeIter = new CanonicalTreeParser();
+        val reader = git.getRepository().newObjectReader();
         oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
-        final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+        val newTreeIter = new CanonicalTreeParser();
         newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
         return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
     }
@@ -775,10 +771,10 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public List<DiffEntry> getPublishDiffs(final String branch) throws Exception {
-        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        final ObjectReader reader = git.getRepository().newObjectReader();
+        val oldTreeIter = new CanonicalTreeParser();
+        val reader = git.getRepository().newObjectReader();
         oldTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
-        final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+        val newTreeIter = new CanonicalTreeParser();
         newTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
         return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
     }
@@ -791,10 +787,10 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public List<DiffEntry> getDiffsToRevert(final String branch) throws Exception {
-        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        final ObjectReader reader = git.getRepository().newObjectReader();
+        val oldTreeIter = new CanonicalTreeParser();
+        val reader = git.getRepository().newObjectReader();
         oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
-        final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+        val newTreeIter = new CanonicalTreeParser();
         newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
         return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
     }
@@ -821,12 +817,12 @@ public class GitUtil implements AutoCloseable {
      */
     public byte[] getFormatter(final RawText oldText, final RawText newText) throws Exception {
         if (!isUndefined()) {
-            final DiffAlgorithm diffAlgorithm = DiffAlgorithm.getAlgorithm(
+            val diffAlgorithm = DiffAlgorithm.getAlgorithm(
                 git.getRepository().getConfig().getEnum("diff",
                     null, "algorithm", DiffAlgorithm.SupportedAlgorithm.HISTOGRAM));
-            final EditList editList = diffAlgorithm.diff(RawTextComparator.DEFAULT, oldText, newText);
-            final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            final DiffFormatter df = new DiffFormatter(bytes);
+            val editList = diffAlgorithm.diff(RawTextComparator.DEFAULT, oldText, newText);
+            val bytes = new ByteArrayOutputStream();
+            val df = new DiffFormatter(bytes);
             df.setRepository(git.getRepository());
             df.format(editList, oldText, newText);
             df.flush();
@@ -859,8 +855,8 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public RevCommit findCommitBeforeSubmit(final String branchName) throws Exception {
-        final RevCommit com = findSubmitCommit(branchName);
-        final RevCommit before = commitLogs(com).skip(1).findFirst().get();
+        val com = findSubmitCommit(branchName);
+        val before = commitLogs(com).skip(1).findFirst().get();
         return before;
     }
 
@@ -888,9 +884,9 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public void markAsReverted(final String branch, final CasUserProfile user) throws Exception {
-        final RevWalk revWalk = new RevWalk(git.getRepository());
-        final RevCommit com = revWalk.parseCommit(git.getRepository().resolve(branch));
-        final String msg = "REVERTED by " + user.getId() + " on " + new Date().toString() + "\n    ";
+        val revWalk = new RevWalk(git.getRepository());
+        val com = revWalk.parseCommit(git.getRepository().resolve(branch));
+        val msg = "REVERTED by " + user.getId() + " on " + new Date().toString() + "\n    ";
         appendNote(com, msg);
     }
 
@@ -913,15 +909,15 @@ public class GitUtil implements AutoCloseable {
     }
 
     private boolean checkMaster() throws Exception {
-        final FetchResult fr = git.fetch().setDryRun(true).call();
+        val fr = git.fetch().setDryRun(true).call();
         git.close();
         return !fr.getTrackingRefUpdates().isEmpty();
     }
 
     private Collection<String> attemptRebase() throws Exception {
-        final Collection<String> conflicts = new HashSet<>();
+        val conflicts = new HashSet<String>();
         createStashIfNeeded();
-        final PullResult pr = git.pull().setStrategy(MergeStrategy.RESOLVE).setRebase(true).call();
+        val pr = git.pull().setStrategy(MergeStrategy.RESOLVE).setRebase(true).call();
         if (pr.getRebaseResult().getConflicts() != null) {
             conflicts.addAll(pr.getRebaseResult().getConflicts());
         }
@@ -949,7 +945,7 @@ public class GitUtil implements AutoCloseable {
             try {
                 git.stashApply().call();
             } catch (final Exception e) {
-                final Set<String> conflicts = git.status().call().getConflicting();
+                val conflicts = git.status().call().getConflicting();
                 git.close();
                 return conflicts;
             }
@@ -1011,8 +1007,8 @@ public class GitUtil implements AutoCloseable {
      */
     public void move(final String oldName, final String newName) throws Exception {
         LOGGER.debug("Attempting to move [{}] to [{}]", oldName, newName);
-        final Path oldPath = Paths.get(repoPath() + '/' + oldName);
-        final Path target = Paths.get(repoPath() + '/' + newName);
+        val oldPath = Paths.get(repoPath() + '/' + oldName);
+        val target = Paths.get(repoPath() + '/' + newName);
 
         LOGGER.debug("Moving [{}] to [{}]", oldPath, target);
         Files.move(oldPath, target);
@@ -1073,7 +1069,7 @@ public class GitUtil implements AutoCloseable {
     @SneakyThrows
     private static Git initializeGitRepository(final File path, final boolean mustExist) {
         LOGGER.debug("Initializing git repository directory at [{}] with strict path checking [{}]", path, BooleanUtils.toStringOnOff(mustExist));
-        final FileRepositoryBuilder builder = new FileRepositoryBuilder()
+        val builder = new FileRepositoryBuilder()
             .setGitDir(path)
             .setMustExist(mustExist)
             .findGitDir()

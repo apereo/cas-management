@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.services.audit;
 
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.inspektr.audit.spi.AuditResourceResolver;
 
@@ -34,8 +35,8 @@ public class ServiceManagementResourceResolver implements AuditResourceResolver 
      * @return the string[]
      */
     private static String[] findService(final JoinPoint joinPoint) {
-        final JoinPoint j = AopUtils.unWrapJoinPoint(joinPoint);
-        final Long id = (Long) j.getArgs()[0];
+        val j = AopUtils.unWrapJoinPoint(joinPoint);
+        val id = (Long) j.getArgs()[0];
         if (id == null) {
             return new String[] {StringUtils.EMPTY};
         }

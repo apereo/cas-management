@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
     JmxAutoConfiguration.class,
     CasPersonDirectoryConfiguration.class,
     CasDiscoveryProfileConfiguration.class,
-    MetricsAutoConfiguration.class,
+    MetricsAutoConfiguration.class
 })
 @Import(value = AopAutoConfiguration.class)
 @EnableConfigurationProperties({CasManagementConfigurationProperties.class, CasConfigurationProperties.class})

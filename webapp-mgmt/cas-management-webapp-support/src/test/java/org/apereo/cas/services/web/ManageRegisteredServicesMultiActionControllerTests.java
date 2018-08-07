@@ -1,5 +1,6 @@
 package org.apereo.cas.services.web;
 
+import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -36,7 +37,6 @@ import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
@@ -44,8 +44,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -93,7 +91,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     public void init() throws Exception {
         FileUtils.deleteDirectory(new File("/tmp/services-repo"));
         this.servicesManager = new DefaultServicesManager(new InMemoryServiceRegistry(), null);
-        RegexRegisteredService svc = new RegexRegisteredService();
+        var svc = new RegexRegisteredService();
         svc.setServiceId("https://.*");
         svc.setName("Wildcard");
         svc.setDescription("Wildacard defualt service");
@@ -103,13 +101,13 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         svc.setName("Apereo");
         svc.setDescription("Service for Apereo domain");
         this.servicesManager.save(svc);
-        final CasUserProfile casUserProfile = mock(CasUserProfile.class);
+        val casUserProfile = mock(CasUserProfile.class);
         when(casUserProfile.isAdministrator()).thenReturn(true);
-        final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
+        val casUserProfileFactory = mock(CasUserProfileFactory.class);
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
-        final RepositoryFactory repositoryFactory = new RepositoryFactory(managementProperties, casUserProfileFactory);
-        final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager, managementProperties,
+        val repositoryFactory = new RepositoryFactory(managementProperties, casUserProfileFactory);
+        val managerFactory = new ManagerFactory(this.servicesManager, managementProperties,
             repositoryFactory, casUserProfileFactory, casProperties);
         managerFactory.initRepository();
         this.controller = new ManageRegisteredServicesMultiActionController(this.servicesManager,
@@ -124,47 +122,46 @@ public class ManageRegisteredServicesMultiActionControllerTests {
 
     @Test
     public void verifyGetUser() throws Exception {
-        final ResponseEntity<CasUserProfile> user = this.controller.getUser(new MockHttpServletRequest(),
-                                                                            new MockHttpServletResponse());
+        val user = this.controller.getUser(new MockHttpServletRequest(), new MockHttpServletResponse());
         assertTrue(user.getBody().isAdministrator());
     }
 
     @Test
     public void verifyDomainList() throws Exception {
-        final Collection<String> domains = this.controller.getDomains(new MockHttpServletRequest(),
-                                                                      new MockHttpServletResponse()).getBody();
+        val domains = this.controller.getDomains(new MockHttpServletRequest(),
+                                                 new MockHttpServletResponse()).getBody();
         assertFalse(domains.isEmpty());
         assertTrue(domains.contains("default"));
     }
 
     @Test
     public void verifyGetServices() throws Exception {
-        final List<RegisteredServiceItem> services = this.controller.getServices(new MockHttpServletRequest(),
-                                                                                 new MockHttpServletResponse(),
-                                                                                "default").getBody();
+        val services = this.controller.getServices(new MockHttpServletRequest(),
+                                                   new MockHttpServletResponse(),
+                                                  "default").getBody();
         assertFalse(services.isEmpty());
         assertEquals(2, services.size());
     }
 
     @Test
     public void verifySearch() throws Exception {
-        final List<RegisteredServiceItem> services = this.controller.search(new MockHttpServletRequest(),
-                                                                            new MockHttpServletResponse(),
-                                                                            "apereo").getBody();
+        val services = this.controller.search(new MockHttpServletRequest(),
+                                              new MockHttpServletResponse(),
+                                             "apereo").getBody();
         assertFalse(services.isEmpty());
         assertEquals(1, services.size());
     }
 
     @Test
     public void verifyUpdateOrder() throws Exception {
-        List<RegisteredServiceItem> services = this.controller.getServices(new MockHttpServletRequest(),
-                                                                                 new MockHttpServletResponse(),
-                                                                                 "default").getBody();
+        var services = this.controller.getServices(new MockHttpServletRequest(),
+                                                   new MockHttpServletResponse(),
+                                                  "default").getBody();
         services.get(0).setEvalOrder(1);
         services.get(1).setEvalOrder(0);
-        final String name0 = services.get(0).getName();
-        final String name1 = services.get(1).getName();
-        final RegisteredServiceItem[] svcs = new RegisteredServiceItem[2];
+        val name0 = services.get(0).getName();
+        val name1 = services.get(1).getName();
+        val svcs = new RegisteredServiceItem[2];
         svcs[0] = services.get(0);
         svcs[1] = services.get(1);
         this.controller.updateOrder(new MockHttpServletRequest(), new MockHttpServletResponse(), svcs);
@@ -178,27 +175,27 @@ public class ManageRegisteredServicesMultiActionControllerTests {
 
     @Test
     public void verifyDeleteService() throws Exception {
-        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
-                                                                                    new MockHttpServletResponse(),
-                                                                                   2L);
+        val resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
+                                                           new MockHttpServletResponse(),
+                                                           2L);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         assertTrue(resp.getBody().contains("Apereo"));
     }
 
     @Test
     public void verifyCantDelteDefault() throws Exception {
-        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
-                                                                                    new MockHttpServletResponse(),
-                                                                                   1L);
+        val resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
+                                                           new MockHttpServletResponse(),
+                                                          1L);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
         assertTrue(resp.getBody().startsWith("The default service"));
     }
 
     @Test
     public void verifyDeleteNonExistentService() throws Exception {
-        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
-                                                                                    new MockHttpServletResponse(),
-                                                                                   3L);
+        val resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
+                                                           new MockHttpServletResponse(),
+                                                          3L);
         assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
         assertTrue(resp.getBody().startsWith("Service id"));
     }

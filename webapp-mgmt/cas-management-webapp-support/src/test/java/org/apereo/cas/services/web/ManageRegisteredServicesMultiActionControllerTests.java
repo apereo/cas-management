@@ -34,6 +34,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -56,6 +58,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(
         classes = {
                 AopAutoConfiguration.class,
+                ServerProperties.class,
                 RefreshAutoConfiguration.class,
                 CasManagementAuditConfiguration.class,
                 CasManagementWebAppConfiguration.class,
@@ -67,6 +70,7 @@ import static org.mockito.Mockito.*;
                 CasManagementAuthorizationConfiguration.class,
                 JsonServiceRegistryConfiguration.class})
 @DirtiesContext
+@EnableConfigurationProperties(CasManagementConfigurationProperties.class)
 @TestPropertySource(locations = "classpath:mgmt.properties")
 public class ManageRegisteredServicesMultiActionControllerTests {
 

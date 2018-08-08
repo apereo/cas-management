@@ -41,7 +41,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
 @Configuration("casManagementWebAppConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @Slf4j
-public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
+public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
     private ServerProperties serverProperties;
@@ -181,7 +181,8 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public ManageRegisteredServicesMultiActionController manageRegisteredServicesMultiActionController(
-        @Qualifier("servicesManager") final ServicesManager servicesManager) {
+        @Qualifier("servicesManager") final ServicesManager servicesManager,
+        @Qualifier("serverProperties") final ServerProperties serverProperties) {
         val defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
         return new ManageRegisteredServicesMultiActionController(servicesManager, formDataFactory(),
             webApplicationServiceFactory, defaultCallbackUrl, managementProperties,

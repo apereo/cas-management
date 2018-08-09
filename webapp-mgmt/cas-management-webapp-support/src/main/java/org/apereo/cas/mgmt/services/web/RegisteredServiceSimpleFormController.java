@@ -1,11 +1,10 @@
 package org.apereo.cas.mgmt.services.web;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.mgmt.GitUtil;
-import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -73,10 +72,10 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<String> saveService(final HttpServletRequest request,
                                               final HttpServletResponse response,
                                               @RequestBody final RegisteredService service) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = managerFactory.from(request, casUserProfile);
         if (service.getEvaluationOrder() < 0) {
-            final String domain = manager.extractDomain(service.getServiceId());
+            val domain = manager.extractDomain(service.getServiceId());
             service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
         }
 
@@ -84,7 +83,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
             checkForRename(service, request, response);
         }
 
-        final RegisteredService newSvc = manager.save(service);
+        val newSvc = manager.save(service);
         LOGGER.info("Saved changes to service [{}]", service.getId());
         return new ResponseEntity<>(String.valueOf(newSvc.getId()), HttpStatus.OK);
     }
@@ -102,7 +101,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<RegisteredService> getServiceById(final HttpServletRequest request,
                                                             final HttpServletResponse response,
                                                             @RequestParam(value = "id", required = false) final Long id) throws Exception {
-        final RegisteredService service = getService(request, response, id);
+        val service = getService(request, response, id);
         return new ResponseEntity<>(service, HttpStatus.OK);
     }
 
@@ -119,9 +118,9 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<String> getYaml(final HttpServletRequest request,
                                           final HttpServletResponse response,
                                           @RequestParam(value = "id", required = false) final Long id) throws Exception {
-        final RegisteredService service = getService(request, response, id);
-        final RegisteredServiceYamlSerializer yamlSerializer = new RegisteredServiceYamlSerializer();
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        val service = getService(request, response, id);
+        val yamlSerializer = new RegisteredServiceYamlSerializer();
+        val output = new ByteArrayOutputStream();
         yamlSerializer.to(output, service);
         return new ResponseEntity<>(output.toString(), HttpStatus.OK);
     }
@@ -139,9 +138,9 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     public ResponseEntity<String> getJson(final HttpServletRequest request,
                                           final HttpServletResponse response,
                                           @RequestParam(value = "id", required = false) final Long id) throws Exception {
-        final RegisteredService service = getService(request, response, id);
-        final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        val service = getService(request, response, id);
+        val serializer = new DefaultRegisteredServiceJsonSerializer();
+        val output = new ByteArrayOutputStream();
         serializer.to(output, service);
         return new ResponseEntity<>(output.toString(), HttpStatus.OK);
     }
@@ -149,26 +148,25 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     private RegisteredService getService(final HttpServletRequest request,
                                          final HttpServletResponse response,
                                          final Long id) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
-        final RegisteredService service;
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = managerFactory.from(request, casUserProfile);
         if (id == -1) {
-            service = new RegexRegisteredService();
+            return new RegexRegisteredService();
         } else {
-            service = manager.findServiceBy(id);
+            val service = manager.findServiceBy(id);
             if (service == null) {
                 LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
                 throw new IllegalArgumentException("Service id " + id + " cannot be found");
             }
+            return service;
         }
-        return service;
     }
 
     private void checkForRename(final RegisteredService service,
                                 final HttpServletRequest request,
                                 final HttpServletResponse response) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final RegisteredService oldSvc = managerFactory.from(request, casUserProfile).findServiceBy(service.getId());
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val oldSvc = managerFactory.from(request, casUserProfile).findServiceBy(service.getId());
         if (oldSvc != null) {
             if (!service.getName().equals(oldSvc.getName())) {
                 try (GitUtil git = repositoryFactory.from(request, response)) {

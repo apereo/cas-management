@@ -1,5 +1,6 @@
 package org.apereo.cas.services.web;
 
+import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apereo.cas.config.CasCoreServicesConfiguration;
 import org.apereo.cas.config.CasCoreUtilConfiguration;
@@ -20,7 +21,6 @@ import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
-import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.junit.After;
 import org.junit.Before;
@@ -30,11 +30,10 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
@@ -55,10 +54,10 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(
         classes = {
                 AopAutoConfiguration.class,
+                ServerProperties.class,
                 RefreshAutoConfiguration.class,
                 CasManagementAuditConfiguration.class,
                 CasManagementWebAppConfiguration.class,
-                ServerPropertiesAutoConfiguration.class,
                 CasCoreUtilConfiguration.class,
                 CasCoreServicesConfiguration.class,
                 CasServiceRegistryInitializationConfiguration.class,
@@ -86,7 +85,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     @Before
     public void setUp() throws Exception {
         this.servicesManager = new DefaultServicesManager(new InMemoryServiceRegistry(), null);
-        RegexRegisteredService svc = new RegexRegisteredService();
+        var svc = new RegexRegisteredService();
         svc.setServiceId("^https://.*");
         svc.setName("Wildcard");
         svc.setDescription("Wildacard defualt service");
@@ -96,13 +95,13 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setName("Apereo");
         svc.setDescription("Service for Apereo domain");
         this.servicesManager.save(svc);
-        final CasUserProfile casUserProfile = mock(CasUserProfile.class);
+        val casUserProfile = mock(CasUserProfile.class);
         when(casUserProfile.isAdministrator()).thenReturn(true);
-        final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
+        val casUserProfileFactory = mock(CasUserProfileFactory.class);
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
-        final RepositoryFactory repositoryFactory = new RepositoryFactory(managementProperties, casUserProfileFactory);
-        final ManagerFactory managerFactory = new ManagerFactory(servicesManager, managementProperties,
+        val repositoryFactory = new RepositoryFactory(managementProperties, casUserProfileFactory);
+        val managerFactory = new ManagerFactory(servicesManager, managementProperties,
             repositoryFactory, casUserProfileFactory, casProperties);
         managerFactory.initRepository();
         this.controller = new RegisteredServiceSimpleFormController(servicesManager, managerFactory, casUserProfileFactory, repositoryFactory);
@@ -115,27 +114,27 @@ public class RegisteredServiceSimpleFormControllerTests {
 
     @Test
     public void verifyGetService() throws Exception {
-        final RegisteredService service = this.controller.getServiceById(new MockHttpServletRequest(),
-                                                                         new MockHttpServletResponse(),
-                                                                         2L).getBody();
+        val service = this.controller.getServiceById(new MockHttpServletRequest(),
+                                                     new MockHttpServletResponse(),
+                                                    2L).getBody();
         assertNotNull(service);
         assertEquals(2L, service.getId());
     }
 
     @Test
     public void verifyGetYaml() throws Exception {
-        final String yaml = this.controller.getYaml(new MockHttpServletRequest(),
-                                                    new MockHttpServletResponse(),
-                                                   2L).getBody();
+        val yaml = this.controller.getYaml(new MockHttpServletRequest(),
+                                           new MockHttpServletResponse(),
+                                          2L).getBody();
         assertNotNull(yaml);
         assertTrue(yaml.contains("id: 2"));
     }
 
     @Test
     public void verifyGetJson() throws Exception {
-        final String json = this.controller.getYaml(new MockHttpServletRequest(),
-                                                    new MockHttpServletResponse(),
-                                                    2L).getBody();
+        val json = this.controller.getYaml(new MockHttpServletRequest(),
+                                           new MockHttpServletResponse(),
+                                          2L).getBody();
         assertNotNull(json);
         assertTrue(json.contains("id: 2"));
     }
@@ -150,13 +149,13 @@ public class RegisteredServiceSimpleFormControllerTests {
 
     @Test
     public void verifyEditService() throws Exception {
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-        final MockHttpServletResponse response = new MockHttpServletResponse();
-        RegexRegisteredService service = (RegexRegisteredService) this.controller.getServiceById(request,
+        val request = new MockHttpServletRequest();
+        val response = new MockHttpServletResponse();
+        var service = (RegexRegisteredService) this.controller.getServiceById(request,
                                                                                                 response,
                                                                                                2L).getBody();
         service.setTheme("myTheme");
-        final String resp = this.controller.saveService(request, response, service).getBody();
+        val resp = this.controller.saveService(request, response, service).getBody();
         assertEquals("2", resp);
         service = (RegexRegisteredService) this.controller.getServiceById(request, response, 2L).getBody();
         assertEquals("myTheme", service.getTheme());
@@ -164,18 +163,18 @@ public class RegisteredServiceSimpleFormControllerTests {
 
     @Test
     public void verifyAddService() throws Exception {
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-        final MockHttpServletResponse response = new MockHttpServletResponse();
-        final RegexRegisteredService svc = new RegexRegisteredService();
+        val request = new MockHttpServletRequest();
+        val response = new MockHttpServletResponse();
+        val svc = new RegexRegisteredService();
         svc.setServiceId("^https://mytest.domain.com/.*");
         svc.setDescription("Test domain service");
         svc.setName("MyTest");
-        final ResponseEntity<String> resp = this.controller.saveService(request,
+        val resp = this.controller.saveService(request,
                                                                         response,
                                                                         svc);
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        final long id = Long.valueOf(resp.getBody());
-        final RegisteredService service = this.controller.getServiceById(request,
+        val id = Long.valueOf(resp.getBody());
+        val service = this.controller.getServiceById(request,
                                                                          response,
                                                                          id).getBody();
         assertEquals("MyTest", service.getName());

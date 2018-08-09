@@ -4,7 +4,7 @@ import org.apereo.cas.config.CasDiscoveryProfileConfiguration;
 import org.apereo.cas.config.CasPersonDirectoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.springframework.boot.actuate.autoconfigure.MetricsDropwizardAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAutoConfiguration;
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
     JmxAutoConfiguration.class,
     CasPersonDirectoryConfiguration.class,
     CasDiscoveryProfileConfiguration.class,
-    MetricsDropwizardAutoConfiguration.class
+    MetricsAutoConfiguration.class
 })
 @Import(value = AopAutoConfiguration.class)
 @EnableConfigurationProperties({CasManagementConfigurationProperties.class, CasConfigurationProperties.class})

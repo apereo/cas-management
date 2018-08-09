@@ -1,0 +1,32 @@
+description = "Apereo CAS Management Web Application"
+
+apply plugin: "war"
+
+project.ext["mainClassName"] = "org.apereo.cas.mgmt.web.CasManagementWebApplication"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "${project.buildDir}/generated-src/main/resources", "${project.projectDir}/../resources"
+        }
+    }
+    /**
+     * Make resources become reloadable.
+     * Application’s static resources are loaded from their source location.
+     */
+    bootRun {
+        resources {
+            new File(project(":webapp-mgmt").getProjectDir(), "resources")
+        }
+    }
+}
+
+apply from: rootProject.file("gradle/springboot.gradle")
+
+
+dependencies {
+    runtimeOnly project(":webapp-mgmt:cas-management-webapp-configuration")
+    runtimeOnly project(":webapp-mgmt:cas-management-webapp-support")
+
+    providedRuntime libraries.springboottomcat
+}

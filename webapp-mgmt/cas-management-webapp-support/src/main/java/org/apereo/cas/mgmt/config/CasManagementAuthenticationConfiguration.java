@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.config;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.CasManagementUtils;
@@ -63,12 +64,12 @@ public class CasManagementAuthenticationConfiguration {
     @Bean
     @RefreshScope
     public List<Client> authenticationClients() {
-        final List<Client> clients = new ArrayList<>();
+        val clients = new ArrayList<Client>();
 
         if (StringUtils.hasText(casProperties.getServer().getName())) {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
-            final CasConfiguration cfg = new CasConfiguration(casProperties.getServer().getLoginUrl());
-            final DirectCasClient client = new DirectCasClient(cfg);
+            val cfg = new CasConfiguration(casProperties.getServer().getLoginUrl());
+            val client = new DirectCasClient(cfg);
             client.setAuthorizationGenerator(authorizationGenerator);
             client.setName("CasClient");
             clients.add(client);
@@ -78,7 +79,7 @@ public class CasManagementAuthenticationConfiguration {
 
         if (StringUtils.hasText(managementProperties.getAuthzIpRegex())) {
             LOGGER.info("Configuring an authentication strategy based on authorized IP addresses matching [{}]", managementProperties.getAuthzIpRegex());
-            final IpClient ipClient = new IpClient(new IpRegexpAuthenticator(managementProperties.getAuthzIpRegex()));
+            val ipClient = new IpClient(new IpRegexpAuthenticator(managementProperties.getAuthzIpRegex()));
             ipClient.setName("IpClient");
             ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
             clients.add(ipClient);
@@ -89,7 +90,7 @@ public class CasManagementAuthenticationConfiguration {
         if (clients.isEmpty()) {
             LOGGER.warn("No authentication strategy is defined, CAS will establish an anonymous authentication mode whereby access is immediately granted. "
                 + "This may NOT be relevant for production purposes. Consider configuring alternative authentication strategies for maximum security.");
-            final AnonymousClient anon = new AnonymousClient();
+            val anon = new AnonymousClient();
             anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
             clients.add(anon);
         }
@@ -100,7 +101,7 @@ public class CasManagementAuthenticationConfiguration {
     @Bean
     @RefreshScope
     public Config casManagementSecurityConfiguration() {
-        final Config cfg = new Config(CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients());
+        val cfg = new Config(CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients());
         cfg.setAuthorizer(this.managementWebappAuthorizer);
         return cfg;
     }

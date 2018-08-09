@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -59,8 +59,8 @@ public class ManagementServicesManager implements ServicesManager {
      */
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
         LOGGER.debug("Loading services for domain [{}]", domain);
-        final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
-        final List<RegisteredServiceItem> items = services.stream()
+        val services = new ArrayList<RegisteredService>(getServicesForDomain(domain));
+        val items = services.stream()
             .map(this::createServiceItem)
             .collect(Collectors.toList());
         this.uncommitted = new HashMap<>();
@@ -75,7 +75,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @return - RegisteredServiceItem
      */
     public RegisteredServiceItem createServiceItem(final RegisteredService service) {
-        final RegisteredServiceItem serviceItem = new RegisteredServiceItem();
+        val serviceItem = new RegisteredServiceItem();
         serviceItem.setAssignedId(String.valueOf(service.getId()));
         serviceItem.setEvalOrder(service.getEvaluationOrder());
         serviceItem.setName(service.getName());
@@ -92,12 +92,10 @@ public class ManagementServicesManager implements ServicesManager {
 
     private void createChange(final DiffEntry entry) {
         try {
-            final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
-            final RegisteredService svc;
+            val ser = new DefaultRegisteredServiceJsonSerializer();
+            var svc = ser.from(new File(git.repoPath() + '/' + entry.getNewPath()));;
             if (entry.getChangeType() == DiffEntry.ChangeType.DELETE) {
                 svc = ser.from(git.readObject(entry.getOldId().toObjectId()));
-            } else {
-                svc = ser.from(new File(git.repoPath() + '/' + entry.getNewPath()));
             }
             LOGGER.debug("Created change entry for service [{}]", svc.getServiceId());
 
@@ -213,7 +211,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @return the string
      */
     public String extractDomain(final String service) {
-        final Matcher extractor = this.domainExtractor.matcher(service.toLowerCase());
+        val extractor = this.domainExtractor.matcher(service.toLowerCase());
         return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
     }
 
@@ -224,8 +222,8 @@ public class ManagementServicesManager implements ServicesManager {
      * @return the string
      */
     public String validateDomain(final String providedDomain) {
-        final String domain = StringUtils.remove(providedDomain, "\\");
-        final Matcher match = domainPattern.matcher(StringUtils.remove(domain, "\\"));
+        val domain = StringUtils.remove(providedDomain, "\\");
+        val match = domainPattern.matcher(StringUtils.remove(domain, "\\"));
         return match.matches() ? domain : "default";
     }
 }

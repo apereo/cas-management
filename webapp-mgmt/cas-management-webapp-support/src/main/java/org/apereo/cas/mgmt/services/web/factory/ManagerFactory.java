@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services.web.factory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
@@ -18,9 +19,7 @@ import org.eclipse.jgit.api.Git;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -44,7 +43,7 @@ public class ManagerFactory {
      */
     @PostConstruct
     public void initRepository() {
-        final Path servicesRepo = Paths.get(managementProperties.getServicesRepo());
+        val servicesRepo = Paths.get(managementProperties.getServicesRepo());
         if (!Files.exists(servicesRepo)) {
             try {
                 Git.init().setDirectory(servicesRepo.toFile()).call();
@@ -52,7 +51,7 @@ public class ManagerFactory {
                 return;
             }
             try (GitUtil git = repositoryFactory.masterRepository()) {
-                final ManagementServicesManager manager = new ManagementServicesManager(createJSONServiceManager(git), git);
+                val manager = new ManagementServicesManager(createJSONServiceManager(git), git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();
                 git.commit("Initial commit");
@@ -73,7 +72,7 @@ public class ManagerFactory {
      */
     public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
         if (!managementProperties.isEnableVersionControl()) {
-            final GitUtil git = new GitUtil();
+            val git = new GitUtil();
             LOGGER.info("Version control & change management is disabled in CAS configuration");
             return new ManagementServicesManager(servicesManager, git);
         }
@@ -81,15 +80,15 @@ public class ManagerFactory {
     }
 
     private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final CasUserProfile user) {
-        final HttpSession session = request.getSession();
-        ManagementServicesManager manager = (ManagementServicesManager) session.getAttribute("servicesManager");
+        val session = request.getSession();
+        var manager = (ManagementServicesManager) session.getAttribute("servicesManager");
         if (manager != null) {
             if (!user.isAdministrator()) {
                 manager.getGit().rebase();
             }
             manager.load();
         } else {
-            final GitUtil git;
+            var git = new GitUtil();
             if (!user.isAdministrator()) {
                 git = repositoryFactory.from(user);
                 git.rebase();
@@ -104,17 +103,18 @@ public class ManagerFactory {
 
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {
-        final ServicesManager manager;
-        final Path path = Paths.get(git.repoPath());
-        final JsonServiceRegistry serviceRegistryDAO = new JsonServiceRegistry(path,
+        val path = Paths.get(git.repoPath());
+        val serviceRegistryDAO = new JsonServiceRegistry(path,
             false, null, null,
             new DefaultRegisteredServiceResourceNamingStrategy());
         if (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN) {
-            manager = new DomainServicesManager(serviceRegistryDAO, null);
+            val manager = new DomainServicesManager(serviceRegistryDAO, null);
+            manager.load();
+            return manager;
         } else {
-            manager = new DefaultServicesManager(serviceRegistryDAO, null);
+            val manager = new DefaultServicesManager(serviceRegistryDAO, null);
+            manager.load();
+            return manager;
         }
-        manager.load();
-        return manager;
     }
 }

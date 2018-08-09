@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.config;
 
+import lombok.val;
 import org.apereo.cas.audit.spi.ShortenedReturnValueAsStringResourceResolver;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
@@ -82,7 +83,7 @@ public class CasManagementAuditConfiguration {
 
     @Bean
     public Map<String, AuditResourceResolver> auditResourceResolverMap() {
-        final Map<String, AuditResourceResolver> map = new HashMap<>(2);
+        val map = new HashMap<String, AuditResourceResolver>(2);
         map.put("DELETE_SERVICE_RESOURCE_RESOLVER", deleteServiceResourceResolver());
         map.put("SAVE_SERVICE_RESOURCE_RESOLVER", saveServiceResourceResolver());
         return map;
@@ -90,7 +91,7 @@ public class CasManagementAuditConfiguration {
 
     @Bean
     public Map<String, AuditActionResolver> auditActionResolverMap() {
-        final Map<String, AuditActionResolver> map = new HashMap<>(2);
+        val map = new HashMap<String, AuditActionResolver>(2);
         map.put("DELETE_SERVICE_ACTION_RESOLVER", deleteServiceActionResolver());
         map.put("SAVE_SERVICE_ACTION_RESOLVER", saveServiceActionResolver());
         return map;
@@ -98,7 +99,7 @@ public class CasManagementAuditConfiguration {
 
     @Bean
     public FilterRegistrationBean casClientInfoLoggingFilter() {
-        final FilterRegistrationBean bean = new FilterRegistrationBean();
+        val bean = new FilterRegistrationBean();
         bean.setFilter(new ClientInfoThreadLocalFilter());
         bean.setUrlPatterns(CollectionUtils.wrap("/*"));
         bean.setName("CAS Client Info Logging Filter");

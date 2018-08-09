@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.services.web.factory;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -52,7 +52,7 @@ public class RepositoryFactory {
             LOGGER.debug("User [{}] is not an administrator. Loading objects from master repository", user);
             return masterRepository();
         }
-        final Path path = Paths.get(casProperties.getUserReposDir() + '/' + user.getId());
+        val path = Paths.get(casProperties.getUserReposDir() + '/' + user.getId());
         if (!Files.exists(path)) {
             clone(path.toString());
         }
@@ -66,13 +66,13 @@ public class RepositoryFactory {
      */
     @SneakyThrows
     public GitUtil masterRepository() {
-        final String path = casProperties.getServicesRepo() + "/.git";
+        val path = casProperties.getServicesRepo() + "/.git";
         return buildGitUtil(path);
     }
 
     @SneakyThrows
     private GitUtil userRepository(final String user) {
-        final String path = casProperties.getUserReposDir() + '/' + user + "/.git";
+        val path = casProperties.getUserReposDir() + '/' + user + "/.git";
         return buildGitUtil(path);
     }
 
@@ -89,7 +89,7 @@ public class RepositoryFactory {
      */
     public GitUtil clone(final String clone) {
         try {
-            final String uri = casProperties.getServicesRepo() + "/.git";
+            val uri = casProperties.getServicesRepo() + "/.git";
             LOGGER.debug("Cloning repository [{}] to path [{}]", uri, clone);
             return new GitUtil(Git.cloneRepository()
                 .setURI(uri)

@@ -19,6 +19,10 @@ public class CasUserProfile extends CommonProfile {
     private static final long serialVersionUID = -6308325782274816263L;
     private final boolean administrator;
 
+    public CasUserProfile() {
+        this.administrator = false;
+    }
+
     public CasUserProfile(final UserProfile up, final Collection<String> adminRoles) {
         build(up.getId(), up.getAttributes());
         setClientName(up.getClientName());

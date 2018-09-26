@@ -55,7 +55,4 @@ export class ServiceidComponent implements OnInit {
     }
   }
 
-  checkForSpaces() {
-    this.data.service.serviceId = this.data.service.serviceId ? this.data.service.serviceId.trim() : null;
-  }
 }

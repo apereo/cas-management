@@ -6,7 +6,6 @@
     <input matInput #serviceId="ngModel" name="serviceId" id="serviceId" required
            appInvalidDomain [data]="data"
            [(ngModel)]="data.service.serviceId">
-    <mat-error i18n *ngIf="data.invalidRegEx">The entered service id is not a valid regular expression</mat-error>
     <mat-error i18n *ngIf="data.invalidDomain">You do not have permissions to create a service for the domain entered in the service id</mat-error>
     <mat-hint align="end">
       <app-hint></app-hint>

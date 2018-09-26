@@ -41,15 +41,15 @@ public class FormData implements Serializable {
 
     private List<Integer> remoteCodes = Arrays.stream(HttpStatus.values()).map(HttpStatus::value).collect(Collectors.toList());
 
-    private String[] samlMetadataRoles = {"SPSSODescriptor", "IDPSSODescriptor"};
+    private List<String> samlMetadataRoles = CollectionUtils.wrapList("SPSSODescriptor", "IDPSSODescriptor");
 
     private List<String> samlDirections = CollectionUtils.wrapList("INCLUDE", "EXCLUDE");
 
-    private String[] samlAttributeNameFormats = {
+    private List<String> samlAttributeNameFormats = CollectionUtils.wrapList(
         "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
         "urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified",
         "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
-    };
+    );
 
     private List<String> samlCredentialTypes = Arrays.stream(SamlIdPResponseProperties.SignatureCredentialTypes.values())
         .map(s -> s.name().toUpperCase())

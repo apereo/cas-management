@@ -82,10 +82,9 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        if (!git.isUndefined()) {
-            if (uncommitted != null && uncommitted.containsKey(service.getId())) {
-                serviceItem.setStatus(uncommitted.get(service.getId()));
-            }
+        final Long id = service.getId();
+        if (uncommitted != null && !git.isUndefined() && uncommitted.containsKey(id)) {
+            serviceItem.setStatus(uncommitted.get(id));
         }
         LOGGER.debug("Created service item [{}] based on registered service [{}]", serviceItem, service.getServiceId());
         return serviceItem;

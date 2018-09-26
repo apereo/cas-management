@@ -306,6 +306,8 @@ export class FormComponent implements OnInit {
   validateForm(): Tabs {
     const data = this.data.service;
 
+    data.serviceId = this.checkForSpaces(data.serviceId);
+
     // Service Basics
     if (!data.serviceId ||
         !this.validateRegex(data.serviceId) ||
@@ -424,4 +426,8 @@ export class FormComponent implements OnInit {
 
     return -1;
   };
+
+  checkForSpaces(val) {
+    return val ? val.trim() : null;
+  }
 }

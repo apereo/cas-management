@@ -632,8 +632,9 @@ public class GitUtil implements AutoCloseable {
 
         @Override
         public boolean include(final TreeWalk treeWalk) {
-            final List<String> pathSplit = Splitter.on("-").splitToList(path);
-            final List<String> treePathSplit = Splitter.on("-").splitToList(treeWalk.getPathString());
+            final Splitter splitter = Splitter.on("-");
+            final List<String> pathSplit = splitter.splitToList(path);
+            final List<String> treePathSplit = splitter.splitToList(treeWalk.getPathString());
             return pathSplit.get(pathSplit.size() - 1).equals(treePathSplit.get(treePathSplit.size() - 1));
         }
 
@@ -844,8 +845,9 @@ public class GitUtil implements AutoCloseable {
      */
     @SuppressWarnings("DefaultCharset")
     public RawText rawText(final ObjectId id) throws Exception {
-        if (objectReader().has(id)) {
-            return new RawText(objectReader().open(id).getBytes());
+        final ObjectReader objectReader = objectReader();
+        if (objectReader.has(id)) {
+            return new RawText(objectReader.open(id).getBytes());
         } else {
             return new RawText(readFormWorkingTree(id).getBytes());
         }
@@ -1010,9 +1012,10 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public void move(final String oldName, final String newName) throws Exception {
+        final String repoPath = repoPath();
         LOGGER.debug("Attempting to move [{}] to [{}]", oldName, newName);
-        final Path oldPath = Paths.get(repoPath() + '/' + oldName);
-        final Path target = Paths.get(repoPath() + '/' + newName);
+        final Path oldPath = Paths.get(repoPath + '/' + oldName);
+        final Path target = Paths.get(repoPath + '/' + newName);
 
         LOGGER.debug("Moving [{}] to [{}]", oldPath, target);
         Files.move(oldPath, target);

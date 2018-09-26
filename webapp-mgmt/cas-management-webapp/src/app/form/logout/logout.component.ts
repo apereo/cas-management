@@ -20,8 +20,4 @@ export class LogoutComponent implements OnInit {
   ngOnInit() {
   }
 
-  checkForSpaces() {
-    this.data.service.logoutUrl = this.data.service.logoutUrl ? this.data.service.logoutUrl.trim() : null;
-  }
-
 }

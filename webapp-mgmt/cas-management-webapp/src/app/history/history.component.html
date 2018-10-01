@@ -81,7 +81,7 @@
   </button>
   <button mat-menu-item (click)="viewChangeMade()" *ngIf="!last()">
     <mat-icon>compare_arrows</mat-icon>
-    <ng-container i18n>Compare to Previous</ng-container>
+    <ng-container i18n>Show Diff</ng-container>
   </button>
   <button mat-menu-item (click)="viewJSON()">
     <mat-icon>code</mat-icon>
@@ -93,6 +93,6 @@
   </button>
   <button mat-menu-item (click)="checkout()">
     <mat-icon>file_download</mat-icon>
-    <ng-container i18n>Checkout</ng-container>
+    <ng-container i18n>Checkout Version</ng-container>
   </button>
 </mat-menu>

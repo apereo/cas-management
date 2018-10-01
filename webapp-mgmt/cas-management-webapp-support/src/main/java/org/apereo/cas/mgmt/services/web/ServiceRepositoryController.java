@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -240,26 +241,21 @@ public class ServiceRepositoryController {
             throw new Exception("Permission denied");
         }
 
-        final int behind = getPublishBehindCount();
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final List<Commit> commits = git.getLastNCommits(behind)
-                    .map(c -> new Commit(c.getId().abbreviate(GitUtil.NAME_LENGTH).name(),
-                            c.getFullMessage(),
-                            formatCommitTime(c.getCommitTime())))
-                    .collect(toList());
+            final List<Commit> commits = git.getUnpublishedCommits();
             return new ResponseEntity<>(commits, HttpStatus.OK);
         }
     }
 
     /**
-     * Returns the number of commits the published-repo is behind.
+     * Returns true if the master repository has committs ahead of the published repository.
      *
-     * @return - count of commits behind.
+     * @return - true if there are commits to publish.
      * @throws Exception - failed.
      */
-    private int getPublishBehindCount() throws Exception {
+    private boolean isPublishedBehind() throws Exception {
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            return git.getRepository().resolve("HEAD").equals(git.getPublished().getPeeledObjectId()) ? 0 : 1;
+            return !git.getRepository().resolve("HEAD").equals(git.getPublished().getPeeledObjectId());
         }
     }
 
@@ -330,9 +326,10 @@ public class ServiceRepositoryController {
             gitStatus.setModified(status.getModified().stream()
                     .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setDeleted(status.getMissing().stream()
-                    .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
-            gitStatus.setUnpublished(getPublishBehindCount() > 0);
+                    .map(s -> getDeletedServiceName(git,s)).collect(Collectors.toSet()));
+            gitStatus.setUnpublished(isPublishedBehind());
             gitStatus.setPullRequests(pendingSubmits(request, response, git));
+            return new ResponseEntity<>(gitStatus, HttpStatus.OK);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -387,17 +384,6 @@ public class ServiceRepositoryController {
                     .collect(toList());
             return new ResponseEntity<>(changes, HttpStatus.OK);
         }
-    }
-
-    /**
-     * Method that returns to the client a count of how many commits the published repo is behind the services-repo.
-     *
-     * @return ResponseEntity
-     * @throws Exception - failed
-     */
-    @GetMapping(value = "/unpublished")
-    public ResponseEntity<Integer> unpublished() throws Exception {
-        return new ResponseEntity<>(getPublishBehindCount(), HttpStatus.OK);
     }
 
     /**
@@ -489,7 +475,7 @@ public class ServiceRepositoryController {
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            final List<Diff> changes = git.getDiffs(branch).stream()
+            final List<Diff> changes = git.getDiffsMinus1(branch).stream()
                     .map(d -> createDiff(d, git))
                     .collect(toList());
             return new ResponseEntity<>(changes, HttpStatus.OK);
@@ -569,6 +555,33 @@ public class ServiceRepositoryController {
         }
     }
 
+    @GetMapping("changeMade")
+    public ResponseEntity<String> changeMade(final HttpServletResponse response,
+                                             final HttpServletRequest request,
+                                             final @RequestParam String id,
+                                             final @RequestParam String path) throws Exception {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
+            final DiffEntry diff = git.getChange(id, path);
+            return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
+                    diff.getOldId().toObjectId())), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("No difference", HttpStatus.valueOf(501));
+        }
+    }
+
+    @GetMapping("compareWithHead")
+    public ResponseEntity<String> compareWithHead(final HttpServletResponse response,
+                                                  final HttpServletRequest request,
+                                                  final @RequestParam String id,
+                                                  final @RequestParam String path) throws Exception {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
+            final DiffEntry diff = git.getChange("HEAD", id, path);
+            return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
+                    diff.getOldId().toObjectId())), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("No difference", HttpStatus.valueOf(501));
+        }
+    }
     /**
      * Method returns a RegisteredService instance of the the submitted service that it can be viewed in the
      * online form before being accepted by an admin.

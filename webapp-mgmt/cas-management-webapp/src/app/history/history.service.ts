@@ -17,4 +17,11 @@ export class HistoryService extends Service {
     return this.getText('checkout?id=' + id + '&path=' + path);
   }
 
+  change(commit: String, path: String): Observable<String> {
+    return this.getText('changeMade?id=' + commit + '&path=' + path);
+  }
+
+  toHead(commit: String, path: String): Observable<String> {
+    return this.getText('compareWithHead?id=' + commit + '&path=' + path);
+  }
 }

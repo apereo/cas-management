@@ -84,11 +84,15 @@
 <mat-menu #historyMenu>
   <button mat-menu-item (click)="viewChange()">
     <mat-icon>visibility</mat-icon>
-    <ng-container i18n>View</ng-container>
+    <ng-container i18n>View Version</ng-container>
   </button>
-  <button mat-menu-item (click)="viewDiff()">
+  <button mat-menu-item (click)="viewDiff()" *ngIf="!first()">
     <mat-icon>compare_arrows</mat-icon>
-    <ng-container i18n>View Diff</ng-container>
+    <ng-container i18n>Compare to Current</ng-container>
+  </button>
+  <button mat-menu-item (click)="viewChangeMade()">
+    <mat-icon>compare_arrows</mat-icon>
+    <ng-container i18n>Change in Commit</ng-container>
   </button>
   <button mat-menu-item (click)="viewJSON()">
     <mat-icon>code</mat-icon>

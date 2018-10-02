@@ -94,6 +94,17 @@ public class ManagerFactory {
         return getManagementServicesManager(request, user);
     }
 
+    /**
+     * Creates a manager for the passed Git repo.
+     *
+     * @param git - the repo
+     * @return - manager
+     * @throws Exception - failed
+     */
+    public ManagementServicesManager from(final GitUtil git) throws Exception {
+        return new ManagementServicesManager(createJSONServiceManager(git), git);
+    }
+
     private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final CasUserProfile user) {
         final HttpSession session = request.getSession();
         ManagementServicesManager manager = (ManagementServicesManager) session.getAttribute("servicesManager");
@@ -116,12 +127,14 @@ public class ManagerFactory {
         return manager;
     }
 
+    /**
+     * Returns the master repo.
+     *
+     * @return - maste repo manager
+     * @throws Exception -failed
+     */
     public ManagementServicesManager master() throws Exception {
         final GitUtil git = repositoryFactory.masterRepository();
-        return new ManagementServicesManager(createJSONServiceManager(git), git);
-    }
-
-    public ManagementServicesManager from(final GitUtil git) throws Exception {
         return new ManagementServicesManager(createJSONServiceManager(git), git);
     }
 

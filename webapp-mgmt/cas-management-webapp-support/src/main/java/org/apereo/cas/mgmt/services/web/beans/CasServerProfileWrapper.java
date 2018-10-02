@@ -1,7 +1,8 @@
 package org.apereo.cas.mgmt.services.web.beans;
 
-import lombok.Getter;
 import org.apereo.cas.discovery.CasServerProfile;
+
+import lombok.Getter;
 
 /**
  * Class used unerap profile form cas discovery response.

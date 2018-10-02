@@ -1,16 +1,9 @@
 package org.apereo.cas.mgmt.services.web;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.BranchActionData;
 import org.apereo.cas.mgmt.services.web.beans.BranchData;
 import org.apereo.cas.mgmt.services.web.beans.CNote;
@@ -26,11 +19,14 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.io.CommunicationsManager;
-import org.eclipse.jgit.api.Status;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.notes.Note;
-import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -93,7 +89,7 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> commit(final HttpServletResponse response, final HttpServletRequest request,
                                          @RequestParam final String msg) throws Exception {
         val user = casUserProfileFactory.from(request, response);
-        try(GitUtil git = repositoryFactory.from(user)) {
+        try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
                 throw new Exception("No changes to commit");
             }
@@ -125,25 +121,25 @@ public class ServiceRepositoryController {
 
                     // Run through deletes first in case of name change
                     diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
-                            .forEach(c -> {
-                                val ser = new DefaultRegisteredServiceJsonSerializer();
-                                try {
-                                    this.servicesManager.delete(ser.from(git.readObject(c.getOldId().toObjectId())).getId());
-                                } catch (final Exception e) {
-                                    this.publishError = true;
-                                    LOGGER.error(e.getMessage(), e);
-                                }
-                            });
+                        .forEach(c -> {
+                            val ser = new DefaultRegisteredServiceJsonSerializer();
+                            try {
+                                this.servicesManager.delete(ser.from(git.readObject(c.getOldId().toObjectId())).getId());
+                            } catch (final Exception e) {
+                                this.publishError = true;
+                                LOGGER.error(e.getMessage(), e);
+                            }
+                        });
                     diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)
-                            .forEach(c -> {
-                                val ser = new DefaultRegisteredServiceJsonSerializer();
-                                try {
-                                    this.servicesManager.save(ser.from(git.readObject(c.getNewId().toObjectId())));
-                                } catch (final Exception e) {
-                                    this.publishError = true;
-                                    LOGGER.error(e.getMessage(), e);
-                                }
-                            });
+                        .forEach(c -> {
+                            val ser = new DefaultRegisteredServiceJsonSerializer();
+                            try {
+                                this.servicesManager.save(ser.from(git.readObject(c.getNewId().toObjectId())));
+                            } catch (final Exception e) {
+                                this.publishError = true;
+                                LOGGER.error(e.getMessage(), e);
+                            }
+                        });
                 } catch (final Exception e) {
                     this.publishError = true;
                     LOGGER.error(e.getMessage(), e);
@@ -151,7 +147,7 @@ public class ServiceRepositoryController {
             });
             if (this.publishError) {
                 return new ResponseEntity<>("Services were not published because of a failure.  Please review logs and try again",
-                        HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.INTERNAL_SERVER_ERROR);
             }
             git.setPublished();
         }
@@ -211,11 +207,11 @@ public class ServiceRepositoryController {
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val commits = git.getLastNCommits(MAX_COMMITS)
-                    .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
-                            c.getFullMessage(),
-                            formatCommitTime(c.getCommitTime()))
-                    )
-                    .collect(toList());
+                .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
+                    c.getFullMessage(),
+                    formatCommitTime(c.getCommitTime()))
+                )
+                .collect(toList());
             return new ResponseEntity<>(commits, HttpStatus.OK);
         }
     }
@@ -323,11 +319,11 @@ public class ServiceRepositoryController {
             val status = git.status();
             gitStatus.setHasChanges(!status.isClean());
             gitStatus.setAdded(status.getUntracked().stream()
-                     .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
+                .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setModified(status.getModified().stream()
-                    .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
+                .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setDeleted(status.getMissing().stream()
-                    .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
+                .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(isPublishedBehind());
             gitStatus.setPullRequests(pendingSubmits(request, response, git));
             return new ResponseEntity<>(gitStatus, HttpStatus.OK);
@@ -381,8 +377,8 @@ public class ServiceRepositoryController {
                 return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
             }
             val changes = git.scanWorkingDiffs().stream()
-                    .map(d -> createChange(d, git))
-                    .collect(toList());
+                .map(d -> createChange(d, git))
+                .collect(toList());
             return new ResponseEntity<>(changes, HttpStatus.OK);
         }
     }
@@ -406,10 +402,10 @@ public class ServiceRepositoryController {
         }
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val names = git.branches()
-                    .map(git::mapBranches)
-                    .filter(r -> filterPulls(r, options))
-                    .map(ServiceRepositoryController::createBranch)
-                    .collect(toList());
+                .map(git::mapBranches)
+                .filter(r -> filterPulls(r, options))
+                .map(ServiceRepositoryController::createBranch)
+                .collect(toList());
             return new ResponseEntity<>(names, HttpStatus.OK);
         }
     }
@@ -448,10 +444,10 @@ public class ServiceRepositoryController {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val names = git.branches()
-                    .filter(r -> r.getName().contains('/' + user.getId() + '_'))
-                    .map(git::mapBranches)
-                    .map(ServiceRepositoryController::createBranch)
-                    .collect(toList());
+                .filter(r -> r.getName().contains('/' + user.getId() + '_'))
+                .map(git::mapBranches)
+                .map(ServiceRepositoryController::createBranch)
+                .collect(toList());
             return new ResponseEntity<>(names, HttpStatus.OK);
         }
     }
@@ -477,8 +473,8 @@ public class ServiceRepositoryController {
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val changes = git.getDiffsMinus1(branch).stream()
-                    .map(d -> createDiff(d, git))
-                    .collect(toList());
+                .map(d -> createDiff(d, git))
+                .collect(toList());
             return new ResponseEntity<>(changes, HttpStatus.OK);
         }
     }
@@ -501,17 +497,17 @@ public class ServiceRepositoryController {
             throw new Exception("Permission Denied");
         }
 
-        try (GitUtil git = repositoryFactory.masterRepository()){
+        try (GitUtil git = repositoryFactory.masterRepository()) {
             val r = git.getCommit(id);
             val diffs = git.getPublishDiffs(id).stream()
-                    .map(d -> createDiff(d, git))
-                    .map(d -> {
-                        d.setCommitter(r.getCommitterIdent().getName());
-                        d.setCommitTime(formatCommitTime(r.getCommitTime()));
-                        d.setCommit(id);
-                        return d;
-                    })
-                    .collect(toList());
+                .map(d -> createDiff(d, git))
+                .map(d -> {
+                    d.setCommitter(r.getCommitterIdent().getName());
+                    d.setCommitTime(formatCommitTime(r.getCommitTime()));
+                    d.setCommit(id);
+                    return d;
+                })
+                .collect(toList());
             return new ResponseEntity<>(diffs, HttpStatus.OK);
         }
     }
@@ -552,7 +548,7 @@ public class ServiceRepositoryController {
                                                         final @RequestParam String id) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return new ResponseEntity<>(new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id)),
-                                        HttpStatus.OK);
+                HttpStatus.OK);
         }
     }
 
@@ -560,9 +556,9 @@ public class ServiceRepositoryController {
      * Returns a diff as a string representing the change made to a file in a commit.
      *
      * @param response - the response
-     * @param request - the request
-     * @param id - the commit id
-     * @param path - the file path
+     * @param request  - the request
+     * @param id       - the commit id
+     * @param path     - the file path
      * @return - the diff
      * @throws Exception -failed
      */
@@ -574,7 +570,7 @@ public class ServiceRepositoryController {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val diff = git.getChange(id, path);
             return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
-                    diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
+                diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
         } catch (final Exception e) {
             return new ResponseEntity<>("No difference", HttpStatus.NO_CONTENT);
         }
@@ -584,9 +580,9 @@ public class ServiceRepositoryController {
      * Compares the file in given commit to the current HEAD.
      *
      * @param response - the response
-     * @param request - the request
-     * @param id - the commit id
-     * @param path - the path of the file
+     * @param request  - the request
+     * @param id       - the commit id
+     * @param path     - the path of the file
      * @return - String of the diff
      * @throws Exception - failed.
      */
@@ -598,11 +594,12 @@ public class ServiceRepositoryController {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val diff = git.getChange("HEAD", id, path);
             return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
-                    diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
+                diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
         } catch (final Exception e) {
             return new ResponseEntity<>("No difference", HttpStatus.NO_CONTENT);
         }
     }
+
     /**
      * Method returns a RegisteredService instance of the the submitted service that it can be viewed in the
      * online form before being accepted by an admin.
@@ -692,7 +689,7 @@ public class ServiceRepositoryController {
             git.merge(branch.getId());
             val com = git.getCommit(branch.getId());
             val msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + "\n    "
-                    + text.replaceAll("\\n", "\n    ");
+                + text.replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
             sendAcceptMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), com.getCommitterIdent().getEmailAddress());
             return new ResponseEntity<>("Branch Merged", HttpStatus.OK);
@@ -736,7 +733,7 @@ public class ServiceRepositoryController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(branch.getId());
             val msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + "\n    "
-                    + text.replaceAll("\\n", "\n    ");
+                + text.replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
 
             sendRejectMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), text, com.getCommitterIdent().getEmailAddress());
@@ -795,7 +792,7 @@ public class ServiceRepositoryController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(cnote.getId());
             val msg = user.getId() + " - " + new Date().toString() + " : \n    "
-                    + cnote.getText().replaceAll("\\n", "\n    ");
+                + cnote.getText().replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
             return new ResponseEntity<>("Note Added", HttpStatus.OK);
         }
@@ -1000,13 +997,12 @@ public class ServiceRepositoryController {
     public ResponseEntity<String> notifications(final HttpServletRequest request,
                                                 final HttpServletResponse response) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
-        String resp = "";
+        var resp = "";
         if (casUserProfile.isAdministrator()) {
             try (GitUtil git = repositoryFactory.masterRepository()) {
                 val pending = git.branches()
-                        .map(git::mapBranches)
-                        .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
-                        .findAny().isPresent();
+                    .map(git::mapBranches)
+                    .anyMatch(r -> filterPulls(r, new boolean[]{true, false, false}));
                 if (pending) {
                     resp = "There are pending pull requests for your approval";
                 }
@@ -1021,9 +1017,9 @@ public class ServiceRepositoryController {
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (casUserProfile.isAdministrator()) {
             return (int) git.branches()
-                    .map(git::mapBranches)
-                    .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
-                    .count();
+                .map(git::mapBranches)
+                .filter(r -> filterPulls(r, new boolean[]{true, false, false}))
+                .count();
         } else {
             return 0;
         }
@@ -1119,17 +1115,17 @@ public class ServiceRepositoryController {
     private static Diff createDiff(final DiffEntry d, final GitUtil git) {
         try {
             val ser = new DefaultRegisteredServiceJsonSerializer();
-            final RegisteredService service;
+            var service = (RegisteredService) null;
             if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
                 service = ser.from(git.readObject(d.getNewId().toObjectId()));
             } else {
                 service = ser.from(git.readObject(d.getOldId().toObjectId()));
             }
             return new Diff(d.getNewPath(),
-                    d.getOldId().toObjectId(),
-                    d.getNewId().toObjectId(),
-                    d.getChangeType().toString(),
-                    service.getName());
+                d.getOldId().toObjectId(),
+                d.getNewId().toObjectId(),
+                d.getChangeType().toString(),
+                service.getName());
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             return null;

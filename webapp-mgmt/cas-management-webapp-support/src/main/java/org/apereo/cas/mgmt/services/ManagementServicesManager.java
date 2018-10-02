@@ -1,9 +1,5 @@
 package org.apereo.cas.mgmt.services;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
@@ -12,6 +8,11 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.RegexUtils;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.diff.DiffEntry;
 
 import java.io.File;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -93,7 +93,7 @@ public class ManagementServicesManager implements ServicesManager {
     private void createChange(final DiffEntry entry) {
         try {
             val ser = new DefaultRegisteredServiceJsonSerializer();
-            RegisteredService svc;
+            var svc = (RegisteredService) null;
             if (entry.getChangeType() == DiffEntry.ChangeType.DELETE) {
                 svc = ser.from(git.readObject(entry.getOldId().toObjectId()));
             } else {

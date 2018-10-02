@@ -1,5 +1,9 @@
 package org.apereo.cas.mgmt;
 
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
+import org.apereo.cas.mgmt.services.web.beans.Commit;
+import org.apereo.cas.mgmt.services.web.beans.History;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.Getter;
@@ -13,18 +17,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.services.web.beans.Commit;
-import org.apereo.cas.mgmt.services.web.beans.History;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.diff.DiffAlgorithm;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.diff.EditList;
 import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
@@ -39,7 +38,6 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevObject;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
@@ -52,7 +50,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -64,7 +61,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -88,7 +84,7 @@ public class GitUtil implements AutoCloseable {
     private final Git git;
 
     public GitUtil(final String path) {
-        boolean repositoryMustExist = true;
+        var repositoryMustExist = true;
         val gitDir = new File(path);
         if (!gitDir.exists()) {
             LOGGER.debug("Creating git repository directory at [{}]", gitDir);
@@ -245,7 +241,7 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public void addWorkingChanges() throws Exception {
-        final Status status = git.status().call();
+        val status = git.status().call();
         status.getUntracked().forEach(this::addFile);
     }
 
@@ -576,8 +572,8 @@ public class GitUtil implements AutoCloseable {
 
     private static String formatCommitTime(final int ctime) {
         return LocalDateTime.ofInstant(new Date(ctime * 1000L).toInstant(),
-                ZoneId.systemDefault())
-                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            ZoneId.systemDefault())
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     /**
@@ -616,7 +612,6 @@ public class GitUtil implements AutoCloseable {
     public void markAsSubmitted(final RevObject c) throws Exception {
         appendNote(c, "SUBMITTED on " + new Date().toString() + "\n    ");
     }
-
 
 
     /**
@@ -811,7 +806,7 @@ public class GitUtil implements AutoCloseable {
     /**
      * Returns the the diffs of two branches.
      *
-     * @param first - the first branch
+     * @param first  - the first branch
      * @param second - the second branch
      * @return - List of DiffEntry
      * @throws Exception - failed
@@ -840,29 +835,29 @@ public class GitUtil implements AutoCloseable {
      * Returns the diff of a file in a commit and against the the previous version.
      *
      * @param commit - the commit
-     * @param path - the file path
+     * @param path   - the file path
      * @return - DiffEntry
      * @throws Exception - No difference
      */
     public DiffEntry getChange(final String commit, final String path) throws Exception {
         return getDiffsMinus1(commit).stream()
-                .filter(d -> d.getNewPath().contains(path))
-                .findFirst().orElseThrow(() -> new Exception("No Difference"));
+            .filter(d -> d.getNewPath().contains(path))
+            .findFirst().orElseThrow(() -> new Exception("No Difference"));
     }
 
     /**
      * Compares the same file between two commits.
      *
-     * @param first - the first commit
+     * @param first  - the first commit
      * @param second - the second commit
-     * @param path - the file
+     * @param path   - the file
      * @return - DiffEntry
      * @throws Exception - No Difference
      */
     public DiffEntry getChange(final String first, final String second, final String path) throws Exception {
         return getDiffs(first + "^{tree}", second + "^{tree}").stream()
-                .filter(d -> d.getNewPath().contains(path))
-                .findFirst().orElseThrow(() -> new Exception("No Difference"));
+            .filter(d -> d.getNewPath().contains(path))
+            .findFirst().orElseThrow(() -> new Exception("No Difference"));
     }
 
     /**
@@ -908,7 +903,7 @@ public class GitUtil implements AutoCloseable {
      * Overloaded method to return a formatted diff by using a RawText and an ObjectId.
      *
      * @param oldText - RawText.
-     * @param newId - ObjectId.
+     * @param newId   - ObjectId.
      * @return - Formatted diff in a byte[].
      * @throws Exception -failed.
      */
@@ -919,7 +914,7 @@ public class GitUtil implements AutoCloseable {
     /**
      * Overloaded method to return a formatted diff by using a RawText and an ObjectId.
      *
-     * @param oldId - ObjectId.
+     * @param oldId   - ObjectId.
      * @param newText - RawText.
      * @return - Formatted diff in a byte[].
      * @throws Exception - failed.

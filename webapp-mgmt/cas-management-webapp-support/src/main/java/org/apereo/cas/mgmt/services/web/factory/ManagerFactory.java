@@ -1,8 +1,5 @@
 package org.apereo.cas.mgmt.services.web.factory;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
@@ -15,14 +12,16 @@ import org.apereo.cas.services.DomainServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.eclipse.jgit.api.Git;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -69,7 +68,7 @@ public class ManagerFactory {
      * Method will look up the CasUserProfile for the logged in user and the return the GitServicesManager for
      * that user.
      *
-     * @param request - HttpServeltRequest
+     * @param request  - HttpServeltRequest
      * @param response - HttpServletRespone
      * @return - GitServicesManager for the logged in user
      * @throws Exception - failed
@@ -107,7 +106,7 @@ public class ManagerFactory {
     }
 
     private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final CasUserProfile user) {
-        final HttpSession session = request.getSession();
+        val session = request.getSession();
         var manager = (ManagementServicesManager) session.getAttribute("servicesManager");
         if (manager != null) {
             if (!user.isAdministrator()) {
@@ -115,7 +114,7 @@ public class ManagerFactory {
             }
             manager.load();
         } else {
-            GitUtil git;
+            var git = (GitUtil) null;
             if (!user.isAdministrator()) {
                 git = repositoryFactory.from(user);
                 git.rebase();
@@ -140,7 +139,7 @@ public class ManagerFactory {
     }
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {
-        ServicesManager manager;
+        var manager = (ServicesManager) null;
         val path = Paths.get(git.repoPath());
         val serviceRegistryDAO = new JsonServiceRegistry(path,
             false, null, null,

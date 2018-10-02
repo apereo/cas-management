@@ -1,13 +1,7 @@
 package org.apereo.cas.mgmt.services.web;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.mgmt.GitUtil;
-import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.apereo.cas.mgmt.services.web.factory.RepositoryFactory;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -15,6 +9,10 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
+
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -103,7 +101,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
     @GetMapping(value = "getService")
     public ResponseEntity<RegisteredService> getServiceById(final HttpServletRequest request,
                                                             final HttpServletResponse response,
-                                                            @RequestParam(value = "id", required = false) final Long id) throws Exception {
+                                                            @RequestParam(value = "id", required = false, defaultValue = "-1") final Long id) throws Exception {
         val service = getService(request, response, id);
         return new ResponseEntity<>(service, HttpStatus.OK);
     }
@@ -153,15 +151,11 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
                                          final Long id) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val manager = managerFactory.from(request, casUserProfile);
-        RegisteredService service;
-        if (id == -1) {
-            service = new RegexRegisteredService();
-        } else {
-            service = manager.findServiceBy(id);
-            if (service == null) {
-                LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
-                throw new IllegalArgumentException("Service id " + id + " cannot be found");
-            }
+        var service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
+
+        if (service == null) {
+            LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
+            throw new IllegalArgumentException("Service id " + id + " cannot be found");
         }
         return service;
     }

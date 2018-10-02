@@ -1,11 +1,11 @@
 package org.apereo.cas.mgmt.services.audit;
 
+import org.apereo.cas.util.AopUtils;
+
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.inspektr.audit.spi.AuditResourceResolver;
-
 import org.aspectj.lang.JoinPoint;
-import org.apereo.cas.util.AopUtils;
 
 
 /**
@@ -38,8 +38,8 @@ public class ServiceManagementResourceResolver implements AuditResourceResolver 
         val j = AopUtils.unWrapJoinPoint(joinPoint);
         val id = (Long) j.getArgs()[0];
         if (id == null) {
-            return new String[] {StringUtils.EMPTY};
+            return new String[]{StringUtils.EMPTY};
         }
-        return new String[] {"id=" + id};
+        return new String[]{"id=" + id};
     }
 }

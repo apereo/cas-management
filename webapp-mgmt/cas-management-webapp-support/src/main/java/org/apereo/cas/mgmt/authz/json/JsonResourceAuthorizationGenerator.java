@@ -1,18 +1,17 @@
 package org.apereo.cas.mgmt.authz.json;
 
+import org.apereo.cas.util.io.FileWatcherService;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apereo.cas.util.io.FileWatcherService;
 import org.hjson.JsonValue;
 import org.jooq.lambda.Unchecked;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.CommonProfile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
 import java.io.InputStreamReader;
@@ -54,7 +53,7 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
     private void loadResource(final Resource res) {
         try (Reader reader = new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8)) {
             val personList = new TypeReference<Map<String, UserAuthorizationDefinition>>() {
-                };
+            };
             this.rules = this.objectMapper.readValue(JsonValue.readHjson(reader).toString(), personList);
         } catch (final Exception e) {
             throw new RuntimeException(e.getMessage(), e);

@@ -1,7 +1,5 @@
 package org.apereo.cas.mgmt.config;
 
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -24,6 +22,9 @@ import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.io.CommunicationsManager;
+
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -51,10 +51,8 @@ import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 import org.springframework.web.servlet.mvc.UrlFilenameViewController;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Properties;
@@ -102,11 +100,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Autowired
     @Qualifier("servicesManager")
     private ServicesManager servicesManager;
-
-    @Bean
-    public Filter characterEncodingFilter() {
-        return new CharacterEncodingFilter(StandardCharsets.UTF_8.name(), true);
-    }
 
     @RefreshScope
     @ConditionalOnMissingBean(name = "attributeRepository")

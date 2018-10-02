@@ -1,8 +1,9 @@
 package org.apereo.cas.mgmt.web;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.mgmt.CasManagementUtils;
 import org.apereo.cas.util.spring.boot.AbstractCasBanner;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 
 import java.util.Formatter;

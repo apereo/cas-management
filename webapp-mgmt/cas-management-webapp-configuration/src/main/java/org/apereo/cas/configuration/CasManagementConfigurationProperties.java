@@ -1,12 +1,13 @@
 package org.apereo.cas.configuration;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.apereo.cas.configuration.model.NotificationsProperties;
 import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
 import org.apereo.cas.util.CollectionUtils;
+
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
@@ -112,7 +113,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     private boolean enableDelegatedMgmt;
 
     /**
-     *  Flag to enable/disable calling cas discovery endpoint.
+     * Flag to enable/disable calling cas discovery endpoint.
      */
     private boolean enableDiscoveryEndpointCall = true;
 

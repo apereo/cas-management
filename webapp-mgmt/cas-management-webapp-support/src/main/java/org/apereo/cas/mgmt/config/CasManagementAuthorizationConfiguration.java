@@ -1,12 +1,13 @@
 package org.apereo.cas.mgmt.config;
 
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authz.CasRoleBasedAuthorizer;
 import org.apereo.cas.mgmt.authz.CasSpringSecurityAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.json.JsonResourceAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.yaml.YamlResourceAuthorizationGenerator;
+
+import lombok.val;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.FromAttributesAuthorizationGenerator;
@@ -16,10 +17,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is {@link CasManagementAuthorizationConfiguration}.

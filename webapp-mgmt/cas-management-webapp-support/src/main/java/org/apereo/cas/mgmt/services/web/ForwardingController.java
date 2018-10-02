@@ -1,7 +1,7 @@
 package org.apereo.cas.mgmt.services.web;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * This controller is mapped to all allowed paths that the user can type into the Url bar of
@@ -20,19 +20,19 @@ public class ForwardingController {
      * @return - String manage.html
      */
     @RequestMapping({
-            "services",
-            "services/{id:.*}",
-            "form/{id:.*}",
-            "domains",
-            "duplicate/{id:.*}",
-            "view/{id:.*}",
-            "search/{query:.*}",
-            "history/{fileName:.*}",
-            "json/{fileId:.*}",
-            "localChanges",
-            "pulls",
-            "import",
-            "repo-history"})
+        "services",
+        "services/{id:.*}",
+        "form/{id:.*}",
+        "domains",
+        "duplicate/{id:.*}",
+        "view/{id:.*}",
+        "search/{query:.*}",
+        "history/{fileName:.*}",
+        "json/{fileId:.*}",
+        "localChanges",
+        "pulls",
+        "import",
+        "repo-history"})
     public String forward() {
         return "manage.html";
     }

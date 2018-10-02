@@ -1,7 +1,8 @@
 package org.apereo.cas.mgmt.authentication;
 
-import lombok.val;
 import org.apereo.cas.CasProtocolConstants;
+
+import lombok.val;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.Pac4jConstants;

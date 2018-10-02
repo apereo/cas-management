@@ -1,7 +1,5 @@
 package org.apereo.cas.mgmt.services.web;
 
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -9,7 +7,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.services.ManagementServicesManager;
 import org.apereo.cas.mgmt.services.web.beans.AppConfig;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
 import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
@@ -22,6 +19,9 @@ import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.RegexUtils;
+
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.springframework.http.HttpStatus;
@@ -41,9 +41,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -205,7 +202,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         val casUserProfile = casUserProfileFactory.from(request, response);
         val manager = managerFactory.from(request, casUserProfile);
 
-        final Collection<String> data;
+        var data = (Collection<String>) null;
         if (!casUserProfile.isAdministrator()) {
             data = manager.getDomains()
                 .stream()
@@ -360,7 +357,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                            final HttpServletResponse response,
                                                            @RequestBody final String service) throws Exception {
         try {
-            final RegisteredService svc;
+            var svc = (RegisteredService) null;
             if (service.startsWith("{")) {
                 val serializer = new DefaultRegisteredServiceJsonSerializer();
                 svc = serializer.from(service);

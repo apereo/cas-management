@@ -1,8 +1,9 @@
 package org.apereo.cas.mgmt.services.audit;
 
 import org.apereo.cas.util.Pac4jUtils;
-import org.aspectj.lang.JoinPoint;
+
 import org.apereo.inspektr.common.spi.PrincipalResolver;
+import org.aspectj.lang.JoinPoint;
 
 /**
  * Principal resolver for inspektr based on pac4j.

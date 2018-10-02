@@ -18,6 +18,7 @@ import org.eclipse.jgit.api.Git;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,6 +65,19 @@ public class ManagerFactory {
     }
 
     /**
+     * Method will look up the CasUserProfile for the logged in user and the return the GitServicesManager for
+     * that user.
+     *
+     * @param request - HttpServeltRequest
+     * @param response - HttpServletRespone
+     * @return - GitServicesManager for the logged in user
+     * @throws Exception - failed
+     */
+    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        return from(request, casUserProfileFactory.from(request, response));
+    }
+
+    /**
      * Method will create the GitServicesManager for the user passed in the CasUserProfile.
      *
      * @param request - HttpServletRequest
@@ -78,6 +92,17 @@ public class ManagerFactory {
             return new ManagementServicesManager(servicesManager, git);
         }
         return getManagementServicesManager(request, user);
+    }
+
+    /**
+     * Creates a manager for the passed Git repo.
+     *
+     * @param git - the repo
+     * @return - manager
+     * @throws Exception - failed
+     */
+    public ManagementServicesManager from(final GitUtil git) throws Exception {
+        return new ManagementServicesManager(createJSONServiceManager(git), git);
     }
 
     private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final CasUserProfile user) {
@@ -102,6 +127,16 @@ public class ManagerFactory {
         return manager;
     }
 
+    /**
+     * Returns the master repo.
+     *
+     * @return - maste repo manager
+     * @throws Exception -failed
+     */
+    public ManagementServicesManager master() throws Exception {
+        final GitUtil git = repositoryFactory.masterRepository();
+        return new ManagementServicesManager(createJSONServiceManager(git), git);
+    }
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {
         final ServicesManager manager;

@@ -7,8 +7,8 @@ import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {FormService} from './form.service';
 import {AbstractRegisteredService, RegexRegisteredService} from '../../domain/registered-service';
 import {ChangesService} from '../changes/changes.service';
-import {map, take} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
+import {map, take} from 'rxjs/operators';
 
 @Injectable()
 export class FormResolve implements Resolve<AbstractRegisteredService[]> {

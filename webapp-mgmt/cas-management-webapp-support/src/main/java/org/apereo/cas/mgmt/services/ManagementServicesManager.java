@@ -65,7 +65,6 @@ public class ManagementServicesManager implements ServicesManager {
         final List<RegisteredServiceItem> items = services.stream()
             .map(this::createServiceItem)
             .collect(Collectors.toList());
-
         return items;
     }
 

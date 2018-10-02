@@ -39,7 +39,7 @@
         <mat-icon>add_circle</mat-icon>
         <ng-container i18n>Import Service</ng-container>
       </a>
-      <a mat-list-item *ngIf="isAdmin() && isVersionControl()" routerLink="/localChanges" (click)="close()">
+      <a mat-list-item *ngIf="appService.config.versionControl" routerLink="/localChanges" (click)="close()">
         <mat-icon>build</mat-icon>
         <ng-container i18n>Working Changes</ng-container>
       </a>
@@ -47,7 +47,7 @@
         <mat-icon>sync</mat-icon>
         <ng-container i18n>Synchronize</ng-container>
       </a>
-      <a mat-list-item *ngIf="isAdmin() && isVersionControl()" routerLink="/repo-history" (click)="close()">
+      <a mat-list-item *ngIf="isAdmin()" routerLink="/repo-history" (click)="close()">
         <mat-icon>history</mat-icon>
         <ng-container i18n>History</ng-container>
       </a>

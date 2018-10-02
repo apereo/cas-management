@@ -20,4 +20,12 @@ export class CommitHistoryService extends Service {
   revertRepo(id: string): Observable<String> {
     return this.getText('revertRepo?id=' + id);
   }
+
+  change(commit: String, path: String): Observable<String> {
+    return this.getText('changeMade?id=' + commit + '&path=' + path);
+  }
+
+  toHead(commit: String, path: String): Observable<String> {
+    return this.getText('compareWithHead?id=' + commit + '&path=' + path);
+  }
 }

@@ -20,6 +20,7 @@ public class ForwardingController {
      * @return - String manage.html
      */
     @RequestMapping({
+            "services",
             "services/{id:.*}",
             "form/{id:.*}",
             "domains",
@@ -29,8 +30,8 @@ public class ForwardingController {
             "history/{fileName:.*}",
             "json/{fileId:.*}",
             "localChanges",
+            "pulls",
             "import",
-            "submissions",
             "repo-history"})
     public String forward() {
         return "manage.html";

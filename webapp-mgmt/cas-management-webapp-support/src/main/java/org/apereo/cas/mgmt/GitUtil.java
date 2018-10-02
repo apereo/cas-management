@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -299,6 +300,19 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
+     * Returns a RawText representation of a file in the passed repository.  Used in creating diffs.
+     *
+     * @param repo - The repository to pull the change.
+     * @param path - The path to the file.
+     * @return - RawText representation of the file.
+     * @throws Exception - failed.
+     */
+    public RawText raw(final Repository repo, final String path) throws Exception {
+        final File file = new File(repo.getWorkTree().getAbsolutePath() + "/" + path);
+        return new RawText(FileUtils.readFileToByteArray(file));
+    }
+
+    /**
      * Returns the file as a String form the repository indexed by the passed String
      * representing its ObjectId.
      *
@@ -410,6 +424,53 @@ public class GitUtil implements AutoCloseable {
             .setObjectId(com)
             .call();
     }
+
+    /**
+     * Gets the note attached to a commit.
+     *
+     * @param com - the commit
+     * @return - the note
+     * @throws Exception - failed
+     */
+    public String noteText(final RevCommit com) throws Exception {
+        return noteText(note(com));
+    }
+
+    /**
+     * Returns a the Note of a commit as a String.
+     *
+     * @param com - The RevObkect of the commit to pull the note from.
+     * @return - Returns the note text as a String.
+     * @throws Exception -failed.
+     */
+    public String noteText(final RevObject com) throws Exception {
+        if (!isUndefined()) {
+            final Note note = note(com);
+            if (note != null) {
+                final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                git.getRepository().open(note.getData()).copyTo(bytes);
+                return bytes.toString();
+            }
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /**
+     * Extracts the text from a Note.
+     *
+     * @param note - the note
+     * @return - the text
+     * @throws Exception - failed
+     */
+    public String noteText(final Note note) throws Exception {
+        final StringBuilder buffer = new StringBuilder();
+        try (OutputStream bytes = new ByteArrayOutputStream()) {
+            git.getRepository().open(note.getData()).copyTo(bytes);
+            buffer.append(bytes.toString().concat("\n\n"));
+        }
+        return buffer.toString();
+    }
+
 
     /**
      * Returns the history of a file in the repository.
@@ -555,24 +616,7 @@ public class GitUtil implements AutoCloseable {
         appendNote(c, "SUBMITTED on " + new Date().toString() + "\n    ");
     }
 
-    /**
-     * Returns a the Note of a commit as a String.
-     *
-     * @param com - The RevObkect of the commit to pull the note from.
-     * @return - Returns the note text as a String.
-     * @throws Exception -failed.
-     */
-    public String noteText(final RevObject com) throws Exception {
-        if (!isUndefined()) {
-            final Note note = note(com);
-            if (note != null) {
-                final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                git.getRepository().open(note.getData()).copyTo(bytes);
-                return bytes.toString();
-            }
-        }
-        return StringUtils.EMPTY;
-    }
+
 
     /**
      * Creates a Person Identity to add to the commit.
@@ -759,13 +803,65 @@ public class GitUtil implements AutoCloseable {
      * @return - List of DiffEntry.
      * @throws Exception - failed.
      */
-    public List<DiffEntry> getDiffs(final String branch) throws Exception {
+    public List<DiffEntry> getDiffsMinus1(final String branch) throws Exception {
+        return getDiffs(branch + "^{tree}", branch + "~1^{tree}");
+    }
+
+    /**
+     * Returns the the diffs of two branches.
+     *
+     * @param first - the first branch
+     * @param second - the second branch
+     * @return - List of DiffEntry
+     * @throws Exception - failed
+     */
+    public List<DiffEntry> getDiffs(final String first, final String second) throws Exception {
         final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
         final ObjectReader reader = git.getRepository().newObjectReader();
-        oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
+        oldTreeIter.reset(reader, git.getRepository().resolve(first));
         final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-        newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
+        newTreeIter.reset(reader, git.getRepository().resolve(second));
         return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+    }
+
+    /**
+     * Returns the Diff of a file on a path against HEAD.
+     *
+     * @param path - path to file
+     * @return - DiffEntry
+     * @throws Exception -failed
+     */
+    public DiffEntry getChange(final String path) throws Exception {
+        return getChange("HEAD", path);
+    }
+
+    /**
+     * Returns the diff of a file in a commit and against the the previous version.
+     *
+     * @param commit - the commit
+     * @param path - the file path
+     * @return - DiffEntry
+     * @throws Exception - No difference
+     */
+    public DiffEntry getChange(final String commit, final String path) throws Exception {
+        return getDiffsMinus1(commit).stream()
+                .filter(d -> d.getNewPath().contains(path))
+                .findFirst().orElseThrow(() -> new Exception("No Difference"));
+    }
+
+    /**
+     * Compares the same file between two commits.
+     *
+     * @param first - the first commit
+     * @param second - the second commit
+     * @param path - the file
+     * @return - DiffEntry
+     * @throws Exception - No Difference
+     */
+    public DiffEntry getChange(final String first, final String second, final String path) throws Exception {
+        return getDiffs(first + "^{tree}", second + "^{tree}").stream()
+                .filter(d -> d.getNewPath().contains(path))
+                .findFirst().orElseThrow(() -> new Exception("No Difference"));
     }
 
     /**
@@ -776,12 +872,7 @@ public class GitUtil implements AutoCloseable {
      * @throws Exception - failed.
      */
     public List<DiffEntry> getPublishDiffs(final String branch) throws Exception {
-        final CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        final ObjectReader reader = git.getRepository().newObjectReader();
-        oldTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
-        final CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-        newTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
-        return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+        return getDiffs(branch + "~1^{tree}", branch + "^{tree}");
     }
 
     /**
@@ -810,6 +901,30 @@ public class GitUtil implements AutoCloseable {
      */
     public byte[] getFormatter(final ObjectId oldId, final ObjectId newId) throws Exception {
         return getFormatter(rawText(oldId), rawText(newId));
+    }
+
+    /**
+     * Overloaded method to return a formatted diff by using a RawText and an ObjectId.
+     *
+     * @param oldText - RawText.
+     * @param newId - ObjectId.
+     * @return - Formatted diff in a byte[].
+     * @throws Exception -failed.
+     */
+    public byte[] getFormatter(final RawText oldText, final ObjectId newId) throws Exception {
+        return getFormatter(oldText, rawText(newId));
+    }
+
+    /**
+     * Overloaded method to return a formatted diff by using a RawText and an ObjectId.
+     *
+     * @param oldId - ObjectId.
+     * @param newText - RawText.
+     * @return - Formatted diff in a byte[].
+     * @throws Exception - failed.
+     */
+    public byte[] getFormatter(final ObjectId oldId, final RawText newText) throws Exception {
+        return getFormatter(rawText(oldId), newText);
     }
 
     /**
@@ -854,6 +969,18 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
+     * Returns the RawText of a file specified by its path.
+     *
+     * @param path - File path.
+     * @return - RawText.
+     * @throws Exception - failed.
+     */
+    public RawText rawText(final String path) throws Exception {
+        final File file = new File(git.getRepository().getWorkTree().getAbsolutePath() + "/" + path);
+        return new RawText(FileUtils.readFileToByteArray(file));
+    }
+
+    /**
      * Returns the last commit before the commit that was submitted as a pull request.
      *
      * @param branchName - Name given to the branch when submitted.
@@ -894,6 +1021,16 @@ public class GitUtil implements AutoCloseable {
         final RevCommit com = revWalk.parseCommit(git.getRepository().resolve(branch));
         final String msg = "REVERTED by " + user.getId() + " on " + new Date().toString() + "\n    ";
         appendNote(com, msg);
+    }
+
+    /**
+     * Returns the name of the current branch in the repository.
+     *
+     * @return - the name of the branch.
+     * @throws Exception - failed
+     */
+    public String currentBranchName() throws Exception {
+        return git.getRepository().getBranch();
     }
 
     /**

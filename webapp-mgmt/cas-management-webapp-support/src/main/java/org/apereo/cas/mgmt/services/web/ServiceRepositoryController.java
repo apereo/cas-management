@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -53,7 +54,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -326,7 +326,7 @@ public class ServiceRepositoryController {
             gitStatus.setModified(status.getModified().stream()
                     .map(s -> getServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setDeleted(status.getMissing().stream()
-                    .map(s -> getDeletedServiceName(git,s)).collect(Collectors.toSet()));
+                    .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(isPublishedBehind());
             gitStatus.setPullRequests(pendingSubmits(request, response, git));
             return new ResponseEntity<>(gitStatus, HttpStatus.OK);
@@ -555,6 +555,16 @@ public class ServiceRepositoryController {
         }
     }
 
+    /**
+     * Returns a diff as a string representing the change made to a file in a commit.
+     *
+     * @param response - the response
+     * @param request - the request
+     * @param id - the commit id
+     * @param path - the file path
+     * @return - the diff
+     * @throws Exception -failed
+     */
     @GetMapping("changeMade")
     public ResponseEntity<String> changeMade(final HttpServletResponse response,
                                              final HttpServletRequest request,
@@ -563,12 +573,22 @@ public class ServiceRepositoryController {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             final DiffEntry diff = git.getChange(id, path);
             return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
-                    diff.getOldId().toObjectId())), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("No difference", HttpStatus.valueOf(501));
+                    diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
+        } catch (final Exception e) {
+            return new ResponseEntity<>("No difference", HttpStatus.NO_CONTENT);
         }
     }
 
+    /**
+     * Compares the file in given commit to the current HEAD.
+     *
+     * @param response - the response
+     * @param request - the request
+     * @param id - the commit id
+     * @param path - the path of the file
+     * @return - String of the diff
+     * @throws Exception - failed.
+     */
     @GetMapping("compareWithHead")
     public ResponseEntity<String> compareWithHead(final HttpServletResponse response,
                                                   final HttpServletRequest request,
@@ -577,9 +597,9 @@ public class ServiceRepositoryController {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             final DiffEntry diff = git.getChange("HEAD", id, path);
             return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
-                    diff.getOldId().toObjectId())), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("No difference", HttpStatus.valueOf(501));
+                    diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
+        } catch (final Exception e) {
+            return new ResponseEntity<>("No difference", HttpStatus.NO_CONTENT);
         }
     }
     /**

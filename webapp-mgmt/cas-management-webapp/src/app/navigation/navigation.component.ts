@@ -9,6 +9,7 @@ import {UserService} from '../user.service';
 import {AppConfigService} from '../app-config.service';
 import {Location} from '@angular/common';
 import {ControlsService} from '../controls/controls.service';
+import {async} from 'rxjs/internal/scheduler/async';
 
 @Component({
   selector: 'app-navigation',

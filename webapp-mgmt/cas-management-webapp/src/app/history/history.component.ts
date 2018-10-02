@@ -3,9 +3,11 @@ import {Messages} from '../messages';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HistoryService} from './history.service';
 import {History} from '../../domain/history';
-import {MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from '../paginator/paginator.component';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import {DiffViewComponent} from '../diff-view/diff-view.component';
+import {ChangesService} from '../changes/changes.service';
 
 @Component({
   selector: 'app-history',
@@ -29,7 +31,9 @@ export class HistoryComponent implements OnInit {
               private router: Router,
               private service: HistoryService,
               public  snackBar: MatSnackBar,
-              public breakObserver: BreakpointObserver) {
+              public breakObserver: BreakpointObserver,
+              public dialog: MatDialog,
+              public changeService: ChangesService) {
   }
 
   ngOnInit() {
@@ -64,15 +68,56 @@ export class HistoryComponent implements OnInit {
       );
   }
 
+  viewChangeMade() {
+    this.service.change(this.selectedItem.commit, this.selectedItem.path)
+      .subscribe(f => {
+        this.dialog.open(DiffViewComponent, {
+          data: [f, 'diff', 'github'],
+          width: '900px',
+          position: {top: '50px'}
+        })
+      });
+  }
+
   viewDiff() {
-    this.router.navigate(['/diff', {oldId: this.dataSource.data[0].id, newId: this.selectedItem.id}]);
+    this.service.toHead(this.selectedItem.commit, this.selectedItem.path)
+      .subscribe(f => {
+          this.dialog.open(DiffViewComponent, {
+            data: [f, 'diff', 'github'],
+            width: '900px',
+            position: {top: '50px'}
+          })
+        },
+        (error) => {console.log(error); this.snackBar.open(error.error, 'Dismiss')});
   }
 
   viewJSON() {
-    this.router.navigate(['/viewJson', this.selectedItem.id]);
+    this.changeService.viewJson(this.selectedItem.id)
+      .subscribe(f => {
+        this.dialog.open(DiffViewComponent, {
+          data: [f, 'hjson', 'eclipse'],
+          width: '900px',
+          position: {top: '50px'}
+        })
+      });
   }
 
   viewYaml() {
-    this.router.navigate(['/viewYaml', this.selectedItem.id]);
+    this.changeService.viewYaml(this.selectedItem.id)
+      .subscribe(f => {
+        this.dialog.open(DiffViewComponent, {
+          data: [f, 'yaml', 'eclipse'],
+          width: '900px',
+          position: {top: '50px'}
+        })
+      });
+  }
+
+  first(): boolean {
+    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) == 0;
+  }
+
+  last(): boolean {
+    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) == this.dataSource.data.length -1
   }
 }

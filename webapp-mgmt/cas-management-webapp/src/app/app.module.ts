@@ -21,6 +21,9 @@ import {ChangesModule} from './changes/changes.module';
 import {DiffModule} from './diff/diff.module';
 import {JSONModule} from './json/json.module';
 import {InitComponent} from 'app/init.component';
+import {ControlsComponent} from './controls/controls.component';
+import {ControlsService} from './controls/controls.service';
+import { FooterComponent } from './footer/footer.component';
 import {HttpClientModule} from '@angular/common/http';
 import { LocalChangesComponent } from './local-changes/local-changes.component';
 import { YamlComponent } from './yaml/yaml.component';
@@ -39,7 +42,11 @@ import {RepoHistoryService} from './repo-history/repo-history.service';
 import {CommitHistoryModule} from './commit-history/commit-history.module';
 import {LocalChangesResolver} from './local-changes/local-changes.resolver';
 import {RepoHistoryResolver} from './repo-history/repo-history.resolver';
-import {NavigationComponent} from './navigation/navigation.component';
+import { UnknownComponent } from './unknown/unknown.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import { NavigationComponent } from './navigation/navigation.component';
+import {DiffViewComponent} from './diff-view/diff-view.component';
 
 @NgModule({
   imports: [
@@ -59,7 +66,13 @@ import {NavigationComponent} from './navigation/navigation.component';
     FormModule,
     SharedModule,
     AppRoutingModule,
-    CommitHistoryModule
+    CommitHistoryModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
   ],
   declarations: [
     AppComponent,
@@ -74,12 +87,14 @@ import {NavigationComponent} from './navigation/navigation.component';
     ImportComponent,
     RepoHistoryComponent,
     NavigationComponent,
+    DiffViewComponent
   ],
   entryComponents: [
     DeleteComponent,
     RevertComponent,
     AcceptComponent,
-    RejectComponent
+    RejectComponent,
+    DiffViewComponent
   ],
   providers: [
     Messages,

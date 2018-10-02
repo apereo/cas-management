@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.discovery.CasServerProfile;
 import org.apereo.cas.mgmt.services.web.beans.CasServerProfileWrapper;
 import org.apereo.cas.mgmt.services.web.beans.FormData;
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 public class FormDataFactory {
 
     private final CasConfigurationProperties casProperties;
+    private final CasManagementConfigurationProperties mgmtProperties;
     private final IPersonAttributeDao attributeRepository;
 
     private Optional<CasServerProfile> profile = Optional.empty();
@@ -59,6 +61,10 @@ public class FormDataFactory {
 
     @PostConstruct
     private void callForProfile() {
+        if (!mgmtProperties.isEnableDiscoveryEndpointCall()) {
+            LOGGER.warn("Call to cas/status/discovery disabled by management configuration.  Using default FormData values.");
+            return;
+        }
         if (StringUtils.isBlank(casProperties.getServer().getName())) {
             LOGGER.warn("CAS server name is undefined and cannot be contacted to retrieve profile");
             return;
@@ -107,7 +113,7 @@ public class FormDataFactory {
         if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypes().isEmpty()) {
             final CasServerProfile p = profile.get();
             final List<FormData.Option> mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
-                .map(e -> new FormData.Option(e.getKey(), e.getValue()))
+                .map(e -> new FormData.Option(e.getValue(), e.getKey()))
                 .collect(Collectors.toList());
             formData.setMfaProviders(mfas);
         } else {

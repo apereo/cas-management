@@ -84,11 +84,15 @@
 <mat-menu #historyMenu>
   <button mat-menu-item (click)="viewChange()">
     <mat-icon>visibility</mat-icon>
-    <ng-container i18n>View</ng-container>
+    <ng-container i18n>View Version</ng-container>
   </button>
-  <button mat-menu-item (click)="viewDiff()">
+  <button mat-menu-item (click)="viewDiff()" *ngIf="!first()">
     <mat-icon>compare_arrows</mat-icon>
-    <ng-container i18n>View Diff</ng-container>
+    <ng-container i18n>Compare to Current</ng-container>
+  </button>
+  <button mat-menu-item (click)="viewChangeMade()">
+    <mat-icon>compare_arrows</mat-icon>
+    <ng-container i18n>Show Diff</ng-container>
   </button>
   <button mat-menu-item (click)="viewJSON()">
     <mat-icon>code</mat-icon>
@@ -99,7 +103,7 @@
     <ng-container>Yaml</ng-container>
   </button>
   <button mat-menu-item *ngIf="selectedItem && selectedItem.changeType != 'ADD'" (click)="revert()">
-    <mat-icon>undo</mat-icon>
-    <ng-container i18n>checkout</ng-container>
+    <mat-icon>file_download</mat-icon>
+    <ng-container i18n>Checkout Version</ng-container>
   </button>
 </mat-menu>

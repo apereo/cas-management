@@ -208,7 +208,7 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public FormDataFactory formDataFactory() {
-        return new FormDataFactory(casProperties, attributeRepository());
+        return new FormDataFactory(casProperties, managementProperties, attributeRepository());
     }
 
     @Bean

@@ -10,7 +10,7 @@ import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.core.io.Resource;
 
-import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.util.Properties;
 
 /**
@@ -42,7 +42,7 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
             final FileWatcherService watcher = new FileWatcherService(usersFile.getFile(),
                     Unchecked.consumer(file -> {
                         final Properties newProps = new Properties();
-                        newProps.load(new FileInputStream(file));
+                        newProps.load(Files.newInputStream(file.toPath()));
                         this.generator = new SpringSecurityPropertiesAuthorizationGenerator(newProps);
                     }));
             watcher.start(getClass().getSimpleName());

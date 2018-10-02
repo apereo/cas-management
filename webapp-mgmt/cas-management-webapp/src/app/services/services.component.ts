@@ -150,7 +150,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   refresh() {
     this.getServices();
-    this.controlsService.gitStatus();
   }
 
   getServices() {

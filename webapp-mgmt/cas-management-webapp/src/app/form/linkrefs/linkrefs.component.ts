@@ -16,12 +16,4 @@ export class LinkrefsComponent implements OnInit {
   ngOnInit() {
   }
 
-  checkForSpaces(url: string) {
-    if (url === 'info') {
-      this.data.service.informationUrl = this.data.service.informationUrl ? this.data.service.informationUrl.trim() : null;
-    } else {
-      this.data.service.privacyUrl = this.data.service.privacyUrl ? this.data.service.privacyUrl.trim() : null;
-    }
-  }
-
 }

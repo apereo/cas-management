@@ -26,7 +26,14 @@ import {
   MatChipsModule,
   MatAutocompleteModule,
   MatSnackBarModule,
-  MatPaginatorModule, MatProgressSpinnerModule, MatBadgeModule, MatSidenavModule, MatToolbarModule
+  MatPaginatorModule,
+  MatStepperModule,
+  MatProgressSpinnerModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatBadgeModule,
+  MatSortModule,
+  MatSlideToggleModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ControlsComponent} from '../controls/controls.component';
@@ -66,10 +73,16 @@ import {UnknownComponent} from '../unknown/unknown.component';
     MatAutocompleteModule,
     MatSnackBarModule,
     MatPaginatorModule,
+    MatStepperModule,
     MatProgressSpinnerModule,
-    MatBadgeModule,
+    MatToolbarModule,
+    MatButtonModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatIconModule,
+    MatListModule,
+    MatBadgeModule,
+    MatSortModule,
+    MatSlideToggleModule
   ],
   declarations: [
     EditorComponent,
@@ -114,15 +127,21 @@ import {UnknownComponent} from '../unknown/unknown.component';
     MatAutocompleteModule,
     MatSnackBarModule,
     MatPaginatorModule,
+    MatStepperModule,
     EditorComponent,
     ControlsComponent,
     CommitComponent,
     FooterComponent,
     PaginatorComponent,
     MatProgressSpinnerModule,
-    MatBadgeModule,
+    MatToolbarModule,
+    MatButtonModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatIconModule,
+    MatListModule,
+    MatBadgeModule,
+    MatSortModule,
+    MatSlideToggleModule
   ]
 })
 export class SharedModule {}

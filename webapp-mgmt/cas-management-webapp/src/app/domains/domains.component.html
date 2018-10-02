@@ -12,7 +12,6 @@
   <div>
     <app-controls></app-controls>
   </div>
-
 </div>
 
 <div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
@@ -48,9 +47,11 @@
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
 
-<app-paginator></app-paginator>
-
+  <app-paginator></app-paginator>
 </div>
+
+
+
 
 <mat-menu #serviceMenu>
   <button mat-menu-item (click)="view(selectedItem)">

@@ -32,5 +32,4 @@ export class ServiceViewService extends Service {
   updateOrder(a: ServiceItem, b: ServiceItem): Observable<String> {
     return this.postText('updateOrder', [a, b]);
   }
-
 }

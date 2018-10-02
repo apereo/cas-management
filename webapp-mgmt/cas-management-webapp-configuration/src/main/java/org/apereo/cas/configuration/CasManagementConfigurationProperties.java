@@ -84,7 +84,7 @@ public class CasManagementConfigurationProperties implements Serializable {
      * }
      * </pre>
      */
-    private Resource userPropertiesFile = new ClassPathResource("user-details.properties");
+    private transient Resource userPropertiesFile = new ClassPathResource("user-details.properties");
 
     /**
      * A writable location where the Git repository will be created to track changes.
@@ -110,6 +110,11 @@ public class CasManagementConfigurationProperties implements Serializable {
      * Flag to enable delegated management.
      */
     private boolean enableDelegatedMgmt;
+
+    /**
+     *  Flag to enable/disable calling cas discovery endpoint.
+     */
+    private boolean enableDiscoveryEndpointCall = true;
 
     /**
      * Notifications.

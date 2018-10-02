@@ -47,6 +47,8 @@ The index `[0]` is meant to be incremented by the adopter to allow for distinct 
 
 # mgmt.enableVersionControl=false
 # mgmt.enableDelegatedMgmt=false
+
+# mgmt.enableDiscoveryEndpointCall=true
 ```
 
 ### Notifications

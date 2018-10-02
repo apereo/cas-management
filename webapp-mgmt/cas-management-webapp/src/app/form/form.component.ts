@@ -74,8 +74,7 @@ export class FormComponent implements OnInit {
               private location: Location,
               public snackBar: MatSnackBar,
               public userService: UserService,
-              private breakpointObserver: BreakpointObserver,
-              public appConfig: AppConfigService) {
+              private breakpointObserver: BreakpointObserver) {
   }
 
   ngOnInit() {
@@ -249,12 +248,7 @@ export class FormComponent implements OnInit {
     }
 
     this.data.service.id = id;
-    if (this.imported) {
-      const domain = this.appConfig.config.mgmtType === 'DOMAIN' ? this.extractDomain(this.data.service.serviceId) : 'defualt'
-      this.router.navigate(['services', domain]);
-    } else {
-      this.location.back();
-    }
+    this.location.back();
   }
 
   handleNotSaved() {
@@ -305,6 +299,8 @@ export class FormComponent implements OnInit {
 
   validateForm(): Tabs {
     const data = this.data.service;
+
+    this.data.service.serviceId = this.checkForSpaces(data.serviceId);
 
     // Service Basics
     if (!data.serviceId ||
@@ -424,4 +420,8 @@ export class FormComponent implements OnInit {
 
     return -1;
   };
+
+  checkForSpaces(val) {
+    return val ? val.trim() : null;
+  }
 }

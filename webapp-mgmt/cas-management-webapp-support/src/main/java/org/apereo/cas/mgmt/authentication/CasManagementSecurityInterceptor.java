@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.authentication;
 
+import lombok.val;
 import org.apereo.cas.CasProtocolConstants;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
@@ -33,7 +34,7 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
      */
     public CasManagementSecurityInterceptor(final Config config) {
         super(config, getClientNames(config), getAuthorizerNames(config));
-        final CasManagementSecurityLogic logic = new CasManagementSecurityLogic();
+        val logic = new CasManagementSecurityLogic();
         setSecurityLogic(logic);
     }
 
@@ -41,10 +42,10 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
     public void postHandle(final HttpServletRequest request, final HttpServletResponse response,
                            final Object handler, final ModelAndView modelAndView) {
         if (!StringUtils.isEmpty(request.getQueryString()) && request.getQueryString().contains(CasProtocolConstants.PARAMETER_TICKET)) {
-            final RedirectView v = new RedirectView(request.getRequestURL().toString());
-            v.setExposeModelAttributes(false);
-            v.setExposePathVariables(false);
-            modelAndView.setView(v);
+            val view = new RedirectView(request.getRequestURL().toString());
+            view.setExposeModelAttributes(false);
+            view.setExposePathVariables(false);
+            modelAndView.setView(view);
         }
     }
 

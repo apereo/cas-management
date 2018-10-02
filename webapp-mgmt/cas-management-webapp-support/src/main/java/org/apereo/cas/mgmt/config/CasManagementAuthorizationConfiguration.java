@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.config;
 
+import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authz.CasRoleBasedAuthorizer;
@@ -37,7 +38,7 @@ public class CasManagementAuthorizationConfiguration {
     @Bean
     @RefreshScope
     public AuthorizationGenerator authorizationGenerator() {
-        final List<String> authzAttributes = casProperties.getAuthzAttributes();
+        val authzAttributes = casProperties.getAuthzAttributes();
         if (!authzAttributes.isEmpty()) {
             if (authzAttributes.stream().anyMatch(a -> a.equals("*"))) {
                 return staticAdminRolesAuthorizationGenerator();
@@ -63,7 +64,7 @@ public class CasManagementAuthorizationConfiguration {
     @Bean
     @RefreshScope
     public Authorizer managementWebappAuthorizer() {
-        final List<String> roles = new ArrayList<>();
+        val roles = new ArrayList<String>();
         roles.addAll(casProperties.getAdminRoles());
         roles.addAll(casProperties.getUserRoles());
         return new CasRoleBasedAuthorizer(roles);
@@ -74,7 +75,7 @@ public class CasManagementAuthorizationConfiguration {
     @ConditionalOnMissingBean(name = "springSecurityPropertiesAuthorizationGenerator")
     public AuthorizationGenerator springSecurityPropertiesAuthorizationGenerator() {
         try {
-            final Resource userPropertiesFile = casProperties.getUserPropertiesFile();
+            val userPropertiesFile = casProperties.getUserPropertiesFile();
             if (userPropertiesFile.getFilename().endsWith("json")) {
                 return new JsonResourceAuthorizationGenerator(userPropertiesFile);
             }

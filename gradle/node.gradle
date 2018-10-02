@@ -1,0 +1,46 @@
+apply plugin: "com.moowork.node"
+
+node {
+    version = "${nodeVersion}"
+    nodeModulesDir = project(":webapp-mgmt:cas-management-webapp").projectDir
+    download = true
+}
+
+npm_update {
+    args = ['--production', '--loglevel', 'warn']
+}
+
+if (!Boolean.getBoolean("skipNpmCache")) {
+    npm_install.dependsOn(npm_cache_verify)
+} else {
+    npm_install.enabled = false
+}
+
+if (!Boolean.getBoolean("skipNodeModulesCleanUp")) {
+    clean.delete << new File(project(":webapp-mgmt:cas-management-webapp").projectDir, "node_modules")
+    clean.delete << fileTree(dir: project(":webapp-mgmt").projectDir.getPath() + '/resources/static/js', include: '*-bundle.js')
+} else {
+    logger.info("Skipping node_modules cleanup...")
+}
+
+task buildClientDev(type: NpmTask, dependsOn: "npm_install", group: "bootRun",
+        description: "Compile client side folder for development") {
+    args = ['run', 'buildDev', mgmtUrl]
+    enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildClient(type: NpmTask, dependsOn: "npm_install", group: "build",
+        description: "Compile client side folder for production") {
+    args = ['run', 'build', mgmtUrl]
+    enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildClientWatch(type: NpmTask, dependsOn: "npm_install", group: "application", description: "Build and watches the client side assets for rebuilding") {
+    args = ['run', 'buildWatch', mgmtUrl]
+    enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
+        description: "Runs Angular TypeScript and HtML Linting") {
+    args = ['run', 'lint']
+}

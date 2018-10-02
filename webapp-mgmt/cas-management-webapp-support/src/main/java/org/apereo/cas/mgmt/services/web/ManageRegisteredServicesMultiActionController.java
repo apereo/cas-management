@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.services.web;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -103,7 +104,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @GetMapping("/manage.html")
     public ModelAndView manage() {
         ensureDefaultServiceExists();
-        final Map<String, Object> model = new HashMap<>();
+        val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         model.put("defaultServiceUrl", this.defaultService.getId());
         return new ModelAndView("manage", model);
@@ -114,14 +115,14 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      */
     private void ensureDefaultServiceExists() {
         this.servicesManager.load();
-        final Collection<RegisteredService> c = this.servicesManager.getAllServices();
+        val c = this.servicesManager.getAllServices();
         if (c == null) {
             throw new IllegalStateException("Services cannot be empty");
         }
 
         if (!this.servicesManager.matchesExistingService(this.defaultService)) {
             LOGGER.debug("Default service [{}] does not exist. Creating...", this.defaultService);
-            final RegexRegisteredService svc = new RegexRegisteredService();
+            val svc = new RegexRegisteredService();
             svc.setServiceId('^' + this.defaultService.getId());
             svc.setName("Services Management Web Application");
             svc.setDescription(svc.getName());
@@ -170,9 +171,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<String> deleteRegisteredService(final HttpServletRequest request,
                                                           final HttpServletResponse response,
                                                           @RequestParam("id") final long idAsLong) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
-        final RegisteredService svc = manager.findServiceBy(idAsLong);
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = managerFactory.from(request, casUserProfile);
+        val svc = manager.findServiceBy(idAsLong);
         if (svc == null) {
             return new ResponseEntity<>("Service id " + idAsLong + " cannot be found.", HttpStatus.BAD_REQUEST);
         }
@@ -201,8 +202,8 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @GetMapping(value = "/domainList")
     public ResponseEntity<Collection<String>> getDomains(final HttpServletRequest request,
                                                          final HttpServletResponse response) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = managerFactory.from(request, casUserProfile);
 
         final Collection<String> data;
         if (!casUserProfile.isAdministrator()) {
@@ -226,7 +227,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @GetMapping(value = "/user")
     public ResponseEntity<CasUserProfile> getUser(final HttpServletRequest request,
                                                   final HttpServletResponse response) {
-        final CasUserProfile data = casUserProfileFactory.from(request, response);
+        val data = casUserProfileFactory.from(request, response);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -244,14 +245,14 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                                                                    final HttpServletResponse response,
                                                                    @RequestParam final String domain) throws Exception {
         ensureDefaultServiceExists();
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
+        val casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator()) {
             if (!hasPermission(domain, casUserProfile)) {
                 throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
             }
         }
-        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
-        final List<RegisteredServiceItem> serviceItemsForDomain = manager.getServiceItemsForDomain(domain);
+        val manager = managerFactory.from(request, casUserProfile);
+        val serviceItemsForDomain = manager.getServiceItemsForDomain(domain);
         return new ResponseEntity<>(serviceItemsForDomain, HttpStatus.OK);
     }
 
@@ -269,9 +270,9 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     public ResponseEntity<List<RegisteredServiceItem>> search(final HttpServletRequest request,
                                                               final HttpServletResponse response,
                                                               @RequestParam final String query) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
-        final Pattern pattern = RegexUtils.createPattern("^.*" + query + ".*$");
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = managerFactory.from(request, casUserProfile);
+        val pattern = RegexUtils.createPattern("^.*" + query + ".*$");
         List<RegisteredService> services;
         if (!casUserProfile.isAdministrator()) {
             services = casUserProfile.getPermissions()
@@ -286,7 +287,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
                 || pattern.matcher(service.getName()).lookingAt()
                 || pattern.matcher(service.getDescription() != null ? service.getDescription() : "").lookingAt())
             .collect(Collectors.toList());
-        final List<RegisteredServiceItem> serviceBeans = new ArrayList<>(services.stream()
+        val serviceBeans = new ArrayList<>(services.stream()
             .map(manager::createServiceItem)
             .collect(Collectors.toList()));
         return new ResponseEntity<>(serviceBeans, HttpStatus.OK);
@@ -314,15 +315,15 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
                             @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
-        final CasUserProfile casUserProfile = casUserProfileFactory.from(request, response);
-        final ManagementServicesManager manager = managerFactory.from(request, casUserProfile);
-        final String id = svcs[0].getAssignedId();
-        final RegisteredService svcA = manager.findServiceBy(Long.parseLong(id));
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = managerFactory.from(request, casUserProfile);
+        val id = svcs[0].getAssignedId();
+        val svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {
             throw new IllegalArgumentException("Service " + id + " cannot be found");
         }
-        final String id2 = svcs[1].getAssignedId();
-        final RegisteredService svcB = manager.findServiceBy(Long.parseLong(id2));
+        val id2 = svcs[1].getAssignedId();
+        val svcB = manager.findServiceBy(Long.parseLong(id2));
         if (svcB == null) {
             throw new IllegalArgumentException("Service " + id2 + " cannot be found");
         }
@@ -361,10 +362,10 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
         try {
             final RegisteredService svc;
             if (service.startsWith("{")) {
-                final DefaultRegisteredServiceJsonSerializer serializer = new DefaultRegisteredServiceJsonSerializer();
+                val serializer = new DefaultRegisteredServiceJsonSerializer();
                 svc = serializer.from(service);
             } else {
-                final RegisteredServiceYamlSerializer yamlSerializer = new RegisteredServiceYamlSerializer();
+                val yamlSerializer = new RegisteredServiceYamlSerializer();
                 svc = yamlSerializer.from(service);
             }
             svc.setId(-1);
@@ -382,7 +383,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
      */
     @GetMapping("/appConfig")
     public ResponseEntity<AppConfig> appConfig() {
-        final AppConfig config = new AppConfig();
+        val config = new AppConfig();
         config.setMgmtType(casProperties.getServiceRegistry().getManagementType().toString());
         config.setVersionControl(managementProperties.isEnableVersionControl());
         config.setDelegatedMgmt(managementProperties.isEnableDelegatedMgmt());
@@ -391,7 +392,7 @@ public class ManageRegisteredServicesMultiActionController extends AbstractManag
     }
 
     private static boolean hasPermission(final String domain, final CasUserProfile casUserProfile) {
-        final Set<String> permissions = casUserProfile.getPermissions();
+        val permissions = casUserProfile.getPermissions();
         LOGGER.debug("Current permissions for [{}] matched against domain [{}] are [{}]", casUserProfile, domain, permissions);
         return permissions.contains("*") || permissions.stream().anyMatch(domain::endsWith);
     }

@@ -24,7 +24,7 @@ public final class CasManagementUtils {
      */
     public static String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            return casProperties.getServer().getName().concat(serverProperties.getContextPath()).concat("/manage.html");
+            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("/manage.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }

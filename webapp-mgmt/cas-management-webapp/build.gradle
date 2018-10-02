@@ -1,3 +1,6 @@
+apply from: rootProject.file("gradle/webapp.gradle")
+description = "Apereo CAS Management Web Application"   
+/*
 apply plugin: "war"
 apply plugin: "org.springframework.boot"
 apply plugin: "com.moowork.node"
@@ -102,3 +105,4 @@ dependencies {
 
     providedRuntime libraries.springboottomcat
 }
+*/

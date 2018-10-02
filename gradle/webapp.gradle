@@ -1,0 +1,56 @@
+description = "Apereo CAS Web Application"
+
+apply plugin: "war"
+
+project.ext["mainClassName"] = "org.apereo.cas.mgmt.web.CasManagementWebApplication"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "${project.buildDir}/generated-src/main/resources"
+        }
+    }
+    /**
+     * Make resources become reloadable.
+     * Application’s static resources are loaded from their source location.
+     */
+    bootRun {
+        resources {
+            srcDirs new File("/etc/cas/templates"), new File(project(":webapp-mgmt:cas-management-webapp").getProjectDir(), "resources")
+        }
+    }
+}
+
+apply from: rootProject.file("gradle/springboot.gradle")
+
+dependencies {
+    runtimeOnly project(":webapp-mgmt:cas-management-webapp-configuration")
+    runtimeOnly project(":webapp-mgmt:cas-management-webapp-support")
+
+    providedRuntime libraries.springboottomcat
+}
+
+/**
+ * Share the resources directory outside the content root of the project
+ * for all webapp projects in a dynamic fashion, and do it only when the taskGraph is ready.
+ * 
+ * This allows the IDE, specially Intellij IDEA, to ignore the resources
+ * directory for webapp projects, allowing it to be shared across modules.
+ * While the directory isn't recognizes as a "resources" directory by the IDE,
+ * it is still a valid legitimate resources directory recognized by Gradle.
+ * Note that bootRun also includes the same directory for resources, allowing
+ * for automatic updates to static resources, etc.
+ */
+gradle.taskGraph.whenReady {taskGraph ->
+    def resourcesDir = "${project.projectDir}/../resources"
+    logger.info("Adding resources directory ${resourcesDir} to project ${project.name}")
+    
+    sourceSets {
+        main {
+            resources {
+                srcDir resourcesDir
+            }
+        }
+    }
+    
+}

@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authz;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.HttpAction;
@@ -24,7 +25,7 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
     @Override
     protected boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) throws HttpAction {
         LOGGER.debug("Evaluating profile [{}]", profile);
-        final boolean result = super.isProfileAuthorized(context, profile);
+        val result = super.isProfileAuthorized(context, profile);
         if (!result) {
             LOGGER.warn("Unable to authorize access, since the authenticated profile [{}] does not contain any required roles", profile);
         } else {

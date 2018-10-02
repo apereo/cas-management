@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.GitUtil;
@@ -61,8 +62,8 @@ public class ManagementServicesManager implements ServicesManager {
         this.uncommitted = new HashMap<>();
         git.scanWorkingDiffs().stream().forEach(this::createChange);
         LOGGER.debug("Loading services for domain [{}]", domain);
-        final List<RegisteredService> services = new ArrayList<>(getServicesForDomain(domain));
-        final List<RegisteredServiceItem> items = services.stream()
+        val services = new ArrayList<RegisteredService>(getServicesForDomain(domain));
+        val items = services.stream()
             .map(this::createServiceItem)
             .collect(Collectors.toList());
         return items;
@@ -75,13 +76,13 @@ public class ManagementServicesManager implements ServicesManager {
      * @return - RegisteredServiceItem
      */
     public RegisteredServiceItem createServiceItem(final RegisteredService service) {
-        final RegisteredServiceItem serviceItem = new RegisteredServiceItem();
+        val serviceItem = new RegisteredServiceItem();
         serviceItem.setAssignedId(String.valueOf(service.getId()));
         serviceItem.setEvalOrder(service.getEvaluationOrder());
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        final Long id = service.getId();
+        val id = service.getId();
         if (uncommitted != null && !git.isUndefined() && uncommitted.containsKey(id)) {
             serviceItem.setStatus(uncommitted.get(id));
         }
@@ -91,8 +92,8 @@ public class ManagementServicesManager implements ServicesManager {
 
     private void createChange(final DiffEntry entry) {
         try {
-            final DefaultRegisteredServiceJsonSerializer ser = new DefaultRegisteredServiceJsonSerializer();
-            final RegisteredService svc;
+            val ser = new DefaultRegisteredServiceJsonSerializer();
+            RegisteredService svc;
             if (entry.getChangeType() == DiffEntry.ChangeType.DELETE) {
                 svc = ser.from(git.readObject(entry.getOldId().toObjectId()));
             } else {
@@ -212,7 +213,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @return the string
      */
     public String extractDomain(final String service) {
-        final Matcher extractor = this.domainExtractor.matcher(service.toLowerCase());
+        val extractor = this.domainExtractor.matcher(service.toLowerCase());
         return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
     }
 
@@ -223,8 +224,8 @@ public class ManagementServicesManager implements ServicesManager {
      * @return the string
      */
     public String validateDomain(final String providedDomain) {
-        final String domain = StringUtils.remove(providedDomain, "\\");
-        final Matcher match = domainPattern.matcher(StringUtils.remove(domain, "\\"));
+        val domain = StringUtils.remove(providedDomain, "\\");
+        val match = domainPattern.matcher(StringUtils.remove(domain, "\\"));
         return match.matches() ? domain : "default";
     }
 }

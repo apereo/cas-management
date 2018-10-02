@@ -1,0 +1,26 @@
+test {
+    include "**/*Tests.*"
+    useJUnit {
+    }
+    onlyIf {
+        "SIMPLE".equalsIgnoreCase(rootProject.testCategoryType)
+    }
+}
+
+tasks.withType(Test) {
+    exclude "**/Abstract*.*", "**/Base*.*", "**/*Suite.*"
+    enabled = !Boolean.getBoolean("skipTests")
+    scanForTestClasses = false
+    ignoreFailures = Boolean.getBoolean("ignoreTestFailures")
+    maxParallelForks = 1
+    failFast = true
+    jvmArgs "-Xmx1024m"
+    classpath = it.classpath + files("${projectDir}/src/main/resources") + files("${projectDir}/src/test/resources")
+    testLogging {
+        events = ["FAILED", "STANDARD_OUT"]
+        exceptionFormat = "full"
+        showStandardStreams = Boolean.getBoolean("showStandardStreams")
+        showExceptions = true
+        showCauses = true
+    }
+}

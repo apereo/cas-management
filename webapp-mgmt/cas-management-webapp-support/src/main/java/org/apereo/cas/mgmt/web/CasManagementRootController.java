@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.web;
 
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,10 +22,10 @@ public class CasManagementRootController extends ParameterizableViewController {
     @Override
     protected ModelAndView handleRequestInternal(final HttpServletRequest request,
                                                  final HttpServletResponse response) {
-        final String url = request.getContextPath() + "/manage.html";
+        val url = request.getContextPath() + "/manage.html";
         LOGGER.debug("Initial url is [{}]", url);
         
-        final String encodedUrl = response.encodeURL(url);
+        val encodedUrl = response.encodeURL(url);
         LOGGER.debug("Encoded url is [{}]", encodedUrl);
 
         return new ModelAndView(new RedirectView(encodedUrl));

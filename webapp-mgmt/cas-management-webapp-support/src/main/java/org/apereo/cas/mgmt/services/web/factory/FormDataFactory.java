@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.services.web.factory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -20,6 +21,7 @@ import org.apereo.services.persondir.IPersonAttributeDao;
 import org.springframework.http.HttpStatus;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,7 +53,7 @@ public class FormDataFactory {
      * @return - FormData
      */
     public FormData create() {
-        final FormData formData = new FormData();
+        val formData = new FormData();
         loadServiceTypes(formData);
         loadMfaProviders(formData);
         loadDelegatedClientTypes(formData);
@@ -70,14 +72,14 @@ public class FormDataFactory {
             return;
         }
 
-        final Map<String, Object> params = new HashMap<>();
-        final String url = casProperties.getServer().getPrefix() + "/status/discovery";
+        val params = new HashMap<String, Object>();
+        val url = casProperties.getServer().getPrefix() + "/status/discovery";
         try {
-            final HttpResponse response = HttpUtils.executeGet(url, params);
+            val response = HttpUtils.executeGet(url, params);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
-                    final ObjectMapper mapper = new ObjectMapper();
-                    final CasServerProfileWrapper wrapper = mapper.readValue(response.getEntity().getContent(), CasServerProfileWrapper.class);
+                    val mapper = new ObjectMapper();
+                    val wrapper = mapper.readValue(response.getEntity().getContent(), CasServerProfileWrapper.class);
                     this.profile = Optional.of(wrapper.getProfile());
                     LOGGER.info("FormData is populated with values from {}.", url);
                 } else {
@@ -92,14 +94,14 @@ public class FormDataFactory {
 
     private void loadServiceTypes(final FormData formData) {
         if (profile.isPresent() && !profile.get().getRegisteredServiceTypes().isEmpty()) {
-            final CasServerProfile p = profile.get();
+            val p = profile.get();
 
-            final List<FormData.Option> types = p.getRegisteredServiceTypes().entrySet().stream()
+            val types = p.getRegisteredServiceTypes().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
                 .collect(Collectors.toList());
             formData.setServiceTypes(types);
         } else {
-            final List<FormData.Option> serviceTypes = new ArrayList<>();
+            val serviceTypes = new ArrayList<FormData.Option>();
             serviceTypes.add(new FormData.Option("CAS Client", RegexRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("OAuth2 Client", OAuthRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("SAML2 Service Provider", SamlRegisteredService.class.getTypeName()));
@@ -111,13 +113,13 @@ public class FormDataFactory {
 
     private void loadMfaProviders(final FormData formData) {
         if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypes().isEmpty()) {
-            final CasServerProfile p = profile.get();
-            final List<FormData.Option> mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
+            val p = profile.get();
+            val mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
                 .map(e -> new FormData.Option(e.getValue(), e.getKey()))
                 .collect(Collectors.toList());
             formData.setMfaProviders(mfas);
         } else {
-            final List<FormData.Option> mfaProviders = new ArrayList<>();
+            val mfaProviders = new ArrayList<FormData.Option>();
             mfaProviders.add(new FormData.Option("Duo Security", "mfa-duo"));
             mfaProviders.add(new FormData.Option("Authy Authenticator", "mfa-authy"));
             mfaProviders.add(new FormData.Option("YubiKey", "mfa-yubikey"));
@@ -133,10 +135,10 @@ public class FormDataFactory {
 
     private void loadDelegatedClientTypes(final FormData formData) {
         if (profile.isPresent() && !profile.get().getDelegatedClientTypes().isEmpty()) {
-            final CasServerProfile p = profile.get();
+            val p = profile.get();
             formData.setDelegatedAuthnProviders(p.getDelegatedClientTypes());
         } else {
-            final Set<String> delegatedAuthnProviders = new HashSet<>();
+            val delegatedAuthnProviders = new HashSet<String>();
             delegatedAuthnProviders.add("Twitter");
             delegatedAuthnProviders.add("Paypal");
             delegatedAuthnProviders.add("Wordpress");
@@ -154,7 +156,7 @@ public class FormDataFactory {
 
     private void loadAvailableAttributes(final FormData formData) {
         if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
-            final CasServerProfile p = profile.get();
+            val p = profile.get();
             formData.setAvailableAttributes(p.getAvailableAttributes());
         } else {
             formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames());

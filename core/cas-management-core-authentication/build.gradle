@@ -1,0 +1,9 @@
+description "mgmt authentication"
+
+dependencies {
+    implementation libraries.pac4j
+    implementation libraries.casServer
+    
+    implementation project(":core:cas-management-core-configuration")
+    implementation project(":core:cas-management-core-util")
+}

@@ -1,0 +1,9 @@
+description "mgmt authz"
+
+dependencies {
+    implementation libraries.pac4j
+    implementation libraries.casServer
+   
+    implementation project(":core:cas-management-core-authz")
+    implementation project(":core:cas-management-core-configuration")
+}

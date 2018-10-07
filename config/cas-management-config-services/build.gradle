@@ -1,0 +1,15 @@
+description "mgmt services"
+
+dependencies {
+    implementation libraries.springcloudconfigclient
+    implementation libraries.casServer
+    implementation libraries.git
+  
+    implementation project(":core:cas-management-core-services")
+    implementation project(":core:cas-management-core-util")
+    implementation project(":core:cas-management-core-authentication")
+    implementation project(":core:cas-management-core-configuration")
+    
+    testImplementation project(":core:cas-management-core-audit")
+    testImplementation project(":core:cas-management-core-authz")
+}

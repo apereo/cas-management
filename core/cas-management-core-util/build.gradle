@@ -1,0 +1,7 @@
+description "mgmt util"
+
+dependencies {
+    implementation libraries.casServer
+    
+    implementation project(":core:cas-management-core-configuration")
+}

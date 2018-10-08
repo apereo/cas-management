@@ -14,7 +14,7 @@ import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.factory.ManagerFactory;
-import org.apereo.cas.mgmt.services.RegisteredServiceSimpleFormController;
+import org.apereo.cas.mgmt.controller.RegisteredServiceSimpleFormController;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -97,7 +97,7 @@ public class RegisteredServiceSimpleFormControllerTests {
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
         final ManagerFactory managerFactory = new ManagerFactory(servicesManager);
-        this.controller = new RegisteredServiceSimpleFormController(servicesManager, managerFactory, casUserProfileFactory); //repositoryFactory);
+        this.controller = new RegisteredServiceSimpleFormController(managerFactory, casUserProfileFactory);
     }
 
     @After

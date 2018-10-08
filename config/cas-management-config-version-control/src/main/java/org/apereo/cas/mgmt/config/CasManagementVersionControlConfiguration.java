@@ -11,12 +11,12 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration("casManagementCoreServicesConfiguration")
+@Configuration("casManagementVersionControlConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @Slf4j
 public class CasManagementVersionControlConfiguration {
@@ -31,16 +31,18 @@ public class CasManagementVersionControlConfiguration {
     private CasUserProfileFactory casUserProfileFactory;
 
     @Autowired
-    private ManagerFactory managerFactory;
-
-    @Autowired
     private ServicesManager servicesManager;
 
     @Autowired
     @Qualifier("communicationsManager")
     private CommunicationsManager communicationsManager;
 
-    @RefreshScope
+
+    @Bean
+    public ManagerFactory managerFactory() {
+        return new ManagerFactory(servicesManager, managementProperties, repositoryFactory(), casUserProfileFactory, casProperties);
+    }
+
     @Bean
     public RepositoryFactory repositoryFactory() {
         return new RepositoryFactory(managementProperties, casUserProfileFactory);
@@ -48,7 +50,7 @@ public class CasManagementVersionControlConfiguration {
 
     @Bean
     public ServiceRepositoryController serviceRepositoryController() {
-        return new ServiceRepositoryController(repositoryFactory(), managerFactory, casUserProfileFactory,
+        return new ServiceRepositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
                 managementProperties, servicesManager, communicationsManager);
     }
 }

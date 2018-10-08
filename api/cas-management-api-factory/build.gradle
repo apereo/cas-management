@@ -1,0 +1,7 @@
+description "CAS Management factory"
+
+dependencies {
+    implementation libraries.casServer
+    
+    implementation project(":core:cas-management-core-authentication")
+}

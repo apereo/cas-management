@@ -35,7 +35,6 @@ public class CasManagementAuthorizationConfiguration {
 
     @ConditionalOnMissingBean(name = "authorizationGenerator")
     @Bean
-    @RefreshScope
     public AuthorizationGenerator authorizationGenerator() {
         val authzAttributes = casProperties.getAuthzAttributes();
         if (!authzAttributes.isEmpty()) {
@@ -48,7 +47,6 @@ public class CasManagementAuthorizationConfiguration {
         return springSecurityPropertiesAuthorizationGenerator();
     }
 
-    @RefreshScope
     @Bean
     @ConditionalOnMissingBean(name = "staticAdminRolesAuthorizationGenerator")
     public AuthorizationGenerator staticAdminRolesAuthorizationGenerator() {
@@ -61,7 +59,6 @@ public class CasManagementAuthorizationConfiguration {
 
     @ConditionalOnMissingBean(name = "managementWebappAuthorizer")
     @Bean
-    @RefreshScope
     public Authorizer managementWebappAuthorizer() {
         val roles = new ArrayList<String>();
         roles.addAll(casProperties.getAdminRoles());
@@ -69,7 +66,6 @@ public class CasManagementAuthorizationConfiguration {
         return new CasRoleBasedAuthorizer(roles);
     }
 
-    @RefreshScope
     @Bean
     @ConditionalOnMissingBean(name = "springSecurityPropertiesAuthorizationGenerator")
     public AuthorizationGenerator springSecurityPropertiesAuthorizationGenerator() {

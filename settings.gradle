@@ -1,11 +1,14 @@
 rootProject.name = "cas-management"
 
+include "api:cas-management-api-factory"
+
 include ":config:cas-management-config-audit"
 include ":config:cas-management-config-authentication"
 include ":config:cas-management-config-authz"
 include ":config:cas-management-config-authz-ldap"
 include ":config:cas-management-config-services"
 include ":config:cas-management-config-version-control"
+include ":config:cas-management-config-factory"
 
 include ":core:cas-management-core-authentication"
 include ":core:cas-management-core-authz"
@@ -15,6 +18,9 @@ include ":core:cas-management-core-configuration"
 include ":core:cas-management-core-version-control"
 include ":core:cas-management-core-services"
 include ":core:cas-management-core-util"
+
+include "docs:cas-server-documentation"
+include "docs:cas-server-documentation-swagger"
 
 include ":webapp:cas-management-webapp"
 include ":webapp:cas-management-webapp-config"

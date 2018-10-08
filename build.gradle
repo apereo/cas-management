@@ -64,7 +64,6 @@ buildscript {
         classpath "org.owasp:dependency-check-gradle:$gradleDependencyCheckVersion"
         classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:$gradleSpotbugsVersion"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$gradleSonarqubeVersion"
-
     }
 }
 
@@ -116,11 +115,7 @@ allprojects {
         gradleLint.rules = ["dependency-parentheses", "dependency-tuple"]
     }
 
-    if (project.name == "cas-server-support-bom") {
-        logger.info "Skipping pom generation for [$project.name], letting it create <dependency-management> entries on its own."
-    } else {
-        apply from: rootProject.file("gradle/maven.gradle")
-    }
+    apply from: rootProject.file("gradle/maven.gradle")
 
     jacoco {
         toolVersion = "$gradleJacocoVersion"
@@ -162,6 +157,7 @@ allprojects {
         options.addBooleanOption('html5', true)
         failOnError = Boolean.getBoolean("ignoreJavadocFailures")
     }
+    
 }
 
 
@@ -193,6 +189,7 @@ subprojects {
 
     apply from: rootProject.file("gradle/tasks.gradle")
     apply from: rootProject.file("gradle/tests.gradle")
+    
     
     dependencyManagement {
         imports {
@@ -229,15 +226,6 @@ subprojects {
             cacheDynamicVersionsFor 1, "days"
             cacheChangingModulesFor 5, "days"
 
-            /**
-             * Required for all JRadius modules
-             
-            eachDependency { DependencyResolveDetails details ->
-                if (details.requested.group == "gnu-getopt") {
-                    details.useTarget group: "gnu.getopt", name: "java-getopt", version: details.requested.version
-                }
-            }
-             */
         }
         exclude(group: "ch.qos.logback", module: "logback-core")
         exclude(group: "ch.qos.logback", module: "logback-classic")

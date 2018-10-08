@@ -20,7 +20,6 @@ import org.apereo.inspektr.common.web.ClientInfoThreadLocalFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -77,7 +76,6 @@ public class CasManagementAuditConfiguration {
     }
 
     @Bean
-    @RefreshScope
     public AuditTrailManager auditTrailManager() {
         return new Slf4jLoggingAuditTrailManager();
     }

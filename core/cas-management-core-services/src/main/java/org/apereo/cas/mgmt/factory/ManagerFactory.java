@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.factory;
 
 import org.apereo.cas.mgmt.ManagementServicesManager;
+import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.services.ServicesManager;
 
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class ManagerFactory {
+public class ManagerFactory implements MgmtManagerFactory {
 
     private final ServicesManager servicesManager;
 

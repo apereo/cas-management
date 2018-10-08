@@ -44,3 +44,5 @@ task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
         description: "Runs Angular TypeScript and HtML Linting") {
     args = ['run', 'lint']
 }
+
+

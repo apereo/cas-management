@@ -1,8 +1,8 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.beans.Commit;
-import org.apereo.cas.mgmt.beans.History;
+import org.apereo.cas.mgmt.domains.Commit;
+import org.apereo.cas.mgmt.domains.History;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;

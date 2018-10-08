@@ -1,6 +1,8 @@
 description "mgmt services"
 
 dependencies {
+    api project(":api:cas-management-api-factory")
+    
     implementation libraries.springcloudconfigclient
     implementation libraries.casServer
     implementation libraries.git

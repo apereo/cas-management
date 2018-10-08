@@ -12,12 +12,12 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.beans.RegisteredServiceItem;
+import org.apereo.cas.mgmt.domains.RegisteredServiceItem;
 import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.factory.ManagerFactory;
-import org.apereo.cas.mgmt.services.ManageRegisteredServicesMultiActionController;
+import org.apereo.cas.mgmt.controller.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -109,9 +109,8 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
         final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager);
-        this.controller = new ManageRegisteredServicesMultiActionController(this.servicesManager,
-                null, webApplicationServiceFactory, "https://.*",
-            managementProperties, casUserProfileFactory, managerFactory, casProperties);
+        this.controller = new ManageRegisteredServicesMultiActionController(null, casUserProfileFactory,
+             managerFactory, managementProperties, casProperties);
     }
 
     @After

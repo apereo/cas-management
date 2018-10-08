@@ -63,7 +63,6 @@ public class CasManagementAuthenticationConfiguration {
 
     @ConditionalOnMissingBean(name = "authenticationClients")
     @Bean
-    @RefreshScope
     public List<Client> authenticationClients() {
         val clients = new ArrayList<Client>();
 
@@ -100,7 +99,6 @@ public class CasManagementAuthenticationConfiguration {
 
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
     @Bean
-    @RefreshScope
     public Config casManagementSecurityConfiguration() {
         val cfg = new Config(CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients());
         cfg.setAuthorizer(this.managementWebappAuthorizer);
@@ -109,7 +107,6 @@ public class CasManagementAuthenticationConfiguration {
 
     @ConditionalOnMissingBean(name = "casUserProfileFactory")
     @Bean
-    @RefreshScope
     public CasUserProfileFactory casUserProfileFactory() {
         return new CasUserProfileFactory(managementProperties);
     }

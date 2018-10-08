@@ -2,10 +2,9 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.authentication.principal.Service;
 //import org.apereo.cas.mgmt.GitUtil;
-import org.apereo.cas.mgmt.beans.RegisteredServiceItem;
+import org.apereo.cas.mgmt.domains.RegisteredServiceItem;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.RegexUtils;
 
@@ -13,14 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jgit.diff.DiffEntry;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;

@@ -1,0 +1,10 @@
+description "CAS Management Core Congig"
+
+dependencies {
+    implementation project(":core:cas-management-core-configuration")
+    implementation project(":config:cas-management-config-audit")
+    implementation project(":config:cas-management-config-authentication")
+    implementation project(":config:cas-management-config-authz")
+    implementation project(":config:cas-management-config-factory")
+    implementation project(":config:cas-management-config-services")
+}

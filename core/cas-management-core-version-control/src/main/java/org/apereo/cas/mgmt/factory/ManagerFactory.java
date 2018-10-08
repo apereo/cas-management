@@ -8,6 +8,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
+import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.DefaultServicesManager;
@@ -33,7 +34,7 @@ import java.util.HashMap;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class ManagerFactory {
+public class ManagerFactory implements MgmtManagerFactory<ManagementServicesManager> {
 
     private final ServicesManager servicesManager;
     private final CasManagementConfigurationProperties managementProperties;

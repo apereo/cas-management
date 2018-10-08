@@ -1,26 +1,35 @@
 package org.apereo.cas.mgmt.config;
 
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.controller.DomainController;
+import org.apereo.cas.mgmt.controller.ManagementAppDataController;
+import org.apereo.cas.mgmt.controller.ServiceController;
+import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.mgmt.factory.ManagerFactory;
-import org.apereo.cas.mgmt.controller.ManageRegisteredServicesMultiActionController;
-import org.apereo.cas.mgmt.controller.RegisteredServiceSimpleFormController;
-import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.ServicesManager;
+
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for core services.
+ *
+ * @author Travis Schmidt
+ * @since 6.0
+ */
 @Configuration("casManagementCoreServicesConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @Slf4j
@@ -55,14 +64,20 @@ public class CasManagementCoreServicesConfiguration {
     private FormDataFactory formDataFactory;
 
     @Bean
-    public ManageRegisteredServicesMultiActionController manageRegisteredServicesMultiActionController() {
-        return new ManageRegisteredServicesMultiActionController(formDataFactory,casUserProfileFactory,managerFactory,
+    public ManagementAppDataController manageRegisteredServicesMultiActionController() {
+        return new ManagementAppDataController(formDataFactory, casUserProfileFactory, managerFactory,
                 managementProperties, casProperties);
     }
 
     @Bean
-    public RegisteredServiceSimpleFormController registeredServiceSimpleFormController() {
-        return new RegisteredServiceSimpleFormController(managerFactory, casUserProfileFactory);
+    public ServiceController serviceController() {
+        return new ServiceController(casUserProfileFactory, managerFactory);
+    }
+
+    @Bean
+    public DomainController domainController() {
+        return new DomainController(formDataFactory, casUserProfileFactory, managerFactory, managementProperties,
+                casProperties);
     }
 
     @Bean

@@ -7,10 +7,12 @@ import {Service} from '../service';
 @Injectable()
 export class ImportService extends Service {
 
+  controller = 'services/';
+
   service: AbstractRegisteredService;
 
   import(file: String): Observable<AbstractRegisteredService> {
-    return this.http.post<AbstractRegisteredService>('import', file)
+    return this.http.post<AbstractRegisteredService>(this.controller + 'import', file)
       .pipe(
         tap(resp => this.service = resp),
         catchError((e) => this.handleError(e, this.dialog))

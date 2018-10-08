@@ -1,5 +1,6 @@
 package org.apereo.cas.services.web;
 
+import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apereo.cas.config.CasCoreServicesConfiguration;
 import org.apereo.cas.config.CasCoreUtilConfiguration;
@@ -8,13 +9,15 @@ import org.apereo.cas.config.JsonServiceRegistryConfiguration;
 import org.apereo.cas.config.support.CasWebApplicationServiceFactoryConfiguration;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mgmt.NoOpVersionControl;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
+import org.apereo.cas.mgmt.controller.ServiceController;
+import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.mgmt.factory.ManagerFactory;
-import org.apereo.cas.mgmt.controller.RegisteredServiceSimpleFormController;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -42,7 +45,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test cases for {@link RegisteredServiceSimpleFormController}.
+ * Test cases for {@link ServiceController}.
  *
  * @author Scott Battaglia
  * @author Misagh Moayyed
@@ -68,7 +71,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private RegisteredServiceSimpleFormController controller;
+    private ServiceController controller;
 
     private ServicesManager servicesManager;
 
@@ -97,7 +100,7 @@ public class RegisteredServiceSimpleFormControllerTests {
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
         final ManagerFactory managerFactory = new ManagerFactory(servicesManager);
-        this.controller = new RegisteredServiceSimpleFormController(managerFactory, casUserProfileFactory);
+        this.controller = new ServiceController(casUserProfileFactory, managerFactory);
     }
 
     @After
@@ -109,7 +112,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     public void verifyGetService() throws Exception {
         final RegisteredService service = this.controller.getServiceById(new MockHttpServletRequest(),
                                                                          new MockHttpServletResponse(),
-                                                                         2L).getBody();
+                                                                         2L);
         assertNotNull(service);
         assertEquals(2L, service.getId());
     }
@@ -118,7 +121,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     public void verifyGetYaml() throws Exception {
         final String yaml = this.controller.getYaml(new MockHttpServletRequest(),
                                                     new MockHttpServletResponse(),
-                                                   2L).getBody();
+                                                   2L);
         assertNotNull(yaml);
         assertTrue(yaml.contains("id: 2"));
     }
@@ -127,7 +130,7 @@ public class RegisteredServiceSimpleFormControllerTests {
     public void verifyGetJson() throws Exception {
         final String json = this.controller.getYaml(new MockHttpServletRequest(),
                                                     new MockHttpServletResponse(),
-                                                    2L).getBody();
+                                                    2L);
         assertNotNull(json);
         assertTrue(json.contains("id: 2"));
     }
@@ -146,11 +149,10 @@ public class RegisteredServiceSimpleFormControllerTests {
         final MockHttpServletResponse response = new MockHttpServletResponse();
         RegexRegisteredService service = (RegexRegisteredService) this.controller.getServiceById(request,
                                                                                                 response,
-                                                                                               2L).getBody();
+                                                                                               2L);
         service.setTheme("myTheme");
-        final String resp = this.controller.saveService(request, response, service).getBody();
-        assertEquals("2", resp);
-        service = (RegexRegisteredService) this.controller.getServiceById(request, response, 2L).getBody();
+        this.controller.saveService(request, response, service);
+        service = (RegexRegisteredService) this.controller.getServiceById(request, response, 2L);
         assertEquals("myTheme", service.getTheme());
     }
 
@@ -162,14 +164,6 @@ public class RegisteredServiceSimpleFormControllerTests {
         svc.setServiceId("^https://mytest.domain.com/.*");
         svc.setDescription("Test domain service");
         svc.setName("MyTest");
-        final ResponseEntity<String> resp = this.controller.saveService(request,
-                                                                        response,
-                                                                        svc);
-        assertEquals(HttpStatus.OK, resp.getStatusCode());
-        final long id = Long.valueOf(resp.getBody());
-        final RegisteredService service = this.controller.getServiceById(request,
-                                                                         response,
-                                                                         id).getBody();
-        assertEquals("MyTest", service.getName());
+        this.controller.saveService(request, response, svc);
     }
 }

@@ -8,8 +8,10 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class DomainService extends Service {
 
+  controller = 'domains';
+
   getDomains(): Observable<String[]> {
-    return this.get<String[]>('domainList');
+    return this.get<String[]>(this.controller);
   }
 
  }

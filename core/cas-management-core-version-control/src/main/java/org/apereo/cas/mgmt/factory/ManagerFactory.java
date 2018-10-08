@@ -1,14 +1,12 @@
 package org.apereo.cas.mgmt.factory;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
+import org.apereo.cas.mgmt.VersionControlImpl;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.DefaultServicesManager;
@@ -18,11 +16,19 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+
+import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.diff.DiffEntry;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
@@ -42,7 +48,32 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
     private final CasUserProfileFactory casUserProfileFactory;
     private final CasConfigurationProperties casProperties;
 
-    private HashMap<Integer, String> uncommitted = new HashMap<>();
+    private HashMap<Long, String> uncommitted = new HashMap<>();
+
+    /**
+     * Init repository.
+     */
+    @PostConstruct
+    public void initRepository() {
+        val servicesRepo = Paths.get(managementProperties.getServicesRepo());
+        if (!Files.exists(servicesRepo)) {
+            try {
+                Git.init().setDirectory(servicesRepo.toFile()).call();
+            } catch (final Exception e) {
+                return;
+            }
+            try (GitUtil git = repositoryFactory.masterRepository()) {
+                val manager = new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
+                manager.loadFrom(servicesManager);
+                git.addWorkingChanges();
+                git.commit("Initial commit");
+                git.setPublished();
+            } catch (final Exception e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+    }
+
     /**
      * Method will look up the CasUserProfile for the logged in user and the return the GitServicesManager for
      * that user.
@@ -65,11 +96,6 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
      * @throws Exception the exception
      */
     public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
-        if (!managementProperties.isEnableVersionControl()) {
-            val git = new GitUtil();
-            LOGGER.info("Version control & change management is disabled in CAS configuration");
-            return new ManagementServicesManager(servicesManager);
-        }
         return getManagementServicesManager(request, user);
     }
 
@@ -81,7 +107,8 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
      * @throws Exception - failed
      */
     public ManagementServicesManager from(final GitUtil git) throws Exception {
-        return new ManagementServicesManager(createJSONServiceManager(git));
+        val versionControl = new VersionControlImpl(git);
+        return new ManagementServicesManager(createJSONServiceManager(git), versionControl);
     }
 
 
@@ -90,7 +117,7 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
         var manager = (ManagementServicesManager) session.getAttribute("servicesManager");
         if (manager != null) {
             if (!user.isAdministrator()) {
-                //manager.getGit().rebase();
+                manager.getVersionControl().rebase();
             }
             manager.load();
         } else {
@@ -101,7 +128,7 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
             } else {
                 git = repositoryFactory.masterRepository();
             }
-            manager = new ManagementServicesManager(createJSONServiceManager(git));
+            manager = new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
         }
         session.setAttribute("servicesManager", manager);
         return manager;
@@ -115,7 +142,7 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
      */
     public ManagementServicesManager master() throws Exception {
         val git = repositoryFactory.masterRepository();
-        return new ManagementServicesManager(createJSONServiceManager(git));
+        return new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
     }
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {
@@ -133,8 +160,7 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
         return manager;
     }
 
-    /*
-    private void createChange(final DiffEntry entry) {
+    private void createChange(final DiffEntry entry, final GitUtil git) {
         try {
             val ser = new DefaultRegisteredServiceJsonSerializer();
             var svc = (RegisteredService) null;
@@ -154,6 +180,5 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
             LOGGER.error(e.getMessage(), e);
         }
     }
-    */
 
 }

@@ -9,27 +9,29 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class ServiceViewService extends Service {
 
+  controller = 'services';
+
   getServices(domain: String): Observable<ServiceItem[]> {
-    return this.get<ServiceItem[]>('getServices?domain=' + domain);
+    return this.get<ServiceItem[]>(this.controller + '/domain/' + domain);
   }
 
   getYaml(id: number): Observable<String> {
-    return this.getText('getYaml?id=' + id);
+    return this.getText(this.controller + '/yaml/' + id);
   }
 
   getJson(id: number): Observable<String> {
-    return this.getText('getJson?id=' + id);
+    return this.getText(this.controller + '/json/' + id);
   }
 
-  delete(id: number): Observable<String> {
-    return this.getText('deleteRegisteredService?id=' + id);
+  deleteService(id: number): Observable<void> {
+    return this.delete(this.controller + '/' + id);
   }
 
   revert(fileName: string): Observable<String> {
-    return this.getText('revert?path=' + fileName);
+    return this.getText('versionControl/revert?path=' + fileName);
   }
 
   updateOrder(a: ServiceItem, b: ServiceItem): Observable<String> {
-    return this.postText('updateOrder', [a, b]);
+    return this.postText(this.controller + '/updateOrder', [a, b]);
   }
 }

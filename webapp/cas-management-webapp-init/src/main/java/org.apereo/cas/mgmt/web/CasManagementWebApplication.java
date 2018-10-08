@@ -1,13 +1,14 @@
 package org.apereo.cas.mgmt.web;
 
-import lombok.val;
 import org.apereo.cas.config.CasDiscoveryProfileConfiguration;
 import org.apereo.cas.config.CasPersonDirectoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.CasManagementEmbeddedContainerUtils;
 
 import lombok.NoArgsConstructor;
-import org.apereo.cas.mgmt.CasManagementEmbeddedContainerUtils;
+import lombok.val;
+
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;

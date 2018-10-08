@@ -17,7 +17,7 @@ import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.factory.ManagerFactory;
-import org.apereo.cas.mgmt.controller.ManageRegisteredServicesMultiActionController;
+import org.apereo.cas.mgmt.controller.ManagementAppDataController;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -72,7 +72,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private ManageRegisteredServicesMultiActionController controller;
+    private ManagementAppDataController controller;
 
     private ServicesManager servicesManager;
 
@@ -109,7 +109,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
         final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager);
-        this.controller = new ManageRegisteredServicesMultiActionController(null, casUserProfileFactory,
+        this.controller = new ManagementAppDataController(null, casUserProfileFactory,
              managerFactory, managementProperties, casProperties);
     }
 
@@ -120,82 +120,8 @@ public class ManageRegisteredServicesMultiActionControllerTests {
 
     @Test
     public void verifyGetUser() throws Exception {
-        final ResponseEntity<CasUserProfile> user = this.controller.getUser(new MockHttpServletRequest(),
+        final CasUserProfile user = this.controller.getUser(new MockHttpServletRequest(),
                                                                             new MockHttpServletResponse());
-        assertTrue(user.getBody().isAdministrator());
-    }
-
-    @Test
-    public void verifyDomainList() throws Exception {
-        final Collection<String> domains = this.controller.getDomains(new MockHttpServletRequest(),
-                                                                      new MockHttpServletResponse()).getBody();
-        assertFalse(domains.isEmpty());
-        assertTrue(domains.contains("default"));
-    }
-
-    @Test
-    public void verifyGetServices() throws Exception {
-        final List<RegisteredServiceItem> services = this.controller.getServices(new MockHttpServletRequest(),
-                                                                                 new MockHttpServletResponse(),
-                                                                                "default").getBody();
-        assertFalse(services.isEmpty());
-        assertEquals(2, services.size());
-    }
-
-    @Test
-    public void verifySearch() throws Exception {
-        final List<RegisteredServiceItem> services = this.controller.search(new MockHttpServletRequest(),
-                                                                            new MockHttpServletResponse(),
-                                                                            "apereo").getBody();
-        assertFalse(services.isEmpty());
-        assertEquals(1, services.size());
-    }
-
-    @Test
-    public void verifyUpdateOrder() throws Exception {
-        List<RegisteredServiceItem> services = this.controller.getServices(new MockHttpServletRequest(),
-                                                                                 new MockHttpServletResponse(),
-                                                                                 "default").getBody();
-        services.get(0).setEvalOrder(1);
-        services.get(1).setEvalOrder(0);
-        final String name0 = services.get(0).getName();
-        final String name1 = services.get(1).getName();
-        final RegisteredServiceItem[] svcs = new RegisteredServiceItem[2];
-        svcs[0] = services.get(0);
-        svcs[1] = services.get(1);
-        this.controller.updateOrder(new MockHttpServletRequest(), new MockHttpServletResponse(), svcs);
-        services = this.controller.getServices(new MockHttpServletRequest(),
-                                               new MockHttpServletResponse(),
-                                               "default").getBody();
-        assertTrue(services.get(0).getName().equals(name1));
-        assertTrue(services.get(1).getName().equals(name0));
-    }
-
-
-    @Test
-    public void verifyDeleteService() throws Exception {
-        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
-                                                                                    new MockHttpServletResponse(),
-                                                                                   2L);
-        assertEquals(HttpStatus.OK, resp.getStatusCode());
-        assertTrue(resp.getBody().contains("Apereo"));
-    }
-
-    @Test
-    public void verifyCantDelteDefault() throws Exception {
-        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
-                                                                                    new MockHttpServletResponse(),
-                                                                                   1L);
-        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        assertTrue(resp.getBody().startsWith("The default service"));
-    }
-
-    @Test
-    public void verifyDeleteNonExistentService() throws Exception {
-        final ResponseEntity<String> resp = this.controller.deleteRegisteredService(new MockHttpServletRequest(),
-                                                                                    new MockHttpServletResponse(),
-                                                                                   3L);
-        assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
-        assertTrue(resp.getBody().startsWith("Service id"));
+        assertTrue(user.isAdministrator());
     }
 }

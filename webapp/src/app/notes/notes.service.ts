@@ -9,12 +9,14 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class NotesService extends Service {
 
+  controller = 'versionControl/';
+
   getNotes(id: String): Observable<String> {
-    return this.getText('notes?id=' + id);
+    return this.getText(this.controller + 'notes?id=' + id);
   }
 
   addNote(id: String, text: String): Observable<String> {
-    return this.postText('addNote', new Note(id, text));
+    return this.postText(this.controller + 'addNote', new Note(id, text));
   }
 
 }

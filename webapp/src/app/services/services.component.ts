@@ -108,8 +108,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   };
 
   delete() {
-    this.service.delete(Number.parseInt(this.deleteItem.assignedId as string))
-      .subscribe(resp => this.handleDelete(resp),
+    this.service.delete(this.deleteItem.assignedId as string)
+      .subscribe(resp => this.handleDelete(this.deleteItem.name),
        (e: any) => this.snackBar
          .open(e.message || e.text(),
            'Dismiss',

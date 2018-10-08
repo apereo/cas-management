@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.factory;
 
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
+import org.apereo.cas.mgmt.NoOpVersionControl;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.services.ServicesManager;
 
@@ -33,7 +34,7 @@ public class ManagerFactory implements MgmtManagerFactory {
      * @throws Exception - failed
      */
     public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        return new ManagementServicesManager(servicesManager);
+        return new ManagementServicesManager(servicesManager, new NoOpVersionControl());
     }
 
     /**
@@ -45,7 +46,7 @@ public class ManagerFactory implements MgmtManagerFactory {
      * @throws Exception the exception
      */
     public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
-        return new ManagementServicesManager(servicesManager);
+        return new ManagementServicesManager(servicesManager, new NoOpVersionControl());
     }
 
 }

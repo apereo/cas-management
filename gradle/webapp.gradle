@@ -28,7 +28,7 @@ dependencies {
     implementation libraries.casServer 
     implementation libraries.classmate
   
-    implementation project(":config:cas-management-config-version-control")
+    //implementation project(":config:cas-management-config-version-control")
     apply from: rootProject.file("config/core-config.gradle")
     
     implementation project(":webapp:cas-management-webapp-config")

@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 public class ManagementServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
+    private final VersionControl versionControl;
 
     private final Pattern domainExtractor = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
     private final Pattern domainPattern = RegexUtils.createPattern("^[a-z0-9-.]*$");
@@ -57,7 +58,9 @@ public class ManagementServicesManager implements ServicesManager {
         val services = new ArrayList<RegisteredService>(getServicesForDomain(domain));
         val items = services.stream()
             .map(this::createServiceItem)
+            .peek(versionControl::attachStatus)
             .collect(Collectors.toList());
+
         return items;
     }
 
@@ -198,5 +201,14 @@ public class ManagementServicesManager implements ServicesManager {
         val domain = StringUtils.remove(providedDomain, "\\");
         val match = domainPattern.matcher(StringUtils.remove(domain, "\\"));
         return match.matches() ? domain : "default";
+    }
+
+    /**
+     * Returns the versionControl.
+     *
+     * @return - VersionControl
+     */
+    public VersionControl getVersionControl() {
+        return versionControl;
     }
 }

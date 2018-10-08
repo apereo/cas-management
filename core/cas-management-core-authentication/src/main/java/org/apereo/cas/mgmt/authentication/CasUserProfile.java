@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authentication;
 
 import lombok.Getter;
+import lombok.val;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
@@ -64,5 +65,17 @@ public class CasUserProfile extends CommonProfile {
             .map(e -> e.getValue().toString())
             .findFirst()
             .orElse(null);
+    }
+
+    /**
+     * Checks a user's permissions if they have access to the passed domain.
+     *
+     * @param domain - the domain
+     * @return - true if user has permission
+     */
+    public boolean hasPermission(final String domain) {
+        val permissions = getPermissions();
+        return permissions.contains("*") || permissions.stream().anyMatch(domain::endsWith);
+
     }
 }

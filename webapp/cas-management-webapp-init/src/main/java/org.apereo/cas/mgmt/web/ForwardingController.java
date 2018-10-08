@@ -20,8 +20,8 @@ public class ForwardingController {
      * @return - String manage.html
      */
     @RequestMapping({
-        "services",
-        "services/{id:.*}",
+        //"services",
+        //"services/{id:.*}",
         "form/{id:.*}",
         "domains",
         "duplicate/{id:.*}",

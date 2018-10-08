@@ -30,12 +30,13 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +61,8 @@ import static java.util.stream.Collectors.toList;
  * @author Travis Schmidt
  * @since 5.2
  */
-@Controller("publish")
+@RestController("versionControlController")
+@RequestMapping(path = "versionControl", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @RequiredArgsConstructor
 public class ServiceRepositoryController {
@@ -82,12 +84,12 @@ public class ServiceRepositoryController {
      * @param response - HttpServletResponse.
      * @param request  - HttpServletRequest.
      * @param msg      - Commit msg entered by the user.
-     * @return - ResponseEntity
      * @throws Exception - failed.
      */
-    @GetMapping(value = "/commit")
-    public ResponseEntity<String> commit(final HttpServletResponse response, final HttpServletRequest request,
-                                         @RequestParam final String msg) throws Exception {
+    @PostMapping(value = "commit")
+    @ResponseStatus(HttpStatus.OK)
+    public void commit(final HttpServletResponse response, final HttpServletRequest request,
+                       @RequestBody final String msg) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
@@ -96,7 +98,6 @@ public class ServiceRepositoryController {
             git.addWorkingChanges();
             git.commit(user, msg);
         }
-        return new ResponseEntity<String>("Changes committed", HttpStatus.OK);
     }
 
     /**
@@ -104,11 +105,11 @@ public class ServiceRepositoryController {
      *
      * @param response - HttpServletResponse.
      * @param request  - HttpServletRequest.
-     * @return ResponseEntity
      * @throws Exception - failed
      */
     @GetMapping(value = "/publish")
-    public ResponseEntity<String> publish(final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+    @ResponseStatus(HttpStatus.OK)
+    public void publish(final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
@@ -146,33 +147,29 @@ public class ServiceRepositoryController {
                 }
             });
             if (this.publishError) {
-                return new ResponseEntity<>("Services were not published because of a failure.  Please review logs and try again",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new Exception("Services were not published because of a failure.  Please review logs and try again");
             }
             git.setPublished();
         }
         runSyncScript();
-        return new ResponseEntity<>("Services published", HttpStatus.OK);
     }
 
     /**
      * Method to run sync script outside of publish.
      *
      * @param request  - the request
-     * @param response - ther resposne
-     * @return - status
+     * @param response - their resposne
      * @throws Exception - failed
      */
     @GetMapping("sync")
-    public ResponseEntity<String> sync(final HttpServletRequest request,
+    @ResponseStatus(HttpStatus.OK)
+    public void sync(final HttpServletRequest request,
                                        final HttpServletResponse response) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
-        if (casUserProfile.isAdministrator()) {
-            runSyncScript();
-            return new ResponseEntity<>("Services Synced", HttpStatus.OK);
+        if (!casUserProfile.isAdministrator()) {
+            throw new Exception("You are not authorized for this operation");
         }
-        throw new Exception("You are not authorized for this operation");
-
+        runSyncScript();
     }
 
     /**
@@ -194,12 +191,12 @@ public class ServiceRepositoryController {
      *
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @return ResponseEntity
+     * @return - List of Commit
      * @throws Exception - failed.
      */
-    @GetMapping(value = "/commits")
-    public ResponseEntity<List<Commit>> commitLogs(final HttpServletRequest request,
-                                                             final HttpServletResponse response) throws Exception {
+    @GetMapping(value = "commits")
+    public List<Commit> commitLogs(final HttpServletRequest request,
+                                   final HttpServletResponse response) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
@@ -212,7 +209,7 @@ public class ServiceRepositoryController {
                     formatCommitTime(c.getCommitTime()))
                 )
                 .collect(toList());
-            return new ResponseEntity<>(commits, HttpStatus.OK);
+            return commits;
         }
     }
 
@@ -227,20 +224,19 @@ public class ServiceRepositoryController {
      *
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @return ResponseEntity
+     * @return - List of Commit
      * @throws Exception - failed.
      */
-    @GetMapping(value = "/commitList")
-    public ResponseEntity<List<Commit>> commits(final HttpServletRequest request,
-                                                final HttpServletResponse response) throws Exception {
+    @GetMapping(value = "commitList")
+    public List<Commit> commits(final HttpServletRequest request,
+                                final HttpServletResponse response) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission denied");
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            val commits = git.getUnpublishedCommits();
-            return new ResponseEntity<>(commits, HttpStatus.OK);
+            return git.getUnpublishedCommits();
         }
     }
 
@@ -262,13 +258,12 @@ public class ServiceRepositoryController {
      * @param response - HttpServletResponse
      * @param request  - HttpServletRequest
      * @param msg      - message from user
-     * @return ResponseEntity
      * @throws Exception - failed.
      */
     @PostMapping(value = "/submit", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> submitPull(final HttpServletResponse response,
-                                             final HttpServletRequest request,
-                                             @RequestBody final String msg) throws Exception {
+    public void submitPull(final HttpServletResponse response,
+                           final HttpServletRequest request,
+                           @RequestBody final String msg) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
@@ -286,8 +281,6 @@ public class ServiceRepositoryController {
             git.createPullRequest(commit, submitName);
             git.checkout("master");
             sendSubmitMessage(submitName, user);
-
-            return new ResponseEntity<>("Request Submitted", HttpStatus.OK);
         }
     }
 
@@ -311,9 +304,9 @@ public class ServiceRepositoryController {
      * @param response - the response
      * @return - GitStatus
      */
-    @GetMapping("/gitStatus")
-    public ResponseEntity<GitStatus> gitStatus(final HttpServletRequest request,
-                                               final HttpServletResponse response) {
+    @GetMapping("gitStatus")
+    public GitStatus gitStatus(final HttpServletRequest request,
+                               final HttpServletResponse response) {
         val gitStatus = new GitStatus();
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val status = git.status();
@@ -326,12 +319,11 @@ public class ServiceRepositoryController {
                 .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(isPublishedBehind());
             gitStatus.setPullRequests(pendingSubmits(request, response, git));
-            return new ResponseEntity<>(gitStatus, HttpStatus.OK);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return new ResponseEntity<>(gitStatus, HttpStatus.OK);
+        return gitStatus;
     }
 
     private static String getServiceName(final GitUtil git, final String path) {
@@ -366,20 +358,20 @@ public class ServiceRepositoryController {
      *
      * @param response - HttpServletResponse
      * @param request  - HttpServletRequest
-     * @return ResponseEntity
+     * @return - List of Change
      * @throws Exception - failed.
      */
-    @GetMapping(value = "/untracked")
-    public ResponseEntity<List<Change>> untracked(final HttpServletResponse response,
-                                                  final HttpServletRequest request) throws Exception {
+    @GetMapping("untracked")
+    public List<Change> untracked(final HttpServletResponse response,
+                                  final HttpServletRequest request) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+                return new ArrayList<>();
             }
             val changes = git.scanWorkingDiffs().stream()
                 .map(d -> createChange(d, git))
                 .collect(toList());
-            return new ResponseEntity<>(changes, HttpStatus.OK);
+            return changes;
         }
     }
 
@@ -389,24 +381,23 @@ public class ServiceRepositoryController {
      * @param response - HttpServletResponse
      * @param request  - HttpsServletRequest
      * @param options  - List of Branch statuses filter the returned branches by
-     * @return ResponseEntity
+     * @return - List of BranchData
      * @throws Exception - failed
      */
-    @PostMapping(value = "/pullRequests", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BranchData>> branches(final HttpServletResponse response,
-                                                     final HttpServletRequest request,
-                                                     @RequestBody final boolean[] options) throws Exception {
+    @PostMapping(value = "pullRequests", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<BranchData> branches(final HttpServletResponse response,
+                                     final HttpServletRequest request,
+                                     @RequestBody final boolean[] options) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            val names = git.branches()
+            return git.branches()
                 .map(git::mapBranches)
                 .filter(r -> filterPulls(r, options))
                 .map(ServiceRepositoryController::createBranch)
                 .collect(toList());
-            return new ResponseEntity<>(names, HttpStatus.OK);
         }
     }
 
@@ -435,20 +426,19 @@ public class ServiceRepositoryController {
      *
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @return ResponseEntity
+     * @return - List of BranchData
      * @throws Exception - failed
      */
-    @GetMapping(value = "/submitRequests")
-    public ResponseEntity<List<BranchData>> submits(final HttpServletRequest request,
-                                                    final HttpServletResponse response) throws Exception {
+    @GetMapping(value = "submitRequests")
+    public List<BranchData> submits(final HttpServletRequest request,
+                                    final HttpServletResponse response) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            val names = git.branches()
+            return git.branches()
                 .filter(r -> r.getName().contains('/' + user.getId() + '_'))
                 .map(git::mapBranches)
                 .map(ServiceRepositoryController::createBranch)
                 .collect(toList());
-            return new ResponseEntity<>(names, HttpStatus.OK);
         }
     }
 
@@ -459,23 +449,22 @@ public class ServiceRepositoryController {
      * @param response - HttpServletResponse
      * @param request  - HttpServletRequest
      * @param branch   - name of branch submitted
-     * @return ResponseEntity
+     * @return - List of Diff
      * @throws Exception - failed
      */
     @GetMapping(value = "/changes")
-    public ResponseEntity<List<Diff>> changes(final HttpServletResponse response,
-                                              final HttpServletRequest request,
-                                              @RequestParam("branch") final String branch) throws Exception {
+    public List<Diff> changes(final HttpServletResponse response,
+                              final HttpServletRequest request,
+                              @RequestParam("branch") final String branch) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            val changes = git.getDiffsMinus1(branch).stream()
+            return git.getDiffsMinus1(branch).stream()
                 .map(d -> createDiff(d, git))
                 .collect(toList());
-            return new ResponseEntity<>(changes, HttpStatus.OK);
         }
     }
 
@@ -488,10 +477,10 @@ public class ServiceRepositoryController {
      * @return - List of Differences
      * @throws Exception - failed
      */
-    @GetMapping("/commitHistoryList")
-    public ResponseEntity<List<Diff>> commitHistoryList(final HttpServletResponse response,
-                                                        final HttpServletRequest request,
-                                                        @RequestParam("id") final String id) throws Exception {
+    @GetMapping("commitHistoryList")
+    public List<Diff> commitHistoryList(final HttpServletResponse response,
+                                        final HttpServletRequest request,
+                                        @RequestParam("id") final String id) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
@@ -499,7 +488,7 @@ public class ServiceRepositoryController {
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val r = git.getCommit(id);
-            val diffs = git.getPublishDiffs(id).stream()
+            return git.getPublishDiffs(id).stream()
                 .map(d -> createDiff(d, git))
                 .map(d -> {
                     d.setCommitter(r.getCommitterIdent().getName());
@@ -508,7 +497,6 @@ public class ServiceRepositoryController {
                     return d;
                 })
                 .collect(toList());
-            return new ResponseEntity<>(diffs, HttpStatus.OK);
         }
     }
 
@@ -521,7 +509,8 @@ public class ServiceRepositoryController {
      * @param ids      - Array of ids to compare
      * @throws Exception - failed
      */
-    @PostMapping(value = "/viewDiff", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "viewDiff", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public void viewDiff(final HttpServletRequest request,
                          final HttpServletResponse response,
                          final @RequestBody String[] ids) throws Exception {
@@ -542,13 +531,12 @@ public class ServiceRepositoryController {
      * @return ResponseEntity
      * @throws Exception - failed
      */
-    @GetMapping(value = "/viewChange")
-    public ResponseEntity<RegisteredService> viewChange(final HttpServletResponse response,
-                                                        final HttpServletRequest request,
-                                                        final @RequestParam String id) throws Exception {
+    @GetMapping(value = "viewChange")
+    public RegisteredService viewChange(final HttpServletResponse response,
+                                        final HttpServletRequest request,
+                                        final @RequestParam String id) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
-            return new ResponseEntity<>(new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id)),
-                HttpStatus.OK);
+            return new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
         }
     }
 
@@ -563,16 +551,17 @@ public class ServiceRepositoryController {
      * @throws Exception -failed
      */
     @GetMapping("changeMade")
-    public ResponseEntity<String> changeMade(final HttpServletResponse response,
-                                             final HttpServletRequest request,
-                                             final @RequestParam String id,
-                                             final @RequestParam String path) throws Exception {
+    public String changeMade(final HttpServletResponse response,
+                             final HttpServletRequest request,
+                             final @RequestParam String id,
+                             final @RequestParam String path) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val diff = git.getChange(id, path);
-            return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
-                diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
+            return new String(git.getFormatter(diff.getNewId().toObjectId(),
+                diff.getOldId().toObjectId()), StandardCharsets.UTF_8);
         } catch (final Exception e) {
-            return new ResponseEntity<>("No difference", HttpStatus.NO_CONTENT);
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return "No difference";
         }
     }
 
@@ -587,16 +576,17 @@ public class ServiceRepositoryController {
      * @throws Exception - failed.
      */
     @GetMapping("compareWithHead")
-    public ResponseEntity<String> compareWithHead(final HttpServletResponse response,
-                                                  final HttpServletRequest request,
-                                                  final @RequestParam String id,
-                                                  final @RequestParam String path) throws Exception {
+    public String compareWithHead(final HttpServletResponse response,
+                                  final HttpServletRequest request,
+                                  final @RequestParam String id,
+                                  final @RequestParam String path) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val diff = git.getChange("HEAD", id, path);
-            return new ResponseEntity<>(new String(git.getFormatter(diff.getNewId().toObjectId(),
-                diff.getOldId().toObjectId()), StandardCharsets.UTF_8), HttpStatus.OK);
+            return new String(git.getFormatter(diff.getNewId().toObjectId(),
+                diff.getOldId().toObjectId()), StandardCharsets.UTF_8);
         } catch (final Exception e) {
-            return new ResponseEntity<>("No difference", HttpStatus.NO_CONTENT);
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return "No difference";
         }
     }
 
@@ -607,19 +597,19 @@ public class ServiceRepositoryController {
      * @param response - HttpServletResponse
      * @param request  - HttpServletRequest
      * @param id       - id of service
-     * @return ResponseEntity
+     * @return - Array of RegisteredService
      * @throws Exception - failed
      */
-    @GetMapping(value = "/changePair")
-    public ResponseEntity<RegisteredService[]> changePair(final HttpServletResponse response,
-                                                          final HttpServletRequest request,
-                                                          @RequestParam final String id) throws Exception {
+    @GetMapping("changePair")
+    public RegisteredService[] changePair(final HttpServletResponse response,
+                                          final HttpServletRequest request,
+                                          @RequestParam final String id) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val change = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
             val casUserProfile = casUserProfileFactory.from(request, response);
             val orig = managerFactory.from(request, casUserProfile).findServiceBy(change.getId());
             val resp = new RegisteredService[]{change, orig};
-            return new ResponseEntity<>(resp, HttpStatus.OK);
+            return resp;
         }
     }
 
@@ -632,12 +622,12 @@ public class ServiceRepositoryController {
      * @return - String representing service version in HJson
      * @throws Exception - failed
      */
-    @GetMapping("/viewJSON")
-    public ResponseEntity<String> viewJSON(final HttpServletRequest request,
-                                           final HttpServletResponse response,
-                                           final @RequestParam String id) throws Exception {
+    @GetMapping("viewJSON")
+    public String viewJSON(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final @RequestParam String id) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
-            return new ResponseEntity<>(git.readObject(id), HttpStatus.OK);
+            return git.readObject(id);
         }
     }
 
@@ -650,17 +640,17 @@ public class ServiceRepositoryController {
      * @return - String representing the verison of the service in Yaml
      * @throws Exception - failed
      */
-    @GetMapping("/viewYaml")
-    public ResponseEntity<String> viewYaml(final HttpServletRequest request,
-                                           final HttpServletResponse response,
-                                           final @RequestParam String id) throws Exception {
+    @GetMapping("viewYaml")
+    public String viewYaml(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final @RequestParam String id) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val jsonSerializer = new DefaultRegisteredServiceJsonSerializer();
             val service = jsonSerializer.from(git.readObject(id));
             val yamlSerializer = new RegisteredServiceYamlSerializer();
             val output = new ByteArrayOutputStream();
             yamlSerializer.to(output, service);
-            return new ResponseEntity<>(output.toString(), HttpStatus.OK);
+            return output.toString();
         }
     }
 
@@ -671,13 +661,13 @@ public class ServiceRepositoryController {
      * @param request   - HttpServletRequest
      * @param response  - HttpServletResponse
      * @param acception - BranchActionData
-     * @return ResponseEntity
      * @throws Exception - failed
      */
     @PostMapping(value = "/acceptBranch", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> acceptChange(final HttpServletRequest request,
-                                               final HttpServletResponse response,
-                                               final @RequestBody BranchActionData acception) throws Exception {
+    @ResponseStatus(HttpStatus.OK)
+    public void acceptChange(final HttpServletRequest request,
+                               final HttpServletResponse response,
+                               final @RequestBody BranchActionData acception) throws Exception {
         val branch = acception.getBranch();
         val text = acception.getNote();
         val user = casUserProfileFactory.from(request, response);
@@ -692,7 +682,6 @@ public class ServiceRepositoryController {
                 + text.replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
             sendAcceptMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), com.getCommitterIdent().getEmailAddress());
-            return new ResponseEntity<>("Branch Merged", HttpStatus.OK);
         }
     }
 
@@ -716,11 +705,10 @@ public class ServiceRepositoryController {
      * @param request   - HttpServletRequest
      * @param response  - HttpServletResponse
      * @param rejection - BranchActionData
-     * @return ResponseEntity
      * @throws Exception - failed
      */
     @PostMapping(value = "/rejectBranch", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> rejectChange(final HttpServletRequest request,
+    public void rejectChange(final HttpServletRequest request,
                                                final HttpServletResponse response,
                                                final @RequestBody BranchActionData rejection) throws Exception {
         val user = casUserProfileFactory.from(request, response);
@@ -737,7 +725,6 @@ public class ServiceRepositoryController {
             git.appendNote(com, msg);
 
             sendRejectMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), text, com.getCommitterIdent().getEmailAddress());
-            return new ResponseEntity<>("Branch Rejected", HttpStatus.OK);
         }
     }
 
@@ -762,7 +749,7 @@ public class ServiceRepositoryController {
      * @param id       - id of note
      * @throws Exception - failed
      */
-    @GetMapping(value = "/notes")
+    @GetMapping("notes")
     public void getNotes(final HttpServletResponse response, final @RequestParam String id) throws Exception {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val note = git.note(id);
@@ -778,11 +765,11 @@ public class ServiceRepositoryController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param cnote    - CNote
-     * @return ResponseEntity
      * @throws Exception - failed
      */
     @PostMapping(value = "/addNote", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addNote(final HttpServletRequest request,
+    @ResponseStatus(HttpStatus.OK)
+    public void addNote(final HttpServletRequest request,
                                           final HttpServletResponse response,
                                           final @RequestBody CNote cnote) throws Exception {
         val user = casUserProfileFactory.from(request, response);
@@ -794,7 +781,6 @@ public class ServiceRepositoryController {
             val msg = user.getId() + " - " + new Date().toString() + " : \n    "
                 + cnote.getText().replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
-            return new ResponseEntity<>("Note Added", HttpStatus.OK);
         }
     }
 
@@ -804,16 +790,16 @@ public class ServiceRepositoryController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param path     - path of file
-     * @return - Lost of History
+     * @return - List of History
      * @throws Exception - failed
      */
-    @GetMapping(value = "/history")
-    public ResponseEntity<List<History>> history(final HttpServletRequest request,
+    @GetMapping("history")
+    public List<History> history(final HttpServletRequest request,
                                                  final HttpServletResponse response,
                                                  final @RequestParam String path) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val history = git.history(path);
-            return new ResponseEntity<>(history, HttpStatus.OK);
+            return history;
         }
     }
 
@@ -823,11 +809,11 @@ public class ServiceRepositoryController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param path     - path of the file
-     * @return status
      * @throws Exception - failed
      */
-    @GetMapping(value = "/revert")
-    public ResponseEntity<String> revert(final HttpServletRequest request,
+    @GetMapping("revert")
+    @ResponseStatus(HttpStatus.OK)
+    public void revert(final HttpServletRequest request,
                                          final HttpServletResponse response,
                                          final @RequestParam String path) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
@@ -835,7 +821,6 @@ public class ServiceRepositoryController {
                 throw new Exception("No changes to revert");
             }
             git.checkout(path, "HEAD");
-            return new ResponseEntity<>("File Reverted", HttpStatus.OK);
         }
     }
 
@@ -845,11 +830,11 @@ public class ServiceRepositoryController {
      * @param request  - the request
      * @param response - the response
      * @param id       - the id of the commit
-     * @return - Status message
      * @throws Exception - failed
      */
-    @GetMapping("/revertRepo")
-    public ResponseEntity<String> revertRepo(final HttpServletRequest request,
+    @GetMapping("revertRepo")
+    @ResponseStatus(HttpStatus.OK)
+    public void revertRepo(final HttpServletRequest request,
                                              final HttpServletResponse response,
                                              final @RequestParam String id) throws Exception {
         val user = casUserProfileFactory.from(request, response);
@@ -860,7 +845,6 @@ public class ServiceRepositoryController {
             val svc = new DefaultRegisteredServiceJsonSerializer().from(git.readObject(id));
             val mgmtServicesManager = managerFactory.from(request, user);
             mgmtServicesManager.save(svc);
-            return new ResponseEntity<>("File Reverted", HttpStatus.OK);
         }
     }
 
@@ -870,11 +854,11 @@ public class ServiceRepositoryController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param path     - path of the file
-     * @return - status message
      * @throws Exception - failed
      */
-    @GetMapping(value = "/revertDelete")
-    public ResponseEntity<String> revertDelete(final HttpServletRequest request,
+    @GetMapping("revertDelete")
+    @ResponseStatus(HttpStatus.OK)
+    public void revertDelete(final HttpServletRequest request,
                                                final HttpServletResponse response,
                                                final @RequestParam String path) throws Exception {
         val user = casUserProfileFactory.from(request, response);
@@ -885,7 +869,6 @@ public class ServiceRepositoryController {
             val manager = managerFactory.from(request, user);
             insertService(git, path);
             git.checkoutFile(path);
-            return new ResponseEntity<>("File Reverted", HttpStatus.OK);
         }
     }
 
@@ -896,18 +879,16 @@ public class ServiceRepositoryController {
      * @param response - HttpServletResponse
      * @param id       - Id of the commit to checkout the file from
      * @param path     - path of the file
-     * @return - status message
      * @throws Exception - failed
      */
-    @GetMapping(value = "/checkout")
-    public ResponseEntity<String> checkout(final HttpServletRequest request,
+    @GetMapping("checkout")
+    public void checkout(final HttpServletRequest request,
                                            final HttpServletResponse response,
                                            @RequestParam final String id,
                                            @RequestParam final String path) throws Exception {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             git.checkout(path, id);
             git.reset(path);
-            return new ResponseEntity<>("File Checked Out", HttpStatus.OK);
         }
     }
 
@@ -917,11 +898,11 @@ public class ServiceRepositoryController {
      * @param response - the response
      * @param request  - the request
      * @param id       - Id of the commit
-     * @return - Status message
      * @throws Exception - failed
      */
-    @GetMapping("/checkoutCommit")
-    public ResponseEntity<String> checkoutCommit(final HttpServletResponse response,
+    @GetMapping("checkoutCommit")
+    @ResponseStatus(HttpStatus.OK)
+    public void checkoutCommit(final HttpServletResponse response,
                                                  final HttpServletRequest request,
                                                  @RequestParam final String id) throws Exception {
         val user = casUserProfileFactory.from(request, response);
@@ -942,7 +923,6 @@ public class ServiceRepositoryController {
                     LOGGER.error(e.getMessage(), e);
                 }
             });
-            return new ResponseEntity<>("Commit checked out", HttpStatus.OK);
         }
     }
 
@@ -964,11 +944,11 @@ public class ServiceRepositoryController {
      * @param request    - HttpServletRequest
      * @param response   - HttpServletResponse
      * @param branchName - Name of the pull requet
-     * @return - status message
      * @throws Exception - failed
      */
-    @GetMapping(value = "/revertSubmit")
-    public ResponseEntity<String> revertSubmit(final HttpServletRequest request,
+    @GetMapping("revertSubmit")
+    @ResponseStatus(HttpStatus.OK)
+    public void revertSubmit(final HttpServletRequest request,
                                                final HttpServletResponse response,
                                                @RequestParam final String branchName) throws Exception {
         val user = casUserProfileFactory.from(request, response);
@@ -982,7 +962,6 @@ public class ServiceRepositoryController {
         try (GitUtil master = repositoryFactory.masterRepository()) {
             master.markAsReverted(branchName, user);
         }
-        return new ResponseEntity<>("Submit reverted", HttpStatus.OK);
     }
 
     /**
@@ -994,7 +973,7 @@ public class ServiceRepositoryController {
      * @throws Exception - failed.
      */
     @GetMapping("notifications")
-    public ResponseEntity<String> notifications(final HttpServletRequest request,
+    public String notifications(final HttpServletRequest request,
                                                 final HttpServletResponse response) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         var resp = "";
@@ -1008,7 +987,7 @@ public class ServiceRepositoryController {
                 }
             }
         }
-        return new ResponseEntity(resp, HttpStatus.OK);
+        return resp;
     }
 
     private int pendingSubmits(final HttpServletRequest request,

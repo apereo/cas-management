@@ -9,19 +9,21 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class HistoryService extends Service {
 
+  controller = 'versionControl/';
+
   history(fileName: string): Observable<History[]> {
-    return this.get<History[]>('history?path=' + fileName);
+    return this.get<History[]>(this.controller + 'history?path=' + fileName);
   }
 
   checkout(id: string, path: String): Observable<String> {
-    return this.getText('checkout?id=' + id + '&path=' + path);
+    return this.getText(this.controller + 'checkout?id=' + id + '&path=' + path);
   }
 
   change(commit: String, path: String): Observable<String> {
-    return this.getText('changeMade?id=' + commit + '&path=' + path);
+    return this.getText(this.controller + 'changeMade?id=' + commit + '&path=' + path);
   }
 
   toHead(commit: String, path: String): Observable<String> {
-    return this.getText('compareWithHead?id=' + commit + '&path=' + path);
+    return this.getText(this.controller + 'compareWithHead?id=' + commit + '&path=' + path);
   }
 }

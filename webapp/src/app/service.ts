@@ -39,6 +39,13 @@ export class Service {
       );
   }
 
+  delete(url: string): Observable<void> {
+    return this.delete(url)
+      .pipe(
+        catchError(e => this.handleError(e, this.dialog))
+      );
+  }
+
   getText(url: string): Observable<String> {
     return this.http.get(url, {responseType: 'text'})
       .pipe(

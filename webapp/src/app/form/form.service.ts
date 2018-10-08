@@ -14,11 +14,13 @@ import {Observable} from 'rxjs';
 @Injectable()
 export class FormService {
 
+  controller = 'services/';
+
   constructor(private http: HttpClient,
               private dialog: MatDialog) {}
 
   getService(id: string): Observable<AbstractRegisteredService> {
-    return this.http.get<AbstractRegisteredService>('getService?id=' + id)
+    return this.http.get<AbstractRegisteredService>(this.controller + id)
       .pipe(
         take(1),
         map(resp => {
@@ -29,7 +31,7 @@ export class FormService {
   }
 
   saveService(service: AbstractRegisteredService): Observable<number> {
-    return this.http.post('saveService', service)
+    return this.http.post(this.controller, service)
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
       );

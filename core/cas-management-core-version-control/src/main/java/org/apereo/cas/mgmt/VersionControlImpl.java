@@ -35,8 +35,21 @@ public class VersionControlImpl implements VersionControl {
     }
 
     @Override
-    public void attachStatus(final RegisteredServiceItem serviceItem) {
-
+    public RegisteredServiceItem attachStatus(final RegisteredServiceItem serviceItem) {
+        try {
+            val status = git.status();
+            val fileName = serviceItem.getName() + "-" + serviceItem.getAssignedId() + ".json";
+            if (status.getAdded().contains(fileName)) {
+                serviceItem.setStatus("ADD");
+            } else if (status.getModified().contains(fileName)) {
+                serviceItem.setStatus("MODIFY");
+            } else if (status.getRemoved().contains(fileName)) {
+                serviceItem.setStatus("DELETE");
+            }
+        } catch (final Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+        return serviceItem;
     }
 
     @Override

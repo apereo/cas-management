@@ -6,7 +6,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.DomainController;
-import org.apereo.cas.mgmt.controller.ManagementAppDataController;
+import org.apereo.cas.mgmt.controller.ApplicationDataController;
 import org.apereo.cas.mgmt.controller.ServiceController;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
@@ -64,8 +64,8 @@ public class CasManagementCoreServicesConfiguration {
     private FormDataFactory formDataFactory;
 
     @Bean
-    public ManagementAppDataController manageRegisteredServicesMultiActionController() {
-        return new ManagementAppDataController(formDataFactory, casUserProfileFactory, managerFactory,
+    public ApplicationDataController manageRegisteredServicesMultiActionController() {
+        return new ApplicationDataController(formDataFactory, casUserProfileFactory, managerFactory,
                 managementProperties, casProperties);
     }
 

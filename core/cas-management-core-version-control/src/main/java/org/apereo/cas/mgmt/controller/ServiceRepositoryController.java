@@ -62,7 +62,7 @@ import static java.util.stream.Collectors.toList;
  * @since 5.2
  */
 @RestController("versionControlController")
-@RequestMapping(path = "versionControl", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/versionControl", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @RequiredArgsConstructor
 public class ServiceRepositoryController {

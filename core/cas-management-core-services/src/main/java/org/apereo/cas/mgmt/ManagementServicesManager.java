@@ -52,13 +52,11 @@ public class ManagementServicesManager implements ServicesManager {
      * @return - List of RegisteredServiceItems
      */
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
-        //this.uncommitted = new HashMap<>();
-        //git.scanWorkingDiffs().stream().forEach(this::createChange);
         LOGGER.debug("Loading services for domain [{}]", domain);
         val services = new ArrayList<RegisteredService>(getServicesForDomain(domain));
         val items = services.stream()
             .map(this::createServiceItem)
-            .peek(versionControl::attachStatus)
+            .map(versionControl::attachStatus)
             .collect(Collectors.toList());
 
         return items;
@@ -78,11 +76,6 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
         val id = service.getId();
-        /*
-        if (uncommitted != null && !git.isUndefined() && uncommitted.containsKey(id)) {
-            serviceItem.setStatus(uncommitted.get(id));
-        }
-        */
         LOGGER.debug("Created service item [{}] based on registered service [{}]", serviceItem, service.getServiceId());
         return serviceItem;
     }

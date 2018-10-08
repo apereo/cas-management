@@ -12,12 +12,11 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.domains.RegisteredServiceItem;
 import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
 import org.apereo.cas.mgmt.factory.ManagerFactory;
-import org.apereo.cas.mgmt.controller.ManagementAppDataController;
+import org.apereo.cas.mgmt.controller.ApplicationDataController;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -33,8 +32,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
@@ -42,8 +39,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -72,7 +67,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private ManagementAppDataController controller;
+    private ApplicationDataController controller;
 
     private ServicesManager servicesManager;
 
@@ -109,7 +104,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
         final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager);
-        this.controller = new ManagementAppDataController(null, casUserProfileFactory,
+        this.controller = new ApplicationDataController(null, casUserProfileFactory,
              managerFactory, managementProperties, casProperties);
     }
 

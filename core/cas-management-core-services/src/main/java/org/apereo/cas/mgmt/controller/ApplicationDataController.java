@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @RestController("mangememtAppDataController")
 @Slf4j
 @RequiredArgsConstructor
-public class ManagementAppDataController {
+public class ApplicationDataController {
 
     private final FormDataFactory formDataFactory;
     private final CasUserProfileFactory casUserProfileFactory;

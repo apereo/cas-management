@@ -12,25 +12,20 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.DomainServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
-import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
-import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.diff.DiffEntry;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 
 /**
  * Factory class to create ServiceManagers for the logged in user.
@@ -47,8 +42,6 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
     private final RepositoryFactory repositoryFactory;
     private final CasUserProfileFactory casUserProfileFactory;
     private final CasConfigurationProperties casProperties;
-
-    private HashMap<Long, String> uncommitted = new HashMap<>();
 
     /**
      * Init repository.
@@ -158,27 +151,6 @@ public class ManagerFactory implements MgmtManagerFactory<ManagementServicesMana
         }
         manager.load();
         return manager;
-    }
-
-    private void createChange(final DiffEntry entry, final GitUtil git) {
-        try {
-            val ser = new DefaultRegisteredServiceJsonSerializer();
-            var svc = (RegisteredService) null;
-            if (entry.getChangeType() == DiffEntry.ChangeType.DELETE) {
-                svc = ser.from(git.readObject(entry.getOldId().toObjectId()));
-            } else {
-                svc = ser.from(new File(git.repoPath() + '/' + entry.getNewPath()));
-            }
-            LOGGER.debug("Created change entry for service [{}]", svc.getServiceId());
-
-            if (this.uncommitted.containsKey(svc.getId())) {
-                this.uncommitted.replace(svc.getId(), "MODIFY");
-            } else {
-                this.uncommitted.put(svc.getId(), entry.getChangeType().toString());
-            }
-        } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
     }
 
 }

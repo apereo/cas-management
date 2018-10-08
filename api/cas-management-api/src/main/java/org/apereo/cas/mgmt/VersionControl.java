@@ -25,7 +25,7 @@ public interface VersionControl {
      *
      * @param serviceItem - RegisteredServiceItems
      */
-    void attachStatus(RegisteredServiceItem serviceItem);
+    RegisteredServiceItem attachStatus(RegisteredServiceItem serviceItem);
 
     /**
      * Rebases the Git Repository for the user.

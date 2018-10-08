@@ -17,8 +17,8 @@ public class NoOpVersionControl implements VersionControl {
     }
 
     @Override
-    public void attachStatus(final RegisteredServiceItem serviceItem) {
-        // do nothing
+    public RegisteredServiceItem attachStatus(final RegisteredServiceItem serviceItem) {
+        return serviceItem;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.apereo.cas.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.CasManagementEmbeddedContainerUtils;
 import org.apereo.cas.util.ResourceUtils;
@@ -52,7 +51,7 @@ import java.nio.charset.StandardCharsets;
  * @since 5.0.0
  */
 @Configuration("casEmbeddedContainerTomcatConfiguration")
-@EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
+@EnableConfigurationProperties(CasConfigurationProperties.class)
 @ConditionalOnProperty(name = CasManagementEmbeddedContainerUtils.EMBEDDED_CONTAINER_CONFIG_ACTIVE, havingValue = "true")
 @ConditionalOnClass(value = {Tomcat.class, Http2Protocol.class})
 @AutoConfigureBefore(ServletWebServerFactoryAutoConfiguration.class)
@@ -65,9 +64,6 @@ public class CasEmbeddedContainerTomcatConfiguration {
 
     @Autowired
     private CasConfigurationProperties casProperties;
-
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
 
     private static void configureConnectorForProtocol(final Connector connector, final String protocol) {
         val field = ReflectionUtils.findField(connector.getClass(), "protocolHandler");

@@ -3,7 +3,7 @@ description "mgmt services"
 dependencies {
     implementation libraries.casServer
     
-    api project(":api:cas-management-api-factory")
+    api project(":api:cas-management-api")
   
     implementation project(":core:cas-management-core-services")
     implementation project(":core:cas-management-core-authentication")

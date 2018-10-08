@@ -1,0 +1,7 @@
+description "Mgmt config configuration"
+
+dependencies {
+    implementation libraries.casServer
+    
+    implementation project(":core:cas-management-core-configuration")
+}

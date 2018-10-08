@@ -1,4 +1,4 @@
-package org.apereo.cas.configuration.config;
+package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.CipherExecutor;
 import org.apereo.cas.configuration.CasConfigurationPropertiesEnvironmentManager;

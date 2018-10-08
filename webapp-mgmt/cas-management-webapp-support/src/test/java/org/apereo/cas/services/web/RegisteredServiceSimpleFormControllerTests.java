@@ -105,7 +105,8 @@ public class RegisteredServiceSimpleFormControllerTests {
         final ManagerFactory managerFactory = new ManagerFactory(servicesManager, managementProperties,
             repositoryFactory, casUserProfileFactory, casProperties);
         managerFactory.initRepository();
-        this.controller = new RegisteredServiceSimpleFormController(servicesManager, managerFactory, casUserProfileFactory, repositoryFactory);
+        this.controller = new RegisteredServiceSimpleFormController(servicesManager, managerFactory,
+                casUserProfileFactory, repositoryFactory, managementProperties);
     }
 
     @After

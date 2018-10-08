@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.services.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
@@ -42,6 +43,8 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
 
     private final RepositoryFactory repositoryFactory;
 
+    private final CasManagementConfigurationProperties mgmtProperties;
+
     /**
      * Instantiates a new registered service simple form controller.
      *
@@ -49,15 +52,18 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
      * @param managerFactory        the manager factory
      * @param casUserProfileFactory the cas user factory
      * @param repositoryFactory     the git repository factory
+     * @param mgmtProperties        the mgmt properties
      */
     public RegisteredServiceSimpleFormController(final ServicesManager servicesManager,
                                                  final ManagerFactory managerFactory,
                                                  final CasUserProfileFactory casUserProfileFactory,
-                                                 final RepositoryFactory repositoryFactory) {
+                                                 final RepositoryFactory repositoryFactory,
+                                                 final CasManagementConfigurationProperties mgmtProperties) {
         super(servicesManager);
         this.managerFactory = managerFactory;
         this.casUserProfileFactory = casUserProfileFactory;
         this.repositoryFactory = repositoryFactory;
+        this.mgmtProperties = mgmtProperties;
     }
 
     /**
@@ -80,7 +86,7 @@ public class RegisteredServiceSimpleFormController extends AbstractManagementCon
             service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
         }
 
-        if (service.getId() > -1) {
+        if (mgmtProperties.isEnableVersionControl() && service.getId() > -1) {
             checkForRename(service, request, response);
         }
 

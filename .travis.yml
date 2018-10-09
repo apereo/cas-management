@@ -85,7 +85,7 @@ jobs:
     name: "Publish Artifacts"
   - stage: build
     script: ./ci/build.sh
-    name: "Build CAS"
+    name: "Build CAS Management"
   - stage: build
     script: ./ci/analyze-style.sh
     name: "Checkstyle Analysis"

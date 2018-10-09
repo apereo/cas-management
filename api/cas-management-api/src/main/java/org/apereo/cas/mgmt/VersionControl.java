@@ -24,6 +24,7 @@ public interface VersionControl {
      * Looks up git status for the passed item and sets it on the item.
      *
      * @param serviceItem - RegisteredServiceItems
+     * @return - the service item
      */
     RegisteredServiceItem attachStatus(RegisteredServiceItem serviceItem);
 

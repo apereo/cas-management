@@ -101,9 +101,6 @@ jobs:
     script: ./ci/build-javadocs.sh
     name: "Build Javadocs"
   - stage: build
-    script: ./ci/build-config-metadata.sh
-    name: "Build Configuration Metadata"
-  - stage: build
     script: ./ci/check-config-factories.sh
     name: "Configuration Factory Analysis"
     ############################################

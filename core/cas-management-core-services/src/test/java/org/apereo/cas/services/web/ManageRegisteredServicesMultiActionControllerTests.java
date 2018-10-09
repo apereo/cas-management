@@ -1,6 +1,5 @@
 package org.apereo.cas.services.web;
 
-import org.apache.commons.io.FileUtils;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.config.CasCoreServicesConfiguration;
@@ -15,18 +14,22 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.config.CasManagementAuditConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthenticationConfiguration;
 import org.apereo.cas.mgmt.config.CasManagementAuthorizationConfiguration;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
 import org.apereo.cas.mgmt.controller.ApplicationDataController;
+import org.apereo.cas.mgmt.factory.ManagerFactory;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.InMemoryServiceRegistry;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.ServicesManager;
+
+import lombok.val;
+import org.apache.commons.io.FileUtils;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
@@ -36,7 +39,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import java.io.File;
 
@@ -47,7 +51,6 @@ import static org.mockito.Mockito.*;
  * @author Scott Battaglia
  * @since 3.1
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = {
                 AopAutoConfiguration.class,
@@ -63,6 +66,11 @@ import static org.mockito.Mockito.*;
 @DirtiesContext
 @TestPropertySource(locations = "classpath:mgmt.properties")
 public class ManageRegisteredServicesMultiActionControllerTests {
+    @ClassRule
+    public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
+
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -88,7 +96,7 @@ public class ManageRegisteredServicesMultiActionControllerTests {
     public void init() throws Exception {
         FileUtils.deleteDirectory(new File("/tmp/services-repo"));
         this.servicesManager = new DefaultServicesManager(new InMemoryServiceRegistry(), null);
-        RegexRegisteredService svc = new RegexRegisteredService();
+        var svc = new RegexRegisteredService();
         svc.setServiceId("https://.*");
         svc.setName("Wildcard");
         svc.setDescription("Wildacard defualt service");
@@ -98,12 +106,12 @@ public class ManageRegisteredServicesMultiActionControllerTests {
         svc.setName("Apereo");
         svc.setDescription("Service for Apereo domain");
         this.servicesManager.save(svc);
-        final CasUserProfile casUserProfile = mock(CasUserProfile.class);
+        val casUserProfile = mock(CasUserProfile.class);
         when(casUserProfile.isAdministrator()).thenReturn(true);
-        final CasUserProfileFactory casUserProfileFactory = mock(CasUserProfileFactory.class);
+        val casUserProfileFactory = mock(CasUserProfileFactory.class);
         when(casUserProfileFactory.from(any(), any()))
                 .thenReturn(casUserProfile);
-        final ManagerFactory managerFactory = new ManagerFactory(this.servicesManager);
+        val managerFactory = new ManagerFactory(this.servicesManager);
         this.controller = new ApplicationDataController(null, casUserProfileFactory,
              managerFactory, managementProperties, casProperties);
     }
@@ -115,8 +123,8 @@ public class ManageRegisteredServicesMultiActionControllerTests {
 
     @Test
     public void verifyGetUser() throws Exception {
-        final CasUserProfile user = this.controller.getUser(new MockHttpServletRequest(),
-                                                                            new MockHttpServletResponse());
+        val user = this.controller.getUser(new MockHttpServletRequest(),
+                                           new MockHttpServletResponse());
         assertTrue(user.isAdministrator());
     }
 }

@@ -1,12 +1,13 @@
-description "mgmt version control"
+description "Apereo CAS Management Core Version Control"
 
-dependencies { 
+dependencies {
+    api project(":api:cas-management-api-version-control")
     implementation libraries.casServer
     implementation libraries.git
     implementation libraries.pac4j
     
     implementation project(":core:cas-management-core-authentication")
     implementation project(":core:cas-management-core-configuration")
-    implementation project(":core:cas-management-core-services")
+    implementation project(":core:cas-management-core")
     
 }

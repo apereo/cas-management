@@ -1,7 +1,10 @@
 package org.apereo.cas.mgmt.authentication;
 
+import org.apereo.cas.mgmt.domain.MgmtUserProfile;
+
 import lombok.Getter;
 import lombok.val;
+
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
@@ -16,7 +19,7 @@ import java.util.Collection;
  * @since 5.2.0
  */
 @Getter
-public class CasUserProfile extends CommonProfile {
+public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     private static final long serialVersionUID = -6308325782274816263L;
     private final boolean administrator;
 

@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class NotesService extends Service {
 
-  controller = 'versionControl/';
+  controller = 'delegated/';
 
   getNotes(id: String): Observable<String> {
     return this.getText(this.controller + 'notes?id=' + id);

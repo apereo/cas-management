@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class PullService extends Service {
 
-  controller = 'versionControl/';
+  controller = 'delegated/';
 
   getBranches(options: boolean[]): Observable<Branch[]> {
     return this.post<Branch[]>(this.controller + 'pullRequests', options);

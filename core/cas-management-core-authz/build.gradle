@@ -1,4 +1,4 @@
-description "mgmt authz"
+description "Apereo CAS Management Core Authz"
 
 dependencies {
     implementation libraries.pac4j

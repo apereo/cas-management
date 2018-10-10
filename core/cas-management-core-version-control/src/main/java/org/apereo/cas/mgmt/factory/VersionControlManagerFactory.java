@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.eclipse.jgit.api.Git;
+import org.pac4j.core.profile.UserProfile;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      */
     @PostConstruct
     public void initRepository() {
-        val servicesRepo = Paths.get(managementProperties.getServicesRepo());
+        val servicesRepo = Paths.get(managementProperties.getVersionControl().getServicesRepo());
         if (!Files.exists(servicesRepo)) {
             try {
                 Git.init().setDirectory(servicesRepo.toFile()).call();
@@ -88,7 +89,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @return - GitServicesManager for the logged in user
      * @throws Exception the exception
      */
-    public ManagementServicesManager from(final HttpServletRequest request, final CasUserProfile user) throws Exception {
+    public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) throws Exception {
         return getManagementServicesManager(request, user);
     }
 
@@ -105,7 +106,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     }
 
 
-    private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final CasUserProfile user) {
+    private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final UserProfile userProfile) {
+        val user = (CasUserProfile) userProfile;
         val session = request.getSession();
         var manager = (ManagementServicesManager) session.getAttribute("servicesManager");
         if (manager != null) {

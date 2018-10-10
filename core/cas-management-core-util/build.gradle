@@ -1,4 +1,4 @@
-description "mgmt util"
+description "Apereo CAS Management Core Util"
 
 dependencies {
     implementation libraries.casServer

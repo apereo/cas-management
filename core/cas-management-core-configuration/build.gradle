@@ -1,4 +1,4 @@
-description = "Apereo CAS Management Web Application Configuration"
+description = "Apereo CAS Management Core Configuration"
 
 dependencies {
     implementation libraries.springcloudconfigclient

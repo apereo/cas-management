@@ -1,5 +1,4 @@
-
-description "webapp init"
+description "Apereo CAS Management Webapp Init"
 
 dependencies {
     implementation libraries.casServer

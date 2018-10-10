@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class SubmitService extends Service {
 
-  controller = 'versionControl/';
+  controller = 'delegated/';
 
   getSubmits(): Observable<Branch[]> {
     return this.get<Branch[]>(this.controller + 'submitRequests');

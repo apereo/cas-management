@@ -88,44 +88,23 @@ public class CasManagementConfigurationProperties implements Serializable {
     private transient Resource userPropertiesFile = new ClassPathResource("user-details.properties");
 
     /**
-     * A writable location where the Git repository will be created to track changes.
-     */
-    private String servicesRepo = "/etc/cas/services-repo";
-
-    /**
-     * A writable location where the users Git repositories will be created.
-     */
-    private String userReposDir = "/etc/cas/user-repos";
-
-    /**
-     * Path to executable bean shell script to sync server nodes.
-     */
-    private String syncScript;
-
-    /**
-     * Flag to enable version control with git.
-     */
-    private boolean enableVersionControl;
-
-    /**
-     * Flag to enable delegated management.
-     */
-    private boolean enableDelegatedMgmt;
-
-    /**
      * Flag to enable/disable calling cas discovery endpoint.
      */
     private boolean enableDiscoveryEndpointCall = true;
 
     /**
-     * Notifications.
+     * Properties for version control.
      */
-    @NestedConfigurationProperty
-    private NotificationsProperties notifications = new NotificationsProperties();
+    private VersionControl versionControl = new VersionControl();
+
+    /**
+     * Properties for delegated mgmt.
+     */
+    private Delegated delegated = new Delegated();
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-webapp-support-ldap")
+    @RequiresModule(name = "cas-management-config-ldap-authz")
     public static class Ldap extends AbstractLdapProperties {
         private static final long serialVersionUID = -8129280052479631538L;
         /**
@@ -135,6 +114,46 @@ public class CasManagementConfigurationProperties implements Serializable {
         private LdapAuthorizationProperties ldapAuthz = new LdapAuthorizationProperties();
     }
 
+    @Getter
+    @Setter
+    @RequiresModule(name = "cas-management-config-version-control")
+    public static class VersionControl implements Serializable {
+        /**
+         * A writable location where the Git repository will be created to track changes.
+         */
+        private String servicesRepo = "/etc/cas/services-repo";
+
+        /**
+         * Path to executable bean shell script to sync server nodes.
+         */
+        private String syncScript;
+
+        /**
+         * Version Control flag.
+         */
+        private boolean enabled;
+    }
+
+    @Getter
+    @Setter
+    @RequiresModule(name = "cas-management-config-delegated")
+    public static class Delegated implements Serializable {
+        /**
+         * A writable location where the users Git repositories will be created.
+         */
+        private String userReposDir = "/etc/cas/user-repos";
+
+        /**
+         * Delegated auth flag.
+         */
+        private boolean enabled;
+
+        /**
+         * Notifications.
+         */
+        @NestedConfigurationProperty
+        private NotificationsProperties notifications = new NotificationsProperties();
+    }
 }
 
 

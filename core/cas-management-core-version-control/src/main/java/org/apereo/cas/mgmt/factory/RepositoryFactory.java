@@ -53,7 +53,7 @@ public class RepositoryFactory {
             LOGGER.debug("User [{}] is not an administrator. Loading objects from master repository", user);
             return masterRepository();
         }
-        val path = Paths.get(casProperties.getUserReposDir() + '/' + user.getId());
+        val path = Paths.get(casProperties.getDelegated().getUserReposDir() + '/' + user.getId());
         if (!Files.exists(path)) {
             clone(path.toString());
         }
@@ -67,13 +67,13 @@ public class RepositoryFactory {
      */
     @SneakyThrows
     public GitUtil masterRepository() {
-        val path = casProperties.getServicesRepo() + "/.git";
+        val path = casProperties.getVersionControl().getServicesRepo() + "/.git";
         return buildGitUtil(path);
     }
 
     @SneakyThrows
     private GitUtil userRepository(final String user) {
-        val path = casProperties.getUserReposDir() + '/' + user + "/.git";
+        val path = casProperties.getDelegated().getUserReposDir() + '/' + user + "/.git";
         return buildGitUtil(path);
     }
 
@@ -90,7 +90,7 @@ public class RepositoryFactory {
      */
     public GitUtil clone(final String clone) {
         try {
-            val uri = casProperties.getServicesRepo() + "/.git";
+            val uri = casProperties.getVersionControl().getServicesRepo() + "/.git";
             LOGGER.debug("Cloning repository [{}] to path [{}]", uri, clone);
             return new GitUtil(Git.cloneRepository()
                 .setURI(uri)

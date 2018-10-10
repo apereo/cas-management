@@ -1,4 +1,4 @@
-description "mgmt authentication"
+description "Apereo CAS Management Config Authentication"
 
 dependencies {
     implementation libraries.pac4j

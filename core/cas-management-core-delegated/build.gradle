@@ -1,0 +1,15 @@
+description "Apereo CAS Management Core Delegated"
+
+dependencies {
+    implementation libraries.casServer
+    implementation libraries.git
+    
+    api project(":api:cas-management-api-core")
+    api project(":api:cas-management-api-version-control")
+    api project(":api:cas-management-api-delegated")
+    
+    implementation project(":core:cas-management-core-configuration")
+    implementation project(":core:cas-management-core-version-control")
+    implementation project(":core:cas-management-core-authentication")
+    
+}

@@ -1,9 +1,11 @@
 package org.apereo.cas.configuration.model;
 
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
+import org.apereo.cas.configuration.support.RequiresModule;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.io.Serializable;
@@ -16,6 +18,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@RequiresModule(name = "cas-management-config-delegated")
 public class NotificationsProperties implements Serializable {
     private static final long serialVersionUID = -7616426966125636166L;
 

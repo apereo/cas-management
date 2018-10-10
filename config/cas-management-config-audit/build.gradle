@@ -1,4 +1,4 @@
-description "mgmt audit"
+description "Apereo CAS Management Config Audit"
 
 dependencies {
     implementation libraries.pac4j

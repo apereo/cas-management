@@ -1,4 +1,4 @@
-description "Mgmt config configuration"
+description "Apereo CAS Management Config Configuration"
 
 dependencies {
     implementation libraries.casServer

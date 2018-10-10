@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt;
 
-import org.apereo.cas.mgmt.domains.RegisteredServiceItem;
+import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 

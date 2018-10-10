@@ -1,20 +1,14 @@
 export class UserProfile {
-  static cName = 'org.apereo.cas.mgmt.authentication.CasUserProfile';
+  static cName = 'org.apereo.cas.mgmt.domains.MgmtUserProfile';
 
   id: String;
-  attributes: Map<String, any>;
-  isRemembered: boolean;
-  roles: String[];
   permissions: String[];
-  clientName: String;
-  linkedId: String;
   email: String;
-  phone: String;
-  department: String;
   firstName: String;
   familyName: String;
-  displayName: String;
   username: String;
+  phone: String;
+  department: String;
   administrator: boolean;
 
   static instanceOf(obj: any): boolean {

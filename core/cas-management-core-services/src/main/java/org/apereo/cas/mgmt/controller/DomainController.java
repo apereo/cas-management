@@ -4,7 +4,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
+import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class DomainController {
 
     private final FormDataFactory formDataFactory;
     private final CasUserProfileFactory casUserProfileFactory;
-    private final ManagerFactory managerFactory;
+    private final ServicesManagerFactory managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
 

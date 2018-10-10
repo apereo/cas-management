@@ -4,7 +4,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
+import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
@@ -42,8 +42,8 @@ public class CasManagementFactoryConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "managerFactory")
-    public ManagerFactory managerFactory() {
-        return new ManagerFactory(servicesManager);
+    public ServicesManagerFactory managerFactory() {
+        return new ServicesManagerFactory(servicesManager);
     }
 
     @Bean

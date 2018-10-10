@@ -10,7 +10,7 @@ import org.apereo.cas.mgmt.controller.DomainController;
 import org.apereo.cas.mgmt.controller.ServiceController;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
+import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.ServicesManager;
 
@@ -57,7 +57,7 @@ public class CasManagementCoreServicesConfiguration {
 
     @Autowired
     @Qualifier("managerFactory")
-    private ManagerFactory managerFactory;
+    private ServicesManagerFactory managerFactory;
 
     @Autowired
     @Qualifier("formDataFactory")

@@ -35,7 +35,7 @@ import java.nio.file.Paths;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class ManagerFactory implements MgmtManagerFactory<ManagementServicesManager> {
+public class VersionControlManagerFactory implements MgmtManagerFactory<ManagementServicesManager> {
 
     private final ServicesManager servicesManager;
     private final CasManagementConfigurationProperties managementProperties;

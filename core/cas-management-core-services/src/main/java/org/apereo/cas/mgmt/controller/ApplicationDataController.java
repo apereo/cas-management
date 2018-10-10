@@ -8,7 +8,7 @@ import org.apereo.cas.mgmt.domains.AppConfig;
 import org.apereo.cas.mgmt.domains.FormData;
 import org.apereo.cas.mgmt.domains.RegisteredServiceItem;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
+import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.RegexUtils;
@@ -41,7 +41,7 @@ public class ApplicationDataController {
 
     private final FormDataFactory formDataFactory;
     private final CasUserProfileFactory casUserProfileFactory;
-    private final ManagerFactory managerFactory;
+    private final ServicesManagerFactory managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
 

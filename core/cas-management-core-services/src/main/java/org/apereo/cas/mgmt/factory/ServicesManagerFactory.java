@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class ManagerFactory implements MgmtManagerFactory {
+public class ServicesManagerFactory implements MgmtManagerFactory {
 
     private final ServicesManager servicesManager;
 

@@ -2,7 +2,7 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domains.RegisteredServiceItem;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
+import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
@@ -39,7 +39,7 @@ import java.util.List;
 public class ServiceController {
 
     private final CasUserProfileFactory casUserProfileFactory;
-    private final ManagerFactory managerFactory;
+    private final ServicesManagerFactory managerFactory;
 
     /**
      * Gets services.

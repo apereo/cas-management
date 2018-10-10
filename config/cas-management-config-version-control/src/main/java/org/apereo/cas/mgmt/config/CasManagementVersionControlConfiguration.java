@@ -2,10 +2,11 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ServiceRepositoryController;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
+import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.io.CommunicationsManager;
 
@@ -46,8 +47,8 @@ public class CasManagementVersionControlConfiguration {
 
 
     @Bean
-    public ManagerFactory managerFactory() {
-        return new ManagerFactory(servicesManager, managementProperties, repositoryFactory(), casUserProfileFactory, casProperties);
+    public MgmtManagerFactory managerFactory() {
+        return new VersionControlManagerFactory(servicesManager, managementProperties, repositoryFactory(), casUserProfileFactory, casProperties);
     }
 
     @Bean

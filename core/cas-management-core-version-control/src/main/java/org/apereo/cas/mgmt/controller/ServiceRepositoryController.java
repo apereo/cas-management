@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
+import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domains.BranchActionData;
@@ -12,7 +13,6 @@ import org.apereo.cas.mgmt.domains.Commit;
 import org.apereo.cas.mgmt.domains.Diff;
 import org.apereo.cas.mgmt.domains.GitStatus;
 import org.apereo.cas.mgmt.domains.History;
-import org.apereo.cas.mgmt.factory.ManagerFactory;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -70,7 +70,7 @@ public class ServiceRepositoryController {
     private static final int MAX_COMMITS = 100;
 
     private final RepositoryFactory repositoryFactory;
-    private final ManagerFactory managerFactory;
+    private final MgmtManagerFactory managerFactory;
     private final CasUserProfileFactory casUserProfileFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final ServicesManager servicesManager;

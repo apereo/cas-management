@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * @author Travis Schmidt
  * @since 6.0
  */
-@RestController("mangememtAppDataController")
+@RestController("managementAppDataController")
 @Slf4j
 @RequiredArgsConstructor
 public class ApplicationDataController {

@@ -5,7 +5,6 @@ import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPResponseProper
 import org.apereo.cas.grouper.GrouperGroupField;
 import org.apereo.cas.oidc.OidcConstants;
 import org.apereo.cas.services.OidcSubjectTypes;
-import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceLogoutType;
 import org.apereo.cas.services.RegisteredServiceMultifactorPolicy;
 import org.apereo.cas.services.RegisteredServiceProperty;

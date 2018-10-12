@@ -1,0 +1,12 @@
+description "Apereo CAS Management Core Authentication"
+
+dependencies {
+   
+    api project(":api:cas-mgmt-api-core")
+    
+    implementation libraries.pac4j
+    implementation libraries.casServer
+    
+    implementation project(":core:cas-mgmt-core-configuration")
+    implementation project(":core:cas-mgmt-core-util")
+}

@@ -30,8 +30,8 @@ dependencies {
   
     apply from: rootProject.file("config/core-config.gradle")
     
-    implementation project(":webapp:cas-management-webapp-config")
-    implementation project(":webapp:cas-management-webapp-init")
+    implementation project(":webapp:cas-mgmt-webapp-config")
+    implementation project(":webapp:cas-mgmt-webapp-init")
     
 }
 

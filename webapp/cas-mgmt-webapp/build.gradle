@@ -1,0 +1,13 @@
+apply from: rootProject.file("gradle/node.gradle")
+apply from: rootProject.file("gradle/webapp.gradle")
+
+if (!Boolean.getBoolean("skipClientBuild")) {
+    if (rootProject.publishReleases || Boolean.getBoolean("buildProd")) {
+        build.dependsOn(buildClient)
+    } else {
+        build.dependsOn(buildClientDev)
+    }
+    bootRun.dependsOn(buildClientDev)
+}
+
+description = "Apereo CAS Management Web Application"   

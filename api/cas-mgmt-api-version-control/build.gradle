@@ -1,0 +1,6 @@
+description "Apereo CAS Management API Version Control"
+
+dependencies {
+    implementation libraries.git
+    
+}

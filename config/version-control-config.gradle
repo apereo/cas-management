@@ -1,0 +1,7 @@
+description "Apereo CAS Management Version Control Config"
+
+dependencies {
+    apply from: rootProject.file("config/core-config.gradle")
+
+    implementation project(":config:cas-mgmt-config-version-control")
+}

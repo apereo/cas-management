@@ -1,0 +1,13 @@
+description "Apereo CAS Management Config Core"
+
+dependencies {
+    implementation libraries.casServer
+    
+    api project(":api:cas-mgmt-api-core")
+  
+    implementation project(":core:cas-mgmt-core")
+    implementation project(":core:cas-mgmt-core-authentication")
+    implementation project(":core:cas-mgmt-core-util")
+    implementation project(":core:cas-mgmt-core-configuration")
+    
+}

@@ -2,7 +2,7 @@ apply plugin: "com.moowork.node"
 
 node {
     version = "${nodeVersion}"
-    nodeModulesDir = project(":webapp-mgmt:cas-management-webapp").projectDir
+    nodeModulesDir = project(":webapp").projectDir
     download = true
 }
 
@@ -17,8 +17,8 @@ if (!Boolean.getBoolean("skipNpmCache")) {
 }
 
 if (!Boolean.getBoolean("skipNodeModulesCleanUp")) {
-    clean.delete << new File(project(":webapp-mgmt:cas-management-webapp").projectDir, "node_modules")
-    clean.delete << fileTree(dir: project(":webapp-mgmt").projectDir.getPath() + '/resources/static/js', include: '*-bundle.js')
+    //clean.delete << new File(project(":webapp").projectDir, "node_modules")
+    //clean.delete << fileTree(dir: project(":webapp").projectDir.getPath() + '/resources/static/js', include: '*-bundle.js')
 } else {
     logger.info("Skipping node_modules cleanup...")
 }
@@ -44,3 +44,5 @@ task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
         description: "Runs Angular TypeScript and HtML Linting") {
     args = ['run', 'lint']
 }
+
+

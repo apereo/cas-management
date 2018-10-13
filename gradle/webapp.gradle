@@ -1,4 +1,4 @@
-description = "Apereo CAS Web Application"
+description = "Apereo CAS Management Web Application"
 
 apply plugin: "war"
 
@@ -16,18 +16,23 @@ sourceSets {
      */
     bootRun {
         resources {
-            srcDirs new File("/etc/cas/templates"), new File(project(":webapp-mgmt:cas-management-webapp").getProjectDir(), "resources")
+            srcDirs new File(project(":webapp").getProjectDir(), "resources")
         }
     }
 }
 
+
 apply from: rootProject.file("gradle/springboot.gradle")
 
 dependencies {
-    runtimeOnly project(":webapp-mgmt:cas-management-webapp-configuration")
-    runtimeOnly project(":webapp-mgmt:cas-management-webapp-support")
-
-    providedRuntime libraries.springboottomcat
+    implementation libraries.casServer 
+    implementation libraries.classmate
+  
+    apply from: rootProject.file("config/core-config.gradle")
+    
+    implementation project(":webapp:cas-mgmt-webapp-config")
+    implementation project(":webapp:cas-mgmt-webapp-init")
+    
 }
 
 /**

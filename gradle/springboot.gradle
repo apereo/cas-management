@@ -5,8 +5,6 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !root
 
     apply plugin: "org.springframework.boot"
 
-    apply from: rootProject.file("gradle/node.gradle")
-    
     sourceSets {
         bootRun {
             resources {
@@ -39,11 +37,6 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !root
             }
             from "${buildDir}/resources/main", { into "WEB-INF/classes" }
             launchScript()
-            if (rootProject.publishReleases || Boolean.getBoolean("buildProd")) {
-                dependsOn(buildClient)
-            } else {
-                dependsOn(buildClientDev)
-            }
         }
 
     } else {
@@ -51,11 +44,6 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !root
             mainClassName = project.ext.mainClassName
             from "${buildDir}/resources/main", { into "WEB-INF/classes" }
             launchScript()
-            if (rootProject.publishReleases || Boolean.getBoolean("buildProd")) {
-                dependsOn(buildClient)
-            } else {
-                dependsOn(buildClientDev)
-            }
         }
     }
 
@@ -66,7 +54,7 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !root
                 classpath = files("$buildDir/classes/main", "$buildDir/resources/main", pathingJar.archivePath)
             }
         }
-        dependsOn(buildClientDev)
+        
         sourceResources sourceSets.bootRun
         systemProperties = System.properties
 

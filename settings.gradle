@@ -1,6 +1,32 @@
-rootProject.name = "cas-management"
+rootProject.name = "cas-mgmt"
 
-include "webapp-mgmt:cas-management-webapp"
-include "webapp-mgmt:cas-management-webapp-support"
-include "webapp-mgmt:cas-management-webapp-support-ldap"
-include "webapp-mgmt:cas-management-webapp-configuration"
+include "api:cas-mgmt-api-core"
+include "api:cas-mgmt-api-version-control"
+include "api:cas-mgmt-api-delegated"
+
+include ":config:cas-mgmt-config-audit"
+include ":config:cas-mgmt-config-authentication"
+include ":config:cas-mgmt-config-authz"
+include ":config:cas-mgmt-config-authz-ldap"
+include ":config:cas-mgmt-config-configuration"
+include ":config:cas-mgmt-config-core"
+include ":config:cas-mgmt-config-version-control"
+include ":config:cas-mgmt-config-delegated"
+
+include ":core:cas-mgmt-core"
+include ":core:cas-mgmt-core-authentication"
+include ":core:cas-mgmt-core-authz"
+include ":core:cas-mgmt-core-audit"
+include ":core:cas-mgmt-core-configuration"
+include ":core:cas-mgmt-core-version-control"
+include ":core:cas-mgmt-core-util"
+
+include ":docs:cas-mgmt-documentation"
+
+include ":support:cas-mgmt-support-delegated"
+include ":support:cas-mgmt-support-version-control"
+
+include ":webapp:cas-mgmt-webapp"
+include ":webapp:cas-mgmt-webapp-config"
+include ":webapp:cas-mgmt-webapp-init"
+include ":webapp:cas-mgmt-webapp-tomcat"

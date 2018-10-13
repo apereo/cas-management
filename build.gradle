@@ -28,7 +28,6 @@ ext {
 def isArtifactSigningRequired = {
     return (publishReleases && sonatypeUsername != null && sonatypePassword != null)
 }
-
 apply from: rootProject.file("gradle/overrides.gradle")
 apply from: rootProject.file("gradle/dependencies.gradle")
 apply plugin: "com.github.ben-manes.versions"
@@ -58,6 +57,7 @@ buildscript {
         classpath "io.franzbecker:gradle-lombok:$gradleLombokVersion"
         classpath "com.github.ben-manes:gradle-versions-plugin:$gradleDependencyVersionsVersion"
         classpath "io.spring.gradle:propdeps-plugin:$gradlePropDepsVersion"
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
         classpath "org.ajoberstar:grgit:$gradleGitVersion"
         classpath "net.ltgt.gradle:gradle-errorprone-javacplugin-plugin:$gradleErrorProneVersion"
         classpath "com.moowork.gradle:gradle-node-plugin:$gradleNodeVersion"
@@ -115,11 +115,7 @@ allprojects {
         gradleLint.rules = ["dependency-parentheses", "dependency-tuple"]
     }
 
-    if (project.name == "cas-server-support-bom") {
-        logger.info "Skipping pom generation for [$project.name], letting it create <dependency-management> entries on its own."
-    } else {
-        apply from: rootProject.file("gradle/maven.gradle")
-    }
+    apply from: rootProject.file("gradle/maven.gradle")
 
     jacoco {
         toolVersion = "$gradleJacocoVersion"
@@ -161,7 +157,9 @@ allprojects {
         options.addBooleanOption('html5', true)
         failOnError = Boolean.getBoolean("ignoreJavadocFailures")
     }
+    
 }
+
 
 subprojects {
     task dependencyCheckAnalyze(type: org.owasp.dependencycheck.gradle.tasks.Analyze)
@@ -187,12 +185,20 @@ subprojects {
     apply plugin: "propdeps-maven"
     apply plugin: "propdeps-idea"
     apply plugin: "propdeps-eclipse"
+    apply plugin: "io.spring.dependency-management"
 
     apply from: rootProject.file("gradle/tasks.gradle")
     apply from: rootProject.file("gradle/tests.gradle")
+    
+    
+    dependencyManagement {
+        imports {
+            mavenBom "org.apereo.cas:cas-server-support-bom:$casVersion"
+        }
+    }
 
     ext.libraries = rootProject.ext.libraries
-
+    
     repositories {
         mavenLocal()
         mavenCentral()
@@ -202,10 +208,11 @@ subprojects {
         maven { url "https://repo.spring.io/milestone/" }
         maven { url "https://repo.spring.io/libs-milestone" }
         maven { url "https://dl.bintray.com/uniconiam/maven" }
+        maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
         maven { url "https://jitpack.io" }
         jcenter()
     }
-
+    
 
     configurations {
         tests
@@ -220,14 +227,6 @@ subprojects {
             cacheDynamicVersionsFor 1, "days"
             cacheChangingModulesFor 5, "days"
 
-            /**
-             * Required for all JRadius modules
-             */
-            eachDependency { DependencyResolveDetails details ->
-                if (details.requested.group == "gnu-getopt") {
-                    details.useTarget group: "gnu.getopt", name: "java-getopt", version: details.requested.version
-                }
-            }
         }
         exclude(group: "ch.qos.logback", module: "logback-core")
         exclude(group: "ch.qos.logback", module: "logback-classic")
@@ -348,11 +347,14 @@ subprojects {
             it.finalizedBy outputSpotbugsReports
         }
     }
+    
 
     dependencies {
+        
         optional libraries.springcomponentindexer
 
         implementation libraries.aspectj
+        implementation libraries.validationapi
 
         api libraries.jaxb
         api libraries.log4j

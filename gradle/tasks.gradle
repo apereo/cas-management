@@ -166,3 +166,4 @@ gradle.buildFinished { buildResult ->
 }
 
 clean.dependsOn("cleanLogs")
+

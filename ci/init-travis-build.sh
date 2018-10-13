@@ -27,28 +27,18 @@ echo -e "User HOME directory: ${HOME}"
 echo -e "Secure environment variables: ${TRAVIS_SECURE_ENV_VARS}"
 echo -e "************************************"
 
-if [ "$TRAVIS_SECURE_ENV_VARS" == "false" ]
-then
-  echo -e "Secure environment variables are NOT available...\n"
-else
-  echo -e "Secure environment variables are available...\n"
-  #echo -e "GH_TOKEN -> ${GH_TOKEN}"
-fi
+echo -e "Stopping current services...\n"
+sudo service mysql stop
 
-if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$PUBLISH_SNAPSHOTS" == "true" ]; then
-    echo -e "Skipping build since this is a pull request and we are not publishing snapshots.\n"
-    exit 0
-fi
+echo -e "Setting build environment...\n"
+sudo mkdir -p /etc/cas/config  /etc/cas/services
 
 echo -e "Configuring Gradle wrapper...\n"
 chmod -R 777 ./gradlew
 
-echo -e "Installing NPM...\n"
-#mkdir ~/.npm-global
-#export NPM_CONFIG_PREFIX=~/.npm-global
-#echo "NPM config environment variable: $NPM_CONFIG_PREFIX"
-./gradlew npmInstall --stacktrace -q
-echo "Rebuilding using node-sass"
-npm rebuild node-sass
+echo "Home directory: $HOME"
+
+echo "Gradle Home directory:"
+./gradlew gradleHome
 
 echo -e "Configured build environment\n"

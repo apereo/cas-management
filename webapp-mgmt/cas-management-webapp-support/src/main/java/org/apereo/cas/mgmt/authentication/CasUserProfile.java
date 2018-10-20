@@ -1,14 +1,12 @@
 package org.apereo.cas.mgmt.authentication;
 
 import lombok.Getter;
-import lombok.val;
 import org.apereo.cas.services.RegisteredService;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 /**

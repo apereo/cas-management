@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import org.apache.lucene.queryparser.flexible.core.processors.QueryNodeProcessorImpl;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
@@ -116,7 +117,7 @@ public class LuceneSearch {
                 .flatMap(t -> createFields(t).stream())
                 .forEach(document::add);
         if (fields.contains("body")) {
-            document.add(new TextField("body", json.toString(), Field.Store.YES));
+            document.add(new TextField("body", json.toString(), Field.Store.NO));
         }
         document.add(new StringField("id", String.valueOf(id), Field.Store.YES));
         return document;
@@ -140,14 +141,17 @@ public class LuceneSearch {
         if (!"body".equals(field)) {
             if (type == JsonType.NUMBER) {
                 fields.add(new LongPoint(field, ((Long) value).longValue()));
-                fields.add(new StringField(field, String.valueOf(value), Field.Store.YES));
+                fields.add(new StringField(field, String.valueOf(value), Field.Store.NO));
             }
             if (EnumSet.of(JsonType.ARRAY, JsonType.OBJECT, JsonType.BOOLEAN).contains(type)) {
-                fields.add(new TextField(field, (String) value, Field.Store.YES));
+                fields.add(new TextField(field, (String) value, Field.Store.NO));
             }
             if (type == JsonType.STRING) {
-                fields.add(new StringField(field, (String) value, Field.Store.YES));
-                fields.add(new TextField(field, (String) value, Field.Store.YES));
+                if (field.endsWith("-reg")) {
+                    fields.add(new StringField(field.replace("-reg", ""), (String) value, Field.Store.NO));
+                } else {
+                    fields.add(new TextField(field, (String) value, Field.Store.NO));
+                }
             }
         }
         return fields;
@@ -221,7 +225,7 @@ public class LuceneSearch {
             return fields;
         }
         if (query instanceof RegexpQuery) {
-            fields.add(((RegexpQuery) query).getField());
+            fields.add(((RegexpQuery) query).getField() + "-reg");
             return fields;
         }
         if (query instanceof TermQuery) {
@@ -265,26 +269,27 @@ public class LuceneSearch {
             val nextField = field.substring(field.indexOf(".") + 1);
             return getValue(nextObj, nextField);
         }
-        val myVal = json.get(field);
+        val tfield = field.replace("-reg", "");
+        val myVal = json.get(tfield);
         val type = myVal != null ? myVal.getType() : null;
         if (type == null) {
             return Pair.of(JsonType.NULL, null);
         }
         if (type == JsonType.STRING) {
-            return Pair.of(JsonType.STRING, json.getString(field, ""));
+            return Pair.of(JsonType.STRING, json.getString(tfield, ""));
         }
         if (type == JsonType.BOOLEAN) {
-            return Pair.of(JsonType.BOOLEAN, String.valueOf(json.getBoolean(field, false)));
+            return Pair.of(JsonType.BOOLEAN, String.valueOf(json.getBoolean(tfield, false)));
         }
         if (type == JsonType.NUMBER) {
-            return Pair.of(JsonType.NUMBER, json.getLong(field, 0));
+            return Pair.of(JsonType.NUMBER, json.getLong(tfield, 0));
         }
         if (type == JsonType.ARRAY) {
-            return Pair.of(JsonType.ARRAY, json.get(field).asArray().toString());
+            return Pair.of(JsonType.ARRAY, json.get(tfield).asArray().toString());
         }
         if (type == JsonType.OBJECT) {
-            return Pair.of(JsonType.OBJECT, json.get(field).toString());
+            return Pair.of(JsonType.OBJECT, json.get(tfield).toString());
         }
-        return Pair.of(JsonType.DSF, json.get(field));
+        return Pair.of(JsonType.DSF, json.get(tfield));
     }
 }

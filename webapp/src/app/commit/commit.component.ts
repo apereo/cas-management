@@ -15,7 +15,7 @@ export class CommitComponent implements OnInit {
   isAdmin: boolean;
 
   constructor(public dialogRef: MatDialogRef<CommitComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: [any],
+              @Inject(MAT_DIALOG_DATA) public data: [any, boolean],
               public messages: Messages) { }
 
   ngOnInit() {

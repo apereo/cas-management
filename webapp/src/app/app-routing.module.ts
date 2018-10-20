@@ -49,7 +49,7 @@ import {RepoHistoryResolver} from './repo-history/repo-history.resolver';
         }
       },
       {
-        path: 'search/:query',
+        path: 'search',
         component: SearchComponent
       },
       {

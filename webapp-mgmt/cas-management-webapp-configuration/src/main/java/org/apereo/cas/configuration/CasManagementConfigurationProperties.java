@@ -117,6 +117,11 @@ public class CasManagementConfigurationProperties implements Serializable {
     private boolean enableDiscoveryEndpointCall = true;
 
     /**
+     * Index directory fro Lucene.
+     */
+    private String luceneIndexDir = "/etc/cas/lucene";
+
+    /**
      * Notifications.
      */
     @NestedConfigurationProperty

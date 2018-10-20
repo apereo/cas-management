@@ -1,8 +1,17 @@
 package org.apereo.cas.mgmt;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.services.RegisteredService;
+import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
+import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
+import org.apereo.cas.util.RegexUtils;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+
+import java.io.ByteArrayOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is {@link CasManagementUtils}.
@@ -11,6 +20,11 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
  * @since 5.2.0
  */
 public final class CasManagementUtils {
+
+    private static final DefaultRegisteredServiceJsonSerializer JSON_SERIALIZER = new DefaultRegisteredServiceJsonSerializer();
+    private static final RegisteredServiceYamlSerializer YAML_SERIALIZER = new RegisteredServiceYamlSerializer();
+    private static final Pattern DOMAIN_EXTRACTOR = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
+    private static final Pattern DOMAIN_PATTERN = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     private CasManagementUtils() {
     }
@@ -46,5 +60,72 @@ public final class CasManagementUtils {
     public static String getSpecificationVersion() {
         return CasManagementUtils.class.getPackage().getSpecificationVersion();
     }
+
+    /**
+     * Returns service as yaml string.
+     *
+     * @param service - the service
+     * @return - yaml
+     */
+    public static String toYaml(final RegisteredService service) {
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        YAML_SERIALIZER.to(output, service);
+        return output.toString();
+    }
+
+    /**
+     * Returns service as json string.
+     *
+     * @param service - the service
+     * @return - json
+     */
+    public static String toJson(final RegisteredService service) {
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        JSON_SERIALIZER.to(output, service);
+        return output.toString();
+    }
+
+    /**
+     * Parses the passed yaml into a RegisteredService.
+     *
+     * @param yaml - the yaml
+     * @return - RegisteredService
+     */
+    public static RegisteredService fromYaml(final String yaml) {
+        return YAML_SERIALIZER.from(yaml);
+    }
+
+    /**
+     * Parses the passed json into a RegisteredService.
+     * @param json - the json
+     * @return - RegisteredService
+     */
+    public static RegisteredService fromJson(final String json) {
+        return JSON_SERIALIZER.from(json);
+    }
+
+    /**
+     * Extract domain string.
+     *
+     * @param service the service
+     * @return the string
+     */
+    public static String extractDomain(final String service) {
+        final Matcher extractor = DOMAIN_EXTRACTOR.matcher(service.toLowerCase());
+        return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
+    }
+
+    /**
+     * Validate domain string.
+     *
+     * @param providedDomain the provided domain
+     * @return the string
+     */
+    public static String validateDomain(final String providedDomain) {
+        final String domain = StringUtils.remove(providedDomain, "\\");
+        final Matcher match = DOMAIN_PATTERN.matcher(StringUtils.remove(domain, "\\"));
+        return match.matches() ? domain : "default";
+    }
+
 
 }

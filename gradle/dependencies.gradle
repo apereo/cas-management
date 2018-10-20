@@ -708,5 +708,10 @@ ext.libraries = [
                     exclude group: 'org.slf4j', module: 'slf4j'
                     exclude group: 'org.slf4j', module: 'slf4j-api'
                     exclude group: 'org.apache.commons', module: 'commons-lang3'
-                }
+                },
+        lucene                 : [
+                dependencies.create("org.apache.lucene:lucene-core:7.5.0"),
+                dependencies.create("org.apache.lucene:lucene-queryparser:7.5.0"),
+                dependencies.create("org.apache.lucene:lucene-analyzers-common:7.5.0")
+        ]
 ]

@@ -12,6 +12,7 @@ import org.apereo.cas.mgmt.DefaultCasManagementEventListener;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.services.web.ForwardingController;
+import org.apereo.cas.mgmt.services.web.LuceneSearch;
 import org.apereo.cas.mgmt.services.web.ManageRegisteredServicesMultiActionController;
 import org.apereo.cas.mgmt.services.web.RegisteredServiceSimpleFormController;
 import org.apereo.cas.mgmt.services.web.ServiceRepositoryController;
@@ -215,6 +216,11 @@ public class CasManagementWebAppConfiguration extends WebMvcConfigurerAdapter {
     public ServiceRepositoryController serviceRepositoryController() {
         return new ServiceRepositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
             managementProperties, servicesManager, communicationsManager);
+    }
+
+    @Bean
+    public LuceneSearch luceneSearch() {
+        return new LuceneSearch(managerFactory(), casUserProfileFactory, managementProperties);
     }
 
     @RefreshScope

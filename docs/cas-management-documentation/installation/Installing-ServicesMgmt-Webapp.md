@@ -92,6 +92,32 @@ Like the default manager there are some caveats to observe:
 - If a `serviceId` expression can match only a single domain, then `.` are not required to be escaped. This rule can be relaxed, 
 because when the domain list is looked up, is done so by an equals expression and not a matching test. This means that only that domain 
 is guaranteed to match the domains in the list.
+
+## Search
+
+Services in the registry can be searched by selecting the "Search" option form the navigation panel. Full text search of services is powered by
+[Apache Lucene](http://lucene.apache.org).  Enter a term to search by in the field at the top of the Search Results screen and click "Search" to 
+run a query.  The table can be sorted by clicking on the headers once data is populated.  Advanced searching can be done using the Lucene QueryParser syntax 
+[found here](http://lucene.apache.org/core/7_5_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description).
+
+Searches in general will perform faster and provide more accurate results if the search is limited to specific fields the service.
+
+The keys used in the json format of the service can be used as field names in queries:
+
+```text
+name: Apereo
+```
+Query for nested fields by using "." notation:
+
+```text
+multifactorPolicy.bypassEnabled: true
+```
+
+You can also combine terms:
+
+```text
+name: Apereo AND multifactorPolicy.bypassEnabled: true
+```
  
 ## Version Control
 

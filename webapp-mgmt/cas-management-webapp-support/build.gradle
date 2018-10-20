@@ -6,7 +6,8 @@ dependencies {
     implementation libraries.springcloudconfigclient
     implementation libraries.jgit
     implementation libraries.casServer
-
+    implementation libraries.lucene
+    
     implementation project(":webapp-mgmt:cas-management-webapp-configuration")
     
 }

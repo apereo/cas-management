@@ -4,14 +4,17 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
+import org.apereo.cas.util.RegexUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 
 import java.io.ByteArrayOutputStream;
+import java.util.regex.Pattern;
 
 /**
  * This is {@link CasManagementUtils}.
@@ -24,6 +27,8 @@ public final class CasManagementUtils {
 
     private static final DefaultRegisteredServiceJsonSerializer JSON_SERIALIZER = new DefaultRegisteredServiceJsonSerializer();
     private static final RegisteredServiceYamlSerializer YAML_SERIALIZER = new RegisteredServiceYamlSerializer();
+    private static final Pattern DOMAIN_EXTRACTOR = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
+    private static final Pattern DOMAIN_PATTERN = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     private CasManagementUtils() {
     }
@@ -102,5 +107,29 @@ public final class CasManagementUtils {
     public static RegisteredService fromJson(final String json) {
         return JSON_SERIALIZER.from(json);
     }
+
+    /**
+     * Extract domain string.
+     *
+     * @param service the service
+     * @return the string
+     */
+    public static String extractDomain(final String service) {
+        val extractor = DOMAIN_EXTRACTOR.matcher(service.toLowerCase());
+        return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
+    }
+
+    /**
+     * Validate domain string.
+     *
+     * @param providedDomain the provided domain
+     * @return the string
+     */
+    public static String validateDomain(final String providedDomain) {
+        val domain = StringUtils.remove(providedDomain, "\\");
+        val match = DOMAIN_PATTERN.matcher(StringUtils.remove(domain, "\\"));
+        return match.matches() ? domain : "default";
+    }
+
 
 }

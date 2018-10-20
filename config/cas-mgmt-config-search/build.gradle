@@ -1,0 +1,12 @@
+description "elas"
+
+dependencies {
+    implementation libraries.casServer
+    
+    implementation project(":api:cas-mgmt-api-core")
+    implementation project(":core:cas-mgmt-core")
+    implementation project(":core:cas-mgmt-core-configuration")
+    implementation project(":core:cas-mgmt-core-authentication")
+    implementation project(":support:cas-mgmt-support-search")
+    
+}

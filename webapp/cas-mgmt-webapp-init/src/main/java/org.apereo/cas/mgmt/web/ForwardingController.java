@@ -32,7 +32,8 @@ public class ForwardingController {
         "localChanges",
         "pulls",
         "import",
-        "repo-history"})
+        "repo-history",
+        "search"})
     public String forward() {
         return "manage.html";
     }

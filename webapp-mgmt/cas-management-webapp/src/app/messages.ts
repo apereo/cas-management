@@ -20,6 +20,7 @@ export class Messages {
   readonly management_services_header_navbar_navitem_addNewService = 'Add New Service';
   readonly management_services_header_navbar_navitem_manageService = 'Manage Services';
   readonly management_services_header_navbar_navitem_sessions = 'Sessions';
+  readonly management_services_header_navbar_navitem_search = 'Search';
   readonly management_services_header_navbar_navitem_logout = 'Log Out';
   readonly management_services_header_pendingSubmits = 'There are pending submits that need to be reviewed';
 

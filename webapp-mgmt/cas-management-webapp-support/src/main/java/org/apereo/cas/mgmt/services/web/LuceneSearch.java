@@ -147,8 +147,11 @@ public class LuceneSearch {
                 fields.add(new TextField(field, (String) value, Field.Store.YES));
             }
             if (type == JsonType.STRING) {
-                fields.add(new StringField(field, (String) value, Field.Store.YES));
-                fields.add(new TextField(field, (String) value, Field.Store.YES));
+                if (field.endsWith("-reg")) {
+                    fields.add(new StringField(field.replace("-reg", ""), (String) value, Field.Store.NO));
+                } else {
+                    fields.add(new TextField(field, (String) value, Field.Store.NO));
+                }
             }
         }
         return fields;
@@ -222,7 +225,7 @@ public class LuceneSearch {
             return fields;
         }
         if (query instanceof RegexpQuery) {
-            fields.add(((RegexpQuery) query).getField());
+            fields.add(((RegexpQuery) query).getField() + "-reg");
             return fields;
         }
         if (query instanceof TermQuery) {
@@ -266,26 +269,27 @@ public class LuceneSearch {
             final String nextField = field.substring(field.indexOf(".") + 1);
             return getValue(nextObj, nextField);
         }
+        final String tfield = field.replace("-reg", "");
         final JsonObject myVal = json.get(field).asObject();
         final JsonType type = myVal != null ? myVal.getType() : null;
         if (type == null) {
             return Pair.of(JsonType.NULL, null);
         }
         if (type == JsonType.STRING) {
-            return Pair.of(JsonType.STRING, json.getString(field, ""));
+            return Pair.of(JsonType.STRING, json.getString(tfield, ""));
         }
         if (type == JsonType.BOOLEAN) {
-            return Pair.of(JsonType.BOOLEAN, String.valueOf(json.getBoolean(field, false)));
+            return Pair.of(JsonType.BOOLEAN, String.valueOf(json.getBoolean(tfield, false)));
         }
         if (type == JsonType.NUMBER) {
-            return Pair.of(JsonType.NUMBER, json.getLong(field, 0));
+            return Pair.of(JsonType.NUMBER, json.getLong(tfield, 0));
         }
         if (type == JsonType.ARRAY) {
-            return Pair.of(JsonType.ARRAY, json.get(field).asArray().toString());
+            return Pair.of(JsonType.ARRAY, json.get(tfield).asArray().toString());
         }
         if (type == JsonType.OBJECT) {
-            return Pair.of(JsonType.OBJECT, json.get(field).toString());
+            return Pair.of(JsonType.OBJECT, json.get(tfield).toString());
         }
-        return Pair.of(JsonType.DSF, json.get(field));
+        return Pair.of(JsonType.DSF, json.get(tfield));
     }
 }

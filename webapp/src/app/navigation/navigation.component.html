@@ -17,6 +17,12 @@
         <mat-icon>apps</mat-icon>
         <span i18n>Services</span>
       </a>
+      <a mat-list-item routerLink="/search" (click)="close()">
+        <mat-icon>search</mat-icon>
+        <ng-container i18n="management.services.header.navbar.navitem.search">
+          {{ messages.management_services_header_navbar_navitem_search }}
+        </ng-container>
+      </a>
       <a mat-list-item *ngIf="isDelegated() && isAdmin()" routerLink="/pulls" (click)="close()">
         <mat-icon>file_download</mat-icon>
         <span [matBadge]="pullRequests()"

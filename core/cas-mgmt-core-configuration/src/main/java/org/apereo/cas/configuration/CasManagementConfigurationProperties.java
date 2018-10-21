@@ -102,6 +102,11 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private Delegated delegated = new Delegated();
 
+    /**
+     * Lucence directory for writting indexes.
+     */
+    private String luceneIndexDir = "/etc/cas/lucene";
+
     @Getter
     @Setter
     @RequiresModule(name = "cas-management-config-ldap-authz")

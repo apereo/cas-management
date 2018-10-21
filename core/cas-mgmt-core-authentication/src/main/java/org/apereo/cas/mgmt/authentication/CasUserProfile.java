@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authentication;
 
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
+import org.apereo.cas.services.RegisteredService;
 
 import lombok.Getter;
 import lombok.val;
@@ -78,7 +79,16 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
      */
     public boolean hasPermission(final String domain) {
         val permissions = getPermissions();
-        return permissions.contains("*") || permissions.stream().anyMatch(domain::endsWith);
+        return isAdministrator() || permissions.contains("*") || permissions.stream().anyMatch(domain::endsWith);
+    }
 
+    /**
+     * Checks if user has permission to the {@link RegisteredService}.
+     *
+     * @param service - the service
+     * @return true if user has permission
+     */
+    public boolean hasPermission(final RegisteredService service) {
+        return isAdministrator() || hasPermission(service.getServiceId());
     }
 }

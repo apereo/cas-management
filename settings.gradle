@@ -12,6 +12,7 @@ include ":config:cas-mgmt-config-configuration"
 include ":config:cas-mgmt-config-core"
 include ":config:cas-mgmt-config-version-control"
 include ":config:cas-mgmt-config-delegated"
+include ":config:cas-mgmt-config-search"
 
 include ":core:cas-mgmt-core"
 include ":core:cas-mgmt-core-authentication"
@@ -25,6 +26,7 @@ include ":docs:cas-mgmt-documentation"
 
 include ":support:cas-mgmt-support-delegated"
 include ":support:cas-mgmt-support-version-control"
+include ":support:cas-mgmt-support-search"
 
 include ":webapp:cas-mgmt-webapp"
 include ":webapp:cas-mgmt-webapp-config"

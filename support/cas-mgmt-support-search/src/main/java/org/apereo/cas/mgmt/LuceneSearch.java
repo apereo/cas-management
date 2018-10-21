@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt;
 
-import org.apache.lucene.queryparser.flexible.core.processors.QueryNodeProcessorImpl;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;

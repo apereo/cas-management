@@ -4,7 +4,9 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.controller.ServiceRepositoryController;
+import org.apereo.cas.mgmt.controller.ChangeController;
+import org.apereo.cas.mgmt.controller.CommitController;
+import org.apereo.cas.mgmt.controller.HistoryController;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.services.ServicesManager;
@@ -57,9 +59,20 @@ public class CasManagementVersionControlConfiguration {
     }
 
     @Bean
-    public ServiceRepositoryController serviceRepositoryController() {
-        return new ServiceRepositoryController(repositoryFactory(), managerFactory(), casUserProfileFactory,
-                managementProperties, servicesManager, communicationsManager);
+    public CommitController commitController() {
+        LOGGER.info("CREATING COMMIT CONTROLLER");
+        return new CommitController(repositoryFactory(), casUserProfileFactory,
+                managementProperties, servicesManager);
+    }
+
+    @Bean
+    public ChangeController changeController() {
+        return new ChangeController(repositoryFactory(), managerFactory(), casUserProfileFactory);
+    }
+
+    @Bean
+    public HistoryController historyController() {
+        return new HistoryController(repositoryFactory(), managerFactory(), casUserProfileFactory);
     }
 
 }

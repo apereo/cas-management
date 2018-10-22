@@ -2,7 +2,7 @@ description "Apereo CAS Management Webapp Config"
 
 dependencies {
     implementation libraries.casServer
-    implementation libraries.pac4j
+    api libraries.pac4j
     implementation libraries.thymeleaf
     
     

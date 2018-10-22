@@ -107,7 +107,7 @@ public class DelegatedController {
     @PostMapping(value = "pullRequests", consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<BranchData> branches(final HttpServletResponse response,
                                      final HttpServletRequest request,
-                                     @RequestBody final boolean[] options) throws Exception {
+                                     final @RequestBody boolean[] options) throws Exception {
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
@@ -175,13 +175,12 @@ public class DelegatedController {
     public void acceptChange(final HttpServletRequest request,
                              final HttpServletResponse response,
                              final @RequestBody BranchActionData acception) throws Exception {
-        val branch = acception.getBranch();
-        val text = acception.getNote();
         val user = casUserProfileFactory.from(request, response);
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
-
+        val branch = acception.getBranch();
+        val text = acception.getNote();
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.merge(branch.getId());
             val com = git.getCommit(branch.getId());
@@ -222,7 +221,6 @@ public class DelegatedController {
         if (!user.isAdministrator()) {
             throw new Exception("Permission Denied");
         }
-
         val branch = rejection.getBranch();
         val text = rejection.getNote();
         try (GitUtil git = repositoryFactory.masterRepository()) {

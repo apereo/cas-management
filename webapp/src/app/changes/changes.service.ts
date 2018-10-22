@@ -10,31 +10,27 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class ChangesService extends Service {
 
-  controller = 'versionControl/';
+  controller = 'change/';
 
   getChanges(branch: String): Observable<DiffEntry[]> {
-    return this.get<DiffEntry[]>(this.controller + 'changes?branch=' + branch);
+    return this.get<DiffEntry[]>(this.controller + branch);
   }
 
   viewJson(id: String): Observable<String> {
-    return this.getText(this.controller + 'viewJSON?id=' + id);
+    return this.getText(this.controller + 'json/' + id);
   }
 
   viewYaml(id: String): Observable<String> {
-    return this.getText(this.controller + 'viewYaml?id=' + id);
+    return this.getText(this.controller + 'yaml/' + id);
   }
 
   viewDiff(oldId: String, newId: String): Observable<String> {
     const data = [oldId, newId];
-    return this.postText(this.controller + 'viewDiff', data);
-  }
-
-  getChange(change: String): Observable<AbstractRegisteredService> {
-    return this.get<AbstractRegisteredService>(this.controller + 'viewChange?id=' + change);
+    return this.postText(this.controller + 'diff', data);
   }
 
   getChangePair(change: String): Observable<AbstractRegisteredService[]> {
-    return this.get<AbstractRegisteredService[]>(this.controller + 'changePair?id=' + change);
+    return this.get<AbstractRegisteredService[]>(this.controller + 'pair/' + change);
   }
 
 }

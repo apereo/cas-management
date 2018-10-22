@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.naming.NoPermissionException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -145,8 +146,8 @@ public class ServiceController {
      */
     @GetMapping("/yaml/{id}")
     public String getYaml(final HttpServletRequest request,
-                                          final HttpServletResponse response,
-                                          @PathVariable("id") final Long id) throws Exception {
+                          final HttpServletResponse response,
+                          final @PathVariable("id") Long id) throws Exception {
         val service = getService(request, response, id);
         return CasManagementUtils.toYaml(service);
     }
@@ -162,8 +163,8 @@ public class ServiceController {
      */
     @GetMapping("/json/{id}")
     public String getJson(final HttpServletRequest request,
-                                          final HttpServletResponse response,
-                                          @PathVariable("id") final Long id) throws Exception {
+                          final HttpServletResponse response,
+                          final @PathVariable("id") Long id) throws Exception {
         val service = getService(request, response, id);
         return CasManagementUtils.toJson(service);
     }
@@ -171,8 +172,7 @@ public class ServiceController {
     private RegisteredService getService(final HttpServletRequest request,
                                          final HttpServletResponse response,
                                          final Long id) throws Exception {
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = managerFactory.from(request, casUserProfile);
+        val manager = managerFactory.from(request, response);
         var service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
 
         if (service == null) {
@@ -186,27 +186,20 @@ public class ServiceController {
      * Parses the passes json or yaml string into a Registered Service object and returns to the client.
      * The id of the service will be set to -1 to force adding a new assigned id if saved.
      *
-     * @param response - the response
      * @param service  - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
      * @throws Exception - failed
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public RegisteredService importService(final HttpServletResponse response,
-                                           @RequestBody final String service) throws Exception {
-        try {
-            var svc = (RegisteredService) null;
-            if (service.startsWith("{")) {
-                svc = CasManagementUtils.fromJson(service);
-            } else {
-                svc = CasManagementUtils.fromYaml(service);
-            }
-            svc.setId(-1);
-            return svc;
-        } catch (final Exception e) {
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            throw new Exception("Failed to parse Service");
+    public RegisteredService importService(final @RequestBody String service) {
+        var svc = (RegisteredService) null;
+        if (service.startsWith("{")) {
+            svc = CasManagementUtils.fromJson(service);
+        } else {
+            svc = CasManagementUtils.fromYaml(service);
         }
+        svc.setId(-1);
+        return svc;
     }
 
     /**
@@ -219,9 +212,13 @@ public class ServiceController {
      */
     @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void updateOrder(final HttpServletRequest request, final HttpServletResponse response,
+    public void updateOrder(final HttpServletRequest request,
+                            final HttpServletResponse response,
                             @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
+        if (!casUserProfile.hasPermission(svcs[0].getServiceId())) {
+            throw new NoPermissionException("You do not have permission");
+        }
         val manager = managerFactory.from(request, casUserProfile);
         val id = svcs[0].getAssignedId();
         val svcA = manager.findServiceBy(Long.parseLong(id));

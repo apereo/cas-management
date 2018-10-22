@@ -28,7 +28,7 @@ export class ServiceViewService extends Service {
   }
 
   revert(fileName: string): Observable<String> {
-    return this.getText('versionControl/revert?path=' + fileName);
+    return this.getText('history/revert/' + fileName);
   }
 
   updateOrder(a: ServiceItem, b: ServiceItem): Observable<String> {

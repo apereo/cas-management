@@ -26,7 +26,7 @@ public class ForwardingController {
         "domains",
         "duplicate/{id:.*}",
         "view/{id:.*}",
-        "search/{query:.*}",
+        "search",
         "history/{fileName:.*}",
         "json/{fileId:.*}",
         "localChanges",

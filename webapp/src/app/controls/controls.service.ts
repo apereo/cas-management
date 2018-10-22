@@ -16,7 +16,6 @@ import {MatDialog} from '@angular/material';
 export class ControlsService extends Service {
 
   status: GitStatus;
-  controller = 'versionControl/';
 
   constructor(public http: HttpClient,
               public dialog: MatDialog) {
@@ -32,11 +31,11 @@ export class ControlsService extends Service {
   }
 
   commit(msg: String): Observable<String> {
-    return this.post(this.controller + 'commit', msg);
+    return this.post('commit', msg);
   }
 
   publish(): Observable<String> {
-    return this.getText(this.controller + 'publish');
+    return this.getText('commit/publish');
   }
 
   submit(msg): Observable<String> {
@@ -45,20 +44,20 @@ export class ControlsService extends Service {
 
 
   untracked(): Observable<Change[]> {
-    return this.get<Change[]>(this.controller + 'untracked')
+    return this.get<Change[]>('change/untracked')
   }
 
   getCommits(): Observable<Commit[]> {
-    return this.get<Commit[]>(this.controller + 'commitList')
+    return this.get<Commit[]>('commit/unpublished')
   }
 
   gitStatus() {
-    this.get<GitStatus>(this.controller + 'gitStatus')
+    this.get<GitStatus>('commit/status')
       .subscribe(resp => this.status = resp);
   }
 
   sync(): Observable<String> {
-    return this.getText(this.controller + 'sync');
+    return this.getText( 'commit/sync');
   }
 
 }

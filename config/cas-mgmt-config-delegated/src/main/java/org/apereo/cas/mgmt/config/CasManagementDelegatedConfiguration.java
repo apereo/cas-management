@@ -3,7 +3,9 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.controller.DelegatedController;
+import org.apereo.cas.mgmt.controller.NoteController;
+import org.apereo.cas.mgmt.controller.PullController;
+import org.apereo.cas.mgmt.controller.SubmitController;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.util.io.CommunicationsManager;
 
@@ -40,7 +42,17 @@ public class CasManagementDelegatedConfiguration {
     private CommunicationsManager communicationsManager;
 
     @Bean
-    public DelegatedController delegatedController() {
-        return new DelegatedController(repositoryFactory, casUserProfileFactory, managementProperties, communicationsManager);
+    public SubmitController submitController() {
+        return new SubmitController(repositoryFactory, casUserProfileFactory, managementProperties, communicationsManager);
+    }
+
+    @Bean
+    public PullController pullController() {
+        return new PullController(repositoryFactory, casUserProfileFactory, managementProperties, communicationsManager);
+    }
+
+    @Bean
+    public NoteController noteController() {
+        return new NoteController(repositoryFactory, casUserProfileFactory);
     }
 }

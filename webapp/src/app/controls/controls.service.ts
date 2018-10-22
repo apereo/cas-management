@@ -39,7 +39,7 @@ export class ControlsService extends Service {
   }
 
   submit(msg): Observable<String> {
-    return this.postText('delegated/submit', msg);
+    return this.postText('submit', msg);
   }
 
 

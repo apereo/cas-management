@@ -1,23 +1,20 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.authentication.principal.Service;
-//import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
+import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.DigestUtils;
-import org.apereo.cas.util.RegexUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -32,9 +29,6 @@ public class ManagementServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
     private final VersionControl versionControl;
-
-    private final Pattern domainExtractor = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
-    private final Pattern domainPattern = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     /**
      * Loads Services form an existing ServiceManger to initialize a new repository.
@@ -180,8 +174,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @return the string
      */
     public String extractDomain(final String service) {
-        val extractor = this.domainExtractor.matcher(service.toLowerCase());
-        return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
+        return CasManagementUtils.extractDomain(service);
     }
 
     /**
@@ -191,9 +184,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @return the string
      */
     public String validateDomain(final String providedDomain) {
-        val domain = StringUtils.remove(providedDomain, "\\");
-        val match = domainPattern.matcher(StringUtils.remove(domain, "\\"));
-        return match.matches() ? domain : "default";
+        return CasManagementUtils.validateDomain(providedDomain);
     }
 
     /**

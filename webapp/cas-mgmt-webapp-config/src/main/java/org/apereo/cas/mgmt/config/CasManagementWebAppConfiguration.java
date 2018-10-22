@@ -1,8 +1,11 @@
 package org.apereo.cas.mgmt.config;
 
+import org.apereo.cas.authentication.principal.ServiceFactory;
+import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
+import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
 import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
@@ -10,10 +13,14 @@ import org.apereo.cas.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.pac4j.core.authorization.authorizer.Authorizer;
+import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationContext;
@@ -42,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -57,11 +65,23 @@ import java.util.stream.Collectors;
 public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
+    private ServerProperties serverProperties;
+
+    @Autowired
     private ApplicationContext context;
 
     @Autowired
-    @Qualifier("casManagementSecurityConfiguration")
-    private Config casManagementSecurityConfiguration;
+    @Qualifier("webApplicationServiceFactory")
+    private ServiceFactory<WebApplicationService> webApplicationServiceFactory;
+
+    @Autowired
+    @Qualifier("authenticationClients")
+    private List<Client> authenticationClients;
+
+    @Autowired
+    @Qualifier("managementWebappAuthorizer")
+    private Authorizer managementWebappAuthorizer;
+
 
     @Autowired
     private CasConfigurationProperties casProperties;
@@ -171,6 +191,36 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/dist/", "classpath:/static/");
+    }
+
+    @Bean
+    public ViewController viewController() {
+        val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
+        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
+    }
+
+    @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
+    @Bean
+    public Config casManagementSecurityConfiguration() {
+        val cfg = new Config(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients);
+        cfg.setAuthorizer(this.managementWebappAuthorizer);
+        return cfg;
+    }
+
+    /**
+     * Gets default callback url.
+     *
+     * @param casProperties    the cas properties
+     * @param serverProperties the server properties
+     * @return the default callback url
+     */
+    public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
+        try {
+            LOGGER.info("Cas Properties = " + casProperties + " Server properties = " + serverProperties);
+            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("/manage.html");
+        } catch (final Exception e) {
+            throw new BeanCreationException(e.getMessage(), e);
+        }
     }
 
 }

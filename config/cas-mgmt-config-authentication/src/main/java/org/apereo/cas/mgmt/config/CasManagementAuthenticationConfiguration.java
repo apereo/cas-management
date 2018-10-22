@@ -3,24 +3,20 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.util.CasManagementUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.pac4j.cas.client.direct.DirectCasClient;
 import org.pac4j.cas.config.CasConfiguration;
-import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.direct.AnonymousClient;
-import org.pac4j.core.config.Config;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,17 +37,11 @@ import java.util.List;
 public class CasManagementAuthenticationConfiguration {
 
     @Autowired
-    private ServerProperties serverProperties;
-
-    @Autowired
     private CasConfigurationProperties casProperties;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
 
-    @Autowired
-    @Qualifier("managementWebappAuthorizer")
-    private Authorizer managementWebappAuthorizer;
 
     @Autowired
     @Qualifier("authorizationGenerator")
@@ -97,13 +87,7 @@ public class CasManagementAuthenticationConfiguration {
         return clients;
     }
 
-    @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
-    @Bean
-    public Config casManagementSecurityConfiguration() {
-        val cfg = new Config(CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients());
-        cfg.setAuthorizer(this.managementWebappAuthorizer);
-        return cfg;
-    }
+
 
     @ConditionalOnMissingBean(name = "casUserProfileFactory")
     @Bean

@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt.util;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
@@ -31,21 +30,6 @@ public final class CasManagementUtils {
     private static final Pattern DOMAIN_PATTERN = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     private CasManagementUtils() {
-    }
-
-    /**
-     * Gets default callback url.
-     *
-     * @param casProperties    the cas properties
-     * @param serverProperties the server properties
-     * @return the default callback url
-     */
-    public static String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
-        try {
-            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("/manage.html");
-        } catch (final Exception e) {
-            throw new BeanCreationException(e.getMessage(), e);
-        }
     }
 
     /**

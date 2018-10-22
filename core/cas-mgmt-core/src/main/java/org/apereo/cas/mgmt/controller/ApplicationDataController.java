@@ -65,43 +65,6 @@ public class ApplicationDataController {
     }
 
     /**
-     * Method will filter all services in the register using the passed string a regular expression against the
-     * service name, service id, and service description.
-     *
-     * @param request  - HttpServletRequest
-     * @param response - HttpServletResponse
-     * @param query    - a string representing text to search for
-     * @return - the resulting services
-     * @throws Exception the exception
-     */
-    @GetMapping(value = "/search")
-    public List<RegisteredServiceItem> search(final HttpServletRequest request,
-                                              final HttpServletResponse response,
-                                              @RequestParam final String query) throws Exception {
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
-        val pattern = RegexUtils.createPattern("^.*" + query + ".*$");
-        List<RegisteredService> services;
-        if (!casUserProfile.isAdministrator()) {
-            services = casUserProfile.getPermissions()
-                .stream()
-                .flatMap(d -> manager.getServicesForDomain(d).stream())
-                .collect(Collectors.toList());
-        } else {
-            services = (List<RegisteredService>) manager.getAllServices();
-        }
-        services = services.stream()
-            .filter(service -> pattern.matcher(service.getServiceId()).lookingAt()
-                || pattern.matcher(service.getName()).lookingAt()
-                || pattern.matcher(service.getDescription() != null ? service.getDescription() : "").lookingAt())
-            .collect(Collectors.toList());
-        val serviceBeans = new ArrayList<>(services.stream()
-            .map(manager::createServiceItem)
-            .collect(Collectors.toList()));
-        return serviceBeans;
-    }
-
-    /**
      * Gets form data.
      *
      * @return the form data

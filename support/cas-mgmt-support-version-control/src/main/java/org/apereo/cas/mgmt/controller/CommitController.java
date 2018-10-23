@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
+import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.GitStatus;
@@ -14,6 +15,7 @@ import lombok.val;
 
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,17 +46,20 @@ public class CommitController extends AbstractVersionControlController {
     private final RepositoryFactory repositoryFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final ServicesManager servicesManager;
+    private final ObjectProvider<PendingRequests> pendingRequests;
 
     private boolean publishError;
 
     public CommitController(final RepositoryFactory repositoryFactory,
                             final CasUserProfileFactory casUserProfileFactory,
                             final CasManagementConfigurationProperties managementProperties,
-                            final ServicesManager servicesManager) {
+                            final ServicesManager servicesManager,
+                            final ObjectProvider<PendingRequests> pendingRequests) {
         super(casUserProfileFactory);
         this.repositoryFactory =repositoryFactory;
         this.managementProperties = managementProperties;
         this.servicesManager = servicesManager;
+        this.pendingRequests = pendingRequests;
     }
 
     /**
@@ -209,7 +214,7 @@ public class CommitController extends AbstractVersionControlController {
             gitStatus.setDeleted(status.getMissing().stream()
                     .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(isPublishedBehind());
-            //gitStatus.setPullRequests(pendingSubmits(request, response, git));
+            pendingRequests.ifAvailable(p -> gitStatus.setPullRequests(p.pendingSubmits(request, response)));
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

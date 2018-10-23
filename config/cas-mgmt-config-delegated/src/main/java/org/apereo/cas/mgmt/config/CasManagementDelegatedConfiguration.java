@@ -2,7 +2,9 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.controller.DelegatedUtil;
 import org.apereo.cas.mgmt.controller.NoteController;
 import org.apereo.cas.mgmt.controller.PullController;
 import org.apereo.cas.mgmt.controller.SubmitController;
@@ -10,6 +12,7 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.util.io.CommunicationsManager;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,5 +57,25 @@ public class CasManagementDelegatedConfiguration {
     @Bean
     public NoteController noteController() {
         return new NoteController(repositoryFactory, casUserProfileFactory);
+    }
+
+    @Bean
+    public PendingRequests pendingRequests() {
+        return (request, response) -> {
+            val user = casUserProfileFactory.from(request, response);
+            if (user.isAdministrator()) {
+                val git = repositoryFactory.masterRepository();
+                try {
+                    return (int) git.branches()
+                            .map(git::mapBranches)
+                            .filter(r -> DelegatedUtil.filterPulls(r, new boolean[]{true, false, false}))
+                            .count();
+                } catch (final Exception e) {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        };
     }
 }

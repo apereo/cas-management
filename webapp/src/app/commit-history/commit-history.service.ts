@@ -9,25 +9,23 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class CommitHistoryService extends Service {
 
-  controller = 'versionControl/';
-
   history(id: string): Observable<DiffEntry[]> {
-    return this.get<DiffEntry[]>(this.controller + 'commitHistoryList?id=' + id);
+    return this.get<DiffEntry[]>('history/commit/' + id);
   }
 
   checkout(id: string, path: String): Observable<String> {
-    return this.getText(this.controller + 'checkout?id=' + id + '&path=' + path);
+    return this.getText('history/checkout/' + path + '/' + id);
   }
 
-  revertRepo(id: string): Observable<String> {
-    return this.getText(this.controller + 'revertRepo?id=' + id);
+  revert(id: string): Observable<String> {
+    return this.getText( 'history/revert/' + id);
   }
 
   change(commit: String, path: String): Observable<String> {
-    return this.getText(this.controller + 'changeMade?id=' + commit + '&path=' + path);
+    return this.postText('change/made', [path, commit]);
   }
 
   toHead(commit: String, path: String): Observable<String> {
-    return this.getText(this.controller + 'compareWithHead?id=' + commit + '&path=' + path);
+    return this.postText('change/head', [path, commit]);
   }
 }

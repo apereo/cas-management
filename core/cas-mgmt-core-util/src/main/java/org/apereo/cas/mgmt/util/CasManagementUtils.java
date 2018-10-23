@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt.util;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
@@ -10,10 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -31,21 +32,6 @@ public final class CasManagementUtils {
     private static final Pattern DOMAIN_PATTERN = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     private CasManagementUtils() {
-    }
-
-    /**
-     * Gets default callback url.
-     *
-     * @param casProperties    the cas properties
-     * @param serverProperties the server properties
-     * @return the default callback url
-     */
-    public static String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
-        try {
-            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("/manage.html");
-        } catch (final Exception e) {
-            throw new BeanCreationException(e.getMessage(), e);
-        }
     }
 
     /**
@@ -109,6 +95,14 @@ public final class CasManagementUtils {
     }
 
     /**
+     * Parses the passed json File into a RegisteredService.
+     * @param json - the json file
+     * @return - RegisteredService
+     */
+    public static RegisteredService fromJson(final File json) {
+        return JSON_SERIALIZER.from(json);
+    }
+    /**
      * Extract domain string.
      *
      * @param service the service
@@ -131,5 +125,15 @@ public final class CasManagementUtils {
         return match.matches() ? domain : "default";
     }
 
-
+    /**
+     * Formats a Datetime given in seconds for display.
+     *
+     * @param time - time in seconds
+     * @return - formatted Date.
+     */
+    public static String formatDateTime(final long time) {
+        return LocalDateTime.ofInstant(new Date(time * 1000L).toInstant(),
+                ZoneId.systemDefault())
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
 }

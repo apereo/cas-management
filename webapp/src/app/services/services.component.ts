@@ -108,7 +108,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   };
 
   delete() {
-    this.service.delete(this.deleteItem.assignedId as string)
+    this.service.deleteService(+this.deleteItem.assignedId)
       .subscribe(resp => this.handleDelete(this.deleteItem.name),
        (e: any) => this.snackBar
          .open(e.message || e.text(),
@@ -135,7 +135,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   revert() {
     const fileName: string = (this.revertItem.name + '-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
     this.service.revert(fileName)
-      .subscribe( this.handleRevert);
+      .subscribe(this.handleRevert);
   }
 
   handleRevert() {

@@ -70,7 +70,7 @@ export class CommitHistoryComponent implements OnInit {
   }
 
   revert() {
-    this.service.revertRepo(this.selectedItem.oldId as string)
+    this.service.revert(this.selectedItem.oldId as string)
       .subscribe(
         resp => this.snackBar
           .open('Service successfully restored from history.',

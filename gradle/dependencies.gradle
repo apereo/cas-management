@@ -1716,7 +1716,7 @@ ext.libraries = [
                 }
         ],
         pac4j                   : [
-                dependencies.create("org.pac4j:pac4j-cas") {
+                dependencies.create("org.pac4j:pac4j-cas:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
@@ -1726,7 +1726,7 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-config") {
+                dependencies.create("org.pac4j:pac4j-config:$pac4jVersion") {
                     exclude(group: "com.nimbusds", module: "oauth2-oidc-sdk")
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -1765,7 +1765,7 @@ ext.libraries = [
                     exclude(group: "org.cryptacular", module: "cryptacular")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-core") {
+                dependencies.create("org.pac4j:pac4j-core:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
                     exclude(group: "commons-codec", module: "commons-codec")
@@ -1776,7 +1776,7 @@ ext.libraries = [
                     exclude(group: "com.zaxxer", module: "HikariCP")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-http") {
+                dependencies.create("org.pac4j:pac4j-http:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
@@ -1786,7 +1786,7 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-jwt") {
+                dependencies.create("org.pac4j:pac4j-jwt:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -1797,7 +1797,7 @@ ext.libraries = [
                     exclude(group: "org.cryptacular", module: "cryptacular")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-oidc") {
+                dependencies.create("org.pac4j:pac4j-oidc:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "com.nimbusds", module: "nimbus-jose-jwt")
@@ -1806,7 +1806,7 @@ ext.libraries = [
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-mongo") {
+                dependencies.create("org.pac4j:pac4j-mongo:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -1815,7 +1815,7 @@ ext.libraries = [
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-oauth") {
+                dependencies.create("org.pac4j:pac4j-oauth:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "commons-collections", module: "commons-collections")
                     exclude(group: "org.apache.commons", module: "commons-codec")
@@ -1826,7 +1826,7 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-saml") {
+                dependencies.create("org.pac4j:pac4j-saml:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "commons-collections", module: "commons-collections")
@@ -1864,7 +1864,7 @@ ext.libraries = [
                     exclude(group: "org.cryptacular", module: "cryptacular")
                     force = true
                 },
-                dependencies.create("org.pac4j:spring-webmvc-pac4j") {
+                dependencies.create("org.pac4j:spring-webmvc-pac4j:$pac4jSpringWebmvcVersion") {
                     exclude(group: "org.springframework", module: "spring-webmvc")
                     exclude(group: "org.springframework", module: "spring-core")
                     exclude(group: "org.slf4j", module: "slf4j-api")

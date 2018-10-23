@@ -19,7 +19,6 @@ include ":core:cas-mgmt-core-authentication"
 include ":core:cas-mgmt-core-authz"
 include ":core:cas-mgmt-core-audit"
 include ":core:cas-mgmt-core-configuration"
-include ":core:cas-mgmt-core-version-control"
 include ":core:cas-mgmt-core-util"
 
 include ":docs:cas-mgmt-documentation"

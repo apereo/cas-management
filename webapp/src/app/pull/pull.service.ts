@@ -9,18 +9,18 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class PullService extends Service {
 
-  controller = 'delegated/';
+  controller = 'pull';
 
   getBranches(options: boolean[]): Observable<Branch[]> {
-    return this.post<Branch[]>(this.controller + 'pullRequests', options);
+    return this.post<Branch[]>(this.controller, options);
   }
 
   accept(branch: Branch, note: String): Observable<String> {
-    return this.postText(this.controller + 'acceptBranch', { branch: branch, note: note});
+    return this.postText(this.controller + '/accept', { branch: branch, note: note});
   }
 
   reject(branch: Branch, note: String): Observable<String> {
-    return this.postText(this.controller + 'rejectBranch', { branch: branch, note: note});
+    return this.postText(this.controller + '/reject', { branch: branch, note: note});
   }
 
 }

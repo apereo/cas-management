@@ -2,31 +2,23 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.AppConfig;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
-import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
-import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.util.CasVersion;
-import org.apereo.cas.util.RegexUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * MultiActionController to handle the deletion of RegisteredServices as well as
@@ -62,43 +54,6 @@ public class ApplicationDataController {
     public MgmtUserProfile getUser(final HttpServletRequest request,
                                    final HttpServletResponse response) {
         return casUserProfileFactory.from(request, response);
-    }
-
-    /**
-     * Method will filter all services in the register using the passed string a regular expression against the
-     * service name, service id, and service description.
-     *
-     * @param request  - HttpServletRequest
-     * @param response - HttpServletResponse
-     * @param query    - a string representing text to search for
-     * @return - the resulting services
-     * @throws Exception the exception
-     */
-    @GetMapping(value = "/search")
-    public List<RegisteredServiceItem> search(final HttpServletRequest request,
-                                              final HttpServletResponse response,
-                                              @RequestParam final String query) throws Exception {
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
-        val pattern = RegexUtils.createPattern("^.*" + query + ".*$");
-        List<RegisteredService> services;
-        if (!casUserProfile.isAdministrator()) {
-            services = casUserProfile.getPermissions()
-                .stream()
-                .flatMap(d -> manager.getServicesForDomain(d).stream())
-                .collect(Collectors.toList());
-        } else {
-            services = (List<RegisteredService>) manager.getAllServices();
-        }
-        services = services.stream()
-            .filter(service -> pattern.matcher(service.getServiceId()).lookingAt()
-                || pattern.matcher(service.getName()).lookingAt()
-                || pattern.matcher(service.getDescription() != null ? service.getDescription() : "").lookingAt())
-            .collect(Collectors.toList());
-        val serviceBeans = new ArrayList<>(services.stream()
-            .map(manager::createServiceItem)
-            .collect(Collectors.toList()));
-        return serviceBeans;
     }
 
     /**

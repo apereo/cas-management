@@ -1,7 +1,5 @@
 package org.apereo.cas.mgmt.config;
 
-import org.apereo.cas.authentication.principal.ServiceFactory;
-import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
@@ -10,22 +8,18 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ApplicationDataController;
 import org.apereo.cas.mgmt.controller.DomainController;
 import org.apereo.cas.mgmt.controller.ServiceController;
-import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
-import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,17 +36,11 @@ import org.springframework.context.annotation.Configuration;
 public class CasManagementCoreServicesConfiguration {
 
     @Autowired
-    private ServerProperties serverProperties;
-
-    @Autowired
     private CasConfigurationProperties casProperties;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
 
-    @Autowired
-    @Qualifier("webApplicationServiceFactory")
-    private ServiceFactory<WebApplicationService> webApplicationServiceFactory;
 
     @Autowired
     private CasUserProfileFactory casUserProfileFactory;
@@ -99,10 +87,6 @@ public class CasManagementCoreServicesConfiguration {
         return new DomainController(casUserProfileFactory, managerFactory());
     }
 
-    @Bean
-    public ViewController viewController() {
-        val defaultCallbackUrl = CasManagementUtils.getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
-    }
+
 
 }

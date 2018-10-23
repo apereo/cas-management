@@ -9,14 +9,14 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class SubmitService extends Service {
 
-  controller = 'delegated/';
+  controller = 'submit';
 
   getSubmits(): Observable<Branch[]> {
-    return this.get<Branch[]>(this.controller + 'submitRequests');
+    return this.get<Branch[]>(this.controller);
   }
 
   revert(name: string): Observable<String> {
-    return this.getText(this.controller + 'revertSubmit?branchName=' + name);
+    return this.getText(this.controller + '/revert/' + name);
   }
 
 }

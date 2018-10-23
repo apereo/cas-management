@@ -70,10 +70,10 @@ export class LocalChangesComponent implements OnInit {
     const fileName: string = (this.revertItem.fileName).replace(/ /g, '');
     if (this.revertItem.changeType === 'ADD') {
       this.service.delete(this.revertItem.id as string)
-        .subscribe(this.handleRevert);
+        .subscribe(resp => this.handleRevert());
     } else {
-      this.service.revert(fileName)
-        .subscribe( this.handleRevert);
+      this.service.revert(this.revertItem.oldId as string)
+        .subscribe(resp => this.handleRevert());
     }
   }
 

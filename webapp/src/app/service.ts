@@ -40,7 +40,7 @@ export class Service {
   }
 
   delete(url: string): Observable<void> {
-    return this.delete(url)
+    return this.http.delete(url)
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
       );

@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  * @author Travis Schmidt
  * @since 6.0
  */
-public class ApplicationDataControllerTests extends CoreTests {
+public class ApplicationDataControllerTests extends BaseCoreTests {
 
     @Autowired
     private ApplicationDataController applicationDataController;

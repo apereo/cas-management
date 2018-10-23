@@ -16,5 +16,4 @@ dependencies {
     testImplementation project(":config:cas-mgmt-config-configuration")
     testImplementation project(":config:cas-mgmt-config-authentication")
     testImplementation project(":config:cas-mgmt-config-authz")
-    
 }

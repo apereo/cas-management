@@ -36,7 +36,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 @EnableScheduling
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @TestPropertySource(properties = "mgmt.enableDiscoveryEndpointCall=false")
-public class CoreTests {
+public abstract class BaseCoreTests {
 
     @ClassRule
     public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();

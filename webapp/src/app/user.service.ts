@@ -17,6 +17,6 @@ export class UserService extends Service {
     }
 
     getUser(): Observable<UserProfile> {
-        return this.get<UserProfile>('user');
+        return this.get<UserProfile>('user')
     }
 }

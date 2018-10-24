@@ -12,7 +12,7 @@ export class ServiceViewService extends Service {
   controller = 'services';
 
   getServices(domain: String): Observable<ServiceItem[]> {
-    return this.get<ServiceItem[]>(this.controller + '/domain/' + domain);
+    return this.get<ServiceItem[]>(this.controller + '?domain=' + domain);
   }
 
   getYaml(id: number): Observable<String> {

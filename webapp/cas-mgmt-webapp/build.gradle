@@ -7,7 +7,9 @@ if (!Boolean.getBoolean("skipClientBuild")) {
     } else {
         build.dependsOn(buildClientDev)
     }
-    bootRun.dependsOn(buildClientDev)
+    if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !rootProject.publishSnapshots && !rootProject.skipBootifulArtifact)) {
+        bootRun.dependsOn(buildClientDev)
+    }
 }
 
 description = "Apereo CAS Management Web Application"   

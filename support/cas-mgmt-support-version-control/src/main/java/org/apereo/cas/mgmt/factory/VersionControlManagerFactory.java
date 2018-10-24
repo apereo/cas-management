@@ -13,7 +13,7 @@ import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.DomainServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
+import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,7 @@ import org.pac4j.core.profile.UserProfile;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -43,6 +44,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     private final RepositoryFactory repositoryFactory;
     private final CasUserProfileFactory casUserProfileFactory;
     private final CasConfigurationProperties casProperties;
+    private final RegisteredServiceResourceNamingStrategy namingStrategy;
 
     /**
      * Init repository.
@@ -109,24 +111,23 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final UserProfile userProfile) {
         val user = (CasUserProfile) userProfile;
         val session = request.getSession();
-        var manager = (ManagementServicesManager) session.getAttribute("servicesManager");
-        if (manager != null) {
-            if (!user.isAdministrator()) {
-                manager.getVersionControl().rebase();
-            }
-            manager.load();
-        } else {
-            var git = (GitUtil) null;
-            if (!user.isAdministrator()) {
-                git = repositoryFactory.from(user);
-                git.rebase();
-            } else {
-                git = repositoryFactory.masterRepository();
-            }
-            manager = new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
-        }
+        val manager = session.getAttribute("servicesManager") != null ? getSessionManager(session, user) : createNewManager(user);
         session.setAttribute("servicesManager", manager);
         return manager;
+    }
+
+    private ManagementServicesManager getSessionManager(final HttpSession session, final CasUserProfile user) {
+        val manager = (ManagementServicesManager) session.getAttribute("servicesManager");
+        if (!user.isAdministrator()) {
+            manager.getVersionControl().rebase();
+        }
+        manager.load();
+        return manager;
+    }
+
+    private ManagementServicesManager createNewManager(final CasUserProfile user) {
+        val git = !user.isAdministrator() ? repositoryFactory.from(user).rebase() : repositoryFactory.masterRepository();
+        return new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
     }
 
     /**
@@ -141,16 +142,13 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     }
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {
-        var manager = (ServicesManager) null;
         val path = Paths.get(git.repoPath());
+
         val serviceRegistryDAO = new JsonServiceRegistry(path,
-            false, null, null,
-            new DefaultRegisteredServiceResourceNamingStrategy());
-        if (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN) {
-            manager = new DomainServicesManager(serviceRegistryDAO, null);
-        } else {
-            manager = new DefaultServicesManager(serviceRegistryDAO, null);
-        }
+            false, null, null, namingStrategy);
+        val manager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
+                ? new DomainServicesManager(serviceRegistryDAO, null)
+                : new DefaultServicesManager(serviceRegistryDAO, null));
         manager.load();
         return manager;
     }

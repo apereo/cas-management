@@ -66,7 +66,7 @@ public class CasManagementCoreServicesConfiguration {
         return Beans.newStubAttributeRepository(casProperties.getAuthn().getAttributeRepository());
     }
 
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "namingStrategy")
     @Bean
     public RegisteredServiceResourceNamingStrategy namingStrategy() {
         return new DefaultRegisteredServiceResourceNamingStrategy();

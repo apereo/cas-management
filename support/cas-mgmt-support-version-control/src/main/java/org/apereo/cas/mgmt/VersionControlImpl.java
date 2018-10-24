@@ -38,12 +38,11 @@ public class VersionControlImpl implements VersionControl {
     public RegisteredServiceItem attachStatus(final RegisteredServiceItem serviceItem) {
         try {
             val status = git.status();
-            val fileName = serviceItem.getName() + "-" + serviceItem.getAssignedId() + ".json";
-            if (status.getAdded().contains(fileName)) {
+            if (status.getAdded().stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
                 serviceItem.setStatus("ADD");
-            } else if (status.getModified().contains(fileName)) {
+            } else if (status.getModified().stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
                 serviceItem.setStatus("MODIFY");
-            } else if (status.getRemoved().contains(fileName)) {
+            } else if (status.getRemoved().stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
                 serviceItem.setStatus("DELETE");
             }
         } catch (final Exception ex) {

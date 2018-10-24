@@ -245,7 +245,4 @@ public class CommitController extends AbstractVersionControlController {
         }
         return path;
     }
-
-
-
 }

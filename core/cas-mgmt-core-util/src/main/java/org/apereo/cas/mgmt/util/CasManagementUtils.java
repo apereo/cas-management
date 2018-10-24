@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -102,6 +103,17 @@ public final class CasManagementUtils {
     public static RegisteredService fromJson(final File json) {
         return JSON_SERIALIZER.from(json);
     }
+
+    /**
+     * Writes Services to file in JSON.
+     *
+     * @param out - File writer
+     * @param svc - the service
+     */
+    public static void jsonTo(final OutputStream out, final RegisteredService svc) {
+        JSON_SERIALIZER.to(out, svc);
+    }
+
     /**
      * Extract domain string.
      *

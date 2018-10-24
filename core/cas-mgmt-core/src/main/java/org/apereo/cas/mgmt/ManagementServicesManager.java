@@ -74,8 +74,6 @@ public class ManagementServicesManager implements ServicesManager {
         return serviceItem;
     }
 
-
-
     @Override
     public void deleteAll() {
         this.manager.deleteAll();

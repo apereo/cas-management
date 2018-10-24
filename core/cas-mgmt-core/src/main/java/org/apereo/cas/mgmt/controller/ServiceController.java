@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.NoPermissionException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -52,10 +52,10 @@ public class ServiceController {
      * @return the services
      * @throws Exception - failed
      */
-    @GetMapping("/domain/{domain}")
+    @GetMapping
     public List<RegisteredServiceItem> getServices(final HttpServletRequest request,
                                                    final HttpServletResponse response,
-                                                   @PathVariable final String domain) throws Exception {
+                                                   final @RequestParam String domain) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator()) {
             if (!casUserProfile.hasPermission(domain)) {
@@ -173,7 +173,7 @@ public class ServiceController {
                                          final HttpServletResponse response,
                                          final Long id) throws Exception {
         val manager = managerFactory.from(request, response);
-        var service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
+        val service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
 
         if (service == null) {
             LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
@@ -192,12 +192,7 @@ public class ServiceController {
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
     public RegisteredService importService(final @RequestBody String service) {
-        var svc = (RegisteredService) null;
-        if (service.startsWith("{")) {
-            svc = CasManagementUtils.fromJson(service);
-        } else {
-            svc = CasManagementUtils.fromYaml(service);
-        }
+        val svc = service.startsWith("{") ? CasManagementUtils.fromJson(service) : CasManagementUtils.fromYaml(service);
         svc.setId(-1);
         return svc;
     }
@@ -217,7 +212,7 @@ public class ServiceController {
                             @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.hasPermission(svcs[0].getServiceId())) {
-            throw new NoPermissionException("You do not have permission");
+            throw new Exception("You do not have permission");
         }
         val manager = managerFactory.from(request, casUserProfile);
         val id = svcs[0].getAssignedId();

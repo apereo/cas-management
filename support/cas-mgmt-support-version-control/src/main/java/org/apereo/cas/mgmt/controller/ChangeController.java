@@ -85,10 +85,10 @@ public class ChangeController extends AbstractVersionControlController {
      * @return - List of Diff
      * @throws Exception - failed
      */
-    @GetMapping(value = "diff/{branch}")
+    @PostMapping
     public List<Diff> changes(final HttpServletResponse response,
                               final HttpServletRequest request,
-                              final @PathVariable String branch) throws Exception {
+                              final @RequestBody String branch) throws Exception {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.getDiffsMinus1(branch).stream()
@@ -107,7 +107,7 @@ public class ChangeController extends AbstractVersionControlController {
      * @param ids      - Array of ids to compare
      * @throws Exception - failed
      */
-    @PostMapping(value = "diff", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "diff")
     @ResponseStatus(HttpStatus.OK)
     public void viewDiff(final HttpServletRequest request,
                          final HttpServletResponse response,
@@ -129,7 +129,7 @@ public class ChangeController extends AbstractVersionControlController {
      * @return ResponseEntity
      * @throws Exception - failed
      */
-    @GetMapping(value = "{id}")
+    @GetMapping("{id}")
     public RegisteredService viewChange(final HttpServletResponse response,
                                         final HttpServletRequest request,
                                         final @PathVariable String id) throws Exception {

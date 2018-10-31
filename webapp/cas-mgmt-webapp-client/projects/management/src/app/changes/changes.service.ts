@@ -8,7 +8,7 @@ import {AbstractRegisteredService, DiffEntry, Service} from 'mgmt-lib';
 @Injectable()
 export class ChangesService extends Service {
 
-  controller = '/api/change';
+  controller = 'api/change';
 
   getChanges(branch: String): Observable<DiffEntry[]> {
     return this.post<DiffEntry[]>(this.controller, branch);

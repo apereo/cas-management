@@ -8,7 +8,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class NotesService extends Service {
 
-  controller = '/api/note';
+  controller = 'api/note';
 
   getNotes(id: String): Observable<String> {
     return this.getText(this.controller + '/' + id);

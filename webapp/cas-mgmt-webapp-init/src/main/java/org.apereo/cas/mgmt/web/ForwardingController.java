@@ -20,21 +20,25 @@ public class ForwardingController {
      * @return - String manage.html
      */
     @RequestMapping({
-        //"services",
-        //"services/{id:.*}",
-        "form/{id:.*}",
-        "domains",
-        "duplicate/{id:.*}",
-        "view/{id:.*}",
-        "search",
-        "history/{fileName:.*}",
-        "json/{fileId:.*}",
-        "localChanges",
-        "pulls",
-        "import",
-        "repo-history",
-        "search"})
+            "domains",
+            "services/{domain}",
+            "search",
+            "histrory/{fileName}",
+            "diff",
+            "diffSubmission",
+            "json/{id}",
+            "viewJson/{id}",
+            "viewYaml/{id}",
+            "localChanges",
+            "pulls",
+            "submits",
+            "changes/{branches}",
+            "notes/{id}",
+            "import",
+            "commit-history/{id}",
+            "repo-history"
+    })
     public String forward() {
-        return "management/index.html";
+        return "index.html";
     }
 }

@@ -12,7 +12,7 @@ import {AbstractRegisteredService, FormData} from 'mgmt-lib';
 @Injectable()
 export class FormService {
 
-  controller = '/api/services/';
+  controller = 'api/services/';
 
   constructor(private http: HttpClient,
               private dialog: MatDialog) {}
@@ -36,7 +36,7 @@ export class FormService {
   }
 
   formData(): Observable<FormData> {
-    return this.http.get<FormData>('/api/formData')
+    return this.http.get<FormData>('api/formData')
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
       );

@@ -68,6 +68,7 @@ public class HistoryController extends AbstractVersionControlController {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val commits = git.getLastNCommits(MAX_COMMITS)
+                    .filter(c -> !c.getFullMessage().equals("Created"))
                     .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
                             CasManagementUtils.formatDateTime(c.getCommitTime()))

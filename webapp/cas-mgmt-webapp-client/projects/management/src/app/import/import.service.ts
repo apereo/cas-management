@@ -6,7 +6,7 @@ import {catchError, tap} from 'rxjs/operators';
 @Injectable()
 export class ImportService extends Service {
 
-  controller = '/api/services/';
+  controller = 'api/services/';
   submissionFile: String;
   service: AbstractRegisteredService;
 
@@ -19,7 +19,7 @@ export class ImportService extends Service {
   }
 
   importSubmission(file: String): Observable<AbstractRegisteredService> {
-    return this.http.post<AbstractRegisteredService>( '/api/submissions/import', file)
+    return this.http.post<AbstractRegisteredService>( 'api/submissions/import', file)
       .pipe(
         tap(resp => {
           this.submissionFile = file;

@@ -36,7 +36,7 @@ public class ViewController {
      *
      * @return - ModelAndView
      */
-    @GetMapping({"management/index.html", "management/", "management"})
+    @GetMapping({"index.html", "/"})
     public ModelAndView manage() {
         //ensureDefaultServiceExists();
         val model = new HashMap<String, Object>();

@@ -27,33 +27,33 @@ export class ControlsService extends Service {
   }
 
   commit(msg: String): Observable<String> {
-    return this.post('/api/commit', msg);
+    return this.post('api/commit', msg);
   }
 
   publish(): Observable<String> {
-    return this.getText('/api/commit/publish');
+    return this.getText('api/commit/publish');
   }
 
   submit(msg): Observable<String> {
-    return this.postText('/api/submit', msg);
+    return this.postText('api/submit', msg);
   }
 
 
   untracked(): Observable<Change[]> {
-    return this.get<Change[]>('/api/change/untracked')
+    return this.get<Change[]>('api/change/untracked')
   }
 
   getCommits(): Observable<Commit[]> {
-    return this.get<Commit[]>('/api/commit/unpublished')
+    return this.get<Commit[]>('api/commit/unpublished')
   }
 
   gitStatus() {
-    this.get<GitStatus>('/api/commit/status')
+    this.get<GitStatus>('api/commit/status')
       .subscribe(resp => this.status = resp);
   }
 
   sync(): Observable<String> {
-    return this.getText( '/api/commit/sync');
+    return this.getText( 'api/commit/sync');
   }
 
 }

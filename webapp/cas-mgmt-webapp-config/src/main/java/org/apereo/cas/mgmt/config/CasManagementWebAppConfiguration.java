@@ -7,7 +7,6 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
-import org.apereo.cas.mgmt.web.ForwardingController;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
 import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
 import org.apereo.cas.util.CollectionUtils;
@@ -180,7 +179,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public SpringResourceTemplateResolver casManagementStaticTemplateResolver() {
         val resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
-        resolver.setPrefix("classpath:/dist/management/");
+        resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
         resolver.setCharacterEncoding(Charset.forName("UTF-8").name());

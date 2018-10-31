@@ -31,13 +31,13 @@ task buildLibrary(type: NpmTask, dependsOn: "npm_install",
 
 task buildClientDev(type: NpmTask, dependsOn: "buildLibrary",
         description: "Compile client side folder for development") {
-    args = ['run', 'build', '--base-href', mgmtUrl, 'management']
+    args = ['run', 'buildBase', mgmtUrl, 'management']
     enabled = !Boolean.getBoolean("skipClientBuild")
 }
 
 task buildClient(type: NpmTask, dependsOn: "buildLibrary",
         description: "Compile client side folder for production") {
-    args = ['run', 'build', '--base-href', mgmtUrl, 'management']
+    args = ['run', 'buildBase', mgmtUrl, 'management']
     enabled = !Boolean.getBoolean("skipClientBuild")
 }
 

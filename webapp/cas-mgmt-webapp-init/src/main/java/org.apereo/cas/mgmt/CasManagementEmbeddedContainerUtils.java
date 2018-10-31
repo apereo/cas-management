@@ -60,7 +60,12 @@ public class CasManagementEmbeddedContainerUtils {
         subTypes.remove(DefaultCasBanner.class);
 
         if (subTypes.isEmpty()) {
-            return new DefaultCasBanner();
+            return new DefaultCasBanner() {
+                @Override
+                protected String getTitle() {
+                    return "(CAS Management)";
+                }
+            };
         }
         try {
             val clz = subTypes.iterator().next();
@@ -68,6 +73,11 @@ public class CasManagementEmbeddedContainerUtils {
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return new DefaultCasBanner();
+        return new DefaultCasBanner() {
+            @Override
+            protected String getTitle() {
+                return "(CAS Management)";
+            }
+        };
     }
 }

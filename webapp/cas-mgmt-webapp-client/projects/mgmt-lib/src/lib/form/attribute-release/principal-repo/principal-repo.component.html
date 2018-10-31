@@ -1,0 +1,67 @@
+<div>
+  <mat-radio-group [(ngModel)]="type" (change)="changeType()">
+
+    <mat-radio-button [value]="TYPE.DEFAULT">
+      <ng-container i18n>Default</ng-container>
+    </mat-radio-button>
+
+    <mat-radio-button [value]="TYPE.CACHING">
+      <ng-container i18n>Cached</ng-container>
+    </mat-radio-button>
+
+  </mat-radio-group>
+</div>
+
+<ng-container *ngIf="type == TYPE.CACHING">
+  <lib-input field="timeUnit" [change]="repo" [orig]="original">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n>Time Unit</mat-placeholder>
+      <mat-select required
+                  [(ngModel)]="repo.timeUnit">
+        <mat-option *ngFor="let opt of formData.timeUnits" [value]="opt">
+          {{ opt }}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="end">
+        <lib-hint></lib-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp i18n-matTooltip
+             matTooltip="Time unit of measure for the cache expiration policy.">
+    </mat-icon>
+  </lib-input>
+
+  <lib-input field="expiration" [change]="repo" [orig]="original">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n>Expiration</mat-placeholder>
+      <input matInput
+             [(ngModel)]="repo.expiration">
+      <mat-hint align="end">
+        <lib-hint></lib-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp i18n-matTooltip
+             matTooltip="The cache expiration time.">
+    </mat-icon>
+  </lib-input>
+
+  <lib-input field="mergingStrategy" [change]="repo" [orig]="original">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n>Merging Strategy</mat-placeholder>
+      <mat-select required
+                  [(ngModel)]="repo.mergingStrategy">
+        <mat-option *ngFor="let opt of formData.mergingStrategies" [value]="opt">
+          {{ opt }}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="end">
+        <lib-hint></lib-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp  i18n-matTooltip
+             matTooltip="Decides how attributes that are retrieved from the cache
+    should be merged into the existing attribute repository. Attributes may be replaced, ignored or contain multiple
+    values as a result of the merge action.">
+    </mat-icon>
+  </lib-input>
+</ng-container>

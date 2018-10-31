@@ -1,0 +1,29 @@
+<lib-input field="startingDateTime" [change]="accessStrategy" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Starting Date/Time</mat-placeholder>
+    <input matInput [matDatepicker]="startPicker" [(ngModel)]="accessStrategy.startingDateTime">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+           matTooltip="Determines the starting date/time from which service access is allowed.">
+  </mat-icon>
+  <mat-datepicker #startPicker></mat-datepicker>
+</lib-input>
+
+<lib-input field="endingDateTime" [change]="accessStrategy" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Ending Date/Time</mat-placeholder>
+    <input matInput [matDatepicker]="endPicker" [(ngModel)]="accessStrategy.endingDateTime">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+           matTooltip="Determines the ending date/time from which service access is allowed.">
+  </mat-icon>
+  <mat-datepicker #endPicker></mat-datepicker>
+</lib-input>

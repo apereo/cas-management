@@ -59,7 +59,6 @@ public class ChangeController extends AbstractVersionControlController {
      * @param response - HttpServletResponse
      * @param request  - HttpServletRequest
      * @return - List of Change
-     * @throws Exception - failed.
      */
     @GetMapping("untracked")
     public List<Change> untracked(final HttpServletResponse response,
@@ -145,7 +144,6 @@ public class ChangeController extends AbstractVersionControlController {
      * @param request  - the request
      * @param data     - String[] {path, id}
      * @return - the diff
-     * @throws Exception -failed
      */
     @PostMapping("made")
     @ResponseStatus(HttpStatus.OK)
@@ -172,7 +170,6 @@ public class ChangeController extends AbstractVersionControlController {
      * @param request  - the request
      * @param data     - String[] {path, id}
      * @return - String of the diff
-     * @throws Exception - failed.
      */
     @PostMapping("compare")
     public String compareWithHead(final HttpServletResponse response,

@@ -188,7 +188,6 @@ public class ServiceController {
      *
      * @param service  - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
-     * @throws Exception - failed
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
     public RegisteredService importService(final @RequestBody String service) {

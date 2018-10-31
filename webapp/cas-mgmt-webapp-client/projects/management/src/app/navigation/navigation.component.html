@@ -1,0 +1,106 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar color="primary">{{ getUser() }}</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item *ngIf="appService.config.mgmtType === 'DOMAIN'" routerLink="/domains"
+         (click)="close()">
+        <mat-icon>apps</mat-icon>
+        <span i18n>Domains</span>
+      </a>
+      <a mat-list-item *ngIf="appService.config.mgmtType === 'DEFAULT'" routerLink="/services/default" (click)="close()">
+        <mat-icon>apps</mat-icon>
+        <span i18n>Services</span>
+      </a>
+      <a mat-list-item routerLink="/search" (click)="close()">
+        <mat-icon>search</mat-icon>
+        <ng-container i18n>Search</ng-container>
+      </a>
+      <a mat-list-item *ngIf="isDelegated() && isAdmin()" routerLink="/pulls" (click)="close()">
+        <mat-icon>file_download</mat-icon>
+        <span [matBadge]="pullRequests()"
+              matBadgePosition="above after"
+              matBadgeOverlap="false"
+              matBadgeColor="accent"
+              [matBadgeHidden]="pullRequests() === 0" i18n>Pull Requests</span>
+      </a>
+      <a mat-list-item *ngIf="isDelegated() && !isAdmin()" routerLink="/submits" (click)="close()">
+        <mat-icon>file_upload</mat-icon>
+        <ng-container i18n>Submit Requests</ng-container>
+      </a>
+      <a mat-list-item routerLink="/form/-1" (click)="close()">
+        <mat-icon>add_circle</mat-icon>
+        <span i18n>Add New Service</span>
+      </a>
+      <a mat-list-item routerLink="/import" *ngIf="isAdmin()" (click)="close()">
+        <mat-icon>add_circle</mat-icon>
+        <ng-container i18n>Import Service</ng-container>
+      </a>
+      <a mat-list-item routerLink="/submissions" *ngIf="isAdmin()" (click)="close()">
+        <mat-icon>file_upload</mat-icon>
+        <span i18n
+              [matBadge]="submissions()"
+              matBadgePosition="above after"
+              matBadgeOverlap="false"
+              matBadgeColor="accent"
+              [matBadgeHidden]="submissions() === 0">Submissions</span>
+      </a>
+      <a mat-list-item *ngIf="appService.config.versionControl" routerLink="/localChanges" (click)="close()">
+        <mat-icon>build</mat-icon>
+        <ng-container i18n>Working Changes</ng-container>
+      </a>
+      <a mat-list-item *ngIf="isAdmin() && isSyncScript()" (click)="close();sync()">
+        <mat-icon>sync</mat-icon>
+        <ng-container i18n>Synchronize</ng-container>
+      </a>
+      <a mat-list-item *ngIf="isAdmin() && isVersionControl()" routerLink="/repo-history" (click)="close()">
+        <mat-icon>history</mat-icon>
+        <ng-container i18n>History</ng-container>
+      </a>
+      <a mat-list-item target="_self" id="logoutUrlLink" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <ng-container i18n>Log Out</ng-container>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <!--<div style="width:100%;">-->
+      <mat-toolbar color="primary" style="position: fixed; z-index: 1000; width: 100vw">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon"
+                  matBadge="!"
+                  matBadgeColor="accent"
+                  [matBadgeHidden]="pullRequests() === 0 && submissions() === 0"
+                  matBadgePosition="above after">menu</mat-icon>
+      </button>
+      <div style="width: 100vw;">
+        <div>
+          <a class="brand" href="manage.html" target="_self" id="homepageUrlLink">
+            <img src="../images/logo_cas.png" alt="apereo CAS logo" />
+            <h4>
+              <ng-container i18n="management.services.header.apptitle">
+                Management
+              </ng-container>
+            </h4>
+          </a>
+        </div>
+      </div>
+    </mat-toolbar>
+      <div style="padding-top:65px;padding-bottom:70px;background-color:#f2f2f2;">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer></app-footer>
+    <!--</div>-->
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

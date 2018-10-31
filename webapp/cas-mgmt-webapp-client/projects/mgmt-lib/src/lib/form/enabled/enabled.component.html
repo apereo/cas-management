@@ -1,0 +1,11 @@
+<lib-input [change]="accessStrategy" [orig]="original" field="enabled" style="padding-bottom: 10px;">
+  <mat-checkbox [(ngModel)]="accessStrategy.enabled">
+    <ng-container i18n>Enable Service</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+             matTooltip="Decides whether access to this service is authorized by CAS.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>

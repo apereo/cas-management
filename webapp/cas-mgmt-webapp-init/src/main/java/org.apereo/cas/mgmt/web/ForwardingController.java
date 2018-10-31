@@ -35,6 +35,6 @@ public class ForwardingController {
         "repo-history",
         "search"})
     public String forward() {
-        return "manage.html";
+        return "management/index.html";
     }
 }

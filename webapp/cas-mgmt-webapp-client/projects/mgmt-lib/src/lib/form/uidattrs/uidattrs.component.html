@@ -1,0 +1,25 @@
+<mat-radio-group [(ngModel)]="type" (change)="changeType()">
+
+  <mat-radio-button [value]="TYPE.DEFAULT">
+    <ng-container i18n>Default</ng-container>
+  </mat-radio-button>
+
+  <mat-radio-button [value]="TYPE.ANONYMOUS">
+    <ng-container i18n>Anonymous</ng-container>
+  </mat-radio-button>
+
+  <mat-radio-button [value]="TYPE.PRINCIPAL_ATTRIBUTE">
+    <ng-container i18n>Principle Attribute</ng-container>
+  </mat-radio-button>
+
+</mat-radio-group>
+
+<ng-container *ngIf="type == TYPE.ANONYMOUS">
+  <lib-anonymous></lib-anonymous>
+</ng-container>
+
+<ng-container *ngIf="type == TYPE.PRINCIPAL_ATTRIBUTE">
+  <lib-principal></lib-principal>
+</ng-container>
+
+

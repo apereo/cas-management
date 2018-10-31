@@ -1,0 +1,36 @@
+<div class="panel panel-default" *ngIf="!isEmpty(formData.availableAttributes)">
+  <mat-table [dataSource]="dataSource">
+
+    <ng-container cdkColumnDef="source">
+      <mat-header-cell *cdkHeaderCellDef>
+        <ng-container i18n>Source Attribute</ng-container>
+      </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{ row.key }}</mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="mapped">
+      <mat-header-cell *cdkHeaderCellDef>
+        <ng-container i18n>WS Federation Claim</ng-container>
+        <mat-icon style="font-size: medium;" i18n-matTooltip
+                  matTooltip="List of WS Federation Claims that will be mapped to the corresponding attribute from the attributes repository.">help
+        </mat-icon>
+      </mat-header-cell>
+      <mat-cell *cdkCellDef="let row">
+        <lib-input field="row.key" [change]="policy.allowedAttributes" [orig]="original && original.allowedAttributes">
+          <mat-form-field>
+            <mat-select [(ngModel)]="policy.allowedAttributes[row.key]">
+              <mat-option *ngFor="let item of data.formData.wsFederationClaims" [value]="item">{{ item }}</mat-option>
+            </mat-select>
+            <mat-hint align="end">
+              <lib-hint></lib-hint>
+            </mat-hint>
+          </mat-form-field>
+        </lib-input>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+
+  </mat-table>
+</div>

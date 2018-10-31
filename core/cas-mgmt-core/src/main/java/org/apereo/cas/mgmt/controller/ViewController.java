@@ -36,13 +36,13 @@ public class ViewController {
      *
      * @return - ModelAndView
      */
-    @GetMapping("/manage.html")
+    @GetMapping({"management/index.html", "management/", "management"})
     public ModelAndView manage() {
         //ensureDefaultServiceExists();
         val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         model.put("defaultServiceUrl", this.defaultService.getId());
-        return new ModelAndView("manage", model);
+        return new ModelAndView("index", model);
     }
 
     /**

@@ -1,0 +1,22 @@
+<div>
+  <h3 matDialogTitle>
+    <ng-container i18n>Confirm Delete</ng-container>
+  </h3>
+</div>
+<mat-dialog-content>
+  <ng-container i18n>You are about to permanently delete</ng-container> {{ data != null ? data.name : '' }}.<br/>
+  <ng-container i18n>Are you sure you wish to continue?</ng-container>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button matDialogClose>
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button mat-button matDialogClose="true">
+      <mat-icon>delete</mat-icon>
+      <ng-container i18n>Delete</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>
+

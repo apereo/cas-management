@@ -1,0 +1,23 @@
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-select
+            placeholder="Policy"
+            [(ngModel)]="type"
+            (selectionChange)="changeType()">
+      <mat-option *ngFor="let opt of types; let i = index" [value]="opt">
+        {{ display[i] }}
+      </mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+</lib-input>
+
+<ng-container *ngIf="type === TYPE.DEFAULT">
+ <lib-default></lib-default>
+</ng-container>
+
+<ng-container *ngIf="type === TYPE.GROOVY">
+  <lib-groovy></lib-groovy>
+</ng-container>

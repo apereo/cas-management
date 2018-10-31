@@ -1,0 +1,51 @@
+<form #accessForm="ngForm">
+  <mat-card class="tabCard">
+    <mat-card-title>
+      <h5>Type</h5>
+    </mat-card-title>
+    <div class="cardContent">
+      <lib-type (typeChange)="typeChange()"></lib-type>
+    </div>
+  </mat-card>
+
+  <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
+    <mat-card-title>
+      <h5>Service Access Strategy</h5>
+    </mat-card-title>
+    <div class="cardContent">
+      <lib-access-strategy></lib-access-strategy>
+    </div>
+  </mat-card>
+
+  <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
+    <mat-card-title>
+      <h5>Required Attributes</h5>
+    </mat-card-title>
+    <div class="cardContent">
+      <lib-reqhandlers></lib-reqhandlers>
+    </div>
+  </mat-card>
+
+  <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
+    <mat-card-title>
+      <h5>Delegated Authentication</h5>
+    </mat-card-title>
+    <div class="cardContent">
+      <lib-delegated></lib-delegated>
+    </div>
+  </mat-card>
+
+  <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
+    <mat-card-title>
+      <h5>Rejected Attributes</h5>
+    </mat-card-title>
+    <div class="cardContent">
+      <lib-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"
+                            [attributeNames]="data.formData.availableAttributes">
+      </lib-attributemapping>
+    </div>
+  </mat-card>
+
+  <button type="submit" display="display:none;" #submit></button>
+</form>
+

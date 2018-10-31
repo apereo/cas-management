@@ -59,7 +59,7 @@ import java.util.stream.Stream;
 @Slf4j
 @RequiredArgsConstructor
 @RestController("casSearchController")
-@RequestMapping(path = "search", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/search", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LuceneSearch {
 
     private final MgmtManagerFactory mgmtManagerFactory;

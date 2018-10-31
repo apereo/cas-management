@@ -30,7 +30,7 @@ import java.util.Date;
  * @since 6.0
  */
 @RestController("noteController")
-@RequestMapping(path = "note", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/note", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Slf4j
 public class NoteController {

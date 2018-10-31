@@ -36,7 +36,7 @@ import static java.util.stream.Collectors.toList;
  * @since 6.0
  */
 @RestController("pullController")
-@RequestMapping(path = "/pull", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/pull", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class PullController extends AbstractVersionControlController {
 

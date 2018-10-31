@@ -9,22 +9,22 @@ import {Observable} from 'rxjs/internal/Observable';
 export class CommitHistoryService extends Service {
 
   history(id: string): Observable<DiffEntry[]> {
-    return this.get<DiffEntry[]>('../history/commit/' + id);
+    return this.get<DiffEntry[]>('/api/history/commit/' + id);
   }
 
   checkout(id: string, path: String): Observable<String> {
-    return this.getText('../history/checkout/' + path + '/' + id);
+    return this.getText('/api/history/checkout/' + path + '/' + id);
   }
 
   revert(id: string): Observable<String> {
-    return this.getText( '../history/revert/' + id);
+    return this.getText( '/api/history/revert/' + id);
   }
 
   change(commit: String, path: String): Observable<String> {
-    return this.postText('../change/made', [path, commit]);
+    return this.postText('/api/change/made', [path, commit]);
   }
 
   toHead(commit: String, path: String): Observable<String> {
-    return this.postText('../change/head', [path, commit]);
+    return this.postText('/api/change/head', [path, commit]);
   }
 }

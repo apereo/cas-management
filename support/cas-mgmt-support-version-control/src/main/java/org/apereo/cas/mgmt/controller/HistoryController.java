@@ -37,7 +37,7 @@ import static java.util.stream.Collectors.toList;
  * @since 6.0
  */
 @RestController("historyController")
-@RequestMapping(path = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/history", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class HistoryController extends AbstractVersionControlController {
 

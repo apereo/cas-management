@@ -18,7 +18,7 @@ export class AppConfigService {
   }
 
   getConfig(): Observable<AppConfig> {
-    return this.http.get<AppConfig>('../appConfig')
+    return this.http.get<AppConfig>('/api/appConfig')
       .pipe(
         tap(resp => {
           this.config = resp

@@ -37,7 +37,7 @@ import static java.util.stream.Collectors.toList;
  * @since 6.0
  */
 @RestController("submitController")
-@RequestMapping(path = "/submit", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/submit", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Slf4j
 public class SubmitController {

@@ -8,7 +8,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class HistoryService extends Service {
 
-  controller = '../history';
+  controller = '/api/history';
 
   history(fileName: string): Observable<History[]> {
     return this.post<History[]>(this.controller, fileName);

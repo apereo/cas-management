@@ -8,7 +8,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class SubmitService extends Service {
 
-  controller = '../submit';
+  controller = '/api/submit';
 
   getSubmits(): Observable<Branch[]> {
     return this.get<Branch[]>(this.controller);

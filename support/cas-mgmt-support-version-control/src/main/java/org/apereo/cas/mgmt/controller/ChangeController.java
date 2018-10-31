@@ -38,7 +38,7 @@ import static java.util.stream.Collectors.toList;
  * @since 6.0
  */
 @RestController("changeController")
-@RequestMapping(path = "/change", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/change", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class ChangeController extends AbstractVersionControlController {
 

@@ -41,15 +41,6 @@
         <mat-icon>add_circle</mat-icon>
         <ng-container i18n>Import Service</ng-container>
       </a>
-      <a mat-list-item routerLink="/submissions" *ngIf="isAdmin()" (click)="close()">
-        <mat-icon>file_upload</mat-icon>
-        <span i18n
-              [matBadge]="submissions()"
-              matBadgePosition="above after"
-              matBadgeOverlap="false"
-              matBadgeColor="accent"
-              [matBadgeHidden]="submissions() === 0">Submissions</span>
-      </a>
       <a mat-list-item *ngIf="appService.config.versionControl" routerLink="/localChanges" (click)="close()">
         <mat-icon>build</mat-icon>
         <ng-container i18n>Working Changes</ng-container>
@@ -80,7 +71,7 @@
         <mat-icon aria-label="Side nav toggle icon"
                   matBadge="!"
                   matBadgeColor="accent"
-                  [matBadgeHidden]="pullRequests() === 0 && submissions() === 0"
+                  [matBadgeHidden]="pullRequests() === 0"
                   matBadgePosition="above after">menu</mat-icon>
       </button>
       <div style="width: 100vw;">

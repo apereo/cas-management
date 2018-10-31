@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * @since 6.0
  */
 @RestController("commitController")
-@RequestMapping(path = "/commit", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/commit", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class CommitController extends AbstractVersionControlController {
 

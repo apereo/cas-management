@@ -8,7 +8,7 @@ import {Observable} from 'rxjs/internal/Observable';
 @Injectable()
 export class ServiceViewService extends Service {
 
-  controller = '../services';
+  controller = '/api/services';
 
   getServices(domain: String): Observable<ServiceItem[]> {
     return this.get<ServiceItem[]>(this.controller + '?domain=' + domain);
@@ -27,7 +27,7 @@ export class ServiceViewService extends Service {
   }
 
   revert(fileName: string): Observable<String> {
-    return this.getText('../history/revert/' + fileName);
+    return this.getText('/api/history/revert/' + fileName);
   }
 
   updateOrder(a: ServiceItem, b: ServiceItem): Observable<String> {

@@ -6,14 +6,14 @@ import {Observable} from 'rxjs/internal/Observable';
 export class SearchService extends Service {
 
   search(query: String): Observable<ServiceItem[]> {
-    return this.post('../search', query);
+    return this.post('/api/search', query);
   }
 
   getYaml(id: number): Observable<String> {
-    return this.getText('../services/yaml/' + id);
+    return this.getText('/api/services/yaml/' + id);
   }
 
   getJson(id: number): Observable<String> {
-    return this.getText('../services/json/' + id);
+    return this.getText('/api/services/json/' + id);
   }
 }

@@ -10,7 +10,7 @@ if (!Boolean.getBoolean("skipClientBuild")) {
 
 apply from: rootProject.file("gradle/webapp.gradle")
 
-if (!Boolean.getBoolean("skipClientBuild")) {
+if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !rootProject.publishSnapshots && !rootProject.skipBootifulArtifact)) {
     bootRun.dependsOn(buildClientDev)
 }
 

@@ -210,6 +210,7 @@ public class ServiceRepositoryController {
 
         try (GitUtil git = repositoryFactory.masterRepository()) {
             final List<Commit> commits = git.getLastNCommits(MAX_COMMITS)
+                    .filter(c -> !c.getFullMessage().equals("Created"))
                     .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
                             formatCommitTime(c.getCommitTime()))

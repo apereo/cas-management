@@ -48,7 +48,7 @@ public class ManagerFactory {
         final Path servicesRepo = Paths.get(managementProperties.getServicesRepo());
         if (!Files.exists(servicesRepo)) {
             try {
-                Git.init().setDirectory(servicesRepo.toFile()).call();
+                Git.init().setDirectory(servicesRepo.toFile()).call().commit().setMessage("Created").call();
             } catch (final Exception e) {
                 return;
             }

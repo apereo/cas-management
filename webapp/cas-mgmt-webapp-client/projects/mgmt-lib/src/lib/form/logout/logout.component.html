@@ -4,7 +4,7 @@
     <input matInput #logoutUrl="ngModel" name="logoutUrl" id="logoutUrl"
            pattern="https?://[a-zA-Z0-9.]+:?[0-9]*/.*"
            [(ngModel)]="data.service.logoutUrl" spellcheck="false">
-    <mat-error>You have entered an invalid URL</mat-error>
+    <mat-error i18n>You have entered an invalid URL</mat-error>
     <mat-hint align="end">
       <lib-hint></lib-hint>
     </mat-hint>

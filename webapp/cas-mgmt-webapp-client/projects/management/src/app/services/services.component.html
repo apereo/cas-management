@@ -1,11 +1,7 @@
 <div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
   <div style="padding-top: 3px;">
     <mat-icon style="padding-top: 3px;">build</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;">
-      <ng-container i18n>
-        Manage Services - {{ domain }}
-      </ng-container>
-    </h4>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>Manage Services - {{ domain }}</h4>
   </div>
   <div style="flex: 1 1 auto">
   </div>
@@ -19,9 +15,7 @@
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
-        <ng-container i18n>
-          &nbsp;
-        </ng-container>
+        <ng-container>&nbsp;</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
         <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
@@ -43,9 +37,7 @@
 
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
-        <ng-container i18n>
-          Name
-        </ng-container>
+        <ng-container i18n>Name</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
         <a (click)="serviceEdit(row)">
@@ -56,9 +48,7 @@
 
     <ng-container matColumnDef="serviceId">
       <mat-header-cell *matHeaderCellDef [ngClass]="'serviceIdWidth'">
-        <ng-container i18n>
-          Service Url
-        </ng-container>
+        <ng-container i18n>Service Url</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'serviceIdWidth'">
         {{ row.serviceId }}
@@ -67,9 +57,7 @@
 
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef [ngClass]="'descriptionWidth'">
-        <ng-container i18n>
-          Description
-        </ng-container>
+        <ng-container i18n>Description</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'descriptionWidth'">
         {{ row.description }}
@@ -109,17 +97,16 @@
     <mat-icon>history</mat-icon>
     <ng-container i18n>History</ng-container>
   </button>
-
   <button mat-menu-item (click)="openModalRevert()" *ngIf="showRevert()">
     <mat-icon>undo</mat-icon>
     <ng-container i18n>Revert</ng-container>
   </button>
   <button mat-menu-item (click)="moveUp(selectedItem)" *ngIf="showMoveUp()">
     <mat-icon>arrow_upward</mat-icon>
-    <ng-container>Move Up</ng-container>
+    <ng-container i18n>Move Up</ng-container>
   </button>
   <button mat-menu-item (click)="moveDown(selectedItem)" *ngIf="showMoveDown()">
     <mat-icon>arrow_downward</mat-icon>
-    <ng-container>Move Down</ng-container>
+    <ng-container i18n>Move Down</ng-container>
   </button>
 </mat-menu>

@@ -3,7 +3,7 @@
     <mat-placeholder i18n>Information URL</mat-placeholder>
     <input matInput pattern="https?://[a-zA-Z0-9.]+:?[0-9]*/.*"
            [(ngModel)]="data.service.informationUrl" spellcheck="false">
-    <mat-error>You have entered an invalid URL</mat-error>
+    <mat-error i18n>You have entered an invalid URL</mat-error>
     <mat-hint align="end">
       <lib-hint></lib-hint>
     </mat-hint>
@@ -18,7 +18,7 @@
     <mat-placeholder i18n>Privacy URL</mat-placeholder>
     <input matInput pattern="https?://[a-zA-Z0-9.]+:?[0-9]*/.*"
            [(ngModel)]="data.service.privacyUrl" spellcheck="false">
-    <mat-error>You have entered an invalid URL</mat-error>
+    <mat-error i18n>You have entered an invalid URL</mat-error>
     <mat-hint align="end">
       <lib-hint></lib-hint>
     </mat-hint>

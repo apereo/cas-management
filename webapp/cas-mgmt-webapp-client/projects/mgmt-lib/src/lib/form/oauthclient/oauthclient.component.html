@@ -37,7 +37,7 @@
 
 <lib-input field="bypassApprovalPrompt" [change]="service" [orig]="original">
   <mat-checkbox [(ngModel)]="service.bypassApprovalPrompt">
-    <ng-container>OAuth Bypass Approval Prompt</ng-container>
+    <ng-container i18n>OAuth Bypass Approval Prompt</ng-container>
     <mat-icon appHelp i18n-matTooltip
              matTooltip="Indicates whether the OAuth confirmation screen should be displayed before accessing the service application.">
     </mat-icon>

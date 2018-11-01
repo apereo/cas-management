@@ -1,11 +1,7 @@
 <div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
   <div style="padding-top: 10px;">
     <mat-icon style="padding-top: 3px;">file_upload</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;">
-      <ng-container i18n>
-        Submits
-      </ng-container>
-    </h4>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>Submits</h4>
   </div>
   <div style="flex: 1 1 auto"></div>
   <div>
@@ -29,9 +25,7 @@
 
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
-        <ng-container i18n>
-          Branch Name
-        </ng-container>
+        <ng-container i18n>Branch Name</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
        {{ row.name }}
@@ -40,9 +34,7 @@
 
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef [ngClass]="'statusWidth'">
-        <ng-container i18n>
-          Status
-        </ng-container>
+        <ng-container i18n>Status</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'statusWidth'">
         {{ status(row) }}
@@ -51,9 +43,7 @@
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
-        <ng-container i18n>
-          &nbsp;
-        </ng-container>
+        <ng-container>&nbsp;</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
         <button mat-icon-button [matMenuTriggerFor]="submitsMenu" (click)="selectedItem = row">
@@ -77,6 +67,6 @@
   </button>
   <button mat-menu-item (click)="getNotes()">
     <mat-icon>note</mat-icon>
-    <ng-container>Notes</ng-container>
+    <ng-container i18n>Notes</ng-container>
   </button>
 </mat-menu>

@@ -263,9 +263,10 @@ public class LuceneSearch {
      * @return - Pair representing object type and value
      */
     private Pair<JsonType, Object> getValue(final JsonObject json, final String field) {
-        if (field.contains(".")) {
-            val nextObj = json.get(field.substring(0, field.indexOf("."))).asObject();
-            val nextField = field.substring(field.indexOf(".") + 1);
+        val period = field.indexOf('.');
+        if (period > -1) {
+            val nextObj = json.get(field.substring(0, period)).asObject();
+            val nextField = field.substring(period + 1);
             return getValue(nextObj, nextField);
         }
         val tfield = field.replace("-reg", "");

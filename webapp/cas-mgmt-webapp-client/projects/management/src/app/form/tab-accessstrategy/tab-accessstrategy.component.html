@@ -1,7 +1,7 @@
 <form #accessForm="ngForm">
   <mat-card class="tabCard">
     <mat-card-title>
-      <h5>Type</h5>
+      <h5 i18n>Type</h5>
     </mat-card-title>
     <div class="cardContent">
       <lib-type (typeChange)="typeChange()"></lib-type>
@@ -10,7 +10,7 @@
 
   <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
     <mat-card-title>
-      <h5>Service Access Strategy</h5>
+      <h5 i18n>Service Access Strategy</h5>
     </mat-card-title>
     <div class="cardContent">
       <lib-access-strategy></lib-access-strategy>
@@ -19,7 +19,7 @@
 
   <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
     <mat-card-title>
-      <h5>Required Attributes</h5>
+      <h5 i18n>Required Attributes</h5>
     </mat-card-title>
     <div class="cardContent">
       <lib-reqhandlers></lib-reqhandlers>
@@ -28,7 +28,7 @@
 
   <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
     <mat-card-title>
-      <h5>Delegated Authentication</h5>
+      <h5 i18n>Delegated Authentication</h5>
     </mat-card-title>
     <div class="cardContent">
       <lib-delegated></lib-delegated>
@@ -37,7 +37,7 @@
 
   <mat-card class="tabCard" *ngIf="!groovyAccessStrategy">
     <mat-card-title>
-      <h5>Rejected Attributes</h5>
+      <h5 i18n>Rejected Attributes</h5>
     </mat-card-title>
     <div class="cardContent">
       <lib-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"

@@ -28,7 +28,7 @@ dependencies {
     implementation libraries.casServer 
     implementation libraries.classmate
   
-    apply from: rootProject.file("config/core-config.gradle")
+    apply from: rootProject.file("config/delegated-config.gradle")
     
     implementation project(":webapp:cas-mgmt-webapp-config")
     implementation project(":webapp:cas-mgmt-webapp-init")

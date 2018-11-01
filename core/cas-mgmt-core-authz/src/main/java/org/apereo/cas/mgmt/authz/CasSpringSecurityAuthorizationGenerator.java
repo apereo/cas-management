@@ -44,7 +44,9 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
             val watcher = new FileWatcherService(usersFile.getFile(),
                 Unchecked.consumer(file -> {
                     val newProps = new Properties();
-                    newProps.load(Files.newInputStream(file.toPath()));
+                    val input = Files.newInputStream(file.toPath());
+                    newProps.load(input);
+                    input.close();
                     this.generator = new SpringSecurityPropertiesAuthorizationGenerator(newProps);
                 }));
             watcher.start(getClass().getSimpleName());

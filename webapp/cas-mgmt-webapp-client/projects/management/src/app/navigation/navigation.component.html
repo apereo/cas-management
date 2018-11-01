@@ -11,11 +11,11 @@
       <a mat-list-item *ngIf="appService.config.mgmtType === 'DOMAIN'" routerLink="/domains"
          (click)="close()">
         <mat-icon>apps</mat-icon>
-        <span i18n>Domains</span>
+        <ng-container i18n>Domains</ng-container>
       </a>
       <a mat-list-item *ngIf="appService.config.mgmtType === 'DEFAULT'" routerLink="/services/default" (click)="close()">
         <mat-icon>apps</mat-icon>
-        <span i18n>Services</span>
+        <ng-container i18n>Services</ng-container>
       </a>
       <a mat-list-item routerLink="/search" (click)="close()">
         <mat-icon>search</mat-icon>
@@ -35,7 +35,7 @@
       </a>
       <a mat-list-item routerLink="/form/-1" (click)="close()">
         <mat-icon>add_circle</mat-icon>
-        <span i18n>Add New Service</span>
+        <ng-container i18n>Add New Service</ng-container>
       </a>
       <a mat-list-item routerLink="/import" *ngIf="isAdmin()" (click)="close()">
         <mat-icon>add_circle</mat-icon>
@@ -78,11 +78,7 @@
         <div>
           <a class="brand" href="manage.html" target="_self" id="homepageUrlLink">
             <img src="images/logo_cas.png" alt="apereo CAS logo" />
-            <h4>
-              <ng-container i18n="management.services.header.apptitle">
-                Management
-              </ng-container>
-            </h4>
+            <h4 i18n>Management</h4>
           </a>
         </div>
       </div>

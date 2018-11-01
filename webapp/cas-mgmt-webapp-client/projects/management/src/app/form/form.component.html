@@ -5,15 +5,11 @@
     <div style="display:flex;flex-direction: row;padding-top: 3px;">
       <div *ngIf="!view">
         <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
-        <h4 style="display: inline;position: relative;top: -5px;">
-          <ng-container i18n>Edit Service</ng-container>
-        </h4>
+        <h4 style="display: inline;position: relative;top: -5px;" i18n>Edit Service</h4>
       </div>
       <div *ngIf="view">
         <mat-icon style="padding-top: 3px;">visibility</mat-icon>
-        <h4 style="display: inline;position: relative;top: -5px;">
-          <ng-container i18n>View Service</ng-container>
-        </h4>
+        <h4 style="display: inline;position: relative;top: -5px;" i18n>View Service</h4>
       </div>
     <div style="flex: 1 1 auto"></div>
     <div>
@@ -36,7 +32,7 @@
     <mat-tab *ngIf="isSaml() || isOauth() || isOidc() || isWsFed()">
       <ng-template mat-tab-label>
         <ng-container *ngIf="isSaml()" i18n>SAML2 SP</ng-container>
-        <ng-container i18n *ngIf="isOauth()">OAuth2</ng-container>
+        <ng-container *ngIf="isOauth()" i18n>OAuth2</ng-container>
         <ng-container *ngIf="isOidc()" i18n>OpenID Connect</ng-container>
         <ng-container *ngIf="isWsFed()" i18n>WS Federation</ng-container>
       </ng-template>
@@ -88,7 +84,7 @@
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
-          <ng-container>Advanced</ng-container>
+          <ng-container i18n>Advanced</ng-container>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

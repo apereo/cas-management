@@ -14,9 +14,7 @@
 
 <lib-input field="encryptUserName" [change]="provider" [orig]="original">
   <mat-checkbox [(ngModel)]="provider.encryptUserName">
-    <ng-container i18n>
-      Encrypt Username
-    </ng-container>
+    <ng-container i18n>Encrypt Username</ng-container>
   </mat-checkbox>
   <mat-icon appHelp
             i18n-matTooltip="encpytUsername"

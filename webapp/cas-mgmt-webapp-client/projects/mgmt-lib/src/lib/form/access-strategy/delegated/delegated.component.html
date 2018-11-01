@@ -16,7 +16,7 @@
             i18n-matTooltip
             matTooltip="List of authentication providers this services is allowed to delegate authentication to.">help
   </mat-icon>
-  <h5 *ngIf="delegatedAuthn.length > 0">Allowed Providers</h5>
+  <h5 *ngIf="delegatedAuthn.length > 0" i18n>Allowed Providers</h5>
   <mat-chip-list #chipList [selectable]="false">
     <mat-chip *ngFor="let provider of delegatedAuthn" [selectable]="false"
               removable="true" (removed)="remove(provider)">

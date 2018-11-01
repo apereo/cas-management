@@ -1,0 +1,12 @@
+<lib-input field="evaluationOrder" [change]="data.service" [orig]="data.original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Evaluation Order</mat-placeholder>
+    <input matInput [(ngModel)]="data.service.evaluationOrder">
+  </mat-form-field>
+  <mat-hint align="end">
+    <lib-hint></lib-hint>
+  </mat-hint>
+  <mat-icon appHelp i18n-matTooltip
+           matTooltip="Determines how CAS should load, sort and evaluate services per this numeric order.">
+  </mat-icon>
+</lib-input>

@@ -1,0 +1,77 @@
+<lib-input field="multifactorAuthenticationProviders" [change]="policy" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18>Providers</mat-placeholder>
+    <mat-select multiple
+                [(ngModel)]="policy.multifactorAuthenticationProviders">
+      <mat-option *ngFor="let opt of formData.mfaProviders" [value]="opt.value">
+        {{ opt.display }}
+      </mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="List of multifactor provider ids to assign to this service.">
+  </mat-icon>
+</lib-input>
+
+<lib-input field="failureMode" [change]="policy" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Failure Mode</mat-placeholder>
+    <mat-select [(ngModel)]="policy.failureMode">
+      <mat-option *ngFor="let opt of formData.mfaFailureModes" [value]="opt">
+        {{ opt }}
+      </mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Decide what CAS should do in the event that a provider is not available.">
+  </mat-icon>
+</lib-input>
+
+<lib-input field="principalAttributeNameTrigger" [change]="policy" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Principal Attribute Name Trigger</mat-placeholder>
+    <input matInput [matAutocomplete]="auto"
+           [(ngModel)]="policy.principalAttributeNameTrigger">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Principal attribute name to trigger MFA when accessing this service.">
+  </mat-icon>
+</lib-input>
+
+<lib-input field="principalAttributeValueToMatch" [change]="policy" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Principal Attribute Value To Match</mat-placeholder>
+    <input matInput [(ngModel)]="policy.principalAttributeValueToMatch">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Principal attribute value to match in order to trigger MFA when accessing this service.">
+  </mat-icon>
+</lib-input>
+
+<lib-input field="bypassEnabled" [change]="policy" [orig]="original">
+  <mat-checkbox [(ngModel)]="policy.bypassEnabled">
+    <ng-container i18n>Enable Bypass</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Bypass multifactor authentication for this service.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<mat-autocomplete style="width:300px" #auto="matAutocomplete">
+  <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">{{ opt }}</mat-option>
+</mat-autocomplete>

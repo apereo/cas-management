@@ -2,7 +2,7 @@ apply plugin: "com.moowork.node"
 
 node {
     version = "${nodeVersion}"
-    nodeModulesDir = project(":webapp").projectDir
+    nodeModulesDir = rootProject.file("webapp/cas-mgmt-webapp-client")
     download = true
 }
 
@@ -23,24 +23,25 @@ if (!Boolean.getBoolean("skipNodeModulesCleanUp")) {
     logger.info("Skipping node_modules cleanup...")
 }
 
-task buildClientDev(type: NpmTask, dependsOn: "npm_install", group: "bootRun",
+task buildLibrary(type: NpmTask, dependsOn: "npm_install",
+        description: "Compile client side library") {
+    args = ['run', 'build', 'mgmt-lib']
+    enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildClientDev(type: NpmTask, dependsOn: "buildLibrary",
         description: "Compile client side folder for development") {
-    args = ['run', 'buildDev', mgmtUrl]
+    args = ['run', 'buildBase', mgmtUrl, 'management']
     enabled = !Boolean.getBoolean("skipClientBuild")
 }
 
-task buildClient(type: NpmTask, dependsOn: "npm_install", group: "build",
+task buildClient(type: NpmTask, dependsOn: "buildLibrary",
         description: "Compile client side folder for production") {
-    args = ['run', 'build', mgmtUrl]
+    args = ['run', 'buildBase', mgmtUrl, 'management']
     enabled = !Boolean.getBoolean("skipClientBuild")
 }
 
-task buildClientWatch(type: NpmTask, dependsOn: "npm_install", group: "application", description: "Build and watches the client side assets for rebuilding") {
-    args = ['run', 'buildWatch', mgmtUrl]
-    enabled = !Boolean.getBoolean("skipClientBuild")
-}
-
-task ngLint(type: NpmTask, dependsOn: "npm_install", group: "check",
+task ngLint(type: NpmTask, dependsOn: "npm_install",
         description: "Runs Angular TypeScript and HtML Linting") {
     args = ['run', 'lint']
 }

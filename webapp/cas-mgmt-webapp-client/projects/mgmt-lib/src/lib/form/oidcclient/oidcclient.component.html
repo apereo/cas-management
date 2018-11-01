@@ -1,0 +1,215 @@
+<lib-input field="clientId" [change]="service" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>OIDC Client ID</mat-placeholder>
+    <input matInput required [(ngModel)]="service.clientId">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="OAuth client id for this OIDC client. Only applies to OIDC service types.">
+  </mat-icon>
+</lib-input>
+
+<lib-input field="clientSecret" [change]="service" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>OIDC Client Secret</mat-placeholder>
+    <input matInput required [type]="showOAuthSecret ? 'text' : 'password'"
+           [(ngModel)]="service.clientSecret">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Secret key for this OIDC client. Only applies to OIDC service types.">
+  </mat-icon>
+</lib-input>
+
+<div>
+  <mat-checkbox [(ngModel)]="showOAuthSecret">
+    <ng-container i18n>Show Client Secret</ng-container>
+    <mat-icon style="font-size: medium" i18n-matTooltip
+              matTooltip="Enable to show your OIDC Client Secret.">help
+    </mat-icon>
+  </mat-checkbox>
+</div>
+
+<lib-input field="bypassApprovalPrompt" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.bypassApprovalPrompt">
+    <ng-container i18n>OIDC Bypass Approval Prompt</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Indicates whether the OIDC confirmation screen should be displayed before accessing the service application.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="generateRefreshToken" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.generateRefreshToken">
+    <ng-container i18n>OIDC Refresh Token Generation</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Indicates whether a refresh token should be generated with the access token for this OIDC client.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="jsonFormat" [change]="service" [orig]="original" style="padding-bottom:10px;">
+  <mat-checkbox [(ngModel)]="service.jsonFormat">
+    <ng-container i18n>JSON format for access tokens</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Indicates whether the access token response should be in JSON format or in plain text.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="jwks" [change]="service" [orig]="service">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>JSON Web Keystore</mat-placeholder>
+    <input matInput required [(ngModel)]="service.jwks">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Location of the JSON web keystore to sign id tokens with.">
+  </mat-icon>
+</lib-input>
+
+<ng-container *ngIf="service.scopes.indexOf('user_defined') > -1">
+  <lib-input field="scopes_userdefined" [change]="service" [orig]="original">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n>User Defined Scopes</mat-placeholder>
+      <input matInput [(ngModel)]="service.scopes_userdefined"/>
+    </mat-form-field>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="List any custom defined scopes that should be released.">
+    </mat-icon>
+  </lib-input>
+</ng-container>
+
+<lib-input field="signIdToken" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.signIdToken">
+    <ng-container i18n>Sign ID Token</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Whether ID tokens should be signed.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="implicit" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.implicit">
+    <ng-container i18n>Enable Implicit</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Indicates whether this service should support the implicit flow.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="encryptIdToken" [change]="service" [orig]="original" style="padding-bottom: 10px;">
+  <mat-checkbox [(ngModel)]="service.encryptIdToken">
+    <ng-container i18n>Encrypt ID Token</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Whether ID tokens should be encrypted.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="idTokenEncryptionAlg" [change]="service" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Encryption Algorithm</mat-placeholder>
+    <input matInput required [matAutocomplete]="encryptAlgAuto"
+           [(ngModel)]="service.idTokenEncryptionAlg">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Encryption algorithm to use with ID tokens.">
+  </mat-icon>
+  <mat-autocomplete #encryptAlgAuto="matAutocomplete">
+    <mat-option *ngFor="let opt of data.formData.encryptAlgOptions" [value]="opt">{{ opt }}</mat-option>
+  </mat-autocomplete>
+</lib-input>
+
+<lib-input field="idTokenEncryptionEncoding" [change]="service" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Encryption Encoding Algorithm</mat-placeholder>
+    <input matInput required [matAutocomplete]="encodingAlgAuto"
+           [(ngModel)]="service.idTokenEncryptionEncoding">
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Encryption content encoding algorithm to use with ID tokens.">
+  </mat-icon>
+  <mat-autocomplete #encodingAlgAuto="matAutocomplete">
+    <mat-option *ngFor="let opt of data.formData.encodingAlgOptions" [value]="opt">{{ opt }}</mat-option>
+  </mat-autocomplete>
+</lib-input>
+
+<lib-input field="subjectType" [change]="service" [orig]="original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Subject Type</mat-placeholder>
+    <mat-select [(ngModel)]="service.subjectType">
+      <mat-option *ngFor="let opt of data.formData.oidcSubjectTypes" [value]="opt">{{ opt }}</mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Type to use when generating principal identifiers. Default is public.">
+  </mat-icon>
+</lib-input>
+
+<ng-container *ngIf="service.subjectType === 'PAIRWISE'">
+  <lib-input field="sectorIdentifierUri" [change]="service" [orig]="original">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n>Sector Identifier URI</mat-placeholder>
+      <input matInput [(ngModel)]="service.sectorIdentifierUri">
+      <mat-hint align="end">
+        <lib-hint></lib-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Host value of this URL is used as the sector identifier for the pairwise identifier
+               calculation. If left undefined, the host value of the serviceId will be used instead.">
+    </mat-icon>
+  </lib-input>
+</ng-container>
+
+<ng-container *ngIf="service.dynamicallyRegistered">
+  <lib-input field="dynamicRegistrationDateTime" [change]="service" [orig]="original">
+    <mat-form-field class="textInput">
+      <mat-placeholder i18n>Dynamically Registered At</mat-placeholder>
+      <input matInput [(ngModel)]="service.dynamicRegistrationDateTime">
+      <mat-hint align="end">
+        <lib-hint></lib-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Date service was dynamically registered.">
+    </mat-icon>
+  </lib-input>
+</ng-container>

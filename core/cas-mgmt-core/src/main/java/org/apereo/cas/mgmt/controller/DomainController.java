@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @since 6.0
  */
 @RestController("domainController")
-@RequestMapping(path="/domains", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path="api/domains", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Slf4j
 public class DomainController {

@@ -96,7 +96,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
             @Override
             protected ModelAndView handleRequestInternal(final HttpServletRequest request,
                                                          final HttpServletResponse response) {
-                val url = request.getContextPath() + "/manage.html";
+                val url = request.getContextPath() + "/management/index.html";
                 return new ModelAndView(new RedirectView(response.encodeURL(url)));
             }
 
@@ -200,6 +200,11 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
     }
 
+    //@Bean
+    //public ForwardingController forwardingController() {
+    //    return new ForwardingController();
+    //}
+
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
     @Bean
     public Config casManagementSecurityConfiguration() {
@@ -218,7 +223,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
             LOGGER.info("Cas Properties = " + casProperties + " Server properties = " + serverProperties);
-            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("/manage.html");
+            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("management/index.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }

@@ -1,0 +1,70 @@
+<div>
+  <mat-tab-group [(selectedIndex)]="selectedTab">
+    <mat-tab *ngFor="let contact of data.service.contacts;let i = index;" [label]="getTabHeader(contact)">
+      <ng-container [ngModelGroup]="'contact' + i">
+      <lib-input field="name" [orig]="data.original && data.original.contacts[i]" [change]="contact">
+        <mat-form-field class="textInput">
+          <input matInput required #contactname="ngModel" autocomplete="false"
+                 placeholder="Name" name="contactname" id="contactname" [(ngModel)]="contact.name">
+          <mat-hint align="end">
+            <lib-hint></lib-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon style="font-size: medium" i18n-matTooltip
+                 matTooltip="First and last name of the contact">help
+        </mat-icon>
+      </lib-input>
+      <lib-input field="email" [orig]="data.original && data.original.contacts[i]" [change]="contact">
+        <mat-form-field class="textInput">
+          <input matInput required #email="ngModel" email
+                 placeholder="Email" name="email" id="email"
+                 [(ngModel)]="contact.email" email>
+          <mat-hint align="end">
+            <lib-hint></lib-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon style="font-size: medium" i18n-matTooltip
+                 matTooltip="EMail of the contact">help
+        </mat-icon>
+      </lib-input>
+      <lib-input field="phone" [orig]="data.original && data.original.contacts[i]" [change]="contact">
+        <mat-form-field class="textInput">
+          <input matInput #phone="ngModel" pattern="^[+]?[\d\s]+$"
+                 placeholder="Phone" name="phone" id="phone"
+                 [(ngModel)]="contact.phone">
+          <mat-hint align="end">
+            <lib-hint></lib-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon style="font-size: medium" i18n-matTooltip
+                 matTooltip="Phone number of the contact">help
+        </mat-icon>
+      </lib-input>
+      <lib-input [field]="department" [orig]="data.original && data.original.contacts[i]" [change]="contact">
+        <mat-form-field class="textInput">
+          <input matInput #department="ngModel"
+                 placeholder="Department" name="department" id="department"
+                 [(ngModel)]="contact.department">
+          <mat-hint align="end">
+            <lib-hint></lib-hint>
+          </mat-hint>
+        </mat-form-field>
+        <mat-icon style="font-size: medium" i18n-matTooltip
+                 matTooltip="Department of the contact">help
+        </mat-icon>
+      </lib-input>
+      </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+  <div style="height:25px;padding-top: 5px;">
+    <div style="float:right;padidng:5px">
+      <button mat-mini-fab (click)="addContact()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-mini-fab (click)="deleteContact()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+

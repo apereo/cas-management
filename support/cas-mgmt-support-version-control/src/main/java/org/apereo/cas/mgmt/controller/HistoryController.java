@@ -37,7 +37,7 @@ import static java.util.stream.Collectors.toList;
  * @since 6.0
  */
 @RestController("historyController")
-@RequestMapping(path = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/history", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class HistoryController extends AbstractVersionControlController {
 
@@ -68,6 +68,7 @@ public class HistoryController extends AbstractVersionControlController {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val commits = git.getLastNCommits(MAX_COMMITS)
+                    .filter(c -> !c.getFullMessage().equals("Created"))
                     .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
                             CasManagementUtils.formatDateTime(c.getCommitTime()))

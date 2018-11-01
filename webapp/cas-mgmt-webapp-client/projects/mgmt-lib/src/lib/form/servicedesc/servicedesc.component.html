@@ -1,0 +1,15 @@
+<lib-input field="description" [change]="data.service" [orig]="data.original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Description</mat-placeholder>
+    <textarea matInput rows="5" #serviceDesc="ngModel" id="serviceDesc"
+              name="serviceDesc"
+              [(ngModel)]="data.service.description">
+    </textarea>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="The service description.">
+  </mat-icon>
+</lib-input>

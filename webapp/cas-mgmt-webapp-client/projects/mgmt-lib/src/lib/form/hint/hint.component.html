@@ -1,0 +1,7 @@
+<mat-icon style="font-size: medium; cursor: pointer"
+          *ngIf="diffOn || difference"
+          (click)="clickDiff()"
+          [matTooltip]="diffOn ? 'Click to see changed value' : 'Click to see original value'">
+  <ng-container *ngIf="diffOn">update</ng-container>
+  <ng-container *ngIf="!diffOn">restore</ng-container>
+</mat-icon>

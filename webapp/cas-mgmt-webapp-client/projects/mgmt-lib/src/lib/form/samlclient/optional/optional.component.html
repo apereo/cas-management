@@ -1,0 +1,59 @@
+<lib-input field="skipGeneratingAssertionNameId" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.skipGeneratingAssertionNameId">
+    <ng-container i18n>Skip generating assertion name id</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Whether generation of a name identifier should be skipped for assertions">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="skipGeneratingSubjectConfirmationInResponseTo" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationInResponseTo">
+    <ng-container i18n>Skip generating subject confirmation InRespsonseTo</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Whether generation of the InResponseTo element should be skipped for subject confirmations.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="skipGeneratingSubjectConfirmationNotOnOrAfter" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationNotOnOrAfter">
+    <ng-container i18n>Skip generating subject confirmation NotOnOrAfter</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Whether generation of the NotOnOrAfter element should be skipped for subject confirmations.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="skipGeneratingSubjectConfirmationRecipient" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationRecipient">
+    <ng-container i18n>Skip generating subject confirmation Recipient</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Whether generation of the Recipient element should be skipped for subject confirmations.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input field="skipGeneratingSubjectConfirmationNotBefore" [change]="service" [orig]="original">
+  <mat-checkbox [(ngModel)]="service.skipGeneratingSubjectConfirmationNotBefore">
+    <ng-container i18n>Skip generating subject confirmation NotBefore</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Whether generation of the NotBefore element should be skipped for subject confirmations.">
+    </mat-icon>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-checkbox>
+</lib-input>

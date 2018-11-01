@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 6.0
  */
 @RestController("applicationDataController")
+@RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @RequiredArgsConstructor
 public class ApplicationDataController {
@@ -38,7 +41,7 @@ public class ApplicationDataController {
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
 
-    @GetMapping(value = "managerType")
+    @GetMapping(value = "/managerType")
     public String getManagerType() {
         return casProperties.getServiceRegistry().getManagementType().toString();
     }
@@ -61,7 +64,7 @@ public class ApplicationDataController {
      *
      * @return the form data
      */
-    @GetMapping(value = "formData")
+    @GetMapping(value = "/formData")
     public FormData getFormData() {
         return formDataFactory.create();
     }
@@ -71,7 +74,7 @@ public class ApplicationDataController {
      *
      * @return - cas versions
      */
-    @GetMapping("footer")
+    @GetMapping("/footer")
     public String[] footer() {
         return new String[] {
                 CasVersion.getVersion(),

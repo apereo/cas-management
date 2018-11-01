@@ -9,7 +9,7 @@ currentChangeSetContains() {
 
     for i in "$results"
         do
-            :
+            echo "Processing changed file: $i"
             if [[ ("$i" =~ $1) || "${TRAVIS_COMMIT_MESSAGE}" =~ "[force build]" ]]; then
                 echo "Found a match against pattern $1. Commit message: ${TRAVIS_COMMIT_MESSAGE}"
                 return 0
@@ -34,7 +34,7 @@ currentChangeSetAffectsJavadocs() {
 }
 
 currentChangeSetAffectsDocumentation() {
-    currentChangeSetContains "\.md"
+    currentChangeSetContains "\.(md|properties|java)"
     return `(expr "$?" + 0)`
 }
 
@@ -44,6 +44,6 @@ currentChangeSetAffectsDependencies() {
 }
 
 currentChangeSetAffectsSnapshots() {
-    currentChangeSetContains "\.(java|groovy|yml|properties)"
+    currentChangeSetContains "\.(java|groovy|yml|properties|xml|json)"
     return `(expr "$?" + 0)`
 }

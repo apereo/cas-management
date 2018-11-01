@@ -1,0 +1,39 @@
+<lib-input>
+  <mat-form-field class="textInput">
+        <mat-select i18n-placeHolder
+                    placeholder="Select Type"
+                    [(ngModel)]="type" (selectionChange)="changeType()">
+            <mat-option *ngFor="let opt of types" [value]="opt">{{ TYPE[opt] }}</mat-option>
+        </mat-select>
+      <mat-hint align="end">
+          <lib-hint></lib-hint>
+      </mat-hint>
+    </mat-form-field>
+    <mat-icon appHelp i18-matTooltip
+              matTooltip="Access strategy type">
+    </mat-icon>
+</lib-input>
+
+<ng-container *ngIf="type == TYPE.REMOTE">
+    <lib-remote></lib-remote>
+</ng-container>
+
+<ng-container *ngIf="type == TYPE.TIME || type == TYPE.GROUPER">
+    <lib-time></lib-time>
+</ng-container>
+
+<ng-container *ngIf="type == TYPE.GROUPER">
+    <lib-grouper></lib-grouper>
+</ng-container>
+
+<ng-container *ngIf="type == TYPE.SURROGATE">
+    <lib-surrogate></lib-surrogate>
+</ng-container>
+
+<ng-container *ngIf="type == TYPE.GROOVY_SURROGATE">
+  <lib-groovy-surrogate></lib-groovy-surrogate>
+</ng-container>
+
+<ng-container *ngIf="type == TYPE.GROOVY">
+    <lib-groovy></lib-groovy>
+</ng-container>

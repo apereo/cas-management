@@ -1,0 +1,17 @@
+<lib-input field="responseType" [change]="data.service" [orig]="data.original">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Response Type</mat-placeholder>
+    <mat-select [(ngModel)]="data.service.responseType">
+      <mat-option></mat-option>
+      <mat-option value="POST">POST</mat-option>
+      <mat-option value="REDIRECT">REDIRECT</mat-option>
+      <mat-option value="HEADER">HEADER</mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="'Defines how CAS should respond to requests for this service.">
+  </mat-icon>
+</lib-input>

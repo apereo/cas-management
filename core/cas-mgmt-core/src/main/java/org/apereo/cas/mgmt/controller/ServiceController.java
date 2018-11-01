@@ -35,7 +35,7 @@ import java.util.List;
  * @since 6.0
  */
 @RestController("serviceController")
-@RequestMapping(path = "/services", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/services", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Slf4j
 public class ServiceController {
@@ -188,7 +188,6 @@ public class ServiceController {
      *
      * @param service  - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
-     * @throws Exception - failed
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
     public RegisteredService importService(final @RequestBody String service) {

@@ -30,7 +30,7 @@ echo -e "***********************************************"
 gradleBuild="$gradleBuild javadoc -x test -x check -DskipNpmLint=true \
      -DskipGradleLint=true -DskipSass=true \
      -DskipNestedConfigMetadataGen=true --parallel \
-     -DskipNodeModulesCleanUp=true -DskipNpmCache=true "
+     -DskipNodeModulesCleanUp=true -DskipNpmCache=false "
 
 if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[show streams]"* ]]; then
     gradleBuild="$gradleBuild -DshowStandardStreams=true "

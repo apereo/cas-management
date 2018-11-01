@@ -6,7 +6,7 @@ import { ControlsComponent } from './controls.component';
 import {CommitComponent} from '../commit/commit.component';
 import {ControlsService} from './controls.service';
 import {PublishComponent} from '../publish/publish.component';
-import {Change, Messages, UserService} from 'mgmt-lib';
+import {Change, UserService} from 'mgmt-lib';
 
 const userServiceStub = {
   getRoles(): Promise<String[]> {
@@ -51,7 +51,6 @@ describe('ControlsComponent', () => {
       ],
       declarations: [ ControlsComponent, CommitComponent, PublishComponent ],
       providers: [
-        Messages,
         {provide: ControlsService, useValue: controlsServiceStub},
         {provide: UserService, useValue: userServiceStub}
       ]

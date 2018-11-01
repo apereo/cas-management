@@ -5,9 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { LogoComponent } from './logo.component';
-import {Messages} from '../../messages';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
 describe('LogoComponent', () => {
   let component: LogoComponent;
@@ -16,8 +14,7 @@ describe('LogoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ LogoComponent ],
-      providers: [ Messages ]
+      declarations: [ LogoComponent ]
     })
     .compileComponents();
   }));

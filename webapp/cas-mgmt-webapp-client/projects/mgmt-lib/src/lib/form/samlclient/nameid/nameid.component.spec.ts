@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NameidComponent } from './nameid.component';
+import { SamlNameidComponent } from './nameid.component';
 
 describe('NameidComponent', () => {
-  let component: NameidComponent;
-  let fixture: ComponentFixture<NameidComponent>;
+  let component: SamlNameidComponent;
+  let fixture: ComponentFixture<SamlNameidComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NameidComponent ]
+      declarations: [ SamlNameidComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NameidComponent);
+    fixture = TestBed.createComponent(SamlNameidComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

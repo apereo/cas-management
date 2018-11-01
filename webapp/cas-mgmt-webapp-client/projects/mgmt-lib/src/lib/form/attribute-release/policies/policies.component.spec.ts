@@ -1,12 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PoliciesComponent } from './policies.component';
-import {FormData} from '../../../../domain/form-data';
+import {FormData} from '../../../domain/form-data';
 import {SharedModule} from '../../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
-import {Messages} from '../../../messages';
-import {Data} from '../../data';
-import {RegexRegisteredService} from '../../../../domain/registered-service';
 
 describe('PoliciesComponent', () => {
   let component: PoliciesComponent;
@@ -15,8 +12,7 @@ describe('PoliciesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, SharedModule],
-      declarations: [ PoliciesComponent ],
-      providers: [ Messages ]
+      declarations: [ PoliciesComponent ]
     })
     .compileComponents();
   }));

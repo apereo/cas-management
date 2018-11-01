@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabBasicsComponent } from './tab-basics.component';
-import {DataRecord, Messages, SharedModule} from 'mgmt-lib';
+import {DataRecord, SharedModule} from 'mgmt-lib';
 import {ServicenameComponent} from 'mgmt-lib/lib/form/servicename/servicename.component';
 import {ThemeidComponent} from 'mgmt-lib/lib/form/themeid/themeid.component';
 import {ServicedescComponent} from 'mgmt-lib/lib/form/servicedesc/servicedesc.component';
@@ -31,7 +31,7 @@ describe('TabBasicsComponent', () => {
         LinkrefsComponent,
         EnabledComponent
       ],
-      providers: [ Messages, DataRecord ]
+      providers: [ DataRecord ]
     })
     .compileComponents();
   }));

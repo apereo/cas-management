@@ -5,10 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { LogouttypeevalComponent } from './logouttypeeval.component';
-import {Messages} from '../../messages';
-import {Data} from '../data';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
 describe('LogouttypeevalComponent', () => {
   let component: LogouttypeevalComponent;
@@ -17,8 +14,7 @@ describe('LogouttypeevalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ LogouttypeevalComponent ],
-      providers: [ Messages ]
+      declarations: [ LogouttypeevalComponent ]
     })
     .compileComponents();
   }));

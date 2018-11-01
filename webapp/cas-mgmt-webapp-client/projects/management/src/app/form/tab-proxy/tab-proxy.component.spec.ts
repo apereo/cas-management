@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabProxyComponent } from './tab-proxy.component';
-import {DataRecord, Messages, SharedModule} from 'mgmt-lib';
+import {DataRecord, SharedModule} from 'mgmt-lib';
 import {ProxyComponent} from 'mgmt-lib/lib/form/proxy/proxy.component';
 
 describe('TabProxyComponent', () => {
@@ -16,7 +16,7 @@ describe('TabProxyComponent', () => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ TabProxyComponent, ProxyComponent ],
-      providers: [ Messages, DataRecord ]
+      providers: [ DataRecord ]
     })
     .compileComponents();
   }));

@@ -4,26 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { ReqhandlersComponent } from './reqhandlers.component';
-import {Messages} from '../../messages';
+import { RequiredHandlersComponent } from './reqhandlers.component';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
 describe('ReqhandlersComponent', () => {
-  let component: ReqhandlersComponent;
-  let fixture: ComponentFixture<ReqhandlersComponent>;
+  let component: RequiredHandlersComponent;
+  let fixture: ComponentFixture<RequiredHandlersComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ ReqhandlersComponent ],
-      providers: [ Messages ]
+      declarations: [ RequiredHandlersComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReqhandlersComponent);
+    fixture = TestBed.createComponent(RequiredHandlersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

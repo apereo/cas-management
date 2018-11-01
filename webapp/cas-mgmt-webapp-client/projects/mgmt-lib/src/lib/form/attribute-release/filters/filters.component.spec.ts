@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FiltersComponent } from './filters.component';
 import {SharedModule} from '../../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
-import {Messages} from '../../../messages';
 
 describe('FiltersComponent', () => {
   let component: FiltersComponent;
@@ -12,8 +11,7 @@ describe('FiltersComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, SharedModule],
-      declarations: [ FiltersComponent ],
-      providers: [ Messages ]
+      declarations: [ FiltersComponent ]
     })
     .compileComponents();
   }));

@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { PropertiespaneComponent } from './propertiespane.component';
-import {Messages} from '../../messages';
 import {SharedModule} from '../../shared/shared.module';
 
 describe('PropertiespaneComponent', () => {
@@ -15,8 +14,7 @@ describe('PropertiespaneComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ PropertiespaneComponent ],
-      providers: [ Messages ]
+      declarations: [ PropertiespaneComponent ]
     })
     .compileComponents();
   }));

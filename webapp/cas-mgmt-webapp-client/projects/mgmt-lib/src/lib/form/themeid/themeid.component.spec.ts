@@ -5,9 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { ThemeidComponent } from './themeid.component';
-import {Messages} from '../../messages';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
 describe('ThemeidComponent', () => {
   let component: ThemeidComponent;
@@ -16,8 +14,7 @@ describe('ThemeidComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ ThemeidComponent ],
-      providers: [ Messages ]
+      declarations: [ ThemeidComponent ]
     })
     .compileComponents();
   }));

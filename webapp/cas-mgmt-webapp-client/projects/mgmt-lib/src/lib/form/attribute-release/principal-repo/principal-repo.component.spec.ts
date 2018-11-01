@@ -3,8 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PrincipalRepoComponent } from './principal-repo.component';
 import {SharedModule} from '../../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
-import {Messages} from '../../../messages';
-import {FormData} from '../../../../domain/form-data';
+import {FormData} from '../../../domain/form-data';
 
 describe('PrincipalRepoComponent', () => {
   let component: PrincipalRepoComponent;
@@ -13,8 +12,7 @@ describe('PrincipalRepoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, SharedModule],
-      declarations: [ PrincipalRepoComponent ],
-      providers: [Messages]
+      declarations: [ PrincipalRepoComponent ]
     })
     .compileComponents();
   }));

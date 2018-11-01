@@ -5,10 +5,8 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { UidattrsComponent } from './uidattrs.component';
-import {Messages} from '../../messages';
-import {FormData} from '../../../domain/form-data';
+import {FormData} from '../../domain/form-data';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
 describe('UidattrsComponent', () => {
   let component: UidattrsComponent;
@@ -17,8 +15,7 @@ describe('UidattrsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule],
-      declarations: [ UidattrsComponent ],
-      providers: [ Messages]
+      declarations: [ UidattrsComponent ]
     })
     .compileComponents();
   }));

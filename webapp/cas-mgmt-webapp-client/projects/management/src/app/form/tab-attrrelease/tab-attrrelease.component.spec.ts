@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabAttrreleaseComponent } from './tab-attrrelease.component';
-import {DataRecord, Messages, SharedModule} from 'mgmt-lib';
+import {DataRecord, SharedModule} from 'mgmt-lib';
 import {ChecksComponent} from 'mgmt-lib/lib/form/attribute-release/checks/checks.component';
 import {FiltersComponent} from 'mgmt-lib/lib/form/attribute-release/filters/filters.component';
 import {PoliciesComponent} from 'mgmt-lib/lib/form/attribute-release/policies/policies.component';
@@ -27,7 +27,7 @@ describe('TabAttrreleaseComponent', () => {
         PrincipalRepoComponent,
         WsfedattrrelpoliciesComponent
       ],
-      providers: [ Messages, DataRecord ]
+      providers: [ DataRecord ]
     })
     .compileComponents();
   }));

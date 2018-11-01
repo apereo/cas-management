@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OptionalComponent } from './optional.component';
+import { SamlOptionalComponent } from './optional.component';
 
 describe('OptionalComponent', () => {
-  let component: OptionalComponent;
-  let fixture: ComponentFixture<OptionalComponent>;
+  let component: SamlOptionalComponent;
+  let fixture: ComponentFixture<SamlOptionalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OptionalComponent ]
+      declarations: [ SamlOptionalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OptionalComponent);
+    fixture = TestBed.createComponent(SamlOptionalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,7 +6,7 @@ import {NotesComponent} from '../notes/notes.component';
 import {EditorComponent} from '../editor.component';
 import {SubmitService} from './submits.service';
 import {NotesService} from '../notes/notes.service';
-import {Branch, Messages} from 'mgmt-lib';
+import {Branch} from 'mgmt-lib';
 
 const submitServiceStub = {
   getSubmits(): Promise<Branch[]> {
@@ -33,7 +33,6 @@ describe('SubmitsComponent', () => {
       imports: [ RouterTestingModule ],
       declarations: [ SubmitsComponent, NotesComponent, EditorComponent ],
       providers: [
-        Messages,
         {provide: SubmitService, useValue: submitServiceStub},
         {provide: NotesService, useValue: notesServiceStub}
       ]

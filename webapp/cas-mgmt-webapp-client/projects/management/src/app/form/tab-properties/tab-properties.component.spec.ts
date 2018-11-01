@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabPropertiesComponent } from './tab-properties.component';
-import {DataRecord, Messages, SharedModule} from 'mgmt-lib';
+import {DataRecord, SharedModule} from 'mgmt-lib';
 import {PropertiespaneComponent} from 'mgmt-lib/lib/form/propertiespane/propertiespane.component';
 
 describe('TabPropertiesComponent', () => {
@@ -16,7 +16,7 @@ describe('TabPropertiesComponent', () => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ TabPropertiesComponent, PropertiespaneComponent ],
-      providers: [ Messages, DataRecord ]
+      providers: [ DataRecord ]
     })
     .compileComponents();
   }));

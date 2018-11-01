@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabMulitauthComponent } from './tab-mulitauth.component';
-import {DataRecord, Messages, SharedModule} from 'mgmt-lib';
+import {DataRecord, SharedModule} from 'mgmt-lib';
 import {MfaComponent} from 'mgmt-lib/lib/form/mfa/mfa.component';
 
 describe('TabMulitauthComponent', () => {
@@ -16,7 +16,7 @@ describe('TabMulitauthComponent', () => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ TabMulitauthComponent, MfaComponent ],
-      providers: [ Messages, DataRecord]
+      providers: [ DataRecord]
     })
     .compileComponents();
   }));

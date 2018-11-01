@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { AttributemappingComponent } from './attributemapping.component';
-import {Messages} from '../../messages';
 import {SharedModule} from '../../shared/shared.module';
 
 describe('AttributemappingComponent', () => {
@@ -13,8 +12,7 @@ describe('AttributemappingComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ AttributemappingComponent ],
-      providers: [ Messages ]
+      declarations: [ AttributemappingComponent ]
     })
     .compileComponents();
   }));

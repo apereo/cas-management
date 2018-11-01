@@ -15,7 +15,7 @@ import {ControlsService} from '../controls/controls.service';
 import {PullService} from './pull.service';
 import {NotesService} from '../notes/notes.service';
 import {EditorComponent} from '../editor.component';
-import {Branch, Change, Messages} from 'mgmt-lib';
+import {Branch, Change} from 'mgmt-lib';
 
 const controlsServiceStub = {
   commit(msg: String): Promise<String> {
@@ -81,7 +81,6 @@ describe('PullComponent', () => {
         EditorComponent
       ],
       providers: [
-        Messages,
         {provide: ControlsService, useValue: controlsServiceStub},
         {provide: PullService, useValue: pullServiceStub},
         {provide: NotesService, useValue: noteServiceStub}

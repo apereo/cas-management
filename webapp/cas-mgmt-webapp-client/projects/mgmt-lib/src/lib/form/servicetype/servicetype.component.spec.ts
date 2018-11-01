@@ -5,10 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { ServicetypeComponent } from './servicetype.component';
-import {Messages} from '../../messages';
-import {Data} from '../data';
 import {SharedModule} from '../../shared/shared.module';
-import {RegexRegisteredService} from '../../../domain/registered-service';
 
 describe('ServicetypeComponent', () => {
   let component: ServicetypeComponent;
@@ -17,8 +14,7 @@ describe('ServicetypeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ ServicetypeComponent ],
-      providers: [ Messages ]
+      declarations: [ ServicetypeComponent ]
     })
     .compileComponents();
   }));

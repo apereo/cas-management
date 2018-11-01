@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabLogoutComponent } from './tab-logout.component';
-import {DataRecord, Messages, SharedModule} from 'mgmt-lib';
+import {DataRecord, SharedModule} from 'mgmt-lib';
 import {LogoutComponent} from 'mgmt-lib/lib/form/logout/logout.component';
 import {LogouttypeevalComponent} from 'mgmt-lib/lib/form/logouttypeeval/logouttypeeval.component';
 
@@ -17,7 +17,7 @@ describe('TabLogoutComponent', () => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ TabLogoutComponent, LogoutComponent, LogouttypeevalComponent ],
-      providers: [ Messages, DataRecord ]
+      providers: [ DataRecord ]
     })
     .compileComponents();
   }));

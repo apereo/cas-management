@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabAccessstrategyComponent } from './tab-accessstrategy.component';
-import {DataRecord, Messages, SharedModule} from 'mgmt-lib';
+import {DataRecord, SharedModule} from 'mgmt-lib';
 import {AccessStrategyComponent} from 'mgmt-lib/lib/form/access-strategy/access-strategy.component';
 import {AttributemappingComponent} from 'mgmt-lib/lib/form/attributemapping/attributemapping.component';
 
@@ -17,7 +17,7 @@ describe('TabAccessstrategyComponent', () => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ TabAccessstrategyComponent, AccessStrategyComponent, AttributemappingComponent ],
-      providers: [ DataRecord, Messages ]
+      providers: [ DataRecord ]
     })
     .compileComponents();
   }));

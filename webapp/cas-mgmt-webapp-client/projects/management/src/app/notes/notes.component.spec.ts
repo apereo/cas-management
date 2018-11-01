@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NotesComponent } from './notes.component';
 import {EditorComponent} from '../editor.component';
-import {Messages} from 'mgmt-lib';
 
 describe('NotesComponent', () => {
   let component: NotesComponent;
@@ -10,10 +9,7 @@ describe('NotesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NotesComponent, EditorComponent ],
-      providers: [
-        Messages
-      ]
+      declarations: [ NotesComponent, EditorComponent ]
     })
     .compileComponents();
   }));

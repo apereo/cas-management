@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { PublishComponent } from './publish.component';
 import {ControlsService} from '../controls/controls.service';
-import {Change, Messages} from 'mgmt-lib';
+import {Change} from 'mgmt-lib';
 
 const controlsServiceStub = {
   commit(msg: String): Promise<String> {
@@ -35,7 +35,6 @@ describe('PublishComponent', () => {
       imports: [ FormsModule ],
       declarations: [ PublishComponent ],
       providers: [
-        Messages,
         {provide: ControlsService, useValue: controlsServiceStub}
       ]
     })

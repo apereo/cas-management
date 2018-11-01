@@ -3,7 +3,7 @@ import { Location, LocationStrategy } from '@angular/common';
 import { DiffComponent } from './diff.component';
 import {EditorComponent} from '../editor.component';
 import {ChangesService} from '../changes/changes.service';
-import {AbstractRegisteredService, DiffEntry, Messages, RegexRegisteredService} from 'mgmt-lib';
+import {AbstractRegisteredService, DiffEntry, RegexRegisteredService} from 'mgmt-lib';
 
 const changesServiceStub = {
   getChanges(branch: String): Promise<DiffEntry[]> {
@@ -31,7 +31,6 @@ describe('DiffComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DiffComponent, EditorComponent],
       providers: [
-        Messages,
         {provide: ChangesService, useValue: changesServiceStub},
         {provide: Location, useValue: locationStub},
       ]

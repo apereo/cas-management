@@ -9,7 +9,7 @@ import { ChangesComponent } from './changes.component';
 import {ChangesService} from './changes.service';
 import {ActivatedRouteStub} from '../../testing/router-stub';
 import {RouterTestingModule} from '@angular/router/testing';
-import {AbstractRegisteredService, DiffEntry, Messages, RegexRegisteredService} from 'mgmt-lib';
+import {AbstractRegisteredService, DiffEntry, RegexRegisteredService} from 'mgmt-lib';
 
 
 const changesServiceStub = {
@@ -41,7 +41,6 @@ describe('ChangesComponent', () => {
       ],
       declarations: [ ChangesComponent ],
       providers: [
-        Messages,
         {provide: ChangesService, useValue: changesServiceStub},
         {provide: ActivatedRoute, useValue: activatedRoute}
       ]

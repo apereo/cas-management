@@ -7,7 +7,7 @@ import { DebugElement } from '@angular/core';
 
 import { ServicesComponent } from './services.component';
 import {ServiceViewService} from './service.service';
-import {Messages, ServiceItem} from 'mgmt-lib';
+import {ServiceItem} from 'mgmt-lib';
 
 const serviceViewServiceStub = {
   getServices(domain: String): Promise<ServiceItem[]> {
@@ -59,7 +59,6 @@ describe('ServicesComponent', () => {
       imports: [ FormsModule, RouterTestingModule ],
       declarations: [ ServicesComponent ],
       providers: [
-        Messages,
         {provide: ServiceViewService, useValue: serviceViewServiceStub}
       ]
     })

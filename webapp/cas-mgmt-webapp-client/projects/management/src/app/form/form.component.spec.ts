@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { FormComponent } from './form.component';
-import {AbstractRegisteredService, DataRecord, Messages, RegexRegisteredService} from 'mgmt-lib';
+import {AbstractRegisteredService, DataRecord, RegexRegisteredService} from 'mgmt-lib';
 import {FormService} from './form.service';
 import {ActivatedRouteStub} from '../../testing/router-stub';
 
@@ -47,7 +47,6 @@ describe('FormComponent', () => {
       ],
       declarations: [ FormComponent ],
       providers: [
-        Messages,
         DataRecord,
         {provide: FormService, useValue: formServicesStub},
         {provide: ActivatedRoute, useValue: activatedRoute},

@@ -35,6 +35,7 @@ import org.apereo.cas.mgmt.services.web.beans.RegisteredServiceItem;
 import org.apereo.cas.mgmt.services.web.factory.ManagerFactory;
 import org.hjson.JsonObject;
 import org.hjson.JsonType;
+import org.hjson.JsonValue;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -117,7 +118,7 @@ public class LuceneSearch {
                 .flatMap(t -> createFields(t).stream())
                 .forEach(document::add);
         if (fields.contains("body")) {
-            document.add(new TextField("body", json.toString(), Field.Store.YES));
+            document.add(new TextField("body", json.toString(), Field.Store.NO));
         }
         document.add(new StringField("id", String.valueOf(id), Field.Store.YES));
         return document;
@@ -141,10 +142,10 @@ public class LuceneSearch {
         if (!"body".equals(field)) {
             if (type == JsonType.NUMBER) {
                 fields.add(new LongPoint(field, ((Long) value).longValue()));
-                fields.add(new StringField(field, String.valueOf(value), Field.Store.YES));
+                fields.add(new StringField(field, String.valueOf(value), Field.Store.NO));
             }
             if (EnumSet.of(JsonType.ARRAY, JsonType.OBJECT, JsonType.BOOLEAN).contains(type)) {
-                fields.add(new TextField(field, (String) value, Field.Store.YES));
+                fields.add(new TextField(field, (String) value, Field.Store.NO));
             }
             if (type == JsonType.STRING) {
                 if (field.endsWith("-reg")) {
@@ -270,7 +271,7 @@ public class LuceneSearch {
             return getValue(nextObj, nextField);
         }
         final String tfield = field.replace("-reg", "");
-        final JsonObject myVal = json.get(field).asObject();
+        final JsonValue myVal = json.get(field);
         final JsonType type = myVal != null ? myVal.getType() : null;
         if (type == null) {
             return Pair.of(JsonType.NULL, null);

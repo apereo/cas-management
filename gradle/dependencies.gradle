@@ -2070,7 +2070,6 @@ ext.libraries = [
                     exclude(group: "org.springframework", module: "spring-messaging")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-actuator")
-                    exclude(group: "com.fasterxml", module: "classmate")
                     exclude(group: "org.hibernate", module: "hibernate-validator")
                     exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-core")
                     exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-el")
@@ -3207,11 +3206,6 @@ ext.libraries = [
                     force = true
                 }
         ],
-        classmate             : dependencies.create("com.fasterxml:classmate") {
-            exclude group: 'org.slf4j', module: 'slf4j'
-            exclude group: 'org.slf4j', module: 'slf4j-api'
-            exclude group: 'org.apache.commons', module: 'commons-lang3'
-        },
         git                   :
                 dependencies.create("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion") {
                     exclude group: 'org.apache.httpcomponents', module: 'httpclient'

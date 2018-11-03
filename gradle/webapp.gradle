@@ -26,7 +26,6 @@ apply from: rootProject.file("gradle/springboot.gradle")
 
 dependencies {
     implementation libraries.casServer 
-    implementation libraries.classmate
   
     apply from: rootProject.file("config/core-config.gradle")
     

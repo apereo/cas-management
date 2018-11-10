@@ -10,4 +10,7 @@ dependencies {
     implementation project(":core:cas-mgmt-core-util")
     implementation project(":core:cas-mgmt-core-configuration")
     
+    testImplementation project(":config:cas-mgmt-config-authentication")
+    testImplementation project(":config:cas-mgmt-config-authz")
+    
 }

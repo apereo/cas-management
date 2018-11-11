@@ -1,7 +1,7 @@
 description "Apereo CAS Management Default Core Config"
 
 dependencies {
-    implementation project(":config:cas-mgmt-config-configuration")
+    implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
     implementation project(":config:cas-mgmt-config-audit")
     implementation project(":config:cas-mgmt-config-authentication")
     implementation project(":config:cas-mgmt-config-authz")

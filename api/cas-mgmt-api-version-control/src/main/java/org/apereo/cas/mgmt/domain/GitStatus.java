@@ -15,10 +15,33 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class GitStatus implements Serializable {
+    /**
+     * True if there are uncommitted changes.
+     */
     private boolean hasChanges;
+
+    /**
+     * True if there are commits unpublished to CAS servers.
+     */
     private boolean unpublished;
+
+    /**
+     * Number of Pull requests from users that are pending.
+     */
     private int pullRequests;
+
+    /**
+     * List added files that are uncommitted.
+     */
     private Set<String> added;
+
+    /**
+     * List of modified files that are uncommitted.
+     */
     private Set<String> modified;
+
+    /**
+     * List of deleted files that are uncommitted.
+     */
     private Set<String> deleted;
 }

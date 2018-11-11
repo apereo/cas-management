@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 
 /**
  * Factory class to create ServiceManagers for the logged in user.
@@ -147,8 +148,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         val serviceRegistryDAO = new JsonServiceRegistry(path,
             false, null, null, namingStrategy);
         val manager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
-                ? new DomainServicesManager(serviceRegistryDAO, null)
-                : new DefaultServicesManager(serviceRegistryDAO, null));
+                ? new DomainServicesManager(serviceRegistryDAO, null, new HashSet<>())
+                : new DefaultServicesManager(serviceRegistryDAO, null, new HashSet<>()));
         manager.load();
         return manager;
     }

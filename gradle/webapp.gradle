@@ -25,7 +25,6 @@ sourceSets {
 apply from: rootProject.file("gradle/springboot.gradle")
 
 dependencies {
-    implementation libraries.casServer 
   
     apply from: rootProject.file("config/core-config.gradle")
     

@@ -35,7 +35,6 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !root
                         "Specification-Version": rootProject.currentRevision,
                         "Implementation-Version": project.version)
             }
-            from "${buildDir}/resources/main", { into "WEB-INF/classes" }
             launchScript()
         }
 

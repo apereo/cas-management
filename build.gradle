@@ -335,7 +335,6 @@ subprojects {
             reportLevel = "low"
             includeFilter = file("$rootProject.projectDir/style/findbugs-rules.xml")
             excludeFilter = file("$rootProject.projectDir/style/findbugs-excludes.xml")
-            //jvmArgs = ["-Xms2g", "-Xmx4g"]
             extraArgs = ["maxHeap 4000"]
         }
 
@@ -357,14 +356,7 @@ subprojects {
         implementation libraries.validationapi
 
         api libraries.jaxb
-        api libraries.log4j
-        api libraries.guava
         api libraries.commons
-        api libraries.inspektr
-        api libraries.spring
-        api libraries.jackson
-        api libraries.groovy
-        api libraries.springcloud
         api libraries.springboot
 
         provided libraries.javax

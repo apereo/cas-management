@@ -3,5 +3,5 @@ description = "Apereo CAS Management Web Application via Apache Tomcat"
 apply from: rootProject.file("gradle/webapp.gradle")
 
 dependencies {
-    implementation libraries.springboottomcat
+    implementation "org.apereo.cas:cas-server-webapp-init-tomcat"
 }

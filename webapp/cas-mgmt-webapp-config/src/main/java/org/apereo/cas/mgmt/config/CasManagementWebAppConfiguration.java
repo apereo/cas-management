@@ -222,7 +222,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
      */
     public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            LOGGER.info("Cas Properties = " + casProperties + " Server properties = " + serverProperties);
             return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("management/index.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);

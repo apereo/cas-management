@@ -1,8 +1,0 @@
-description = "Apereo CAS Management Core Configuration"
-
-dependencies {
-    implementation libraries.springcloudconfigclient
-    implementation libraries.casServer
-}
-
-

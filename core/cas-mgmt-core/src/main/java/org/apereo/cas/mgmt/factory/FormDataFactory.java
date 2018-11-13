@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.factory;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.discovery.CasServerProfile;
-import org.apereo.cas.mgmt.domain.CasServerProfileWrapper;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -13,9 +12,12 @@ import org.apereo.cas.util.HttpUtils;
 import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.springframework.http.HttpStatus;
@@ -75,8 +77,8 @@ public class FormDataFactory {
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
                     val mapper = new ObjectMapper();
-                    val wrapper = mapper.readValue(response.getEntity().getContent(), CasServerProfileWrapper.class);
-                    this.profile = Optional.of(wrapper.getProfile());
+                    val wrapper = mapper.readValue(response.getEntity().getContent(), ObjectNode.class);
+                    this.profile = Optional.of(mapper.convertValue(wrapper.findValue("profile"), CasServerProfile.class));
                     LOGGER.info("FormData is populated with values from {}.", url);
                 } else {
                     LOGGER.info("CAS Server returned {} status code from endpoint {}. Using default FormData values.",

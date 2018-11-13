@@ -2,17 +2,20 @@ description "Apereo CAS Management Core"
 
 dependencies {
     api project(":api:cas-mgmt-api-core")
+    api project(":api:cas-mgmt-api-configuration")
+
+    implementation ("org.apereo.cas:cas-server-support-discovery-profile") {
+        transitive = false
+    }
     
-    implementation libraries.springcloudconfigclient
-    implementation libraries.casServer
-    implementation libraries.git
-    implementation libraries.pac4j
+    implementation ("org.apereo.cas:cas-server-support-saml-idp-core") {
+        transitive = false
+    }
     
     implementation project(":core:cas-mgmt-core-util")
     implementation project(":core:cas-mgmt-core-authentication")
-    implementation project(":core:cas-mgmt-core-configuration")
+
     
-    testImplementation project(":config:cas-mgmt-config-configuration")
     testImplementation project(":config:cas-mgmt-config-authentication")
     testImplementation project(":config:cas-mgmt-config-authz")
 }

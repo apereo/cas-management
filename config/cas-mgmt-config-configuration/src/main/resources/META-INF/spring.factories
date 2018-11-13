@@ -1,2 +1,0 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=org.apereo.cas.mgmt.config.CasManagementBootstrapStandaloneConfiguration,\
-   org.apereo.cas.mgmt.config.CasManagementBootstrapStandaloneLocatorConfiguration

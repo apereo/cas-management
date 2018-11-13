@@ -1,12 +1,13 @@
 description "Apereo CAS Management Webapp Config"
 
 dependencies {
-    implementation libraries.casServer
     api libraries.pac4j
     implementation libraries.thymeleaf
+    implementation "org.apereo.cas:cas-server-core-authentication-api"
+    implementation "org.apereo.cas:cas-server-support-oidc-core"
     
+    api project(":api:cas-mgmt-api-configuration")
     
-    implementation project(":core:cas-mgmt-core-configuration")
     implementation project(":core:cas-mgmt-core-authentication")
     implementation project(":core:cas-mgmt-core")
     implementation project(":webapp:cas-mgmt-webapp-init")

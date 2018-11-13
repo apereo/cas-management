@@ -85,7 +85,7 @@ public class CasManagementConfigurationProperties implements Serializable {
      * }
      * </pre>
      */
-    private transient Resource userPropertiesFile = new ClassPathResource("user-details.properties");
+    private transient Resource userPropertiesFile = new ClassPathResource("users.json");
 
     /**
      * Flag to enable/disable calling cas discovery endpoint.
@@ -136,7 +136,7 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Version Control flag.
          */
-        private boolean enabled;
+        private boolean enabled = true;
     }
 
     @Getter
@@ -151,7 +151,7 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Delegated auth flag.
          */
-        private boolean enabled;
+        private boolean enabled = true;
 
         /**
          * Notifications.

@@ -11,30 +11,29 @@
   Versions are explicitly kept here so that gradle-based
   overlays could use and pull this file and have their 
   dependencies match that of CAS. 
-*/
-ext["hibernateVersion"] = "5.3.6.Final"
-ext["hazelcastVersion"] = "3.10.5"
-ext["infinispanVersion"] = "9.4.0.Final"
+ */
+ext["hibernateVersion"] = "5.3.7.Final"
+ext["hazelcastVersion"] = "3.11"
+ext["infinispanVersion"] = "9.4.1.Final"
 
-ext["springVersion"] = "5.1.0.RELEASE"
+ext["springVersion"] = "5.1.2.RELEASE"
 ext["springBootTomcatVersion"] = "9.0.12"
-ext["springSessionVersion"] = "2.1.0.RC1"
-ext["springSessionMongoVersion"] = "2.0.3.RELEASE"
+ext["springSessionVersion"] = "2.1.1.RELEASE"
+ext["springSessionMongoVersion"] = "2.1.0.RELEASE"
 
 ext["jacksonDatabindVersion"] = "2.9.7"
-ext["thymeleafVersion"] = "3.0.10.RELEASE"
+ext["thymeleafVersion"] = "3.0.11.RELEASE"
 ext["thymeleafDialectVersion"] = "2.3.0"
 ext["hsqlVersion"] = "2.4.1"
 ext["httpCoreVersion"] = "4.4.10"
 ext["hikariVersion"] = "3.2.0"
-ext["groovyVersion"] = "3.0.0-SNAPSHOT"
+ext["groovyVersion"] = "2.5.4"
 ext["log4jVersion"] = "2.11.1"
-ext["slf4JVersion"] = "1.8.0-beta2"
 ext["commonsBeansVersion"] = "1.9.3"
 ext["caffeinVersion"] = "2.6.2"
-ext["couchbaseVersion"] = "2.7.0"
+ext["couchbaseVersion"] = "2.7.1"
 
-ext["mysqlVersion"] = "8.0.12"
+ext["mysqlVersion"] = "8.0.13"
 ext["postgresqlVersion"] = "42.2.5"
 ext["mariaDbVersion"] = "2.3.0"
 ext["jtdsVersion"] = "1.3.1"
@@ -63,4 +62,3 @@ ext["postgresql.version"] = ext["postgresqlVersion"]
 ext["mariadb.version"] = ext["mariaDbVersion"]
 ext["jtds.version"] = ext["jtdsVersion"]
 ext["mssql-jdbc.version"] = ext["mssqlServerVersion"]
-ext["slf4j.version"] = ext["slf4jVersion"]

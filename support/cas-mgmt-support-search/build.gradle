@@ -1,21 +1,12 @@
 description "Apereo CAS Management Support Search"
 
 dependencies {
-    implementation libraries.casServer
     implementation libraries.lucene
-    implementation project(":api:cas-mgmt-api-core")
+    
+    api project(":api:cas-mgmt-api-core")
+    api project(":api:cas-mgmt-api-configuration")
     
     implementation project(":core:cas-mgmt-core")
-    implementation project(":core:cas-mgmt-core-configuration")
     implementation project(":core:cas-mgmt-core-util");
     implementation project(":core:cas-mgmt-core-authentication")
-    
-    testImplementation project(":config:cas-mgmt-config-search")
-    testImplementation project(":webapp:cas-mgmt-webapp-config")
-    testImplementation project(":webapp:cas-mgmt-webapp-init")
-    testImplementation project(":config:cas-mgmt-config-configuration")
-    testImplementation project(":config:cas-mgmt-config-core")
-    testImplementation project(":config:cas-mgmt-config-authentication")
-    testImplementation libraries.pac4j
-    testImplementation libraries.lucene
 }

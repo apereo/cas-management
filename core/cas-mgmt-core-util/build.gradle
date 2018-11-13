@@ -1,7 +1,8 @@
 description "Apereo CAS Management Core Util"
 
 dependencies {
-    implementation libraries.casServer
+    api project(":api:cas-mgmt-api-configuration")
     
-    implementation project(":core:cas-mgmt-core-configuration")
+    implementation "org.apereo.cas:cas-server-core-services-api"
+    
 }

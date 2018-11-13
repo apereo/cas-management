@@ -1,5 +1,7 @@
 description "Apereo CAS Management API Core"
 
 dependencies {
-    implementation libraries.casServer
+    api libraries.pac4j
+    api libraries.casServer.core
+    
 }

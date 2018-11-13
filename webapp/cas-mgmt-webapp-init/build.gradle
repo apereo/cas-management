@@ -1,8 +1,10 @@
 description "Apereo CAS Management Webapp Init"
 
 dependencies {
-    implementation libraries.casServer
+    api libraries.casServer.init
+    api project(":api:cas-mgmt-api-configuration")
     
-    implementation project(":core:cas-mgmt-core-configuration")
+    implementation "org.apereo.cas:cas-server-core-util"
+    
     implementation project(":core:cas-mgmt-core-util")
 }

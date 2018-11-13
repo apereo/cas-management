@@ -579,6 +579,12 @@
     <suppress>
         <cve>CVE-2014-9494</cve>
     </suppress>
+    <supperss>
+        <cve>CVE-2015-5211</cve>
+    </supperss>
+    <supperss>
+        <cve>CVE-2018-16132</cve>
+    </supperss>
     <suppress>
         <notes><![CDATA[ file name: jackson-databind and jetty embedded in ehcache ]]></notes>
         <filePath regex="true" >.*/ehcache-2.10.5.jar/rest-management-private-classpath/.*</filePath>

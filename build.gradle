@@ -57,7 +57,6 @@ buildscript {
         classpath "io.franzbecker:gradle-lombok:$gradleLombokVersion"
         classpath "com.github.ben-manes:gradle-versions-plugin:$gradleDependencyVersionsVersion"
         classpath "io.spring.gradle:propdeps-plugin:$gradlePropDepsVersion"
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
         classpath "org.ajoberstar:grgit:$gradleGitVersion"
         classpath "net.ltgt.gradle:gradle-errorprone-javacplugin-plugin:$gradleErrorProneVersion"
         classpath "com.moowork.gradle:gradle-node-plugin:$gradleNodeVersion"
@@ -185,17 +184,9 @@ subprojects {
     apply plugin: "propdeps-maven"
     apply plugin: "propdeps-idea"
     apply plugin: "propdeps-eclipse"
-    apply plugin: "io.spring.dependency-management"
 
     apply from: rootProject.file("gradle/tasks.gradle")
     apply from: rootProject.file("gradle/tests.gradle")
-    
-    
-    dependencyManagement {
-        imports {
-            mavenBom "org.apereo.cas:cas-server-support-bom:$casVersion"
-        }
-    }
 
     ext.libraries = rootProject.ext.libraries
     

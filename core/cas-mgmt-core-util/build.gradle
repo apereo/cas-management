@@ -3,6 +3,6 @@ description "Apereo CAS Management Core Util"
 dependencies {
     api project(":api:cas-mgmt-api-configuration")
     
-    implementation "org.apereo.cas:cas-server-core-services-api"
+    implementation "org.apereo.cas:cas-server-core-services-api:$casVersion"
     
 }

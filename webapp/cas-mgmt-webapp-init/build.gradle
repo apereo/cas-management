@@ -4,7 +4,7 @@ dependencies {
     api libraries.casServer.init
     api project(":api:cas-mgmt-api-configuration")
     
-    implementation "org.apereo.cas:cas-server-core-util"
+    implementation "org.apereo.cas:cas-server-core-util:$casVersion"
     
     implementation project(":core:cas-mgmt-core-util")
 }

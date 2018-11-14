@@ -1,7 +1,7 @@
 description "Apereo CAS Management Config Core"
 
 dependencies {
-    implementation "org.apereo.cas:cas-server-support-person-directory"
+    implementation "org.apereo.cas:cas-server-support-person-directory:$casVersion"
     
     api project(":api:cas-mgmt-api-core")
     api project(":api:cas-mgmt-api-configuration")

@@ -3,6 +3,6 @@ description "Apereo CAS Management Config Audit"
 dependencies {
     implementation libraries.pac4j
 
-    implementation "org.apereo.cas:cas-server-core-audit-api"
+    implementation "org.apereo.cas:cas-server-core-audit-api:$casVersion"
     implementation project(":core:cas-mgmt-core-audit")
 }

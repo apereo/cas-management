@@ -355,6 +355,7 @@ subprojects {
         implementation libraries.aspectj
         implementation libraries.validationapi
 
+        api libraries.log4j
         api libraries.jaxb
         api libraries.commons
         api libraries.springboot

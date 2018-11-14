@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Specify the refresh internal in seconds. -->
-<Configuration monitorInterval="5">
+<Configuration monitorInterval="5" packages="org.apereo.cas.logging">
     <Properties>
         <Property name="baseDir">/tmp/logs</Property>
         <Property name="cas.log.level">info</Property>
@@ -31,6 +31,12 @@
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
+        <CasAppender name="casFile">
+            <AppenderRef ref="file"/>
+        </CasAppender>
+        <CasAppender name="casConsole">
+            <AppenderRef ref="console"/>
+        </CasAppender>
     </Appenders>
     <Loggers>
         <AsyncLogger name="org.apereo.cas" level="${sys:cas.log.level}" includeLocation="true" />
@@ -58,8 +64,8 @@
         <AsyncLogger name="org.ldaptive" level="${sys:ldap.log.level}" includeLocation="true"/>
 
         <AsyncRoot level="error">
-            <AppenderRef ref="file"/>
-            <AppenderRef ref="console"/>
+            <AppenderRef ref="casFile"/>
+            <AppenderRef ref="casConsole"/>
         </AsyncRoot>
     </Loggers>
 </Configuration>

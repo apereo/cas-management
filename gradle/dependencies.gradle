@@ -68,6 +68,32 @@ ext.libraries = [
                     force = true
                 }
         ],
+        log4j                   : [
+                dependencies.create("org.apache.logging.log4j:log4j-api:$log4jVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    force = true
+                },
+                dependencies.create("org.apache.logging.log4j:log4j-core:$log4jVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    force = true
+                },
+                dependencies.create("org.apache.logging.log4j:log4j-jcl:$log4jVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    force = true
+                },
+                dependencies.create("org.apache.logging.log4j:log4j-web:$log4jVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    force = true
+                },
+                dependencies.create("org.apache.logging.log4j:log4j-slf4j18-impl:$log4jVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    force = true
+                },
+                dependencies.create("org.slf4j:slf4j-api:$slf4jVersion"),
+                dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion"),
+                dependencies.create("org.slf4j:jcl-over-slf4j:$slf4jVersion"),
+                dependencies.create("com.lmax:disruptor:$disruptorVersion")
+        ],
         swaggerfox              : [
                 dependencies.create("io.springfox:springfox-swagger2") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -991,7 +1017,10 @@ ext.libraries = [
                     },
                     dependencies.create("org.apereo.cas:cas-server-core-util-api") {
                         force = true
-                    }
+                    },
+                    dependencies.create("org.apereo.cas:cas-server-core-logging-config")  {
+                        force = true
+                    }   
                 ],
                 core                 : [
                     dependencies.create("org.apereo.cas:cas-server-core-services-api") {

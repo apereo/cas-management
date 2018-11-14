@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.util.ClassUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -136,7 +137,8 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Version Control flag.
          */
-        private boolean enabled = true;
+        private boolean enabled = ClassUtils.isPresent("org.apereo.cas.mgmt.config.CasManagementVersionControlConfiguration",
+                this.getClass().getClassLoader());
     }
 
     @Getter
@@ -151,7 +153,7 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Delegated auth flag.
          */
-        private boolean enabled = true;
+        private boolean enabled = ClassUtils.isPresent("org.apereo.cas.mgmt.config.CasManagementDelegatedConfiguration", this.getClass().getClassLoader());
 
         /**
          * Notifications.

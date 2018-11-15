@@ -4,14 +4,8 @@ dependencies {
     api project(":api:cas-mgmt-api-core")
     api project(":api:cas-mgmt-api-configuration")
 
-    implementation ("org.apereo.cas:cas-server-support-discovery-profile:$casVersion") {
-        transitive = false
-    }
-    
-    implementation ("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {
-        transitive = false
-    }
-    
+    implementation libraries.casServer.discovery
+    implementation libraries.casServer.saml     
     implementation project(":core:cas-mgmt-core-util")
     implementation project(":core:cas-mgmt-core-authentication")
 

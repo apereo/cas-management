@@ -591,23 +591,16 @@ ext.libraries = [
                 }
         ],
         casServer              : [
-                init                 : [
-                    dependencies.create("org.apereo.cas:cas-server-support-person-directory:$casVersion") {
-                        force = true
-                    },
-                    dependencies.create("org.apereo.cas:cas-server-support-discovery-profile:$casVersion") {
-                        transitive = false
-                        force = true
-                    },
+                util                 : 
                     dependencies.create("org.apereo.cas:cas-server-core-util:$casVersion") {
                         force = true
-                    }
-                ],
-                configuration        : [
-                    dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
+                    },
+                utilApi             :
+                    dependencies.create("org.apereo.cas:cas-server-core-util-api:$casVersion") {
                         force = true
                     },
-                    dependencies.create("org.apereo.cas:cas-server-core-util-api:$casVersion") {
+                configuration        : [
+                    dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
                         force = true
                     },
                     dependencies.create("org.apereo.cas:cas-server-core-logging-config:$casVersion")  {
@@ -615,9 +608,7 @@ ext.libraries = [
                     }   
                 ],
                 core                 : [
-                    dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
-                        force = true
-                    },
+                   
                     dependencies.create("org.apereo.cas:cas-server-core-util-api:$casVersion") {
                         force = true
                     },
@@ -635,10 +626,52 @@ ext.libraries = [
                     }
                 ],
                 versionControl       : [
-                        dependencies.create("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
-                            force = true;
-                        }
-                ]
+                    dependencies.create("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
+                        force = true
+                    }
+                ],
+                audit                : 
+                    dependencies.create("org.apereo.cas:cas-server-core-audit-api:$casVersion") {
+                        force = true
+                    },
+                ldap                 : 
+                    dependencies.create("org.apereo.cas:cas-server-support-ldap-core:$casVersion") {
+                        force = true
+                    },
+                personDirectory      :
+                    dependencies.create("org.apereo.cas:cas-server-support-person-directory:$casVersion") {
+                        force = true
+                    },
+                discovery            :
+                    dependencies.create("org.apereo.cas:cas-server-support-discovery-profile:$casVersion") {
+                        transitive = false
+                        force = true
+                    },
+                saml                 :
+                    dependencies.create("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {
+                        transitive = false
+                        force = true
+                    },
+                services             :
+                    dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
+                        force = true
+                    },
+                authentication       :
+                    dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
+                        force = true
+                    },
+                oidc                 :
+                    dependencies.create("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
+                        force = true
+                    },
+                web                  :
+                    dependencies.create("org.apereo.cas:cas-server-core-web-api:$casVersion") {
+                        force = true
+                    },
+                initTomcat          :
+                    dependencies.create("org.apereo.cas:cas-server-webapp-init-tomcat:$casVersion") {
+                        force = true
+                    }
         ],
         validationapi           : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),
         git                   :

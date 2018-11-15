@@ -3,8 +3,8 @@ description "Apereo CAS Management Webapp Config"
 dependencies {
     api libraries.pac4j
     implementation libraries.thymeleaf
-    implementation "org.apereo.cas:cas-server-core-authentication-api:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-oidc-core:$casVersion"
+    implementation libraries.casServer.authentication
+    implementation libraries.casServer.oidc 
     
     api project(":api:cas-mgmt-api-configuration")
     

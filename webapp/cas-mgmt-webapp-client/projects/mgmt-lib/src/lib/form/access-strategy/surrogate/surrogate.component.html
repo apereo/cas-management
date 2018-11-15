@@ -1,15 +1,13 @@
 
-<lib-input field="surrogateEnabled" [change]="accessStrategy" [orig]="original">
-  <mat-checkbox [(ngModel)]="accessStrategy.surrogateEnabled">
-    <ng-container i18n>Surrogate Enabled</ng-container>
-  </mat-checkbox>
-  <mat-icon appHelp i18n-matTooltip
-           matTooltip="Determines whether this service is allowed to use surrogate authentication.">
-  </mat-icon>
-  <mat-hint align="end">
-    <lib-hint></lib-hint>
-  </mat-hint>
-</lib-input>
+<mat-checkbox [formControl]="surrogateEnabled">
+  <ng-container i18n>Surrogate Enabled</ng-container>
+</mat-checkbox>
+<mat-icon appHelp i18n-matTooltip
+          matTooltip="Determines whether this service is allowed to use surrogate authentication.">
+</mat-icon>
+<mat-hint align="end" [difference]="surrogateEnabled.difference()">
+  <lib-hint></lib-hint>
+</mat-hint>
 
 <div style="padding-top:10px;">
   <ng-container i18n>Surrogate Required Attributes</ng-container>

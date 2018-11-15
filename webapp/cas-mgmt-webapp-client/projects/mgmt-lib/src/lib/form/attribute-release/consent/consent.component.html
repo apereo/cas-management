@@ -1,51 +1,43 @@
-<lib-input field="enabled" [change]="policy" [orig]="original">
-  <mat-checkbox [(ngModel)]="policy.enabled">
+  <mat-checkbox [formControl]="consentEnabled">
     <ng-container i18n>User Consent Enabled</ng-container>
     <mat-icon appHelp i18n-matTooltip
              matTooltip="Control whether consent is active/inactive for this service.">
     </mat-icon>
-    <mat-hint align="end">
+    <mat-hint align="end" [difference]="consentEnabled.difference()">
       <lib-hint></lib-hint>
     </mat-hint>
   </mat-checkbox>
-</lib-input>
 
 <ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
-  <lib-input field="excludeAttributes" [change]="policy" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Excluded Attributes</mat-placeholder>
-      <mat-select multiple
-                  [(ngModel)]="policy.excludedAttributes">
+      <mat-select multiple [formControl]="excluded">
         <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>
-      <mat-hint align="end">
+      <mat-hint align="end" [differences]="excluded.difference()">
         <lib-hint></lib-hint>
       </mat-hint>
     </mat-form-field>
     <mat-icon appHelp i18n-matTooltip
              matTooltip="Exclude the indicated attributes from consent.">
     </mat-icon>
-  </lib-input>
 </ng-container>
 
 <ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
-  <lib-input field="includeOnlyAttributes" [change]="policy" [orig]="original">
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Include Only Attributes</mat-placeholder>
-      <mat-select multiple
-                  [(ngModel)]="policy.includeOnlyAttributes">
+      <mat-select multiple [formControl]="includeOnly">
         <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>
-      <mat-hint align="end">
+      <mat-hint align="end" [difference]="includeOnly.difference()">
         <lib-hint></lib-hint>
       </mat-hint>
     </mat-form-field>
     <mat-icon appHelp i18n-matTooltip
              matTooltip="Force-include the indicated attributes in consent, provided attributes are resolved.">
     </mat-icon>
-  </lib-input>
 </ng-container>

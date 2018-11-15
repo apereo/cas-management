@@ -1,4 +1,3 @@
-<lib-input field="location" [change]="data.service.publicKey" [orig]="data.original && data.original.publicKey">
   <mat-form-field class="textInput">
     <input matInput [required]="data.service.usernameAttributeProvider.encryptUserName ||
                                data.service.attributeReleasePolicy.authorizedToReleaseCredentialPassword ||
@@ -16,7 +15,6 @@
     This is specifically used to encrypt and sign the credential and the proxy granting ticket returned directly in the CAS validation
     response, provided the service is authorized to release those attributes.">help
   </mat-icon>
-</lib-input>
 
 <lib-input field="algorithm" [change]="data.service.publicKey" [orig]="data.original && data.original.publicKey">
   <mat-form-field class="textInput">

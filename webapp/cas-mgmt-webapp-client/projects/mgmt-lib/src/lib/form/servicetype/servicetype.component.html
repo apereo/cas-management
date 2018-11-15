@@ -2,7 +2,7 @@
   <mat-form-field class="textInput">
     <mat-select i18n-placeholder
                placeholder="Service Type"
-               [(ngModel)]="type"
+               [formControl]="type"
                (selectionChange)="changeType()">
       <mat-option *ngFor="let opt of data.formData.serviceTypes" [value]="opt.value">
         {{ opt.display }}

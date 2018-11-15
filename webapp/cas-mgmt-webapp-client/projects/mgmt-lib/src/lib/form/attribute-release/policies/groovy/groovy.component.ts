@@ -3,6 +3,7 @@ import {
   GroovyScriptAttributeReleasePolicy
 } from '../../../../domain/attribute-release';
 import {DataRecord} from '../../../data';
+import {MgmtFormControl} from '../../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-groovy',
@@ -13,6 +14,7 @@ export class GroovyComponent implements OnInit {
 
   policy: GroovyScriptAttributeReleasePolicy;
   original: GroovyScriptAttributeReleasePolicy;
+  script: MgmtFormControl;
 
   constructor(public data: DataRecord) {
     this.policy = data.service.attributeReleasePolicy as GroovyScriptAttributeReleasePolicy;
@@ -20,6 +22,7 @@ export class GroovyComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.script = new MgmtFormControl(this.policy.groovyScript, this.original.groovyScript);
   }
 
 }

@@ -1,13 +1,8 @@
-<lib-input field="name" [change]="data.service" [orig]="data.original">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Service Name</mat-placeholder>
-    <input matInput #serviceName="ngModel" name="serviceName" id="serviceName"
-           required [(ngModel)]="data.service.name">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
-  </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
-            matTooltip="The service name.">
-  </mat-icon>
-</lib-input>
+<mat-form-field class="textInput">
+  <mat-placeholder i18n>Service Name</mat-placeholder>
+  <input matInput [formControl]="serviceName">
+  <mat-hint align="end" [difference]="serviceName.difference()">
+    <lib-hint></lib-hint>
+  </mat-hint>
+</mat-form-field>
+<mat-icon appHelp i18n-matTooltip matTooltip="The service name."></mat-icon>

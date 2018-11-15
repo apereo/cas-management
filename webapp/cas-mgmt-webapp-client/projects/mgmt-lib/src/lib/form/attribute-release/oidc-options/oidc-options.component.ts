@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {WSFederationRegisterdService} from '../../../domain/wsed-service';
 import {OidcRegisteredService} from '../../../domain/oauth-service';
 import {DataRecord} from '../../data';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-oidc-options',
@@ -14,6 +15,7 @@ export class OidcOptionsComponent implements OnInit {
   isWsFed: boolean;
   oidcService: OidcRegisteredService;
   original: OidcRegisteredService;
+  scopes: MgmtFormControl;
 
   constructor(public data: DataRecord) {
   }
@@ -25,6 +27,7 @@ export class OidcOptionsComponent implements OnInit {
       this.oidcService = this.data.service as OidcRegisteredService;
       this.original = this.data.original as OidcRegisteredService;
     }
+    this.scopes = new MgmtFormControl(this.oidcService.scopes, this.original.scopes);
   }
 
 }

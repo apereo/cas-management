@@ -4,6 +4,8 @@ import {OAuthRegisteredService, OidcRegisteredService} from '../../domain/oauth-
 import {SamlRegisteredService} from '../../domain/saml-service';
 import {WSFederationRegisterdService} from '../../domain/wsed-service';
 import {DataRecord} from '../data';
+import {FormArray, FormControl, Validators} from '@angular/forms';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-servicetype',
@@ -11,22 +13,22 @@ import {DataRecord} from '../data';
 })
 export class ServicetypeComponent implements OnInit {
 
-  type: string;
+  type = new MgmtFormControl('', Validators.required);
 
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
     if (OAuthRegisteredService.instanceOf(this.data.service)) {
-      this.type = OAuthRegisteredService.cName;
+      this.type.setValue(OAuthRegisteredService.cName);
     } else if (WSFederationRegisterdService.instanceOf(this.data.service)) {
-      this.type = WSFederationRegisterdService.cName;
+      this.type.setValue(WSFederationRegisterdService.cName);
     } else if (OidcRegisteredService.instanceOf(this.data.service)) {
-      this.type = OidcRegisteredService.cName;
+      this.type.setValue(OidcRegisteredService.cName);
     } else if (SamlRegisteredService.instanceOf(this.data.service)) {
-      this.type = SamlRegisteredService.cName;
+      this.type.setValue(SamlRegisteredService.cName);
     } else {
-      this.type = RegexRegisteredService.cName;
+      this.type.setValue(RegexRegisteredService.cName);
     }
   }
 

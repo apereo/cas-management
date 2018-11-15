@@ -3,6 +3,8 @@ import {SamlRegisteredService} from '../../domain/saml-service';
 import {OAuthRegisteredService, OidcRegisteredService} from '../../domain/oauth-service';
 import {WSFederationRegisterdService} from '../../domain/wsed-service';
 import {DataRecord} from '../data';
+import {FormControl, Validators} from '@angular/forms';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-service-id',
@@ -13,13 +15,13 @@ export class ServiceIdComponent implements OnInit {
 
   isSaml: boolean;
 
-  //@Input()
-  //validUrl: Function;
+  serviceId: MgmtFormControl;
 
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
+    this.serviceId = new MgmtFormControl(this.data.service.serviceId, this.data.original.serviceId, Validators.required)
     this.isSaml = SamlRegisteredService.instanceOf(this.data.service);
   }
 

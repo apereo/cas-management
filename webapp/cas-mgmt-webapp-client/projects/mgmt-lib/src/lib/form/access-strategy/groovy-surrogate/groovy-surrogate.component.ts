@@ -4,6 +4,7 @@ import {FormData} from '../../../domain/form-data';
 import {
   GroovySurrogateRegisteredServiceAccessStrategy
 } from '../../../domain/access-strategy';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-groovy-surrogate',
@@ -15,6 +16,7 @@ export class GroovySurrogateComponent implements OnInit {
   formData: FormData;
   accessStrategy: GroovySurrogateRegisteredServiceAccessStrategy;
   original: GroovySurrogateRegisteredServiceAccessStrategy;
+  script: MgmtFormControl;
 
   constructor(public data: DataRecord) {
     this.formData = data.formData;
@@ -23,6 +25,7 @@ export class GroovySurrogateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.script = new MgmtFormControl(this.accessStrategy.groovyScript, this.original.groovyScript);
   }
 
 }

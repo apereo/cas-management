@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ServiceIdComponent} from './form/service-id/service-id.component';
 import {InvalidDomainDirective} from './form/service-id/invalid-domain.directive';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ServicedescComponent} from './form/servicedesc/servicedesc.component';
 import {ServicetypeComponent} from './form/servicetype/servicetype.component';
 import {ServicenameComponent} from './form/servicename/servicename.component';
@@ -35,12 +35,14 @@ import {SamlservicespaneComponent} from './form/samlservicespane/samlservicespan
 import {ThemeidComponent} from './form/themeid/themeid.component';
 import {UidattrsModule} from './form/uidattrs/uidattrs.module';
 import {WsfedclientComponent} from './form/wsfedclient/wsfedclient.component';
+import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     FormsModule,
+    ReactiveFormsModule,
     AccessStrategyModule,
     AttributeReleaseModule,
     WsfedattrrelpoliciesModule,
@@ -76,6 +78,7 @@ import {WsfedclientComponent} from './form/wsfedclient/wsfedclient.component';
     SamlservicespaneComponent,
     ThemeidComponent,
     WsfedclientComponent,
+    PrivacyUrlComponent,
   ],
   exports: [
     ServiceIdComponent,

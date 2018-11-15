@@ -3,6 +3,7 @@ import {SurrogateRegisteredServiceAccessStrategy} from '../../../domain/access-s
 import {DataRecord} from '../../data';
 import {Util} from '../../../util';
 import {Row, RowDataSource} from '../../row';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-surrogate',
@@ -17,12 +18,16 @@ export class SurrogateComponent implements OnInit {
   displayedColumns = ['source', 'mapped', 'delete'];
   dataSource: RowDataSource;
 
+  surrogateEnabled: MgmtFormControl;
+
   constructor(public data: DataRecord) {
     this.accessStrategy = data.service.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
     this.original = data.original && data.original.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
   }
 
   ngOnInit() {
+    this.surrogateEnabled = new MgmtFormControl(this.accessStrategy.surrogateEnabled, this.original.surrogateEnabled);
+
     const rows = [];
     if (Util.isEmpty(this.accessStrategy.surrogateRequiredAttributes)) {
       this.accessStrategy.surrogateRequiredAttributes = new Map();

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataRecord} from '../data';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-themeid',
@@ -7,10 +8,13 @@ import {DataRecord} from '../data';
 })
 export class ThemeidComponent implements OnInit {
 
+  theme: MgmtFormControl;
+
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
+    this.theme = new MgmtFormControl(this.data.service.theme, this.data.original.theme);
   }
 
 }

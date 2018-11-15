@@ -5,6 +5,7 @@ import {
   DefaultPrincipalAttributesRepository
 } from '../../../domain/attribute-repo';
 import {DataRecord} from '../../data';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 enum Type {
   DEFAULT,
@@ -23,6 +24,10 @@ export class PrincipalRepoComponent implements OnInit {
 
   repo: any;
   original: any;
+  timeUnit: MgmtFormControl;
+  expiration: MgmtFormControl;
+  mergingStrategy: MgmtFormControl;
+
 
   constructor(public data: DataRecord) {
     this.formData = data.formData;
@@ -40,6 +45,9 @@ export class PrincipalRepoComponent implements OnInit {
         .instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
       this.type = Type.CACHING;
     }
+    this.timeUnit = new MgmtFormControl(this.repo.timeUnit, this.original.timeUnit);
+    this.expiration = new MgmtFormControl(this.repo.expiration, this.original.expiration);
+    this.mergingStrategy = new MgmtFormControl(this.repo.mergingStrategy, this.original.mergingStrategy);
   }
 
   changeType() {

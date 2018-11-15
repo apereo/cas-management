@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {RegisteredServicePublicKeyImpl} from '../../domain/public-key';
 import {DataRecord} from '../data';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {ValidatorFn} from '@angular/forms';
 
 @Component({
   selector: 'lib-pubkey',
@@ -8,41 +9,17 @@ import {DataRecord} from '../data';
 })
 export class PubkeyComponent implements OnInit {
 
-  algorithm: String;
-  location: String;
+  algorithm: MgmtFormControl;
+  location: MgmtFormControl;
+
 
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
-    if (this.data.service.publicKey) {
-      this.algorithm = this.data.service.publicKey.algorithm;
-      this.location = this.data.service.publicKey.location;
-    }
-  }
-
-  changeLocation() {
-    if (this.algorithm || this.location) {
-      this.checkPubKey();
-      this.data.service.publicKey.location = this.location;
-    } else {
-      this.data.service.publicKey = null;
-    }
-  }
-
-  changeAlgorithm() {
-    if (this.algorithm || this.location) {
-      this.checkPubKey();
-      this.data.service.publicKey.algorithm = this.algorithm;
-    } else {
-      this.data.service.publicKey = null;
-    }
-  }
-
-  checkPubKey() {
-    if (!this.data.service.publicKey) {
-      this.data.service.publicKey = new RegisteredServicePublicKeyImpl();
-    }
+    this.location = new MgmtFormControl(this.data.service.publicKey.location, this.data.original.publicKey.location,
+      ValidatorFn.);
+    this.algorithm = new MgmtFormControl(this.data.service.publicKey.algorithm, this.data.original.publicKey.algorithm);
   }
 
 }

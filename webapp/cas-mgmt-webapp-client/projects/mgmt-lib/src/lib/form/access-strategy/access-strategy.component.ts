@@ -3,6 +3,7 @@ import {RegisteredServiceAccessStrategy} from '../../domain/access-strategy';
 import {FormData} from '../../domain/form-data';
 import {Util} from '../../util';
 import {DataRecord} from '../data';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-access-strategy',
@@ -15,6 +16,9 @@ export class AccessStrategyComponent implements OnInit {
 
   accessStrategy: RegisteredServiceAccessStrategy;
   original: RegisteredServiceAccessStrategy;
+  sso: MgmtFormControl;
+  requireAll: MgmtFormControl;
+  unauthorizedUrl: MgmtFormControl;
 
   constructor(public data: DataRecord) {
     this.accessStrategy = data.service.accessStrategy;
@@ -31,9 +35,9 @@ export class AccessStrategyComponent implements OnInit {
       this.accessStrategy.requiredAttributes = new Map();
     }
 
-    if (Util.isEmpty(this.accessStrategy.requiredAttributes)) {
-      this.accessStrategy.requiredAttributes = new Map();
-    }
+    this.sso = new MgmtFormControl(this.accessStrategy.ssoEnabled, this.original.ssoEnabled);
+    this.requireAll = new MgmtFormControl(this.accessStrategy.requireAllAttributes, this.original.requireAllAttributes);
+    this.unauthorizedUrl = new MgmtFormControl(this.accessStrategy.unauthorizedRedirectUrl, this.original.unauthorizedRedirectUrl);
   }
 
 }

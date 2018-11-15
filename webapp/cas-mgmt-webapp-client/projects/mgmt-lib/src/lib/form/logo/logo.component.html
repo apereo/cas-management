@@ -1,12 +1,9 @@
-<lib-input field="logo" [change]="data.service" [orig]="data.original">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Logo URL</mat-placeholder>
-    <input matInput [(ngModel)]="data.service.logo">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
-  </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
-            matTooltip="The logo representing this service that would be displayed on the login page. Could be a file/classpath path or an actual http url.">
-  </mat-icon>
-</lib-input>
+<mat-form-field class="textInput">
+  <mat-placeholder i18n>Logo URL</mat-placeholder>
+  <input matInput [formControl]="logo">
+  <mat-hint align="end" [difference]="logo.difference()">
+    <lib-hint></lib-hint>
+  </mat-hint></mat-form-field>
+<mat-icon appHelp i18n-matTooltip
+          matTooltip="The logo representing this service that would be displayed on the login page. Could be a file/classpath path or an actual http url.">
+</mat-icon>

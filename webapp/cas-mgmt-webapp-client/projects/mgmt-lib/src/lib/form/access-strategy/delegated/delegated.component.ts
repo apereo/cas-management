@@ -23,6 +23,8 @@ export class DelegatedComponent implements OnInit {
   @ViewChild('providerInput')
   providerInput: ElementRef;
 
+
+
   constructor(public data: DataRecord) {
     this.formData = data.formData;
   }

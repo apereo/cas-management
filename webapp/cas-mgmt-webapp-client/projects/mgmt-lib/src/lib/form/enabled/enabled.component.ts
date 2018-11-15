@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {RegisteredServiceAccessStrategy} from '../../domain/access-strategy';
 import {DataRecord} from '../data';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 
 @Component({
@@ -9,15 +9,13 @@ import {DataRecord} from '../data';
 })
 export class EnabledComponent implements OnInit {
 
-  accessStrategy: RegisteredServiceAccessStrategy;
-  original: RegisteredServiceAccessStrategy;
+  enabled: MgmtFormControl;
 
   constructor(public data: DataRecord) {
-    this.accessStrategy = data.service.accessStrategy;
-    this.original = data.original && data.original.accessStrategy;
   }
 
   ngOnInit() {
+    this.enabled = new MgmtFormControl(this.data.service.accessStrategy.enabled, this.data.original.accessStrategy.enabled);
   }
 
 }

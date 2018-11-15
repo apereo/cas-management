@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ScriptedRegisteredServiceAttributeReleasePolicy} from '../../../../domain/attribute-release';
 import {DataRecord} from '../../../data';
+import {MgmtFormControl} from '../../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-script',
@@ -11,6 +12,7 @@ export class ScriptComponent implements OnInit {
 
   policy: ScriptedRegisteredServiceAttributeReleasePolicy;
   original: ScriptedRegisteredServiceAttributeReleasePolicy;
+  script: MgmtFormControl;
 
   constructor(public data: DataRecord) {
     this.policy = data.service.attributeReleasePolicy as ScriptedRegisteredServiceAttributeReleasePolicy;
@@ -18,6 +20,8 @@ export class ScriptComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.script = new MgmtFormControl(this.policy.scriptFile, this.original.scriptFile);
   }
+
 
 }

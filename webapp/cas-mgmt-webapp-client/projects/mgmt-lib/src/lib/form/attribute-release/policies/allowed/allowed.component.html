@@ -1,12 +1,11 @@
-<lib-input field="allowedAttributes" [change]="policy" [orig]="original">
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Return Allowed</mat-placeholder>
-    <mat-select multiple [(ngModel)]="policy.allowedAttributes">
+    <mat-select multiple [formControl]="allowedAttributes">
       <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
-    <mat-hint align="end">
+    <mat-hint align="end" [difference]="allowedAttribtues.difference()">
       <lib-hint></lib-hint>
     </mat-hint>
   </mat-form-field>
@@ -14,4 +13,3 @@
             matTooltip="List of resolved attributes out of the available collection of attributes from the attribute
             repository. Select attributes that are allowed to be released to the application">
   </mat-icon>
-</lib-input>

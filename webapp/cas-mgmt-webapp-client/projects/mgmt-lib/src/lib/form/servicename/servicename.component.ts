@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ControlContainer, NgForm} from '@angular/forms';
+import {ControlContainer, NgForm, Validators} from '@angular/forms';
 import {DataRecord} from '../data';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-servicename',
@@ -12,10 +13,13 @@ import {DataRecord} from '../data';
 })
 export class ServicenameComponent implements OnInit {
 
+  serviceName: MgmtFormControl;
+
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
+    this.serviceName = new MgmtFormControl(this.data.service.name, this.data.original.name, Validators.required);
   }
 
 }

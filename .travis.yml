@@ -14,10 +14,6 @@ services:
 branches:
   only:
   - master
-# Enable once Travis CI fixed JDK setup
-#jdk:
-  #- oraclejdk11
-  #- oraclejdk10
 before_cache:
 - rm -rf $HOME/.gradle/caches/4.*/
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/

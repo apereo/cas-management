@@ -1,33 +1,29 @@
+<lib-input>
   <mat-form-field class="textInput">
     <input matInput [required]="data.service.usernameAttributeProvider.encryptUserName ||
                                data.service.attributeReleasePolicy.authorizedToReleaseCredentialPassword ||
                                data.service.attributeReleasePolicy.authorizedToReleaseProxyGrantingTicket"
            i18n-placeholder
            placeholder="Location"
-           [(ngModel)]="location"
-           (change)="changeLocation()">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+           [formControl]="location">
+    <mat-hint align="end"><lib-hint [difference]="location.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon style="font-size: medium" i18n-matTooltip
            matTooltip="The location to the public key file used to authenticate and sign the CAS response.
     This is specifically used to encrypt and sign the credential and the proxy granting ticket returned directly in the CAS validation
     response, provided the service is authorized to release those attributes.">help
   </mat-icon>
+</lib-input>
 
-<lib-input field="algorithm" [change]="data.service.publicKey" [orig]="data.original && data.original.publicKey">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-select i18n-placeholder
                 placeholder="Algorithm"
-                [(ngModel)]="algorithm"
-                (selectionChange)="changeAlgorithm()">
+                [formControl]="algorithm">
       <mat-option></mat-option>
       <mat-option value="RSA">RSA</mat-option>
     </mat-select>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="algorithm.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon style="font-size: medium" i18n-matTooltip
            matTooltip="Represents a public key for a CAS registered service, used to encrypt credentials, proxy granting ticket ids for release.">help

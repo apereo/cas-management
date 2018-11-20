@@ -14,7 +14,6 @@
   <ng-container cdkColumnDef="mapped">
     <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'" i18n>Value</mat-header-cell>
     <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
-      <lib-input field="row.key" [change]="service.attributeNameFormats" [orig]="original && original.attributeNameFormats">
         <mat-form-field>
           <mat-select [(ngModel)]="service.attributeNameFormats[row.key]">
             <mat-option *ngFor="let item of data.formData.attributeNameFormats" [value]="item">
@@ -25,7 +24,6 @@
             <lib-hint></lib-hint>
           </mat-hint>
         </mat-form-field>
-      </lib-input>
     </mat-cell>
   </ng-container>
 

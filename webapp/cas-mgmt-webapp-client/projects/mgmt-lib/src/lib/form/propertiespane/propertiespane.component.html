@@ -5,8 +5,7 @@
         <mat-cell *cdkCellDef="let row" [ngClass]="'nameWidth'">
             <mat-form-field>
                 <input matInput #text [matAutocomplete]="auto"
-                       [ngModel]="row.key" (click)="selectedRow = row"
-                       (change)="doChange(row,$event.target.value)">
+                       [(ngModel)]="row.key" (click)="selectedRow = row">
             </mat-form-field>
 
         </mat-cell>
@@ -16,9 +15,7 @@
         <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'" i18n>Value</mat-header-cell>
         <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
             <mat-form-field>
-                <input matInput [disabled]="row.key == ''"
-                       [ngModel]="data.service.properties[row.key] ?  data.service.properties[row.key].values : ''"
-                       (ngModelChange)="data.service.properties[row.key].values = $event.split(',')">
+                <input matInput [disabled]="row.key == ''" [(ngModel)]="row.value">
             </mat-form-field>
         </mat-cell>
     </ng-container>
@@ -41,9 +38,9 @@
     <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
 </div>
 
-<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)">
+<mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let opt of formData.registeredServiceProperties"
-                [value]="opt">{{ opt.propertyName }}
+                [value]="opt.propertyName">{{ opt.propertyName }}
     </mat-option>
 </mat-autocomplete>
 

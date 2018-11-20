@@ -1,12 +1,15 @@
 <lib-attributemapping [attributes]="accessStrategy.requiredAttributes"
                       [attributeNames]="formData.availableAttributes">
 </lib-attributemapping>
-<mat-checkbox [formControl]="caseInsensitive">
-  <ng-container i18n>Case Insensitive</ng-container>
-</mat-checkbox>
-<mat-icon appHelp i18n-matTooltip
-          matTooltip="Indicates whether matching on required attribute values should be done in a case-insensitive manner.">
-</mat-icon>
-<mat-hint align="end" [difference]="caseInsensitive.difference()">
-  <lib-hint></lib-hint>
-</mat-hint>
+
+<lib-input>
+  <mat-checkbox [formControl]="caseInsensitive">
+    <ng-container i18n>Case Insensitive</ng-container>
+  </mat-checkbox>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Indicates whether matching on required attribute values should be done in a case-insensitive manner.">
+  </mat-icon>
+  <mat-hint align="end">
+    <lib-hint [difference]="caseInsensitive.difference()"></lib-hint>
+  </mat-hint>
+</lib-input>

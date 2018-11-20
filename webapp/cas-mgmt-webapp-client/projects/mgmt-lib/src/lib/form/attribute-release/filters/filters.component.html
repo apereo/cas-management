@@ -20,7 +20,6 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-container *ngIf="isRegEx(filter)">
-      <lib-input field="pattern" [change]="filter" [orig]="filters()[i]">
         <mat-form-field class="textInput">
           <mat-placeholder i18n>Attribute Filter Pattern</mat-placeholder>
           <input matInput [(ngModel)]="filter.pattern">
@@ -32,13 +31,11 @@
                  matTooltip="A regex pattern used to filter attributes based on their values only.
              Values that successfully pass the filter will be available for release to the application.">
         </mat-icon>
-      </lib-input>
     </ng-container>
     <ng-container *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
       <lib-filter-mapped [filter]="filter"></lib-filter-mapped>
     </ng-container>
     <ng-container *ngIf="isScripted(filter)">
-      <lib-input field="script" [change]="filter" [orig]="filters()[i]">
         <mat-form-field class="textInput">
           <mat-placeholder i18n>Script</mat-placeholder>
           <input matInput [(ngModel)]="filter.script">
@@ -49,7 +46,6 @@
         <mat-icon appHelp i18n-matTooltip
                   matTooltip="This field can accept either an inline groovy script that will be executed or a location of an external script file that will be loaded and executed.">
         </mat-icon>
-      </lib-input>
     </ng-container>
   </mat-expansion-panel>
 </mat-accordion>

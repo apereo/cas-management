@@ -1,25 +1,19 @@
-<lib-input field="salt" [change]="provider.persistentIdGenerator" [orig]="original && original.persistentIdGenerator">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Salt Setting</mat-placeholder>
-    <input matInput required
-           [(ngModel)]="provider.persistentIdGenerator.salt">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="salt">
+    <mat-hint align="end"><lib-hint [difference]="salt.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="The salt used for anonymous id generation.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="attribute" [change]="provider.persistentIdGenerator" [orig]="original && original.persistentIdGenerator">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Username Attribute</mat-placeholder>
-    <input matInput [matAutocomplete]="auto"
-           [(ngModel)]="provider.persistentIdGenerator.attribute">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [matAutocomplete]="auto" [formControl]="attribute">
+    <mat-hint align="end"><lib-hint [difference]="attribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Username attribute used for anonymous id generation.">

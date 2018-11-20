@@ -1,123 +1,104 @@
-<lib-input field="metadataLocation" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Location</mat-placeholder>
-    <input matInput required [(ngModel)]="service.metadataLocation">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput required [formControl]="location">
+    <mat-hint align="end"><lib-hint [difference]="location.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Metadata location for this particular service provider.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="metadataMaxValidity" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Maximum Validity</mat-placeholder>
-    <input matInput [(ngModel)]="service.metadataMaxValidity">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="maxValidity">
+    <mat-hint align="end"><lib-hint [difference]="maxValidity.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Indicates how long should metadata be considered valid.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="metadataSignatureLocation" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Public Key Location</mat-placeholder>
-    <input matInput [(ngModel)]="service.metadataSignatureLocation">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="signatureLocation">
+    <mat-hint align="end"><lib-hint [difference]="signatureLocation.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Location of the metadata signing public key so its authenticity can be verified.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="metadataExpirationDuration" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Expiration Duration</mat-placeholder>
-    <input matInput [(ngModel)]="service.metadataExpirationDuration">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="expirationDuration">
+    <mat-hint align="end"><lib-hint [difference]="expirationDuration.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="If defined, will expire metadata in the cache after the indicated duration which will force CAS to retrieve and resolve the metadata again.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="metadataCriteriaPattern" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Filter Regex</mat-placeholder>
-    <input matInput [(ngModel)]="service.metadataCriteriaPattern">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="criteriaPattern">
+    <mat-hint align="end"><lib-hint [difference]="criteriaPattern.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Regex applied to entity ids in a metadata aggregate.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="metadataCriteriaDirection" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Filter Criteria</mat-placeholder>
-    <mat-select [(ngModel)]="service.metadataCriteriaDirection">
+    <mat-select [formControl]="criteriaDirection">
       <mat-option *ngFor="let opt of data.formData.samlDirections" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="criteriaDirection.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Whether to include/exclude entity ids that match the filter pattern.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="metadataCriteriaRoles" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Whitelisted Metadata Roles</mat-placeholder>
-    <mat-select [(ngModel)]="service.metadataCriteriaRoles">
+    <mat-select [formControl]="criteriaRoles">
       <mat-option *ngFor="let opt of data.formData.samlRoles" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="criteriaRoles.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Whitelisted roles to keep in the metadata.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="metadataCriteriaRemoveEmptyEntitiesDescriptors" [change]="service" [orig]="original">
-  <mat-checkbox [(ngModel)]="service.metadataCriteriaRemoveEmptyEntitiesDescriptors">
+<lib-input>
+  <mat-checkbox [formControl]="criteriaRemoveEmptyEntitiesDescriptors">
     <ng-container i18n>Remove Empty Entities Descriptors</ng-container>
     <mat-icon appHelp i18n-matTooltip
               matTooltip="Controls whether to keep entities descriptors that contain no entity descriptors">
     </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="criteriaRemoveEmptyEntitiesDescriptors.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
-<lib-input style="padding-bottom: 10px;"
-           field="metadataCriteriaRemoveRolelessEntityDescriptors" [change]="service" [orig]="original">
-  <mat-checkbox [(ngModel)]="service.metadataCriteriaRemoveRolelessEntityDescriptors">
+<lib-input>
+  <mat-checkbox [formControl]="criteriaRemoveRolelessEntityDescriptors">
     <ng-container i18n>Remove Empty Roles</ng-container>
     <mat-icon appHelp i18n-matTooltip
               matTooltip="Controls whether to keep entity descriptors that contain no roles.">
     </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="criteriaRemoveRolelessEntityDescriptors"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>

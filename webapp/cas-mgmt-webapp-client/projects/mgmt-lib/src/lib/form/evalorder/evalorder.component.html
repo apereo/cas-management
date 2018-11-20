@@ -1,10 +1,10 @@
-<mat-form-field class="textInput">
-  <mat-placeholder i18n>Evaluation Order</mat-placeholder>
-  <input matInput [formControl]="evalOrder">
-  <mat-hint align="end" [differences]="evalOrder.difference()">
-    <lib-hint></lib-hint>
-  </mat-hint>
-</mat-form-field>
-<mat-icon appHelp i18n-matTooltip
-          matTooltip="Determines how CAS should load, sort and evaluate services per this numeric order.">
-</mat-icon>
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Evaluation Order</mat-placeholder>
+    <input matInput [formControl]="evalOrder">
+    <mat-hint align="end"><lib-hint [difference]="evalOrder.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Determines how CAS should load, sort and evaluate services per this numeric order.">
+  </mat-icon>
+</lib-input>

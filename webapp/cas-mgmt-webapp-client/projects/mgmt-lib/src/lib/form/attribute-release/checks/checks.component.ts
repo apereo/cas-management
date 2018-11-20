@@ -1,14 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, forwardRef, OnInit} from '@angular/core';
 import {RegisteredServiceAttributeReleasePolicy} from '../../../domain/attribute-release';
 import {DataRecord} from '../../data';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {HasControls} from '../../has-controls';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'lib-attribute-release-checks',
   templateUrl: './checks.component.html',
-  styleUrls: ['./checks.component.css']
+  styleUrls: ['./checks.component.css'],
+  providers: [{
+    provide: HasControls,
+    useExisting: forwardRef(() => ChecksComponent)
+  }]
 })
-export class ChecksComponent implements OnInit {
+export class ChecksComponent extends HasControls implements OnInit {
 
   policy: RegisteredServiceAttributeReleasePolicy;
   original: RegisteredServiceAttributeReleasePolicy;
@@ -19,18 +25,29 @@ export class ChecksComponent implements OnInit {
 
 
   constructor(public data: DataRecord) {
+    super();
     this.policy = data.service.attributeReleasePolicy;
     this.original = data.original && data.service.attributeReleasePolicy;
   }
 
+  getControls(): Map<string, FormControl> {
+    let c: Map<string, FormControl> = new Map();
+    c.set('excludeDefaultAttributes', this.excludeDefaultAttributes);
+    c.set('authorizedToReleaseCredentialPassword', this.authorizedToReleaseCredentialPassword);
+    c.set('authorizedToReleaseProxyGrantingTicket', this.authorizedToReleaseProxyGrantingTicket);
+    c.set('authorizedToReleaseAuthenticatedAttributes', this.authorizedToReleaseAuthenticationAttributes);
+    return c;
+  }
+
   ngOnInit() {
-    this.excludeDefaultAttributes = new MgmtFormControl(this.policy.excludeDefaultAttributes, this.original.excludeDefaultAttributes);
+    const og: any = this.original ? this.original : {};
+    this.excludeDefaultAttributes = new MgmtFormControl(this.policy.excludeDefaultAttributes, og.excludeDefaultAttributes);
     this.authorizedToReleaseCredentialPassword = new MgmtFormControl(this.policy.authorizedToReleaseCredentialPassword,
-      this.original.authorizedToReleaseCredentialPassword);
+      og.authorizedToReleaseCredentialPassword);
     this.authorizedToReleaseProxyGrantingTicket = new MgmtFormControl(this.policy.authorizedToReleaseProxyGrantingTicket,
-      this.original.authorizedToReleaseProxyGrantingTicket);
+      og.authorizedToReleaseProxyGrantingTicket);
     this.authorizedToReleaseAuthenticationAttributes = new MgmtFormControl(this.policy.authorizedToReleaseAuthenticationAttributes,
-      this.original.authorizedToReleaseAuthenticationAttributes);
+      og.authorizedToReleaseAuthenticationAttributes);
   }
 
 }

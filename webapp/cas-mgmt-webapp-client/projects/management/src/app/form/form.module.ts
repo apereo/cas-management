@@ -3,7 +3,7 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {FormRoutingModule} from './form-routing.module';
 import {FormComponent} from './form.component';
@@ -27,11 +27,13 @@ import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
 import {MgmtLibModule, SharedModule} from 'mgmt-lib';
 import {MgmtModule} from '../mgmt.module';
+import {MgmtFormGroup} from '../../../../mgmt-lib/src/lib/form/mgmt-form-group';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     FormRoutingModule,
     SharedModule,
     MgmtModule,
@@ -62,7 +64,7 @@ import {MgmtModule} from '../mgmt.module';
   ],
   providers: [
     FormResolve,
-    FormService,
+    FormService
   ]
 })
 

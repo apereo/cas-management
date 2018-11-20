@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {Router} from '@angular/router';
 import {ControlsService} from './controls/controls.service';
 import {TimeoutComponent} from './timeout/timeout.component';
+import {AppConfigService} from '../../../mgmt-lib/src/lib/app-config.service';
 
 @Component({
   selector: 'mgmt-root',
@@ -12,13 +12,15 @@ import {TimeoutComponent} from './timeout/timeout.component';
 export class AppComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
-    public controlService: ControlsService,
-    private router: Router) {
+              public controlService: ControlsService,
+              private appConfig: AppConfigService) {
   }
 
   ngOnInit() {
     this.setSessionTimer();
-    this.controlService.callStatus();
+    if (this.appConfig.config.versionControl) {
+      this.controlService.callStatus();
+    }
   }
 
   setSessionTimer() {

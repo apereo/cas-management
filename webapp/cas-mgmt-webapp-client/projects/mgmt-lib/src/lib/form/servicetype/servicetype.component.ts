@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {RegexRegisteredService} from '../../domain/registered-service';
+import {Component, Input, OnInit} from '@angular/core';
+import {AbstractRegisteredService, RegexRegisteredService} from '../../domain/registered-service';
 import {OAuthRegisteredService, OidcRegisteredService} from '../../domain/oauth-service';
 import {SamlRegisteredService} from '../../domain/saml-service';
 import {WSFederationRegisterdService} from '../../domain/wsed-service';
-import {DataRecord} from '../data';
-import {FormArray, FormControl, Validators} from '@angular/forms';
+import {Validators} from '@angular/forms';
 import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormDataService} from '../../form-data.service';
 
 @Component({
   selector: 'lib-servicetype',
@@ -13,19 +13,24 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 })
 export class ServicetypeComponent implements OnInit {
 
-  type = new MgmtFormControl('', Validators.required);
+  @Input()
+  service: AbstractRegisteredService;
 
-  constructor(public data: DataRecord) {
+  @Input()
+
+  type = new MgmtFormControl('', '', Validators.required);
+
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    if (OAuthRegisteredService.instanceOf(this.data.service)) {
+    if (OAuthRegisteredService.instanceOf(this.service)) {
       this.type.setValue(OAuthRegisteredService.cName);
-    } else if (WSFederationRegisterdService.instanceOf(this.data.service)) {
+    } else if (WSFederationRegisterdService.instanceOf(this.service)) {
       this.type.setValue(WSFederationRegisterdService.cName);
-    } else if (OidcRegisteredService.instanceOf(this.data.service)) {
+    } else if (OidcRegisteredService.instanceOf(this.service)) {
       this.type.setValue(OidcRegisteredService.cName);
-    } else if (SamlRegisteredService.instanceOf(this.data.service)) {
+    } else if (SamlRegisteredService.instanceOf(this.service)) {
       this.type.setValue(SamlRegisteredService.cName);
     } else {
       this.type.setValue(RegexRegisteredService.cName);
@@ -33,21 +38,21 @@ export class ServicetypeComponent implements OnInit {
   }
 
   changeType() {
-    switch (this.type) {
+    switch (this.type.value) {
       case RegexRegisteredService.cName :
-        this.data.service = new RegexRegisteredService(this.data.service);
+        this.service = new RegexRegisteredService(this.service);
         break;
       case OAuthRegisteredService.cName :
-        this.data.service = new OAuthRegisteredService(this.data.service);
+        this.service = new OAuthRegisteredService(this.service);
         break;
       case OidcRegisteredService.cName :
-        this.data.service = new OidcRegisteredService(this.data.service);
+        this.service = new OidcRegisteredService(this.service);
         break;
       case SamlRegisteredService.cName :
-        this.data.service = new SamlRegisteredService(this.data.service);
+        this.service = new SamlRegisteredService(this.service);
         break;
       case WSFederationRegisterdService.cName :
-        this.data.service = new WSFederationRegisterdService(this.data.service);
+        this.service = new WSFederationRegisterdService(this.service);
         break;
     }
   }

@@ -1,26 +1,21 @@
-
-<lib-input field="clientId" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>OAuth Client ID</mat-placeholder>
-    <input matInput required [(ngModel)]="service.clientId">
+    <input matInput required [formControl]="clientId">
   </mat-form-field>
-  <mat-hint align="end">
-    <lib-hint></lib-hint>
-  </mat-hint>
+  <mat-hint align="end"><lib-hint [difference]="clientId.difference()"></lib-hint></mat-hint>
   <mat-icon appHelp i18n-matTooltip
            matTooltip="OAuth client id for this OAuth client. Only applies to OAuth service types.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="clientSecret" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>OAuth Client Secret</mat-placeholder>
     <input matInput required [type]="showOAuthSecret ? 'text' : 'password'"
-           [(ngModel)]="service.clientSecret">
+           [formControl]="clientSecret">
   </mat-form-field>
-  <mat-hint align="end">
-    <lib-hint></lib-hint>
-  </mat-hint>
+  <mat-hint align="end"><lib-hint [difference]="clientSecret.difference()"></lib-hint></mat-hint>
   <mat-icon appHelp i18n-matTooltip
            matTooltip="Secret key for this OAuth client. Only applies to OAuth service types.">
   </mat-icon>
@@ -35,38 +30,32 @@
   </mat-checkbox>
 </div>
 
-<lib-input field="bypassApprovalPrompt" [change]="service" [orig]="original">
-  <mat-checkbox [(ngModel)]="service.bypassApprovalPrompt">
+<lib-input>
+  <mat-checkbox [formControl]="bypassApprovalPrompt">
     <ng-container i18n>OAuth Bypass Approval Prompt</ng-container>
     <mat-icon appHelp i18n-matTooltip
              matTooltip="Indicates whether the OAuth confirmation screen should be displayed before accessing the service application.">
     </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="bypassApprovalPrompt.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
-<lib-input field="generateRefreshToken" [change]="service" [orig]="original">
-  <mat-checkbox [(ngModel)]="service.generateRefreshToken">
+<lib-input>
+  <mat-checkbox [formControl]="generateRefreshToken">
     <ng-container i18n>OAuth Refresh Token Generation</ng-container>
     <mat-icon appHelp i18n-matTooltip
              matTooltip="Indicates whether a refresh token should be generated with the access token for this OAuth client.">
     </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="generateRefreshToken.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
-<lib-input field="jsonFormat" [change]="service" [orig]="original">
-  <mat-checkbox  [(ngModel)]="service.jsonFormat">
+<lib-input>
+  <mat-checkbox  [formControl]="jsonFormat">
     <ng-container i18n>JSON format for access tokens</ng-container>
     <mat-icon appHelp i18n-matTooltip
              matTooltip="Indicates whether the access token response should be in JSON format or in plain text.">
     </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="jsonFormat.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>

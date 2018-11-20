@@ -6,8 +6,7 @@
       <mat-cell *cdkCellDef="let row" [ngClass]="'nameWidth'">
         <mat-form-field>
           <input matInput #text [matAutocomplete]="auto"
-                 [ngModel]="row.key" (click)="selectedRow = row"
-                 (change)="doChange(row,$event.target.value)">
+                 [(ngModel)]="row.key" (click)="selectedRow = row">
         </mat-form-field>
       </mat-cell>
     </ng-container>
@@ -16,9 +15,7 @@
       <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'" i18n>Value</mat-header-cell>
       <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
         <mat-form-field>
-          <input matInput
-                 [ngModel]="attributes[row.key]"
-                 (ngModelChange)="attributes[row.key] = $event.split(',')">
+          <input matInput [(ngModel)]="row.value">
         </mat-form-field>
       </mat-cell>
     </ng-container>
@@ -39,6 +36,6 @@
   </div>
 </div>
 
-<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)">
+<mat-autocomplete #auto="matAutocomplete">
   <mat-option *ngFor="let opt of attributeNames" [value]="opt">{{ opt }}</mat-option>
 </mat-autocomplete>

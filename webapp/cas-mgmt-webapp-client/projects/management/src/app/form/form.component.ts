@@ -107,8 +107,6 @@ export class FormComponent implements OnInit {
   loadService(service: AbstractRegisteredService) {
     this.data.service = service;
     this.data.submitted = false;
-
-    this.service.formData().subscribe(resp => this.data.formData = resp);
   }
 
   isOidc(): boolean {

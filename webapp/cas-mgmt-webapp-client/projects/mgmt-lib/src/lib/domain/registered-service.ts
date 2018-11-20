@@ -15,6 +15,8 @@ import {RegisteredServicePublicKey} from './public-key';
 import {DefaultRegisteredServiceProperty} from './property';
 import {RegisteredServiceContact} from './contact';
 import {DefaultRegisteredServiceExpirationPolicy, RegisteredServiceExpirationPolicy} from './expiration';
+import {Form, FormGroup, Validators} from '@angular/forms';
+import {MgmtFormControl} from '../form/mgmt-formcontrol';
 
 export abstract class RegisteredService {
   serviceId: String;
@@ -82,5 +84,35 @@ export class RegexRegisteredService extends AbstractRegisteredService {
   constructor(service?: RegisteredService) {
     super(service);
     this['@class'] = RegexRegisteredService.cName;
+  }
+}
+
+export class ServiceForm extends FormGroup {
+
+  constructor(service: AbstractRegisteredService) {
+    super({
+      serviceId: new MgmtFormControl(service.serviceId, '', Validators.required),
+      name: new MgmtFormControl(service.name, '', Validators.required),
+      theme: new MgmtFormControl(service.theme),
+      informationUrl: new MgmtFormControl(service.informationUrl),
+      privacyUrl: new MgmtFormControl(service.privacyUrl),
+      responseType: new MgmtFormControl(service.responseType),
+      id: new MgmtFormControl(service.id),
+      description: new MgmtFormControl(service.description),
+      proxyPolicy: new FormGroup({}),
+      evaluationOrder: new MgmtFormControl(service.evaluationOrder),
+      usernameAttributeProvider: new FormGroup({}),// RegisteredServiceUsernameAttributeProvider;
+      requiredHandlers: new MgmtFormControl(service.requiredHandlers),
+      attributeReleasePolicy: new FormGroup({}),// RegisteredServiceAttributeReleasePolicy;
+      multifactorPolicy: new FormGroup({}),//RegisteredServiceMultifactorPolicy;
+      logo: new MgmtFormControl(service.logoutUrl),
+      logoutUrl: new MgmtFormControl(service.logoutUrl),
+      logoutType: new MgmtFormControl(service.logoutType),
+      accessStrategy: new FormGroup({}),//RegisteredServiceAccessStrategy;
+      publicKey: new FormGroup({}),//RegisteredServicePublicKey;
+      properties: new MgmtFormControl(service.properties),//Map<String, DefaultRegisteredServiceProperty>;
+      contacts: new FormGroup({}), //RegisteredServiceContact[];
+      expirationPolicy: new FormGroup({})//RegisteredServiceExpirationPolicy;
+    });
   }
 }

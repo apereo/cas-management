@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Row, RowDataSource} from '../row';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
 import {DataRecord} from '../data';
 
 @Component({
@@ -14,7 +13,7 @@ export class AttributemappingComponent implements OnInit {
   dataSource: RowDataSource;
 
   @Input()
-  attributes: Map<String, String[]>;
+  attributes: Map<String, String>;
 
   @Input()
   attributeNames: String[];
@@ -27,7 +26,7 @@ export class AttributemappingComponent implements OnInit {
   ngOnInit() {
     const rows = [];
     for (const p of Array.from(Object.keys(this.attributes))) {
-      rows.push(new Row(p));
+      rows.push(new Row(p, this.attributes.get(p)));
     }
     this.dataSource = new RowDataSource(rows);
   }
@@ -36,19 +35,8 @@ export class AttributemappingComponent implements OnInit {
     this.dataSource.addRow();
   }
 
-  doChange(row: Row, val: string) {
-    this.attributes[val] = this.attributes[row.key as string];
-    delete this.attributes[row.key as string];
-    row.key = val;
-  }
-
   delete(row: Row) {
-    delete this.attributes[row.key as string];
     this.dataSource.removeRow(row);
   }
 
-  selection(val: MatAutocompleteSelectedEvent) {
-    const opt =  val.option.value;
-    this.doChange(this.selectedRow, opt)
-  }
 }

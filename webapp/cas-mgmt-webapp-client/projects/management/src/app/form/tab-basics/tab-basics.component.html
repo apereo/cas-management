@@ -1,15 +1,15 @@
-<form #basicsForm="ngForm">
+<div #basicsForm="ngForm" [formGroup]="basics">
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Basics</h5>
     </mat-card-title>
     <div class="cardContent">
-        <lib-enabled *ngIf="!groovyAccessStrategy"></lib-enabled>
-        <lib-servicetype></lib-servicetype>
-        <lib-service-id></lib-service-id>
-        <lib-servicename></lib-servicename>
-        <lib-servicedesc></lib-servicedesc>
-        <lib-themeid></lib-themeid>
+        <lib-enabled *ngIf="!groovyAccessStrategy" [data]="enabled()"></lib-enabled>
+        <lib-servicetype [data]="serviceType()"></lib-servicetype>
+        <lib-service-id [data]="serviceId()"></lib-service-id>
+        <lib-servicename [data]="serviceName()"></lib-servicename>
+        <lib-servicedesc [data]="description()"></lib-servicedesc>
+        <lib-themeid [data]="theme()"></lib-themeid>
     </div>
   </mat-card>
   <mat-card class="tabCard">
@@ -17,9 +17,10 @@
       <h5 i18n>Reference Links</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-logo></lib-logo>
-      <lib-linkrefs></lib-linkrefs>
+      <lib-logo [data]="logo()"></lib-logo>
+      <lib-linkrefs [data]="informationUrl()"></lib-linkrefs>
+      <lib-privacy-url [data]="privacyUrl()"></lib-privacy-url>
     </div>
   </mat-card>
   <button type="submit" style="display:none;" #submit></button>
-</form>
+</div>

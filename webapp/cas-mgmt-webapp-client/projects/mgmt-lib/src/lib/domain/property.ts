@@ -1,5 +1,5 @@
 export abstract class RegisteredServiceProperty {
-  id: number;
+
   values: String[];
 
   constructor() {

@@ -1,14 +1,16 @@
-<mat-form-field class="textInput">
-  <mat-placeholder i18n>Group Fieldn</mat-placeholder>
-  <mat-select required [formControl]="groupField">
-    <mat-option *ngFor="let opt of data.formData.grouperFields" [value]="opt">{{ opt }}</mat-option>
-  </mat-select>
-  <mat-hint align="end" [difference]="groupField.difference()">
-    <lib-hint></lib-hint>
-  </mat-hint>
-</mat-form-field>
-<mat-icon appHelp
-         i18n-matTooltip
-         matTooltip="This access strategy attempts to locate Grouper groups for the CAS principal. The groups returned by
-  Grouper are collected as CAS attributes and examined against the list of required attributes for service access.">
-</mat-icon>
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Group Fieldn</mat-placeholder>
+    <mat-select required [formControl]="groupField">
+      <mat-option *ngFor="let opt of data.formData.grouperFields" [value]="opt">{{ opt }}</mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <lib-hint [difference]="groupField.difference()"></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp
+           i18n-matTooltip
+           matTooltip="This access strategy attempts to locate Grouper groups for the CAS principal. The groups returned by
+    Grouper are collected as CAS attributes and examined against the list of required attributes for service access.">
+  </mat-icon>
+</lib-input>

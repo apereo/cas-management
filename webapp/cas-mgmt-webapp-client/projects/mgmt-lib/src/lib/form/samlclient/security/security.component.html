@@ -1,51 +1,36 @@
-<lib-input field="signAssertions" [change]="service" [orig]="original">
-  <mat-checkbox [(ngModel)]="service.signAssertions">
+<lib-input>
+  <mat-checkbox [formControl]="signAssertions">
     <ng-container i18n>Sign Assertions</ng-container>
-    <mat-icon appHelp i18n-matTooltip
-              matTooltip="Sign Assertions.">
-    </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-icon appHelp i18n-matTooltip matTooltip="Sign Assertions."></mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="signAssertions.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
-<lib-input field="signResponses" [change]="service" [orig]="original">
-  <mat-checkbox [(ngModel)]="service.signResponses">
+<lib-input>
+  <mat-checkbox [formControl]="signResponses">
     <ng-container i18n>Sign Responses</ng-container>
-    <mat-icon appHelp i18n-matTooltip
-              matTooltip="Sign Responses.">
-    </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-icon appHelp i18n-matTooltip matTooltip="Sign Responses."></mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="signResponses.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
-<lib-input style="padding-bottom: 10px;"
-           field="encryptAssertions" [change]="service" [orig]="original">
-  <mat-checkbox [(ngModel)]="service.encryptAssertions">
+<lib-input>
+  <mat-checkbox [formControl]="encryptAssertions">
     <ng-container i18n>Encrypt Assertions</ng-container>
-    <mat-icon appHelp i18n-matTooltip
-              matTooltip="Encrypt Assertions.">
-    </mat-icon>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-icon appHelp i18n-matTooltip matTooltip="Encrypt Assertions."></mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="encryptAssertions.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
-<lib-input field="signingCredentialType" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Signing Credential Type</mat-placeholder>
-    <mat-select [(ngModel)]="service.signingCredentialType">
+    <mat-select [formControl]="signingCredentialType">
       <mat-option *ngFor="let opt of data.formData.samlCredentialTypes" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="signingCredentialType.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="This setting controls the type of the signature block produced in the final SAML response
@@ -54,13 +39,11 @@
   </mat-icon>
 </lib-input>
 
-<lib-input field="requiredAuthenticationContextClass" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Authentication Context Class</mat-placeholder>
-    <input matInput [(ngModel)]="service.requiredAuthenticationContextClass">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="requiredAuthenticationContextClass">
+    <mat-hint align="end"><lib-hint [difference]="requiredAuthenticationContextClass.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="The authentication context class that may be passed to the service provider. If
@@ -68,13 +51,11 @@
   </mat-icon>
 </lib-input>
 
-<lib-input field="assertionAudiences" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Assertion Audiences</mat-placeholder>
-    <input matInput [(ngModel)]="service.assertionAudiences">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="assertionAudiences">
+    <mat-hint align="end"><lib-hint [difference]="assertionAudiences.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Comma-separated list of audience urls to include in the assertion, in addition to the entity id.">

@@ -1,7 +1,7 @@
-<mat-checkbox [formControl]="enabled">
-  <ng-container i18n>Enable Service</ng-container>
-  <mat-icon appHelp i18n-matTooltip matTooltip="Decides whether access to this service is authorized by CAS."></mat-icon>
-  <mat-hint align="end" [difference]="enabled.difference()">
-    <lib-hint></lib-hint>
-  </mat-hint>
-</mat-checkbox>
+<lib-input>
+  <mat-checkbox [formControl]="enabled">
+    <ng-container i18n>Enable Service</ng-container>
+    <mat-icon appHelp i18n-matTooltip matTooltip="Decides whether access to this service is authorized by CAS."></mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="enabled.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>

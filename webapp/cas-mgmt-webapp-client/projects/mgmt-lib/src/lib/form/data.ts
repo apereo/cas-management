@@ -11,7 +11,7 @@ import {FormData} from '../domain/form-data';
 })
 export class DataRecord {
   service: AbstractRegisteredService;
-  original: AbstractRegisteredService;
+  original: AbstractRegisteredService | undefined;
   formData: FormData = new FormData();
   submitted: boolean;
   view: boolean;

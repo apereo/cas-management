@@ -78,7 +78,7 @@ import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
     SamlservicespaneComponent,
     ThemeidComponent,
     WsfedclientComponent,
-    PrivacyUrlComponent,
+    PrivacyUrlComponent
   ],
   exports: [
     ServiceIdComponent,
@@ -114,6 +114,7 @@ import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
     ThemeidComponent,
     UidattrsModule,
     WsfedclientComponent,
+    PrivacyUrlComponent
   ]
 })
 export class MgmtLibModule { }

@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, forwardRef, OnInit} from '@angular/core';
 import {FormData} from '../../../domain/form-data';
 import {
   CachingPrincipalAttributesRepository,
@@ -6,6 +6,8 @@ import {
 } from '../../../domain/attribute-repo';
 import {DataRecord} from '../../data';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {HasControls} from '../../has-controls';
+import {FormControl} from '@angular/forms';
 
 enum Type {
   DEFAULT,
@@ -15,9 +17,13 @@ enum Type {
 @Component({
   selector: 'lib-attribute-release-principal-repo',
   templateUrl: './principal-repo.component.html',
-  styleUrls: ['./principal-repo.component.css']
+  styleUrls: ['./principal-repo.component.css'],
+  providers: [{
+    provide: HasControls,
+    useExisting: forwardRef(() => PrincipalRepoComponent)
+  }]
 })
-export class PrincipalRepoComponent implements OnInit {
+export class PrincipalRepoComponent extends HasControls implements OnInit {
   formData: FormData;
   type: Type;
   TYPE = Type;
@@ -30,11 +36,20 @@ export class PrincipalRepoComponent implements OnInit {
 
 
   constructor(public data: DataRecord) {
+    super();
     this.formData = data.formData;
     this.repo = data.service.attributeReleasePolicy.principalAttributesRepository;
     this.original = data.original &&
                     data.original.attributeReleasePolicy &&
                     data.original.attributeReleasePolicy.principalAttributesRepository;
+  }
+
+  getControls(): Map<string, FormControl> {
+    let c: Map<string, FormControl> = new Map();
+    c.set('timeUnit', this.timeUnit);
+    c.set('expiration', this.expiration);
+    c.set('mergingStrategy', this.mergingStrategy);
+    return c;
   }
 
   ngOnInit() {
@@ -45,9 +60,10 @@ export class PrincipalRepoComponent implements OnInit {
         .instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
       this.type = Type.CACHING;
     }
-    this.timeUnit = new MgmtFormControl(this.repo.timeUnit, this.original.timeUnit);
-    this.expiration = new MgmtFormControl(this.repo.expiration, this.original.expiration);
-    this.mergingStrategy = new MgmtFormControl(this.repo.mergingStrategy, this.original.mergingStrategy);
+    const og: any = this.original ? this.original : {};
+    this.timeUnit = new MgmtFormControl(this.repo.timeUnit, og.timeUnit);
+    this.expiration = new MgmtFormControl(this.repo.expiration, og.expiration);
+    this.mergingStrategy = new MgmtFormControl(this.repo.mergingStrategy, og.mergingStrategy);
   }
 
   changeType() {

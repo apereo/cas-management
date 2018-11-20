@@ -6,8 +6,7 @@
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            matChipInputAddOnBlur="true"
            (matChipInputTokenEnd)="add($event)"
-           [matAutocomplete]="auto"
-           #providerInput>
+           [matAutocomplete]="auto">
     <mat-hint align="end">
       <lib-hint></lib-hint>
     </mat-hint>
@@ -17,15 +16,18 @@
             matTooltip="List of authentication providers this services is allowed to delegate authentication to.">help
   </mat-icon>
   <h5 *ngIf="delegatedAuthn.length > 0" i18n>Allowed Providers</h5>
+  <div [formGroup]="providerGroup">
+    <div formArrayName="providers">
   <mat-chip-list #chipList [selectable]="false">
-    <mat-chip *ngFor="let provider of delegatedAuthn" [selectable]="false"
-              removable="true" (removed)="remove(provider)">
-      {{ provider }}
+    <mat-chip *ngFor="let provider of providerArray.controls; let i = index;" [selectable]="false"
+              removable="true" (removed)="remove(i)">
+      {{ i }}
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
   </mat-chip-list>
+    </div>
+  </div>
 </lib-input>
-
 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event);">
   <mat-option *ngFor="let opt of formData.delegatedAuthnProviders" [value]="opt">{{ opt }}</mat-option>
 </mat-autocomplete>

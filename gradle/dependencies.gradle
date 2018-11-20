@@ -131,6 +131,9 @@ ext.libraries = [
                     force = true
                 }
         ],
+        cassecurityfilter       : dependencies.create("org.apereo.cas:cas-server-security-filter:$casSecurityFilterVersion") {
+            force = true
+        },
         findbugscontrib         : dependencies.create("com.mebigfatguy.fb-contrib:fb-contrib:$findbugsContribVersion") {
             force = true
         },
@@ -425,21 +428,23 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
-                },
-                dependencies.create("com.nimbusds:nimbus-jose-jwt") {
+                }
+        ],
+        nimbus : [
+                dependencies.create("com.nimbusds:nimbus-jose-jwt:$nimbusJoseVersion") {
                     exclude(group: "net.minidev", module: "json-smart")
                     exclude(group: "org.bouncycastle", module: "bcpkix-jdk15on")
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
                 },
-                dependencies.create("com.nimbusds:oauth2-oidc-sdk") {
+                dependencies.create("com.nimbusds:oauth2-oidc-sdk:$nimbusOidcVersion") {
                     exclude(group: "net.minidev", module: "json-smart")
                     exclude(group: "com.nimbusds", module: "nimbus-jose-jwt")
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
                 },
-                dependencies.create("net.minidev:json-smart") {
+                dependencies.create("net.minidev:json-smart:$jsonSmartVersion") {
                     force = true
                 }
         ],

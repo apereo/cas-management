@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, forwardRef, OnInit} from '@angular/core';
 import {SurrogateRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 import {DataRecord} from '../../data';
 import {Util} from '../../../util';
 import {Row, RowDataSource} from '../../row';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {HasControls} from '../../has-controls';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'lib-surrogate',
   templateUrl: './surrogate.component.html',
-  styleUrls: ['./surrogate.component.css']
+  styleUrls: ['./surrogate.component.css'],
+  providers: [{
+    provide: HasControls,
+    useExisting: forwardRef(() => SurrogateComponent)
+  }]
 })
-export class SurrogateComponent implements OnInit {
+export class SurrogateComponent extends HasControls implements OnInit {
 
   accessStrategy: SurrogateRegisteredServiceAccessStrategy;
   original: SurrogateRegisteredServiceAccessStrategy;
@@ -21,12 +27,20 @@ export class SurrogateComponent implements OnInit {
   surrogateEnabled: MgmtFormControl;
 
   constructor(public data: DataRecord) {
+    super();
     this.accessStrategy = data.service.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
     this.original = data.original && data.original.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
   }
 
+  getControls(): Map<string, FormControl> {
+    let c: Map<string, FormControl> = new Map();
+    c.set('surrogateEnabled', this.surrogateEnabled);
+    return c;
+  }
+
   ngOnInit() {
-    this.surrogateEnabled = new MgmtFormControl(this.accessStrategy.surrogateEnabled, this.original.surrogateEnabled);
+    const og = this.original && this.original.surrogateEnabled;
+    this.surrogateEnabled = new MgmtFormControl(this.accessStrategy.surrogateEnabled, og);
 
     const rows = [];
     if (Util.isEmpty(this.accessStrategy.surrogateRequiredAttributes)) {

@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChecksComponent} from './checks/checks.component';
 import {ConsentComponent} from './consent/consent.component';
 import {FiltersComponent} from './filters/filters.component';
@@ -23,6 +23,7 @@ import {SharedModule} from '../../shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     WsfedattrrelpoliciesModule
   ],

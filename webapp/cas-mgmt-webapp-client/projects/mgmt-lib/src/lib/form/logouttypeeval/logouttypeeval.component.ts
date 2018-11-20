@@ -1,25 +1,34 @@
-import {Component, OnInit} from '@angular/core';
-import {ControlContainer, NgForm} from '@angular/forms';
+import {Component, forwardRef, OnInit} from '@angular/core';
+import {ControlContainer, FormControl, NgForm} from '@angular/forms';
 import {DataRecord} from '../data';
 import {MgmtFormControl} from '../mgmt-formcontrol';
+import {HasControls} from '../has-controls';
 
 @Component({
   selector: 'lib-logouttypeeval',
   templateUrl: './logouttypeeval.component.html',
-  viewProviders: [{
-    provide: ControlContainer,
-    useExisting: NgForm
+  providers: [{
+    provide: HasControls,
+    useExisting: forwardRef(() => LogouttypeevalComponent)
   }]
 })
-export class LogouttypeevalComponent implements OnInit {
+export class LogouttypeevalComponent extends HasControls implements OnInit {
 
   logoutType: MgmtFormControl
 
   constructor(public data: DataRecord) {
+    super();
+  }
+
+  getControls(): Map<string, FormControl> {
+    let c: Map<string, FormControl> = new Map();
+    c.set('logoutType', this.logoutType);
+    return c;
   }
 
   ngOnInit() {
-    this.logoutType = new MgmtFormControl(this.data.service.logoutType, this.data.original.logoutType);
+    const og = this.data.original && this.data.original.logoutType;
+    this.logoutType = new MgmtFormControl(this.data.service.logoutType, og);
   }
 
 }

@@ -1,13 +1,14 @@
-
-<mat-checkbox [formControl]="surrogateEnabled">
-  <ng-container i18n>Surrogate Enabled</ng-container>
-</mat-checkbox>
-<mat-icon appHelp i18n-matTooltip
-          matTooltip="Determines whether this service is allowed to use surrogate authentication.">
-</mat-icon>
-<mat-hint align="end" [difference]="surrogateEnabled.difference()">
-  <lib-hint></lib-hint>
-</mat-hint>
+<lib-input>
+  <mat-checkbox [formControl]="surrogateEnabled">
+    <ng-container i18n>Surrogate Enabled</ng-container>
+  </mat-checkbox>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Determines whether this service is allowed to use surrogate authentication.">
+  </mat-icon>
+  <mat-hint align="end">
+    <lib-hint [difference]="surrogateEnabled.difference()"></lib-hint>
+  </mat-hint>
+</lib-input>
 
 <div style="padding-top:10px;">
   <ng-container i18n>Surrogate Required Attributes</ng-container>
@@ -18,7 +19,6 @@
     <ng-container cdkColumnDef="source">
       <mat-header-cell *cdkHeaderCellDef [ngClass]="'nameWidth'" i18n>Name</mat-header-cell>
       <mat-cell *cdkCellDef="let row; let i = index;" [ngClass]="'nameWidth'">
-        <lib-input field="key" [change]="row" [orig]="original && original.surrogateRequiredAttributes[i]">
           <mat-form-field>
             <input matInput #text
                    [ngModel]="row.key"
@@ -27,15 +27,12 @@
           <mat-hint align="end">
               <lib-hint></lib-hint>
           </mat-hint>
-        </lib-input>
       </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="mapped">
       <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'" i18n>Value</mat-header-cell>
       <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
-        <lib-input field="row.key" [change]="accessStrategy.surrogateRequiredAttributes"
-                   [orig]="original && original.surrogateRequiredAttributes">
         <mat-form-field>
           <input matInput
                  [ngModel]="accessStrategy.surrogateRequiredAttributes[row.key]"
@@ -44,7 +41,6 @@
         <mat-hint align="end">
           <lib-hint></lib-hint>
         </mat-hint>
-      </lib-input>
       </mat-cell>
     </ng-container>
 

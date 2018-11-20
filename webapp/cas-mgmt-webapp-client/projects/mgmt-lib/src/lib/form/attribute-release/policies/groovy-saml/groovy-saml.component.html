@@ -1,10 +1,10 @@
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Script File Location</mat-placeholder>
-    <input matInput [(ngModel)]="policy.groovyScript">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="script">
+    <mat-hint align="end"><lib-hint [difference]="script.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Location of a groovy script file that can be triggered by the server to determine the attributes to be released.">
   </mat-icon>
+</lib-input>

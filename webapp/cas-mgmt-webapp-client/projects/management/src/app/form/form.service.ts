@@ -35,12 +35,7 @@ export class FormService {
       );
   }
 
-  formData(): Observable<FormData> {
-    return this.http.get<FormData>('api/formData')
-      .pipe(
-        catchError(e => this.handleError(e, this.dialog))
-      );
-  }
+
 
   handleError(e: HttpErrorResponse, dialog: MatDialog): Observable<any> {
     if (e.status === 0) {

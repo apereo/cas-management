@@ -1,29 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import {DataRecord} from '../../data';
-import {FormData} from '../../../domain/form-data';
-import {GroovyRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
+import {Component, forwardRef, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {DataRecord} from '../../data';
+import {GroovyRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
+import {HasControls} from '../../has-controls';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'lib-groovy',
   templateUrl: './groovy.component.html',
-  styleUrls: ['./groovy.component.css']
+  styleUrls: ['./groovy.component.css'],
+  providers: [{
+    provide: HasControls,
+    useExisting: forwardRef(() => GroovyComponent)
+  }]
 })
-export class GroovyComponent implements OnInit {
+export class GroovyComponent extends HasControls implements OnInit {
 
-  formData: FormData;
-  accessStrategy: GroovyRegisteredServiceAccessStrategy;
-  original: GroovyRegisteredServiceAccessStrategy;
   script: MgmtFormControl;
+  strategy: GroovyRegisteredServiceAccessStrategy;
+  original: GroovyRegisteredServiceAccessStrategy;
 
-  constructor(public data: DataRecord) {
-    this.formData = data.formData;
-    this.accessStrategy = data.service.accessStrategy as GroovyRegisteredServiceAccessStrategy;
+  constructor(private data: DataRecord) {
+    super();
+    this.strategy = data.service.accessStrategy as GroovyRegisteredServiceAccessStrategy;
     this.original = data.original && data.original.accessStrategy as GroovyRegisteredServiceAccessStrategy;
   }
 
+  getControls(): Map<string, FormControl> {
+    let c: Map<string, FormControl> = new Map();
+    c.set('groovyScript', this.script);
+    return c;
+  }
+
   ngOnInit() {
-    this.script = new MgmtFormControl(this.accessStrategy.groovyScript, this.original.groovyScript);
+    const og = this.original && this.original.groovyScript;
+    this.script = new MgmtFormControl(this.strategy.groovyScript, og);
   }
 
 }

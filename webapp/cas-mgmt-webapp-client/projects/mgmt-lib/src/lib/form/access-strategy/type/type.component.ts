@@ -1,8 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormData} from '../../../domain/form-data';
 import {
-  DefaultRegisteredServiceAccessStrategy, GroovyRegisteredServiceAccessStrategy,
-  GroovySurrogateRegisteredServiceAccessStrategy, GrouperRegisteredServiceAccessStrategy,
+  DefaultRegisteredServiceAccessStrategy,
+  GroovyRegisteredServiceAccessStrategy,
+  GroovySurrogateRegisteredServiceAccessStrategy,
+  GrouperRegisteredServiceAccessStrategy,
+  RegisteredServiceAccessStrategy,
   RemoteEndpointServiceAccessStrategy,
   SurrogateRegisteredServiceAccessStrategy,
   TimeBasedRegisteredServiceAccessStrategy
@@ -20,6 +23,9 @@ enum Type {
 })
 export class TypeComponent implements OnInit {
 
+  @Input()
+  data: RegisteredServiceAccessStrategy[];
+
   type: Type;
   TYPE = Type;
   types = [Type.DEFAULT, Type.TIME, Type.GROUPER, Type.REMOTE, Type.SURROGATE, Type.GROOVY_SURROGATE, Type.GROOVY];
@@ -34,7 +40,7 @@ export class TypeComponent implements OnInit {
   }
 
   ngOnInit() {
-    const service = this.data.service;
+    const service = this.data[0];
 
     if (RemoteEndpointServiceAccessStrategy.instanceOf(service.accessStrategy)) {
       this.type = Type.REMOTE;

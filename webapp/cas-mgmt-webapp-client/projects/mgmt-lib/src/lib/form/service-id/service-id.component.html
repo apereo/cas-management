@@ -1,4 +1,4 @@
-<lib-input>
+<div class="mgmtInput">
   <mat-form-field class="textInput">
     <mat-placeholder>{{ placeholder() }}</mat-placeholder>
     <input matInput appInvalidDomain pattern="^\S+" [formControl]="serviceId">
@@ -7,5 +7,8 @@
     <mat-hint align="end"><lib-hint [difference]="serviceId.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip [matTooltip]="tooltip()"></mat-icon>
-</lib-input>
+</div>
+
+
+
 

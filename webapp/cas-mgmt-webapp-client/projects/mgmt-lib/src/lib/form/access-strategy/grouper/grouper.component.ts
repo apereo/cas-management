@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {GrouperRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 import {DataRecord} from '../../data';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
@@ -16,14 +16,13 @@ import {FormControl} from '@angular/forms';
 })
 export class GrouperComponent extends HasControls implements OnInit {
 
-  accessStrategy: GrouperRegisteredServiceAccessStrategy;
-  original: GrouperRegisteredServiceAccessStrategy;
+  @Input()
+  data: GrouperRegisteredServiceAccessStrategy[];
+
   groupField: MgmtFormControl;
 
   constructor(public data: DataRecord) {
     super();
-    this.accessStrategy = data.service.accessStrategy as GrouperRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as GrouperRegisteredServiceAccessStrategy;
   }
 
   getControls(): Map<string, FormControl> {
@@ -33,8 +32,8 @@ export class GrouperComponent extends HasControls implements OnInit {
   }
 
   ngOnInit() {
-    const og = this.original && this.original.groupField;
-    this.groupField = new MgmtFormControl(this.accessStrategy.groupField, og);
+    const og = this.data[1] && this.data[1].groupField;
+    this.groupField = new MgmtFormControl(this.data[0].groupField, og);
   }
 
 }

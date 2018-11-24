@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ControlsService} from './controls/controls.service';
 import {TimeoutComponent} from './timeout/timeout.component';
-import {AppConfigService} from '../../../mgmt-lib/src/lib/app-config.service';
+import {FormDataService, AppConfigService} from 'mgmt-lib';
 
 @Component({
   selector: 'mgmt-root',
@@ -13,7 +13,8 @@ export class AppComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
               public controlService: ControlsService,
-              private appConfig: AppConfigService) {
+              private appConfig: AppConfigService,
+              private formData: FormDataService) {
   }
 
   ngOnInit() {

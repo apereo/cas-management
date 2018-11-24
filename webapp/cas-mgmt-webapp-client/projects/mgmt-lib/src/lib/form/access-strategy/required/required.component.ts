@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {DataRecord} from '../../data';
 import {FormData} from '../../../domain/form-data';
 import {RegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
@@ -17,9 +17,10 @@ import {FormControl} from '@angular/forms';
 })
 export class RequiredComponent extends HasControls implements OnInit {
 
+  @Input()
+  data: RegisteredServiceAccessStrategy[];
+
   formData: FormData;
-  accessStrategy: RegisteredServiceAccessStrategy;
-  original: RegisteredServiceAccessStrategy;
   caseInsensitive: MgmtFormControl;
 
   constructor(public data: DataRecord) {

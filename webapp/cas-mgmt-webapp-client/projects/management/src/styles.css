@@ -138,6 +138,11 @@ a:focus {
   flex: 0 1 500px;
 }
 
+.mgmtInput {
+  flex: 0 1 500px;
+  display: flex;
+}
+
 .tabCard {
   margin-right:auto;
   margin-left:auto;

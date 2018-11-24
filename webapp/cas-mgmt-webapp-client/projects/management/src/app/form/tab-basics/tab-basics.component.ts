@@ -8,6 +8,7 @@ import {
 import {TabBaseComponent} from '../tab-base';
 import {DataRecord, GroovyRegisteredServiceAccessStrategy, UserProfile, HasControls, AbstractRegisteredService} from 'mgmt-lib';
 import {FormGroup} from '@angular/forms';
+import {MgmtFormControl} from '../../../../../mgmt-lib/src/lib/form/mgmt-formcontrol';
 
 @Component({
   selector: 'app-tab-basics',
@@ -99,6 +100,67 @@ export class TabBasicsComponent extends TabBaseComponent implements OnInit, Afte
       this.data.original && this.data.original.privacyUrl
     ]
   }
+
+  serviceIdControl(): String[] {
+    return new MgmtFormControl(
+      this.data.service.serviceId,
+      this.data.original && this.data.original.serviceId
+    );
+  }
+
+  serviceNameControl(): String[] {
+    return new MgmtFormControl(
+      this.data.service.name,
+      this.data.original && this.data.original.name
+    );
+  }
+
+  descriptionControl(): String[] {
+    return new MgmtFormControl(
+      this.data.service.description,
+      this.data.original && this.data.original.description
+    );
+  }
+
+  theme(): String[] {
+    return new MgmtFormControl(
+      this.data.service.theme,
+      this.data.original && this.data.original.theme
+    );
+  }
+
+  logo(): String[] {
+    return new MgmtFormControl(
+      this.data.service.logo,
+      this.data.original && this.data.original.logo
+    );
+  }
+
+  informationUrl(): String[] {
+    return new MgmtFormControl(
+      this.data.service.informationUrl,
+      this.data.original && this.data.original.informationUrl
+    );
+  }
+
+  privacyUrlControl(): String[] {
+    return new MgmtFormControl(
+      this.data.service.privacyUrl,
+      this.data.original && this.data.original.privacyUrl
+    );
+  }
+
+  enabledControl(): boolean[] {
+    return new MgmtFormControl(
+      this.data.service.accessStrategy.enabled,
+      this.data.original && this.data.original.accessStrategy.enabled
+    );
+  }
+
+  serviceTypeControl(): AbstractRegisteredService {
+    return new MgmtFormControl(this.data.service);
+  }
+
 
   validateDomain = function(user: UserProfile) {
     return function (service: string): boolean {

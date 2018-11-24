@@ -13,7 +13,7 @@
       <h5 i18n>Service Access Strategy</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-access-strategy></lib-access-strategy>
+      <lib-access-strategy [data]="strategy()"></lib-access-strategy>
     </div>
   </mat-card>
 
@@ -22,7 +22,7 @@
       <h5 i18n>Required Attributes</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-reqhandlers></lib-reqhandlers>
+      <lib-required [data]="handlers()"></lib-required>
     </div>
   </mat-card>
 

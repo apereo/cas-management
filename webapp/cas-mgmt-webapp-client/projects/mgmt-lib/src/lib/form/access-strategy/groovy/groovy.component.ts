@@ -1,9 +1,9 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {DataRecord} from '../../data';
 import {GroovyRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 import {HasControls} from '../../has-controls';
 import {FormControl} from '@angular/forms';
+import {ControlInput} from '../../control-input';
 
 @Component({
   selector: 'lib-groovy',
@@ -16,14 +16,13 @@ import {FormControl} from '@angular/forms';
 })
 export class GroovyComponent extends HasControls implements OnInit {
 
-  script: MgmtFormControl;
-  strategy: GroovyRegisteredServiceAccessStrategy;
-  original: GroovyRegisteredServiceAccessStrategy;
+  @Input()
+  data: ControlInput<GroovyRegisteredServiceAccessStrategy>;
 
-  constructor(private data: DataRecord) {
+  script: MgmtFormControl;
+
+  constructor() {
     super();
-    this.strategy = data.service.accessStrategy as GroovyRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as GroovyRegisteredServiceAccessStrategy;
   }
 
   getControls(): Map<string, FormControl> {
@@ -33,8 +32,8 @@ export class GroovyComponent extends HasControls implements OnInit {
   }
 
   ngOnInit() {
-    const og = this.original && this.original.groovyScript;
-    this.script = new MgmtFormControl(this.strategy.groovyScript, og);
+    const og = this.data.previous && this.data.previous.groovyScript
+    this.script = new MgmtFormControl(this.data.current.groovyScript, og);
   }
 
 }

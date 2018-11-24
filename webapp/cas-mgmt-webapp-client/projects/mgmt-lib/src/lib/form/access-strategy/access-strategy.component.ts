@@ -1,10 +1,10 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {RegisteredServiceAccessStrategy} from '../../domain/access-strategy';
 import {FormData} from '../../domain/form-data';
 import {Util} from '../../util';
 import {DataRecord} from '../data';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {ControlContainer, FormControl, NgForm} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {HasControls} from '../has-controls';
 
 @Component({
@@ -20,8 +20,9 @@ export class AccessStrategyComponent extends HasControls implements OnInit {
 
   formData: FormData;
 
-  accessStrategy: RegisteredServiceAccessStrategy;
-  original: RegisteredServiceAccessStrategy;
+  @Input()
+  data: RegisteredServiceAccessStrategy[];
+
   sso: MgmtFormControl;
   requireAll: MgmtFormControl;
   unauthorizedUrl: MgmtFormControl;
@@ -42,17 +43,17 @@ export class AccessStrategyComponent extends HasControls implements OnInit {
   }
 
   ngOnInit() {
-    if (Util.isEmpty(this.accessStrategy.rejectedAttributes)) {
-      this.accessStrategy.rejectedAttributes = new Map();
+    if (Util.isEmpty(this.data[0].rejectedAttributes)) {
+      this.data[0].rejectedAttributes = new Map();
     }
 
-    if (Util.isEmpty(this.accessStrategy.requiredAttributes)) {
-      this.accessStrategy.requiredAttributes = new Map();
+    if (Util.isEmpty(this.data[0].requiredAttributes)) {
+      this.data[0].requiredAttributes = new Map();
     }
-    const og: any = this.original ? this.original : {};
-    this.sso = new MgmtFormControl(this.accessStrategy.ssoEnabled, og.ssoEnabled);
-    this.requireAll = new MgmtFormControl(this.accessStrategy.requireAllAttributes, og.requireAllAttributes);
-    this.unauthorizedUrl = new MgmtFormControl(this.accessStrategy.unauthorizedRedirectUrl, og.unauthorizedRedirectUrl);
+    const og: any = this.data[1] ? this.data[1] : {};
+    this.sso = new MgmtFormControl(this.data[0].ssoEnabled, og.ssoEnabled);
+    this.requireAll = new MgmtFormControl(this.data[0].requireAllAttributes, og.requireAllAttributes);
+    this.unauthorizedUrl = new MgmtFormControl(this.data[0].unauthorizedRedirectUrl, og.unauthorizedRedirectUrl);
   }
 
 }

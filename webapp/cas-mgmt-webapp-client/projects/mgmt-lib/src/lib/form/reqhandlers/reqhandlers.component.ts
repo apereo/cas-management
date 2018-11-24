@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {DataRecord} from '../data';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {HasControls} from '../has-controls';
@@ -14,6 +14,9 @@ import {FormControl} from '@angular/forms';
 })
 export class RequiredHandlersComponent extends HasControls implements OnInit {
 
+  @Input()
+  data: String[][];
+
   requiredHandlers: MgmtFormControl;
 
   constructor(public data: DataRecord) {
@@ -27,8 +30,7 @@ export class RequiredHandlersComponent extends HasControls implements OnInit {
   }
 
   ngOnInit() {
-    const og = this.data.original && this.data.original.requiredHandlers;
-    this.requiredHandlers = new MgmtFormControl(this.data.service.requiredHandlers, og);
+    this.requiredHandlers = new MgmtFormControl(this.data[0], this.data[1]);
   }
 
 }

@@ -5,7 +5,7 @@
     </mat-card-title>
     <div class="cardContent">
         <lib-enabled *ngIf="!groovyAccessStrategy" [data]="enabled()"></lib-enabled>
-        <lib-servicetype [data]="serviceType()"></lib-servicetype>
+        <lib-servicetype [service]="serviceType()"></lib-servicetype>
         <lib-service-id [data]="serviceId()"></lib-service-id>
         <lib-servicename [data]="serviceName()"></lib-servicename>
         <lib-servicedesc [data]="description()"></lib-servicedesc>

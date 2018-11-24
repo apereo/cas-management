@@ -1,5 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {DataRecord} from '../../data';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {
   GroovySurrogateRegisteredServiceAccessStrategy
 } from '../../../domain/access-strategy';
@@ -18,14 +17,13 @@ import {FormControl} from '@angular/forms';
 })
 export class GroovySurrogateComponent extends HasControls implements OnInit {
 
-  accessStrategy: GroovySurrogateRegisteredServiceAccessStrategy;
-  original: GroovySurrogateRegisteredServiceAccessStrategy;
+  @Input()
+  data: GroovySurrogateRegisteredServiceAccessStrategy[];
+
   script: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
+  constructor() {
     super();
-    this.accessStrategy = data.service.accessStrategy as GroovySurrogateRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as GroovySurrogateRegisteredServiceAccessStrategy;
   }
 
   getControls(): Map<string, FormControl> {
@@ -35,8 +33,8 @@ export class GroovySurrogateComponent extends HasControls implements OnInit {
   }
 
   ngOnInit() {
-    const og = this.original && this.original.groovyScript;
-    this.script = new MgmtFormControl(this.accessStrategy.groovyScript, og);
+    const og = this.data[1] && this.data[1].groovyScript;
+    this.script = new MgmtFormControl(this.data[0].groovyScript, og);
   }
 
 }

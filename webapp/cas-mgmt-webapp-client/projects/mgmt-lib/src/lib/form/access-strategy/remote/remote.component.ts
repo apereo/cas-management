@@ -1,6 +1,5 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {RemoteEndpointServiceAccessStrategy} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {HasControls} from '../../has-controls';
 import {FormControl} from '@angular/forms';
@@ -16,15 +15,14 @@ import {FormControl} from '@angular/forms';
 })
 export class RemoteComponent extends HasControls implements OnInit {
 
-  accessStrategy: RemoteEndpointServiceAccessStrategy;
-  original: RemoteEndpointServiceAccessStrategy;
+  @Input()
+  data: RemoteEndpointServiceAccessStrategy[];
+
   endpointUrl: MgmtFormControl;
   responseCodes: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
+  constructor() {
     super();
-    this.accessStrategy = data.service.accessStrategy as RemoteEndpointServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as RemoteEndpointServiceAccessStrategy;
   }
 
   getControls(): Map<string, FormControl> {
@@ -35,9 +33,9 @@ export class RemoteComponent extends HasControls implements OnInit {
   }
 
   ngOnInit() {
-    const og: any = this.original ? this.original : {};
-    this.endpointUrl = new MgmtFormControl(this.accessStrategy.endpointUrl, og.endpointUrl);
-    this.responseCodes = new MgmtFormControl(this.accessStrategy.acceptableResponseCodes, og.acceptableResponseCodes);
+    const og: any = this.data[1] ? this.data[1] : {};
+    this.endpointUrl = new MgmtFormControl(this.data[0].endpointUrl, og.endpointUrl);
+    this.responseCodes = new MgmtFormControl(this.data[0].acceptableResponseCodes, og.acceptableResponseCodes);
   }
 
 }

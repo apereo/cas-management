@@ -15,25 +15,25 @@
 </lib-input>
 
 <ng-container *ngIf="type == TYPE.REMOTE">
-    <lib-remote></lib-remote>
+    <lib-remote [data]="data"></lib-remote>
 </ng-container>
 
 <ng-container *ngIf="type == TYPE.TIME || type == TYPE.GROUPER">
-    <lib-time></lib-time>
+    <lib-time [data]="data"></lib-time>
 </ng-container>
 
 <ng-container *ngIf="type == TYPE.GROUPER">
-    <lib-grouper></lib-grouper>
+    <lib-grouper [data]="data"></lib-grouper>
 </ng-container>
 
 <ng-container *ngIf="type == TYPE.SURROGATE">
-    <lib-surrogate></lib-surrogate>
+    <lib-surrogate [data]="data"></lib-surrogate>
 </ng-container>
 
 <ng-container *ngIf="type == TYPE.GROOVY_SURROGATE">
-  <lib-groovy-surrogate></lib-groovy-surrogate>
+  <lib-groovy-surrogate [data]="data"></lib-groovy-surrogate>
 </ng-container>
 
 <ng-container *ngIf="type == TYPE.GROOVY">
-    <lib-groovy></lib-groovy>
+  <lib-groovy [data]="data"></lib-groovy>
 </ng-container>

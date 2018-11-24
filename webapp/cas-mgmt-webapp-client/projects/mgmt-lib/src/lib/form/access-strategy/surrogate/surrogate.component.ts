@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {SurrogateRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
 import {DataRecord} from '../../data';
 import {Util} from '../../../util';
@@ -17,6 +17,9 @@ import {FormControl} from '@angular/forms';
   }]
 })
 export class SurrogateComponent extends HasControls implements OnInit {
+
+  @Input()
+  data: SurrogateRegisteredServiceAccessStrategy[];
 
   accessStrategy: SurrogateRegisteredServiceAccessStrategy;
   original: SurrogateRegisteredServiceAccessStrategy;

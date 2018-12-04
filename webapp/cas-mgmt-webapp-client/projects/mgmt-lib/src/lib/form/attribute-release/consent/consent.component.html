@@ -8,12 +8,12 @@
   </mat-checkbox>
 </lib-input>
 
-<ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
+<ng-container *ngIf="consentEnabled.value && !isEmpty( formData.options.availableAttributes )">
   <lib-input>
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Excluded Attributes</mat-placeholder>
       <mat-select multiple [formControl]="excluded">
-        <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
+        <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>
@@ -25,12 +25,12 @@
   </lib-input>
 </ng-container>
 
-<ng-container *ngIf="policy.enabled && !isEmpty( formData.availableAttributes )">
+<ng-container *ngIf="consentEnabled.value && !isEmpty( formData.options.availableAttributes )">
   <lib-input>
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Include Only Attributes</mat-placeholder>
       <mat-select multiple [formControl]="includeOnly">
-        <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">
+        <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>

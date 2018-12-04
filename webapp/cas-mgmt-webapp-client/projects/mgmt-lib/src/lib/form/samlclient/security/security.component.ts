@@ -1,23 +1,17 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {SamlRegisteredService} from '../../../domain/saml-service';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {HasControls} from '../../has-controls';
-import {FormControl} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-security',
   templateUrl: './security.component.html',
-  styleUrls: ['./security.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => SamlSecurityComponent)
-  }]
+  styleUrls: ['./security.component.css']
 })
-export class SamlSecurityComponent extends HasControls implements OnInit {
+export class SamlSecurityComponent implements OnInit {
 
-  service: SamlRegisteredService;
-  original: SamlRegisteredService;
+  @Input()
+  control: FormGroup;
   signAssertions: MgmtFormControl;
   signResponses: MgmtFormControl;
   encryptAssertions: MgmtFormControl;
@@ -25,32 +19,15 @@ export class SamlSecurityComponent extends HasControls implements OnInit {
   requiredAuthenticationContextClass: MgmtFormControl;
   assertionAudiences: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.service = data.service as SamlRegisteredService;
-    this.original = data.original && data.original as SamlRegisteredService;
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('signAssertions', this.signAssertions);
-    c.set('signResponses', this.signResponses);
-    c.set('encryptAssertions', this.encryptAssertions);
-    c.set('signingCredentialType', this.signingCredentialType);
-    c.set('requiredAuthentcationContextClass', this.requiredAuthenticationContextClass);
-    c.set('aasertionAudiences', this.assertionAudiences);
-    return c;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const og: any = this.original ? this.original : {};
-    this.signAssertions = new MgmtFormControl(this.service.signAssertions, og.signAssertions);
-    this.signResponses = new MgmtFormControl(this.service.signResponses, og.signResponses);
-    this.encryptAssertions = new MgmtFormControl(this.service.encryptAssertions, og.encryptAssertions);
-    this.signingCredentialType = new MgmtFormControl(this.service.signingCredentialType, og.signingCredentialType);
-    this.requiredAuthenticationContextClass = new MgmtFormControl(this.service.requiredAuthenticationContextClass,
-      og.requiredAuthenticationContextClass);
-    this.assertionAudiences = new MgmtFormControl(this.service.assertionAudiences, og.assertionAudiences);
+    this.signAssertions = this.control.get('signAssertions') as MgmtFormControl;
+    this.signResponses = this.control.get('signResponses') as MgmtFormControl;
+    this.encryptAssertions = this.control.get('encryptAssertions') as MgmtFormControl;
+    this.signingCredentialType = this.control.get('signingCredentialType') as MgmtFormControl;
+    this.requiredAuthenticationContextClass = this.control.get('requiredAuthenticationContextClass') as MgmtFormControl;
+    this.assertionAudiences = this.control.get('assertionAudiences') as MgmtFormControl;
   }
-
 }

@@ -1,3 +1,4 @@
-<lib-attributemapping [attributes]="policy.allowedAttributes"
-                      [attributeNames]="data.formData.availableAttributes">
-</lib-attributemapping>
+<lib-attributes [control]="control"
+                arrayName="attributes"
+                [keys]="formData.options.availableAttributes">
+</lib-attributes>

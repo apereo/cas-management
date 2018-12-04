@@ -1,11 +1,10 @@
-<form #wsForm="ngForm">
+<div [formGroup]="wsfed.form">
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>WS Federation Options</h5>
     </mat-card-title>
     <div class="cardContent">
-       <lib-wsfedclient></lib-wsfedclient>
+       <lib-wsfedclient [control]="wsfed.form"></lib-wsfedclient>
     </div>
   </mat-card>
-  <button type="submit"style="display:none" #submit></button>
-</form>
+</div>

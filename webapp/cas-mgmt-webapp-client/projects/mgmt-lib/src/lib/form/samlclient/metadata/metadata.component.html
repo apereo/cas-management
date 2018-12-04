@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Location</mat-placeholder>
-    <input matInput required [formControl]="location">
+    <input matInput [formControl]="location">
     <mat-hint align="end"><lib-hint [difference]="location.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
@@ -57,7 +57,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Metadata Filter Criteria</mat-placeholder>
     <mat-select [formControl]="criteriaDirection">
-      <mat-option *ngFor="let opt of data.formData.samlDirections" [value]="opt">
+      <mat-option *ngFor="let opt of formData.options.samlDirections" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
@@ -72,7 +72,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Whitelisted Metadata Roles</mat-placeholder>
     <mat-select [formControl]="criteriaRoles">
-      <mat-option *ngFor="let opt of data.formData.samlRoles" [value]="opt">
+      <mat-option *ngFor="let opt of formData.options.samlRoles" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>

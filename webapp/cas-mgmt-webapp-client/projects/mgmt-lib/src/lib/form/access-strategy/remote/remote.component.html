@@ -26,5 +26,5 @@
 </lib-input>
 
 <mat-autocomplete #auto="matAutocomplete">
-  <mat-option *ngFor="let code of data.formData.remoteCodes" [value]="code">{{ code }}</mat-option>
+  <mat-option *ngFor="let code of formData.options.remoteCodes" [value]="code">{{ code }}</mat-option>
 </mat-autocomplete>

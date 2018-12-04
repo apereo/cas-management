@@ -1,11 +1,10 @@
-<form #contactsForm="ngForm">
+<div>
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Contacts</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-contacts></lib-contacts>
+      <lib-contacts [control]="contacts.form"></lib-contacts>
     </div>
   </mat-card>
-  <button type="submit" style="display: none;" #submit></button>
-</form>
+</div>

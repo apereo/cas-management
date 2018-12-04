@@ -49,13 +49,3 @@
     <mat-hint align="end"><lib-hint [difference]="generateRefreshToken.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
-
-<lib-input>
-  <mat-checkbox  [formControl]="jsonFormat">
-    <ng-container i18n>JSON format for access tokens</ng-container>
-    <mat-icon appHelp i18n-matTooltip
-             matTooltip="Indicates whether the access token response should be in JSON format or in plain text.">
-    </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="jsonFormat.difference()"></lib-hint></mat-hint>
-  </mat-checkbox>
-</lib-input>

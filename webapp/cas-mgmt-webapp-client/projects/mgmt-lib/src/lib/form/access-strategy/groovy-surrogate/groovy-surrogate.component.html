@@ -1,9 +1,9 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Groovy Script File</mat-placeholder>
-    <input matInput [formControl]="script">
+    <input matInput [formControl]="control">
     <mat-hint align="end">
-      <lib-hint [difference]="script.difference()"></lib-hint>
+      <lib-hint [difference]="control.difference()"></lib-hint>
     </mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip

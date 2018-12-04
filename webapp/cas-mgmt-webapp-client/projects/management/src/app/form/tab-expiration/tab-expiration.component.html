@@ -1,11 +1,10 @@
-<form #expirationForm="ngForm">
+<div [formGroup]="expiration.form">
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Expiration</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-expiration></lib-expiration>
+      <lib-expiration [control]="expiration.form"></lib-expiration>
     </div>
   </mat-card>
-  <button type="submit" style="display: none;" #submit></button>
-</form>
+</div>

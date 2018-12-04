@@ -1,9 +1,11 @@
+<div [formGroup]="control">
+  <div formArrayName="filters">
 <mat-accordion #accordian style="width:600px;" multi="true">
-  <mat-expansion-panel *ngFor="let filter of filters();let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
-       [expanded]="last">
+  <mat-expansion-panel *ngFor="let filter of filters.controls;let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
+       [expanded]="last" [formGroupName]="i">
     <mat-expansion-panel-header>
       <mat-panel-title>
-          <button [matMenuTriggerFor]="panelMenu" mat-icon-button (click)="selectedFilter = filter;$event.stopPropagation()" style="width:auto;height:auto;line-height: 0px!important;">
+          <button [matMenuTriggerFor]="panelMenu" (click)="selectedFilter = i;" mat-icon-button style="width:auto;height:auto;line-height: 0px!important;">
             <mat-icon style="font-size: medium;">menu</mat-icon></button>
         <span *ngIf="isRegEx(filter)">Regex</span>
         <span *ngIf="isMappedRegEx(filter)">Mapped</span>
@@ -20,9 +22,10 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-container *ngIf="isRegEx(filter)">
+      <lib-input>
         <mat-form-field class="textInput">
           <mat-placeholder i18n>Attribute Filter Pattern</mat-placeholder>
-          <input matInput [(ngModel)]="filter.pattern">
+          <input matInput formControlName="pattern">
           <mat-hint align="end">
             <lib-hint></lib-hint>
           </mat-hint>
@@ -31,14 +34,16 @@
                  matTooltip="A regex pattern used to filter attributes based on their values only.
              Values that successfully pass the filter will be available for release to the application.">
         </mat-icon>
+      </lib-input>
     </ng-container>
     <ng-container *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
       <lib-filter-mapped [filter]="filter"></lib-filter-mapped>
     </ng-container>
     <ng-container *ngIf="isScripted(filter)">
+      <lib-input>
         <mat-form-field class="textInput">
           <mat-placeholder i18n>Script</mat-placeholder>
-          <input matInput [(ngModel)]="filter.script">
+          <input matInput formControlName="script">
           <mat-hint align="end">
             <lib-hint></lib-hint>
           </mat-hint>
@@ -46,13 +51,15 @@
         <mat-icon appHelp i18n-matTooltip
                   matTooltip="This field can accept either an inline groovy script that will be executed or a location of an external script file that will be loaded and executed.">
         </mat-icon>
+      </lib-input>
     </ng-container>
   </mat-expansion-panel>
 </mat-accordion>
 <div style="height:25px;padding-top: 5px;">
   <button mat-mini-fab [matMenuTriggerFor]="addMenu" style="float:right;">+</button>
 </div>
-
+</div>
+</div>
 <mat-menu #panelMenu>
   <button mat-menu-item (click)="moveUp()" i18n>Move UP</button>
   <button mat-menu-item (click)="moveDown()" i18n>Move Down</button>

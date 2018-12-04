@@ -1,34 +1,19 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {HasControls} from '../has-controls';
-import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'lib-evalorder',
-  templateUrl: './evalorder.component.html',
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => EvalorderComponent)
-  }]
+  templateUrl: './evalorder.component.html'
 })
-export class EvalorderComponent extends HasControls implements OnInit {
+export class EvalorderComponent implements OnInit {
 
-  evalOrder: MgmtFormControl;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('evalOrder', this.evalOrder);
-    return c;
+  constructor() {
   }
 
   ngOnInit() {
-    const og = this.data.original && this.data.original.evaluationOrder;
-    this.evalOrder = new MgmtFormControl(this.data.service.evaluationOrder, og);
   }
 
 }

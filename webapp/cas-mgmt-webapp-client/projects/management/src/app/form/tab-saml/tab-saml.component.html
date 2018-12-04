@@ -1,10 +1,10 @@
-<form #samlForm="ngForm">
+<div [formGroup]="saml.form">
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Saml Client - Metadata</h5>
     </mat-card-title>
     <div class="cardContent">
-        <lib-metadata></lib-metadata>
+        <lib-metadata [control]="saml.get('metadata')"></lib-metadata>
      </div>
   </mat-card>
 
@@ -13,7 +13,7 @@
       <h5 i18n>SAML Client - Security</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-security></lib-security>
+      <lib-security [control]="saml.get('security')"></lib-security>
     </div>
   </mat-card>
 
@@ -22,7 +22,7 @@
       <h5 i18n>SAML Client - Optional Fields</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-optional></lib-optional>
+      <lib-optional [control]="saml.get('optionalSaml')"></lib-optional>
     </div>
   </mat-card>
 
@@ -31,7 +31,7 @@
       <h5 i18n>SAML Client - Name ID</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-nameid></lib-nameid>
+      <lib-nameid [control]="saml.get('nameId')"></lib-nameid>
     </div>
   </mat-card>
 
@@ -40,9 +40,8 @@
       <h5 i18n>SAML Attribute Name Formats</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-samlservicespane></lib-samlservicespane>
+      <lib-samlservicespane [control]="saml.get('nameFormats')"></lib-samlservicespane>
     </div>
   </mat-card>
-  <button type="submit" style="display: none" #submit></button>
-</form>
+</div>
 

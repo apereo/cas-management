@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Util} from '../../util';
-import {DefaultRegisteredServiceProperty} from '../../domain/property';
-import {FormData} from '../../domain/form-data';
-import {Row, RowDataSource} from '../row';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormDataService} from '../../form-data.service';
+import {FormArray, FormGroup} from '@angular/forms';
+import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 @Component({
   selector: 'lib-propertiespane',
@@ -11,37 +10,35 @@ import {DataRecord} from '../data';
   styleUrls: ['./propertiespane.component.css']
 })
 export class PropertiespaneComponent implements OnInit {
-  displayedColumns = ['source', 'mapped', 'delete'];
-  dataSource: RowDataSource;
-  selectedRow: Row;
-  formData: FormData;
-  properties: Map<String, DefaultRegisteredServiceProperty>;
-  original: Map<String, DefaultRegisteredServiceProperty>;
+  @Input()
+  control: FormGroup;
 
-  constructor(public data: DataRecord) {
-    this.formData = data.formData;
-    this.properties = data.service.properties;
-    this.original = data.original && data.original.properties;
+  selectedRow: number;
+
+  entries: FormArray;
+
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const rows: Row[] = [];
-    if (Util.isEmpty(this.properties)) {
-      this.properties = new Map();
-    }
-    for (const p of Array.from(Object.keys(this.properties))) {
-      rows.push(new Row(p, this.properties.get(p).values.toString()));
-    }
-    this.dataSource = new RowDataSource();
-    this.dataSource.data = rows;
+    this.entries = this.control.get('properties') as FormArray;
   }
 
   addRow() {
-    this.dataSource.addRow();
+    this.entries.push(new FormGroup({
+      key: new MgmtFormControl(null),
+      value: new MgmtFormControl(null)
+    }));
   }
 
-  delete(row: Row) {
-    this.dataSource.removeRow(row);
+  delete(row: number) {
+    this.entries.removeAt(row);
+    this.control.markAsTouched();
   }
 
+  selection(event: MatAutocompleteSelectedEvent) {
+    const index = event.source.options.toArray().indexOf(event.option);
+    const val = this.formData.options.registeredServiceProperties[index].defaultValue;
+    this.entries.at(this.selectedRow).get('value').setValue(val);
+  }
 }

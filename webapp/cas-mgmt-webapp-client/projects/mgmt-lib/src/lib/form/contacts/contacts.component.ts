@@ -1,67 +1,33 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DefaultRegisteredServiceContact, RegisteredServiceContact} from '../../domain/contact';
-import {AbstractControl, ControlContainer, FormArray, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../user.service';
-import {DataRecord} from '../data';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {HasControls} from '../has-controls';
 
 @Component({
   selector: 'lib-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => ContactsComponent)
-  }]
+  styleUrls: ['./contacts.component.css']
 })
-export class ContactsComponent extends HasControls implements OnInit {
+export class ContactsComponent implements OnInit {
 
   selectedTab: number;
 
-  constructor(private userService: UserService,
-              public data: DataRecord) {
-    super();
+  constructor(private userService: UserService) {
   }
 
-  contactsGroup: FormGroup;
+  @Input()
+  control: FormGroup;
   contactsArray: FormArray;
 
-  getControls(): Map<string, AbstractControl> {
-    let c: Map<string, AbstractControl> = new Map();
-    c.set('contacts', this.contactsArray);
-    return c;
-  }
-
   ngOnInit() {
-    this.contactsArray = new FormArray([]);
-    this.contactsGroup = new FormGroup({
-      contacts: this.contactsArray
-    })
-    //this.contactsGroup = new FormGroup({contacts: this.contacts});
-    if (!this.userService.user.administrator
-        && (!this.data.service.contacts || this.data.service.contacts.length === 0)) {
-      const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
-      contact.id = 0;
-      contact.name = this.userService.user.firstName + ' ' + this.userService.user.familyName;
-      contact.email = this.userService.user.email;
-      contact.phone = this.userService.user.phone;
-      contact.department = this.userService.user.department;
-      this.contactsArray.push(this.createContactGroup(contact));
-    } else if (this.data.service.contacts) {
-      for (let contact of this.data.service.contacts) {
-        this.contactsArray.push(this.createContactGroup(contact));
-      }
-    }
+    this.contactsArray = this.control.get('contacts') as FormArray;
     this.selectedTab = 0;
   }
 
   addContact() {
     this.contactsArray.push(this.createContactGroup(new DefaultRegisteredServiceContact()));
-    this.selectedTab = this.data.service.contacts.length - 1;
-    setTimeout(() => {
-        // this.form.resetForm();
-    }, 100);
+    this.selectedTab = this.contactsArray.length - 1;
   }
 
   deleteContact() {
@@ -70,13 +36,12 @@ export class ContactsComponent extends HasControls implements OnInit {
     }
   }
 
-  getTabHeader(index) {
-    return index + 1;//this.data.service.contacts[index].name ? this.data.service.contacts[index].name : index + 1;
+  getTabHeader(index: number) {
+    return index + 1;
   }
 
   createContactGroup(contact: RegisteredServiceContact): FormGroup {
     return new FormGroup({
-      id: new MgmtFormControl(contact.id),
       name: new MgmtFormControl(contact.name, '', Validators.required),
       email: new MgmtFormControl(contact.email, '', Validators.required),
       phone: new MgmtFormControl(contact.phone),

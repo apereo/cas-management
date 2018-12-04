@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Username Attribute</mat-placeholder>
-    <input matInput required [matAutocomplete]="auto"
+    <input matInput [matAutocomplete]="auto"
            [formControl]="usernameAttribute">
     <mat-hint align="end"><lib-hint [difference]="usernameAttribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -25,7 +25,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Cononicalization Mode</mat-placeholder>
     <mat-select [formControl]="canonicalizationMode">
-      <mat-option *ngFor="let opt of data.formData.canonicalizationModes" [value]="opt">
+      <mat-option *ngFor="let opt of formData.options.canonicalizationModes" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
@@ -34,5 +34,5 @@
 </lib-input>
 
 <mat-autocomplete style="width:300px" #auto="matAutocomplete">
-  <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">{{ opt }}</mat-option>
+  <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">{{ opt }}</mat-option>
 </mat-autocomplete>

@@ -2,7 +2,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18>Providers</mat-placeholder>
     <mat-select multiple [formControl]="multifactorAuthenticationProviders">
-      <mat-option *ngFor="let opt of formData.mfaProviders" [value]="opt.value">
+      <mat-option *ngFor="let opt of formData.options.mfaProviders" [value]="opt.value">
         {{ opt.display }}
       </mat-option>
     </mat-select>
@@ -17,7 +17,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Failure Mode</mat-placeholder>
     <mat-select [formControl]="failureMode">
-      <mat-option *ngFor="let opt of formData.mfaFailureModes" [value]="opt">
+      <mat-option *ngFor="let opt of formData.options.mfaFailureModes" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
@@ -61,5 +61,5 @@
 </lib-input>
 
 <mat-autocomplete style="width:300px" #auto="matAutocomplete">
-  <mat-option *ngFor="let opt of formData.availableAttributes" [value]="opt">{{ opt }}</mat-option>
+  <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">{{ opt }}</mat-option>
 </mat-autocomplete>

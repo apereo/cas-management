@@ -1,9 +1,9 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Groovy Script Location</mat-placeholder>
-    <input matInput [formControl]="script">
+    <input matInput [formControl]="control">
   </mat-form-field>
-  <mat-hint align="end"><lib-hint [difference]="script.difference()"></lib-hint></mat-hint>
+  <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Location of groovy script file that will be used by this service to determine if MFA is triggered when accessing this service.">
   </mat-icon>

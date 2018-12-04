@@ -1,12 +1,12 @@
-<div [formGroup]="contactsGroup" style="display: flex; width: 100%;">
+<div [formGroup]="control" style="display: flex; width: 100%;">
 <div formArrayName="contacts" style="width: 100%;">
   <mat-tab-group [(selectedIndex)]="selectedTab">
     <mat-tab *ngFor="let contact of contactsArray.controls; let i = index;" [label]="getTabHeader(i)">
-      <div [formGroupName]="i">
+      <div formGroupName="{{i}}">
         <lib-input>
           <mat-form-field class="textInput">
             <mat-placeholder i18n>Name</mat-placeholder>
-            <input matInput formControlName="name">
+            <input matInput required formControlName="name">
             <mat-hint align="end">
               <lib-hint></lib-hint>
             </mat-hint>
@@ -18,7 +18,7 @@
         <lib-input>
           <mat-form-field class="textInput">
             <mat-placeholder i18n>Email</mat-placeholder>
-            <input matInput formControlName="email">
+            <input matInput required formControlName="email">
             <mat-hint align="end">
               <lib-hint></lib-hint>
             </mat-hint>

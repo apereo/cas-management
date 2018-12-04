@@ -10,53 +10,7 @@
   </mat-hint>
 </lib-input>
 
-<div style="padding-top:10px;">
-  <ng-container i18n>Surrogate Required Attributes</ng-container>
-  <mat-icon appHelp i18n-matTooltip
-           matTooltip="List of attributes and values that must be present for the primary user in order to allow surrogate authentication.">
-  </mat-icon>
-  <mat-table [dataSource]="dataSource">
-    <ng-container cdkColumnDef="source">
-      <mat-header-cell *cdkHeaderCellDef [ngClass]="'nameWidth'" i18n>Name</mat-header-cell>
-      <mat-cell *cdkCellDef="let row; let i = index;" [ngClass]="'nameWidth'">
-          <mat-form-field>
-            <input matInput #text
-                   [ngModel]="row.key"
-                   (change)="doChange(row,$event.target.value)">
-          </mat-form-field>
-          <mat-hint align="end">
-              <lib-hint></lib-hint>
-          </mat-hint>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="mapped">
-      <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'" i18n>Value</mat-header-cell>
-      <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
-        <mat-form-field>
-          <input matInput
-                 [ngModel]="accessStrategy.surrogateRequiredAttributes[row.key]"
-                 (ngModelChange)="accessStrategy.surrogateRequiredAttributes[row.key] = $event.split(',')">
-        </mat-form-field>
-        <mat-hint align="end">
-          <lib-hint></lib-hint>
-        </mat-hint>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="delete">
-      <mat-header-cell *cdkHeaderCellDef [ngClass]="'actionWidth'"></mat-header-cell>
-      <mat-cell *cdkCellDef="let row" [ngClass]="'actionWidth'">
-        <button mat-icon-button (click)="delete(row)"><mat-icon style="font-size: medium">delete</mat-icon></button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
-
-  </mat-table>
-  <div style="height:25px;padding-top: 5px;">
-    <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
-  </div>
-</div>
-
+<lib-attributes [control]="control"
+                arrayName="attributes"
+                [keys]="formData.options.availableAttributes">
+</lib-attributes>

@@ -1,11 +1,10 @@
-<form #oidcForm="ngForm">
+<div [formGroup]="oidc.form">
   <mat-card class="tabCard">
     <mat-card-title>
-      <h5 18n>OIDC Client Options</h5>
+      <h5 i18n>OIDC Client Options</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-oidcclient></lib-oidcclient>
+      <lib-oidcclient [control]="oidc.form"></lib-oidcclient>
     </div>
   </mat-card>
-  <button type="submit" style="display: none;" #submit></button>
-</form>
+</div>

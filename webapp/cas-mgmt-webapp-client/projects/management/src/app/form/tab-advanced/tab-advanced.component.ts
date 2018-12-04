@@ -1,8 +1,26 @@
-import {Component} from '@angular/core';
-import {TabBaseComponent} from '../tab-base';
+import {Component, OnInit} from '@angular/core';
+import {MgmtFormControl, DataRecord, RegisteredServicePublicKey} from 'mgmt-lib';
+import {FormGroup} from '@angular/forms';
+import {AdvancedForm} from './advanced-form';
 
 @Component({
   selector: 'app-tab-advanced',
   templateUrl: './tab-advanced.component.html'
 })
-export class TabAdvancedComponent extends TabBaseComponent {}
+export class TabAdvancedComponent implements OnInit {
+
+  advanced: AdvancedForm;
+
+  constructor(public data: DataRecord) {
+  }
+
+  ngOnInit() {
+    if (this.data.formMap.has('advanced')) {
+      this.advanced = this.data.formMap.get('advanced') as AdvancedForm;
+      return;
+    }
+    this.advanced = new AdvancedForm(this.data);
+    this.data.formMap.set('advanced', this.advanced);
+  }
+
+}

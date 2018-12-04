@@ -1,10 +1,10 @@
-<form #accessForm="ngForm">
+<div [formGroup]="accessStrategy.form">
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Type</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-type (typeChange)="typeChange()"></lib-type>
+      <lib-type [control]="accessStrategy.form"></lib-type>
     </div>
   </mat-card>
 
@@ -13,7 +13,7 @@
       <h5 i18n>Service Access Strategy</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-access-strategy [data]="strategy()"></lib-access-strategy>
+      <lib-access-strategy [control]="accessStrategy.get('access')"></lib-access-strategy>
     </div>
   </mat-card>
 
@@ -22,7 +22,7 @@
       <h5 i18n>Required Attributes</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-required [data]="handlers()"></lib-required>
+      <lib-required [control]="accessStrategy.get('required')"></lib-required>
     </div>
   </mat-card>
 
@@ -31,7 +31,7 @@
       <h5 i18n>Delegated Authentication</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-delegated></lib-delegated>
+      <lib-delegated [control]="accessStrategy.get('allowedProviders')"></lib-delegated>
     </div>
   </mat-card>
 
@@ -40,12 +40,11 @@
       <h5 i18n>Rejected Attributes</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-attributemapping [attributes]="data.service.accessStrategy.rejectedAttributes"
-                            [attributeNames]="data.formData.availableAttributes">
-      </lib-attributemapping>
+      <lib-attributes [control]="accessStrategy.get('rejected')"
+                      arrayName="attributes"
+                            [keys]="formData.options.availableAttributes">
+      </lib-attributes>
     </div>
   </mat-card>
-
-  <button type="submit" display="display:none;" #submit></button>
-</form>
+</div>
 

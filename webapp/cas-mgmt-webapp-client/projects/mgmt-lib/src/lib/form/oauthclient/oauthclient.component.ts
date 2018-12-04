@@ -1,55 +1,29 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {OAuthRegisteredService, OidcRegisteredService} from '../../domain/oauth-service';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {HasControls} from '../has-controls';
-import {FormControl} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-oauthclient',
-  templateUrl: './oauthclient.component.html',
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => OauthclientComponent)
-  }]
+  templateUrl: './oauthclient.component.html'
 })
-export class OauthclientComponent extends HasControls implements OnInit {
+export class OauthclientComponent implements OnInit {
 
-  service: OAuthRegisteredService;
-  original: OAuthRegisteredService;
+  @Input()
+  control: FormGroup;
   showOAuthSecret: boolean;
   clientId: MgmtFormControl;
   clientSecret: MgmtFormControl;
   bypassApprovalPrompt: MgmtFormControl;
   generateRefreshToken: MgmtFormControl;
-  jsonFormat: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.service = data.service as OAuthRegisteredService;
-    this.original = data.original && data.original as OAuthRegisteredService;
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('clientId', this.clientId);
-    c.set('clientSecret', this.clientSecret);
-    c.set('bypassApprovalPrompt', this.bypassApprovalPrompt);
-    c.set('generateRefreshToken', this.generateRefreshToken);
-    c.set('jsonFormat', this.jsonFormat);
-    return c;
+  constructor() {
   }
 
   ngOnInit() {
-    const og: any = this.original ? this.original : {};
-    this.clientId = new MgmtFormControl(this.service.clientId, og.clientId);
-    this.clientSecret = new MgmtFormControl(this.service.clientSecret, og.clientSecret);
-    this.bypassApprovalPrompt = new MgmtFormControl(this.service.bypassApprovalPrompt, og.bypassApprovalPrompt);
-    this.generateRefreshToken = new MgmtFormControl(this.service.generateRefreshToken, og.generateRefreshToken);
-    this.jsonFormat = new MgmtFormControl(this.service.jsonFormat, og.jsonFormat);
+    this.clientId = this.control.get('clientId') as MgmtFormControl;
+    this.clientSecret = this.control.get('clientSecret') as MgmtFormControl;
+    this.bypassApprovalPrompt = this.control.get('bypassApprovalPrompt') as MgmtFormControl;
+    this.generateRefreshToken = this.control.get('generateRefreshToken') as MgmtFormControl;
   }
 
-  isOidc() {
-    return OidcRegisteredService.instanceOf(this.data.service);
-  }
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {ReturnMappedAttributeReleasePolicy} from '../../../../domain/attribute-release';
-import {DataRecord} from '../../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../../mgmt-formcontrol';
+import {FormDataService} from '../../../../form-data.service';
 
 @Component({
   selector: 'lib-mapped',
@@ -9,10 +9,10 @@ import {DataRecord} from '../../../data';
 })
 export class MappedComponent implements OnInit {
 
-  policy: ReturnMappedAttributeReleasePolicy;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.attributeReleasePolicy as ReturnMappedAttributeReleasePolicy;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {

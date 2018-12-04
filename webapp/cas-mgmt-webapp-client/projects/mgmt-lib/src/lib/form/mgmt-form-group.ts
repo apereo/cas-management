@@ -1,19 +1,23 @@
-import {Injectable} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormGroup, ValidatorFn} from '@angular/forms';
+import {AbstractRegisteredService} from '../domain/registered-service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class MgmtFormGroup {
+export abstract class MgmtFormGroup {
 
-  formGroup: FormGroup;
+  form: FormGroup;
 
   constructor() {
-    this.formGroup = new FormGroup({});
+
   }
 
-  getFormGroup() {
-    return this.formGroup;
-  }
+  abstract formMap();
 
+  abstract mapForm(service: AbstractRegisteredService);
+
+  get(key: string): AbstractControl {
+    return this.form.get(key);
+  }
 }
+
+
+
+

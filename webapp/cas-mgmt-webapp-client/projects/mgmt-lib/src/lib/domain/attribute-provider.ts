@@ -71,3 +71,9 @@ export class AnonymousRegisteredServiceUsernameProvider extends RegisteredServic
     this.persistentIdGenerator = new ShibbolethCompatiblePersistentIdGenerator();
   }
 }
+
+export enum UserAttributeType {
+  DEFAULT,
+  PRINCIPAL_ATTRIBUTE,
+  ANONYMOUS
+}

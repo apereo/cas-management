@@ -1,13 +1,12 @@
-<form #multiAuthForm="ngForm">
+<div [formGroup]="mfa.form">
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Multifactor Policy</h5>
     </mat-card-title>
     <mat-card-content>
       <div class="cardContent">
-        <lib-mfa></lib-mfa>
+        <lib-mfa [control]="mfa.form"></lib-mfa>
       </div>
     </mat-card-content>
   </mat-card>
-  <button type="submit" style="display:none;" #submit></button>
-</form>
+</div>

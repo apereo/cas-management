@@ -1,73 +1,27 @@
-import {Component, forwardRef, Input, OnInit} from '@angular/core';
-import {SurrogateRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
-import {Util} from '../../../util';
-import {Row, RowDataSource} from '../../row';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {HasControls} from '../../has-controls';
-import {FormControl} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-surrogate',
   templateUrl: './surrogate.component.html',
-  styleUrls: ['./surrogate.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => SurrogateComponent)
-  }]
+  styleUrls: ['./surrogate.component.css']
 })
-export class SurrogateComponent extends HasControls implements OnInit {
+export class SurrogateComponent implements OnInit {
 
   @Input()
-  data: SurrogateRegisteredServiceAccessStrategy[];
-
-  accessStrategy: SurrogateRegisteredServiceAccessStrategy;
-  original: SurrogateRegisteredServiceAccessStrategy;
-
-  displayedColumns = ['source', 'mapped', 'delete'];
-  dataSource: RowDataSource;
+  control: FormGroup;
 
   surrogateEnabled: MgmtFormControl;
+  surrogateRequiredAttributes: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.accessStrategy = data.service.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('surrogateEnabled', this.surrogateEnabled);
-    return c;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const og = this.original && this.original.surrogateEnabled;
-    this.surrogateEnabled = new MgmtFormControl(this.accessStrategy.surrogateEnabled, og);
-
-    const rows = [];
-    if (Util.isEmpty(this.accessStrategy.surrogateRequiredAttributes)) {
-      this.accessStrategy.surrogateRequiredAttributes = new Map();
-    }
-    for (const p of Array.from(Object.keys(this.accessStrategy.surrogateRequiredAttributes))) {
-      rows.push(new Row(p));
-    }
-    this.dataSource = new RowDataSource(rows);
-  }
-
-  addRow() {
-    this.dataSource.addRow();
-  }
-
-  doChange(row: Row, val: string) {
-    this.accessStrategy.surrogateRequiredAttributes[val] = this.accessStrategy.surrogateRequiredAttributes[row.key as string];
-    delete this.accessStrategy.surrogateRequiredAttributes[row.key as string];
-    row.key = val;
-  }
-
-  delete(row: Row) {
-    delete this.accessStrategy.surrogateRequiredAttributes[row.key as string];
-    this.dataSource.removeRow(row);
+    this.surrogateEnabled = this.control.get('surrogateEnabled') as MgmtFormControl;
+    this.surrogateRequiredAttributes = this.control.get('attributes') as MgmtFormControl;
   }
 }
 

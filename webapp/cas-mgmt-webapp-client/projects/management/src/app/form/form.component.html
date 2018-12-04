@@ -13,7 +13,7 @@
       </div>
     <div style="flex: 1 1 auto"></div>
     <div>
-      <app-controls (save)="save()" [showEdit]="!view"></app-controls>
+      <app-controls (save)="save()" [showEdit]="!view" (reset)="reset()"></app-controls>
     </div>
 </div>
   <mat-tab-group #tabGroup (selectedIndexChange)="goto($event)">
@@ -91,5 +91,6 @@
 </div>
 <div style="padding-top:90px;padding-bottom:0px;display:flex;flex-direction: column; margin-right: auto; margin-left: auto;"
      [style.width]="!(isHandset$ | async) ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">
-  <router-outlet name="form"></router-outlet>
+    <router-outlet name="form"></router-outlet>
 </div>
+

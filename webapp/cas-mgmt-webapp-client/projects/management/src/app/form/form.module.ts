@@ -20,14 +20,12 @@ import {FormService} from './form.service';
 import { TabOauthComponent } from './tab-oauth/tab-oauth.component';
 import { TabSamlComponent } from './tab-saml/tab-saml.component';
 import { TabWsfedComponent } from './tab-wsfed/tab-wsfed.component';
-import {TabBaseComponent} from './tab-base';
 import { TabContactsComponent } from './tab-contacts/tab-contacts.component';
 import { TabExpirationComponent } from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
 import {MgmtLibModule, SharedModule} from 'mgmt-lib';
 import {MgmtModule} from '../mgmt.module';
-import {MgmtFormGroup} from '../../../../mgmt-lib/src/lib/form/mgmt-form-group';
 
 @NgModule({
   imports: [
@@ -54,7 +52,6 @@ import {MgmtFormGroup} from '../../../../mgmt-lib/src/lib/form/mgmt-form-group';
     TabOauthComponent,
     TabOIDCComponent,
     TabWsfedComponent,
-    TabBaseComponent,
     FormComponent,
     TabOauthComponent,
     TabSamlComponent,

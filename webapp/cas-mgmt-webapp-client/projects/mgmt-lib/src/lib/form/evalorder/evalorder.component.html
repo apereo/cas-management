@@ -1,8 +1,8 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Evaluation Order</mat-placeholder>
-    <input matInput [formControl]="evalOrder">
-    <mat-hint align="end"><lib-hint [difference]="evalOrder.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="control">
+    <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Determines how CAS should load, sort and evaluate services per this numeric order.">

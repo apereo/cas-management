@@ -5,6 +5,8 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {AbstractRegisteredService} from '../domain/registered-service';
 import {FormData} from '../domain/form-data';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MgmtFormGroup} from './mgmt-form-group';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,8 @@ export class DataRecord {
   save: EventEmitter<void> = new EventEmitter<void>();
   invalidRegEx = false;
   invalidDomain = false;
+  formMap: Map<String, MgmtFormGroup>;
+  serviceForm: FormGroup;
 
   constructor(){
 

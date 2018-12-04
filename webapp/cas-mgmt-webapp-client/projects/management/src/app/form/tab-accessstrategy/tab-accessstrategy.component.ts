@@ -1,49 +1,100 @@
-import {AfterContentInit, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {TabBaseComponent} from '../tab-base';
-import {GroovyRegisteredServiceAccessStrategy} from 'mgmt-lib';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {DataRecord, FormDataService} from 'mgmt-lib'
+import {AccessStrategyForm} from './access-form';
+import {MatFormField} from '@angular/material';
+import {
+  AccessStrategyType,
+  GrouperRegisteredServiceAccessStrategy,
+  RegisteredServiceAccessStrategy,
+  RemoteEndpointServiceAccessStrategy,
+  SurrogateRegisteredServiceAccessStrategy,
+  TimeBasedRegisteredServiceAccessStrategy
+} from '../../../../../mgmt-lib/src/lib/domain/access-strategy';
 import {FormGroup} from '@angular/forms';
-import {RegisteredServiceAccessStrategy} from '../../../../../mgmt-lib/src/lib/domain/access-strategy';
 
 @Component({
   selector: 'app-tab-accessstrategy',
   templateUrl: './tab-accessstrategy.component.html'
 })
-export class TabAccessstrategyComponent extends TabBaseComponent implements OnInit, AfterContentInit {
+export class TabAccessstrategyComponent implements OnInit {
 
   groovyAccessStrategy: boolean;
 
-  @ViewChildren(HasControls)
-  controls: QueryList<HasControls>;
+  accessStrategy: AccessStrategyForm;
 
-  accessStrategy: FormGroup;
-
+  constructor(public data: DataRecord,
+              public formData: FormDataService) {
+  }
 
   ngOnInit() {
-    super.ngOnInit();
-    this.typeChange();
-  }
-
-  ngAfterContentInit() {
-    for (let control of this.controls.toArray()) {
-      control.getControls().forEach((value, key, map) => this.accessStrategy.addControl(key as string, value));
+    if (this.data.formMap.has('accessstrategy')) {
+      this.accessStrategy = this.data.formMap.get('accessstrategy') as AccessStrategyForm;
+      return;
     }
+    this.accessStrategy = new AccessStrategyForm(this.data);
+    this.accessStrategy.get('type').valueChanges.subscribe(t => {
+      this.changeType(t);
+    });
+    this.data.formMap.set('accessstrategy', this.accessStrategy);
   }
 
-  typeChange() {
-    this.groovyAccessStrategy = GroovyRegisteredServiceAccessStrategy.instanceOf(this.data.service.accessStrategy);
+
+  changeType(type: AccessStrategyType) {
+    this.accessStrategy.grouper.reset();
+    this.accessStrategy.remote.reset();
+    this.accessStrategy.time.reset();
+    this.accessStrategy.surrogate.reset();
+    if (type === AccessStrategyType.REMOTE) {
+      this.setRemote(this.accessStrategy.get('remote') as FormGroup, new RemoteEndpointServiceAccessStrategy());
+    }
+    if (type === AccessStrategyType.TIME) {
+      this.setTime(this.accessStrategy.get('time') as FormGroup, new TimeBasedRegisteredServiceAccessStrategy());
+    }
+    if (type === AccessStrategyType.GROUPER) {
+      this.setGrouper(this.accessStrategy.get('grouper') as FormGroup, new GrouperRegisteredServiceAccessStrategy());
+    }
+    if (type === AccessStrategyType.SURROGATE) {
+      this.setSurrogate(this.accessStrategy.get('surrogate') as FormGroup, new SurrogateRegisteredServiceAccessStrategy());
+    }
+    if (type === AccessStrategyType.GROOVY_SURROGATE) {
+      this.accessStrategy.get('groovySurrogate').setValue(null);
+    }
+    if (type === AccessStrategyType.GROOVY) {
+      this.accessStrategy.get('groovy').setValue(null);
+    }
+
   }
 
-  strategy(): RegisteredServiceAccessStrategy[] {
-    return [
-      this.data.service.accessStrategy,
-      this.data.original && this.data.original.accessStrategy
-    ];
+  setAccess(access: FormGroup, strat: RegisteredServiceAccessStrategy) {
+    access.get('sso').setValue(strat.ssoEnabled);
+    access.get('requireAll').setValue(strat.requireAllAttributes);
+    access.get('unauthorizedUrl').setValue(strat.unauthorizedRedirectUrl);
   }
 
-  handlers(): String[][] {
-    return [
-      this.data.service.requiredHandlers,
-      this.data.original && this.data.original.requiredHandlers
-    ];
+  setRemote(remote: FormGroup, strat: RemoteEndpointServiceAccessStrategy) {
+    remote.get('endpointUrl').setValue(strat.endpointUrl);
+    remote.get('responseCodes').setValue(strat.acceptableResponseCodes);
   }
+
+  setTime(time: FormGroup, strat: TimeBasedRegisteredServiceAccessStrategy) {
+    time.get('startingDatetime').setValue(strat.startingDateTime);
+    time.get('endingDatetime').setValue(strat.endingDateTime);
+  }
+
+  setGrouper(grouper: FormGroup, strat: GrouperRegisteredServiceAccessStrategy) {
+    grouper.get('groupField').setValue(strat.groupField);
+    grouper.get('startingDatetime').setValue(strat.startingDateTime);
+    grouper.get('endingDatetime').setValue(strat.endingDateTime);
+  }
+
+  setSurrogate(surrogate: FormGroup, strat: SurrogateRegisteredServiceAccessStrategy) {
+    surrogate.get('surrogateEnabled').setValue(strat.surrogateEnabled);
+    surrogate.get('attributes').setValue(strat.surrogateRequiredAttributes);
+  }
+
+  setRequired(required: FormGroup, strat: RegisteredServiceAccessStrategy) {
+    required.get('requiredAttributes').setValue(strat.requiredAttributes);
+    required.get('caseInsensitive').setValue(strat.caseInsensitive);
+  }
+
 }

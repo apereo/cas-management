@@ -1,36 +1,20 @@
-import {Component, forwardRef, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {HasControls} from '../has-controls';
-import {FormControl} from '@angular/forms';
 
 
 @Component({
   selector: 'lib-enabled',
-  templateUrl: './enabled.component.html',
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => EnabledComponent)
-  }]
+  templateUrl: './enabled.component.html'
 })
-export class EnabledComponent extends HasControls implements OnInit {
+export class EnabledComponent implements OnInit {
 
   @Input()
-  data: boolean[];
-
-  enabled: MgmtFormControl;
+  control: MgmtFormControl;
 
   constructor() {
-    super();
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('enabled', this.enabled);
-    return c;
   }
 
   ngOnInit() {
-    this.enabled = new MgmtFormControl(this.data[0], this.data[1]);
   }
 
 }

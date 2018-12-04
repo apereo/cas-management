@@ -1,27 +1,18 @@
-import {Component, ElementRef, forwardRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent} from '@angular/material';
-import {DataRecord} from '../../data';
-import {DefaultRegisteredServiceDelegatedAuthenticationPolicy} from '../../../domain/delegated-authn';
-import {FormData} from '../../../domain/form-data';
-import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms';
-import {HasControls} from '../../has-controls';
+import {FormDataService} from '../../../form-data.service';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-delegated',
   templateUrl: './delegated.component.html',
-  styleUrls: ['./delegated.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => DelegatedComponent)
-  }]
+  styleUrls: ['./delegated.component.css']
 })
-export class DelegatedComponent extends HasControls implements OnInit {
+export class DelegatedComponent implements OnInit {
 
   separatorKeysCodes = [ENTER, COMMA];
   delegatedAuthn: String[] = [];
-
-  formData: FormData;
 
   @ViewChild( MatAutocompleteTrigger )
   autoTrigger: MatAutocompleteTrigger;
@@ -29,36 +20,14 @@ export class DelegatedComponent extends HasControls implements OnInit {
   @ViewChild('providerInput')
   providerInput: ElementRef;
 
-  providerGroup: FormGroup;
-  providerArray: FormArray;
+  @Input()
+  control: MgmtFormControl;
 
-
-  constructor(public data: DataRecord) {
-    super();
-    this.formData = data.formData;
-  }
-
-  getControls(): Map<string, AbstractControl> {
-    let c: Map<string, AbstractControl> = new Map();
-    c.set('allowedProviders', this.providerArray);
-    return c;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const service = this.data.service;
-
-    this.providerArray = new FormArray([]);
-    this.providerGroup = new FormGroup({
-      providers: this.providerArray
-    })
-    if (service.accessStrategy.delegatedAuthenticationPolicy) {
-      this.delegatedAuthn = (service.accessStrategy.delegatedAuthenticationPolicy as
-        DefaultRegisteredServiceDelegatedAuthenticationPolicy).allowedProviders
-      for (let provider of this.delegatedAuthn) {
-        this.providerArray.push(new FormControl(provider));
-      }
-    }
-
+    this.delegatedAuthn = this.control.value || [];
   }
 
   add(event: MatChipInputEvent): void {
@@ -66,8 +35,10 @@ export class DelegatedComponent extends HasControls implements OnInit {
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.providerArray.push(new FormControl(value.trim()));
+      this.delegatedAuthn.push(value.trim());
       this.autoTrigger.closePanel();
+      this.control.setValue(this.delegatedAuthn);
+      this.control.markAsTouched()
     }
 
     if (input) {
@@ -75,18 +46,22 @@ export class DelegatedComponent extends HasControls implements OnInit {
     }
   }
 
-  remove(index: number): void {
+  remove(provider: any): void {
+    const index = this.delegatedAuthn.indexOf(provider);
 
     if (index >= 0) {
-      this.providerArray.removeAt(index);
+      this.delegatedAuthn.splice(index, 1);
+      this.control.setValue(this.delegatedAuthn);
+      this.control.markAsTouched()
     }
   }
-
 
   selection(val: MatAutocompleteSelectedEvent) {
     const value =  val.option.value;
     if ((value || '').trim()) {
       this.delegatedAuthn.push(value.trim());
+      this.control.setValue(this.delegatedAuthn);
+      this.control.markAsTouched();
     }
 
     if (this.providerInput) {

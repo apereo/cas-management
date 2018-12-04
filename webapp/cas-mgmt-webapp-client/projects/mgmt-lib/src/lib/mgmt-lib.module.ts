@@ -12,7 +12,6 @@ import {AccessStrategyModule} from './form/access-strategy/access-strategy.modul
 import {SharedModule} from './shared/shared.module';
 import {AttributeReleaseModule} from './form/attribute-release/attribute-release.module';
 import {WsfedattrrelpoliciesModule} from './form/wsfedattrrelpolocies/wsfedattrrelpolicies.module';
-import {UnknownComponent} from './unknown/unknown.component';
 import {ContactsComponent} from './form/contacts/contacts.component';
 import {EnabledComponent} from './form/enabled/enabled.component';
 import {EvalorderComponent} from './form/evalorder/evalorder.component';
@@ -57,7 +56,6 @@ import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
     LinkrefsComponent,
     LogoComponent,
     InvalidDomainDirective,
-    UnknownComponent,
     ContactsComponent,
     EnabledComponent,
     EvalorderComponent,
@@ -91,7 +89,6 @@ import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
     AccessStrategyModule,
     AttributeReleaseModule,
     WsfedattrrelpoliciesModule,
-    UnknownComponent,
     ContactsComponent,
     EnabledComponent,
     EvalorderComponent,

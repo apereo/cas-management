@@ -657,10 +657,14 @@ ext.libraries = [
                         transitive = false
                         force = true
                     },
-                services             :
+                services             : [
                     dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
                         force = true
                     },
+                    dependencies.create("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
+                        force = true
+                    }
+                ],
                 authentication       :
                     dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
                         force = true

@@ -1,166 +1,57 @@
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {
-  AfterContentInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  QueryList, ViewChildren,
-} from '@angular/core';
-import {TabBaseComponent} from '../tab-base';
-import {DataRecord, GroovyRegisteredServiceAccessStrategy, UserProfile, HasControls, AbstractRegisteredService} from 'mgmt-lib';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../../../../mgmt-lib/src/lib/form/mgmt-formcontrol';
+  DataRecord,
+  GroovyRegisteredServiceAccessStrategy,
+  UserProfile,
+  OAuthRegisteredService,
+  OidcRegisteredService,
+  SamlRegisteredService,
+  WSFederationRegisterdService,
+  RegexRegisteredService,
+  MgmtFormGroup
+} from 'mgmt-lib';
+import {BasicsForm} from './basics-form';
 
 @Component({
   selector: 'app-tab-basics',
   templateUrl: './tab-basics.component.html'
 })
-export class TabBasicsComponent extends TabBaseComponent implements OnInit, AfterContentInit {
+export class TabBasicsComponent implements OnInit, AfterViewInit {
 
   groovyAccessStrategy: boolean;
 
-  basics: FormGroup;
+  basics: BasicsForm;
 
-  @ViewChildren(HasControls)
-  controls: QueryList<HasControls>;
+  constructor(public data: DataRecord) {
+  }
 
   ngOnInit() {
-    super.ngOnInit();
     this.groovyAccessStrategy = GroovyRegisteredServiceAccessStrategy.instanceOf(this.data.service.accessStrategy);
-  }
-
-  ngAfterContentInit() {
-    console.log(this.controls);
-    for (let control of this.controls.toArray()) {
-      control.getControls().forEach((value, key, map) => this.basics.addControl(key as string, value));
+    if (this.data.formMap.has('basics')) {
+      this.basics = this.data.formMap.get('basics') as BasicsForm;
+      return;
     }
+    this.basics = new BasicsForm(this.data);
+    //this.data.serviceForm.addControl('basics', this.basics.form);
+    this.basics.form.get('serviceType').valueChanges.subscribe(val => {
+      if (val === OAuthRegisteredService.cName) {
+        this.data.service = new OAuthRegisteredService(this.data.service);
+      } else if (val === OidcRegisteredService.cName) {
+        this.data.service = new OidcRegisteredService(this.data.service);
+      } else if (val === SamlRegisteredService.cName) {
+        this.data.service = new SamlRegisteredService(this.data.service);
+      } else if (val === WSFederationRegisterdService.cName) {
+        this.data.service = new WSFederationRegisterdService(this.data.service);
+      } else {
+        this.data.service = new RegexRegisteredService(this.data.service);
+      }
+    });
+    console.log("setting basics");
+    this.data.formMap.set('basics', this.basics);
   }
 
-  constructor(public data: DataRecord,
-              public changeRef: ChangeDetectorRef) {
-    super(data, changeRef);
-    this.basics = new FormGroup({});
+  ngAfterViewInit() {
   }
-
-  enabled(): boolean[] {
-    return [
-      this.data.service.accessStrategy.enabled,
-      this.data.original && this.data.original.accessStrategy.enabled
-    ]
-  }
-
-  serviceType(): AbstractRegisteredService {
-    return this.data.service;
-  }
-
-  serviceId(): String[] {
-    return [
-      this.data.service.serviceId,
-      this.data.original && this.data.original.serviceId
-    ]
-  }
-
-  serviceName(): String[] {
-    return [
-      this.data.service.name,
-      this.data.original && this.data.original.name
-    ]
-  }
-
-  description(): String[] {
-    return [
-      this.data.service.description,
-      this.data.original && this.data.original.description
-    ]
-  }
-
-  theme(): String[] {
-    return [
-      this.data.service.theme,
-      this.data.original && this.data.original.theme
-    ]
-  }
-
-  logo(): String[] {
-    return [
-      this.data.service.logo,
-      this.data.original && this.data.original.logo
-    ]
-  }
-
-  informationUrl(): String[] {
-    return [
-      this.data.service.informationUrl,
-      this.data.original && this.data.original.informationUrl
-    ]
-  }
-
-  privacyUrl(): String[] {
-    return [
-      this.data.service.privacyUrl,
-      this.data.original && this.data.original.privacyUrl
-    ]
-  }
-
-  serviceIdControl(): String[] {
-    return new MgmtFormControl(
-      this.data.service.serviceId,
-      this.data.original && this.data.original.serviceId
-    );
-  }
-
-  serviceNameControl(): String[] {
-    return new MgmtFormControl(
-      this.data.service.name,
-      this.data.original && this.data.original.name
-    );
-  }
-
-  descriptionControl(): String[] {
-    return new MgmtFormControl(
-      this.data.service.description,
-      this.data.original && this.data.original.description
-    );
-  }
-
-  theme(): String[] {
-    return new MgmtFormControl(
-      this.data.service.theme,
-      this.data.original && this.data.original.theme
-    );
-  }
-
-  logo(): String[] {
-    return new MgmtFormControl(
-      this.data.service.logo,
-      this.data.original && this.data.original.logo
-    );
-  }
-
-  informationUrl(): String[] {
-    return new MgmtFormControl(
-      this.data.service.informationUrl,
-      this.data.original && this.data.original.informationUrl
-    );
-  }
-
-  privacyUrlControl(): String[] {
-    return new MgmtFormControl(
-      this.data.service.privacyUrl,
-      this.data.original && this.data.original.privacyUrl
-    );
-  }
-
-  enabledControl(): boolean[] {
-    return new MgmtFormControl(
-      this.data.service.accessStrategy.enabled,
-      this.data.original && this.data.original.accessStrategy.enabled
-    );
-  }
-
-  serviceTypeControl(): AbstractRegisteredService {
-    return new MgmtFormControl(this.data.service);
-  }
-
 
   validateDomain = function(user: UserProfile) {
     return function (service: string): boolean {
@@ -180,4 +71,5 @@ export class TabBasicsComponent extends TabBaseComponent implements OnInit, Afte
       return false;
     };
   }
+
 }

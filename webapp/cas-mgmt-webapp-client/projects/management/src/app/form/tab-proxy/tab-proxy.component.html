@@ -1,11 +1,10 @@
-<form #proxyForm="ngForm">
+<div [formGroup]="proxy.form">
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Proxy Options</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-proxy></lib-proxy>
+      <lib-proxy [control]="proxy.form"></lib-proxy>
     </div>
   </mat-card>
-  <button type="submit" style="display: none;" #submit></button>
-</form>
+</div>

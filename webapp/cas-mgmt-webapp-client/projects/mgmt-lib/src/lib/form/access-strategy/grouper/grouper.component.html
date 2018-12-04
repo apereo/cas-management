@@ -1,8 +1,9 @@
 <lib-input>
   <mat-form-field class="textInput">
-    <mat-placeholder i18n>Group Fieldn</mat-placeholder>
-    <mat-select required [formControl]="groupField">
-      <mat-option *ngFor="let opt of data.formData.grouperFields" [value]="opt">{{ opt }}</mat-option>
+    <mat-placeholder i18n>Group Field</mat-placeholder>
+    <mat-select [formControl]="groupField">
+      <mat-option [value]="null">UNDEFINED</mat-option>
+      <mat-option *ngFor="let opt of fields" [value]="opt">{{ opt }}</mat-option>
     </mat-select>
     <mat-hint align="end">
       <lib-hint [difference]="groupField.difference()"></lib-hint>

@@ -1,46 +1,27 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {SamlRegisteredService} from '../../../domain/saml-service';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {HasControls} from '../../has-controls';
-import {FormControl} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-nameid',
   templateUrl: './nameid.component.html',
-  styleUrls: ['./nameid.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => SamlNameidComponent)
-  }]
+  styleUrls: ['./nameid.component.css']
 })
-export class SamlNameidComponent extends HasControls implements OnInit {
+export class SamlNameidComponent implements OnInit {
 
-  service: SamlRegisteredService;
-  original: SamlRegisteredService;
+  @Input()
+  control: FormGroup;
   requiredNameIdFormat: MgmtFormControl;
   serviceProviderNameIdQualifier: MgmtFormControl;
   nameIdQualifier: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.service = data.service as SamlRegisteredService;
-    this.original = data.original && data.original as SamlRegisteredService;
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('requiredNameIdFormat', this.requiredNameIdFormat);
-    c.set('serviceProviderNameIdQualifier', this.serviceProviderNameIdQualifier);
-    c.set('nameIdQualifier', this.nameIdQualifier);
-    return c;
+  constructor() {
   }
 
   ngOnInit() {
-    const og: any = this.original ? this.original : {};
-    this.requiredNameIdFormat = new MgmtFormControl(this.service.requiredNameIdFormat, og.requiredNameIdFormat);
-    this.serviceProviderNameIdQualifier = new MgmtFormControl(this.service.serviceProviderNameIdQualifier, og.serviceProviderNameIdQualifier);
-    this.nameIdQualifier = new MgmtFormControl(this.service.nameIdQualifier, og.nameIdQualifier);
+    this.requiredNameIdFormat = this.control.get('requiredNameIdFormat') as MgmtFormControl;
+    this.serviceProviderNameIdQualifier = this.control.get('serviceProviderNameIdQualifier') as MgmtFormControl;
+    this.nameIdQualifier = this.control.get('nameIdQualifier') as MgmtFormControl;
   }
 
 }

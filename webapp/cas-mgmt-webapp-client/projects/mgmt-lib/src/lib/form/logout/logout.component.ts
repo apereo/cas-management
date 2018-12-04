@@ -1,34 +1,19 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {ControlContainer, FormControl, NgForm} from '@angular/forms';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {HasControls} from '../has-controls';
 
 @Component({
   selector: 'lib-logout',
-  templateUrl: './logout.component.html',
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => LogoutComponent)
-  }]
+  templateUrl: './logout.component.html'
 })
-export class LogoutComponent extends HasControls implements OnInit {
+export class LogoutComponent implements OnInit {
 
-  logout: MgmtFormControl;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('logout', this.logout);
-    return c;
+  constructor() {
   }
 
   ngOnInit() {
-    const og = this.data.original && this.data.original.logoutUrl;
-    this.logout = new MgmtFormControl(this.data.service.logoutUrl, og);
   }
 
 }

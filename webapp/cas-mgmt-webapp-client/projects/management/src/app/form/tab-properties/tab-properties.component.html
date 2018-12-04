@@ -1,11 +1,10 @@
-<form #propertiesForm="ngForm">
+<div>
   <mat-card class="tabCard">
     <mat-card-title>
       <h5 i18n>Properties</h5>
     </mat-card-title>
     <div class="cardContent">
-      <lib-propertiespane></lib-propertiespane>
+      <lib-propertiespane [control]="properties.form"></lib-propertiespane>
     </div>
   </mat-card>
-  <button type="submit" style="display: none;" #submit></button>
-</form>
+</div>

@@ -1,45 +1,37 @@
-<mat-table [dataSource]="dataSource">
-
-    <ng-container cdkColumnDef="source">
-        <mat-header-cell *cdkHeaderCellDef [ngClass]="'nameWidth'" i18n>Name</mat-header-cell>
-        <mat-cell *cdkCellDef="let row" [ngClass]="'nameWidth'">
-            <mat-form-field>
-                <input matInput #text [matAutocomplete]="auto"
-                       [(ngModel)]="row.key" (click)="selectedRow = row">
-            </mat-form-field>
-
-        </mat-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="mapped">
-        <mat-header-cell *cdkHeaderCellDef [ngClass]="'valueWidth'" i18n>Value</mat-header-cell>
-        <mat-cell *cdkCellDef="let row" [ngClass]="'valueWidth'">
-            <mat-form-field>
-                <input matInput [disabled]="row.key == ''" [(ngModel)]="row.value">
-            </mat-form-field>
-        </mat-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="delete">
-        <mat-header-cell *cdkHeaderCellDef [ngClass]="'actionWidth'"></mat-header-cell>
-        <mat-cell *cdkCellDef="let row" [ngClass]="'actionWidth'">
-            <button mat-icon-button (click)="delete(row)">
-                <mat-icon style="font-size: medium">delete</mat-icon>
-            </button>
-        </mat-cell>
-    </ng-container>
-
-    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
-
-
-</mat-table>
+<div [formGroup]="control">
+  <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
+  border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Name</div>
+    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>Value</div>
+    <div [ngClass]="'actionWidth'" i18n></div>
+  </div>
+  <div formArrayName="properties">
+    <div *ngFor="let entry of entries.controls; let i = index;" [formGroupName]="i"
+         style="display: flex; flex-direction: row; border-bottom-width: 1px;
+         border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+      <div [ngClass]="'nameWidth'">
+        <mat-form-field>
+          <input matInput [matAutocomplete]="auto"
+                 formControlName="key" (focus)="selectedRow = i">
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'valueWidth'">
+        <mat-form-field>
+          <input matInput formControlName="value">
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'actionWidth'">
+        <button mat-icon-button (click)="delete(i)"><mat-icon style="font-size: medium">delete</mat-icon></button>
+      </div>
+    </div>
+  </div>
+</div>
 <div style="height:25px;padding-top: 5px;">
-    <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
+  <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
 </div>
 
-<mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let opt of formData.registeredServiceProperties"
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)">
+    <mat-option *ngFor="let opt of formData.options.registeredServiceProperties"
                 [value]="opt.propertyName">{{ opt.propertyName }}
     </mat-option>
 </mat-autocomplete>

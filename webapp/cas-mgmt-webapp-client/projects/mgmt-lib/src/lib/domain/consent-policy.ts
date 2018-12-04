@@ -9,8 +9,10 @@ export class RegisteredServiceConsentPolicy {
     return obj && obj['@class'] === RegisteredServiceConsentPolicy.cName
   }
 
-  constructor() {
-    this.enabled = true;
+  constructor(policy?: RegisteredServiceConsentPolicy) {
+    this.enabled = (policy && policy.enabled) || true;
+    this.excludedAttributes = (policy && policy.excludedAttributes) || null;
+    this.includeOnlyAttributes = (policy && policy.includeOnlyAttributes) || null;
     this['@class'] = RegisteredServiceConsentPolicy.cName;
   }
 }
@@ -22,8 +24,8 @@ export class DefaultRegisteredServiceConsentPolicy extends RegisteredServiceCons
     return obj && obj['@class'] === DefaultRegisteredServiceConsentPolicy.cName;
   }
 
-  constructor() {
-    super();
+  constructor(policy?: RegisteredServiceConsentPolicy) {
+    super(policy);
     this['@class'] = DefaultRegisteredServiceConsentPolicy.cName;
   }
 }

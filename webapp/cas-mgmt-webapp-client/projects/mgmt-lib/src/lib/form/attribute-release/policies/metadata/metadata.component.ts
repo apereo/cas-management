@@ -1,46 +1,27 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {MetadataEntityAttributesAttributeReleasePolicy} from '../../../../domain/attribute-release';
-import {DataRecord} from '../../../data';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../../../mgmt-formcontrol';
-import {HasControls} from '../../../has-controls';
-import {FormControl} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-metadata',
   templateUrl: './metadata.component.html',
-  styleUrls: ['./metadata.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => MetadataComponent)
-  }]
+  styleUrls: ['./metadata.component.css']
 })
-export class MetadataComponent extends HasControls implements OnInit {
+export class MetadataComponent implements OnInit {
 
-  policy: MetadataEntityAttributesAttributeReleasePolicy;
-  original: MetadataEntityAttributesAttributeReleasePolicy;
+  @Input()
+  control: FormGroup;
   entityAttribute: MgmtFormControl;
   entityAttributeFormat: MgmtFormControl;
   entityAttributeValues: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.policy = data.service.attributeReleasePolicy as MetadataEntityAttributesAttributeReleasePolicy;
-    this.original = data.original && data.original.attributeReleasePolicy as MetadataEntityAttributesAttributeReleasePolicy;
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('entityAttribute', this.entityAttribute);
-    c.set('entityAttributeFormat', this.entityAttributeFormat);
-    c.set('entityAttributeValues', this.entityAttributeValues);
-    return c;
+  constructor() {
   }
 
   ngOnInit() {
-    const og: any = this.original ? this.original : {};
-    this.entityAttribute = new MgmtFormControl(this.policy.entityAttribute, og.entityAttribute);
-    this.entityAttributeFormat = new MgmtFormControl(this.policy.entityAttributeFormat, og.entityAttributeFormat);
-    this.entityAttributeValues = new MgmtFormControl(this.policy.entityAttributeValues, og.entityAttributeValues);
+    this.entityAttribute = this.control.get('entityAttribute') as MgmtFormControl;
+    this.entityAttributeFormat = this.control.get('entityAttributeFormat') as MgmtFormControl;
+    this.entityAttributeValues = this.control.get('entityAttributeValues') as MgmtFormControl;
   }
 
 }

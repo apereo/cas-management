@@ -1,11 +1,11 @@
-<form #attrReleaseForm="ngForm">
+<div [formGroup]="attributeRelease.form">
     <div *ngIf="!isOidc && !isWsFed">
         <mat-card class="tabCard">
             <mat-card-title>
                 <h5 i18n>Attribute Release Policy</h5>
             </mat-card-title>
             <div class="cardContent">
-                <lib-attribute-release-policies></lib-attribute-release-policies>
+                <lib-attribute-release-policies [control]="attributeRelease.get('policies')"></lib-attribute-release-policies>
             </div>
         </mat-card>
         <mat-card class="tabCard">
@@ -13,7 +13,7 @@
                 <h5 i18n>Attribute Release Options</h5>
             </mat-card-title>
             <div class="cardContent">
-                <lib-attribute-release-checks></lib-attribute-release-checks>
+                <lib-attribute-release-checks [control]="attributeRelease.get('checks')"></lib-attribute-release-checks>
             </div>
         </mat-card>
         <mat-card class="tabCard">
@@ -21,7 +21,7 @@
                 <h5 i18n>Attribute Release Consent</h5>
             </mat-card-title>
             <div class="cardContent">
-                <lib-attribute-release-consent></lib-attribute-release-consent>
+                <lib-attribute-release-consent [control]="attributeRelease.get('consent')"></lib-attribute-release-consent>
             </div>
         </mat-card>
         <mat-card class="tabCard">
@@ -29,7 +29,7 @@
                 <h5 i18n>Attribute Value Filters</h5>
             </mat-card-title>
             <div class="cardContent">
-                <lib-attribute-release-filters></lib-attribute-release-filters>
+                <lib-attribute-release-filters [control]="attributeRelease.get('attributeFilter')"></lib-attribute-release-filters>
             </div>
         </mat-card>
         <mat-card class="tabCard">
@@ -37,7 +37,7 @@
                 <h5 i18n>Principal Attribute Repository</h5>
             </mat-card-title>
             <div class="cardContent">
-                <lib-attribute-release-principal-repo></lib-attribute-release-principal-repo>
+                <lib-attribute-release-principal-repo [control]="attributeRelease.get('principalRepo')"></lib-attribute-release-principal-repo>
             </div>
         </mat-card>
     </div>
@@ -49,7 +49,7 @@
                 <h5 i18n>Attribute Release Options</h5>
             </mat-card-title>
             <div class="cardContent">
-                <lib-oidc-options></lib-oidc-options>
+                <lib-oidc-options [control]="attributeRelease.get('oidcOptions')"></lib-oidc-options>
             </div>
         </mat-card>
     </div>
@@ -60,9 +60,9 @@
                 <h5 i18n>Attribute Release Options</h5>
             </mat-card-title>
             <div class="cardContent">
-                <lib-wsfed-options></lib-wsfed-options>
+              <lib-attribute-release-principal-repo [control]="attributeRelease.get('principalRepo')"></lib-attribute-release-principal-repo>
+              <lib-wsfedattrrelpolicies [control]="attributeRelease.get('wsfed')"></lib-wsfedattrrelpolicies>
             </div>
         </mat-card>
     </div>
-  <button type="submit" style="display:none;" #submit></button>
-</form>
+</div>

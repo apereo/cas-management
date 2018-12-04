@@ -1,5 +1,5 @@
 <div>
-  <mat-radio-group [(ngModel)]="type" (change)="changeType()">
+  <mat-radio-group [formControl]="typeControl">
 
     <mat-radio-button [value]="TYPE.DEFAULT">
       <ng-container i18n>Default</ng-container>
@@ -12,12 +12,12 @@
   </mat-radio-group>
 </div>
 
-<ng-container *ngIf="type == TYPE.CACHING">
+<ng-container *ngIf="typeControl.value == TYPE.CACHING">
   <lib-input>
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Time Unit</mat-placeholder>
       <mat-select required [formControl]="timeUnit">
-        <mat-option *ngFor="let opt of formData.timeUnits" [value]="opt">
+        <mat-option *ngFor="let opt of formData.options.timeUnits" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>
@@ -43,7 +43,7 @@
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Merging Strategy</mat-placeholder>
       <mat-select required [formControl]="mergingStrategy">
-        <mat-option *ngFor="let opt of formData.mergingStrategies" [value]="opt">
+        <mat-option *ngFor="let opt of formData.options.mergingStrategies" [value]="opt">
           {{ opt }}
         </mat-option>
       </mat-select>

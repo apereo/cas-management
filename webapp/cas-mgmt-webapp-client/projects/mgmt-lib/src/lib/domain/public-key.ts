@@ -2,6 +2,12 @@ export abstract class RegisteredServicePublicKey {
   location: String;
   algorithm: String;
   publicKeyFactoryBeanClass: any;
+
+  constructor(key?: RegisteredServicePublicKey){
+    this.location = (key && key.location) || null;
+    this.algorithm = (key && key.algorithm) || 'RSA';
+    this.publicKeyFactoryBeanClass (key && key.publicKeyFactoryBeanClass) || null;
+  }
 }
 
 export class RegisteredServicePublicKeyImpl extends RegisteredServicePublicKey {
@@ -11,9 +17,8 @@ export class RegisteredServicePublicKeyImpl extends RegisteredServicePublicKey {
     return obj && obj['@class'] === RegisteredServicePublicKeyImpl.cName;
   }
 
-  constructor() {
-    super();
-    this.algorithm = 'RSA';
+  constructor(key?: RegisteredServicePublicKey) {
+    super(key);
     this['@class'] = RegisteredServicePublicKeyImpl.cName;
   }
 }

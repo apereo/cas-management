@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>OIDC Client ID</mat-placeholder>
-    <input matInput required [formControl]="clientId">
+    <input required matInput [formControl]="clientId">
     <mat-hint align="end"><lib-hint [difference]="clientId.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
@@ -51,16 +51,6 @@
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="jsonFormat">
-    <ng-container i18n>JSON format for access tokens</ng-container>
-    <mat-icon appHelp i18n-matTooltip
-              matTooltip="Indicates whether the access token response should be in JSON format or in plain text.">
-    </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="jsonFormat.difference()"></lib-hint></mat-hint>
-  </mat-checkbox>
-</lib-input>
-
-<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>JSON Web Keystore</mat-placeholder>
     <input matInput required [formControl]="jwks">
@@ -71,7 +61,7 @@
   </mat-icon>
 </lib-input>
 
-<ng-container *ngIf="service.scopes.indexOf('user_defined') > -1">
+<ng-container *ngIf="user_defined">
   <lib-input>
     <mat-form-field class="textInput">
       <mat-placeholder i18n>User Defined Scopes</mat-placeholder>
@@ -125,7 +115,7 @@
             matTooltip="Encryption algorithm to use with ID tokens.">
   </mat-icon>
   <mat-autocomplete #encryptAlgAuto="matAutocomplete">
-    <mat-option *ngFor="let opt of data.formData.encryptAlgOptions" [value]="opt">{{ opt }}</mat-option>
+    <mat-option *ngFor="let opt of formData.options.encryptAlgOptions" [value]="opt">{{ opt }}</mat-option>
   </mat-autocomplete>
 </lib-input>
 
@@ -140,7 +130,7 @@
             matTooltip="Encryption content encoding algorithm to use with ID tokens.">
   </mat-icon>
   <mat-autocomplete #encodingAlgAuto="matAutocomplete">
-    <mat-option *ngFor="let opt of data.formData.encodingAlgOptions" [value]="opt">{{ opt }}</mat-option>
+    <mat-option *ngFor="let opt of formData.options.encodingAlgOptions" [value]="opt">{{ opt }}</mat-option>
   </mat-autocomplete>
 </lib-input>
 
@@ -148,7 +138,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Subject Type</mat-placeholder>
     <mat-select [formControl]="subjectType">
-      <mat-option *ngFor="let opt of data.formData.oidcSubjectTypes" [value]="opt">{{ opt }}</mat-option>
+      <mat-option *ngFor="let opt of formData.options.oidcSubjectTypes" [value]="opt">{{ opt }}</mat-option>
     </mat-select>
     <mat-hint align="end"><lib-hint [difference]="subjectType.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -157,7 +147,7 @@
   </mat-icon>
 </lib-input>
 
-<ng-container *ngIf="service.subjectType === 'PAIRWISE'">
+<ng-container *ngIf="subjectType.value === 'PAIRWISE'">
   <lib-input>
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Sector Identifier URI</mat-placeholder>
@@ -171,7 +161,7 @@
   </lib-input>
 </ng-container>
 
-<ng-container *ngIf="service.dynamicallyRegistered">
+<ng-container *ngIf="dynamicallyRegistered">
   <lib-input>
     <mat-form-field class="textInput">
       <mat-placeholder i18n>Dynamically Registered At</mat-placeholder>

@@ -1,43 +1,26 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {TimeBasedRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {HasControls} from '../../has-controls';
-import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'lib-time',
   templateUrl: './time.component.html',
-  styleUrls: ['./time.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => TimeComponent)
-  }]
+  styleUrls: ['./time.component.css']
 })
-export class TimeComponent extends HasControls implements OnInit {
+export class TimeComponent implements OnInit {
 
-  accessStrategy: TimeBasedRegisteredServiceAccessStrategy;
-  original: TimeBasedRegisteredServiceAccessStrategy;
-  startTime: MgmtFormControl;
-  endTime: MgmtFormControl;
+  @Input()
+  control: FormGroup;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.accessStrategy = data.service.accessStrategy as TimeBasedRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as TimeBasedRegisteredServiceAccessStrategy;
-  }
+  startingDatetime: MgmtFormControl;
+  endingDatetime: MgmtFormControl;
 
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('startingDateTime', this.startTime);
-    c.set('endingDateTime', this.endTime);
-    return c;
+  constructor() {
   }
 
   ngOnInit() {
-    const og: any = this.original ? this.original : {};
-    this.startTime = new MgmtFormControl(this.accessStrategy.startingDateTime, og.startingDateTime);
-    this.endTime = new MgmtFormControl(this.accessStrategy.endingDateTime, og.endingDateTime);
+    this.startingDatetime = this.control.get('startingDatetime') as MgmtFormControl;
+    this.endingDatetime = this.control.get('endingDatetime') as MgmtFormControl;
   }
 
 }

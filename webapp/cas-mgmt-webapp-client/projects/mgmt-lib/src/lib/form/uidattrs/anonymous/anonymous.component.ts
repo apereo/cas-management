@@ -1,47 +1,26 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {AnonymousRegisteredServiceUsernameProvider} from '../../../domain/attribute-provider';
-import {FormData} from '../../../domain/form-data';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {HasControls} from '../../has-controls';
-import {FormControl} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-anonymous',
   templateUrl: './anonymous.component.html',
-  styleUrls: ['./anonymous.component.css'],
-  providers: [{
-    provide: HasControls,
-    useExisting: forwardRef(() => AnonymousComponent)
-  }]
+  styleUrls: ['./anonymous.component.css']
 })
-export class AnonymousComponent extends HasControls implements OnInit {
+export class AnonymousComponent implements OnInit {
 
-  provider: AnonymousRegisteredServiceUsernameProvider;
-  original: AnonymousRegisteredServiceUsernameProvider;
-  formData: FormData;
+  @Input()
+  control: FormGroup;
   salt: MgmtFormControl;
   attribute: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.provider = data.service.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
-    this.formData = data.formData;
-    this.original = data.original && data.original.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
-  }
-
-  getControls(): Map<string, FormControl> {
-    let c: Map<string, FormControl> = new Map();
-    c.set('salt', this.salt);
-    c.set('attribute', this.attribute);
-    return c;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const og: any = this.original && this.original.persistentIdGenerator ? this.original.persistentIdGenerator : {};
-    const pr: any = this.provider && this.provider.persistentIdGenerator ? this.provider.persistentIdGenerator : {};
-    this.salt = new MgmtFormControl(pr.salt, og.salt)
-    this.attribute = new MgmtFormControl(pr.attribute, og.attribute);
+    this.salt = this.control.get('salt') as MgmtFormControl;
+    this.attribute = this.control.get('attribute') as MgmtFormControl;
   }
 
 }

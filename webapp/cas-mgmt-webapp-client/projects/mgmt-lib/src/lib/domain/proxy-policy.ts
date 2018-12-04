@@ -2,6 +2,11 @@ export abstract class RegisteredServiceProxyPolicy {
 
 }
 
+export enum ProxyType {
+  REFUSE,
+  REGEX
+}
+
 export class RegexMatchingRegisteredServiceProxyPolicy extends RegisteredServiceProxyPolicy {
   static cName =  'org.apereo.cas.services.RegexMatchingRegisteredServiceProxyPolicy';
 
@@ -11,8 +16,10 @@ export class RegexMatchingRegisteredServiceProxyPolicy extends RegisteredService
     return obj && obj['@class'] === RegexMatchingRegisteredServiceProxyPolicy.cName;
   }
 
-  constructor() {
+  constructor(policy: RegisteredServiceProxyPolicy) {
     super();
+    const p: RegexMatchingRegisteredServiceProxyPolicy = policy as RegexMatchingRegisteredServiceProxyPolicy;
+    this.pattern = (p && p.pattern) || null;
     this['@class'] = RegexMatchingRegisteredServiceProxyPolicy.cName;
   }
 }

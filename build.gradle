@@ -1,8 +1,11 @@
+import java.util.concurrent.ConcurrentHashMap
+
 description = "Apereo CAS Management Application $version"
 
 defaultTasks "clean", "build"
 
 ext {
+    srcTagMap = new ConcurrentHashMap<File, Set<String>>()
     publishSnapshots = Boolean.getBoolean("publishSnapshots")
     publishReleases = Boolean.getBoolean("publishReleases")
     sonatypeUsername = System.getProperty("sonatypeUsername")
@@ -12,6 +15,8 @@ ext {
     skipErrorProneCompiler = System.getProperty("skipErrorProneCompiler")
     forceBom = Boolean.getBoolean("forceBom")
     enableRemoteDebugging = Boolean.getBoolean("enableRemoteDebugging")
+    remoteDebuggingSuspend = Boolean.getBoolean("remoteDebuggingSuspend") ? "y" : "n"
+
     continuousIntegrationBuild = Boolean.getBoolean("CI") || Boolean.getBoolean("TRAVIS") || Boolean.getBoolean("CONTINUOUS_INTEGRATION")
 
     publishingRelease = publishReleases && rootProject.sonatypeUsername != null && rootProject.sonatypePassword != null
@@ -233,11 +238,10 @@ subprojects {
                 }
             }
         }
-        exclude(group: "ch.qos.logback", module: "logback-core")
-        exclude(group: "ch.qos.logback", module: "logback-classic")
         exclude(group: "cglib", module: "cglib")
         exclude(group: "cglib", module: "cglib-full")
         exclude(group: "org.slf4j", module: "slf4j-log4j12")
+        exclude(group: "org.slf4j", module: "slf4j-simple")
         exclude(group: "org.apache.logging.log4j", module: "log4j-to-slf4j")
     }
 
@@ -288,6 +292,7 @@ subprojects {
             it.options.errorprone.errorproneArgs += ['-Xep:ParameterName:OFF', '-Xep:MissingOverride:OFF']
 
             casCompilerArgs.add("-XDcompilePolicy=byfile")
+            casCompilerArgs.add("-Werror")
         }
         it.options.compilerArgs += casCompilerArgs
     }

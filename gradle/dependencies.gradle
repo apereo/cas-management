@@ -192,15 +192,22 @@ ext.libraries = [
                     exclude(module: "commons-io")
                     force = true
                 },
+                dependencies.create("com.unboundid:unboundid-ldapsdk:$unboundidVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "commons-cli", module: "commons-cli")
+                    force = true
+                },
                 dependencies.create("org.mockito:mockito-core:$mockitoVersion") {
                     exclude(group: "org.hamcrest", module: "hamcrest-core")
                     exclude(group: "org.objenesis", module: "objenesis")
-                    exclude(group: "net.bytebuddy", module: "byte-buddy")
                     exclude(group: "junit", module: "junit")
                     force = true
                 },
                 dependencies.create("org.objenesis:objenesis:$objenesisVersion") {
                     exclude(group: "org.mockito", module: "mockito-all")
+                    force = true
+                },
+                dependencies.create("junit:junit:4.12") {
                     force = true
                 },
                 dependencies.create("org.junit.jupiter:junit-jupiter-api:$junitVersion") {

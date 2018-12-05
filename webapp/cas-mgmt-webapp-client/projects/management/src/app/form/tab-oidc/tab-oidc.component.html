@@ -1,10 +1,5 @@
 <div [formGroup]="oidc.form">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>OIDC Client Options</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-oidcclient [control]="oidc.form"></lib-oidcclient>
-    </div>
-  </mat-card>
+  <app-card i18n-title title="OIDC Client Options" [collapse]="false">
+    <lib-oidcclient [control]="oidc.form"></lib-oidcclient>
+  </app-card>
 </div>

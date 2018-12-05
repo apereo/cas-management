@@ -1,10 +1,5 @@
 <div>
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Contacts</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-contacts [control]="contacts.form"></lib-contacts>
-    </div>
-  </mat-card>
+  <app-card i18n-title title="Contacts" [collapse]="false">
+    <lib-contacts [control]="contacts.form"></lib-contacts>
+  </app-card>
 </div>

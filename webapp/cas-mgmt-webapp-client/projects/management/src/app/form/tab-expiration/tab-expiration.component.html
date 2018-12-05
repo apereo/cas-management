@@ -1,10 +1,5 @@
 <div [formGroup]="expiration.form">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Expiration</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-expiration [control]="expiration.form"></lib-expiration>
-    </div>
-  </mat-card>
+  <app-card i18n-title title="Expiration" [collapse]="false">
+    <lib-expiration [control]="expiration.form"></lib-expiration>
+  </app-card>
 </div>

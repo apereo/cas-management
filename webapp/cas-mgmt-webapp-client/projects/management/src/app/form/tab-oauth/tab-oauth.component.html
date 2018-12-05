@@ -1,10 +1,5 @@
 <div [formGroup]="oauth.form">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>OAuth Client Options</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-oauthclient [control]="oauth.form"></lib-oauthclient>
-    </div>
-  </mat-card>
+  <app-card i18n-title title="OAuth Client Options" [collapse]="false">
+    <lib-oauthclient [control]="oauth.form"></lib-oauthclient>
+  </app-card>
 </div>

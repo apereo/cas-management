@@ -35,6 +35,7 @@ import {ThemeidComponent} from './form/themeid/themeid.component';
 import {UidattrsModule} from './form/uidattrs/uidattrs.module';
 import {WsfedclientComponent} from './form/wsfedclient/wsfedclient.component';
 import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
+import { EnvironmentsComponent } from './form/environments/environments.component';
 
 @NgModule({
   imports: [
@@ -76,7 +77,8 @@ import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
     SamlservicespaneComponent,
     ThemeidComponent,
     WsfedclientComponent,
-    PrivacyUrlComponent
+    PrivacyUrlComponent,
+    EnvironmentsComponent
   ],
   exports: [
     ServiceIdComponent,
@@ -111,7 +113,8 @@ import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
     ThemeidComponent,
     UidattrsModule,
     WsfedclientComponent,
-    PrivacyUrlComponent
+    PrivacyUrlComponent,
+    EnvironmentsComponent
   ]
 })
 export class MgmtLibModule { }

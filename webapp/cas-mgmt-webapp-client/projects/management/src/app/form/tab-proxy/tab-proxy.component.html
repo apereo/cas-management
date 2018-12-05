@@ -1,10 +1,5 @@
 <div [formGroup]="proxy.form">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Proxy Options</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-proxy [control]="proxy.form"></lib-proxy>
-    </div>
-  </mat-card>
+  <app-card i18n-title title="Proxy Options" [collapse]="false">
+    <lib-proxy [control]="proxy.form"></lib-proxy>
+  </app-card>
 </div>

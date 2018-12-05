@@ -1,10 +1,5 @@
 <div [formGroup]="uidAttrs.form">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Username Options</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-uidattrs [control]="uidAttrs.form"></lib-uidattrs>
-    </div>
-  </mat-card>
+  <app-card i18n-title title="Username Options" [collapse]="false">
+    <lib-uidattrs [control]="uidAttrs.form"></lib-uidattrs>
+  </app-card>
 </div>

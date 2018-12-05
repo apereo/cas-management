@@ -26,6 +26,7 @@ import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
 import {MgmtLibModule, SharedModule} from 'mgmt-lib';
 import {MgmtModule} from '../mgmt.module';
+import { MgmtCardComponent } from './mgmt-card/mgmt-card.component';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import {MgmtModule} from '../mgmt.module';
     TabWsfedComponent,
     TabContactsComponent,
     TabExpirationComponent,
+    MgmtCardComponent,
   ],
   providers: [
     FormResolve,

@@ -22,6 +22,8 @@ export class TabBasicsComponent implements OnInit, AfterViewInit {
 
   basics: BasicsForm;
 
+  showBasics = true;
+
   constructor(public data: DataRecord) {
   }
 

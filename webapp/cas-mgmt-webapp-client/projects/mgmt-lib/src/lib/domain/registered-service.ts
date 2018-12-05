@@ -30,7 +30,7 @@ export abstract class RegisteredService {
   proxyPolicy: RegisteredServiceProxyPolicy;
   evaluationOrder: number;
   usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider;
-  requiredHandlers: String[] = [];
+  requiredHandlers: String[];
   attributeReleasePolicy: RegisteredServiceAttributeReleasePolicy;
   multifactorPolicy: RegisteredServiceMultifactorPolicy;
   logo: String;
@@ -41,6 +41,7 @@ export abstract class RegisteredService {
   properties: Map<String, DefaultRegisteredServiceProperty>;
   contacts: RegisteredServiceContact[];
   expirationPolicy: RegisteredServiceExpirationPolicy;
+  environments: String[];
 
   constructor(service?: RegisteredService) {
     this.serviceId = (service && service.serviceId) || null;
@@ -65,6 +66,7 @@ export abstract class RegisteredService {
     this.properties = (service && service.properties) || null;
     this.contacts = (service && service.contacts) || null;
     this.expirationPolicy = (service && service.expirationPolicy) || new DefaultRegisteredServiceExpirationPolicy();
+    this.environments = (service && service.environments) || null;
   }
 }
 

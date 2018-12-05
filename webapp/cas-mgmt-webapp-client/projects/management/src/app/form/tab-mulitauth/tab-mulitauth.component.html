@@ -1,12 +1,5 @@
 <div [formGroup]="mfa.form">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Multifactor Policy</h5>
-    </mat-card-title>
-    <mat-card-content>
-      <div class="cardContent">
-        <lib-mfa [control]="mfa.form"></lib-mfa>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <app-card i18n-title title="Multifactor Policy" [collapse]="false">
+    <lib-mfa [control]="mfa.form"></lib-mfa>
+  </app-card>
 </div>

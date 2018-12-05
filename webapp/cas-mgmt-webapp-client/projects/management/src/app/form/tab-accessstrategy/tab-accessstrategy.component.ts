@@ -1,15 +1,15 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {DataRecord, FormDataService} from 'mgmt-lib'
+import {Component, OnInit} from '@angular/core';
 import {AccessStrategyForm} from './access-form';
-import {MatFormField} from '@angular/material';
 import {
   AccessStrategyType,
+  DataRecord,
+  FormDataService,
   GrouperRegisteredServiceAccessStrategy,
   RegisteredServiceAccessStrategy,
   RemoteEndpointServiceAccessStrategy,
   SurrogateRegisteredServiceAccessStrategy,
   TimeBasedRegisteredServiceAccessStrategy
-} from '../../../../../mgmt-lib/src/lib/domain/access-strategy';
+} from 'mgmt-lib';
 import {FormGroup} from '@angular/forms';
 
 @Component({
@@ -38,7 +38,6 @@ export class TabAccessstrategyComponent implements OnInit {
     this.data.formMap.set('accessstrategy', this.accessStrategy);
   }
 
-
   changeType(type: AccessStrategyType) {
     this.accessStrategy.grouper.reset();
     this.accessStrategy.remote.reset();
@@ -62,7 +61,6 @@ export class TabAccessstrategyComponent implements OnInit {
     if (type === AccessStrategyType.GROOVY) {
       this.accessStrategy.get('groovy').setValue(null);
     }
-
   }
 
   setAccess(access: FormGroup, strat: RegisteredServiceAccessStrategy) {

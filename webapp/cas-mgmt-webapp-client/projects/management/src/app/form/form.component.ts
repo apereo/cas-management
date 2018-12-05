@@ -9,12 +9,10 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 
 import {
   AbstractRegisteredService,
-  AnonymousRegisteredServiceUsernameProvider, CachingPrincipalAttributesRepository, DataRecord,
-  GrouperRegisteredServiceAccessStrategy,
+  DataRecord,
   OAuthRegisteredService,
   OidcRegisteredService,
-  PrincipalAttributeRegisteredServiceUsernameProvider, RegexMatchingRegisteredServiceProxyPolicy,
-  RegexRegisteredService, RegisteredServiceRegexAttributeFilter,
+  RegexRegisteredService,
   SamlRegisteredService,
   UserService,
   WSFederationRegisterdService

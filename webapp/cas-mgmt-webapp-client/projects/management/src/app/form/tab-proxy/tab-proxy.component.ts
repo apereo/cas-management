@@ -17,6 +17,7 @@ export class TabProxyComponent {
     }
     this.proxy = new ProxyForm(this.data);
     this.proxy.get('type').valueChanges.subscribe(val => {
+      this.proxy.get('regex').markAsPristine();
       if (val === ProxyType.REFUSE) {
         this.proxy.get('regex').setValue(null);
       }

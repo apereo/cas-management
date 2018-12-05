@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {
   DataRecord,
   GroovyRegisteredServiceAccessStrategy,
@@ -7,8 +7,7 @@ import {
   OidcRegisteredService,
   SamlRegisteredService,
   WSFederationRegisterdService,
-  RegexRegisteredService,
-  MgmtFormGroup
+  RegexRegisteredService
 } from 'mgmt-lib';
 import {BasicsForm} from './basics-form';
 
@@ -16,13 +15,11 @@ import {BasicsForm} from './basics-form';
   selector: 'app-tab-basics',
   templateUrl: './tab-basics.component.html'
 })
-export class TabBasicsComponent implements OnInit, AfterViewInit {
+export class TabBasicsComponent implements OnInit {
 
   groovyAccessStrategy: boolean;
 
   basics: BasicsForm;
-
-  showBasics = true;
 
   constructor(public data: DataRecord) {
   }
@@ -34,7 +31,6 @@ export class TabBasicsComponent implements OnInit, AfterViewInit {
       return;
     }
     this.basics = new BasicsForm(this.data);
-    //this.data.serviceForm.addControl('basics', this.basics.form);
     this.basics.form.get('serviceType').valueChanges.subscribe(val => {
       if (val === OAuthRegisteredService.cName) {
         this.data.service = new OAuthRegisteredService(this.data.service);
@@ -48,11 +44,7 @@ export class TabBasicsComponent implements OnInit, AfterViewInit {
         this.data.service = new RegexRegisteredService(this.data.service);
       }
     });
-    console.log("setting basics");
     this.data.formMap.set('basics', this.basics);
-  }
-
-  ngAfterViewInit() {
   }
 
   validateDomain = function(user: UserProfile) {

@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {MgmtFormControl, DataRecord, RegisteredServicePublicKey} from 'mgmt-lib';
-import {FormGroup} from '@angular/forms';
+import {Component, OnInit} from'@angular/core';
+import {DataRecord} from 'mgmt-lib';
 import {AdvancedForm} from './advanced-form';
 
 @Component({

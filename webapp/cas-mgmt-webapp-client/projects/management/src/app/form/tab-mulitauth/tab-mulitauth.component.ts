@@ -1,6 +1,12 @@
 import {Component} from '@angular/core';
-import {DataRecord} from 'mgmt-lib';
 import {MultiauthForm} from './multiauth-form';
+import {
+  DataRecord,
+  DefaultRegisteredServiceMultifactorPolicy,
+  GroovyRegisteredServiceMultifactorPolicy,
+  MfaPolicyType
+} from 'mgmt-lib';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-tab-mulitauth',
@@ -16,18 +22,18 @@ export class TabMulitauthComponent {
       return;
     }
     this.mfa = new MultiauthForm(this.data);
-    /*
     this.mfa.get('type').valueChanges.subscribe(val => {
+      this.mfa.get('defaultMfa').markAsPristine();
+      this.mfa.get('groovy').markAsPristine();
       if (val === MfaPolicyType.DEFAULT) {
         this.setMfaControl(new DefaultRegisteredServiceMultifactorPolicy(), this.mfa.get('defaultMfa') as FormGroup);
       } else {
         this.mfa.get('groovy').setValue(null);
       }
     });
-    */
     this.data.formMap.set('mfa', this.mfa);
   }
-/*
+
   setMfaControl(policy: DefaultRegisteredServiceMultifactorPolicy, mfaControl: FormGroup) {
     mfaControl.get('multifactorAuthenticationProviders').setValue(policy.multifactorAuthenticationProviders);
     mfaControl.get('failureMode').setValue(policy.failureMode);
@@ -39,5 +45,4 @@ export class TabMulitauthComponent {
   groovyControl(policy: GroovyRegisteredServiceMultifactorPolicy, control: FormControl) {
     control.setValue(policy.groovyScript);
   }
-  */
 }

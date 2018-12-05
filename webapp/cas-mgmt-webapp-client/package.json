@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "build-lib": "ng build mgmt-lib",
     "start": "ng serve",
-    "buildBase": "ng build --base-href",
-    "build": "ng build",
+    "build-management": "ng build --base-href=/cas-management/ --project management",
+    "build-management-prod": "ng build --base-href=/cas-management/ --prod --project management",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

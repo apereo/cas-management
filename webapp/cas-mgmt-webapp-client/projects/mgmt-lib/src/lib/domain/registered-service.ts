@@ -15,6 +15,8 @@ import {RegisteredServicePublicKey} from './public-key';
 import {DefaultRegisteredServiceProperty} from './property';
 import {RegisteredServiceContact} from './contact';
 import {DefaultRegisteredServiceExpirationPolicy, RegisteredServiceExpirationPolicy} from './expiration';
+import {Form, FormGroup, Validators} from '@angular/forms';
+import {MgmtFormControl} from '../form/mgmt-formcontrol';
 
 export abstract class RegisteredService {
   serviceId: String;
@@ -28,7 +30,7 @@ export abstract class RegisteredService {
   proxyPolicy: RegisteredServiceProxyPolicy;
   evaluationOrder: number;
   usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider;
-  requiredHandlers: String[] = [];
+  requiredHandlers: String[];
   attributeReleasePolicy: RegisteredServiceAttributeReleasePolicy;
   multifactorPolicy: RegisteredServiceMultifactorPolicy;
   logo: String;
@@ -39,30 +41,32 @@ export abstract class RegisteredService {
   properties: Map<String, DefaultRegisteredServiceProperty>;
   contacts: RegisteredServiceContact[];
   expirationPolicy: RegisteredServiceExpirationPolicy;
+  environments: String[];
 
   constructor(service?: RegisteredService) {
-    this.serviceId = service && service.serviceId;
-    this.name = service && service.name;
-    this.theme = service && service.theme;
-    this.informationUrl = service && service.informationUrl;
-    this.privacyUrl = service && service.privacyUrl;
-    this.responseType = service && service.responseType;
+    this.serviceId = (service && service.serviceId) || null;
+    this.name = (service && service.name) || null;
+    this.theme = (service && service.theme) || null;
+    this.informationUrl = (service && service.informationUrl) || null;
+    this.privacyUrl = (service && service.privacyUrl) || null;
+    this.responseType = (service && service.responseType) || null;
     this.id = (service && service.id) || -1;
-    this.description = service && service.description;
+    this.description = (service && service.description) || null;
     this.proxyPolicy = (service && service.proxyPolicy) || new RefuseRegisteredServiceProxyPolicy();
     this.evaluationOrder = (service && service.evaluationOrder) || -1;
     this.usernameAttributeProvider = (service && service.usernameAttributeProvider) || new DefaultRegisteredServiceUsernameProvider();
-    this.requiredHandlers = service && service.requiredHandlers;
+    this.requiredHandlers = (service && service.requiredHandlers) || null;
     this.attributeReleasePolicy = (service && service.attributeReleasePolicy) || new DenyAllAttributeReleasePolicy();
     this.multifactorPolicy = (service && service.multifactorPolicy) || new DefaultRegisteredServiceMultifactorPolicy();
-    this.logo = service && service.logo;
-    this.logoutUrl = service && service.logoutUrl;
+    this.logo = (service && service.logo) || null;
+    this.logoutUrl = (service && service.logoutUrl) || null;
     this.logoutType = (service && service.logoutType) || 'BACK_CHANNEL';
     this.accessStrategy = (service && service.accessStrategy) || new DefaultRegisteredServiceAccessStrategy();
-    this.publicKey = service && service.publicKey;
-    this.properties = service && service.properties;
-    this.contacts = service && service.contacts;
+    this.publicKey = (service && service.publicKey) || null;
+    this.properties = (service && service.properties) || null;
+    this.contacts = (service && service.contacts) || null;
     this.expirationPolicy = (service && service.expirationPolicy) || new DefaultRegisteredServiceExpirationPolicy();
+    this.environments = (service && service.environments) || null;
   }
 }
 
@@ -84,3 +88,4 @@ export class RegexRegisteredService extends AbstractRegisteredService {
     this['@class'] = RegexRegisteredService.cName;
   }
 }
+

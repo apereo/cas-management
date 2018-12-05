@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormService} from './form.service';
 import {MatSnackBar, MatTabGroup} from '@angular/material';
@@ -9,17 +9,17 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 
 import {
   AbstractRegisteredService,
-  AnonymousRegisteredServiceUsernameProvider, CachingPrincipalAttributesRepository, DataRecord,
-  GrouperRegisteredServiceAccessStrategy,
+  DataRecord,
   OAuthRegisteredService,
   OidcRegisteredService,
-  PrincipalAttributeRegisteredServiceUsernameProvider, RegexMatchingRegisteredServiceProxyPolicy,
-  RegexRegisteredService, RegisteredServiceRegexAttributeFilter,
+  RegexRegisteredService,
   SamlRegisteredService,
   UserService,
   WSFederationRegisterdService
 } from 'mgmt-lib';
 import {ImportService} from '../import/import.service';
+import {MgmtFormGroup} from 'mgmt-lib';
+import {FormArray, FormGroup} from '@angular/forms';
 
 enum Tabs {
   BASICS,
@@ -99,32 +99,35 @@ export class FormComponent implements OnInit {
   }
 
   save() {
-    this.saveForm();
-    this.data.save.emit();
-    this.data.submitted = true;
+    if (this.validate() && this.mapForm()) {
+      this.service.saveService(this.data.service)
+        .subscribe(
+          resp => this.handleSave(resp),
+          () => this.handleNotSaved()
+        );
+    }
   }
 
   loadService(service: AbstractRegisteredService) {
     this.data.service = service;
     this.data.submitted = false;
-
-    this.service.formData().subscribe(resp => this.data.formData = resp);
+    this.data.formMap = new Map<String, MgmtFormGroup>();
   }
 
   isOidc(): boolean {
-    return OidcRegisteredService.instanceOf(this.data.service)
+    return OidcRegisteredService.instanceOf(this.data.service);
   }
 
   isSaml(): boolean {
-    return SamlRegisteredService.instanceOf(this.data.service)
+    return SamlRegisteredService.instanceOf(this.data.service);
   }
 
   isWsFed(): boolean {
-    return WSFederationRegisterdService.instanceOf(this.data.service)
+    return WSFederationRegisterdService.instanceOf(this.data.service);
   }
 
   isOauth() {
-    return OAuthRegisteredService.instanceOf(this.data.service)
+    return OAuthRegisteredService.instanceOf(this.data.service);
   }
 
   isCas() {
@@ -195,33 +198,6 @@ export class FormComponent implements OnInit {
     return newValue;
   };
 
-  saveForm() {
-    let formErrors = -1;
-    this.clearErrors();
-    formErrors = this.validateForm();
-    if (formErrors > -1) {
-      this.snackBar
-        .open('Form validation has failed. Please fix the errors before attempting to save again.',
-          'Dismiss',
-          {duration: 5000}
-        );
-      this.goto(-1);
-      setTimeout(() => {
-        this.goto(( formErrors > 0 && this.isCas() ) ? formErrors - 1 : formErrors ) }, 10);
-    } else {
-      this.service.saveService(this.data.service)
-        .subscribe(
-          resp => this.handleSave(resp),
-          () => this.handleNotSaved()
-        );
-    }
-  };
-
-  clearErrors() {
-    this.data.invalidDomain = false;
-    this.data.invalidRegEx = false;
-  }
-
   handleSave(id: number) {
     const hasIdAssignedAlready = this.data.service.id && this.data.service.id > 0;
 
@@ -287,134 +263,95 @@ export class FormComponent implements OnInit {
         return domain[1];
       }
     }
-    return 'default'
+    return 'default';
   }
 
-  validateForm(): Tabs {
-    const data = this.data.service;
+  validate(): boolean {
+    for (let key of Array.from(this.data.formMap.keys())) {
+      const frm: MgmtFormGroup = this.data.formMap.get(key) as MgmtFormGroup;
+      if (frm.form.status === 'INVALID') {
+        console.log("errors = " +frm.form.errors);
+        this.touch(frm.form);
+        this.nav(key);
+        return false;
+      }
+    }
+    return true;
+  }
 
-    this.data.service.serviceId = this.checkForSpaces(data.serviceId);
-
-    // Service Basics
-    if (!data.serviceId ||
-        !this.validateRegex(data.serviceId) ||
-        !data.name) {
-        this.data.invalidRegEx = true;
-      return Tabs.BASICS;
-    }
-
-    if (!this.userService.user.administrator &&
-        !this.validateDomain(data.serviceId as string)) {
-        this.data.invalidDomain = true;
-      return Tabs.BASICS;
-    }
-
-    if (this.isOauth()) {
-      const oauth: OAuthRegisteredService = data as OAuthRegisteredService;
-      if (!oauth.clientId ||
-          !oauth.clientSecret) {
-        return Tabs.TYPE;
-      }
-    }
-
-    if (this.isOidc()) {
-      const oidc: OidcRegisteredService = data as OidcRegisteredService;
-      if (!oidc.clientId ||
-          !oidc.clientSecret ||
-          !oidc.jwks ||
-          !oidc.idTokenEncryptionAlg ||
-          !oidc.idTokenEncryptionEncoding) {
-        return Tabs.TYPE;
-      }
-    }
-
-    if (this.isSaml()) {
-      const saml: SamlRegisteredService = data as SamlRegisteredService;
-      if (!saml.metadataLocation) {
-        return Tabs.TYPE;
-      }
-    }
-
-    if (this.isWsFed()) {
-      const wsfed: WSFederationRegisterdService = data as WSFederationRegisterdService;
-      if (!wsfed.appliesTo) {
-        return Tabs.TYPE;
-      }
-    }
-
-    if (GrouperRegisteredServiceAccessStrategy.instanceOf(data.accessStrategy)) {
-      const grouper: GrouperRegisteredServiceAccessStrategy = data.accessStrategy as GrouperRegisteredServiceAccessStrategy;
-      if (!grouper.groupField) {
-        return Tabs.ACCESS_STRATEGY;
-      }
-    }
-
-    // Username Attribute Provider Options
-    if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(data.usernameAttributeProvider)) {
-      const attrProvider: PrincipalAttributeRegisteredServiceUsernameProvider =
-                          data.usernameAttributeProvider as PrincipalAttributeRegisteredServiceUsernameProvider;
-      if (!attrProvider.usernameAttribute) {
-        return Tabs.USERNAME_ATTRIBUTE;
-      }
-      if (attrProvider.encryptUserName && (!data.publicKey || !data.publicKey.location)) {
-        return Tabs.ADVANCED;
-      }
-    }
-    if (AnonymousRegisteredServiceUsernameProvider.instanceOf(data.usernameAttributeProvider)) {
-      const anonProvider: AnonymousRegisteredServiceUsernameProvider =
-                          data.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
-      if (!anonProvider.persistentIdGenerator) {
-        return Tabs.USERNAME_ATTRIBUTE;
-      }
-    }
-
-    // Proxy Policy Options
-    if (RegexMatchingRegisteredServiceProxyPolicy.instanceOf(data.proxyPolicy)) {
-      const regPolicy: RegexMatchingRegisteredServiceProxyPolicy = data.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
-      if (!regPolicy.pattern || !this.validateRegex(regPolicy.pattern)) {
-        return Tabs.PROXY;
-      }
-    }
-
-    // Principle Attribute Repository Options
-    if (CachingPrincipalAttributesRepository.instanceOf(data.attributeReleasePolicy.principalAttributesRepository)) {
-      const cache: CachingPrincipalAttributesRepository =
-                   data.attributeReleasePolicy.principalAttributesRepository as CachingPrincipalAttributesRepository;
-      if (!cache.timeUnit) {
-        return Tabs.ATTRIBUTE_RELEASE;
-      }
-      if (!cache.mergingStrategy) {
-        return Tabs.ATTRIBUTE_RELEASE;
-      }
-    }
-    if (data.attributeReleasePolicy.attributeFilter != null) {
-      const filter = data.attributeReleasePolicy.attributeFilter as RegisteredServiceRegexAttributeFilter;
-      if (!this.validateRegex(filter.pattern)) {
-        return Tabs.ATTRIBUTE_RELEASE;
-      }
-    }
-    if (data.attributeReleasePolicy.authorizedToReleaseProxyGrantingTicket ||
-        data.attributeReleasePolicy.authorizedToReleaseCredentialPassword) {
-      if (!data.publicKey || !data.publicKey.location) {
-        return Tabs.ADVANCED;
-      }
-    }
-
-    if (data.contacts) {
-      if (data.contacts.length === 0 && !this.userService.user.administrator) {
-        return Tabs.CONTACTS;
-      }
-      for (const contact of data.contacts) {
-        if (!contact.name || !contact.email) {
-          return Tabs.CONTACTS;
+  touch(group: FormGroup | FormArray) {
+    Object.keys(group.controls).forEach(k => {
+      const control = group.get(k);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.touch(control);
+      } else {
+        if (control.invalid) {
+          console.log("touched : " + k);
+          control.markAsTouched();
         }
       }
+    });
+  }
+
+  mapForm(): boolean {
+    let touched: boolean = false;
+    for (let key of Array.from(this.data.formMap.keys())) {
+      const form = this.data.formMap.get(key) as MgmtFormGroup;
+      if (form.form.status === 'VALID' && form.form.touched) {
+        form.mapForm(this.data.service);
+        touched = true;
+      }
     }
+    return touched;
+  }
 
-    return -1;
-  };
+  nav(tab: String) {
+      switch (tab) {
+        case 'basics' :
+          this.tabGroup.selectedIndex = 0;
+          break;
+        case 'saml' :
+        case 'oauth':
+        case 'oidc' :
+        case 'wsfed':
+          this.tabGroup.selectedIndex = 1;
+          break;
+        case 'contacts' :
+          this.tabGroup.selectedIndex = this.isCas() ? 1 : 2;
+          break;
+        case 'logout' :
+          this.tabGroup.selectedIndex = this.isCas() ? 2 : 3;
+          break;
+        case 'accessstrategy' :
+          this.tabGroup.selectedIndex = this.isCas() ? 3 : 4;
+          break;
+        case 'expiration' :
+          this.tabGroup.selectedIndex = this.isCas() ? 4 : 5;
+          break;
+        case 'multiauth' :
+          this.tabGroup.selectedIndex = this.isCas() ? 5 : 6;
+          break;
+        case 'proxy' :
+          this.tabGroup.selectedIndex = this.isCas() ? 6 : 7;
+          break;
+        case 'userattr' :
+          this.tabGroup.selectedIndex = this.isCas() ? 7 : 8;
+          break;
+        case 'attrRelease' :
+          this.tabGroup.selectedIndex = this.isCas() ? 8 : 9;
+          break;
+        case 'properties' :
+          this.tabGroup.selectedIndex = this.isCas() ? 9 : 10;
+          break;
+        case 'advanced' :
+          this.tabGroup.selectedIndex = this.isCas() ? 10 : 11;
+          break;
+      }
+  }
 
-  checkForSpaces(val) {
-    return val ? val.trim() : null;
+  reset() {
+    for(let fg of Array.from(this.data.formMap.values())) {
+      (<MgmtFormGroup>fg).form.reset(fg.formMap());
+    }
   }
 }

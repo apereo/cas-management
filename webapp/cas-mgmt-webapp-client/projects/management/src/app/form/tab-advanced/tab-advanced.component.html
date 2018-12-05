@@ -1,21 +1,11 @@
-<form #advancedForm="ngForm">
-    <mat-card class="tabCard">
-      <mat-card-title>
-        <h5 i18n>Advanced</h5>
-      </mat-card-title>
-      <div class="cardContent">
-        <lib-evalorder></lib-evalorder>
-        <lib-reqhandlers></lib-reqhandlers>
-        <lib-responsetype></lib-responsetype>
-      </div>
-    </mat-card>
-    <mat-card class="tabCard">
-      <mat-card-title>
-          <h5 i18n>Public Key Options</h5>
-      </mat-card-title>
-      <div class="cardContent">
-        <lib-pubkey></lib-pubkey>
-      </div>
-    </mat-card>
-    <button type="submit" style="display:none;" #submit></button>
-</form>
+<div [formGroup]="advanced.form">
+    <app-card i18n-title title="Advanced">
+      <lib-evalorder [control]="advanced.get('evalOrder')"></lib-evalorder>
+      <lib-reqhandlers [control]="advanced.get('required')"></lib-reqhandlers>
+      <lib-responsetype [control]="advanced.get('responseType')"></lib-responsetype>
+      <lib-environments [control]="advanced.get('environments')"></lib-environments>
+    </app-card>
+    <app-card i18n-title title="Public Key Options">
+      <lib-pubkey [control]="advanced.get('publicKey')"></lib-pubkey>
+    </app-card>
+</div>

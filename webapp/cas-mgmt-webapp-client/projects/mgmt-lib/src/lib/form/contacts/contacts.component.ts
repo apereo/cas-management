@@ -1,61 +1,52 @@
-import {Component, OnInit} from '@angular/core';
-import {DefaultRegisteredServiceContact} from '../../domain/contact';
-import {ControlContainer, NgForm} from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {DefaultRegisteredServiceContact, RegisteredServiceContact} from '../../domain/contact';
+import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../user.service';
-import {DataRecord} from '../data';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css'],
-  viewProviders: [{
-    provide: ControlContainer,
-    useExisting: NgForm
-  }]
+  styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
 
   selectedTab: number;
 
-  foundContacts: DefaultRegisteredServiceContact[];
+  constructor(private userService: UserService) {
+  }
 
-  constructor(private userService: UserService,
-              public data: DataRecord) { }
+  @Input()
+  control: FormGroup;
+  contactsArray: FormArray;
 
   ngOnInit() {
-    if (!this.userService.user.administrator
-        && (!this.data.service.contacts || this.data.service.contacts.length === 0)) {
-      const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
-      contact.id = 0;
-      contact.name = this.userService.user.firstName + ' ' + this.userService.user.familyName;
-      contact.email = this.userService.user.email;
-      contact.phone = this.userService.user.phone;
-      contact.department = this.userService.user.department;
-      this.data.service.contacts = [];
-      this.data.service.contacts.push(contact);
-    }
+    this.contactsArray = this.control.get('contacts') as FormArray;
     this.selectedTab = 0;
   }
 
   addContact() {
-    if (!this.data.service.contacts) {
-      this.data.service.contacts = [];
-    }
-    this.data.service.contacts.push(new DefaultRegisteredServiceContact());
-    this.selectedTab = this.data.service.contacts.length - 1;
-    setTimeout(() => {
-        // this.form.resetForm();
-    }, 100);
+    this.contactsArray.push(this.createContactGroup(new DefaultRegisteredServiceContact()));
+    this.selectedTab = this.contactsArray.length - 1;
   }
 
   deleteContact() {
     if (this.selectedTab > -1) {
-      this.data.service.contacts.splice(this.selectedTab, 1);
+      this.contactsArray.removeAt(this.selectedTab);
     }
   }
 
-  getTabHeader(contact: DefaultRegisteredServiceContact) {
-    return contact.name ? contact.name : this.data.service.contacts.indexOf(contact) + 1;
+  getTabHeader(index: number) {
+    return index + 1;
+  }
+
+  createContactGroup(contact: RegisteredServiceContact): FormGroup {
+    return new FormGroup({
+      name: new MgmtFormControl(contact.name, '', Validators.required),
+      email: new MgmtFormControl(contact.email, '', Validators.required),
+      phone: new MgmtFormControl(contact.phone),
+      department: new MgmtFormControl(contact.department)
+    })
   }
 
 }

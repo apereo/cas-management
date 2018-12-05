@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {SamlRegisteredService} from '../../domain/saml-service';
-import {Util} from '../../util';
-import {Row, RowDataSource} from '../row';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormArray, FormGroup} from '@angular/forms';
+import {FormDataService} from '../../form-data.service';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-samlservicespane',
@@ -11,43 +10,28 @@ import {DataRecord} from '../data';
 })
 export class SamlservicespaneComponent implements OnInit {
 
-  displayedColumns = ['source', 'mapped', 'delete'];
-  dataSource: RowDataSource;
+  @Input()
+  control: FormGroup;
+  selectedRow: number;
+  nameArray: FormArray;
 
-  type: String;
-
-  service: SamlRegisteredService;
-  original: SamlRegisteredService;
-
-  constructor(public data: DataRecord) {
-    this.service = data.service as SamlRegisteredService;
-    this.original = data.original && data.original as SamlRegisteredService;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const rows = [];
-    if (Util.isEmpty(this.service.attributeNameFormats)) {
-      this.service.attributeNameFormats = new Map();
-    }
-    for (const p of Array.from(Object.keys(this.service.attributeNameFormats))) {
-      rows.push(new Row(p));
-    }
-    this.dataSource = new RowDataSource(rows);
+    this.nameArray = this.control.get('nameIds') as FormArray;
   }
 
   addRow() {
-    this.dataSource.addRow();
+    this.nameArray.push(new FormGroup({
+      key: new MgmtFormControl(null),
+      value: new MgmtFormControl(null)
+    }));
   }
 
-  doChange(row: Row, val: string) {
-    this.service.attributeNameFormats[val] = this.service.attributeNameFormats[row.key as string];
-    delete this.service.attributeNameFormats[row.key as string];
-    row.key = val;
-  }
-
-  delete(row: Row) {
-    delete this.service.attributeNameFormats[row.key as string];
-    this.dataSource.removeRow(row);
+  delete(row: number) {
+    this.nameArray.removeAt(row);
+    this.control.markAsTouched();
   }
 }
 

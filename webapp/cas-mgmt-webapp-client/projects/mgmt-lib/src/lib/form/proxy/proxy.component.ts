@@ -1,14 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {
-  RefuseRegisteredServiceProxyPolicy,
-  RegexMatchingRegisteredServiceProxyPolicy
-} from '../../domain/proxy-policy';
-import {DataRecord} from '../data';
-
-enum Type {
-  REGEX,
-  REFUSE
-}
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
+import {ProxyType} from '../../domain/proxy-policy';
 
 @Component({
   selector: 'lib-proxy',
@@ -16,36 +9,19 @@ enum Type {
 })
 export class ProxyComponent implements OnInit {
 
-  type: Type;
-  TYPE = Type;
+  type: ProxyType;
+  TYPE = ProxyType;
 
-  policy: RegexMatchingRegisteredServiceProxyPolicy;
-  original: RegexMatchingRegisteredServiceProxyPolicy;
+  @Input()
+  control: FormGroup;
+  typeControl: MgmtFormControl;
+  regex: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
+  constructor() {
   }
 
   ngOnInit() {
-    if (RefuseRegisteredServiceProxyPolicy.instanceOf(this.data.service.proxyPolicy)) {
-      this.type = Type.REFUSE;
-    } else if (RegexMatchingRegisteredServiceProxyPolicy.instanceOf(this.data.service.proxyPolicy)) {
-      this.type = Type.REGEX;
-      this.policy = this.data.service.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
-      this.original = this.data.original && this.data.original.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
-    }
+    this.typeControl = this.control.get('type') as MgmtFormControl;
+    this.regex = this.control.get('regex') as MgmtFormControl;
   }
-
-  changeType() {
-    switch (+this.type) {
-      case Type.REFUSE :
-        this.data.service.proxyPolicy = new RefuseRegisteredServiceProxyPolicy();
-        break;
-      case Type.REGEX :
-        this.data.service.proxyPolicy = new RegexMatchingRegisteredServiceProxyPolicy();
-        this.policy = this.data.service.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy;
-        break;
-    }
-
-  }
-
 }

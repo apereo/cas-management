@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {GrouperRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormDataService} from '../../../form-data.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-grouper',
@@ -9,15 +10,17 @@ import {DataRecord} from '../../data';
 })
 export class GrouperComponent implements OnInit {
 
-  accessStrategy: GrouperRegisteredServiceAccessStrategy;
-  original: GrouperRegisteredServiceAccessStrategy;
+  @Input()
+  control: FormGroup;
+  groupField: MgmtFormControl;
+  fields: String[];
 
-  constructor(public data: DataRecord) {
-    this.accessStrategy = data.service.accessStrategy as GrouperRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as GrouperRegisteredServiceAccessStrategy;
+  constructor(public formData: FormDataService) {
+    this.fields = formData.options.grouperFields;
   }
 
   ngOnInit() {
+    this.groupField = this.control.get('groupField') as MgmtFormControl;
   }
 
 }

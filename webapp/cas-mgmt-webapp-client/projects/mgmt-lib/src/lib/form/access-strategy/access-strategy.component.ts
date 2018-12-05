@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {RegisteredServiceAccessStrategy} from '../../domain/access-strategy';
-import {FormData} from '../../domain/form-data';
-import {Util} from '../../util';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-access-strategy',
@@ -11,29 +9,20 @@ import {DataRecord} from '../data';
 })
 export class AccessStrategyComponent implements OnInit {
 
-  formData: FormData;
+  @Input()
+  control: FormGroup;
 
-  accessStrategy: RegisteredServiceAccessStrategy;
-  original: RegisteredServiceAccessStrategy;
+  sso: MgmtFormControl;
+  requireAll: MgmtFormControl;
+  unauthorizedUrl: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.accessStrategy = data.service.accessStrategy;
-    this.formData = data.formData;
-    this.original = data.original && data.original.accessStrategy;
+  constructor() {
   }
 
   ngOnInit() {
-    if (Util.isEmpty(this.accessStrategy.rejectedAttributes)) {
-      this.accessStrategy.rejectedAttributes = new Map();
-    }
-
-    if (Util.isEmpty(this.accessStrategy.requiredAttributes)) {
-      this.accessStrategy.requiredAttributes = new Map();
-    }
-
-    if (Util.isEmpty(this.accessStrategy.requiredAttributes)) {
-      this.accessStrategy.requiredAttributes = new Map();
-    }
+    this.sso = this.control.get('sso') as MgmtFormControl;
+    this.requireAll = this.control.get('requireAll') as MgmtFormControl;
+    this.unauthorizedUrl = this.control.get('unauthorizedUrl') as MgmtFormControl;
   }
 
 }

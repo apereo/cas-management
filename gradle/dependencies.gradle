@@ -84,17 +84,6 @@ ext.libraries = [
                 dependencies.create("commons-logging:commons-logging:$commonsLoggingVersion") {
                     force = true
                 },
-                dependencies.create("org.apache.commons:commons-configuration2:$commonsConfigVersion") {
-                    exclude(group: "commons-beanutils", module: "commons-beanutils")
-                    exclude(group: "commons-logging", module: "commons-logging")
-                    exclude(group: "commons-lang", module: "commons-lang")
-                    exclude(group: "commons-codec", module: "commons-codec")
-                    exclude(group: "log4j", module: "log4j")
-                    exclude(group: "org.springframework", module: "spring-beans")
-                    exclude(group: "org.springframework", module: "spring-core")
-                    exclude(group: "org.apache.commons", module: "commons-lang3")
-                    force = true
-                },
                 dependencies.create("commons-validator:commons-validator:$commonsValidatorVersion") {
                     exclude(group: "commons-logging", module: "commons-logging")
                     exclude(group: "commons-lang", module: "commons-lang")
@@ -131,6 +120,9 @@ ext.libraries = [
                     force = true
                 }
         ],
+        cassecurityfilter       : dependencies.create("org.apereo.cas:cas-server-security-filter:$casSecurityFilterVersion") {
+            force = true
+        },
         findbugscontrib         : dependencies.create("com.mebigfatguy.fb-contrib:fb-contrib:$findbugsContribVersion") {
             force = true
         },
@@ -200,15 +192,22 @@ ext.libraries = [
                     exclude(module: "commons-io")
                     force = true
                 },
+                dependencies.create("com.unboundid:unboundid-ldapsdk:$unboundidVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "commons-cli", module: "commons-cli")
+                    force = true
+                },
                 dependencies.create("org.mockito:mockito-core:$mockitoVersion") {
                     exclude(group: "org.hamcrest", module: "hamcrest-core")
                     exclude(group: "org.objenesis", module: "objenesis")
-                    exclude(group: "net.bytebuddy", module: "byte-buddy")
                     exclude(group: "junit", module: "junit")
                     force = true
                 },
                 dependencies.create("org.objenesis:objenesis:$objenesisVersion") {
                     exclude(group: "org.mockito", module: "mockito-all")
+                    force = true
+                },
+                dependencies.create("junit:junit:4.12") {
                     force = true
                 },
                 dependencies.create("org.junit.jupiter:junit-jupiter-api:$junitVersion") {
@@ -425,21 +424,23 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
-                },
-                dependencies.create("com.nimbusds:nimbus-jose-jwt") {
+                }
+        ],
+        nimbus : [
+                dependencies.create("com.nimbusds:nimbus-jose-jwt:$nimbusJoseVersion") {
                     exclude(group: "net.minidev", module: "json-smart")
                     exclude(group: "org.bouncycastle", module: "bcpkix-jdk15on")
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
                 },
-                dependencies.create("com.nimbusds:oauth2-oidc-sdk") {
+                dependencies.create("com.nimbusds:oauth2-oidc-sdk:$nimbusOidcVersion") {
                     exclude(group: "net.minidev", module: "json-smart")
                     exclude(group: "com.nimbusds", module: "nimbus-jose-jwt")
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "commons-collections", module: "commons-collections")
                     force = true
                 },
-                dependencies.create("net.minidev:json-smart") {
+                dependencies.create("net.minidev:json-smart:$jsonSmartVersion") {
                     force = true
                 }
         ],
@@ -603,9 +604,9 @@ ext.libraries = [
                     dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
                         force = true
                     },
-                    dependencies.create("org.apereo.cas:cas-server-core-logging-config:$casVersion")  {
+                    dependencies.create("org.apereo.cas:cas-server-core-logging-api:$casVersion")  {
                         force = true
-                    }   
+                    }
                 ],
                 core                 : [
                    
@@ -652,10 +653,14 @@ ext.libraries = [
                         transitive = false
                         force = true
                     },
-                services             :
+                services             : [
                     dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
                         force = true
                     },
+                    dependencies.create("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
+                        force = true
+                    }
+                ],
                 authentication       :
                     dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
                         force = true

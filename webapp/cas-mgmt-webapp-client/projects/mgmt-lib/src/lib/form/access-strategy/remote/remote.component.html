@@ -1,29 +1,30 @@
-<lib-input field="endpointUrl" [change]="accessStrategy" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Remote URL</mat-placeholder>
-    <input matInput [(ngModel)]="accessStrategy.endpointUrl">
+    <input matInput [formControl]="endpointUrl">
     <mat-hint align="end">
-      <lib-hint></lib-hint>
+      <lib-hint [difference]="endpointUrl.difference()"></lib-hint>
     </mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
-           matTooltip="URL that CAS should contact to determine if access to this service should be granted.">
+            matTooltip="URL that CAS should contact to determine if access to this service should be granted.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="acceptableResponseCodes" [change]="accessStrategy" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Acceptable HTTP Codes</mat-placeholder>
     <input matInput [matAutocomplete]="auto"
-           [(ngModel)]="accessStrategy.acceptableResponseCodes">
+           [formControl]="responseCodes">
     <mat-hint align="end">
-      <lib-hint></lib-hint>
+     <lib-hint [difference]="responseCodes.difference()"></lib-hint>
     </mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
-           matTooltip="Acceptable HTTP codes before granting access to this service.">
+            matTooltip="Acceptable HTTP codes before granting access to this service.">
   </mat-icon>
-  <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let code of data.formData.remoteCodes" [value]="code">{{ code }}</mat-option>
-  </mat-autocomplete>
 </lib-input>
+
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let code of formData.options.remoteCodes" [value]="code">{{ code }}</mat-option>
+</mat-autocomplete>

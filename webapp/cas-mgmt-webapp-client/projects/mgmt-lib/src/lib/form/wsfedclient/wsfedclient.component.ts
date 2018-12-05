@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {WSFederationRegisterdService} from '../../domain/wsed-service';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-wsfedclient',
@@ -9,15 +9,17 @@ import {DataRecord} from '../data';
 })
 export class WsfedclientComponent implements OnInit {
 
-  service: WSFederationRegisterdService;
-  original: WSFederationRegisterdService;
+  @Input()
+  control: FormGroup;
+  realm: MgmtFormControl;
+  appliesTo: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.service = data.service as WSFederationRegisterdService;
-    this.original = data.original && data.original as WSFederationRegisterdService;
+  constructor() {
   }
 
   ngOnInit() {
+    this.realm = this.control.get('realm') as MgmtFormControl;
+    this.appliesTo = this.control.get('appliesTo') as MgmtFormControl;
   }
 
 }

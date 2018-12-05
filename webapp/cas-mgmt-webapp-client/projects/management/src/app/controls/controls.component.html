@@ -21,6 +21,10 @@
       <mat-icon>save</mat-icon>
         <ng-container i18n>Save</ng-container>
     </button>
+    <button mat-button (click)="reset.emit();">
+      <mat-icon>restore</mat-icon>
+        <ng-container i18n>Reset</ng-container>
+    </button>
     <button mat-button (click)="goBack();">
       <mat-icon>cancel</mat-icon>
         <ng-container i18n>Cancel</ng-container>

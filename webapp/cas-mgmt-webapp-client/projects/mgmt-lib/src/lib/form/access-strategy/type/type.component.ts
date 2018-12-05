@@ -1,17 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormData} from '../../../domain/form-data';
-import {
-  DefaultRegisteredServiceAccessStrategy, GroovyRegisteredServiceAccessStrategy,
-  GroovySurrogateRegisteredServiceAccessStrategy, GrouperRegisteredServiceAccessStrategy,
-  RemoteEndpointServiceAccessStrategy,
-  SurrogateRegisteredServiceAccessStrategy,
-  TimeBasedRegisteredServiceAccessStrategy
-} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
-
-enum Type {
-  DEFAULT, TIME, GROUPER, REMOTE, SURROGATE, GROOVY_SURROGATE, GROOVY
-}
+import {Component, Input, OnInit} from '@angular/core';
+import {AccessStrategyType} from '../../../domain/access-strategy';
+import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-type',
@@ -20,65 +11,27 @@ enum Type {
 })
 export class TypeComponent implements OnInit {
 
-  type: Type;
-  TYPE = Type;
-  types = [Type.DEFAULT, Type.TIME, Type.GROUPER, Type.REMOTE, Type.SURROGATE, Type.GROOVY_SURROGATE, Type.GROOVY];
+  @Input()
+  control: FormGroup;
 
-  formData: FormData;
+  type: AccessStrategyType;
+  TYPE = AccessStrategyType;
+  types = [AccessStrategyType.DEFAULT,
+    AccessStrategyType.TIME,
+    AccessStrategyType.GROUPER,
+    AccessStrategyType.REMOTE,
+    AccessStrategyType.SURROGATE,
+    AccessStrategyType.GROOVY_SURROGATE,
+    AccessStrategyType.GROOVY
+  ];
 
-  @Output()
-  typeChange: EventEmitter<void> = new EventEmitter<void>();
+  typeControl: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.formData = data.formData;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const service = this.data.service;
-
-    if (RemoteEndpointServiceAccessStrategy.instanceOf(service.accessStrategy)) {
-      this.type = Type.REMOTE;
-    } else if (TimeBasedRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
-      this.type = Type.TIME;
-    } else if (GrouperRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
-      this.type = Type.GROUPER;
-    } else if (SurrogateRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
-      this.type = Type.SURROGATE;
-    } else if (GroovyRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
-      this.type = Type.GROOVY;
-    } else if (GroovySurrogateRegisteredServiceAccessStrategy.instanceOf(service.accessStrategy)) {
-      this.type = Type.GROOVY_SURROGATE;
-    } else {
-      this.type = Type.DEFAULT;
-    }
-  }
-
-  changeType() {
-    switch (+this.type) {
-      case Type.DEFAULT :
-        this.data.service.accessStrategy = new DefaultRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
-        break;
-      case Type.REMOTE :
-        this.data.service.accessStrategy = new RemoteEndpointServiceAccessStrategy(this.data.service.accessStrategy);
-        break;
-      case Type.TIME :
-        this.data.service.accessStrategy = new TimeBasedRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
-        break;
-      case Type.GROUPER :
-        this.data.service.accessStrategy = new GrouperRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
-        break;
-      case Type.SURROGATE :
-        this.data.service.accessStrategy = new SurrogateRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
-        break;
-      case Type.GROOVY :
-        this.data.service.accessStrategy = new GroovyRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
-        break;
-      case Type.GROOVY_SURROGATE :
-        this.data.service.accessStrategy = new GroovySurrogateRegisteredServiceAccessStrategy(this.data.service.accessStrategy);
-        break;
-      default:
-    }
-    this.typeChange.emit();
+    this.typeControl = this.control.get('type') as MgmtFormControl;
   }
 
 }

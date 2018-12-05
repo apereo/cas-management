@@ -1,5 +1,6 @@
 export class RegisteredServiceContact {
-  id: number;
+  static cName = "org.apereo.cas.services.RegisteredServiceContact";
+
   name: String;
   email: String;
   phone: String;
@@ -15,6 +16,10 @@ export class DefaultRegisteredServiceContact extends RegisteredServiceContact {
 
   constructor() {
     super();
+    this.name = null;
+    this.email = null;
+    this.phone = null;
+    this.department = null;
     this['@class'] = DefaultRegisteredServiceContact.cName;
   }
 }

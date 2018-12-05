@@ -1,36 +1,30 @@
-<lib-input field="requiredNameIdFormat" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Required NameID Format</mat-placeholder>
-    <input matInput [(ngModel)]="service.requiredNameIdFormat">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="requiredNameIdFormat">
+    <mat-hint align="end"><lib-hint [difference]="requiredNameIdFormat.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Force the indicated Name ID format in the final SAML response.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="serviceProviderNameIdQualifier" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Required NameID Format</mat-placeholder>
-    <input matInput [(ngModel)]="service.serviceProviderNameIdQualifier">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="serviceProviderNameIdQualifier">
+    <mat-hint align="end"><lib-hint [difference]="serviceProviderNameIdQualifier.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Overwrite the SPNameQualifier attribute of the produced subject name id.">
   </mat-icon>
 </lib-input>
 
-<lib-input field="nameIdQualifier" [change]="service" [orig]="original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Name Qualifier</mat-placeholder>
-    <input matInput [(ngModel)]="service.nameIdQualifier">
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <input matInput [formControl]="nameIdQualifier">
+    <mat-hint align="end"><lib-hint [difference]="nameIdQualifier.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
             matTooltip="Overwrite the NameQualifier attribute of the produced subject name id.">

@@ -45,3 +45,7 @@ export * from './lib/unknown/unknown.component';
 export * from './lib/paginator/paginator.component';
 export * from './lib/shared/shared.module';
 export * from './lib/footer/footer.component';
+export * from './lib/form/mgmt-formcontrol';
+export * from './lib/form/has-controls';
+export * from './lib/form-data.service';
+export * from './lib/form/mgmt-form-group';

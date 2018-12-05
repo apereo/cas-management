@@ -1,9 +1,11 @@
+<div [formGroup]="control">
+  <div formArrayName="filters">
 <mat-accordion #accordian style="width:600px;" multi="true">
-  <mat-expansion-panel *ngFor="let filter of filters();let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
-       [expanded]="last">
+  <mat-expansion-panel *ngFor="let filter of filters.controls;let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
+       [expanded]="last" [formGroupName]="i">
     <mat-expansion-panel-header>
       <mat-panel-title>
-          <button [matMenuTriggerFor]="panelMenu" mat-icon-button (click)="selectedFilter = filter;$event.stopPropagation()" style="width:auto;height:auto;line-height: 0px!important;">
+          <button [matMenuTriggerFor]="panelMenu" (click)="selectedFilter = i;" mat-icon-button style="width:auto;height:auto;line-height: 0px!important;">
             <mat-icon style="font-size: medium;">menu</mat-icon></button>
         <span *ngIf="isRegEx(filter)">Regex</span>
         <span *ngIf="isMappedRegEx(filter)">Mapped</span>
@@ -20,10 +22,10 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-container *ngIf="isRegEx(filter)">
-      <lib-input field="pattern" [change]="filter" [orig]="filters()[i]">
+      <lib-input>
         <mat-form-field class="textInput">
           <mat-placeholder i18n>Attribute Filter Pattern</mat-placeholder>
-          <input matInput [(ngModel)]="filter.pattern">
+          <input matInput formControlName="pattern">
           <mat-hint align="end">
             <lib-hint></lib-hint>
           </mat-hint>
@@ -38,10 +40,10 @@
       <lib-filter-mapped [filter]="filter"></lib-filter-mapped>
     </ng-container>
     <ng-container *ngIf="isScripted(filter)">
-      <lib-input field="script" [change]="filter" [orig]="filters()[i]">
+      <lib-input>
         <mat-form-field class="textInput">
           <mat-placeholder i18n>Script</mat-placeholder>
-          <input matInput [(ngModel)]="filter.script">
+          <input matInput formControlName="script">
           <mat-hint align="end">
             <lib-hint></lib-hint>
           </mat-hint>
@@ -56,7 +58,8 @@
 <div style="height:25px;padding-top: 5px;">
   <button mat-mini-fab [matMenuTriggerFor]="addMenu" style="float:right;">+</button>
 </div>
-
+</div>
+</div>
 <mat-menu #panelMenu>
   <button mat-menu-item (click)="moveUp()" i18n>Move UP</button>
   <button mat-menu-item (click)="moveDown()" i18n>Move Down</button>

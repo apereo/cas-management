@@ -3,7 +3,7 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {FormRoutingModule} from './form-routing.module';
 import {FormComponent} from './form.component';
@@ -20,18 +20,19 @@ import {FormService} from './form.service';
 import { TabOauthComponent } from './tab-oauth/tab-oauth.component';
 import { TabSamlComponent } from './tab-saml/tab-saml.component';
 import { TabWsfedComponent } from './tab-wsfed/tab-wsfed.component';
-import {TabBaseComponent} from './tab-base';
 import { TabContactsComponent } from './tab-contacts/tab-contacts.component';
 import { TabExpirationComponent } from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
 import {MgmtLibModule, SharedModule} from 'mgmt-lib';
 import {MgmtModule} from '../mgmt.module';
+import { MgmtCardComponent } from './mgmt-card/mgmt-card.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     FormRoutingModule,
     SharedModule,
     MgmtModule,
@@ -52,17 +53,17 @@ import {MgmtModule} from '../mgmt.module';
     TabOauthComponent,
     TabOIDCComponent,
     TabWsfedComponent,
-    TabBaseComponent,
     FormComponent,
     TabOauthComponent,
     TabSamlComponent,
     TabWsfedComponent,
     TabContactsComponent,
     TabExpirationComponent,
+    MgmtCardComponent,
   ],
   providers: [
     FormResolve,
-    FormService,
+    FormService
   ]
 })
 

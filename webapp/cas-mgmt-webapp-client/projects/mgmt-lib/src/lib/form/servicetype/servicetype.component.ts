@@ -1,9 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {RegexRegisteredService} from '../../domain/registered-service';
-import {OAuthRegisteredService, OidcRegisteredService} from '../../domain/oauth-service';
-import {SamlRegisteredService} from '../../domain/saml-service';
-import {WSFederationRegisterdService} from '../../domain/wsed-service';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormDataService} from '../../form-data.service';
 
 @Component({
   selector: 'lib-servicetype',
@@ -11,43 +8,15 @@ import {DataRecord} from '../data';
 })
 export class ServicetypeComponent implements OnInit {
 
-  type: string;
 
-  constructor(public data: DataRecord) {
+  @Input()
+  control: MgmtFormControl;
+
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    if (OAuthRegisteredService.instanceOf(this.data.service)) {
-      this.type = OAuthRegisteredService.cName;
-    } else if (WSFederationRegisterdService.instanceOf(this.data.service)) {
-      this.type = WSFederationRegisterdService.cName;
-    } else if (OidcRegisteredService.instanceOf(this.data.service)) {
-      this.type = OidcRegisteredService.cName;
-    } else if (SamlRegisteredService.instanceOf(this.data.service)) {
-      this.type = SamlRegisteredService.cName;
-    } else {
-      this.type = RegexRegisteredService.cName;
-    }
-  }
 
-  changeType() {
-    switch (this.type) {
-      case RegexRegisteredService.cName :
-        this.data.service = new RegexRegisteredService(this.data.service);
-        break;
-      case OAuthRegisteredService.cName :
-        this.data.service = new OAuthRegisteredService(this.data.service);
-        break;
-      case OidcRegisteredService.cName :
-        this.data.service = new OidcRegisteredService(this.data.service);
-        break;
-      case SamlRegisteredService.cName :
-        this.data.service = new SamlRegisteredService(this.data.service);
-        break;
-      case WSFederationRegisterdService.cName :
-        this.data.service = new WSFederationRegisterdService(this.data.service);
-        break;
-    }
   }
 
 }

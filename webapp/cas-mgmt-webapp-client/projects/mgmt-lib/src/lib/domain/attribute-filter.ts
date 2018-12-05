@@ -12,9 +12,10 @@ export class RegisteredServiceChainingAttributeFilter extends RegisteredServiceA
     return obj && obj['@class'] === RegisteredServiceChainingAttributeFilter.cName;
   }
 
-  constructor() {
+  constructor(filter?: RegisteredServiceAttributeFilter) {
     super();
-    this.filters = [];
+    const f: RegisteredServiceChainingAttributeFilter = filter as RegisteredServiceChainingAttributeFilter;
+    this.filters = (f && f.filters) || null;
     this['@class'] = RegisteredServiceChainingAttributeFilter.cName;
   }
 }
@@ -29,8 +30,11 @@ export class RegisteredServiceRegexAttributeFilter extends RegisteredServiceAttr
     return obj && obj['@class'] === RegisteredServiceRegexAttributeFilter.cName;
   }
 
-  constructor(filter?) {
+  constructor(filter?: RegisteredServiceAttributeFilter) {
     super();
+    const f: RegisteredServiceRegexAttributeFilter = filter as RegisteredServiceRegexAttributeFilter;
+    this.order = (f && f.order) || null;
+    this.pattern = (f && f.pattern) || null;
     this['@class'] = RegisteredServiceRegexAttributeFilter.cName;
   }
 }
@@ -40,7 +44,7 @@ export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServi
 
   patterns: Map<String, String>;
   excludeUnmappedAttributes: boolean;
-  caseInsensitve: boolean;
+  caseInsensitive: boolean;
   completeMatch: boolean;
   order: number;
 
@@ -48,13 +52,14 @@ export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServi
     return obj && obj['@class'] === RegisteredServiceMappedRegexAttributeFilter.cName;
   }
 
-  constructor(filter?: RegisteredServiceMappedRegexAttributeFilter) {
+  constructor(filter?: RegisteredServiceAttributeFilter) {
     super();
-    this.patterns = filter ? filter.patterns : new Map<String, String>();
-    this.excludeUnmappedAttributes = filter && filter.excludeUnmappedAttributes;
-    this.caseInsensitve = filter && filter.caseInsensitve;
-    this.completeMatch = filter && filter.completeMatch;
-    this.order = filter && filter.order;
+    const f: RegisteredServiceMappedRegexAttributeFilter = filter as RegisteredServiceMappedRegexAttributeFilter;
+    this.patterns = (f && f.patterns) || null;
+    this.excludeUnmappedAttributes = (f && f.excludeUnmappedAttributes) || null;
+    this.caseInsensitive = (f && f.caseInsensitive) || null;
+    this.completeMatch = (f && f.completeMatch) || null;
+    this.order = (f && f.order) || null;
     this['@class'] = RegisteredServiceMappedRegexAttributeFilter.cName;
   }
 }
@@ -95,8 +100,19 @@ export class RegisteredServiceScriptedAttributeFilter extends RegisteredServiceA
     return obj && obj['@class'] === RegisteredServiceScriptedAttributeFilter.cName;
   }
 
-  constructor() {
+  constructor(filter?: RegisteredServiceAttributeFilter) {
     super();
+    const f: RegisteredServiceScriptedAttributeFilter = filter as RegisteredServiceScriptedAttributeFilter;
+    this.script = (f && f.script) || null;
+    this.order = (f && f.order) || null;
     this['@class'] = RegisteredServiceScriptedAttributeFilter.cName;
   }
+}
+
+export enum FilterType {
+  REGEX,
+  MAPPED_REGEX,
+  REVERSE_MAPPED_REGEX,
+  SCRIPTED,
+  MUTANT_REGEX
 }

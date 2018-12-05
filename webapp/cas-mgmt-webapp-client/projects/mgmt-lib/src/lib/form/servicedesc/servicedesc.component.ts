@@ -1,19 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {ControlContainer, NgForm} from '@angular/forms';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-servicedesc',
-  templateUrl: './servicedesc.component.html',
-  viewProviders: [{
-    provide: ControlContainer,
-    useExisting: NgForm
-  }]
+  templateUrl: './servicedesc.component.html'
 })
 export class ServicedescComponent implements OnInit {
 
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
+  constructor() {
   }
 
   ngOnInit() {

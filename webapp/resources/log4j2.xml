@@ -5,7 +5,7 @@
         <Property name="baseDir">/tmp/logs</Property>
         <Property name="cas.log.level">info</Property>
         <Property name="spring.webflow.log.level">warn</Property>
-        <Property name="spring.security.log.level">info</Property>
+        <Property name="spring.security.log.level">warn</Property>
         <Property name="spring.web.log.level">warn</Property>
         <Property name="spring.boot.log.level">warn</Property>
         <Property name="ldap.log.level">warn</Property>

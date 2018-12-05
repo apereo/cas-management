@@ -3,7 +3,10 @@ export abstract class RegisteredServiceExpirationPolicy {
   deleteWhenExpired: boolean;
   notifyWhenDeleted: boolean;
 
-  constructor() {
+  constructor(policy?: RegisteredServiceExpirationPolicy) {
+    this.notifyWhenDeleted = (policy && policy.notifyWhenDeleted) || false;
+    this.deleteWhenExpired = (policy && policy.deleteWhenExpired) || false;
+    this.expirationDate = (policy && policy.expirationDate) || null;
   }
 }
 
@@ -14,8 +17,8 @@ export class DefaultRegisteredServiceExpirationPolicy extends RegisteredServiceE
     return obj && obj['@class'] === DefaultRegisteredServiceExpirationPolicy.cName;
   }
 
-  constructor() {
-    super();
+  constructor(policy?: RegisteredServiceExpirationPolicy) {
+    super(policy);
     this['@class'] = DefaultRegisteredServiceExpirationPolicy.cName;
   }
 }

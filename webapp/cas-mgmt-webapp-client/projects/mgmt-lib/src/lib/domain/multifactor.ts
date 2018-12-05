@@ -15,9 +15,14 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
     return obj && obj['@class'] === DefaultRegisteredServiceMultifactorPolicy.cName;
   }
 
-  constructor() {
+  constructor(policy?: RegisteredServiceMultifactorPolicy) {
     super();
-    this.failureMode = 'NOT_SET';
+    const p: DefaultRegisteredServiceMultifactorPolicy = policy as DefaultRegisteredServiceMultifactorPolicy;
+    this.multifactorAuthenticationProviders = (p && p.multifactorAuthenticationProviders) || null;
+    this.failureMode = (p && p.failureMode) ||  'UNDEFINED';
+    this.principalAttributeNameTrigger = (p && p.principalAttributeNameTrigger) || null;
+    this.principalAttributeValueToMatch = (p && p.principalAttributeValueToMatch) || null;
+    this.bypassEnabled = (p && p.bypassEnabled) || null;
     this['@class'] = DefaultRegisteredServiceMultifactorPolicy.cName;
   }
 }
@@ -31,9 +36,16 @@ export class GroovyRegisteredServiceMultifactorPolicy extends RegisteredServiceM
     return obj && obj['@class'] === GroovyRegisteredServiceMultifactorPolicy.cName;
   }
 
-  constructor() {
+  constructor(policy?: RegisteredServiceMultifactorPolicy) {
     super();
+    const p: GroovyRegisteredServiceMultifactorPolicy = policy as GroovyRegisteredServiceMultifactorPolicy;
+    this.groovyScript = (p && p.groovyScript) || null;
     this['@class'] = GroovyRegisteredServiceMultifactorPolicy.cName;
   }
 
+}
+
+export enum MfaPolicyType {
+  DEFAULT,
+  GROOVY
 }

@@ -1,11 +1,5 @@
-<form #oauthForm="ngForm">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 18n>OAuth Client Options</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-oauthclient></lib-oauthclient>
-    </div>
-  </mat-card>
-  <button type="submit" style="display: none;" #submit></button>
-</form>
+<div [formGroup]="oauth.form">
+  <app-card i18n-title title="OAuth Client Options" [collapse]="false">
+    <lib-oauthclient [control]="oauth.form"></lib-oauthclient>
+  </app-card>
+</div>

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {FormData } from '../../../domain/form-data';
-import {RegisteredServiceConsentPolicy} from '../../../domain/consent-policy';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormDataService} from '../../../form-data.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-attribute-release-consent',
@@ -9,21 +9,21 @@ import {DataRecord} from '../../data';
   styleUrls: ['./consent.component.css']
 })
 export class ConsentComponent implements OnInit {
-  formData: FormData;
 
-  policy: RegisteredServiceConsentPolicy;
-  original: RegisteredServiceConsentPolicy;
+  @Input()
+  control: FormGroup;
+  consentEnabled: MgmtFormControl;
+  excluded: MgmtFormControl;
+  includeOnly: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.attributeReleasePolicy && data.service.attributeReleasePolicy.consentPolicy;
-    this.original = data.original && data.original.attributeReleasePolicy
-      && data.original.attributeReleasePolicy.consentPolicy;
-    this.formData = data.formData;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
+    this.consentEnabled = this.control.get('enabled') as MgmtFormControl;
+    this.excluded = this.control.get('excludedAttributes') as MgmtFormControl;
+    this.includeOnly = this.control.get('includeOnlyAttributes') as MgmtFormControl;
   }
-
 
   isEmpty(data: any[]): boolean {
     return !data || data.length === 0;

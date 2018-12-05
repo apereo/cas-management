@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ReturnRestfulAttributeReleasePolicy} from '../../../../domain/attribute-release';
-import {DataRecord} from '../../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-restful',
@@ -9,12 +8,10 @@ import {DataRecord} from '../../../data';
 })
 export class RestfulComponent implements OnInit {
 
-  policy: ReturnRestfulAttributeReleasePolicy;
-  original: ReturnRestfulAttributeReleasePolicy;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.attributeReleasePolicy as ReturnRestfulAttributeReleasePolicy;
-    this.original = data.original && data.original.attributeReleasePolicy as ReturnRestfulAttributeReleasePolicy;
+  constructor() {
   }
 
   ngOnInit() {

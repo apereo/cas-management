@@ -16,6 +16,7 @@
             i18n-matTooltip
             matTooltip="List of authentication providers this services is allowed to delegate authentication to.">help
   </mat-icon>
+</lib-input>
   <h5 *ngIf="delegatedAuthn.length > 0" i18n>Allowed Providers</h5>
   <mat-chip-list #chipList [selectable]="false">
     <mat-chip *ngFor="let provider of delegatedAuthn" [selectable]="false"
@@ -24,8 +25,8 @@
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
   </mat-chip-list>
-</lib-input>
+
 
 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event);">
-  <mat-option *ngFor="let opt of formData.delegatedAuthnProviders" [value]="opt">{{ opt }}</mat-option>
+  <mat-option *ngFor="let opt of formData.options.delegatedAuthnProviders" [value]="opt">{{ opt }}</mat-option>
 </mat-autocomplete>

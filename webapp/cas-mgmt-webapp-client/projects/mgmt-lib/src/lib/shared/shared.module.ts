@@ -3,7 +3,7 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms'
+import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import 'hammerjs';
 import {
   MatButtonModule,
@@ -39,14 +39,16 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {InputComponent} from '../form/input/input.component';
 import {HintComponent} from '../form/hint/hint.component';
 import {HelpDirective} from '../form/help.directive';
-import {AttributemappingComponent} from '../form/attributemapping/attributemapping.component';
 import {PaginatorComponent} from '../paginator/paginator.component';
 import {FooterComponent} from '../footer/footer.component';
+import {UnknownComponent} from '../unknown/unknown.component';
+import {AttributesComponent} from '../form/attributes/attributes.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatTabsModule,
     MatCheckboxModule,
     MatInputModule,
@@ -85,9 +87,10 @@ import {FooterComponent} from '../footer/footer.component';
     InputComponent,
     HintComponent,
     HelpDirective,
-    AttributemappingComponent,
+    AttributesComponent,
     PaginatorComponent,
-    FooterComponent
+    FooterComponent,
+    UnknownComponent
   ],
   exports: [
     MatTabsModule,
@@ -125,9 +128,10 @@ import {FooterComponent} from '../footer/footer.component';
     HintComponent,
     InputComponent,
     HelpDirective,
-    AttributemappingComponent,
+    AttributesComponent,
     PaginatorComponent,
-    FooterComponent
+    FooterComponent,
+    UnknownComponent
   ]
 })
 export class SharedModule {}

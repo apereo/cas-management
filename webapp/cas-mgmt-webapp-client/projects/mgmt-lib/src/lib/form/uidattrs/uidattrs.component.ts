@@ -1,17 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormData} from '../../domain/form-data';
-import {
-  AnonymousRegisteredServiceUsernameProvider,
-  DefaultRegisteredServiceUsernameProvider,
-  PrincipalAttributeRegisteredServiceUsernameProvider
-} from '../../domain/attribute-provider';
+import {Component, Input, OnInit} from '@angular/core';
+import {UserAttributeType} from '../../domain/attribute-provider';
+import {FormDataService} from '../../form-data.service';
 import {DataRecord} from '../data';
-
-enum Type {
-  DEFAULT,
-  PRINCIPAL_ATTRIBUTE,
-  ANONYMOUS
-}
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-uidattrs',
@@ -19,36 +11,23 @@ enum Type {
 })
 export class UidattrsComponent implements OnInit {
 
-  formData: FormData;
-  type: Type;
-  TYPE = Type;
+  type: UserAttributeType;
+  TYPE = UserAttributeType;
 
-  constructor(public data: DataRecord) {
-    this.formData = data.formData;
+  @Input()
+  control: FormGroup;
+  typeControl: MgmtFormControl;
+  anonymous: MgmtFormControl;
+  principal: MgmtFormControl;
+
+  constructor(public data: DataRecord,
+    public formData: FormDataService) {
   }
 
   ngOnInit() {
-    if (DefaultRegisteredServiceUsernameProvider.instanceOf(this.data.service.usernameAttributeProvider)) {
-      this.type = Type.DEFAULT;
-    } else if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(this.data.service.usernameAttributeProvider)) {
-      this.type = Type.PRINCIPAL_ATTRIBUTE;
-    } else if (AnonymousRegisteredServiceUsernameProvider.instanceOf(this.data.service.usernameAttributeProvider)) {
-      this.type = Type.ANONYMOUS;
-    }
-  }
-
-  changeType() {
-      switch (+this.type) {
-        case Type.DEFAULT :
-          this.data.service.usernameAttributeProvider = new DefaultRegisteredServiceUsernameProvider();
-          break;
-        case Type.PRINCIPAL_ATTRIBUTE :
-          this.data.service.usernameAttributeProvider = new PrincipalAttributeRegisteredServiceUsernameProvider();
-          break;
-        case Type.ANONYMOUS :
-          this.data.service.usernameAttributeProvider = new AnonymousRegisteredServiceUsernameProvider();
-          break;
-      }
+    this.typeControl = this.control.get('type') as MgmtFormControl;
+    this.anonymous = this.control.get('anonymous') as MgmtFormControl;
+    this.principal = this.control.get('principal') as MgmtFormControl;
   }
 
 }

@@ -1,20 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {RegisteredServiceAccessStrategy} from '../../domain/access-strategy';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 
 @Component({
   selector: 'lib-enabled',
-  templateUrl: './enabled.component.html',
+  templateUrl: './enabled.component.html'
 })
 export class EnabledComponent implements OnInit {
 
-  accessStrategy: RegisteredServiceAccessStrategy;
-  original: RegisteredServiceAccessStrategy;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.accessStrategy = data.service.accessStrategy;
-    this.original = data.original && data.original.accessStrategy;
+  constructor() {
   }
 
   ngOnInit() {

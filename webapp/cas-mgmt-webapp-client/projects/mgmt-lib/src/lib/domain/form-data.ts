@@ -9,7 +9,7 @@ export class FormData {
     serviceTypes: PropertyEnum[];
     samlRoles: String[];
     samlDirections: String[];
-    attributeNameFormats: String[];
+    samlAttributeNameFormats: String[];
     samlCredentialTypes: String[];
     wsFederationClaims: String[];
     mfaProviders: PropertyEnum[];
@@ -23,6 +23,6 @@ export class FormData {
 }
 
 export interface PropertyEnum {
-    display: String;
-    value: String;
+    propertyName: String;
+    defaultValue: String;
 }

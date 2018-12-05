@@ -1,12 +1,6 @@
-<form #logoutForm="ngForm">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Logout Options</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-logout></lib-logout>
-      <lib-logouttypeeval></lib-logouttypeeval>
-    </div>
-  </mat-card>
-  <button type="submit" style="display:none;" #submit></button>
-</form>
+<div [formGroup]="logout.form">
+  <app-card i18n-title title="Logout Options" [collapse]="false">
+    <lib-logout [control]="logout.get('logout')"></lib-logout>
+    <lib-logouttypeeval [control]="logout.get('logoutType')"></lib-logouttypeeval>
+  </app-card>
+</div>

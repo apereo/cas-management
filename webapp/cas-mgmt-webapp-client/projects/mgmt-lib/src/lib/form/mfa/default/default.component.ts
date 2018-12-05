@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {DefaultRegisteredServiceMultifactorPolicy} from '../../../domain/multifactor';
-import {FormData} from '../../../domain/form-data';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-default',
@@ -10,17 +10,23 @@ import {DataRecord} from '../../data';
 })
 export class DefaultComponent implements OnInit {
 
-  policy: DefaultRegisteredServiceMultifactorPolicy;
-  original: DefaultRegisteredServiceMultifactorPolicy;
-  formData: FormData;
+  @Input()
+  control: FormGroup;
+  multifactorAuthenticationProviders: MgmtFormControl;
+  failureMode: MgmtFormControl;
+  principalAttributeNameTrigger: MgmtFormControl;
+  principalAttributeValueToMatch: MgmtFormControl;
+  bypassEnabled: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.multifactorPolicy as DefaultRegisteredServiceMultifactorPolicy;
-    this.original = data.original && data.original.multifactorPolicy as DefaultRegisteredServiceMultifactorPolicy;
-    this.formData = data.formData;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
+    this.multifactorAuthenticationProviders = this.control.get('multifactorAuthenticationProviders') as MgmtFormControl;
+    this.failureMode = this.control.get('failureMode') as MgmtFormControl;
+    this.principalAttributeNameTrigger = this.control.get('principalAttributeNameTrigger') as MgmtFormControl;
+    this.principalAttributeValueToMatch = this.control.get('principalAttributeValueToMatch') as MgmtFormControl;
+    this.bypassEnabled = this.control.get('bypassEnabled') as MgmtFormControl;
   }
 
 }

@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  GroovyScriptAttributeReleasePolicy
-} from '../../../../domain/attribute-release';
-import {DataRecord} from '../../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-groovy',
@@ -11,12 +8,10 @@ import {DataRecord} from '../../../data';
 })
 export class GroovyComponent implements OnInit {
 
-  policy: GroovyScriptAttributeReleasePolicy;
-  original: GroovyScriptAttributeReleasePolicy;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.attributeReleasePolicy as GroovyScriptAttributeReleasePolicy;
-    this.original = data.original && data.original.attributeReleasePolicy as GroovyScriptAttributeReleasePolicy;
+  constructor() {
   }
 
   ngOnInit() {

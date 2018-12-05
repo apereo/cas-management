@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {RegisteredServiceAttributeReleasePolicy} from '../../../domain/attribute-release';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-attribute-release-checks',
@@ -9,15 +9,22 @@ import {DataRecord} from '../../data';
 })
 export class ChecksComponent implements OnInit {
 
-  policy: RegisteredServiceAttributeReleasePolicy;
-  original: RegisteredServiceAttributeReleasePolicy;
+  @Input()
+  control: FormGroup;
+  excludeDefaultAttributes: MgmtFormControl;
+  authorizedToReleaseCredentialPassword: MgmtFormControl;
+  authorizedToReleaseProxyGrantingTicket: MgmtFormControl;
+  authorizedToReleaseAuthenticationAttributes: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.attributeReleasePolicy;
-    this.original = data.original && data.service.attributeReleasePolicy;
+
+  constructor() {
   }
 
   ngOnInit() {
+    this.excludeDefaultAttributes = this.control.get('excludeDefaultAttributes') as MgmtFormControl;
+    this.authorizedToReleaseCredentialPassword = this.control.get('authorizedToReleaseCredentialPassword') as MgmtFormControl;
+    this.authorizedToReleaseProxyGrantingTicket = this.control.get('authorizedToReleaseProxyGrantingTicket') as MgmtFormControl;
+    this.authorizedToReleaseAuthenticationAttributes = this.control.get('authorizedToReleaseAuthenticationAttributes') as MgmtFormControl;
   }
 
 }

@@ -1,13 +1,12 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChecksComponent} from './checks/checks.component';
 import {ConsentComponent} from './consent/consent.component';
 import {FiltersComponent} from './filters/filters.component';
 import {OidcOptionsComponent} from './oidc-options/oidc-options.component';
 import {PoliciesComponent} from './policies/policies.component';
 import {PrincipalRepoComponent} from './principal-repo/principal-repo.component';
-import {WsfedOptionsComponent} from './wsfed-options/wsfed-options.component';
 import {MappedComponent} from './policies/mapped/mapped.component';
 import {WsfedattrrelpoliciesModule} from '../wsfedattrrelpolocies/wsfedattrrelpolicies.module';
 import { ScriptComponent } from './policies/script/script.component';
@@ -23,6 +22,7 @@ import {SharedModule} from '../../shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     WsfedattrrelpoliciesModule
   ],
@@ -34,7 +34,6 @@ import {SharedModule} from '../../shared/shared.module';
     OidcOptionsComponent,
     PoliciesComponent,
     PrincipalRepoComponent,
-    WsfedOptionsComponent,
     MappedComponent,
     ScriptComponent,
     GroovyComponent,
@@ -50,7 +49,6 @@ import {SharedModule} from '../../shared/shared.module';
     OidcOptionsComponent,
     PoliciesComponent,
     PrincipalRepoComponent,
-    WsfedOptionsComponent,
     MappedComponent
   ]
 })

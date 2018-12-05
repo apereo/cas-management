@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {MetadataEntityAttributesAttributeReleasePolicy} from '../../../../domain/attribute-release';
-import {DataRecord} from '../../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-metadata',
@@ -9,15 +9,19 @@ import {DataRecord} from '../../../data';
 })
 export class MetadataComponent implements OnInit {
 
-  policy: MetadataEntityAttributesAttributeReleasePolicy;
-  original: MetadataEntityAttributesAttributeReleasePolicy;
+  @Input()
+  control: FormGroup;
+  entityAttribute: MgmtFormControl;
+  entityAttributeFormat: MgmtFormControl;
+  entityAttributeValues: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.attributeReleasePolicy as MetadataEntityAttributesAttributeReleasePolicy;
-    this.original = data.original && data.original.attributeReleasePolicy as MetadataEntityAttributesAttributeReleasePolicy;
+  constructor() {
   }
 
   ngOnInit() {
+    this.entityAttribute = this.control.get('entityAttribute') as MgmtFormControl;
+    this.entityAttributeFormat = this.control.get('entityAttributeFormat') as MgmtFormControl;
+    this.entityAttributeValues = this.control.get('entityAttributeValues') as MgmtFormControl;
   }
 
 }

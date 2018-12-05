@@ -1,15 +1,8 @@
-import {Component, OnInit } from '@angular/core';
-import {FormData} from '../../../domain/form-data';
-import {
-  CachingPrincipalAttributesRepository,
-  DefaultPrincipalAttributesRepository
-} from '../../../domain/attribute-repo';
-import {DataRecord} from '../../data';
-
-enum Type {
-  DEFAULT,
-  CACHING,
-}
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
+import {PrincipalRepoType} from '../../../domain/attribute-release';
 
 @Component({
   selector: 'lib-attribute-release-principal-repo',
@@ -17,44 +10,25 @@ enum Type {
   styleUrls: ['./principal-repo.component.css']
 })
 export class PrincipalRepoComponent implements OnInit {
-  formData: FormData;
-  type: Type;
-  TYPE = Type;
+  type: PrincipalRepoType;
+  TYPE = PrincipalRepoType;
 
-  repo: any;
-  original: any;
+  @Input()
+  control: FormGroup;
+  typeControl: MgmtFormControl;
+  timeUnit: MgmtFormControl;
+  expiration: MgmtFormControl;
+  mergingStrategy: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.formData = data.formData;
-    this.repo = data.service.attributeReleasePolicy.principalAttributesRepository;
-    this.original = data.original &&
-                    data.original.attributeReleasePolicy &&
-                    data.original.attributeReleasePolicy.principalAttributesRepository;
+
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    if (DefaultPrincipalAttributesRepository
-        .instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
-      this.type = Type.DEFAULT;
-    } else if (CachingPrincipalAttributesRepository
-        .instanceOf(this.data.service.attributeReleasePolicy.principalAttributesRepository)) {
-      this.type = Type.CACHING;
-    }
-  }
-
-  changeType() {
-    switch (+this.type) {
-      case Type.DEFAULT :
-        this.data.service.attributeReleasePolicy.principalAttributesRepository =
-          new DefaultPrincipalAttributesRepository();
-        this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
-        break;
-      case Type.CACHING :
-        this.data.service.attributeReleasePolicy.principalAttributesRepository =
-          new CachingPrincipalAttributesRepository();
-        this.repo = this.data.service.attributeReleasePolicy.principalAttributesRepository;
-        break;
-    }
+    this.typeControl = this.control.get('type') as MgmtFormControl;
+    this.timeUnit = this.control.get('timeUnit') as MgmtFormControl;
+    this.expiration = this.control.get('expiration') as MgmtFormControl;
+    this.mergingStrategy = this.control.get('mergingStrategy') as MgmtFormControl;
   }
 
 }

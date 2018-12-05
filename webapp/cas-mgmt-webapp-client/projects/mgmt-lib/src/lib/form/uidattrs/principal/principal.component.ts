@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {PrincipalAttributeRegisteredServiceUsernameProvider} from '../../../domain/attribute-provider';
-import {FormData} from '../../../domain/form-data';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormDataService} from '../../../form-data.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-principal',
@@ -10,18 +10,19 @@ import {DataRecord} from '../../data';
 })
 export class PrincipalComponent implements OnInit {
 
-  provider: PrincipalAttributeRegisteredServiceUsernameProvider;
-  original: PrincipalAttributeRegisteredServiceUsernameProvider;
-  formData: FormData;
+  @Input()
+  control: FormGroup;
+  usernameAttribute: MgmtFormControl;
+  encryptUserName: MgmtFormControl;
+  canonicalizationMode: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.provider = data.service.usernameAttributeProvider as PrincipalAttributeRegisteredServiceUsernameProvider;
-    this.original = data.original &&
-                    data.original.usernameAttributeProvider as PrincipalAttributeRegisteredServiceUsernameProvider;
-    this.formData = data.formData;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
+    this.usernameAttribute = this.control.get('usernameAttribute') as MgmtFormControl;
+    this.encryptUserName = this.control.get('encryptUserName') as MgmtFormControl;
+    this.canonicalizationMode = this.control.get('canonicalizationMode') as MgmtFormControl;
   }
 
 }

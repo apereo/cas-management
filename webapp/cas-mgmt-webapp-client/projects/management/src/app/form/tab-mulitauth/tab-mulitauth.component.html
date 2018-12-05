@@ -1,13 +1,5 @@
-<form #multiAuthForm="ngForm">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Multifactor Policy</h5>
-    </mat-card-title>
-    <mat-card-content>
-      <div class="cardContent">
-        <lib-mfa></lib-mfa>
-      </div>
-    </mat-card-content>
-  </mat-card>
-  <button type="submit" style="display:none;" #submit></button>
-</form>
+<div [formGroup]="mfa.form">
+  <app-card i18n-title title="Multifactor Policy" [collapse]="false">
+    <lib-mfa [control]="mfa.form"></lib-mfa>
+  </app-card>
+</div>

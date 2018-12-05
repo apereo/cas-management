@@ -1,11 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DataRecord} from '../data';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-reqhandlers',
   templateUrl: './reqhandlers.component.html'
 })
 export class RequiredHandlersComponent implements OnInit {
+
+  @Input()
+  control: MgmtFormControl;
 
   constructor(public data: DataRecord) {
   }

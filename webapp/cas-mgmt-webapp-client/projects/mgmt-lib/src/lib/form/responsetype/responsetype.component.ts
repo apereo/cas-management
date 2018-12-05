@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-responsetype',
@@ -8,7 +8,10 @@ import {DataRecord} from '../data';
 })
 export class ResponsetypeComponent implements OnInit {
 
-  constructor(public data: DataRecord) {
+  @Input()
+  control: MgmtFormControl;
+
+  constructor() {
   }
 
   ngOnInit() {

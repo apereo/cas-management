@@ -47,6 +47,9 @@ export class ControlsComponent implements OnInit {
   @Output()
   refresh: EventEmitter<void> = new EventEmitter<void>();
 
+  @Output()
+  reset: EventEmitter<void> = new EventEmitter<void>();
+
   constructor(public service: ControlsService,
               public userService: UserService,
               public appService: AppConfigService,

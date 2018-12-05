@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AccessStrategyComponent} from './access-strategy.component';
 import {DelegatedComponent} from './delegated/delegated.component';
 import {GroovyComponent} from './groovy/groovy.component';
@@ -18,6 +18,7 @@ import {SharedModule} from '../../shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule
   ],
   declarations: [

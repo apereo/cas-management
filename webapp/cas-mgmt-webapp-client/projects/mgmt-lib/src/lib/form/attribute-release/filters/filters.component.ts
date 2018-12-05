@@ -1,11 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {
-    RegisteredServiceAttributeFilter, RegisteredServiceChainingAttributeFilter,
-    RegisteredServiceMappedRegexAttributeFilter, RegisteredServiceMutantRegexAttributeFilter,
-    RegisteredServiceRegexAttributeFilter, RegisteredServiceReverseMappedRegexAttributeFilter,
-    RegisteredServiceScriptedAttributeFilter
-} from '../../../domain/attribute-filter';
-import {DataRecord} from '../../data';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {FilterType} from '../../../domain/attribute-filter';
+import {FormArray, FormGroup} from '@angular/forms';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-attribute-release-filters',
@@ -15,142 +11,126 @@ import {DataRecord} from '../../data';
 
 export class FiltersComponent implements OnInit {
 
-  selectedFilter: RegisteredServiceAttributeFilter;
+  selectedFilter: number;
 
   @ViewChild('accordian')
   accordian: ElementRef;
 
-  constructor(public data: DataRecord) {
+  @Input()
+  control: FormGroup;
+
+  filters: FormArray;
+
+  constructor() {
   }
 
   ngOnInit() {
-  }
-
-  updateFilter(pattern: String) {
-    let attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter as RegisteredServiceRegexAttributeFilter;
-    if (pattern && pattern !== '') {
-      attributeFilter = new RegisteredServiceRegexAttributeFilter();
-      attributeFilter.pattern = pattern;
-      this.data.service.attributeReleasePolicy.attributeFilter = attributeFilter;
-    } else {
-      attributeFilter = null;
-      this.data.service.attributeReleasePolicy.attributeFilter = null;
-    }
-  }
-
-  getPattern(): String {
-    const attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter as RegisteredServiceRegexAttributeFilter;
-    if (attributeFilter) {
-      return attributeFilter.pattern;
-    }
-    return '';
-  }
-
-  filters(): RegisteredServiceAttributeFilter[] {
-    const attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter;
-    if (RegisteredServiceChainingAttributeFilter.instanceof(attributeFilter)) {
-      return (attributeFilter as RegisteredServiceChainingAttributeFilter).filters;
-    } else if (attributeFilter) {
-      return [attributeFilter];
-    } else {
-      return [];
-    }
+    this.filters = this.control.get('filters') as FormArray;
   }
 
   addRegEx() {
-    this.addFilter(new RegisteredServiceRegexAttributeFilter())
+    this.addFilter(new FormGroup({
+      type: new MgmtFormControl(FilterType.REGEX),
+      pattern: new MgmtFormControl(null),
+      order: new MgmtFormControl(null)
+    }));
   }
 
   addMappedRegex() {
-    this.addFilter(new RegisteredServiceMappedRegexAttributeFilter());
+    this.addFilter(new FormGroup({
+      type: new MgmtFormControl(FilterType.MAPPED_REGEX),
+      patterns: new FormArray([]),
+      completeMatch: new MgmtFormControl(null),
+      excludeUnmappedAttributes: new MgmtFormControl(null),
+      caseInsensitve: new MgmtFormControl(null),
+      order: new MgmtFormControl(null)
+    }));
   }
 
   addReverseMapped() {
-    this.addFilter(new RegisteredServiceReverseMappedRegexAttributeFilter());
+    this.addFilter(new FormGroup({
+      type: new MgmtFormControl(FilterType.REVERSE_MAPPED_REGEX),
+      patterns: new FormArray([]),
+      completeMatch: new MgmtFormControl(null),
+      excludeUnmappedAttributes: new MgmtFormControl(null),
+      caseInsensitve: new MgmtFormControl(null),
+      order: new MgmtFormControl(null)
+    }));
   }
 
   addMutantMappedRegex() {
-    this.addFilter(new RegisteredServiceMutantRegexAttributeFilter());
+    this.addFilter(new FormGroup({
+      type: new MgmtFormControl(FilterType.MUTANT_REGEX),
+      patterns: new FormArray([]),
+      completeMatch: new MgmtFormControl(null),
+      excludeUnmappedAttributes: new MgmtFormControl(null),
+      caseInsensitve: new MgmtFormControl(null),
+      order: new MgmtFormControl(null)
+    }));
   }
 
   addScript() {
-    this.addFilter(new RegisteredServiceScriptedAttributeFilter());
+    this.addFilter(new FormGroup({
+      type: new MgmtFormControl(FilterType.SCRIPTED),
+      script: new MgmtFormControl(null),
+      order: new MgmtFormControl(null)
+    }));
   }
 
-  addFilter(filter: any) {
-      const attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter;
-      if (RegisteredServiceChainingAttributeFilter.instanceof(attributeFilter)) {
-          (attributeFilter as RegisteredServiceChainingAttributeFilter).filters.push(filter);
-      } else if (attributeFilter) {
-          const chaining = new RegisteredServiceChainingAttributeFilter();
-          chaining.filters.push(attributeFilter);
-          chaining.filters.push(filter);
-          this.data.service.attributeReleasePolicy.attributeFilter = chaining;
-      } else {
-          this.data.service.attributeReleasePolicy.attributeFilter = filter;
-      }
+  addFilter(filter: FormGroup) {
+    this.filters.push(filter);
+    this.filters.markAsTouched();
   }
 
   removeFilter() {
-    if (this.isChaining(this.data.service.attributeReleasePolicy.attributeFilter)) {
-      const filters = (this.data.service.attributeReleasePolicy.attributeFilter as RegisteredServiceChainingAttributeFilter).filters;
-      filters.splice(filters.indexOf(this.selectedFilter), 1);
-      if (filters.length > 1) {
-        return;
-      } else if (filters.length === 1) {
-        this.data.service.attributeReleasePolicy.attributeFilter = filters[0];
-        return;
+    this.filters.removeAt(this.selectedFilter);
+    this.filters.markAsTouched();
+  }
+
+  isMappedRegEx(filter: FormGroup): boolean {
+    return filter.get('type').value === FilterType.MAPPED_REGEX;
+  }
+
+  isReverseMapped(filter: FormGroup): boolean {
+    return filter.get('type').value === FilterType.REVERSE_MAPPED_REGEX;
+  }
+
+  isMutantMappedRegEx(filter: FormGroup): boolean {
+    return filter.get('type').value === FilterType.MUTANT_REGEX;
+  }
+
+  isScripted(filter: FormGroup): boolean {
+    return filter.get('type').value === FilterType.SCRIPTED;
+  }
+
+  isRegEx(filter: FormGroup): boolean {
+    return filter.get('type').value === FilterType.REGEX;
+  }
+
+  getAttributes(filter: FormGroup): string[] {
+    if (filter.get('patterns').value) {
+      const parry = filter.get('patterns') as FormArray;
+      const keys: string[] = [];
+      for (let pg of parry.controls) {
+        keys.push(pg.get('key').value);
       }
+      return keys;
     }
-    this.data.service.attributeReleasePolicy.attributeFilter = null;
-  }
-
-  isRegEx(filter: any): boolean {
-    return RegisteredServiceRegexAttributeFilter.instanceOf(filter);
-  }
-
-  isChaining(filter: any): boolean {
-    return RegisteredServiceChainingAttributeFilter.instanceof(filter);
-  }
-
-  isMappedRegEx(filter: any): boolean {
-    return RegisteredServiceMappedRegexAttributeFilter.instanceof(filter);
-  }
-
-  isReverseMapped(filter: any): boolean {
-    return RegisteredServiceReverseMappedRegexAttributeFilter.instanceof(filter);
-  }
-
-  isMutantMappedRegEx(filter: any): boolean {
-    return RegisteredServiceMutantRegexAttributeFilter.instanceof(filter);
-  }
-
-  isScripted(filter: any): boolean {
-    return RegisteredServiceScriptedAttributeFilter.instanceof(filter);
-  }
-
-  getAttributes(filter: RegisteredServiceMappedRegexAttributeFilter) {
-    return Object.keys(filter.patterns);
+    return [""];
   }
 
   moveUp() {
-    const attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter as RegisteredServiceChainingAttributeFilter;
-    const i = attributeFilter.filters.indexOf(this.selectedFilter);
-    if (i === 0) {
-      return;
-    }
-    attributeFilter.filters[i] = attributeFilter.filters[i - 1];
-    attributeFilter.filters[i - 1] = this.selectedFilter;
+    const index = this.selectedFilter;
+    const up = this.filters.controls[index];
+    this.filters.controls[index] = this.filters.controls[index - 1];
+    this.filters.controls[index - 1] = up;
   }
 
   moveDown() {
-    const attributeFilter = this.data.service.attributeReleasePolicy.attributeFilter as RegisteredServiceChainingAttributeFilter;
-    const i = attributeFilter.filters.indexOf(this.selectedFilter);
-    if (i === attributeFilter.filters.length - 1) {
-      return;
-    }
-    attributeFilter.filters[i] = attributeFilter.filters[i + 1];
-    attributeFilter.filters[i + 1] = this.selectedFilter;
+    const index = this.selectedFilter;
+    const down = this.filters.controls[index];
+    this.filters.controls[index] = this.filters.controls[index + 1];
+    this.filters.controls[index + 1] = down;
   }
 
 }

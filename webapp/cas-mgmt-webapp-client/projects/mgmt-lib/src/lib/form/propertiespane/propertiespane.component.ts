@@ -1,10 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Util} from '../../util';
-import {DefaultRegisteredServiceProperty} from '../../domain/property';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormDataService} from '../../form-data.service';
+import {FormArray, FormGroup} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
-import {FormData} from '../../domain/form-data';
-import {Row, RowDataSource} from '../row';
-import {DataRecord} from '../data';
 
 @Component({
   selector: 'lib-propertiespane',
@@ -12,50 +10,35 @@ import {DataRecord} from '../data';
   styleUrls: ['./propertiespane.component.css']
 })
 export class PropertiespaneComponent implements OnInit {
-  displayedColumns = ['source', 'mapped', 'delete'];
-  dataSource: RowDataSource;
-  selectedRow: Row;
-  formData: FormData;
+  @Input()
+  control: FormGroup;
 
-  constructor(public data: DataRecord) {
-    this.formData = data.formData;
+  selectedRow: number;
+
+  entries: FormArray;
+
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const rows = [];
-    if (Util.isEmpty(this.data.service.properties)) {
-      this.data.service.properties = new Map();
-    }
-    for (const p of Array.from(Object.keys(this.data.service.properties))) {
-      rows.push(new Row(p));
-    }
-    this.dataSource = new RowDataSource(rows);
+    this.entries = this.control.get('properties') as FormArray;
   }
 
   addRow() {
-    this.dataSource.addRow();
+    this.entries.push(new FormGroup({
+      key: new MgmtFormControl(null),
+      value: new MgmtFormControl(null)
+    }));
   }
 
-  doChange(row: Row, val: string) {
-    if (Object.keys(this.data.service.properties).indexOf(row.key as string) > -1) {
-      this.data.service.properties[val] = this.data.service.properties[row.key as string];
-      delete this.data.service.properties[row.key as string];
-    } else {
-      this.data.service.properties[val] = new DefaultRegisteredServiceProperty();
-    }
-    row.key = val;
+  delete(row: number) {
+    this.entries.removeAt(row);
+    this.control.markAsTouched();
   }
 
-  delete(row: Row) {
-    delete this.data.service.properties[row.key as string];
-    this.dataSource.removeRow(row);
-  }
-
-  selection(val: MatAutocompleteSelectedEvent) {
-    const opt =  val.option.value;
-    this.doChange(this.selectedRow, opt.propertyName);
-    if (val) {
-      this.data.service.properties[opt.propertyName].values = [opt.defaultValue];
-    }
+  selection(event: MatAutocompleteSelectedEvent) {
+    const index = event.source.options.toArray().indexOf(event.option);
+    const val = this.formData.options.registeredServiceProperties[index].defaultValue;
+    this.entries.at(this.selectedRow).get('value').setValue(val);
   }
 }

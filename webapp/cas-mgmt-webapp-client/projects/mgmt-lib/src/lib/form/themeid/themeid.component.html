@@ -1,11 +1,9 @@
-<lib-input field="theme" [change]="data.service" [orig]="data.original">
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Theme</mat-placeholder>
-    <input matInput [(ngModel)]="data.service.theme">
+    <input matInput [formControl]="control">
+    <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-hint align="end">
-    <lib-hint></lib-hint>
-  </mat-hint>
   <mat-icon appHelp i18n-matTooltip
            matTooltip="A token that represents the theme that should be applied to CAS when this service asks for
            authentication.  Valid values are a theme name configured in the CAS deployment, a REST endpoint or a groovy file location.">

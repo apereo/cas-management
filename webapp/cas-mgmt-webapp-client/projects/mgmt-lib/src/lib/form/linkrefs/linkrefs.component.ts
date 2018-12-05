@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-linkrefs',
@@ -7,8 +7,10 @@ import {DataRecord} from '../data';
 })
 export class LinkrefsComponent implements OnInit {
 
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
+  constructor() {
   }
 
   ngOnInit() {

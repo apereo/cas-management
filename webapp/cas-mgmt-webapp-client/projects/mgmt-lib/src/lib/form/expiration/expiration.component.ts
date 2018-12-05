@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {RegisteredServiceExpirationPolicy} from '../../domain/expiration';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-expiration',
@@ -9,15 +9,19 @@ import {DataRecord} from '../data';
 })
 export class ExpirationComponent implements OnInit {
 
-  policy: RegisteredServiceExpirationPolicy;
-  original: RegisteredServiceExpirationPolicy;
+  @Input()
+  control: FormGroup;
+  expirationDate: MgmtFormControl;
+  deleteWhenExpired: MgmtFormControl;
+  notifyWhenDeleted: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.expirationPolicy;
-    this.original = data.original && data.original.expirationPolicy;
+  constructor() {
   }
 
   ngOnInit() {
+    this.expirationDate = this.control.get('expirationDate') as MgmtFormControl;
+    this.deleteWhenExpired = this.control.get('deleteWhenExpired') as MgmtFormControl;
+    this.notifyWhenDeleted = this.control.get('notifyWhenDeleted') as MgmtFormControl;
   }
 
 }

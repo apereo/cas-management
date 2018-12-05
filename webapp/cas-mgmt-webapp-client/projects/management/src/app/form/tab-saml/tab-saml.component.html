@@ -1,48 +1,22 @@
-<form #samlForm="ngForm">
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>Saml Client - Metadata</h5>
-    </mat-card-title>
-    <div class="cardContent">
-        <lib-metadata></lib-metadata>
-     </div>
+<div [formGroup]="saml.form">
+  <app-card i18n-title title="Metadata">
+    <lib-metadata [control]="saml.get('metadata')"></lib-metadata>
+  </app-card>
+
+  <app-card i18n-title title="Security">
+    <lib-security [control]="saml.get('security')"></lib-security>
+  </app-card>
+
+  <mat-card i18n-title title="Optional Fields">
+    <lib-optional [control]="saml.get('optionalSaml')"></lib-optional>
   </mat-card>
 
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>SAML Client - Security</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-security></lib-security>
-    </div>
-  </mat-card>
+  <app-card i18n-title title="Name ID">
+    <lib-nameid [control]="saml.get('nameId')"></lib-nameid>
+  </app-card>
 
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>SAML Client - Optional Fields</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-optional></lib-optional>
-    </div>
-  </mat-card>
-
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>SAML Client - Name ID</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-nameid></lib-nameid>
-    </div>
-  </mat-card>
-
-  <mat-card class="tabCard">
-    <mat-card-title>
-      <h5 i18n>SAML Attribute Name Formats</h5>
-    </mat-card-title>
-    <div class="cardContent">
-      <lib-samlservicespane></lib-samlservicespane>
-    </div>
-  </mat-card>
-  <button type="submit" style="display: none" #submit></button>
-</form>
+  <app-card i18n-title title="Name Formats">
+    <lib-samlservicespane [control]="saml.get('nameFormats')"></lib-samlservicespane>
+  </app-card>
+</div>
 

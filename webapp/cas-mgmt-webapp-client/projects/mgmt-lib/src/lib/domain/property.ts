@@ -1,9 +1,9 @@
 export abstract class RegisteredServiceProperty {
-  id: number;
+
   values: String[];
 
-  constructor() {
-    this.values = [];
+  constructor(prop?: RegisteredServiceProperty) {
+    this.values = (prop && prop.values) || null;
   }
 }
 
@@ -14,8 +14,8 @@ export class DefaultRegisteredServiceProperty extends RegisteredServiceProperty 
     return obj && obj['@class'] === DefaultRegisteredServiceProperty.cName;
   }
 
-  constructor() {
-    super();
+  constructor(prop?: RegisteredServiceProperty) {
+    super(prop);
     this['@class'] = DefaultRegisteredServiceProperty.cName;
   }
 }

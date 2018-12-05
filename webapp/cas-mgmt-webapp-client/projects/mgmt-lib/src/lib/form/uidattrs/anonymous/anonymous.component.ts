@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {AnonymousRegisteredServiceUsernameProvider} from '../../../domain/attribute-provider';
-import {FormData} from '../../../domain/form-data';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormDataService} from '../../../form-data.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-anonymous',
@@ -10,17 +10,17 @@ import {DataRecord} from '../../data';
 })
 export class AnonymousComponent implements OnInit {
 
-  provider: AnonymousRegisteredServiceUsernameProvider;
-  original: AnonymousRegisteredServiceUsernameProvider;
-  formData: FormData;
+  @Input()
+  control: FormGroup;
+  salt: MgmtFormControl;
+  attribute: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.provider = data.service.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
-    this.formData = data.formData;
-    this.original = data.original && data.original.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
+    this.salt = this.control.get('salt') as MgmtFormControl;
+    this.attribute = this.control.get('attribute') as MgmtFormControl;
   }
 
 }

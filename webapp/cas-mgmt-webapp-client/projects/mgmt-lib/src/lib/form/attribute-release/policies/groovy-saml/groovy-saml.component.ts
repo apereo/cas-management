@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {GroovySamlRegisteredServiceAttributeReleasePolicy} from '../../../../domain/attribute-release';
-import {DataRecord} from '../../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-groovy-saml',
@@ -9,12 +8,10 @@ import {DataRecord} from '../../../data';
 })
 export class GroovySamlComponent implements OnInit {
 
-  policy: GroovySamlRegisteredServiceAttributeReleasePolicy;
-  original: GroovySamlRegisteredServiceAttributeReleasePolicy;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.attributeReleasePolicy as GroovySamlRegisteredServiceAttributeReleasePolicy;
-    this.original = data.original && data.original.attributeReleasePolicy as GroovySamlRegisteredServiceAttributeReleasePolicy;
+  constructor() {
   }
 
   ngOnInit() {

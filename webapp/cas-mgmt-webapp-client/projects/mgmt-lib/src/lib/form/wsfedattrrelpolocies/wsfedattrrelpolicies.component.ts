@@ -1,9 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormData} from '../../domain/form-data';
-import {WsFederationClaimsReleasePolicy} from '../../domain/attribute-release';
-import {Util} from '../../util';
-import {Row, RowDataSource} from '../row';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormDataService} from '../../form-data.service';
+import {FormArray, FormGroup} from '@angular/forms';
+import {MgmtFormControl} from '../mgmt-formcontrol';
 
 
 @Component({
@@ -13,33 +11,31 @@ import {DataRecord} from '../data';
 })
 export class WsfedattrrelpoliciesComponent implements OnInit {
 
-  formData: FormData;
-  displayedColumns = ['source', 'mapped'];
-  dataSource: RowDataSource;
 
-  policy: WsFederationClaimsReleasePolicy;
-  original: WsFederationClaimsReleasePolicy;
+  @Input()
+  control: FormGroup;
 
-  constructor(public data: DataRecord) {
-    this.formData = data.formData;
-    this.policy = data.service.attributeReleasePolicy as WsFederationClaimsReleasePolicy;
-    this.original = data.original && data.original.attributeReleasePolicy as WsFederationClaimsReleasePolicy;
+  attributeArray: FormArray;
+
+  selectedRow: number;
+
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const rows = [];
-    if (Util.isEmpty(this.policy.allowedAttributes)) {
-      this.policy.allowedAttributes = new Map();
-    }
+    this.attributeArray = this.control.get('attributes') as FormArray;
+  }
 
-    this.formData.availableAttributes.forEach((k) => {
-      this.policy.allowedAttributes[k as string] = k;
-    });
+  addRow() {
+    this.attributeArray.push(new FormGroup({
+      key: new MgmtFormControl(null),
+      value: new MgmtFormControl(null)
+    }));
+  }
 
-    for (const key of Array.from(Object.keys(this.policy.allowedAttributes))) {
-      rows.push(new Row(key as string));
-    }
-    this.dataSource = new RowDataSource(rows);
+  delete(row: number) {
+    this.attributeArray.removeAt(row);
+    this.control.markAsTouched();
   }
 
   isEmpty(data: any[]): boolean {

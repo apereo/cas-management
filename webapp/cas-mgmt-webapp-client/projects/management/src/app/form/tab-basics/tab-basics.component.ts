@@ -1,24 +1,50 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {TabBaseComponent} from '../tab-base';
-import {DataRecord, GroovyRegisteredServiceAccessStrategy, UserProfile, UserService} from 'mgmt-lib';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {
+  DataRecord,
+  GroovyRegisteredServiceAccessStrategy,
+  UserProfile,
+  OAuthRegisteredService,
+  OidcRegisteredService,
+  SamlRegisteredService,
+  WSFederationRegisterdService,
+  RegexRegisteredService
+} from 'mgmt-lib';
+import {BasicsForm} from './basics-form';
 
 @Component({
   selector: 'app-tab-basics',
   templateUrl: './tab-basics.component.html'
 })
-export class TabBasicsComponent extends TabBaseComponent implements OnInit {
+export class TabBasicsComponent implements OnInit {
 
   groovyAccessStrategy: boolean;
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.groovyAccessStrategy = GroovyRegisteredServiceAccessStrategy.instanceOf(this.data.service.accessStrategy);
+  basics: BasicsForm;
+
+  constructor(public data: DataRecord) {
   }
 
-  constructor(public data: DataRecord,
-              public changeRef: ChangeDetectorRef,
-              public userService: UserService) {
-    super(data, changeRef);
+  ngOnInit() {
+    this.groovyAccessStrategy = GroovyRegisteredServiceAccessStrategy.instanceOf(this.data.service.accessStrategy);
+    if (this.data.formMap.has('basics')) {
+      this.basics = this.data.formMap.get('basics') as BasicsForm;
+      return;
+    }
+    this.basics = new BasicsForm(this.data);
+    this.basics.form.get('serviceType').valueChanges.subscribe(val => {
+      if (val === OAuthRegisteredService.cName) {
+        this.data.service = new OAuthRegisteredService(this.data.service);
+      } else if (val === OidcRegisteredService.cName) {
+        this.data.service = new OidcRegisteredService(this.data.service);
+      } else if (val === SamlRegisteredService.cName) {
+        this.data.service = new SamlRegisteredService(this.data.service);
+      } else if (val === WSFederationRegisterdService.cName) {
+        this.data.service = new WSFederationRegisterdService(this.data.service);
+      } else {
+        this.data.service = new RegexRegisteredService(this.data.service);
+      }
+    });
+    this.data.formMap.set('basics', this.basics);
   }
 
   validateDomain = function(user: UserProfile) {
@@ -39,4 +65,5 @@ export class TabBasicsComponent extends TabBaseComponent implements OnInit {
       return false;
     };
   }
+
 }

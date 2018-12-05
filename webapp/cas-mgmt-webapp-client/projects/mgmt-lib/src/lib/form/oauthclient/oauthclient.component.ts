@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {OAuthRegisteredService, OidcRegisteredService} from '../../domain/oauth-service';
-import {DataRecord} from '../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-oauthclient',
@@ -8,20 +8,22 @@ import {DataRecord} from '../data';
 })
 export class OauthclientComponent implements OnInit {
 
-  service: OAuthRegisteredService;
-  original: OAuthRegisteredService;
+  @Input()
+  control: FormGroup;
   showOAuthSecret: boolean;
+  clientId: MgmtFormControl;
+  clientSecret: MgmtFormControl;
+  bypassApprovalPrompt: MgmtFormControl;
+  generateRefreshToken: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.service = data.service as OAuthRegisteredService;
-    this.original = data.original && data.original as OAuthRegisteredService;
+  constructor() {
   }
 
   ngOnInit() {
-
+    this.clientId = this.control.get('clientId') as MgmtFormControl;
+    this.clientSecret = this.control.get('clientSecret') as MgmtFormControl;
+    this.bypassApprovalPrompt = this.control.get('bypassApprovalPrompt') as MgmtFormControl;
+    this.generateRefreshToken = this.control.get('generateRefreshToken') as MgmtFormControl;
   }
 
-  isOidc() {
-    return OidcRegisteredService.instanceOf(this.data.service);
-  }
 }

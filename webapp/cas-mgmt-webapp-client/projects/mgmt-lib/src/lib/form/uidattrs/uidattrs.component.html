@@ -1,4 +1,4 @@
-<mat-radio-group [(ngModel)]="type" (change)="changeType()">
+<mat-radio-group [formControl]="typeControl">
 
   <mat-radio-button [value]="TYPE.DEFAULT">
     <ng-container i18n>Default</ng-container>
@@ -14,12 +14,12 @@
 
 </mat-radio-group>
 
-<ng-container *ngIf="type == TYPE.ANONYMOUS">
-  <lib-anonymous></lib-anonymous>
+<ng-container *ngIf="typeControl.value == TYPE.ANONYMOUS">
+  <lib-anonymous [control]="anonymous"></lib-anonymous>
 </ng-container>
 
-<ng-container *ngIf="type == TYPE.PRINCIPAL_ATTRIBUTE">
-  <lib-principal></lib-principal>
+<ng-container *ngIf="typeControl.value == TYPE.PRINCIPAL_ATTRIBUTE">
+  <lib-principal [control]="principal"></lib-principal>
 </ng-container>
 
 

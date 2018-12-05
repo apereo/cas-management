@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {TimeBasedRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-time',
@@ -9,15 +9,18 @@ import {DataRecord} from '../../data';
 })
 export class TimeComponent implements OnInit {
 
-  accessStrategy: TimeBasedRegisteredServiceAccessStrategy;
-  original: TimeBasedRegisteredServiceAccessStrategy;
+  @Input()
+  control: FormGroup;
 
-  constructor(public data: DataRecord) {
-    this.accessStrategy = data.service.accessStrategy as TimeBasedRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as TimeBasedRegisteredServiceAccessStrategy;
+  startingDatetime: MgmtFormControl;
+  endingDatetime: MgmtFormControl;
+
+  constructor() {
   }
 
   ngOnInit() {
+    this.startingDatetime = this.control.get('startingDatetime') as MgmtFormControl;
+    this.endingDatetime = this.control.get('endingDatetime') as MgmtFormControl;
   }
 
 }

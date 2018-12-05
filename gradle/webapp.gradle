@@ -31,6 +31,9 @@ dependencies {
     implementation project(":webapp:cas-mgmt-webapp-config")
     implementation project(":webapp:cas-mgmt-webapp-init")
     
+    implementation libraries.nimbus
+    implementation libraries.cassecurityfilter
+    
 }
 
 /**

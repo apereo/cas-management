@@ -20,6 +20,17 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
 
   constructor(service?: RegisteredService) {
     super(service);
+    const s: WSFederationRegisterdService = service as WSFederationRegisterdService;
+    this.realm = (s && s.realm) || null;
+    this.protocol = (s && s.protocol) || null;
+    this.tokenType = (s && s.tokenType) || null;
+    this.wsdlLocation = (s && s.wsdlLocation) || null;
+    this.namespace = (s && s.namespace) || null;
+    this.addressingNamespace = (s && s.addressingNamespace) || null;
+    this.policyNamespace = (s && s.policyNamespace) || null;
+    this.wsdlService = (s && s.wsdlService) || null;
+    this.wsdlEndpoint = (s && s.wsdlEndpoint) || null;
+    this.appliesTo = (s && s.appliesTo) || null;
     this['@class'] = WSFederationRegisterdService.cName;
   }
 }

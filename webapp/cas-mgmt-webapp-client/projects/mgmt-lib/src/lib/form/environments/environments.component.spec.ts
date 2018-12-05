@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WsfedOptionsComponent } from './wsfed-options.component';
+import { EnvironmentsComponent } from './environments.component';
 
-describe('WsfedOptionsComponent', () => {
-  let component: WsfedOptionsComponent;
-  let fixture: ComponentFixture<WsfedOptionsComponent>;
+describe('EnvironmentsComponent', () => {
+  let component: EnvironmentsComponent;
+  let fixture: ComponentFixture<EnvironmentsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WsfedOptionsComponent ]
+      declarations: [ EnvironmentsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WsfedOptionsComponent);
+    fixture = TestBed.createComponent(EnvironmentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

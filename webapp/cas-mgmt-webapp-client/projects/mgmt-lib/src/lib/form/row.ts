@@ -2,16 +2,18 @@ import {MatTableDataSource} from '@angular/material';
 
 export class Row {
   key: String;
+  value: String;
 
-  constructor (key: String) {
+  constructor (key: String, value?: String) {
     this.key = key;
+    this.value = value;
   }
 }
 
 export class RowDataSource extends MatTableDataSource<Row> {
 
   addRow(row?: Row) {
-    this.data.push(row ? row : new Row(''));
+    this.data.push(row ? row : new Row('', ''));
     this._updateChangeSubscription();
   }
 

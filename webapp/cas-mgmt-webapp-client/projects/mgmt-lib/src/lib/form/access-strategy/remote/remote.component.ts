@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {RemoteEndpointServiceAccessStrategy} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-remote',
@@ -9,15 +10,18 @@ import {DataRecord} from '../../data';
 })
 export class RemoteComponent implements OnInit {
 
-  accessStrategy: RemoteEndpointServiceAccessStrategy;
-  original: RemoteEndpointServiceAccessStrategy;
+  @Input()
+  control: FormGroup;
 
-  constructor(public data: DataRecord) {
-    this.accessStrategy = data.service.accessStrategy as RemoteEndpointServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as RemoteEndpointServiceAccessStrategy;
+  endpointUrl: MgmtFormControl;
+  responseCodes: MgmtFormControl;
+
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
+    this.endpointUrl = this.control.get('endpointUrl') as MgmtFormControl;
+    this.responseCodes = this.control.get('responseCodes') as MgmtFormControl;
   }
 
 }

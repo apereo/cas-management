@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {SamlRegisteredService} from '../../../domain/saml-service';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-nameid',
@@ -9,15 +9,19 @@ import {DataRecord} from '../../data';
 })
 export class SamlNameidComponent implements OnInit {
 
-  service: SamlRegisteredService;
-  original: SamlRegisteredService;
+  @Input()
+  control: FormGroup;
+  requiredNameIdFormat: MgmtFormControl;
+  serviceProviderNameIdQualifier: MgmtFormControl;
+  nameIdQualifier: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.service = data.service as SamlRegisteredService;
-    this.original = data.original && data.original as SamlRegisteredService;
+  constructor() {
   }
 
   ngOnInit() {
+    this.requiredNameIdFormat = this.control.get('requiredNameIdFormat') as MgmtFormControl;
+    this.serviceProviderNameIdQualifier = this.control.get('serviceProviderNameIdQualifier') as MgmtFormControl;
+    this.nameIdQualifier = this.control.get('nameIdQualifier') as MgmtFormControl;
   }
 
 }

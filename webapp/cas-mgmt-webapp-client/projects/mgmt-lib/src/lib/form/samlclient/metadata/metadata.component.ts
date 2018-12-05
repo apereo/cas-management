@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {SamlRegisteredService} from '../../../domain/saml-service';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-metadata',
@@ -9,15 +10,31 @@ import {DataRecord} from '../../data';
 })
 export class SamlMetadataComponent implements OnInit {
 
-  service: SamlRegisteredService;
-  original: SamlRegisteredService;
+  @Input()
+  control: FormGroup;
+  location: MgmtFormControl;
+  maxValidity: MgmtFormControl;
+  signatureLocation: MgmtFormControl;
+  expirationDuration: MgmtFormControl;
+  criteriaPattern: MgmtFormControl;
+  criteriaDirection: MgmtFormControl;
+  criteriaRoles: MgmtFormControl;
+  criteriaRemoveEmptyEntitiesDescriptors: MgmtFormControl;
+  criteriaRemoveRolelessEntityDescriptors: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.service = data.service as SamlRegisteredService;
-    this.original = data.original && data.original as SamlRegisteredService;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
+    this.location = this.control.get('location') as MgmtFormControl;
+    this.maxValidity = this.control.get('maxValidity') as MgmtFormControl;
+    this.signatureLocation = this.control.get('signatureLocation') as MgmtFormControl;
+    this.expirationDuration = this.control.get('expirationDuration') as MgmtFormControl;
+    this.criteriaPattern = this.control.get('criteriaPattern') as MgmtFormControl;
+    this.criteriaRoles = this.control.get('criteriaRoles') as MgmtFormControl;
+    this.criteriaDirection = this.control.get('criteriaDirection') as MgmtFormControl;
+    this.criteriaRemoveEmptyEntitiesDescriptors = this.control.get('criteriaRemoveEmptyEntitiesDescriptors') as MgmtFormControl;
+    this.criteriaRemoveRolelessEntityDescriptors = this.control.get('criteriaRemoveRolelessEntityDescriptors') as MgmtFormControl;
   }
 
 }

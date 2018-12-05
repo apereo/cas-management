@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {SurrogateRegisteredServiceAccessStrategy} from '../../../domain/access-strategy';
-import {DataRecord} from '../../data';
-import {Util} from '../../../util';
-import {Row, RowDataSource} from '../../row';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-surrogate',
@@ -11,41 +10,18 @@ import {Row, RowDataSource} from '../../row';
 })
 export class SurrogateComponent implements OnInit {
 
-  accessStrategy: SurrogateRegisteredServiceAccessStrategy;
-  original: SurrogateRegisteredServiceAccessStrategy;
+  @Input()
+  control: FormGroup;
 
-  displayedColumns = ['source', 'mapped', 'delete'];
-  dataSource: RowDataSource;
+  surrogateEnabled: MgmtFormControl;
+  surrogateRequiredAttributes: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.accessStrategy = data.service.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
-    this.original = data.original && data.original.accessStrategy as SurrogateRegisteredServiceAccessStrategy;
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    const rows = [];
-    if (Util.isEmpty(this.accessStrategy.surrogateRequiredAttributes)) {
-      this.accessStrategy.surrogateRequiredAttributes = new Map();
-    }
-    for (const p of Array.from(Object.keys(this.accessStrategy.surrogateRequiredAttributes))) {
-      rows.push(new Row(p));
-    }
-    this.dataSource = new RowDataSource(rows);
-  }
-
-  addRow() {
-    this.dataSource.addRow();
-  }
-
-  doChange(row: Row, val: string) {
-    this.accessStrategy.surrogateRequiredAttributes[val] = this.accessStrategy.surrogateRequiredAttributes[row.key as string];
-    delete this.accessStrategy.surrogateRequiredAttributes[row.key as string];
-    row.key = val;
-  }
-
-  delete(row: Row) {
-    delete this.accessStrategy.surrogateRequiredAttributes[row.key as string];
-    this.dataSource.removeRow(row);
+    this.surrogateEnabled = this.control.get('surrogateEnabled') as MgmtFormControl;
+    this.surrogateRequiredAttributes = this.control.get('attributes') as MgmtFormControl;
   }
 }
 

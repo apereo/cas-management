@@ -1,19 +1,14 @@
-<lib-input field="serviceId" [change]="data.service" [orig]="data.original">
+<div class="mgmtInput">
   <mat-form-field class="textInput">
-    <mat-placeholder>
-      {{ placeholder() }}
-    </mat-placeholder>
-    <input matInput #serviceId="ngModel" name="serviceId" id="serviceId" required
-           appInvalidDomain [data]="data" pattern="^\S+"
-           [(ngModel)]="data.service.serviceId">
-    <mat-error i18n *ngIf="data.invalidDomain">You do not have permissions to create a service for the domain entered in the service id</mat-error>
-    <mat-error i18n *ngIf="!data.invalidDomain">Please remove any leading or trailing spaces from your service id.</mat-error>
-    <mat-hint align="end">
-      <lib-hint></lib-hint>
-    </mat-hint>
+    <mat-placeholder>{{ prompt }}</mat-placeholder>
+    <input matInput appInvalidDomain pattern="^\S+" required [formControl]="control">
+    <mat-error i18n *ngIf="invalidDomain">You do not have permissions to create a service for the domain entered in the service id</mat-error>
+    <mat-error i18n *ngIf="!invalidDomain">Please remove any leading or trailing spaces from your service id.</mat-error>
+    <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp
-            i18n-matTooltip="services.form.label.serviceId"
-            [matTooltip]="tooltip()">
-  </mat-icon>
-</lib-input>
+  <mat-icon appHelp i18n-matTooltip [matTooltip]="tip"></mat-icon>
+</div>
+
+
+
+

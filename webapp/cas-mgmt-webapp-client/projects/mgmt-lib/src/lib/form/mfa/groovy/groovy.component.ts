@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {GroovyRegisteredServiceMultifactorPolicy} from '../../../domain/multifactor';
-import {DataRecord} from '../../data';
+import {Component, Input, OnInit} from '@angular/core';
+import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-groovy',
@@ -9,13 +8,10 @@ import {DataRecord} from '../../data';
 })
 export class GroovyComponent implements OnInit {
 
-  policy: GroovyRegisteredServiceMultifactorPolicy;
-  original: GroovyRegisteredServiceMultifactorPolicy;
+  @Input()
+  control: MgmtFormControl;
 
-  constructor(public data: DataRecord) {
-    this.policy = data.service.multifactorPolicy as GroovyRegisteredServiceMultifactorPolicy;
-    this.original = data.original && data.original.multifactorPolicy as GroovyRegisteredServiceMultifactorPolicy;
-
+  constructor() {
   }
 
   ngOnInit() {

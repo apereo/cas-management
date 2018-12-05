@@ -1,7 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
+        <cve>CVE-1999-0182</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2012-1182</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2015-7082</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2004-2687</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2011-2411</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2017-1000393</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2017-14867</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2017-9461</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2002-2196</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2003-1332</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2006-0477</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2006-0550</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2006-1643</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2008-5516</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2010-2063</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2010-2542</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2010-3069</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2015-7545</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2016-9299</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2017-1000353</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2017-5645</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2016-7048</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2015-6420</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2017-15708</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-16132</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-15728</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2015-5211</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-1000613</cve>
+    </suppress>
+    <suppress>
         <cve>CVE-2011-4461</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2017-8316</cve>
     </suppress>
     <suppress>
         <cve>CVE-2018-1131</cve>
@@ -580,12 +667,6 @@
         <cve>CVE-2014-9494</cve>
     </suppress>
     <suppress>
-        <cve>CVE-2015-5211</cve>
-    </suppress>
-    <suppress>
-        <cve>CVE-2018-16132</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[ file name: jackson-databind and jetty embedded in ehcache ]]></notes>
         <filePath regex="true" >.*/ehcache-2.10.5.jar/rest-management-private-classpath/.*</filePath>
         <cve>CVE-2017-15095</cve>
@@ -684,5 +765,27 @@
    ]]></notes>
         <gav regex="true">^io\.fabric8:kubernetes-client:.*$</gav>
         <cpe>cpe:/a:kubernetes:kubernetes</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: hazelcast-docker-swarm-discovery-spi-1.0-RC8.jar
+   ]]></notes>
+        <gav regex="true">^org\.bitsofinfo:hazelcast-docker-swarm-discovery-spi:.*$</gav>
+        <cpe>cpe:/a:docker:docker</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: wink-client-apache-httpclient-1.4.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.wink:wink-client-apache-httpclient:.*$</gav>
+        <cpe>cpe:/a:apache:apache_http_server</cpe>
+        <cpe>cpe:/a:wink:wink</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-session-data-mongodb-2.1.0.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.session:spring-session-data-mongodb:.*$</gav>
+        <cpe>cpe:/a:mongodb:mongodb</cpe>
     </suppress>
 </suppressions>

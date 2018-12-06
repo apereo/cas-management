@@ -1,5 +1,5 @@
 apply from: rootProject.file("gradle/node.gradle")
-
+/*
 if (!Boolean.getBoolean("skipClientBuild")) {
     if (rootProject.publishReleases || rootProject.publishSnapshots || Boolean.getBoolean("buildProd")) {
         classes.dependsOn(buildClient)
@@ -7,7 +7,7 @@ if (!Boolean.getBoolean("skipClientBuild")) {
         classes.dependsOn(buildClientDev)
     }
 }
-
+*/
 apply from: rootProject.file("gradle/webapp.gradle")
 
 if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases  && !rootProject.publishSnapshots && !rootProject.skipBootifulArtifact)) {

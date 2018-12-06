@@ -23,28 +23,5 @@ if (!Boolean.getBoolean("skipNodeModulesCleanUp")) {
     logger.info("Skipping node_modules cleanup...")
 }
 
-task buildLibrary(type: NpmTask, dependsOn: "npm_install",
-        description: "Compile client side library") {
-     args = ['run', 'build-lib']
-    
-    enabled = !Boolean.getBoolean("skipClientBuild")
-}
-
-task buildClientDev(type: NpmTask, dependsOn: "buildLibrary",
-        description: "Compile client side folder for development") {
-    args = ['run','build-management']
-    enabled = !Boolean.getBoolean("skipClientBuild")
-}
-
-task buildClient(type: NpmTask, dependsOn: "buildLibrary",
-        description: "Compile client side folder for production") {
-    args = ['run', 'build-management-prod']
-    enabled = !Boolean.getBoolean("skipClientBuild")
-}
-
-task ngLint(type: NpmTask, dependsOn: "npm_install",
-        description: "Runs Angular TypeScript and HtML Linting") {
-    args = ['run', 'lint']
-}
 
 

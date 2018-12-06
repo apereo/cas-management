@@ -27,6 +27,8 @@ include ":support:cas-mgmt-support-version-control"
 include ":support:cas-mgmt-support-search"
 
 include ":webapp:cas-mgmt-webapp"
+include ":webapp:cas-mgmt-webapp-client"
 include ":webapp:cas-mgmt-webapp-config"
 include ":webapp:cas-mgmt-webapp-init"
 include ":webapp:cas-mgmt-webapp-tomcat"
+

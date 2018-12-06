@@ -24,6 +24,14 @@ sourceSets {
 
 apply from: rootProject.file("gradle/springboot.gradle")
 
+if (!Boolean.getBoolean("skipClientBuild")) {
+    if (rootProject.publishReleases || rootProject.publishSnapshots || Boolean.getBoolean("buildProd")) {
+        processResources.dependsOn(':webapp:cas-mgmt-webapp-client:buildClient')
+    } else {
+        processResources.dependsOn(':webapp:cas-mgmt-webapp-client:buildClientDev')
+    }
+}
+
 dependencies {
   
     apply from: rootProject.file("config/core-config.gradle")

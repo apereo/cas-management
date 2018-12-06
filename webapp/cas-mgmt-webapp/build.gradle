@@ -1,7 +1,7 @@
 apply from: rootProject.file("gradle/node.gradle")
 
 if (!Boolean.getBoolean("skipClientBuild")) {
-    if (rootProject.publishReleases || Boolean.getBoolean("buildProd")) {
+    if (rootProject.publishReleases || rootProject.publishSnapshots || Boolean.getBoolean("buildProd")) {
         classes.dependsOn(buildClient)
     } else {
         classes.dependsOn(buildClientDev)

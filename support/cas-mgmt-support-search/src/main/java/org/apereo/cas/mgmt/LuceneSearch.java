@@ -62,6 +62,8 @@ import java.util.stream.Stream;
 @RequestMapping(path = "api/search", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LuceneSearch {
 
+    private static final int MAX_RESULTS = 1000;
+
     private final MgmtManagerFactory mgmtManagerFactory;
     private final CasUserProfileFactory casUserProfileFactory;
     private final CasManagementConfigurationProperties managementProperties;
@@ -186,7 +188,7 @@ public class LuceneSearch {
     private List<Document> results(final MMapDirectory memoryIndex, final Query query) throws Exception {
         val indexReader = DirectoryReader.open(memoryIndex);
         val searcher = new IndexSearcher(indexReader);
-        return Arrays.stream(searcher.search(query, 1000).scoreDocs)
+        return Arrays.stream(searcher.search(query, MAX_RESULTS).scoreDocs)
                 .map(s -> pullDoc(searcher, s))
                 .collect(Collectors.toList());
     }

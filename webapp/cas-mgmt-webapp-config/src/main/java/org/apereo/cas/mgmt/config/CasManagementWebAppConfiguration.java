@@ -151,7 +151,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(casManagementLocaleChangeInterceptor());
         registry.addInterceptor(casManagementSecurityInterceptor())
-            .addPathPatterns("/**").excludePathPatterns("/callback*", "/logout*", "/authorizationFailure");
+            .addPathPatterns("/**")
+                .excludePathPatterns("/images/**", "/css/**", "callback*", "logout*", "authorizationFailure*", "error*");
     }
 
     @Bean
@@ -176,7 +177,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public SpringResourceTemplateResolver casManagementStaticTemplateResolver() {
+    public SpringResourceTemplateResolver casManagementTemplateResolver() {
         val resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
         resolver.setPrefix("classpath:/dist/");
@@ -199,11 +200,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
         return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
     }
-
-    //@Bean
-    //public ForwardingController forwardingController() {
-    //    return new ForwardingController();
-    //}
 
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
     @Bean

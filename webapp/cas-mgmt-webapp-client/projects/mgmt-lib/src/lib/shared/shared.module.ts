@@ -81,7 +81,7 @@ import {AttributesComponent} from '../form/attributes/attributes.component';
     MatListModule,
     MatBadgeModule,
     MatSortModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   declarations: [
     InputComponent,

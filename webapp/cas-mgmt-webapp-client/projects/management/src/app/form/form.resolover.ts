@@ -6,11 +6,13 @@ import {Injectable} from '@angular/core';
 import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {FormService} from './form.service';
 import {AbstractRegisteredService, RegexRegisteredService} from 'mgmt-lib';
-import {ChangesService} from '../changes/changes.service';
+import {ChangesService} from '../version-control/changes/changes.service';
 import {Observable} from 'rxjs/internal/Observable';
 import {map, take} from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FormResolve implements Resolve<AbstractRegisteredService[]> {
 
   constructor(private service: FormService, private changeService: ChangesService) {}

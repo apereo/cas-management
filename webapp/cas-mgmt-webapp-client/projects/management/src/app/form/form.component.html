@@ -22,13 +22,6 @@
           <ng-container i18n>Basics</ng-container>
       </ng-template>
     </mat-tab>
-    <!--
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Service Type</ng-container>
-      </ng-template>
-    </mat-tab>
-    -->
     <mat-tab *ngIf="isSaml() || isOauth() || isOidc() || isWsFed()">
       <ng-template mat-tab-label>
         <ng-container *ngIf="isSaml()" i18n>SAML2 SP</ng-container>

@@ -114,7 +114,8 @@ import { EnvironmentsComponent } from './form/environments/environments.componen
     UidattrsModule,
     WsfedclientComponent,
     PrivacyUrlComponent,
-    EnvironmentsComponent
+    EnvironmentsComponent,
+    SharedModule
   ]
 })
 export class MgmtLibModule { }

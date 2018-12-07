@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormService} from './form.service';
 import {MatSnackBar, MatTabGroup} from '@angular/material';
@@ -17,7 +17,7 @@ import {
   UserService,
   WSFederationRegisterdService
 } from 'mgmt-lib';
-import {ImportService} from '../import/import.service';
+import {ImportService} from '../registry/import/import.service';
 import {MgmtFormGroup} from 'mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
 

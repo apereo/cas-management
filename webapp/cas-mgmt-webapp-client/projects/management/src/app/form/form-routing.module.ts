@@ -125,7 +125,7 @@ const childRoutes: Routes = [
         }
       },
       {
-        path: 'form/:id',
+        path: ':id',
         component: FormComponent,
         resolve: {
           resp: FormResolve

@@ -9,7 +9,9 @@ import {MatDialog} from '@angular/material';
 import {Observable} from 'rxjs';
 import {AbstractRegisteredService, FormData} from 'mgmt-lib';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FormService {
 
   controller = 'api/services/';

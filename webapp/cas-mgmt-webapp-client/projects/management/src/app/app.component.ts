@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ControlsService} from './controls/controls.service';
-import {TimeoutComponent} from './timeout/timeout.component';
-import {FormDataService, AppConfigService} from 'mgmt-lib';
+import {ControlsService} from './project-share/controls/controls.service';
+import {TimeoutComponent} from './core/timeout/timeout.component';
+import {AppConfigService, FormDataService} from 'mgmt-lib';
 
 @Component({
   selector: 'mgmt-root',

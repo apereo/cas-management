@@ -16,7 +16,6 @@ import {TabProxyComponent} from './tab-proxy/tab-proxy.component';
 import {TabUsernameattrComponent} from './tab-usernameattr/tab-usernameattr.component';
 import {TabAttrreleaseComponent} from './tab-attrrelease/tab-attrrelease.component';
 import {TabPropertiesComponent} from './tab-properties/tab-properties.component';
-import {FormService} from './form.service';
 import { TabOauthComponent } from './tab-oauth/tab-oauth.component';
 import { TabSamlComponent } from './tab-saml/tab-saml.component';
 import { TabWsfedComponent } from './tab-wsfed/tab-wsfed.component';
@@ -24,19 +23,14 @@ import { TabContactsComponent } from './tab-contacts/tab-contacts.component';
 import { TabExpirationComponent } from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
-import {MgmtLibModule, SharedModule} from 'mgmt-lib';
-import {MgmtModule} from '../mgmt.module';
 import { MgmtCardComponent } from './mgmt-card/mgmt-card.component';
+import {ProjectShareModule} from '../project-share/project-share.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
+    ProjectShareModule,
     ReactiveFormsModule,
     FormRoutingModule,
-    SharedModule,
-    MgmtModule,
-    MgmtLibModule
   ],
   declarations: [
     FormComponent,
@@ -60,10 +54,6 @@ import { MgmtCardComponent } from './mgmt-card/mgmt-card.component';
     TabContactsComponent,
     TabExpirationComponent,
     MgmtCardComponent,
-  ],
-  providers: [
-    FormResolve,
-    FormService
   ]
 })
 

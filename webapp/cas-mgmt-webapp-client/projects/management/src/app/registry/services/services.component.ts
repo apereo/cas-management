@@ -60,19 +60,19 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     if (item) {
       this.selectedItem = item;
     }
-    this.router.navigate(['/form', this.selectedItem.assignedId]);
+    this.router.navigate(['form', this.selectedItem.assignedId]);
   }
 
   getYaml() {
-    this.router.navigate(['/yaml', this.selectedItem.assignedId]);
+    this.router.navigate(['registry/yaml', this.selectedItem.assignedId]);
   }
 
   getJson() {
-    this.router.navigate(['/json', this.selectedItem.assignedId]);
+    this.router.navigate(['registry/json', this.selectedItem.assignedId]);
   }
 
   serviceDuplicate() {
-    this.router.navigate(['/duplicate', this.selectedItem.assignedId]);
+    this.router.navigate(['form/duplicate', this.selectedItem.assignedId]);
   }
 
   openModalDelete() {
@@ -125,7 +125,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   history() {
     const fileName: string = (this.selectedItem.name + '-' + this.selectedItem.assignedId + '.json').replace(/ /g, '');
-    this.router.navigate(['/history', fileName]);
+    this.router.navigate(['version-control/history', fileName]);
   }
 
   revert() {

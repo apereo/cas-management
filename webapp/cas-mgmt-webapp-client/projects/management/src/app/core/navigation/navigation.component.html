@@ -21,7 +21,7 @@
         <mat-icon>search</mat-icon>
         <ng-container i18n>Search</ng-container>
       </a>
-      <a mat-list-item *ngIf="isDelegated() && isAdmin()" routerLink="/pulls" (click)="close()">
+      <a mat-list-item *ngIf="isDelegated() && isAdmin()" routerLink="delegated/pulls" (click)="close()">
         <mat-icon>file_download</mat-icon>
         <span [matBadge]="pullRequests()"
               matBadgePosition="above after"
@@ -29,7 +29,7 @@
               matBadgeColor="accent"
               [matBadgeHidden]="pullRequests() === 0" i18n>Pull Requests</span>
       </a>
-      <a mat-list-item *ngIf="isDelegated() && !isAdmin()" routerLink="/submits" (click)="close()">
+      <a mat-list-item *ngIf="isDelegated() && !isAdmin()" routerLink="delegated/submits" (click)="close()">
         <mat-icon>file_upload</mat-icon>
         <ng-container i18n>Submit Requests</ng-container>
       </a>
@@ -41,7 +41,7 @@
         <mat-icon>add_circle</mat-icon>
         <ng-container i18n>Import Service</ng-container>
       </a>
-      <a mat-list-item *ngIf="appService.config.versionControl" routerLink="/localChanges" (click)="close()">
+      <a mat-list-item *ngIf="appService.config.versionControl" routerLink="version-control/localChanges" (click)="close()">
         <mat-icon>build</mat-icon>
         <ng-container i18n>Working Changes</ng-container>
       </a>
@@ -49,7 +49,7 @@
         <mat-icon>sync</mat-icon>
         <ng-container i18n>Synchronize</ng-container>
       </a>
-      <a mat-list-item *ngIf="isAdmin() && isVersionControl()" routerLink="/repo-history" (click)="close()">
+      <a mat-list-item *ngIf="isAdmin() && isVersionControl()" routerLink="version-control/repo-history" (click)="close()">
         <mat-icon>history</mat-icon>
         <ng-container i18n>History</ng-container>
       </a>

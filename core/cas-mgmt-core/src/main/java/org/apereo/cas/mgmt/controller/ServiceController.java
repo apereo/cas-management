@@ -8,6 +8,7 @@ import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -106,6 +107,10 @@ public class ServiceController {
                             @RequestBody final RegisteredService service) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+        save(service, manager);
+    }
+
+    private void save(final RegisteredService service, final ManagementServicesManager manager) throws Exception {
         if (service.getEvaluationOrder() < 0) {
             val domain = manager.extractDomain(service.getServiceId());
             service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
@@ -153,6 +158,32 @@ public class ServiceController {
     }
 
     /**
+     * Methods that saves changes made to a service through a YAML string.
+     *
+     * @param request - the request
+     * @param response - the response
+     * @param id - the id of the service
+     * @param yaml - the service as a yaml string
+     * @throws Exception - failed
+     */
+    @PostMapping("yaml/{id}")
+    public void saveYaml(final HttpServletRequest request,
+                         final HttpServletResponse response,
+                         final @PathVariable("id") Long id,
+                         final @RequestBody String yaml) throws Exception {
+        try {
+            val service = CasManagementUtils.parseYaml(yaml);
+            if (!id.equals(service.getId())) {
+                throw new Exception("Changes to assigned id are not allowed");
+            }
+            val casUserProfile = casUserProfileFactory.from(request, response);
+            val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+            save(service, manager);
+        } catch (final UnrecognizedPropertyException urp) {
+            throw new Exception("Unrecognized property '" + urp.getPropertyName() + "'");
+        }
+    }
+    /**
      * Method that will return the service as an HJson string.
      *
      * @param request  - HttpServletRequest
@@ -167,6 +198,34 @@ public class ServiceController {
                           final @PathVariable("id") Long id) throws Exception {
         val service = getService(request, response, id);
         return CasManagementUtils.toJson(service);
+    }
+
+    /**
+     * Saves a service that was edited as Json string.
+     *
+     * @param request - the request
+     * @param response - the response
+     * @param id - the service id
+     * @param json - the sevice as a json string
+     * @throws Exception - failed
+     */
+    @PostMapping("/json/{id}")
+    public void saveJson(final HttpServletRequest request,
+                         final HttpServletResponse response,
+                         final @PathVariable("id") Long id,
+                         final @RequestBody String json) throws Exception {
+
+        try {
+            val service = CasManagementUtils.parseJson(json);
+            if (!id.equals(service.getId())) {
+                throw new Exception("Changes to assigned id are not allowed.");
+            }
+            val casUserProfile = casUserProfileFactory.from(request, response);
+            val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+            save(service, manager);
+        } catch (final UnrecognizedPropertyException urp) {
+            throw new Exception("Unknown property '" + urp.getPropertyName() + "'");
+        }
     }
 
     private RegisteredService getService(final HttpServletRequest request,
@@ -188,9 +247,10 @@ public class ServiceController {
      *
      * @param service  - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
+     * @throws Exception - failed
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public RegisteredService importService(final @RequestBody String service) {
+    public RegisteredService importService(final @RequestBody String service) throws Exception {
         val svc = service.startsWith("{") ? CasManagementUtils.fromJson(service) : CasManagementUtils.fromYaml(service);
         svc.setId(-1);
         return svc;

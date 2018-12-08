@@ -5,10 +5,10 @@
   </div>
   <div style="flex: 1 1 auto"></div>
   <div>
-    <app-controls></app-controls>
+    <app-controls [showEdit]="changed" (save)="save()" (reset)="reset()"></app-controls>
   </div>
 </div>
 
 <div style="height:600px;margin-right:10px;margin-left:10px;">
-  <app-editor [file]="file" mode="hjson" theme="eclipse" style="width:100%;height:100%;"></app-editor>
+  <app-editor #editor [file]="file" (changed)="change()" mode="hjson" theme="eclipse" style="width:100%;height:100%;"></app-editor>
 </div>

@@ -1,4 +1,6 @@
-import { Input, Component, OnInit } from '@angular/core';
+import {Input, Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Ace} from 'ace-builds';
+import Editor = Ace.Editor;
 
 declare var ace: any;
 
@@ -16,7 +18,10 @@ export class EditorComponent implements OnInit {
   @Input()
   theme: String;
 
-  editor: any;
+  @Output()
+  changed: EventEmitter<void> = new EventEmitter<void>();
+
+  editor: Editor;
 
   ngOnInit() {
     this.editor = ace.edit('editor');
@@ -29,14 +34,17 @@ export class EditorComponent implements OnInit {
       this.editor.setTheme('ace/theme/' + this.theme);
     }
     this.editor.setKeyboardHandler(Vim.handler);
-    this.editor.setFontSize(14);
-    this.editor.$blockScrolling = Infinity;
+    this.editor.setFontSize('14');
+    (<any>this.editor).$blockScrolling = Infinity;
   }
 
   @Input()
   set file(file: String) {
     if (this.editor) {
-      this.editor.setValue(file ? file : '');
+      this.editor.setValue(file ? file as string : '');
+      this.editor.once("change", (event) => {
+        this.changed.emit();
+      });
     }
     setTimeout(() => {
       this.editor.focus();

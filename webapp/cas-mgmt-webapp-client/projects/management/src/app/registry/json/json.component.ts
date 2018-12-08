@@ -1,7 +1,10 @@
-import { Component, OnInit, AfterViewInit} from '@angular/core';
-import {ChangesService} from '../../version-control/changes/changes.service';
+import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
+import {ServiceViewService} from '../services/service.service';
+import {EditorComponent} from '../../project-share/editor.component';
+import {MatSnackBar} from '@angular/material';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-json',
@@ -12,9 +15,18 @@ export class JSONComponent implements AfterViewInit, OnInit {
 
   file: String;
 
-  constructor(private service: ChangesService,
+  changed = false;
+
+  @ViewChild('editor')
+  editor: EditorComponent;
+
+  constructor(private service: ServiceViewService,
               private location: Location,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private snackBar: MatSnackBar) { }
+
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -25,8 +37,35 @@ export class JSONComponent implements AfterViewInit, OnInit {
     }, 100);
   }
 
-  ngOnInit() {
+  save() {
+    this.service.saveJson(this.route.snapshot.params['id'], this.editor.getFile())
+      .subscribe(resp => this.handleSuccess(), error => this.handleError(error));
+  }
 
+  handleSuccess() {
+    this.snackBar.open(
+      "Service successfully saved",
+      "Dismiss",
+      { duration: 5000 }
+    );
+    this.location.back();
+  }
+
+  handleError(error: HttpErrorResponse) {
+    this.snackBar.open(
+      error.error.message,
+      "Dismiss",
+      { duration: 5000 }
+    );
+  }
+
+  change() {
+    this.changed = true;
+  }
+
+  reset() {
+    this.changed = false;
+    this.editor.file = this.file;
   }
 
 }

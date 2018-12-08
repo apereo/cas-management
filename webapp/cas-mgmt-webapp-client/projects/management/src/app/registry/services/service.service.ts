@@ -28,6 +28,14 @@ export class ServiceViewService extends Service {
     return this.delete(this.controller + '/' + id);
   }
 
+  saveJson(id: number, json: String): Observable<void> {
+    return this.post(this.controller + '/json/' + id, json);
+  }
+
+  saveYaml(id: number, yaml: String): Observable<void> {
+    return this.post(this.controller + '/yaml/' + id,  yaml);
+  }
+
   revert(fileName: string): Observable<String> {
     return this.getText('api/history/revert/' + fileName);
   }

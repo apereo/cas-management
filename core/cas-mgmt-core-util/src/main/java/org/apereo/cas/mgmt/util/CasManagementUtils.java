@@ -5,9 +5,11 @@ import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.RegexUtils;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.hjson.JsonValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -81,8 +83,9 @@ public final class CasManagementUtils {
      *
      * @param yaml - the yaml
      * @return - RegisteredService
+     * @throws Exception - Parse failure
      */
-    public static RegisteredService fromYaml(final String yaml) {
+    public static RegisteredService fromYaml(final String yaml) throws Exception {
         return YAML_SERIALIZER.from(yaml);
     }
 
@@ -90,8 +93,9 @@ public final class CasManagementUtils {
      * Parses the passed json into a RegisteredService.
      * @param json - the json
      * @return - RegisteredService
+     * @throws Exception - Parse failure
      */
-    public static RegisteredService fromJson(final String json) {
+    public static RegisteredService fromJson(final String json) throws Exception {
         return JSON_SERIALIZER.from(json);
     }
 
@@ -103,6 +107,33 @@ public final class CasManagementUtils {
     public static RegisteredService fromJson(final File json) {
         return JSON_SERIALIZER.from(json);
     }
+
+    /**
+     * Parses the passed yaml into a RegisteredService.
+     *
+     * @param yaml - the yaml
+     * @return - RegisteredService
+     * @throws Exception - Parse failure
+     */
+    public static RegisteredService parseYaml(final String yaml) throws Exception {
+        val om = YAML_SERIALIZER.getObjectMapper().copy();
+        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        return om.readValue(yaml, RegisteredService.class);
+    }
+
+    /**
+     * Parses the passed json into a RegisteredService.
+     * @param json - the json
+     * @return - RegisteredService
+     * @throws Exception - Parse failure
+     */
+    public static RegisteredService parseJson(final String json) throws Exception {
+        val om = JSON_SERIALIZER.getObjectMapper().copy();
+        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        val jsonString = JsonValue.readHjson(json).toString();
+        return om.readValue(jsonString, RegisteredService.class);
+    }
+
 
     /**
      * Writes Services to file in JSON.

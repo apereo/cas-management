@@ -37,8 +37,6 @@ export class FormService {
       );
   }
 
-
-
   handleError(e: HttpErrorResponse, dialog: MatDialog): Observable<any> {
     if (e.status === 0) {
       //dialog.open(UnknownComponent, {

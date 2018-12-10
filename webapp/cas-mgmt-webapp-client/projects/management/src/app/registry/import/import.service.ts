@@ -13,7 +13,7 @@ export class ImportService extends Service {
   service: AbstractRegisteredService;
 
   import(file: String): Observable<AbstractRegisteredService> {
-    return this.http.post<AbstractRegisteredService>(this.controller + 'import', file)
+    return this.post<AbstractRegisteredService>(this.controller + 'import', file)
       .pipe(
         tap(resp => this.service = resp),
         catchError((e) => this.handleError(e, this.dialog))
@@ -21,7 +21,7 @@ export class ImportService extends Service {
   }
 
   importSubmission(file: String): Observable<AbstractRegisteredService> {
-    return this.http.post<AbstractRegisteredService>( 'api/submissions/import', file)
+    return this.post<AbstractRegisteredService>( 'api/submissions/import', file)
       .pipe(
         tap(resp => {
           this.submissionFile = file;

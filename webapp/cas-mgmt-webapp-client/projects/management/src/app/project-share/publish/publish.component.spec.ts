@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-
-import { CommitComponent } from './commit.component';
-import {ControlsService} from '../../project-share/controls/controls.service';
+import { PublishComponent } from './publish.component';
+import {ControlsService} from '../controls/controls.service';
 import {Change} from 'mgmt-lib';
 
 const controlsServiceStub = {
@@ -27,14 +26,14 @@ const controlsServiceStub = {
   }
 };
 
-describe('CommitComponent', () => {
-  let component: CommitComponent;
-  let fixture: ComponentFixture<CommitComponent>;
+describe('PublishComponent', () => {
+  let component: PublishComponent;
+  let fixture: ComponentFixture<PublishComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule ],
-      declarations: [ CommitComponent ],
+      declarations: [ PublishComponent ],
       providers: [
         {provide: ControlsService, useValue: controlsServiceStub}
       ]
@@ -43,7 +42,7 @@ describe('CommitComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommitComponent);
+    fixture = TestBed.createComponent(PublishComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

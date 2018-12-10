@@ -2,12 +2,9 @@
  * Created by tschmidt on 2/23/17.
  */
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {FormRoutingModule} from './form-routing.module';
 import {FormComponent} from './form.component';
-import {FormResolve} from './form.resolover';
 import {TabBasicsComponent} from './tab-basics/tab-basics.component';
 import {TabLogoutComponent} from './tab-logout/tab-logout.component';
 import {TabAccessstrategyComponent} from './tab-accessstrategy/tab-accessstrategy.component';
@@ -29,8 +26,7 @@ import {ProjectShareModule} from '../project-share/project-share.module';
 @NgModule({
   imports: [
     ProjectShareModule,
-    ReactiveFormsModule,
-    FormRoutingModule,
+    FormRoutingModule
   ],
   declarations: [
     FormComponent,

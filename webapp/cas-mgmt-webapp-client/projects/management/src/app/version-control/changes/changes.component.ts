@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {DiffViewComponent} from '../diff-view/diff-view.component';
+import {ViewComponent} from '../../project-share/view/view.component';
 import {ChangesService} from './changes.service';
 import {DiffEntry, PaginatorComponent} from 'mgmt-lib';
 
@@ -39,7 +39,7 @@ export class ChangesComponent implements OnInit {
   viewDiff() {
     this.service.viewDiff(this.selectedItem.oldId, this.selectedItem.newId)
       .subscribe(f => {
-          this.dialog.open(DiffViewComponent, {
+          this.dialog.open(ViewComponent, {
             data: [f, 'diff', 'github'],
             width: '900px',
             position: {top: '50px'}
@@ -48,11 +48,7 @@ export class ChangesComponent implements OnInit {
         (error) => {console.log(error); this.snackBar.open(error.error, 'Dismiss')});
   }
 
-  //viewDiff() {
-  //  this.router.navigate(['/diff', {oldId: this.selectedItem.oldId, newId: this.selectedItem.newId}]);
-  //}
-
   viewChange() {
-    this.router.navigate(['/view', this.selectedItem.newId]);
+    this.router.navigate(['form/view', this.selectedItem.newId]);
   }
 }

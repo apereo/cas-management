@@ -25,13 +25,16 @@ export class ServiceIdComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.serviceType.valueChanges.subscribe(type => {
-      this.placeholder(type);
-      this.tooltip(type);
-    });
+    if (this.serviceType != null) {
+      this.serviceType.valueChanges.subscribe(type => {
+        this.placeholder(type);
+        this.tooltip(type);
+      });
+    }
     this.tooltip(this.serviceType.value);
     this.placeholder(this.serviceType.value);
-  }
+   }
+
 
   placeholder(type: String) {
     if (SamlRegisteredService.cName === type) {

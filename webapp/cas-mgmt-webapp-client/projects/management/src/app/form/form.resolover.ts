@@ -9,22 +9,27 @@ import {AbstractRegisteredService, RegexRegisteredService} from 'mgmt-lib';
 import {ChangesService} from '../version-control/changes/changes.service';
 import {Observable} from 'rxjs/internal/Observable';
 import {map, take} from 'rxjs/operators';
+import {ImportService} from '../registry/import/import.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormResolve implements Resolve<AbstractRegisteredService[]> {
 
-  constructor(private service: FormService, private changeService: ChangesService) {}
+  constructor(private service: FormService,
+              private changeService: ChangesService,
+              private importService: ImportService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<AbstractRegisteredService[]> | AbstractRegisteredService[] {
     const param: string = route.params['id'];
 
-    if (!param || param === '-1') {
-      return [new RegexRegisteredService()];
-    } else if (route.data.view) {
+    if (route.data.view) {
       return this.changeService.getChangePair(param).pipe(take(1));
-    } else {
+    } else if (route.data.import) {
+      return [this.importService.service];
+    } else if (!param || param === '-1') {
+      return [new RegexRegisteredService()];
+    }
       return this.service.getService(param)
         .pipe(
           take(1),
@@ -40,6 +45,5 @@ export class FormResolve implements Resolve<AbstractRegisteredService[]> {
             }
           })
         );
-    }
   }
 }

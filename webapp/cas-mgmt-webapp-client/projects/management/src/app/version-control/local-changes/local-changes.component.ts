@@ -2,9 +2,11 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Change, PaginatorComponent} from 'mgmt-lib';
 import {ControlsService} from '../../project-share/controls/controls.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {RevertComponent} from '../revert/revert.component';
+import {RevertComponent} from '../../project-share/revert/revert.component';
 import {ServiceViewService} from '../../registry/services/service.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ChangesService} from '../changes/changes.service';
+import {ViewComponent} from '../../project-share/view/view.component';
 
 @Component({
   selector: 'app-local-changes',
@@ -26,6 +28,7 @@ export class LocalChangesComponent implements OnInit {
               private route: ActivatedRoute,
               private controlsService: ControlsService,
               private service: ServiceViewService,
+              private changeService: ChangesService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) { }
 
@@ -84,12 +87,28 @@ export class LocalChangesComponent implements OnInit {
   }
 
   viewDiff() {
-    this.router.navigate(['/diff', {oldId: this.selectedItem.oldId, newId: this.selectedItem.newId}]);
+    this.changeService.viewDiff(this.selectedItem.oldId, this.selectedItem.newId)
+      .subscribe(resp => this.openView(resp, 'diff', 'github'));
   }
 
   viewJSON() {
     const id = this.selectedItem.changeType === 'DELETE' ? this.selectedItem.oldId : this.selectedItem.newId;
-    this.router.navigate(['/viewJson', id]);
+    this.changeService.viewJson(id)
+      .subscribe(resp => this.openView(resp, 'hjson', 'eclipse'));
+  }
+
+  viewYaml() {
+    const id = this.selectedItem.changeType === 'DELETE' ? this.selectedItem.oldId : this.selectedItem.newId;
+    this.changeService.viewYaml(id)
+      .subscribe(resp => this.openView(resp, 'yaml', 'eclipse'));
+  }
+
+  openView(text: String, mode: string, theme: string) {
+    this.dialog.open(ViewComponent, {
+      data: [text, mode, theme],
+      width: '900px',
+      position: {top: '50px'}
+    });
   }
 
 }

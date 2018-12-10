@@ -125,7 +125,7 @@ const childRoutes: Routes = [
         }
       },
       {
-        path: ':id',
+        path: 'edit/:id',
         component: FormComponent,
         resolve: {
           resp: FormResolve
@@ -136,6 +136,9 @@ const childRoutes: Routes = [
         path: 'importService',
         component: FormComponent,
         children: childRoutes,
+        resolve: {
+          resp: FormResolve
+        },
         data: {
           import: true
         }

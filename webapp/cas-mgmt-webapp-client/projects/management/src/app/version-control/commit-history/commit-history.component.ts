@@ -4,7 +4,7 @@ import {CommitHistoryService} from './commit-history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry, PaginatorComponent} from 'mgmt-lib';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {DiffViewComponent} from '../diff-view/diff-view.component';
+import {ViewComponent} from '../../project-share/view/view.component';
 import {ChangesService} from '../changes/changes.service';
 
 @Component({
@@ -52,7 +52,7 @@ export class CommitHistoryComponent implements OnInit {
   }
 
   viewChange() {
-    this.router.navigate(['/view', this.selectedItem.oldId]);
+    this.router.navigate(['form/view', this.selectedItem.oldId]);
   }
 
   checkout() {
@@ -79,47 +79,31 @@ export class CommitHistoryComponent implements OnInit {
 
   viewChangeMade() {
     this.service.change(this.selectedItem.commit, this.selectedItem.path)
-      .subscribe(f => {
-        this.dialog.open(DiffViewComponent, {
-          data: [f, 'diff', 'github'],
-          width: '900px',
-          position: {top: '50px'}
-        })
-      });
+      .subscribe(f => this.openView(f, 'diff', 'github'));
   }
 
   viewDiff() {
     this.service.toHead(this.selectedItem.commit, this.selectedItem.path)
-      .subscribe(f => {
-        this.dialog.open(DiffViewComponent, {
-          data: [f, 'diff', 'github'],
-          width: '900px',
-          position: {top: '50px'}
-        })
-      },
+      .subscribe(f => this.openView(f, 'diff', 'github'),
         (error) => {console.log(error); this.snackBar.open(error.error, 'Dismiss')});
   }
 
   viewJSON() {
     this.changeService.viewJson(this.selectedItem.oldId)
-      .subscribe(f => {
-        this.dialog.open(DiffViewComponent, {
-          data: [f, 'hjson', 'eclipse'],
-          width: '900px',
-          position: {top: '50px'}
-        })
-      });
+      .subscribe(f => this.openView(f, 'hjson', 'eclipse'));
   }
 
   viewYaml() {
     this.changeService.viewYaml(this.selectedItem.oldId)
-      .subscribe(f => {
-        this.dialog.open(DiffViewComponent, {
-          data: [f, 'yaml', 'eclipse'],
-          width: '900px',
-          position: {top: '50px'}
-        })
-      });
+      .subscribe(f => this.openView(f, 'yaml', 'eclipse'));
+  }
+
+  openView(text: String, mode: string, theme: string) {
+    this.dialog.open(ViewComponent, {
+       data: [text, mode, theme],
+       width: '900px',
+       position: {top: '50px'}
+    });
   }
 
   first(): boolean {

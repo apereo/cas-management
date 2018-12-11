@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ControlsService} from './project-share/controls/controls.service';
-import {TimeoutComponent} from './core/timeout/timeout.component';
 import {FormDataService, AppConfigService} from 'mgmt-lib';
 
 @Component({
@@ -18,25 +17,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setSessionTimer();
     if (this.appConfig.config.versionControl) {
       this.controlService.callStatus();
     }
-  }
-
-  setSessionTimer() {
-    setTimeout(() => {
-      this.dialog.open(TimeoutComponent, {
-        width: '500px',
-        position: { top: '100px'}
-      }).afterClosed().subscribe((result) => {
-        if (result) {
-          window.location.href = 'logout.html';
-        } else {
-          this.setSessionTimer();
-        }
-      })
-    }, (30 * 60 * 1000));
   }
 
 }

@@ -35,7 +35,11 @@ import {ThemeidComponent} from './form/themeid/themeid.component';
 import {UidattrsModule} from './form/uidattrs/uidattrs.module';
 import {WsfedclientComponent} from './form/wsfedclient/wsfedclient.component';
 import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
-import { EnvironmentsComponent } from './form/environments/environments.component';
+import {EnvironmentsComponent} from './form/environments/environments.component';
+import { TrackerComponent } from './tracker/tracker.component';
+import {TimeoutComponent} from './timeout/timeout.component';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {ServiceInterceptor} from './interceptor';
 
 @NgModule({
   imports: [
@@ -78,7 +82,15 @@ import { EnvironmentsComponent } from './form/environments/environments.componen
     ThemeidComponent,
     WsfedclientComponent,
     PrivacyUrlComponent,
-    EnvironmentsComponent
+    EnvironmentsComponent,
+    TrackerComponent,
+    TimeoutComponent
+  ],
+  entryComponents: [
+    TimeoutComponent
+  ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: ServiceInterceptor, multi: true}
   ],
   exports: [
     ServiceIdComponent,
@@ -115,7 +127,9 @@ import { EnvironmentsComponent } from './form/environments/environments.componen
     WsfedclientComponent,
     PrivacyUrlComponent,
     EnvironmentsComponent,
-    SharedModule
+    SharedModule,
+    TrackerComponent,
+    TimeoutComponent
   ]
 })
 export class MgmtLibModule { }

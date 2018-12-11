@@ -19,7 +19,7 @@ export class FormDataService extends Service {
   }
 
   private formData(): Observable<FormData> {
-    return this.http.get<FormData>('api/formData')
+    return this.get<FormData>('api/formData')
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
       );

@@ -48,3 +48,4 @@ export * from './lib/footer/footer.component';
 export * from './lib/form/mgmt-formcontrol';
 export * from './lib/form-data.service';
 export * from './lib/form/mgmt-form-group';
+export * from './lib/tracker/tracker.component';

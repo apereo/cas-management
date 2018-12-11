@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {SubmitService} from './submits.service';
 import {Branch, PaginatorComponent} from 'mgmt-lib';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {RevertComponent} from '../../version-control/revert/revert.component';
+import {RevertComponent} from '../../project-share/revert/revert.component';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({

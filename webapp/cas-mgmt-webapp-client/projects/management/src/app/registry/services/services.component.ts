@@ -5,7 +5,7 @@ import {ServiceViewService} from './service.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
 import {ControlsService} from '../../project-share/controls/controls.service';
-import {RevertComponent} from '../../version-control/revert/revert.component';
+import {RevertComponent} from '../../project-share/revert/revert.component';
 import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
@@ -60,7 +60,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     if (item) {
       this.selectedItem = item;
     }
-    this.router.navigate(['form', this.selectedItem.assignedId]);
+    this.router.navigate(['form/edit', this.selectedItem.assignedId]);
   }
 
   getYaml() {

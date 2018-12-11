@@ -55,7 +55,7 @@ export class RepoHistoryComponent implements OnInit {
       this.selectedItem = commit;
     }
 
-    this.router.navigate(['/commit-history', this.selectedItem.id]);
+    this.router.navigate(['version-control/commit-history', this.selectedItem.id]);
   }
 
   checkout() {

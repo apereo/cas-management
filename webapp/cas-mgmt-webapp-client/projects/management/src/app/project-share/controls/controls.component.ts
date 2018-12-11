@@ -2,9 +2,9 @@ import {Component, OnInit, Output, EventEmitter, ViewChild, Input} from '@angula
 import {UserService, Commit, AppConfigService} from 'mgmt-lib';
 import {ControlsService} from './controls.service';
 import {Location} from '@angular/common';
-import {PublishComponent} from '../../version-control/publish/publish.component';
+import {PublishComponent} from '../publish/publish.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {CommitComponent} from '../../version-control/commit/commit.component';
+import {CommitComponent} from '../commit/commit.component';
 
 @Component({
   selector: 'app-controls',

@@ -3,9 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ControlsComponent } from './controls.component';
-import {CommitComponent} from '../../version-control/commit/commit.component';
+import {CommitComponent} from '../commit/commit.component';
 import {ControlsService} from './controls.service';
-import {PublishComponent} from '../../version-control/publish/publish.component';
+import {PublishComponent} from '../publish/publish.component';
 import {Change, UserService} from 'mgmt-lib';
 
 const userServiceStub = {

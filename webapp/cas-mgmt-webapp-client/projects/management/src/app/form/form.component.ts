@@ -74,23 +74,17 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
     this.data.view = this.view;
-    if (this.route.snapshot.data.import) {
-      this.imported = true;
-      this.loadService(this.importService.service);
-      this.goto(Tabs.BASICS);
-    } else {
-      this.route.data
-        .subscribe((data: { resp: AbstractRegisteredService[] }) => {
-          if (data.resp && data.resp[1]) {
-            this.data.original = data.resp[1];
-          }
-          if (data.resp && data.resp[0]) {
-            this.loadService(data.resp[0]);
-            this.goto(Tabs.BASICS)
-          }
-
-        });
-    }
+    this.imported = this.route.snapshot.data.import;
+    this.route.data
+      .subscribe((data: { resp: AbstractRegisteredService[] }) => {
+        if (data.resp && data.resp[1]) {
+          this.data.original = data.resp[1];
+        }
+        if (data.resp && data.resp[0]) {
+          this.loadService(data.resp[0]);
+          this.goto(Tabs.BASICS)
+        }
+      });
   }
 
   goto(tab: Tabs) {
@@ -294,7 +288,7 @@ export class FormComponent implements OnInit {
   }
 
   mapForm(): boolean {
-    let touched: boolean = false;
+    let touched: boolean = this.imported;
     for (let key of Array.from(this.data.formMap.keys())) {
       const form = this.data.formMap.get(key) as MgmtFormGroup;
       if (form.form.status === 'VALID' && form.form.touched) {
@@ -353,5 +347,14 @@ export class FormComponent implements OnInit {
     for(let fg of Array.from(this.data.formMap.values())) {
       (<MgmtFormGroup>fg).form.reset(fg.formMap());
     }
+  }
+
+  touched(): boolean {
+    for (let fg of Array.from(this.data.formMap.values())) {
+      if ((<MgmtFormGroup>fg).form.touched) {
+        return true;
+      }
+    }
+    return false;
   }
 }

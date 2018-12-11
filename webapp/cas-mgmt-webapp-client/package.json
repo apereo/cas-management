@@ -5,8 +5,8 @@
     "ng": "ng",
     "build-lib": "ng build mgmt-lib",
     "start": "ng serve",
-    "build-management": "ng build --base-href=/cas-management/ --project management",
-    "build-management-prod": "ng build --base-href=/cas-management/ --prod --project management",
+    "build-management": "ng build --project management",
+    "build-management-prod": "ng build --prod --project management",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

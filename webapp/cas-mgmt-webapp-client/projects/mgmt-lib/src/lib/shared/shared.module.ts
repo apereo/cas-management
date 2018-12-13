@@ -33,7 +33,7 @@ import {
   MatSidenavModule,
   MatBadgeModule,
   MatSortModule,
-  MatSlideToggleModule
+  MatSlideToggleModule, MatProgressBarModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {InputComponent} from '../form/input/input.component';
@@ -43,6 +43,7 @@ import {PaginatorComponent} from '../paginator/paginator.component';
 import {FooterComponent} from '../footer/footer.component';
 import {UnknownComponent} from '../unknown/unknown.component';
 import {AttributesComponent} from '../form/attributes/attributes.component';
+import {SpinnerComponent} from '../spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import {AttributesComponent} from '../form/attributes/attributes.component';
     MatListModule,
     MatBadgeModule,
     MatSortModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressBarModule
   ],
   declarations: [
     InputComponent,
@@ -90,7 +92,11 @@ import {AttributesComponent} from '../form/attributes/attributes.component';
     AttributesComponent,
     PaginatorComponent,
     FooterComponent,
-    UnknownComponent
+    UnknownComponent,
+    SpinnerComponent
+  ],
+  entryComponents: [
+    SpinnerComponent
   ],
   exports: [
     MatTabsModule,
@@ -125,13 +131,15 @@ import {AttributesComponent} from '../form/attributes/attributes.component';
     MatBadgeModule,
     MatSortModule,
     MatSlideToggleModule,
+    MatProgressBarModule,
     HintComponent,
     InputComponent,
     HelpDirective,
     AttributesComponent,
     PaginatorComponent,
     FooterComponent,
-    UnknownComponent
+    UnknownComponent,
+    SpinnerComponent
   ]
 })
 export class SharedModule {}

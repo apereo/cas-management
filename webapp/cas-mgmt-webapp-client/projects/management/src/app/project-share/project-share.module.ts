@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import {ControlsComponent} from './controls/controls.component';
 import {EditorComponent} from './editor.component';
-import {MgmtLibModule, SharedModule} from 'mgmt-lib';
+import {MgmtLibModule, SharedModule, SpinnerComponent} from 'mgmt-lib';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
@@ -25,7 +25,8 @@ import {RevertComponent} from './revert/revert.component';
     ViewComponent,
     CommitComponent,
     PublishComponent,
-    RevertComponent
+    RevertComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,

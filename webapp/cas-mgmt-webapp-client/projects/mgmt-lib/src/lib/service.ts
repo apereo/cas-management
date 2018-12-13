@@ -2,7 +2,7 @@
  * Created by tsschmi on 4/25/17.
  */
 
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
@@ -51,6 +51,13 @@ export class Service {
 
   getText(url: string): Observable<String> {
     return this.http.get(this.base + url, {responseType: 'text'})
+      .pipe(
+        catchError(e => this.handleError(e, this.dialog))
+      );
+  }
+
+  patch(url: string, data: any): Observable<void> {
+    return this.http.patch(this.base + url, data)
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
       );

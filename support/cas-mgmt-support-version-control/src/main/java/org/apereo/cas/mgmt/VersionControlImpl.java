@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -9,6 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.pac4j.core.profile.CommonProfile;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Implementation of {@link VersionControl}.
@@ -58,5 +64,25 @@ public class VersionControlImpl implements VersionControl {
 
     private String makeFileName(final RegisteredService service) throws Exception {
         return StringUtils.remove(service.getName() + '-' + service.getId() + ".json", " ");
+    }
+
+    @Override
+    public void commitSingleFile(final CommonProfile profile, final String path, final String msg) throws Exception {
+        git.commitSingleFile((CasUserProfile) profile, path, msg);
+    }
+
+    @Override
+    public Stream<DiffEntry> scanWorkingDifferences() {
+        return git.scanWorkingDiffs().stream();
+    }
+
+    @Override
+    public List getUnpublishedCommits() throws Exception {
+        return git.getUnpublishedCommits();
+    }
+
+    @Override
+    public void setPublished() {
+        git.setPublished();
     }
 }

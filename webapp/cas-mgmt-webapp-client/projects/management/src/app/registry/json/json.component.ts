@@ -5,6 +5,8 @@ import {ServiceViewService} from '../services/service.service';
 import {EditorComponent} from '../../project-share/editor.component';
 import {MatSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
+import {SpinnerService} from 'mgmt-lib';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-json',
@@ -23,7 +25,8 @@ export class JSONComponent implements AfterViewInit, OnInit {
   constructor(private service: ServiceViewService,
               private location: Location,
               private route: ActivatedRoute,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar,
+              private spinner: SpinnerService) { }
 
   ngOnInit() {
   }
@@ -38,7 +41,9 @@ export class JSONComponent implements AfterViewInit, OnInit {
   }
 
   save() {
+    this.spinner.start('Saving json');
     this.service.saveJson(this.route.snapshot.params['id'], this.editor.getFile())
+      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.handleSuccess(), error => this.handleError(error));
   }
 

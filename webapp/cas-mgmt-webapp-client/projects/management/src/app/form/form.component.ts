@@ -4,7 +4,7 @@ import {Location} from '@angular/common';
 import {FormService} from './form.service';
 import {MatSnackBar, MatTabGroup} from '@angular/material';
 import {Observable} from 'rxjs/index';
-import {map} from 'rxjs/operators';
+import {finalize, map} from 'rxjs/operators';
 import {BreakpointObserver} from '@angular/cdk/layout';
 
 import {
@@ -15,10 +15,11 @@ import {
   RegexRegisteredService,
   SamlRegisteredService,
   UserService,
-  WSFederationRegisterdService
+  WSFederationRegisterdService,
+  MgmtFormGroup,
+  SpinnerService
 } from 'mgmt-lib';
 import {ImportService} from '../registry/import/import.service';
-import {MgmtFormGroup} from 'mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
 
 enum Tabs {
@@ -68,7 +69,8 @@ export class FormComponent implements OnInit {
               private location: Location,
               public snackBar: MatSnackBar,
               public userService: UserService,
-              private breakpointObserver: BreakpointObserver) {
+              private breakpointObserver: BreakpointObserver,
+              private spinner: SpinnerService) {
   }
 
   ngOnInit() {
@@ -94,7 +96,9 @@ export class FormComponent implements OnInit {
 
   save() {
     if (this.validate() && this.mapForm()) {
+      this.spinner.start("Saving service");
       this.service.saveService(this.data.service)
+        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(
           resp => this.handleSave(resp),
           () => this.handleNotSaved()

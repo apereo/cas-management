@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
@@ -7,12 +7,16 @@ import {ServiceInterceptor} from '../interceptor';
 
 @Component({
   selector: 'lib-tracker',
-  templateUrl: './tracker.component.html',
-  styleUrls: ['./tracker.component.css']
+  template: ''
 })
 export class TrackerComponent implements OnInit {
   timer;
-  time = 30 * 60 * 1000;
+
+  @Input()
+  minutes = 30;
+
+  time: number;
+
   timerHandler = () => {
     this.dialog.open(TimeoutComponent, {
       width: '500px',
@@ -32,6 +36,7 @@ export class TrackerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.time = this.minutes * 60 * 1000;
     this.router.events.pipe(
       filter(e => e instanceof NavigationEnd)
     ).subscribe(() => this.setTimer());

@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ServiceItem, PaginatorComponent} from 'mgmt-lib';
+import {ServiceItem, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {SearchService} from './SearchService';
 import {ViewComponent} from '../../project-share/view/view.component';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -27,7 +28,8 @@ export class SearchComponent implements OnInit {
               public location: Location,
               private service: SearchService,
               public snackBar: MatSnackBar,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              public spinner: SpinnerService) { }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
@@ -43,12 +45,16 @@ export class SearchComponent implements OnInit {
   }
 
   viewJson() {
+    this.spinner.start("Loading json");
     this.service.getJson(+this.selectedItem.assignedId)
+      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'hjson', 'eclipse'));
   }
 
   viewYaml() {
+    this.spinner.start('Loading yaml');
     this.service.getYaml(+this.selectedItem.assignedId)
+      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'yaml', 'eclipse'));
   }
 
@@ -61,7 +67,10 @@ export class SearchComponent implements OnInit {
   }
 
   doSearch(query: string) {
-    this.service.search(query).subscribe(resp => this.dataSource.data = resp);
+    this.spinner.start('Searching');
+    this.service.search(query)
+      .pipe(finalize(() => this.spinner.stop()))
+      .subscribe(resp => this.dataSource.data = resp);
   }
 
 }

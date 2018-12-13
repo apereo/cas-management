@@ -5,7 +5,8 @@ dependencies {
     api project(":api:cas-mgmt-api-configuration")
 
     implementation libraries.casServer.discovery
-    implementation libraries.casServer.saml     
+    implementation libraries.casServer.saml    
+    implementation libraries.git
     implementation project(":core:cas-mgmt-core-util")
     implementation project(":core:cas-mgmt-core-authentication")
 

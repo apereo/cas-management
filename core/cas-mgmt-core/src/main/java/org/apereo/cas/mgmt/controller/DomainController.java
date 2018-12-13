@@ -3,6 +3,8 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -41,13 +44,20 @@ public class DomainController {
      * @throws Exception the exception
      */
     @GetMapping
-    public Collection<String> getDomains(final HttpServletRequest request,
+    public Collection<DomainRpc> getDomains(final HttpServletRequest request,
                                          final HttpServletResponse response) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val manager = managerFactory.from(request, casUserProfile);
         return manager.getDomains().stream()
                 .filter(casUserProfile::hasPermission)
+                .map(d -> new DomainRpc(d))
                 .collect(Collectors.toList());
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class DomainRpc implements Serializable {
+        private String name;
     }
 
 }

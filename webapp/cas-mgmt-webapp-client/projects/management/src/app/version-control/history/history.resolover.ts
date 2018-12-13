@@ -4,9 +4,9 @@
 
 import {Injectable} from '@angular/core';
 import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
-import { History } from 'mgmt-lib';
+import {History, SpinnerService} from 'mgmt-lib';
 import {HistoryService} from './history.service';
-import {take} from 'rxjs/operators';
+import {finalize} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable({
@@ -14,10 +14,14 @@ import {Observable} from 'rxjs/internal/Observable';
 })
 export class HistoryResolve implements Resolve<History[]> {
 
-  constructor(private service: HistoryService) {}
+  constructor(private service: HistoryService, private spinner: SpinnerService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<History[]> | History[] {
     const param: string = route.params['fileName'];
-    return param ? this.service.history(param).pipe(take(1)) : [];
+    if (param) {
+      this.spinner.start('Loading history');
+      return this.service.history(param).pipe(finalize(() => this.spinner.stop()));
+    }
+    return [];
   }
 }

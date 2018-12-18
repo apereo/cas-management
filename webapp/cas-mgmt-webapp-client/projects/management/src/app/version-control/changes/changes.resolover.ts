@@ -3,21 +3,25 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, Router, ActivatedRouteSnapshot} from '@angular/router';
-import {DiffEntry} from 'mgmt-lib';
+import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
+import {DiffEntry, SpinnerService} from 'mgmt-lib';
 import {ChangesService} from './changes.service';
 import {Observable} from 'rxjs/internal/Observable';
-import {map, take} from 'rxjs/operators';
+import {finalize} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChangesResolve implements Resolve<DiffEntry[]> {
 
-  constructor(private service: ChangesService, private router: Router) {}
+  constructor(private service: ChangesService, private spinner: SpinnerService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<DiffEntry[]> | DiffEntry[] {
     const param: String = route.params['branch'];
-    return param ? this.service.getChanges(param).pipe(take(1)) : [];
+    if (param) {
+      this.spinner.start('Loading changes');
+      return this.service.getChanges(param).pipe(finalize(() => this.spinner.stop()));
+    }
+    return [];
   }
 }

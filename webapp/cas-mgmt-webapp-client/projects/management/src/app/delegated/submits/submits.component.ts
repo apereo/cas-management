@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {SubmitService} from './submits.service';
-import {Branch, PaginatorComponent} from 'mgmt-lib';
+import {Branch, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {RevertComponent} from '../../project-share/revert/revert.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-submits',
@@ -26,7 +27,8 @@ export class SubmitsComponent implements OnInit {
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               public router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private spinner: SpinnerService) { }
 
   ngOnInit() {
     this.route.data.subscribe((data: { resp: Branch[]}) => {
@@ -36,7 +38,10 @@ export class SubmitsComponent implements OnInit {
   }
 
   refresh() {
-    this.service.getSubmits().subscribe(resp => this.dataSource.data = resp);
+    this.spinner.start('Refreshing');
+    this.service.getSubmits()
+      .pipe(finalize(() => this.spinner.stop()))
+      .subscribe(resp => this.dataSource.data = resp);
   }
 
 
@@ -75,7 +80,9 @@ export class SubmitsComponent implements OnInit {
   }
 
   revert() {
+    this.spinner.start('Reverting');
     this.service.revert(this.revertBranch.name as string)
+      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(() => {
         this.snackBar
           .open('Branch has been reverted',
@@ -85,5 +92,4 @@ export class SubmitsComponent implements OnInit {
         this.refresh()
       });
   }
-
 }

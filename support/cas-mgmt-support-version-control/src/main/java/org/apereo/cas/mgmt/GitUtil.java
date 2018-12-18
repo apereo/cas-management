@@ -210,6 +210,23 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
+     * Commits a single file into the git repository.
+     *
+     * @param user - the user
+     * @param file - the file
+     * @param msg - commit msg
+     * @return - Commit Id
+     * @throws Exception -failed
+     */
+    public RevCommit commitSingleFile(final CasUserProfile user, final String file, final String msg) throws Exception {
+        git.add().addFilepattern(file).call();
+        return git.commit()
+                .setCommitter(getCommitterId(user))
+                .setMessage(msg)
+                .call();
+    }
+
+    /**
      * Checks out the passed ref to be the current branch of the repository.
      *
      * @param ref - String representing a commit in the repository.

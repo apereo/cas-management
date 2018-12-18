@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ImportService} from './import.service';
 import {Router} from '@angular/router';
 import {EditorComponent} from '../../project-share/editor.component';
+import {SpinnerService} from 'mgmt-lib';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-import',
@@ -16,7 +18,8 @@ export class ImportComponent implements OnInit {
   editor: EditorComponent;
 
   constructor(public service: ImportService,
-              public router: Router) {
+              public router: Router,
+              public spinner: SpinnerService) {
 
   }
 
@@ -24,7 +27,9 @@ export class ImportComponent implements OnInit {
   }
 
   save() {
+    this.spinner.start('Loading file');
     this.service.import(this.editor.getFile())
+      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(
         () => this.router.navigate(['importService']),
         () => alert('The system was not able to parse your imported service as a valid Registered Service.')

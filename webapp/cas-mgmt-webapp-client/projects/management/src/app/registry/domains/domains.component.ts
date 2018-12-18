@@ -1,11 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSnackBar, MatTableDataSource } from '@angular/material';
-import {PaginatorComponent} from 'mgmt-lib';
+import {PaginatorComponent, DomainRpc} from 'mgmt-lib';
 import {ActivatedRoute, Router} from '@angular/router';
-
-export interface DomainRow {
-  name: String;
-}
 
 @Component({
   selector: 'app-domains',
@@ -14,8 +10,8 @@ export interface DomainRow {
 })
 export class DomainsComponent implements OnInit {
   displayedColumns = ['actions', 'name'];
-  dataSource: MatTableDataSource<DomainRow>;
-  selectedItem: String;
+  dataSource: MatTableDataSource<DomainRpc>;
+  selectedItem: DomainRpc;
 
 
   @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
@@ -26,31 +22,21 @@ export class DomainsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.route.data.subscribe((data: {resp: String[]}) => {
-          const dataRows: DomainRow[] = [];
-
-          for (let r of data.resp) {
-            dataRows.push({name: r});
-          }
-
-          this.dataSource = new MatTableDataSource(dataRows);
+    this.route.data
+      .subscribe((data: {resp: DomainRpc[]}) => {
+          this.dataSource = new MatTableDataSource(data.resp);
           this.dataSource.paginator = this.paginator.paginator;
-         },
-          error => {
-            console.log(error),
-              this.snackBar
-                .open('Failed to load domains',
-                  'Dismiss',
-            {duration: 5000}
-                );
-          }
+        },
+        error => this.snackBar.open(
+          'Failed to load domains',
+          'Dismiss',
+          {duration: 5000}
+        )
       );
   }
 
   doFilter(val: string) {
-    console.log("val = " + val);
     if (!this.dataSource) { return; }
-    console.log("setting val");
     this.dataSource.filter = val;
   }
 

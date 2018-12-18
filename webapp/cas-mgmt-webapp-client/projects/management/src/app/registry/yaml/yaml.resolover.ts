@@ -6,8 +6,9 @@ import {Injectable} from '@angular/core';
 import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {ChangesService} from '../../version-control/changes/changes.service';
 import {ServiceViewService} from '../services/service.service';
-import {take} from 'rxjs/operators';
+import {finalize, take} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
+import {SpinnerService} from 'mgmt-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ import {Observable} from 'rxjs/internal/Observable';
 export class YamlResolver implements Resolve<String> {
 
   constructor(private service: ServiceViewService,
-              private changeService: ChangesService) {}
+              private changeService: ChangesService,
+              private spinner: SpinnerService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<String> | String {
     const history: boolean = route.data.history;
@@ -24,10 +26,11 @@ export class YamlResolver implements Resolve<String> {
     if (!param) {
       return '';
     } else {
+      this.spinner.start('Loading yaml');
       if (history) {
-        return this.changeService.viewYaml(param).pipe(take(1));
+        return this.changeService.viewYaml(param).pipe(finalize(() => this.spinner.stop()));
       } else {
-        return this.service.getYaml(+param).pipe(take(1));
+        return this.service.getYaml(+param).pipe(finalize(() => this.spinner.stop()));
       }
     }
   }

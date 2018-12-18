@@ -3,5 +3,6 @@ description "Apereo CAS Management API Core"
 dependencies {
     api libraries.pac4j
     api libraries.casServer.core
+    api libraries.git
     
 }

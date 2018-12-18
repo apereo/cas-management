@@ -49,3 +49,5 @@ export * from './lib/form/mgmt-formcontrol';
 export * from './lib/form-data.service';
 export * from './lib/form/mgmt-form-group';
 export * from './lib/tracker/tracker.component';
+export * from './lib/spinner/spinner.service';
+export * from './lib/spinner/spinner.component';

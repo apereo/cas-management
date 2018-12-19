@@ -3,7 +3,7 @@ import {
   SurrogateRegisteredServiceAccessStrategy,
   MgmtFormControl
 } from 'mgmt-lib';
-import {AttributeForm} from '../../attribut-form';
+import {AttributeForm} from '../../attribute-form';
 
 export class SurrogateAccessForm extends BaseAccessForm<SurrogateRegisteredServiceAccessStrategy> {
 

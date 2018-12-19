@@ -19,7 +19,7 @@ import {TimeAccessForm} from './strategy/time-access-form';
 import {GrouperAccessForm} from './strategy/grouper-access-form';
 import {SurrogateAccessForm} from './strategy/surrogate-access-form';
 import {GroovySurrogateAccesForm} from './strategy/groovy-surrogate-acces-form';
-import {GroovyAccessForm} from './strategy/groovy-acces-form';
+import {GroovyAccessForm} from './strategy/groovy-access-form';
 import {DefaultAccessForm} from './strategy/default-access-form';
 
 export class StrategyAccessForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

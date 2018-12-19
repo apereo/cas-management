@@ -1,6 +1,6 @@
 import {BaseFilterForm} from './filter-form';
 import {RegisteredServiceMappedRegexAttributeFilter, MgmtFormControl, FilterType} from 'mgmt-lib';
-import {AttributeForm} from '../../attribut-form';
+import {AttributeForm} from '../../attribute-form';
 import {FormControl} from '@angular/forms';
 
 export class MappedFilterForm extends BaseFilterForm<RegisteredServiceMappedRegexAttributeFilter> {

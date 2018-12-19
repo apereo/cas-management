@@ -1,6 +1,6 @@
 import {ReturnMappedAttributeReleasePolicy} from 'mgmt-lib';
 import {BaseReleaseForm} from './base-release-form';
-import {AttributeForm} from '../../attribut-form';
+import {AttributeForm} from '../../attribute-form';
 
 export class MappedReleaseForm extends BaseReleaseForm<ReturnMappedAttributeReleasePolicy> {
 

@@ -1,6 +1,6 @@
 import {FormGroup} from '@angular/forms';
 import {MgmtFormGroup, WsFederationClaimsReleasePolicy} from 'mgmt-lib';
-import {AttributeForm} from '../../attribut-form';
+import {AttributeForm} from '../../attribute-form';
 
 export class WsFedReleaseForm extends FormGroup implements MgmtFormGroup<WsFederationClaimsReleasePolicy> {
 

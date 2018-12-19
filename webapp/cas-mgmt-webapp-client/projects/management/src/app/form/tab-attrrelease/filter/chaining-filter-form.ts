@@ -14,7 +14,7 @@ import {MappedFilterForm} from './mapped-filter-form';
 import {MutantMappedFilterForm} from './mutant-mapped-filter-form';
 import {ReverseMappedFilterForm} from './reverse-mapped-filter-form';
 import {RegexFilterForm} from './regex-filter-form';
-import {ScriptFilterForm} from './sscript-filter-form';
+import {ScriptFilterForm} from './script-filter-form';
 
 export class ChainingFilterForm extends BaseFilterForm<RegisteredServiceChainingAttributeFilter> {
 

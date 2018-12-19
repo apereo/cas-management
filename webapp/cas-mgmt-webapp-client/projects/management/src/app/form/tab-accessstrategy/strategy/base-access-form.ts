@@ -5,7 +5,7 @@ import {
   MgmtFormGroup
 } from 'mgmt-lib';
 import {FormGroup} from '@angular/forms';
-import {AttributeForm} from '../../attribut-form';
+import {AttributeForm} from '../../attribute-form';
 
 export class BaseAccessForm<T extends RegisteredServiceAccessStrategy> extends FormGroup implements MgmtFormGroup<T> {
 

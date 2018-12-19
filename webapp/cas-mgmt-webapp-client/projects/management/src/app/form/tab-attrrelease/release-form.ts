@@ -44,7 +44,7 @@ import {RegexFilterForm} from './filter/regex-filter-form';
 import {MappedFilterForm} from './filter/mapped-filter-form';
 import {ReverseMappedFilterForm} from './filter/reverse-mapped-filter-form';
 import {MutantMappedFilterForm} from './filter/mutant-mapped-filter-form';
-import {ScriptFilterForm} from './filter/sscript-filter-form';
+import {ScriptFilterForm} from './filter/script-filter-form';
 import {ChainingFilterForm} from './filter/chaining-filter-form';
 import {BaseFilterForm} from './filter/filter-form';
 

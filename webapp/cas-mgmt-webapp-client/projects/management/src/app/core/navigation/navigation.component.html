@@ -33,9 +33,9 @@
         <mat-icon>file_upload</mat-icon>
         <ng-container i18n>Submit Requests</ng-container>
       </a>
-      <a mat-list-item routerLink="/form/-1" (click)="close()">
+      <a mat-list-item routerLink="/form/edit/-1" (click)="close()">
         <mat-icon>add_circle</mat-icon>
-        <ng-container i18n>Add New Service</ng-container>
+        <span i18n>Add New Service</span>
       </a>
       <a mat-list-item routerLink="registry/import" *ngIf="isAdmin()" (click)="close()">
         <mat-icon>add_circle</mat-icon>

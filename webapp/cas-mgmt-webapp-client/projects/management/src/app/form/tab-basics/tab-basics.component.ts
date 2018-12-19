@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   DataRecord,
   GroovyRegisteredServiceAccessStrategy,
@@ -31,7 +31,7 @@ export class TabBasicsComponent implements OnInit {
       return;
     }
     this.basics = new BasicsForm(this.data);
-    this.basics.form.get('serviceType').valueChanges.subscribe(val => {
+    this.basics.get('serviceType').valueChanges.subscribe(val => {
       if (val === OAuthRegisteredService.cName) {
         this.data.service = new OAuthRegisteredService(this.data.service);
       } else if (val === OidcRegisteredService.cName) {

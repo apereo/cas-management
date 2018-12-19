@@ -1,20 +1,19 @@
-import {FormGroup} from '@angular/forms';
 import {
   MgmtFormGroup,
   DataRecord,
   MgmtFormControl,
   AbstractRegisteredService
 } from 'mgmt-lib';
+import {FormGroup} from '@angular/forms';
 
-export class LogoutForm extends MgmtFormGroup {
+export class LogoutForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
+    super({
       logout: new MgmtFormControl(null),
       logoutType: new MgmtFormControl(null)
     });
-    this.form.setValue(this.formMap());
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -25,7 +24,7 @@ export class LogoutForm extends MgmtFormGroup {
   }
 
   mapForm(service: AbstractRegisteredService) {
-    const frm = this.form.value;
+    const frm = this.value;
     service.logoutUrl = frm.logout;
     service.logoutType = frm.logoutType;
   }

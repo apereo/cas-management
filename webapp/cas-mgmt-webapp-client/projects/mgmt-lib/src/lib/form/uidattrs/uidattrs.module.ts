@@ -5,6 +5,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UidattrsComponent} from './uidattrs.component';
 import { PrincipalComponent } from './principal/principal.component';
 import {SharedModule} from '../../shared/shared.module';
+import {GroovyComponent} from './groovy/groovy.component';
+import {ScriptComponent} from './script/script.component';
 
 @NgModule({
   imports: [
@@ -16,7 +18,9 @@ import {SharedModule} from '../../shared/shared.module';
   declarations: [
     UidattrsComponent,
     AnonymousComponent,
-    PrincipalComponent
+    PrincipalComponent,
+    GroovyComponent,
+    ScriptComponent
   ],
   exports: [
     UidattrsComponent

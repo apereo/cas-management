@@ -1,21 +1,11 @@
-import {AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormGroup, ValidatorFn} from '@angular/forms';
-import {AbstractRegisteredService} from '../domain/registered-service';
+import {FormGroup} from '@angular/forms';
 
-export abstract class MgmtFormGroup {
+export interface MgmtFormGroup<T> extends FormGroup {
 
-  form: FormGroup;
+  formMap(): any;
 
-  constructor() {
+  mapForm(service: T);
 
-  }
-
-  abstract formMap();
-
-  abstract mapForm(service: AbstractRegisteredService);
-
-  get(key: string): AbstractControl {
-    return this.form.get(key);
-  }
 }
 
 

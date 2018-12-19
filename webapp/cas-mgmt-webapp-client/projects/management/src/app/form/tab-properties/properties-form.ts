@@ -7,10 +7,12 @@ import {
   DefaultRegisteredServiceProperty
 } from 'mgmt-lib';
 
-export class PropertiesForm extends MgmtFormGroup {
+export class PropertiesForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(private data: DataRecord) {
-    super();
+    super({
+      properties: new FormArray([])
+    });
     const props = new FormArray([]);
     if (this.data.service.properties) {
       for (let i = 0; i < Array.from(Object.keys(this.data.service.properties)).length; i++) {
@@ -20,10 +22,8 @@ export class PropertiesForm extends MgmtFormGroup {
         }));
       }
     }
-    this.form = new FormGroup({
-      properties: props
-    })
-    this.form.setValue(this.formMap());
+    this.setControl('properties', props);
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -42,7 +42,7 @@ export class PropertiesForm extends MgmtFormGroup {
   }
 
   mapForm(service: AbstractRegisteredService) {
-    const frm = this.form.value;
+    const frm = this.value;
     service.properties = new Map<String, DefaultRegisteredServiceProperty>();
     for (let p of frm.properties) {
       const drp = new DefaultRegisteredServiceProperty();

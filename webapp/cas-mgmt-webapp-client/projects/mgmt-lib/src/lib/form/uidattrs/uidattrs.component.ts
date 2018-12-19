@@ -13,21 +13,31 @@ export class UidattrsComponent implements OnInit {
 
   type: UserAttributeType;
   TYPE = UserAttributeType;
+  types = [
+    UserAttributeType.DEFAULT,
+    UserAttributeType.ANONYMOUS,
+    UserAttributeType.PRINCIPAL_ATTRIBUTE,
+    UserAttributeType.GROOVY,
+    UserAttributeType.SCRIPTED
+  ];
+  display = ['Default', 'Anonymous', 'Principal Attribute', 'Groovy', 'Scripted'];
 
   @Input()
   control: FormGroup;
+
+  @Input()
   typeControl: MgmtFormControl;
-  anonymous: MgmtFormControl;
-  principal: MgmtFormControl;
+
+  encryptUsername: MgmtFormControl;
+  canonicalizationMode: MgmtFormControl;
 
   constructor(public data: DataRecord,
     public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.typeControl = this.control.get('type') as MgmtFormControl;
-    this.anonymous = this.control.get('anonymous') as MgmtFormControl;
-    this.principal = this.control.get('principal') as MgmtFormControl;
+    this.encryptUsername = this.control.get('encryptUsername') as MgmtFormControl;
+    this.canonicalizationMode = this.control.get('canonicalizationMode') as MgmtFormControl;
   }
 
 }

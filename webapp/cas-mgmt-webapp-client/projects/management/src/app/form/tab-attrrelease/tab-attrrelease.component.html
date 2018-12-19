@@ -1,30 +1,27 @@
-<div [formGroup]="attributeRelease.form">
-  <div *ngIf="!isOidc && !isWsFed">
-    <app-card i18n-title title="Attribute Release Policy">
-      <lib-attribute-release-policies [control]="attributeRelease.get('policies')"></lib-attribute-release-policies>
-    </app-card>
-    <app-card i18n-title title="Attribute Release Options">
-      <lib-attribute-release-checks [control]="attributeRelease.get('checks')"></lib-attribute-release-checks>
-    </app-card>
-    <app-card i18n-title title="Attribute Release Consent">
-      <lib-attribute-release-consent [control]="attributeRelease.get('consent')"></lib-attribute-release-consent>
-    </app-card>
-    <app-card i18n-title title="Attribute Value Filters">
-      <lib-attribute-release-filters [control]="attributeRelease.get('attributeFilter')"></lib-attribute-release-filters>
-    </app-card>
-    <app-card i18n-title title="Principal Attribute Repository">
-      <lib-attribute-release-principal-repo [control]="attributeRelease.get('principalRepo')"></lib-attribute-release-principal-repo>
-    </app-card>
-  </div>
-  <div *ngIf="isOidc">
-    <app-card i18n-title title="Attribute Release Options" [collapse]="false">
-      <lib-oidc-options [control]="attributeRelease.get('oidcOptions')"></lib-oidc-options>
-    </app-card>
-  </div>
-  <div *ngIf="isWsFed">
-    <app-card i18n-title title="Attribute Release Options" [collapse]="false">
-      <lib-attribute-release-principal-repo [control]="attributeRelease.get('principalRepo')"></lib-attribute-release-principal-repo>
-      <lib-wsfedattrrelpolicies [control]="attributeRelease.get('wsfed')"></lib-wsfedattrrelpolicies>
-    </app-card>
-  </div>
+<div *ngIf="!isOidc && !isWsFed" [formGroup]="attributeRelease">
+  <app-card i18n-title title="Attribute Release Policy">
+    <lib-attribute-release-policies [typeControl]="attributeRelease.type" [control]="attributeRelease.policy"></lib-attribute-release-policies>
+  </app-card>
+  <app-card i18n-title title="Attribute Release Options" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-checks [control]="attributeRelease.policy.get('checks')"></lib-attribute-release-checks>
+  </app-card>
+  <app-card i18n-title title="Attribute Release Consent" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-consent [control]="attributeRelease.policy.get('consent')"></lib-attribute-release-consent>
+  </app-card>
+  <app-card i18n-title title="Attribute Value Filters" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-filters (addFilter)="attributeRelease.addFilter($event)" [control]="attributeRelease.filter"></lib-attribute-release-filters>
+  </app-card>
+  <app-card i18n-title title="Principal Attribute Repository" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-principal-repo [control]="attributeRelease.policy.get('principalRepo')"></lib-attribute-release-principal-repo>
+  </app-card>
+</div>
+<div *ngIf="isOidc" [formGroup]="oidcForm">
+  <app-card i18n-title title="Attribute Release Options" [collapse]="false">
+    <lib-oidc-options [control]="oidcForm.get('scopes')"></lib-oidc-options>
+  </app-card>
+</div>
+<div *ngIf="isWsFed" [formGroup]="attributeRelease">
+  <app-card i18n-title title="Attribute Release Options" [collapse]="false">
+    <lib-wsfedattrrelpolicies [control]="attributeRelease.policy"></lib-wsfedattrrelpolicies>
+  </app-card>
 </div>

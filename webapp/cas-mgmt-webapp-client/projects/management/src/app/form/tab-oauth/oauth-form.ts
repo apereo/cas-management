@@ -1,4 +1,4 @@
-import {FormGroup, Validators} from '@angular/forms';
+import {Validators, FormGroup} from '@angular/forms';
 import {
   MgmtFormGroup,
   DataRecord,
@@ -7,17 +7,16 @@ import {
   AbstractRegisteredService
 } from 'mgmt-lib';
 
-export class OauthForm extends MgmtFormGroup {
+export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
+    super({
       clientId: new MgmtFormControl(null, null, Validators.required),
       clientSecret: new MgmtFormControl(null, null, Validators.required),
       bypassApprovalPrompt: new MgmtFormControl(null),
       generateRefreshToken: new MgmtFormControl(null),
     });
-    this.form.setValue(this.formMap());
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -32,7 +31,7 @@ export class OauthForm extends MgmtFormGroup {
 
   mapForm(service: AbstractRegisteredService) {
     const srv: OAuthRegisteredService = service as OAuthRegisteredService;
-    const frm = this.form.value;
+    const frm = this.value;
     srv.generateRefreshToken = frm.generateRefreshToken;
     srv.bypassApprovalPrompt = frm.bypassApprovalPrompt;
     srv.clientSecret = frm.clientSecret;

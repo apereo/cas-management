@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../../mgmt-formcontrol';
 import {FormDataService} from '../../../../form-data.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-mapped',
@@ -10,7 +10,8 @@ import {FormDataService} from '../../../../form-data.service';
 export class MappedComponent implements OnInit {
 
   @Input()
-  control: MgmtFormControl;
+  control: FormGroup;
+
 
   constructor(public formData: FormDataService) {
   }

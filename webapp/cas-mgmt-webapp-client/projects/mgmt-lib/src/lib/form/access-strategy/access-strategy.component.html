@@ -1,4 +1,20 @@
 <lib-input>
+  <mat-form-field class="textInput">
+    <mat-select i18n-placeHolder
+                placeholder="Select Type"
+                [formControl]="typeControl">
+      <mat-option *ngFor="let opt of types" [value]="opt">{{ TYPE[opt] }}</mat-option>
+    </mat-select>
+    <mat-hint align="end">
+      <lib-hint></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon appHelp i18-matTooltip
+            matTooltip="Access strategy type">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
   <mat-checkbox [formControl]="sso">
     <ng-container i18n>Allow Single Sign-On</ng-container>
   </mat-checkbox>
@@ -28,3 +44,30 @@
             matTooltip="URL to which CAS should direct in the event that service access is defined.">
   </mat-icon>
 </lib-input>
+
+<ng-container *ngIf="typeControl.value == TYPE.REMOTE">
+  <lib-remote [control]="control"></lib-remote>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value === TYPE.TIME">
+  <lib-time [control]="control"></lib-time>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value == TYPE.GROUPER">
+  <lib-grouper [control]="control"></lib-grouper>
+  <lib-time [control]="control"></lib-time>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value == TYPE.SURROGATE">
+  <lib-surrogate [control]="control"></lib-surrogate>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value == TYPE.GROOVY_SURROGATE">
+  <lib-groovy-surrogate [control]="control"></lib-groovy-surrogate>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value == TYPE.GROOVY">
+  <lib-groovy [control]="control"></lib-groovy>
+</ng-container>
+
+

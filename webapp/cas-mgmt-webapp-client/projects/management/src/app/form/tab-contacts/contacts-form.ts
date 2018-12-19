@@ -7,25 +7,22 @@ import {
   DefaultRegisteredServiceContact}
 from 'mgmt-lib';
 
-export class ContactsForm extends MgmtFormGroup {
+export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
+    super({
+      contacts: new FormArray([])
+    });
+  }
+
+  init() {
     const contacts = new FormArray([]);
     if (this.data.service.contacts) {
       for (let i = 0; i < this.data.service.contacts.length; i++) {
-        contacts.push(new FormGroup({
-          name: new MgmtFormControl(null, null, Validators.required),
-          email: new MgmtFormControl(null, null, Validators.required),
-          phone: new MgmtFormControl(null),
-          department: new MgmtFormControl(null)
-        }));
+        contacts.push(this.createContact());
       }
     }
-    this.form = new FormGroup({
-      contacts: contacts
-    });
-    this.form.setValue(this.formMap());
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -42,7 +39,7 @@ export class ContactsForm extends MgmtFormGroup {
 
   mapForm(service: AbstractRegisteredService) {
     service.contacts = [];
-    const frm = this.form.value;
+    const frm = this.value;
     for (let c of frm.contacts) {
       const index = service.contacts.length;
       service.contacts.push(new DefaultRegisteredServiceContact());
@@ -72,7 +69,7 @@ export class ContactsForm extends MgmtFormGroup {
   }
 
   add(contact: DefaultRegisteredServiceContact) {
-    (<FormArray>this.form.get('contacts')).push(
+    (<FormArray>this.get('contacts')).push(
       new FormGroup({
         name: new MgmtFormControl(contact.name, '', Validators.required),
         email: new MgmtFormControl(contact.email, '', Validators.required),

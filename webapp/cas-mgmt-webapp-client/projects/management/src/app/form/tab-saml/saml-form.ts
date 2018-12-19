@@ -7,21 +7,10 @@ import {
   SamlRegisteredService
 } from 'mgmt-lib';
 
-export class SamlForm extends MgmtFormGroup {
+export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
-    const saml: SamlRegisteredService = this.data.service as SamlRegisteredService;
-    const nameIds = new FormArray([]);
-    if (saml.attributeNameFormats) {
-      for (let i = 0; i < Array.from(Object.keys(saml.attributeNameFormats)).length; i++) {
-        nameIds.push(new FormGroup({
-          key: new MgmtFormControl(null, null, Validators.required),
-          value: new MgmtFormControl(null, null, Validators.required)
-        }));
-      }
-    }
-    this.form = new FormGroup({
+    super({
       metadata: new FormGroup({
         location: new MgmtFormControl(null, null, Validators.required),
         maxValidity: new MgmtFormControl(null),
@@ -54,10 +43,20 @@ export class SamlForm extends MgmtFormGroup {
         assertionAudiences: new MgmtFormControl(null)
       }),
       nameFormats: new FormGroup({
-        nameIds: nameIds
+        nameIds: new FormArray([])
       })
     });
-    this.form.setValue(this.formMap());
+    const saml: SamlRegisteredService = this.data.service as SamlRegisteredService;
+    const nameIds: FormArray = this.get('nameIds') as FormArray;
+    if (saml.attributeNameFormats) {
+      for (let i = 0; i < Array.from(Object.keys(saml.attributeNameFormats)).length; i++) {
+        nameIds.push(new FormGroup({
+          key: new MgmtFormControl(null, null, Validators.required),
+          value: new MgmtFormControl(null, null, Validators.required)
+        }));
+      }
+    }
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -111,7 +110,7 @@ export class SamlForm extends MgmtFormGroup {
 
   mapForm(service: AbstractRegisteredService) {
     const saml: SamlRegisteredService = service as SamlRegisteredService;
-    const frm = this.form.value;
+    const frm = this.value;
     saml.metadataLocation = frm.metadata.location;
     saml.metadataMaxValidity = frm.metadata.maxValidity;
     saml.metadataSignatureLocation = frm.metadata.signatureLocation;

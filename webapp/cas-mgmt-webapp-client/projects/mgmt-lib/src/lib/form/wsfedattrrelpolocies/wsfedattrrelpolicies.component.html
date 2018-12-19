@@ -5,7 +5,7 @@
     <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>WS Federation Claim</div>
     <div [ngClass]="'actionWidth'" i18n></div>
   </div>
-  <div formArrayName="attributes">
+  <div formArrayName="allowedAttributes">
     <div *ngFor="let attr of attributeArray.controls; let i = index;" [formGroupName]="i"
          style="display: flex; flex-direction: row; border-bottom-width: 1px;
          border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">

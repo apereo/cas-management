@@ -1,4 +1,5 @@
 import {RegexRegisteredService, RegisteredService} from './registered-service';
+import {WsFederationClaimsReleasePolicy} from './attribute-release';
 
 export class WSFederationRegisterdService extends RegexRegisteredService {
   static readonly cName = 'org.apereo.cas.ws.idp.services.WSFederationRegisteredService';
@@ -31,6 +32,7 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
     this.wsdlService = (s && s.wsdlService) || null;
     this.wsdlEndpoint = (s && s.wsdlEndpoint) || null;
     this.appliesTo = (s && s.appliesTo) || null;
+    this.attributeReleasePolicy = WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy) ? s.attributeReleasePolicy : new WsFederationClaimsReleasePolicy();
     this['@class'] = WSFederationRegisterdService.cName;
   }
 }

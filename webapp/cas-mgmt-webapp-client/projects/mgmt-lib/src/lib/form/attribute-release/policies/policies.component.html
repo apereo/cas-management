@@ -14,31 +14,31 @@
 </lib-input>
 
 <ng-container *ngIf="typeControl.value == TYPE.SCRIPT">
-  <lib-script [control]="script"></lib-script>
+  <lib-script [control]="control"></lib-script>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.GROOVY">
-  <lib-groovy [control]="groovy"></lib-groovy>
+  <lib-groovy [control]="control"></lib-groovy>
 </ng-container>
 
 <ng-container *ngIf="(typeControl.value == TYPE.RETURN_ALLOWED
   || typeControl.value == TYPE.METADATA) && !isEmpty( formData.options.availableAttributes )">
-  <lib-allowed [control]="allowed"></lib-allowed>
+  <lib-allowed [control]="control"></lib-allowed>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.RETURN_MAPPED">
-  <lib-mapped [control]="mapped"></lib-mapped>
+  <lib-mapped [control]="control"></lib-mapped>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.METADATA" style="padding-top:25px;">
-  <lib-metadata [control]="metadata"></lib-metadata>
+  <lib-metadata [control]="control"></lib-metadata>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.RESTFUL">
-  <lib-restful [control]="restful"></lib-restful>
+  <lib-restful [control]="control"></lib-restful>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.GROOVY_SAML">
-  <lib-groovy-saml [control]="groovySaml"></lib-groovy-saml>
+  <lib-groovy-saml [control]="control"></lib-groovy-saml>
 </ng-container>
 

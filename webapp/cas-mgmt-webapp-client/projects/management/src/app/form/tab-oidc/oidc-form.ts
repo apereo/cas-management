@@ -7,11 +7,10 @@ import {
   OidcRegisteredService
 } from 'mgmt-lib';
 
-export class OidcForm extends MgmtFormGroup {
+export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
+    super({
       clientId: new MgmtFormControl(null, null, Validators.required),
       clientSecret: new MgmtFormControl(null, null, Validators.required),
       bypassApprovalPrompt: new MgmtFormControl(null),
@@ -27,7 +26,7 @@ export class OidcForm extends MgmtFormGroup {
       sectorIdentifierUri: new MgmtFormControl(null),
       dynamicRegistrationDateTime: new MgmtFormControl(null)
     });
-    this.form.setValue(this.formMap());
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -52,7 +51,7 @@ export class OidcForm extends MgmtFormGroup {
 
   mapForm(service: AbstractRegisteredService) {
     const srv: OidcRegisteredService = service as OidcRegisteredService;
-    const frm = this.form.value;
+    const frm = this.value;
     srv.clientId =  frm.clientId;
     srv.clientSecret = frm.clientSecret;
     srv.bypassApprovalPrompt = frm.bypassApprovalPrompt;

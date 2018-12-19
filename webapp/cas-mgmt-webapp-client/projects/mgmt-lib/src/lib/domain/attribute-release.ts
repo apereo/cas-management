@@ -161,7 +161,7 @@ export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAll
 export class WsFederationClaimsReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName = 'org.apereo.cas.ws.idp.services.WsFederationClaimsReleasePolicy';
 
-  allowedAttributes: Map<String, String>
+  allowedAttributes: Map<String, String>;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === WsFederationClaimsReleasePolicy.cName;
@@ -233,7 +233,8 @@ export enum ReleasePolicyType {
   MATCHING,
   METADATA,
   RESTFUL,
-  GROOVY_SAML
+  GROOVY_SAML,
+  WS_FED
 }
 
 export enum PrincipalRepoType {

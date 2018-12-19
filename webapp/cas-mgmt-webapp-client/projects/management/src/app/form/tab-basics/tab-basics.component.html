@@ -1,4 +1,4 @@
-<div [formGroup]="basics.form">
+<div [formGroup]="basics">
   <app-card i18n-title title="Basics">
     <lib-enabled *ngIf="!groovyAccessStrategy" [control]="basics.get('enabled')"></lib-enabled>
     <lib-servicetype [control]="basics.get('serviceType')"></lib-servicetype>

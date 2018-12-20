@@ -3,9 +3,12 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
+import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
+import org.apereo.cas.mgmt.NoOpContactLookup;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ApplicationDataController;
+import org.apereo.cas.mgmt.controller.ContactLookupController;
 import org.apereo.cas.mgmt.controller.DomainController;
 import org.apereo.cas.mgmt.controller.ServiceController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
@@ -74,7 +77,7 @@ public class CasManagementCoreServicesConfiguration {
     @Bean
     public ApplicationDataController applicationDataController() {
         return new ApplicationDataController(formDataFactory(), casUserProfileFactory, managerFactory(),
-                managementProperties, casProperties);
+                managementProperties, casProperties, contactLookup());
     }
 
     @Bean
@@ -87,6 +90,14 @@ public class CasManagementCoreServicesConfiguration {
         return new DomainController(casUserProfileFactory, managerFactory());
     }
 
+    @ConditionalOnMissingBean(name ="contactLookup")
+    @Bean
+    public ContactLookup contactLookup() {
+        return new NoOpContactLookup();
+    }
 
-
+    @Bean
+    public ContactLookupController contactLookupController() {
+        return new ContactLookupController(contactLookup());
+    }
 }

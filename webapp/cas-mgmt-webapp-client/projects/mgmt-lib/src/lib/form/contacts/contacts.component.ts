@@ -3,6 +3,11 @@ import {DefaultRegisteredServiceContact, RegisteredServiceContact} from '../../d
 import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../user.service';
 import {MgmtFormControl} from '../mgmt-formcontrol';
+import {Observable, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';
+import {SpinnerService} from '../../spinner/spinner.service';
+import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {AppConfigService} from '../../app-config.service';
 
 @Component({
   selector: 'lib-contacts',
@@ -13,7 +18,12 @@ export class ContactsComponent implements OnInit {
 
   selectedTab: number;
 
-  constructor(private userService: UserService) {
+  private lookupContact = new Subject<string>();
+  foundContacts: DefaultRegisteredServiceContact[];
+
+  constructor(private user: UserService,
+              private spinner: SpinnerService,
+              private appConfig: AppConfigService) {
   }
 
   @Input()
@@ -23,10 +33,42 @@ export class ContactsComponent implements OnInit {
   ngOnInit() {
     this.contactsArray = this.control.get('contacts') as FormArray;
     this.selectedTab = 0;
+
+    this.lookupContact.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((query: string) => {
+        if (query && query !== '' && query.length >= 3) {
+          this.spinner.start("Searching");
+          return this.user.lookupContact(query)
+            .pipe(finalize(() => this.spinner.stop()));
+        } else {
+          return Observable.create((observer) => observer.next([]));
+        }
+      })
+    ).subscribe((resp: DefaultRegisteredServiceContact[])  => this.foundContacts = resp);
   }
 
-  addContact() {
-    this.contactsArray.push(this.createContactGroup(new DefaultRegisteredServiceContact()));
+  doLookupContact(val: string) {
+    if (this.appConfig.config.contactLookup) {
+      this.lookupContact.next(val);
+    }
+  }
+
+  selection(sel: MatAutocompleteSelectedEvent ) {
+    const selection = sel.option.value as DefaultRegisteredServiceContact;
+    const contact = this.contactsArray.at(this.selectedTab);
+    contact.get('email').setValue(selection.email);
+    contact.get('phone').setValue(selection.phone);
+    contact.get('department').setValue(selection.department);
+  }
+
+  contactName(contact?: DefaultRegisteredServiceContact): String | undefined {
+    return contact ? contact.name : undefined;
+  }
+
+  addContact(contact?: DefaultRegisteredServiceContact) {
+    this.contactsArray.push(this.createContactGroup(contact || new DefaultRegisteredServiceContact()));
     this.selectedTab = this.contactsArray.length - 1;
   }
 

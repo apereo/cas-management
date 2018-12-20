@@ -6,7 +6,7 @@
         <lib-input>
           <mat-form-field class="textInput">
             <mat-placeholder i18n>Name</mat-placeholder>
-            <input matInput required formControlName="name">
+            <input matInput [matAutocomplete]="auto" required formControlName="name" (keyup)="doLookupContact($event.target.value)">
             <mat-hint align="end">
               <lib-hint></lib-hint>
             </mat-hint>
@@ -66,3 +66,7 @@
   </div>
 </div>
 </div>
+
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="contactName" (optionSelected)="selection($event)">
+  <mat-option *ngFor="let opt of foundContacts" [value]="opt">{{ opt.name }}</mat-option>
+</mat-autocomplete>

@@ -3,4 +3,5 @@ export class AppConfig {
   versionControl: boolean;
   delegatedMgmt: boolean;
   syncScript: boolean;
+  contactLookup: boolean;
 }

@@ -46,7 +46,7 @@ public class FormDataFactory {
     private Optional<CasServerProfile> profile = Optional.empty();
 
     /**
-     * Factoryu method to create an instance of FormData.
+     * Factory method to create an instance of FormData.
      *
      * @return - FormData
      */

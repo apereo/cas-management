@@ -2,7 +2,9 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
+import org.apereo.cas.mgmt.NoOpContactLookup;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.AppConfig;
 import org.apereo.cas.mgmt.domain.FormData;
@@ -40,6 +42,7 @@ public class ApplicationDataController {
     private final MgmtManagerFactory managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
+    private final ContactLookup contactLookup;
 
     @GetMapping(value = "/managerType")
     public String getManagerType() {
@@ -94,6 +97,7 @@ public class ApplicationDataController {
         config.setVersionControl(managementProperties.getVersionControl().isEnabled());
         config.setDelegatedMgmt(managementProperties.getDelegated().isEnabled());
         config.setSyncScript(managementProperties.getVersionControl().getSyncScript() != null);
+        config.setContactLookup(!(contactLookup instanceof NoOpContactLookup));
         return config;
     }
 

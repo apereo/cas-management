@@ -18,4 +18,5 @@ public class AppConfig {
     private boolean versionControl;
     private boolean delegatedMgmt;
     private boolean syncScript;
+    private boolean contactLookup;
 }

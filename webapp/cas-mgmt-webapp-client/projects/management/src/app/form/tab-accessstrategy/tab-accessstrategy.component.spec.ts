@@ -7,7 +7,6 @@ import { DebugElement } from '@angular/core';
 import { TabAccessstrategyComponent } from './tab-accessstrategy.component';
 import {DataRecord, SharedModule} from 'mgmt-lib';
 import {AccessStrategyComponent} from 'mgmt-lib/lib/form/access-strategy/access-strategy.component';
-import {AttributemappingComponent} from 'mgmt-lib/lib/form/attributemapping/attributemapping.component';
 
 describe('TabAccessstrategyComponent', () => {
   let component: TabAccessstrategyComponent;

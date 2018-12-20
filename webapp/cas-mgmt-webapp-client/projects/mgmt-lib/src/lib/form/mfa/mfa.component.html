@@ -14,9 +14,9 @@
 </lib-input>
 
 <ng-container *ngIf="typeControl.value === TYPE.DEFAULT">
- <lib-default [control]="defaultMfa"></lib-default>
+ <lib-default [control]="control"></lib-default>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value === TYPE.GROOVY">
-  <lib-groovy [control]="groovy"></lib-groovy>
+  <lib-groovy [control]="control.get('groovy')"></lib-groovy>
 </ng-container>

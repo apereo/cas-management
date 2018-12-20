@@ -11,7 +11,6 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 })
 export class WsfedattrrelpoliciesComponent implements OnInit {
 
-
   @Input()
   control: FormGroup;
 
@@ -23,7 +22,7 @@ export class WsfedattrrelpoliciesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.attributeArray = this.control.get('attributes') as FormArray;
+    this.attributeArray = this.control.get('allowedAttributes') as FormArray;
   }
 
   addRow() {

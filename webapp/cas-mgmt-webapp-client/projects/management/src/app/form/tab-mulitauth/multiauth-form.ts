@@ -1,7 +1,6 @@
 import {AbstractControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {
   AbstractRegisteredService,
-  DataRecord,
   DefaultRegisteredServiceMultifactorPolicy,
   GroovyRegisteredServiceMultifactorPolicy,
   MfaPolicyType,
@@ -9,60 +8,44 @@ import {
   MgmtFormGroup,
   RegisteredServiceMultifactorPolicy
 } from 'mgmt-lib';
+import {DefaultMFAForm} from './default-mfa-form';
+import {GroovyMfaForm} from './groovy-mfa-form';
+import {BaseMfaForm} from './base-mfa-form';
 
-export class MultiauthForm extends MgmtFormGroup {
+export class MultiauthForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   static policyType: MfaPolicyType = MfaPolicyType.DEFAULT;
 
-  constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
-      type: new MgmtFormControl(null),
-      defaultMfa: new FormGroup({
-        multifactorAuthenticationProviders: new MgmtFormControl(null),
-        failureMode: new MgmtFormControl(null),
-        principalAttributeNameTrigger: new MgmtFormControl(null),
-        principalAttributeValueToMatch: new MgmtFormControl(null),
-        bypassEnabled: new MgmtFormControl(null)
-      }),
-      groovy: new MgmtFormControl(null, null, this.condtionalReq(MfaPolicyType.GROOVY))
+  type: MgmtFormControl;
+  policy: MgmtFormGroup<RegisteredServiceMultifactorPolicy>;
+
+  constructor(public data: RegisteredServiceMultifactorPolicy) {
+    super({});
+    const type = this.findType(data);
+    this.type = new MgmtFormControl(type);
+    this.policy = this.getPolicy(type);
+    this.addControl('type', this.type);
+    this.addControl('policy', this.policy);
+    this.type.valueChanges.subscribe(t => {
+      this.changeType(t);
     });
-    this.form.setValue(this.formMap());
   }
 
   formMap(): any {
-    const policy: RegisteredServiceMultifactorPolicy = this.data.service.multifactorPolicy;
-    const type = this.type(policy);
-    return {
-      type: type,
-      defaultMfa: {
-        multifactorAuthenticationProviders: type === MfaPolicyType.DEFAULT ? (<DefaultRegisteredServiceMultifactorPolicy>policy).multifactorAuthenticationProviders : null,
-        failureMode: type === MfaPolicyType.DEFAULT ? (<DefaultRegisteredServiceMultifactorPolicy>policy).failureMode : null,
-        principalAttributeNameTrigger: type === MfaPolicyType.DEFAULT ? (<DefaultRegisteredServiceMultifactorPolicy>policy).principalAttributeNameTrigger : null,
-        principalAttributeValueToMatch: type === MfaPolicyType.DEFAULT ? (<DefaultRegisteredServiceMultifactorPolicy>policy).principalAttributeValueToMatch : null,
-        bypassEnabled: type === MfaPolicyType.DEFAULT ? (<DefaultRegisteredServiceMultifactorPolicy>policy).bypassEnabled : null
-      },
-      groovy: type === MfaPolicyType.GROOVY ? (<GroovyRegisteredServiceMultifactorPolicy>policy).groovyScript : null
-    }
+    return {};
   }
 
   mapForm(service: AbstractRegisteredService) {
-    const frm = this.form.value;
-    if (frm.type === MfaPolicyType.DEFAULT) {
-      const mfaPolicy: DefaultRegisteredServiceMultifactorPolicy = new DefaultRegisteredServiceMultifactorPolicy();
-      mfaPolicy.multifactorAuthenticationProviders = frm.defaultMfa.multifactorAuthenticationProviders;
-      mfaPolicy.failureMode = frm.defaultMfa.failureMode;
-      mfaPolicy.principalAttributeNameTrigger = frm.defaultMfa.principalAttributeNameTrigger;
-      mfaPolicy.principalAttributeValueToMatch = frm.defaultMfa.prinicipalAttributeValueToMatch;
-      mfaPolicy.bypassEnabled = frm.defaultMfa.bypassEnabled;
-      service.multifactorPolicy = mfaPolicy;
-    } else {
-      service.multifactorPolicy = new GroovyRegisteredServiceMultifactorPolicy();
-      (<GroovyRegisteredServiceMultifactorPolicy>service.multifactorPolicy).groovyScript = frm.groovy;
+    if (this.type.value === MfaPolicyType.DEFAULT) {
+      service.multifactorPolicy = new DefaultRegisteredServiceMultifactorPolicy();
     }
+    if (this.type.value === MfaPolicyType.GROOVY) {
+      service.multifactorPolicy = new GroovyRegisteredServiceMultifactorPolicy();
+    }
+    this.policy.mapForm(service.multifactorPolicy);
   }
 
-  type(policy: RegisteredServiceMultifactorPolicy): MfaPolicyType {
+  findType(policy: RegisteredServiceMultifactorPolicy): MfaPolicyType {
     if (DefaultRegisteredServiceMultifactorPolicy.instanceOf(policy)) {
       return MfaPolicyType.DEFAULT;
     } else {
@@ -70,12 +53,28 @@ export class MultiauthForm extends MgmtFormGroup {
     }
   }
 
-  condtionalReq(type: MfaPolicyType): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      if (MultiauthForm.policyType === type) {
-        return control.value == null || control.value.length === 0 ? {'required': true } : null;
-      }
-      return null;
-    };
+  changeType(type: MfaPolicyType) {
+    if (type === MfaPolicyType.DEFAULT) {
+      this.policy = new DefaultMFAForm(new DefaultRegisteredServiceMultifactorPolicy());
+    } else {
+      this.policy = new GroovyMfaForm(new GroovyRegisteredServiceMultifactorPolicy());
+    }
   }
+
+  getPolicy(type: MfaPolicyType): BaseMfaForm<RegisteredServiceMultifactorPolicy> {
+    if (type === MfaPolicyType.GROOVY) {
+      return new GroovyMfaForm(this.data as GroovyRegisteredServiceMultifactorPolicy);
+    } else {
+      return new DefaultMFAForm(this.data as DefaultRegisteredServiceMultifactorPolicy);
+    }
+  }
+}
+
+function condtionalReq(type: MfaPolicyType): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (MultiauthForm.policyType === type) {
+      return control.value == null || control.value.length === 0 ? {'required': true } : null;
+    }
+    return null;
+  };
 }

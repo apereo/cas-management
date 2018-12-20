@@ -1,74 +1,124 @@
-import {FormGroup, Validators} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {
-  MgmtFormGroup,
-  DataRecord,
-  MgmtFormControl,
+  AbstractRegisteredService,
   AnonymousRegisteredServiceUsernameProvider,
   DefaultRegisteredServiceUsernameProvider,
+  MgmtFormControl,
+  MgmtFormGroup,
   PrincipalAttributeRegisteredServiceUsernameProvider,
   RegisteredServiceUsernameAttributeProvider,
   UserAttributeType,
-  AbstractRegisteredService
+  GroovyRegisteredServiceUsernameProvider,
+  ScriptedRegisteredServiceUsernameProvider
 } from 'mgmt-lib';
+import {GroovyAttrForm} from './groovy-attr-form';
+import {BaseAttrForm} from './base-attr-form';
+import {ScriptAttrForm} from './script-attr-form';
+import {AnonAttrForm} from './anon-attr-form';
+import {PrincipalAttrForm} from './principal-attr-form';
+import {DefaultAttrForm} from './default-attr-form';
 
-export class UsernameattrForm extends MgmtFormGroup {
+export class UsernameattrForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
-      type: new MgmtFormControl(null),
-      anonymous: new FormGroup({
-        salt: new MgmtFormControl(null),
-        attribute: new MgmtFormControl(null)
-      }),
-      principal: new FormGroup({
-        usernameAttribute: new MgmtFormControl(null, null, Validators.required),
-        encryptUserName: new MgmtFormControl(null),
-        canonicalizationMode: new MgmtFormControl(null)
-      })
-    });
-    this.form.setValue(this.formMap());
+  type: MgmtFormControl;
+  provider: MgmtFormGroup<RegisteredServiceUsernameAttributeProvider>;
+
+  constructor(public data: RegisteredServiceUsernameAttributeProvider) {
+    super({});
+    const type = this.findType(data);
+    this.type = new MgmtFormControl(type);
+    this.provider = this.getProvider(type);
+    this.addControl('type', this.type);
+    this.addControl('provider', this.provider);
+    this.type.valueChanges.subscribe(val => this.changeType(val));
   }
 
   formMap(): any {
-    const provider: RegisteredServiceUsernameAttributeProvider = this.data.service.usernameAttributeProvider;
-    const type = this.type(provider);
-    return {
-      type: this.type(provider),
-      anonymous: {
-        salt: type === UserAttributeType.ANONYMOUS ? (<AnonymousRegisteredServiceUsernameProvider>provider).persistentIdGenerator.salt : null,
-        attribute: type === UserAttributeType.ANONYMOUS ? (<AnonymousRegisteredServiceUsernameProvider>provider).persistentIdGenerator.attribute : null
-      },
-      principal: {
-        usernameAttribute: type === UserAttributeType.PRINCIPAL_ATTRIBUTE ? (<PrincipalAttributeRegisteredServiceUsernameProvider>provider).usernameAttribute : null,
-        encryptUserName: type === UserAttributeType.PRINCIPAL_ATTRIBUTE ? (<PrincipalAttributeRegisteredServiceUsernameProvider>provider).encryptUserName : null,
-        canonicalizationMode: type === UserAttributeType.PRINCIPAL_ATTRIBUTE ? (<PrincipalAttributeRegisteredServiceUsernameProvider>provider).canonicalizationMode : null
-      }
-    };
+    return {};
   }
 
   mapForm(service: AbstractRegisteredService) {
-    const frm = this.form.value;
-    service.usernameAttributeProvider = new DefaultRegisteredServiceUsernameProvider(service.usernameAttributeProvider);
-    if (frm.type === UserAttributeType.ANONYMOUS) {
-      service.usernameAttributeProvider = new AnonymousRegisteredServiceUsernameProvider();
-      (<AnonymousRegisteredServiceUsernameProvider>service.usernameAttributeProvider).persistentIdGenerator.salt = frm.anonymous.salt;
-      (<AnonymousRegisteredServiceUsernameProvider>service.usernameAttributeProvider).persistentIdGenerator.attribute = frm.anonymous.attribute;
+    const frm = this.value;
+    if (frm.type === UserAttributeType.DEFAULT) {
+      service.usernameAttributeProvider = new DefaultRegisteredServiceUsernameProvider();
+    }
+    if (frm.type === UserAttributeType.SCRIPTED) {
+      service.usernameAttributeProvider = new ScriptedRegisteredServiceUsernameProvider();
+    }
+    if (frm.type === UserAttributeType.GROOVY) {
+      service.usernameAttributeProvider = new GroovyRegisteredServiceUsernameProvider();
     }
     if (frm.type === UserAttributeType.PRINCIPAL_ATTRIBUTE) {
-      service.usernameAttributeProvider = new PrincipalAttributeRegisteredServiceUsernameProvider(service.usernameAttributeProvider);
-      (<PrincipalAttributeRegisteredServiceUsernameProvider>service.usernameAttributeProvider).usernameAttribute = frm.principal.usernameAttribute;
-      (<PrincipalAttributeRegisteredServiceUsernameProvider>service.usernameAttributeProvider).encryptUserName = frm.principal.encryptUserName;
-      (<PrincipalAttributeRegisteredServiceUsernameProvider>service.usernameAttributeProvider).canonicalizationMode = frm.principal.canonicalizationMode;
+      service.usernameAttributeProvider = new PrincipalAttributeRegisteredServiceUsernameProvider();
+    }
+    if (frm.type === UserAttributeType.ANONYMOUS) {
+      service.usernameAttributeProvider = new AnonymousRegisteredServiceUsernameProvider();
+    }
+    this.provider.mapForm(service.usernameAttributeProvider);
+  }
+
+  findType(provider: RegisteredServiceUsernameAttributeProvider): UserAttributeType {
+    if (AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)) {
+      return UserAttributeType.ANONYMOUS;
+    }
+    if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)) {
+      return UserAttributeType.PRINCIPAL_ATTRIBUTE;
+    }
+    if (ScriptedRegisteredServiceUsernameProvider.instanceOf(provider)) {
+      return UserAttributeType.SCRIPTED;
+    }
+    if (GroovyRegisteredServiceUsernameProvider.instanceOf(provider)) {
+      return UserAttributeType.GROOVY;
+    }
+    return UserAttributeType.DEFAULT;
+  }
+
+  getProvider(type: UserAttributeType): BaseAttrForm<RegisteredServiceUsernameAttributeProvider> {
+    if (type === UserAttributeType.GROOVY) {
+      return new GroovyAttrForm(this.data as GroovyRegisteredServiceUsernameProvider);
+    }
+    if (type === UserAttributeType.SCRIPTED) {
+      return new ScriptAttrForm(this.data as ScriptedRegisteredServiceUsernameProvider);
+    }
+    if (type === UserAttributeType.ANONYMOUS) {
+      return new AnonAttrForm(this.data as AnonymousRegisteredServiceUsernameProvider);
+    }
+    if (type === UserAttributeType.PRINCIPAL_ATTRIBUTE) {
+      return new PrincipalAttrForm(this.data as PrincipalAttributeRegisteredServiceUsernameProvider);
+    }
+    if (this.data) {
+      return new DefaultAttrForm(this.data as DefaultRegisteredServiceUsernameProvider);
+    } else {
+      return new DefaultAttrForm(new DefaultRegisteredServiceUsernameProvider());
     }
   }
 
-  type(provider: RegisteredServiceUsernameAttributeProvider): UserAttributeType {
-    if (AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)) {
-      return UserAttributeType.ANONYMOUS;
-    } else if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)) {
-      return UserAttributeType.PRINCIPAL_ATTRIBUTE;
+  changeType(type: UserAttributeType) {
+    const base = this.provider as  BaseAttrForm<RegisteredServiceUsernameAttributeProvider>;
+    if (type === UserAttributeType.GROOVY) {
+      const provider = new GroovyRegisteredServiceUsernameProvider();
+      base.baseForm(provider);
+      this.provider = new GroovyAttrForm(provider);
     }
-    return UserAttributeType.DEFAULT;
+    if (type === UserAttributeType.SCRIPTED) {
+      const provider = new ScriptedRegisteredServiceUsernameProvider();
+      base.baseForm(provider);
+      this.provider = new ScriptAttrForm(provider);
+    }
+    if (type === UserAttributeType.ANONYMOUS) {
+      const provider = new AnonymousRegisteredServiceUsernameProvider();
+      base.baseForm(provider);
+      this.provider = new AnonAttrForm(provider);
+    }
+    if (type === UserAttributeType.PRINCIPAL_ATTRIBUTE) {
+      const provider = new PrincipalAttributeRegisteredServiceUsernameProvider();
+      base.baseForm(provider);
+      this.provider = new PrincipalAttrForm(provider);
+    }
+    if (type === UserAttributeType.DEFAULT) {
+      const provider = new DefaultRegisteredServiceUsernameProvider();
+      base.baseForm(provider);
+      this.provider = new DefaultAttrForm(provider);
+    }
   }
 }

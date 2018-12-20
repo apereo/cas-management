@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormGroup} from '@angular/forms';
+import {AccessStrategyType} from '../../domain/access-strategy';
 
 @Component({
   selector: 'lib-access-strategy',
@@ -11,6 +12,19 @@ export class AccessStrategyComponent implements OnInit {
 
   @Input()
   control: FormGroup;
+
+  @Input()
+  typeControl: MgmtFormControl;
+
+  TYPE = AccessStrategyType;
+  types = [AccessStrategyType.DEFAULT,
+    AccessStrategyType.TIME,
+    AccessStrategyType.GROUPER,
+    AccessStrategyType.REMOTE,
+    AccessStrategyType.SURROGATE,
+    AccessStrategyType.GROOVY_SURROGATE,
+    AccessStrategyType.GROOVY
+  ];
 
   sso: MgmtFormControl;
   requireAll: MgmtFormControl;

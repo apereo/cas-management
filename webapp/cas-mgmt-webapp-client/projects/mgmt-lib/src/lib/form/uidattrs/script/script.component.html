@@ -1,0 +1,10 @@
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Script Location</mat-placeholder>
+    <input matInput [formControl]="script">
+  </mat-form-field>
+  <mat-hint align="end"><lib-hint [difference]="script.difference()"></lib-hint></mat-hint>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Location of script file that will be used by this service to determine usernames.">
+  </mat-icon>
+</lib-input>

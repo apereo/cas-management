@@ -19,6 +19,7 @@ export class RequiredComponent implements OnInit {
 
   ngOnInit() {
     this.caseInsensitive = this.control.get('caseInsensitive') as MgmtFormControl;
+
   }
 
 }

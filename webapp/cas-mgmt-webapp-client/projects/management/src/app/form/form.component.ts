@@ -75,7 +75,6 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
-    this.data.view = this.view;
     this.imported = this.route.snapshot.data.import;
     this.route.data
       .subscribe((data: { resp: AbstractRegisteredService[] }) => {
@@ -108,8 +107,7 @@ export class FormComponent implements OnInit {
 
   loadService(service: AbstractRegisteredService) {
     this.data.service = service;
-    this.data.submitted = false;
-    this.data.formMap = new Map<String, MgmtFormGroup>();
+    this.data.formMap = new Map<String, MgmtFormGroup<AbstractRegisteredService>>();
   }
 
   isOidc(): boolean {
@@ -266,10 +264,10 @@ export class FormComponent implements OnInit {
 
   validate(): boolean {
     for (let key of Array.from(this.data.formMap.keys())) {
-      const frm: MgmtFormGroup = this.data.formMap.get(key) as MgmtFormGroup;
-      if (frm.form.status === 'INVALID') {
-        console.log("errors = " +frm.form.errors);
-        this.touch(frm.form);
+      const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
+      if (frm.status === 'INVALID') {
+        console.log("errors = " +frm.errors);
+        this.touch(frm);
         this.nav(key);
         return false;
       }
@@ -294,8 +292,8 @@ export class FormComponent implements OnInit {
   mapForm(): boolean {
     let touched: boolean = this.imported;
     for (let key of Array.from(this.data.formMap.keys())) {
-      const form = this.data.formMap.get(key) as MgmtFormGroup;
-      if (form.form.status === 'VALID' && form.form.touched) {
+      const form = this.data.formMap.get(key);
+      if (form.status === 'VALID' && form.touched) {
         form.mapForm(this.data.service);
         touched = true;
       }
@@ -349,13 +347,28 @@ export class FormComponent implements OnInit {
 
   reset() {
     for(let fg of Array.from(this.data.formMap.values())) {
-      (<MgmtFormGroup>fg).form.reset(fg.formMap());
+      fg.reset(fg.formMap());
     }
   }
 
   touched(): boolean {
+    if (this.imported) {
+      return true;
+    }
     for (let fg of Array.from(this.data.formMap.values())) {
-      if ((<MgmtFormGroup>fg).form.touched) {
+      if (fg.touched) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  dirty(): boolean {
+    if (this.imported) {
+      return true;
+    }
+    for (let fg of Array.from(this.data.formMap.values())) {
+      if (fg.dirty) {
         return true;
       }
     }

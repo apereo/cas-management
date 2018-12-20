@@ -1,23 +1,19 @@
-<div [formGroup]="accessStrategy.form">
-  <app-card i18n-title title="Type">
-    <lib-type [control]="accessStrategy.form"></lib-type>
-  </app-card>
-
+<div [formGroup]="accessStrategy">
   <app-card i18n-title title="Service Access Strategy" *ngIf="!groovyAccessStrategy">
-    <lib-access-strategy [control]="accessStrategy.get('access')"></lib-access-strategy>
+    <lib-access-strategy [typeControl]="accessStrategy.type" [control]="accessStrategy.strategy"></lib-access-strategy>
   </app-card>
 
   <app-card i18n-title title="Required Attributes" *ngIf="!groovyAccessStrategy">
-    <lib-required [control]="accessStrategy.get('required')"></lib-required>
+    <lib-required [control]="accessStrategy.strategy"></lib-required>
   </app-card>
 
   <app-card i18n-title title="Delegated Authentication" *ngIf="!groovyAccessStrategy">
-    <lib-delegated [control]="accessStrategy.get('allowedProviders')"></lib-delegated>
+    <lib-delegated [control]="accessStrategy.strategy.get('allowedProviders')"></lib-delegated>
   </app-card>
 
   <app-card i18n-title title="Rejected Attributes" *ngIf="!groovyAccessStrategy">
-    <lib-attributes [control]="accessStrategy.get('rejected')"
-                    arrayName="attributes"
+    <lib-attributes [control]="accessStrategy.strategy"
+                    arrayName="rejectedAttributes"
                     [keys]="formData.options.availableAttributes">
     </lib-attributes>
   </app-card>

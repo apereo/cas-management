@@ -9,8 +9,6 @@ import {RemoteComponent} from './remote/remote.component';
 import {RequiredComponent} from './required/required.component';
 import {SurrogateComponent} from './surrogate/surrogate.component';
 import {TimeComponent} from './time/time.component';
-import {TypeComponent} from './type/type.component';
-//import {AttributemappingModule} from '../attributemapping/attributemapping.module';
 import {GroovySurrogateComponent} from './groovy-surrogate/groovy-surrogate.component';
 import {SharedModule} from '../../shared/shared.module';
 
@@ -30,8 +28,7 @@ import {SharedModule} from '../../shared/shared.module';
     RequiredComponent,
     SurrogateComponent,
     GroovySurrogateComponent,
-    TimeComponent,
-    TypeComponent,
+    TimeComponent
   ],
   exports: [
     AccessStrategyComponent,
@@ -42,8 +39,7 @@ import {SharedModule} from '../../shared/shared.module';
     RequiredComponent,
     SurrogateComponent,
     GroovySurrogateComponent,
-    TimeComponent,
-    TypeComponent
+    TimeComponent
   ]
 })
 

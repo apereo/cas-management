@@ -29,27 +29,13 @@ export class PoliciesComponent implements OnInit {
   @Input()
   control: FormGroup;
 
-  allowed: MgmtFormControl;
-  groovy: MgmtFormControl;
-  groovySaml: MgmtFormControl;
-  mapped: MgmtFormControl;
-  metadata: MgmtFormControl;
-  restful: MgmtFormControl;
-  script: MgmtFormControl;
+  @Input()
   typeControl: MgmtFormControl;
 
   constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.allowed = this.control.get('allowed') as MgmtFormControl;
-    this.groovy = this.control.get('groovy') as MgmtFormControl;
-    this.groovySaml = this.control.get('groovySaml') as MgmtFormControl;
-    this.mapped = this.control.get('mapped') as MgmtFormControl;
-    this.metadata = this.control.get('metadata') as MgmtFormControl;
-    this.restful = this.control.get('restful') as MgmtFormControl;
-    this.script = this.control.get('script') as MgmtFormControl;
-    this.typeControl = this.control.get('type') as MgmtFormControl;
   }
 
   isEmpty(data: any[]): boolean {

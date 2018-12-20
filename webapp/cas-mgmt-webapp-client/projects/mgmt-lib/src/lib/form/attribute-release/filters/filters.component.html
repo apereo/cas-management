@@ -67,9 +67,9 @@
 </mat-menu>
 
 <mat-menu #addMenu>
-  <button mat-menu-item (click)="addRegEx()" i18n>Regex</button>
-  <button mat-menu-item (click)="addMappedRegex()" i18n>Mapped Regex</button>
-  <button mat-menu-item (click)="addReverseMapped()" i18n>Reverse Mapped Regex</button>
-  <button mat-menu-item (click)="addMutantMappedRegex()" i18n>Mutant Regex</button>
-  <button mat-menu-item (click)="addScript()" i18n>Script</button>
+  <button mat-menu-item (click)="addFilter.emit(TYPE.REGEX)" i18n>Regex</button>
+  <button mat-menu-item (click)="addFilter.emit(TYPE.MAPPED_REGEX)" i18n>Mapped Regex</button>
+  <button mat-menu-item (click)="addFilter.emit(TYPE.REVERSE_MAPPED_REGEX)" i18n>Reverse Mapped Regex</button>
+  <button mat-menu-item (click)="addFilter.emit(TYPE.MUTANT_REGEX)" i18n>Mutant Regex</button>
+  <button mat-menu-item (click)="addFilter.emit(TYPE.SCRIPTED)" i18n>Script</button>
 </mat-menu>

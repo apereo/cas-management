@@ -4,13 +4,13 @@ import {
   DataRecord,
   MgmtFormControl,
   AbstractRegisteredService,
-  RegisteredServicePublicKeyImpl} from 'mgmt-lib';
+  RegisteredServicePublicKeyImpl
+} from 'mgmt-lib';
 
-export class AdvancedForm extends MgmtFormGroup {
+export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
+    super({
       evalOrder: new MgmtFormControl(null),
       required: new MgmtFormControl(null),
       environments: new MgmtFormControl(null),
@@ -20,7 +20,7 @@ export class AdvancedForm extends MgmtFormGroup {
         algorithm: new MgmtFormControl(null)
        })
     });
-    this.form.setValue(this.formMap());
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -37,7 +37,7 @@ export class AdvancedForm extends MgmtFormGroup {
   }
 
   mapForm(service: AbstractRegisteredService) {
-    const frm = this.form.value;
+    const frm = this.value;
     service.evaluationOrder = frm.evalOrder;
     service.requiredHandlers = frm.required && frm.required.length > 0 ? frm.required.split(',') : null;
     service.environments = frm.environments && frm.environments.length > 0 ? frm.environments.split(',') : null;

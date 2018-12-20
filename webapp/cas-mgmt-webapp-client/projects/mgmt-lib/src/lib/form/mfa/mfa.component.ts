@@ -17,20 +17,14 @@ export class MfaComponent implements OnInit {
 
   @Input()
   control: FormGroup;
+  @Input()
   typeControl: MgmtFormControl;
-  defaultMfa: MgmtFormControl;
-  groovy: MgmtFormControl;
 
 
   constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.typeControl = this.control.get('type') as MgmtFormControl;
-    this.defaultMfa = this.control.get('defaultMfa') as MgmtFormControl;
-    this.groovy = this.control.get('groovy') as MgmtFormControl;
   }
-
-
 
 }

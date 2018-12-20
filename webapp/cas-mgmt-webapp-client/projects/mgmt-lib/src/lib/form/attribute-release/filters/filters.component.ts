@@ -1,7 +1,6 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FilterType} from '../../../domain/attribute-filter';
 import {FormArray, FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-attribute-release-filters',
@@ -21,65 +20,16 @@ export class FiltersComponent implements OnInit {
 
   filters: FormArray;
 
+  @Output()
+  addFilter: EventEmitter<FilterType> = new EventEmitter<FilterType>()
+
+  TYPE = FilterType;
+
   constructor() {
   }
 
   ngOnInit() {
     this.filters = this.control.get('filters') as FormArray;
-  }
-
-  addRegEx() {
-    this.addFilter(new FormGroup({
-      type: new MgmtFormControl(FilterType.REGEX),
-      pattern: new MgmtFormControl(null),
-      order: new MgmtFormControl(null)
-    }));
-  }
-
-  addMappedRegex() {
-    this.addFilter(new FormGroup({
-      type: new MgmtFormControl(FilterType.MAPPED_REGEX),
-      patterns: new FormArray([]),
-      completeMatch: new MgmtFormControl(null),
-      excludeUnmappedAttributes: new MgmtFormControl(null),
-      caseInsensitve: new MgmtFormControl(null),
-      order: new MgmtFormControl(null)
-    }));
-  }
-
-  addReverseMapped() {
-    this.addFilter(new FormGroup({
-      type: new MgmtFormControl(FilterType.REVERSE_MAPPED_REGEX),
-      patterns: new FormArray([]),
-      completeMatch: new MgmtFormControl(null),
-      excludeUnmappedAttributes: new MgmtFormControl(null),
-      caseInsensitve: new MgmtFormControl(null),
-      order: new MgmtFormControl(null)
-    }));
-  }
-
-  addMutantMappedRegex() {
-    this.addFilter(new FormGroup({
-      type: new MgmtFormControl(FilterType.MUTANT_REGEX),
-      patterns: new FormArray([]),
-      completeMatch: new MgmtFormControl(null),
-      excludeUnmappedAttributes: new MgmtFormControl(null),
-      caseInsensitve: new MgmtFormControl(null),
-      order: new MgmtFormControl(null)
-    }));
-  }
-
-  addScript() {
-    this.addFilter(new FormGroup({
-      type: new MgmtFormControl(FilterType.SCRIPTED),
-      script: new MgmtFormControl(null),
-      order: new MgmtFormControl(null)
-    }));
-  }
-
-  addFilter(filter: FormGroup) {
-    this.filters.push(filter);
-    this.filters.markAsTouched();
   }
 
   removeFilter() {

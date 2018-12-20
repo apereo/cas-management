@@ -7,15 +7,14 @@ import {
   AbstractRegisteredService
 } from 'mgmt-lib';
 
-export class WsfedForm extends MgmtFormGroup {
+export class WsfedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
+    super({
       realm: new MgmtFormControl(null, null, Validators.required),
       appliesTo: new MgmtFormControl(null, null, Validators.required)
     });
-    this.form.setValue(this.formMap());
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -28,7 +27,7 @@ export class WsfedForm extends MgmtFormGroup {
 
   mapForm(service: AbstractRegisteredService) {
     const srv: WSFederationRegisterdService = service as WSFederationRegisterdService;
-    const frm = this.form.value;
+    const frm = this.value;
     srv.appliesTo = frm.appliesTo;
     srv.realm = frm.realm;
   }

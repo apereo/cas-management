@@ -1,6 +1,6 @@
 export abstract class RegisteredServiceUsernameAttributeProvider {
   canonicalizationMode: String;
-  encryptUserName: String;
+  encryptUsername: boolean;
 }
 
 export abstract class BaseRegisteredServiceUsernameAtttributeProvider extends RegisteredServiceUsernameAttributeProvider {
@@ -8,7 +8,7 @@ export abstract class BaseRegisteredServiceUsernameAtttributeProvider extends Re
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super();
     this.canonicalizationMode = (provider && provider.canonicalizationMode) || 'NONE';
-    this.encryptUserName = provider && provider.encryptUserName;
+    this.encryptUsername = provider && provider.encryptUsername || false;
   }
 
 }
@@ -37,7 +37,43 @@ export class PrincipalAttributeRegisteredServiceUsernameProvider extends BaseReg
 
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super(provider);
+    const p: PrincipalAttributeRegisteredServiceUsernameProvider = provider as PrincipalAttributeRegisteredServiceUsernameProvider;
+    this.usernameAttribute = (p && p.usernameAttribute) || null;
     this['@class'] = PrincipalAttributeRegisteredServiceUsernameProvider.cName;
+  }
+}
+
+export class GroovyRegisteredServiceUsernameProvider extends BaseRegisteredServiceUsernameAtttributeProvider {
+  static cName = 'org.apereo.cas.services.GroovyRegisteredServiceUsernameProvider';
+
+  groovyScript: String;
+
+  static instanceOf(obj: any): boolean {
+    return obj && obj['@class'] === GroovyRegisteredServiceUsernameProvider.cName;
+  }
+
+  constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
+    super(provider);
+    const p: GroovyRegisteredServiceUsernameProvider = provider as GroovyRegisteredServiceUsernameProvider;
+    this.groovyScript = (p && p.groovyScript) || null;
+    this['@class'] = GroovyRegisteredServiceUsernameProvider.cName;
+  }
+}
+
+export class ScriptedRegisteredServiceUsernameProvider extends BaseRegisteredServiceUsernameAtttributeProvider {
+  static cName = 'org.apereo.cas.services.ScriptedRegisteredServiceUsernameProvider';
+
+  script: String;
+
+  static instanceOf(obj: any): boolean {
+    return obj && obj['@class'] === ScriptedRegisteredServiceUsernameProvider.cName;
+  }
+
+  constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
+    super(provider);
+    const p: ScriptedRegisteredServiceUsernameProvider = provider as ScriptedRegisteredServiceUsernameProvider;
+    this.script = (p && p.script) || null;
+    this['@class'] = ScriptedRegisteredServiceUsernameProvider.cName;
   }
 }
 
@@ -47,16 +83,18 @@ export class ShibbolethCompatiblePersistentIdGenerator {
   salt: String;
   attribute: String;
 
-  static instsanceOf(obj: any): boolean {
+  static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === ShibbolethCompatiblePersistentIdGenerator.cName;
   }
 
-  constructor() {
+  constructor(generator?: ShibbolethCompatiblePersistentIdGenerator) {
+    this.salt = (generator && generator.salt) || null;
+    this.attribute = (generator && generator.attribute) || null;
     this['@class'] = ShibbolethCompatiblePersistentIdGenerator.cName
   }
 }
 
-export class AnonymousRegisteredServiceUsernameProvider extends RegisteredServiceUsernameAttributeProvider {
+export class AnonymousRegisteredServiceUsernameProvider extends BaseRegisteredServiceUsernameAtttributeProvider {
   static cName = 'org.apereo.cas.services.AnonymousRegisteredServiceUsernameAttributeProvider';
 
   persistentIdGenerator: ShibbolethCompatiblePersistentIdGenerator;
@@ -65,15 +103,18 @@ export class AnonymousRegisteredServiceUsernameProvider extends RegisteredServic
     return obj && obj['@class'] === AnonymousRegisteredServiceUsernameProvider.cName;
   }
 
-  constructor() {
-    super();
+  constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
+    super(provider);
+    const p: AnonymousRegisteredServiceUsernameProvider = provider as AnonymousRegisteredServiceUsernameProvider;
+    this.persistentIdGenerator = (p && this.persistentIdGenerator) || new ShibbolethCompatiblePersistentIdGenerator();
     this['@class'] = AnonymousRegisteredServiceUsernameProvider.cName;
-    this.persistentIdGenerator = new ShibbolethCompatiblePersistentIdGenerator();
   }
 }
 
 export enum UserAttributeType {
   DEFAULT,
   PRINCIPAL_ATTRIBUTE,
-  ANONYMOUS
+  ANONYMOUS,
+  SCRIPTED,
+  GROOVY,
 }

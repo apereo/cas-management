@@ -1,4 +1,4 @@
-import {FormGroup, Validators} from '@angular/forms';
+import {Validators, FormGroup} from '@angular/forms';
 import {
   MgmtFormGroup,
   DataRecord,
@@ -8,15 +8,14 @@ import {
   RegexMatchingRegisteredServiceProxyPolicy
 } from 'mgmt-lib';
 
-export class ProxyForm extends MgmtFormGroup {
+export class ProxyForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public data: DataRecord) {
-    super();
-    this.form = new FormGroup({
+    super({
       type: new MgmtFormControl(null),
       regex: new MgmtFormControl(null, null, Validators.required)
     });
-    this.form.setValue(this.formMap());
+    this.setValue(this.formMap());
   }
 
   formMap(): any {
@@ -28,7 +27,7 @@ export class ProxyForm extends MgmtFormGroup {
   }
 
   mapForm(service: AbstractRegisteredService) {
-    const frm = this.form.value;
+    const frm = this.value;
     if (frm.type === ProxyType.REGEX) {
       (<RegexMatchingRegisteredServiceProxyPolicy>service.proxyPolicy).pattern = frm.regex;
     } else {

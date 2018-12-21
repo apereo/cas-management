@@ -28,7 +28,7 @@ public class ContactLookupController {
     private final ContactLookup contactLookup;
 
     /**
-     *
+     * Method called to query and return a list of contacts.
      *
      * @param query - the query
      * @return - List of RegisteredServiceContact

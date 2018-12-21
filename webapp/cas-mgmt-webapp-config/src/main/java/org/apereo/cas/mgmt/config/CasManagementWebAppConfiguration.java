@@ -5,6 +5,7 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
+import org.apereo.cas.mgmt.controller.ForwardingController;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
@@ -199,6 +200,11 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public ViewController viewController() {
         val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
         return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
+    }
+
+    @Bean
+    public ForwardingController forwardingController() {
+        return new ForwardingController();
     }
 
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")

@@ -6,6 +6,13 @@ node {
     download = true
 }
 
+sonarqube {
+    properties {
+        property "sonar.sources", "projects"
+        property "sonar.typescript.node", node.variant.nodeExec
+    }
+}
+
 npm_update {
     args = ['--production', '--loglevel', 'warn']
 }

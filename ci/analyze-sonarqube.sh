@@ -31,7 +31,7 @@ echo -e "Installing NPM...\n"
 ./gradlew npmInstall --stacktrace -q --no-daemon
 
 gradleBuild="$gradleBuild sonarqube -x javadoc -Dsonar.organization=apereo \
-            -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${CAS-MGMT-SONAR} \
+            -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONARCLOUD_TOKEN} \
             -DskipGradleLint=true -DskipSass=true -DskipNestedConfigMetadataGen=true \
             -DskipNodeModulesCleanUp=true -DskipNpmCache=true --parallel "
 

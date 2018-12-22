@@ -24,12 +24,12 @@ currentChangeSetContains() {
 }
 
 currentChangeSetAffectsTests() {
-    currentChangeSetContains "\.(java|groovy|xml|properties|yml|json)"
+    currentChangeSetContains "\.(java|groovy|xml|properties|yml|json|ts)"
     return `(expr "$?" + 0)`
 }
 
 currentChangeSetAffectsStyle() {
-    currentChangeSetContains "\.(java|groovy|xml)"
+    currentChangeSetContains "\.(java|groovy|xml|ts|html)"
     return `(expr "$?" + 0)`
 }
 
@@ -49,6 +49,6 @@ currentChangeSetAffectsDependencies() {
 }
 
 currentChangeSetAffectsSnapshots() {
-    currentChangeSetContains "\.(java|groovy|yml|properties|xml|json)"
+    currentChangeSetContains "\.(java|groovy|yml|properties|xml|json|ts|html)"
     return `(expr "$?" + 0)`
 }

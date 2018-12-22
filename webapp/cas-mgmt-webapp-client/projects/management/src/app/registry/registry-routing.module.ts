@@ -38,30 +38,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'viewJson/:id',
-    component: JSONComponent,
-    resolve: {
-      resp: JSONResolver
-    },
-    data: {
-      history: true
-    }
-  },
-  {
     path: 'yaml/:id',
     component: YamlComponent,
     resolve: {
       resp: YamlResolver
-    }
-  },
-  {
-    path: 'viewYaml/:id',
-    component: YamlComponent,
-    resolve: {
-      resp: YamlResolver
-    },
-    data: {
-      history: true
     }
   },
   {

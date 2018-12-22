@@ -9,7 +9,7 @@ import {GitStatus} from 'mgmt-lib';
 })
 export class CommitComponent implements OnInit {
 
-  commitMessage: String;
+  commitMessage: string;
   status: GitStatus;
   isAdmin: boolean;
 

@@ -1,5 +1,6 @@
 import {BaseReleaseForm} from './base-release-form';
 import {MetadataEntityAttributesAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {Validators} from '@angular/forms';
 
 export class MetadataReleaseForm extends BaseReleaseForm<MetadataEntityAttributesAttributeReleasePolicy> {
 
@@ -8,7 +9,7 @@ export class MetadataReleaseForm extends BaseReleaseForm<MetadataEntityAttribute
     this.addControl('allowed', new MgmtFormControl(null));
     this.addControl('entityAttributeValues', new MgmtFormControl(null));
     this.addControl('entityAttributeFormat', new MgmtFormControl(null));
-    this.addControl('entityAttribute', new MgmtFormControl(null));
+    this.addControl('entityAttribute', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 

@@ -1,5 +1,5 @@
 export abstract class RegisteredServiceExpirationPolicy {
-  expirationDate: String;
+  expirationDate: string;
   deleteWhenExpired: boolean;
   notifyWhenDeleted: boolean;
 

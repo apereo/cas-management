@@ -9,7 +9,7 @@ import {DiffEntry} from 'mgmt-lib';
 })
 export class AcceptComponent implements OnInit {
 
-  acceptMessage: String;
+  acceptMessage: string;
   changes: DiffEntry[];
 
   constructor(public dialogRef: MatDialogRef<AcceptComponent>,

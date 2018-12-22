@@ -3,12 +3,12 @@ import {RegexRegisteredService, RegisteredService} from './registered-service';
 export class OAuthRegisteredService extends RegexRegisteredService {
   static cName = 'org.apereo.cas.support.oauth.services.OAuthRegisteredService';
 
-  clientSecret: String;
-  clientId: String;
+  clientSecret: string;
+  clientId: string;
   bypassApprovalPrompt: boolean;
   generateRefreshToken: boolean;
-  supportedGrantTypes: String[];
-  supportedResponseTypes: String[];
+  supportedGrantTypes: string[];
+  supportedResponseTypes: string[];
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === OAuthRegisteredService.cName;
@@ -30,18 +30,18 @@ export class OAuthRegisteredService extends RegexRegisteredService {
 export class OidcRegisteredService extends OAuthRegisteredService {
   static cName = 'org.apereo.cas.services.OidcRegisteredService';
 
-  jwks: String;
+  jwks: string;
   signIdToken: boolean;
   encryptIdToken: boolean;
-  idTokenEncryptionAlg: String;
-  idTokenEncryptionEncoding: String;
+  idTokenEncryptionAlg: string;
+  idTokenEncryptionEncoding: string;
   dynamicallyRegistered: boolean;
   implicit: boolean;
-  dynamicRegistrationDateTime: String;
-  scopes: String[];
-  scopes_userdefined: String[];
-  subjectType: String;
-  sectorIdentifierUri: String;
+  dynamicRegistrationDateTime: string;
+  scopes: string[];
+  scopes_userdefined: string[];
+  subjectType: string;
+  sectorIdentifierUri: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === OidcRegisteredService.cName;

@@ -8,7 +8,7 @@ import {MatDialogRef} from '@angular/material';
 })
 export class RejectComponent implements OnInit {
 
-  rejectMessage: String;
+  rejectMessage: string;
 
   constructor(public dialogRef: MatDialogRef<RejectComponent>) { }
 

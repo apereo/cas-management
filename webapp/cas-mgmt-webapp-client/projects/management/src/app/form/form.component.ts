@@ -45,7 +45,7 @@ enum Tabs {
 
 export class FormComponent implements OnInit {
 
-  id: String;
+  id: string;
   view: boolean;
 
   @ViewChild('tabGroup')
@@ -107,7 +107,7 @@ export class FormComponent implements OnInit {
 
   loadService(service: AbstractRegisteredService) {
     this.data.service = service;
-    this.data.formMap = new Map<String, MgmtFormGroup<AbstractRegisteredService>>();
+    this.data.formMap = new Map<string, MgmtFormGroup<AbstractRegisteredService>>();
   }
 
   isOidc(): boolean {
@@ -130,7 +130,7 @@ export class FormComponent implements OnInit {
     return RegexRegisteredService.instanceOf(this.data.service);
   }
 
-  tabRoute(tab: Tabs): String {
+  tabRoute(tab: Tabs): string {
     if (tab < 0) {
       return 'clear';
     }
@@ -252,7 +252,7 @@ export class FormComponent implements OnInit {
     return false;
   }
 
-  extractDomain(service: String): string {
+  extractDomain(service: string): string {
     const domain = this.domainPattern.exec(service.toLowerCase() as string);
     if (domain != null) {
       if (this.validDomain.exec(domain[1]) != null) {
@@ -265,7 +265,7 @@ export class FormComponent implements OnInit {
   validate(): boolean {
     for (let key of Array.from(this.data.formMap.keys())) {
       const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
-      if (frm.status === 'INVALID') {
+      if (frm.invalid) {
         console.log("errors = " +frm.errors);
         this.touch(frm);
         this.nav(key);
@@ -301,7 +301,7 @@ export class FormComponent implements OnInit {
     return touched;
   }
 
-  nav(tab: String) {
+  nav(tab: string) {
       switch (tab) {
         case 'basics' :
           this.tabGroup.selectedIndex = 0;

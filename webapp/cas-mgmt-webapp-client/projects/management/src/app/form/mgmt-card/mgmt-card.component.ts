@@ -10,7 +10,7 @@ export class MgmtCardComponent implements OnInit {
   showContent = true;
 
   @Input()
-  title: String;
+  title: string;
 
   @Input()
   collapse: boolean = true;

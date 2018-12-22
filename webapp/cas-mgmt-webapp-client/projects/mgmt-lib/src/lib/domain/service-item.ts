@@ -1,15 +1,15 @@
 export class ServiceItem {
   evalOrder: number;
-  assignedId: String;
-  serviceId: String;
-  name: String;
-  description: String;
-  status: String;
+  assignedId: string;
+  serviceId: string;
+  name: string;
+  description: string;
+  status: string;
   duo: boolean;
   sso: boolean;
-  expires: String;
-  ucdRole: String;
-  submitter: String;
-  submitted: String;
+  expires: string;
+  ucdRole: string;
+  submitter: string;
+  submitted: string;
   selected: boolean;
 }

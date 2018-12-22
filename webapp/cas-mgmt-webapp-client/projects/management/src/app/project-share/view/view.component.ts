@@ -8,12 +8,12 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 })
 export class ViewComponent implements OnInit {
 
-  file: String;
-  mode: String;
-  theme: String;
+  file: string;
+  mode: string;
+  theme: string;
 
   constructor(public dialogRef: MatDialogRef<ViewComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: String[]) { }
+              @Inject(MAT_DIALOG_DATA) public data: string[]) { }
 
   ngOnInit() {
     this.mode = this.data[1];

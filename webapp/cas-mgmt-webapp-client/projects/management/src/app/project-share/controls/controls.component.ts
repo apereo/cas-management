@@ -88,7 +88,7 @@ export class ControlsComponent implements OnInit {
       });
   }
 
-  commit(msg: String) {
+  commit(msg: string) {
     if (msg === 'CANCEL') {
       return;
     } else if (!this.userService.user.administrator) {
@@ -170,7 +170,7 @@ export class ControlsComponent implements OnInit {
     this.openModalCommit();
   }
 
-  submit(msg: String) {
+  submit(msg: string) {
     this.spinner.start('Submitting request');
     this.service.submit(msg)
       .pipe(finalize(() => this.spinner.stop()))

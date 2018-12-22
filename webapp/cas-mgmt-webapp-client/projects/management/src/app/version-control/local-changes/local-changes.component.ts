@@ -109,7 +109,7 @@ export class LocalChangesComponent implements OnInit {
       .subscribe(resp => this.openView(resp, 'yaml', 'eclipse'));
   }
 
-  openView(text: String, mode: string, theme: string) {
+  openView(text: string, mode: string, theme: string) {
     this.dialog.open(ViewComponent, {
       data: [text, mode, theme],
       width: '900px',

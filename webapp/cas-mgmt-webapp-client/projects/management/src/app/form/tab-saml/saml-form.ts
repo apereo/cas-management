@@ -1,4 +1,4 @@
-import {FormArray, FormGroup, Validators} from '@angular/forms';
+import {FormGroup, Validators} from '@angular/forms';
 import {
   MgmtFormGroup,
   DataRecord,
@@ -6,6 +6,7 @@ import {
   AbstractRegisteredService,
   SamlRegisteredService
 } from 'mgmt-lib';
+import {AttributeForm} from '../attribute-form';
 
 export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
@@ -43,19 +44,9 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
         assertionAudiences: new MgmtFormControl(null)
       }),
       nameFormats: new FormGroup({
-        nameIds: new FormArray([])
+        nameIds: new AttributeForm((<SamlRegisteredService>data.service).attributeNameFormats)
       })
     });
-    const saml: SamlRegisteredService = this.data.service as SamlRegisteredService;
-    const nameIds: FormArray = this.get('nameIds') as FormArray;
-    if (saml.attributeNameFormats) {
-      for (let i = 0; i < Array.from(Object.keys(saml.attributeNameFormats)).length; i++) {
-        nameIds.push(new FormGroup({
-          key: new MgmtFormControl(null, null, Validators.required),
-          value: new MgmtFormControl(null, null, Validators.required)
-        }));
-      }
-    }
     this.setValue(this.formMap());
   }
 
@@ -94,17 +85,9 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
         assertionAudiences: saml.assertionAudiences
       },
       nameFormats: {
-        nameIds: []
+        nameIds: (<AttributeForm>this.get('nameIds')).formMap()
       }
     };
-    if (saml.attributeNameFormats) {
-      for (let n of Array.from(Object.keys(saml.attributeNameFormats))) {
-        frm.nameFormats.nameIds.push({
-          key: n,
-          value: saml.attributeNameFormats[n]
-        });
-      }
-    }
     return frm;
   }
 
@@ -134,11 +117,6 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
     saml.signingCredentialType = frm.security.signingCredentialType;
     saml.requiredAuthenticationContextClass = frm.security.requiredAuthenticationContextClass;
     saml.assertionAudiences = frm.security.assertionAudiences;
-    if (frm.nameFormats.nameIds) {
-      saml.attributeNameFormats = new Map<String, String>();
-      for(let n of frm.nameFormats.nameIds) {
-        saml.attributeNameFormats[n.key] = n.value;
-      }
-    }
+    saml.attributeNameFormats = (<AttributeForm>this.get('nameIds')).mapFormString();
   }
 }

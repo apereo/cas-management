@@ -6,7 +6,6 @@ import { DebugElement } from '@angular/core';
 
 import { TabAccessstrategyComponent } from './tab-accessstrategy.component';
 import {DataRecord, SharedModule} from 'mgmt-lib';
-import {AccessStrategyComponent} from 'mgmt-lib/lib/form/access-strategy/access-strategy.component';
 
 describe('TabAccessstrategyComponent', () => {
   let component: TabAccessstrategyComponent;
@@ -15,7 +14,7 @@ describe('TabAccessstrategyComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ TabAccessstrategyComponent, AccessStrategyComponent, AttributemappingComponent ],
+      declarations: [ TabAccessstrategyComponent ],
       providers: [ DataRecord ]
     })
     .compileComponents();

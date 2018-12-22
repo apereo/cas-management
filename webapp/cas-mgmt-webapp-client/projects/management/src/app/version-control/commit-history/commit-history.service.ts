@@ -14,19 +14,19 @@ export class CommitHistoryService extends Service {
     return this.get<DiffEntry[]>('api/history/commit/' + id);
   }
 
-  checkout(id: string, path: String): Observable<String> {
+  checkout(id: string, path: string): Observable<string> {
     return this.getText('api/history/checkout/' + path + '/' + id);
   }
 
-  revert(id: string): Observable<String> {
+  revert(id: string): Observable<string> {
     return this.getText( 'api/history/revert/' + id);
   }
 
-  change(commit: String, path: String): Observable<String> {
+  change(commit: string, path: string): Observable<string> {
     return this.postText('api/change/made', [path, commit]);
   }
 
-  toHead(commit: String, path: String): Observable<String> {
+  toHead(commit: string, path: string): Observable<string> {
     return this.postText('api/change/head', [path, commit]);
   }
 }

@@ -10,8 +10,8 @@ import {Service} from '../service';
 })
 export class FooterService extends Service {
 
-  getVersions(): Observable<String[]> {
-    return this.get<String[]>('api/footer');
+  getVersions(): Observable<string[]> {
+    return this.get<string[]>('api/footer');
   }
 
 }

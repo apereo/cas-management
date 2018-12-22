@@ -16,7 +16,7 @@ export class SubmitService extends Service {
     return this.get<Branch[]>(this.controller);
   }
 
-  revert(name: string): Observable<String> {
+  revert(name: string): Observable<string> {
     return this.getText(this.controller + '/revert/' + name);
   }
 

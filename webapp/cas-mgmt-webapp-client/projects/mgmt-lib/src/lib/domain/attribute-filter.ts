@@ -24,7 +24,7 @@ export class RegisteredServiceRegexAttributeFilter extends RegisteredServiceAttr
   static cName = 'org.apereo.cas.services.support.RegisteredServiceRegexAttributeFilter';
 
   order: number;
-  pattern: String;
+  pattern: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === RegisteredServiceRegexAttributeFilter.cName;
@@ -42,7 +42,7 @@ export class RegisteredServiceRegexAttributeFilter extends RegisteredServiceAttr
 export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServiceAttributeFilter {
   static cName = 'org.apereo.cas.services.support.RegisteredServiceMappedRegexAttributeFilter';
 
-  patterns: Map<String, String>;
+  patterns: Map<string, string>;
   excludeUnmappedAttributes: boolean;
   caseInsensitive: boolean;
   completeMatch: boolean;
@@ -93,7 +93,7 @@ export class RegisteredServiceMutantRegexAttributeFilter extends RegisteredServi
 export class RegisteredServiceScriptedAttributeFilter extends RegisteredServiceAttributeFilter {
   static cName = 'org.apereo.cas.services.support.RegisteredServiceScriptedAttributeFilter';
 
-  script: String;
+  script: string;
   order: number;
 
   static instanceof(obj: any): boolean {

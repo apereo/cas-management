@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>REST Endpoint</mat-placeholder>
-    <input matInput [formControl]="endpoint">
+    <input matInput [formControl]="endpoint" required>
     <mat-hint align="end"><lib-hint [difference]="endpoint.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip

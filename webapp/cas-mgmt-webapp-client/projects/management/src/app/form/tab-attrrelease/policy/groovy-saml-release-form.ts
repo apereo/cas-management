@@ -1,12 +1,13 @@
 import {BaseReleaseForm} from './base-release-form';
 import {GroovySamlRegisteredServiceAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {Validators} from '@angular/forms';
 
 export class GroovySamlReleaseForm extends BaseReleaseForm<GroovySamlRegisteredServiceAttributeReleasePolicy> {
 
   constructor(public data: GroovySamlRegisteredServiceAttributeReleasePolicy) {
     super(data);
     this.addControl('allowed', new MgmtFormControl(null));
-    this.addControl('groovySaml', new MgmtFormControl(null));
+    this.addControl('groovySaml', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 

@@ -50,7 +50,7 @@ export class SubmitsComponent implements OnInit {
   }
 
 
-  status(branch: Branch): String {
+  status(branch: Branch): string {
     if (!branch) {
       return;
     }

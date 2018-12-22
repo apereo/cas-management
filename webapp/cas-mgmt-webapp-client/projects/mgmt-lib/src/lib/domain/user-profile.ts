@@ -1,14 +1,14 @@
 export class UserProfile {
   static cName = 'org.apereo.cas.mgmt.domains.MgmtUserProfile';
 
-  id: String;
-  permissions: String[];
-  email: String;
-  firstName: String;
-  familyName: String;
-  username: String;
-  phone: String;
-  department: String;
+  id: string;
+  permissions: string[];
+  email: string;
+  firstName: string;
+  familyName: string;
+  username: string;
+  phone: string;
+  department: string;
   administrator: boolean;
 
   static instanceOf(obj: any): boolean {

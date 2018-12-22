@@ -79,6 +79,7 @@ export class StrategyAccessForm extends FormGroup implements MgmtFormGroup<Abstr
       base.mapForm(def);
       this.strategy = new DefaultAccessForm(def);
     }
+    this.setControl('strategy', this.strategy);
   }
 
   mapForm(service: AbstractRegisteredService) {

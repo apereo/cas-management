@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Remote URL</mat-placeholder>
-    <input matInput [formControl]="endpointUrl">
+    <input matInput [formControl]="endpointUrl" required>
     <mat-hint align="end">
       <lib-hint [difference]="endpointUrl.difference()"></lib-hint>
     </mat-hint>
@@ -14,7 +14,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Acceptable HTTP Codes</mat-placeholder>
-    <input matInput [matAutocomplete]="auto"
+    <input matInput [matAutocomplete]="auto" required
            [formControl]="responseCodes">
     <mat-hint align="end">
      <lib-hint [difference]="responseCodes.difference()"></lib-hint>

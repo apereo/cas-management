@@ -13,7 +13,7 @@ export class RepoHistoryService extends Service {
     return this.get<Commit[]>(this.controller);
   }
 
-  checkout(id: String): Observable<String> {
+  checkout(id: string): Observable<string> {
     return this.getText(this.controller + '/checkout/' + id);
   }
 }

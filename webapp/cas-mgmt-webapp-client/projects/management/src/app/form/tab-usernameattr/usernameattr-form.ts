@@ -120,5 +120,6 @@ export class UsernameattrForm extends FormGroup implements MgmtFormGroup<Abstrac
       base.baseForm(provider);
       this.provider = new DefaultAttrForm(provider);
     }
+    this.setControl('provider', this.provider);
   }
 }

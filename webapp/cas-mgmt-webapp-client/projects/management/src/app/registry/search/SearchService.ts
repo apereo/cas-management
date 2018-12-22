@@ -11,11 +11,11 @@ export class SearchService extends Service {
     return this.post('api/search', query);
   }
 
-  getYaml(id: number): Observable<String> {
+  getYaml(id: number): Observable<string> {
     return this.getText('api/services/yaml/' + id);
   }
 
-  getJson(id: number): Observable<String> {
+  getJson(id: number): Observable<string> {
     return this.getText('api/services/json/' + id);
   }
 }

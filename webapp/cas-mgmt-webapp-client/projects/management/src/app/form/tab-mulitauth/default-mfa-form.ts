@@ -31,7 +31,7 @@ export class DefaultMFAForm extends BaseMfaForm<DefaultRegisteredServiceMultifac
     policy.multifactorAuthenticationProviders = frm.multifactorAuthenticationProviders;
     policy.failureMode = frm.failureMode;
     policy.principalAttributeNameTrigger = frm.principalAttributeNameTrigger;
-    policy.principalAttributeValueToMatch = frm.prinicipalAttributeValueToMatch;
+    policy.principalAttributeValueToMatch = frm.principalAttributeValueToMatch;
     policy.bypassEnabled = frm.bypassEnabled;
   }
 

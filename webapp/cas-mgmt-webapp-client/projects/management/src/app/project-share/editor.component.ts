@@ -112,7 +112,7 @@ export class EditorComponent implements OnInit {
     });
   }
 
-  setKeybinding(key: String) {
+  setKeybinding(key: string) {
     if (key === 'keybinding-vim') {
       this.editor.setKeyboardHandler(this.vim);
     } else if (key === 'keybinding-emacs') {

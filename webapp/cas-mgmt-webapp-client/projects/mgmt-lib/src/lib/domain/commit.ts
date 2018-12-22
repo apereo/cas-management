@@ -2,11 +2,11 @@
  * Created by tsschmi on 3/8/17.
  */
 export class Commit {
-  id: String;
-  text: String;
-  commitTime: String;
+  id: string;
+  text: string;
+  commitTime: string;
 
-  constructor(id: String, text: String, commitTime: String) {
+  constructor(id: string, text: string, commitTime: string) {
     this.id = id;
     this.text = text;
     this.commitTime = commitTime;

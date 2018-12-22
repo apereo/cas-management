@@ -11,8 +11,8 @@ import {Observable} from 'rxjs/index';
 })
 export class FooterComponent implements OnInit {
 
-  casVersion: String;
-  mgmtVersion: String;
+  casVersion: string;
+  mgmtVersion: string;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
     .pipe(

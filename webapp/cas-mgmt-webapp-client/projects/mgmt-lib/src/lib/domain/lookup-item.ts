@@ -1,8 +1,8 @@
 export class LookupItem {
-  assignedId: String;
-  serviceId: String;
-  name: String;
-  description: String;
-  contacts: String;
+  assignedId: string;
+  serviceId: string;
+  name: string;
+  description: string;
+  contacts: string;
   selected: boolean;
 }

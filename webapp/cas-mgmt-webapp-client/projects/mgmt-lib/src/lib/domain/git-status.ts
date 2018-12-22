@@ -1,8 +1,8 @@
 export class GitStatus {
   hasChanges: boolean;
-  added: String[];
-  modified: String[];
-  deleted: String[];
+  added: string[];
+  modified: string[];
+  deleted: string[];
   unpublished: boolean;
   submissions: number;
   pullRequests: number;

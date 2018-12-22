@@ -1,12 +1,13 @@
 import {BaseAttrForm} from './base-attr-form';
 import {AnonymousRegisteredServiceUsernameProvider, MgmtFormControl} from 'mgmt-lib';
+import {Validators} from '@angular/forms';
 
 export class AnonAttrForm extends BaseAttrForm<AnonymousRegisteredServiceUsernameProvider> {
 
   constructor(public data: AnonymousRegisteredServiceUsernameProvider) {
     super(data);
-    this.addControl('salt', new MgmtFormControl(null));
-    this.addControl('attribute', new MgmtFormControl(null));
+    this.addControl('salt', new MgmtFormControl(null, null, Validators.required));
+    this.addControl('attribute', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 

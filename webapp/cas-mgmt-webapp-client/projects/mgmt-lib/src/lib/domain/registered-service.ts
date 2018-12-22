@@ -19,29 +19,29 @@ import {Form, FormGroup, Validators} from '@angular/forms';
 import {MgmtFormControl} from '../form/mgmt-formcontrol';
 
 export abstract class RegisteredService {
-  serviceId: String;
-  name: String;
-  theme: String;
-  informationUrl: String;
-  privacyUrl: String;
-  responseType: String;
+  serviceId: string;
+  name: string;
+  theme: string;
+  informationUrl: string;
+  privacyUrl: string;
+  responseType: string;
   id: number;
-  description: String;
+  description: string;
   proxyPolicy: RegisteredServiceProxyPolicy;
   evaluationOrder: number;
   usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider;
-  requiredHandlers: String[];
+  requiredHandlers: string[];
   attributeReleasePolicy: RegisteredServiceAttributeReleasePolicy;
   multifactorPolicy: RegisteredServiceMultifactorPolicy;
-  logo: String;
-  logoutUrl: String;
-  logoutType: String;
+  logo: string;
+  logoutUrl: string;
+  logoutType: string;
   accessStrategy: RegisteredServiceAccessStrategy;
   publicKey: RegisteredServicePublicKey;
-  properties: Map<String, DefaultRegisteredServiceProperty>;
+  properties: Map<string, DefaultRegisteredServiceProperty>;
   contacts: RegisteredServiceContact[];
   expirationPolicy: RegisteredServiceExpirationPolicy;
-  environments: String[];
+  environments: string[];
 
   constructor(service?: RegisteredService) {
     this.serviceId = (service && service.serviceId) || null;
@@ -57,7 +57,7 @@ export abstract class RegisteredService {
     this.usernameAttributeProvider = (service && service.usernameAttributeProvider) || new DefaultRegisteredServiceUsernameProvider();
     this.requiredHandlers = (service && service.requiredHandlers) || null;
     this.attributeReleasePolicy = (service && service.attributeReleasePolicy) || new DenyAllAttributeReleasePolicy();
-    this.multifactorPolicy = (service && service.multifactorPolicy) || new DefaultRegisteredServiceMultifactorPolicy();
+    this.multifactorPolicy = (service && service.multifactorPolicy) || null;
     this.logo = (service && service.logo) || null;
     this.logoutUrl = (service && service.logoutUrl) || null;
     this.logoutType = (service && service.logoutType) || 'BACK_CHANNEL';

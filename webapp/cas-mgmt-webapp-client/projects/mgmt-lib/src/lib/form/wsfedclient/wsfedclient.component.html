@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Realm</mat-placeholder>
-    <input matInput [formControl]="realm">
+    <input matInput [formControl]="realm" required>
     <mat-hint align="end"><lib-hint [difference]="realm.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
@@ -13,7 +13,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>appliesTo</mat-placeholder>
-    <input matInput required [formControl]="appliesTo">
+    <input matInput required [formControl]="appliesTo" required>
     <mat-hint align="end"><lib-hint [difference]="appliesTo.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip

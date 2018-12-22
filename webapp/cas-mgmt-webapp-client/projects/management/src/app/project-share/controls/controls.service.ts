@@ -28,15 +28,15 @@ export class ControlsService extends Service {
     }, 60 * 1000)
   }
 
-  commit(msg: String): Observable<String> {
+  commit(msg: string): Observable<string> {
     return this.post('api/commit', msg);
   }
 
-  publish(): Observable<String> {
+  publish(): Observable<string> {
     return this.getText('api/commit/publish');
   }
 
-  submit(msg): Observable<String> {
+  submit(msg): Observable<string> {
     return this.postText('api/submit', msg);
   }
 
@@ -54,7 +54,7 @@ export class ControlsService extends Service {
       .subscribe(resp => this.status = resp);
   }
 
-  sync(): Observable<String> {
+  sync(): Observable<string> {
     return this.getText( 'api/commit/sync');
   }
 

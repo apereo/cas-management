@@ -1,6 +1,6 @@
 export abstract class RegisteredServiceProperty {
 
-  values: String[];
+  values: string[];
 
   constructor(prop?: RegisteredServiceProperty) {
     this.values = (prop && prop.values) || null;

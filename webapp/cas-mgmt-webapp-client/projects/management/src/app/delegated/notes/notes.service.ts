@@ -12,11 +12,11 @@ export class NotesService extends Service {
 
   controller = 'api/note';
 
-  getNotes(id: String): Observable<String> {
+  getNotes(id: string): Observable<string> {
     return this.getText(this.controller + '/' + id);
   }
 
-  addNote(id: String, text: String): Observable<String> {
+  addNote(id: string, text: string): Observable<string> {
     return this.postText(this.controller, new Note(id, text));
   }
 

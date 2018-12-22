@@ -1,5 +1,5 @@
 export abstract class RegisteredServiceUsernameAttributeProvider {
-  canonicalizationMode: String;
+  canonicalizationMode: string;
   encryptUsername: boolean;
 }
 
@@ -29,7 +29,7 @@ export class DefaultRegisteredServiceUsernameProvider extends BaseRegisteredServ
 export class PrincipalAttributeRegisteredServiceUsernameProvider extends BaseRegisteredServiceUsernameAtttributeProvider {
   static cName = 'org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider';
 
-  usernameAttribute: String;
+  usernameAttribute: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === PrincipalAttributeRegisteredServiceUsernameProvider.cName;
@@ -46,7 +46,7 @@ export class PrincipalAttributeRegisteredServiceUsernameProvider extends BaseReg
 export class GroovyRegisteredServiceUsernameProvider extends BaseRegisteredServiceUsernameAtttributeProvider {
   static cName = 'org.apereo.cas.services.GroovyRegisteredServiceUsernameProvider';
 
-  groovyScript: String;
+  groovyScript: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === GroovyRegisteredServiceUsernameProvider.cName;
@@ -63,7 +63,7 @@ export class GroovyRegisteredServiceUsernameProvider extends BaseRegisteredServi
 export class ScriptedRegisteredServiceUsernameProvider extends BaseRegisteredServiceUsernameAtttributeProvider {
   static cName = 'org.apereo.cas.services.ScriptedRegisteredServiceUsernameProvider';
 
-  script: String;
+  script: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === ScriptedRegisteredServiceUsernameProvider.cName;
@@ -80,8 +80,8 @@ export class ScriptedRegisteredServiceUsernameProvider extends BaseRegisteredSer
 export class ShibbolethCompatiblePersistentIdGenerator {
   static cName = 'org.apereo.cas.authentication.principal.ShibbolethCompatiblePersistentIdGenerator';
 
-  salt: String;
-  attribute: String;
+  salt: string;
+  attribute: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === ShibbolethCompatiblePersistentIdGenerator.cName;

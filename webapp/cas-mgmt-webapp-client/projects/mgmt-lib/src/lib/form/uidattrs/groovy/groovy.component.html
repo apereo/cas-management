@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Groovy Script Location</mat-placeholder>
-    <input matInput [formControl]="groovy">
+    <input matInput [formControl]="groovy" required>
   </mat-form-field>
   <mat-hint align="end"><lib-hint [difference]="groovy.difference()"></lib-hint></mat-hint>
   <mat-icon appHelp i18n-matTooltip

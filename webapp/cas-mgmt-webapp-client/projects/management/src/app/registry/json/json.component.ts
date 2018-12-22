@@ -15,7 +15,7 @@ import {finalize} from 'rxjs/operators';
 })
 export class JSONComponent implements AfterViewInit, OnInit {
 
-  file: String;
+  file: string;
 
   changed = false;
 
@@ -34,7 +34,7 @@ export class JSONComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.route.data
-        .subscribe((data: { resp: String }) => {
+        .subscribe((data: { resp: string }) => {
           this.file = data.resp;
        });
     }, 100);

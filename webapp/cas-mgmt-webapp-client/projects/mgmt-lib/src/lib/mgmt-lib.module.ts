@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ServiceIdComponent} from './form/service-id/service-id.component';
-import {InvalidDomainDirective} from './form/service-id/invalid-domain.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ServicedescComponent} from './form/servicedesc/servicedesc.component';
 import {ServicetypeComponent} from './form/servicetype/servicetype.component';
@@ -60,7 +59,6 @@ import {ServiceInterceptor} from './interceptor';
     ServicenameComponent,
     LinkrefsComponent,
     LogoComponent,
-    InvalidDomainDirective,
     ContactsComponent,
     EnabledComponent,
     EvalorderComponent,
@@ -99,7 +97,6 @@ import {ServiceInterceptor} from './interceptor';
     ServicenameComponent,
     LinkrefsComponent,
     LogoComponent,
-    InvalidDomainDirective,
     AccessStrategyModule,
     AttributeReleaseModule,
     WsfedattrrelpoliciesModule,

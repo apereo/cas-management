@@ -3,11 +3,11 @@ import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn'
 export abstract class RegisteredServiceAccessStrategy {
   enabled = true;
   ssoEnabled = false;
-  unauthorizedRedirectUrl: String;
+  unauthorizedRedirectUrl: string;
   delegatedAuthenticationPolicy: RegisteredServiceDelegatedAuthenticationPolicy;
   requireAllAttributes = false;
-  requiredAttributes: Map<String, String[]>;
-  rejectedAttributes: Map<String, String[]>;
+  requiredAttributes: Map<string, string[]>;
+  rejectedAttributes: Map<string, string[]>;
   caseInsensitive: boolean;
 
   constructor(strat?: RegisteredServiceAccessStrategy) {
@@ -48,8 +48,8 @@ export class DefaultRegisteredServiceAccessStrategy extends RegisteredServiceAcc
 export class RemoteEndpointServiceAccessStrategy extends DefaultRegisteredServiceAccessStrategy {
   static cName = 'org.apereo.cas.services.RemoteEndpointServiceAccessStrategy';
 
-  endpointUrl: String;
-  acceptableResponseCodes: String;
+  endpointUrl: string;
+  acceptableResponseCodes: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === RemoteEndpointServiceAccessStrategy.cName;
@@ -67,8 +67,8 @@ export class RemoteEndpointServiceAccessStrategy extends DefaultRegisteredServic
 export class TimeBasedRegisteredServiceAccessStrategy extends DefaultRegisteredServiceAccessStrategy {
   static cName = 'org.apereo.cas.services.TimeBasedRegisteredServiceAccessStrategy';
 
-  startingDateTime: String;
-  endingDateTime: String;
+  startingDateTime: string;
+  endingDateTime: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === TimeBasedRegisteredServiceAccessStrategy.cName;
@@ -86,7 +86,7 @@ export class TimeBasedRegisteredServiceAccessStrategy extends DefaultRegisteredS
 export class GrouperRegisteredServiceAccessStrategy extends TimeBasedRegisteredServiceAccessStrategy {
   static cName = 'org.apereo.cas.grouper.services.GrouperRegisteredServiceAccessStrategy';
 
-  groupField: String;
+  groupField: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === GrouperRegisteredServiceAccessStrategy.cName;
@@ -117,7 +117,7 @@ export class SurrogateRegisteredServiceAccessStrategy extends BaseSurrogateRegis
   static cName = 'org.apereo.cas.services.SurrogateRegisteredServiceAccessStrategy';
 
   surrogateEnabled: boolean;
-  surrogateRequiredAttributes: Map<String, String[]>;
+  surrogateRequiredAttributes: Map<string, string[]>;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === SurrogateRegisteredServiceAccessStrategy.cName;
@@ -135,7 +135,7 @@ export class SurrogateRegisteredServiceAccessStrategy extends BaseSurrogateRegis
 export class GroovySurrogateRegisteredServiceAccessStrategy extends RegisteredServiceAccessStrategy {
   static cName = 'org.apereo.cas.services.GroovySurrogateRegisteredServiceAccessStrategy';
 
-  groovyScript: String;
+  groovyScript: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === GroovySurrogateRegisteredServiceAccessStrategy.cName;
@@ -153,7 +153,7 @@ export class GroovyRegisteredServiceAccessStrategy extends RegisteredServiceAcce
   static cName = 'org.apereo.cas.services.GroovyRegisteredServiceAccessStrategy';
 
   order: number;
-  groovyScript: String;
+  groovyScript: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === GroovyRegisteredServiceAccessStrategy.cName;

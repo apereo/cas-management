@@ -13,15 +13,18 @@ export class ProxyComponent implements OnInit {
   TYPE = ProxyType;
 
   @Input()
-  control: FormGroup;
   typeControl: MgmtFormControl;
-  regex: MgmtFormControl;
+
+  @Input()
+  control: FormGroup;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.typeControl = this.control.get('type') as MgmtFormControl;
-    this.regex = this.control.get('regex') as MgmtFormControl;
+  }
+
+  regex(): MgmtFormControl {
+    return this.control.get('regex') as MgmtFormControl;
   }
 }

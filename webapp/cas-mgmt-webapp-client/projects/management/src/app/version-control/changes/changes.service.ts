@@ -12,24 +12,24 @@ export class ChangesService extends Service {
 
   controller = 'api/change';
 
-  getChanges(branch: String): Observable<DiffEntry[]> {
+  getChanges(branch: string): Observable<DiffEntry[]> {
     return this.post<DiffEntry[]>(this.controller, branch);
   }
 
-  viewJson(id: String): Observable<String> {
+  viewJson(id: string): Observable<string> {
     return this.getText(this.controller + '/json/' + id);
   }
 
-  viewYaml(id: String): Observable<String> {
+  viewYaml(id: string): Observable<string> {
     return this.getText(this.controller + '/yaml/' + id);
   }
 
-  viewDiff(oldId: String, newId: String): Observable<String> {
+  viewDiff(oldId: string, newId: string): Observable<string> {
     const data = [oldId, newId];
     return this.postText(this.controller + '/diff', data);
   }
 
-  getChangePair(change: String): Observable<AbstractRegisteredService[]> {
+  getChangePair(change: string): Observable<AbstractRegisteredService[]> {
     return this.get<AbstractRegisteredService[]>(this.controller + '/pair/' + change);
   }
 

@@ -15,7 +15,7 @@ import {finalize} from 'rxjs/operators';
 })
 export class ServicesComponent implements OnInit, AfterViewInit {
   deleteItem: ServiceItem;
-  domain: String;
+  domain: string;
   selectedItem: ServiceItem;
   revertItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
@@ -116,7 +116,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       );
   };
 
-  handleDelete(name: String) {
+  handleDelete(name: string) {
     this.snackBar
       .open(name + ' has been successfully deleted.',
         'Dismiss',
@@ -234,7 +234,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
            row.status === 'DELETE';
   }
 
-  status(row: ServiceItem): String {
+  status(row: ServiceItem): string {
     return this.appService.config.versionControl ? row.status : '';
   }
 }

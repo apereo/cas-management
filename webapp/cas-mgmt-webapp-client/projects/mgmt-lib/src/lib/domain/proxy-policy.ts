@@ -10,13 +10,13 @@ export enum ProxyType {
 export class RegexMatchingRegisteredServiceProxyPolicy extends RegisteredServiceProxyPolicy {
   static cName =  'org.apereo.cas.services.RegexMatchingRegisteredServiceProxyPolicy';
 
-  pattern: String;
+  pattern: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === RegexMatchingRegisteredServiceProxyPolicy.cName;
   }
 
-  constructor(policy: RegisteredServiceProxyPolicy) {
+  constructor(policy?: RegisteredServiceProxyPolicy) {
     super();
     const p: RegexMatchingRegisteredServiceProxyPolicy = policy as RegexMatchingRegisteredServiceProxyPolicy;
     this.pattern = (p && p.pattern) || null;

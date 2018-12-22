@@ -40,7 +40,7 @@ export class DomainsComponent implements OnInit {
     this.dataSource.filter = val;
   }
 
-  view(domain: String) {
+  view(domain: string) {
     this.router.navigate(['registry/services', domain]);
   }
 }

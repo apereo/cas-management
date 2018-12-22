@@ -1,10 +1,10 @@
 export class RegisteredServiceContact {
   static cName = "org.apereo.cas.services.RegisteredServiceContact";
 
-  name: String;
-  email: String;
-  phone: String;
-  department: String;
+  name: string;
+  email: string;
+  phone: string;
+  department: string;
 }
 
 export class DefaultRegisteredServiceContact extends RegisteredServiceContact {

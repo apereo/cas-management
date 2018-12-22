@@ -14,7 +14,7 @@ import {finalize} from 'rxjs/operators';
 export class NotesComponent implements OnInit {
 
   @Output()
-  commit: EventEmitter<String> = new EventEmitter<String>();
+  commit: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('editor')
   editor: EditorComponent;
@@ -22,7 +22,7 @@ export class NotesComponent implements OnInit {
   @Input()
   viewOnly: boolean;
 
-  file: String;
+  file: string;
 
   constructor(public route: ActivatedRoute,
               public service: NotesService,

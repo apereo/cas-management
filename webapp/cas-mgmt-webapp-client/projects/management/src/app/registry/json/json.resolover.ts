@@ -13,13 +13,13 @@ import {SpinnerService} from 'mgmt-lib';
 @Injectable({
   providedIn: 'root'
 })
-export class JSONResolver implements Resolve<String> {
+export class JSONResolver implements Resolve<string> {
 
   constructor(private service: ServiceViewService,
               private changeService: ChangesService,
               private spinner: SpinnerService) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<String> | String {
+  resolve(route: ActivatedRouteSnapshot): Observable<string> | string {
     const history: boolean = route.data.history;
     const param: string = route.params['id'];
 

@@ -5,14 +5,16 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { TabBasicsComponent } from './tab-basics.component';
-import {DataRecord, SharedModule} from 'mgmt-lib';
-import {ServicenameComponent} from 'mgmt-lib/lib/form/servicename/servicename.component';
-import {ThemeidComponent} from 'mgmt-lib/lib/form/themeid/themeid.component';
-import {ServicedescComponent} from 'mgmt-lib/lib/form/servicedesc/servicedesc.component';
-import {LogoComponent} from 'mgmt-lib/lib/form/logo/logo.component';
-import {LinkrefsComponent} from 'mgmt-lib/lib/form/linkrefs/linkrefs.component';
-import {EnabledComponent} from 'mgmt-lib/lib/form/enabled/enabled.component';
-import {ServiceIdComponent} from 'mgmt-lib/lib/form/service-id/service-id.component';
+import {DataRecord,
+  SharedModule,
+  ServicenameComponent,
+  ServiceIdComponent,
+  ServicedescComponent,
+  LogoComponent,
+  LinkrefsComponent,
+  EnabledComponent,
+  ThemeidComponent
+} from 'mgmt-lib';
 
 describe('TabBasicsComponent', () => {
   let component: TabBasicsComponent;

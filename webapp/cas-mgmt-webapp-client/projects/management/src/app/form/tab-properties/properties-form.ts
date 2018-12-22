@@ -43,7 +43,7 @@ export class PropertiesForm extends FormGroup implements MgmtFormGroup<AbstractR
 
   mapForm(service: AbstractRegisteredService) {
     const frm = this.value;
-    service.properties = new Map<String, DefaultRegisteredServiceProperty>();
+    service.properties = new Map<string, DefaultRegisteredServiceProperty>();
     for (let p of frm.properties) {
       const drp = new DefaultRegisteredServiceProperty();
       drp.values = p.value.split(',');

@@ -3,10 +3,10 @@
  */
 
 export class History {
-  id: String;
-  message: String;
-  committer: String;
-  time: String;
-  path: String;
-  commit: String;
+  id: string;
+  message: string;
+  committer: string;
+  time: string;
+  path: string;
+  commit: string;
 }

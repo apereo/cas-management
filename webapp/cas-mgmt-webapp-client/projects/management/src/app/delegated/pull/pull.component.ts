@@ -78,7 +78,7 @@ export class PullComponent implements OnInit {
     this.acceptBranch = this.selectedBranch;
   }
 
-  accept(note: String) {
+  accept(note: string) {
     this.spinner.start('Accepting request');
     this.service.accept(this.acceptBranch, note)
       .pipe(finalize(() => this.spinner.stop()))
@@ -107,7 +107,7 @@ export class PullComponent implements OnInit {
     this.rejectBranch = this.selectedBranch;
   }
 
-  reject(note: String) {
+  reject(note: string) {
     this.spinner.start('Rejecting request');
     this.service.reject(this.rejectBranch, note)
       .pipe(finalize(() => this.spinner.stop()))
@@ -132,13 +132,13 @@ export class PullComponent implements OnInit {
     this.router.navigate(['notes', this.selectedBranch.id]);
   }
 
-  saveNote(note: String) {
+  saveNote(note: string) {
   }
 
-  handleSaveNote(msg: String) {
+  handleSaveNote(msg: string) {
   }
 
-  status(branch: Branch): String {
+  status(branch: Branch): string {
     if (branch) {
       if (branch.accepted) {
         return 'Accepted';

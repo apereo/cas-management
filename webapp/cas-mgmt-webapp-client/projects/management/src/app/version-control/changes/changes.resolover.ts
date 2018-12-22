@@ -17,7 +17,7 @@ export class ChangesResolve implements Resolve<DiffEntry[]> {
   constructor(private service: ChangesService, private spinner: SpinnerService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<DiffEntry[]> | DiffEntry[] {
-    const param: String = route.params['branch'];
+    const param: string = route.params['branch'];
     if (param) {
       this.spinner.start('Loading changes');
       return this.service.getChanges(param).pipe(finalize(() => this.spinner.stop()));

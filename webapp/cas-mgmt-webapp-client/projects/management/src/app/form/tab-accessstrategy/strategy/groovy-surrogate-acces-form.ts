@@ -3,12 +3,13 @@ import {
   GroovySurrogateRegisteredServiceAccessStrategy,
   MgmtFormControl
 } from 'mgmt-lib';
+import {Validators} from '@angular/forms';
 
 export class GroovySurrogateAccesForm extends BaseAccessForm<GroovySurrogateRegisteredServiceAccessStrategy> {
 
   constructor(public strategy: GroovySurrogateRegisteredServiceAccessStrategy) {
     super(strategy);
-    this.addControl('groovyScript', new MgmtFormControl(null));
+    this.addControl('groovyScript', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 

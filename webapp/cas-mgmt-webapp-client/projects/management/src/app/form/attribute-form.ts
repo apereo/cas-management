@@ -3,9 +3,9 @@ import {MgmtFormControl} from 'mgmt-lib';
 
 export class AttributeForm extends FormArray {
 
-  map: Map<String, String[] | String>;
+  map: Map<string, string[] | string>;
 
-  constructor(map?: Map<String, String[] | String>) {
+  constructor(map?: Map<string, string[] | string>) {
     super([]);
     if (map) {
       this.map = map;
@@ -31,9 +31,9 @@ export class AttributeForm extends FormArray {
     return frm;
   }
 
-  mapForm(): Map<String, String[]> {
+  mapForm(): Map<string, string[]> {
     if (this.length > 0) {
-      const map = new Map<String, String[]>();
+      const map = new Map<string, string[]>();
       for (let c of this.value) {
         map[c.key] = c.value.split(",")
       }
@@ -42,9 +42,9 @@ export class AttributeForm extends FormArray {
     return null;
   }
 
-  mapFormString(): Map<String, String> {
+  mapFormString(): Map<string, string> {
     if (this.length > 0) {
-      const map = new Map<String, String>();
+      const map = new Map<string, string>();
       for (let c of this.value) {
         map[c.key] = c.value
       }

@@ -3,13 +3,14 @@ import {
   RemoteEndpointServiceAccessStrategy,
   MgmtFormControl
 } from 'mgmt-lib';
+import {Validators} from '@angular/forms';
 
 export class RemoteAccessForm extends BaseAccessForm<RemoteEndpointServiceAccessStrategy> {
 
   constructor(public strat: RemoteEndpointServiceAccessStrategy) {
     super(strat);
-    this.addControl('endpointUrl', new MgmtFormControl(null));
-    this.addControl('responseCodes', new MgmtFormControl(null));
+    this.addControl('endpointUrl', new MgmtFormControl(null, null, Validators.required));
+    this.addControl('responseCodes', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 

@@ -5,10 +5,10 @@ export abstract class RegisteredServiceMultifactorPolicy {
 export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredServiceMultifactorPolicy {
   static cName = 'org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy';
 
-  multifactorAuthenticationProviders: String[];
-  failureMode: String;
-  principalAttributeNameTrigger: String;
-  principalAttributeValueToMatch: String;
+  multifactorAuthenticationProviders: string[];
+  failureMode: string;
+  principalAttributeNameTrigger: string;
+  principalAttributeValueToMatch: string;
   bypassEnabled: boolean;
 
   static instanceOf(obj: any): boolean {
@@ -19,7 +19,7 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
     super();
     const p: DefaultRegisteredServiceMultifactorPolicy = policy as DefaultRegisteredServiceMultifactorPolicy;
     this.multifactorAuthenticationProviders = (p && p.multifactorAuthenticationProviders) || null;
-    this.failureMode = (p && p.failureMode) ||  'NOT_SET';
+    this.failureMode = (p && p.failureMode) ||  null
     this.principalAttributeNameTrigger = (p && p.principalAttributeNameTrigger) || null;
     this.principalAttributeValueToMatch = (p && p.principalAttributeValueToMatch) || null;
     this.bypassEnabled = (p && p.bypassEnabled) || null;
@@ -30,7 +30,7 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
 export class GroovyRegisteredServiceMultifactorPolicy extends RegisteredServiceMultifactorPolicy {
   static cName = 'org.apereo.cas.services.GroovyRegisteredServiceMultifactorPolicy';
 
-  groovyScript: String;
+  groovyScript: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === GroovyRegisteredServiceMultifactorPolicy.cName;

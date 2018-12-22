@@ -1,45 +1,65 @@
-import {Validators, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {
-  MgmtFormGroup,
-  DataRecord,
-  MgmtFormControl,
   AbstractRegisteredService,
-  ProxyType, RefuseRegisteredServiceProxyPolicy,
-  RegexMatchingRegisteredServiceProxyPolicy
+  MgmtFormControl,
+  MgmtFormGroup,
+  ProxyType,
+  RefuseRegisteredServiceProxyPolicy,
+  RegexMatchingRegisteredServiceProxyPolicy,
+  RegisteredServiceProxyPolicy
 } from 'mgmt-lib';
+import {RegexProxyForm} from './regex-proxy-form';
 
 export class ProxyForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
-    super({
-      type: new MgmtFormControl(null),
-      regex: new MgmtFormControl(null, null, Validators.required)
-    });
-    this.setValue(this.formMap());
+  type: MgmtFormControl;
+  policy: FormGroup;
+
+  constructor(public data: RegisteredServiceProxyPolicy) {
+    super({});
+    const type = this.findType(data);
+    this.policy = this.getPolicy(type);
+    this.type = new MgmtFormControl(type);
+    this.addControl('type',this.type);
+    this.addControl('policy', this.policy);
+    this.type.valueChanges.subscribe(val => this.changeType(val))
   }
 
   formMap(): any {
-    const type = this.type();
-    return {
-      type: this.type(),
-      regex: type === ProxyType.REGEX ? (<RegexMatchingRegisteredServiceProxyPolicy>this.data.service.proxyPolicy).pattern : null
-    }
+    return {}
   }
 
   mapForm(service: AbstractRegisteredService) {
     const frm = this.value;
     if (frm.type === ProxyType.REGEX) {
-      (<RegexMatchingRegisteredServiceProxyPolicy>service.proxyPolicy).pattern = frm.regex;
+      service.proxyPolicy = new RegexMatchingRegisteredServiceProxyPolicy();
+      (<MgmtFormGroup<RegisteredServiceProxyPolicy>>this.policy).mapForm(service.proxyPolicy);
     } else {
       service.proxyPolicy = new RefuseRegisteredServiceProxyPolicy();
     }
   }
 
-  type(): ProxyType {
-    if (RegexMatchingRegisteredServiceProxyPolicy.instanceOf(this.data.service.proxyPolicy)) {
+  findType(policy: RegisteredServiceProxyPolicy): ProxyType {
+    if (RegexMatchingRegisteredServiceProxyPolicy.instanceOf(policy)) {
       return ProxyType.REGEX;
     } else {
       return ProxyType.REFUSE;
     }
+  }
+
+  changeType(type: ProxyType) {
+    if (type === ProxyType.REGEX) {
+      this.policy = new RegexProxyForm(new RegexMatchingRegisteredServiceProxyPolicy());
+    } else {
+      this.policy = new FormGroup({});
+    }
+    this.setControl('policy', this.policy);
+  }
+
+  getPolicy(type: ProxyType) {
+    if (type === ProxyType.REGEX) {
+      return new RegexProxyForm(this.data as RegexMatchingRegisteredServiceProxyPolicy);
+    }
+    return new FormGroup({});
   }
 }

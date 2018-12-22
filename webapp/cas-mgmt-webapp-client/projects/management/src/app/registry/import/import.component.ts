@@ -12,7 +12,7 @@ import {finalize} from 'rxjs/operators';
 })
 export class ImportComponent implements OnInit {
 
-  file: String;
+  file: string;
 
   @ViewChild(EditorComponent)
   editor: EditorComponent;
@@ -41,7 +41,7 @@ export class ImportComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (function(fe: ImportComponent) {
       return function (e: Event) {
-        fe.file = <String> reader.result;
+        fe.file = <string> reader.result;
       };
     })(this);
     reader.readAsText(input.files[0]);

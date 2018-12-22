@@ -3,30 +3,30 @@ import {RegexRegisteredService, RegisteredService} from './registered-service';
 export class SamlRegisteredService extends RegexRegisteredService {
   static cName = 'org.apereo.cas.support.saml.services.SamlRegisteredService';
 
-  metadataLocation: String;
+  metadataLocation: string;
   metadataMaxValidity: number;
-  requiredAuthenticationContextClass: String;
-  metadataCriteriaDirection: String;
-  metadataCriteriaPattern: String;
-  requiredNameIdFormat: String;
-  metadataSignatureLocation: String;
-  serviceProviderNameIdQualifier: String;
-  nameIdQualifier: String;
-  metadataExpirationDuration: String;
+  requiredAuthenticationContextClass: string;
+  metadataCriteriaDirection: string;
+  metadataCriteriaPattern: string;
+  requiredNameIdFormat: string;
+  metadataSignatureLocation: string;
+  serviceProviderNameIdQualifier: string;
+  nameIdQualifier: string;
+  metadataExpirationDuration: string;
   signAssertions: boolean;
   signResponses: boolean;
-  signingCredentialType: String;
+  signingCredentialType: string;
   encryptAssertions: boolean;
-  metadataCriteriaRoles: String;
+  metadataCriteriaRoles: string;
   metadataCriteriaRemoveEmptyEntitiesDescriptors: boolean;
   metadataCriteriaRemoveRolelessEntityDescriptors: boolean;
-  attributeNameFormats: Map<String, String>;
+  attributeNameFormats: Map<string, string>;
   skipGeneratingAssertionNameId: boolean;
   skipGeneratingSubjectConfirmationInResponseTo: boolean;
   skipGeneratingSubjectConfirmationNotOnOrAfter: boolean;
   skipGeneratingSubjectConfirmationRecipient: boolean;
   skipGeneratingSubjectConfirmationNotBefore: boolean;
-  assertionAudiences: String;
+  assertionAudiences: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === SamlRegisteredService.cName;

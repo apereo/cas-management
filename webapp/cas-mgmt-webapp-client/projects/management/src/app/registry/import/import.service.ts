@@ -9,10 +9,10 @@ import {catchError, tap} from 'rxjs/operators';
 export class ImportService extends Service {
 
   controller = 'api/services/';
-  submissionFile: String;
+  submissionFile: string;
   service: AbstractRegisteredService;
 
-  import(file: String): Observable<AbstractRegisteredService> {
+  import(file: string): Observable<AbstractRegisteredService> {
     return this.post<AbstractRegisteredService>(this.controller + 'import', file)
       .pipe(
         tap(resp => this.service = resp),
@@ -20,7 +20,7 @@ export class ImportService extends Service {
       );
   }
 
-  importSubmission(file: String): Observable<AbstractRegisteredService> {
+  importSubmission(file: string): Observable<AbstractRegisteredService> {
     return this.post<AbstractRegisteredService>( 'api/submissions/import', file)
       .pipe(
         tap(resp => {

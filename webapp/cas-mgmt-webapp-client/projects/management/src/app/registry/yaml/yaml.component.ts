@@ -15,7 +15,7 @@ import {finalize} from 'rxjs/operators';
 })
 export class YamlComponent implements OnInit, AfterViewInit {
 
-  file: String;
+  file: string;
 
   changed = false;
 
@@ -34,7 +34,7 @@ export class YamlComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.route.data
-        .subscribe((data: { resp: String }) => {
+        .subscribe((data: { resp: string }) => {
           this.file = data.resp;
         });
     }, 100);

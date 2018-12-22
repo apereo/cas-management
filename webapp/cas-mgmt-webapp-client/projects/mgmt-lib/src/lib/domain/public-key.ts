@@ -1,6 +1,6 @@
 export abstract class RegisteredServicePublicKey {
-  location: String;
-  algorithm: String;
+  location: string;
+  algorithm: string;
   publicKeyFactoryBeanClass: any;
 
   constructor(key?: RegisteredServicePublicKey){

@@ -12,9 +12,7 @@ import {MgmtFormGroup} from './mgmt-form-group';
 export class DataRecord {
   service: AbstractRegisteredService;
   original: AbstractRegisteredService | undefined;
-  invalidRegEx = false;
-  invalidDomain = false;
-  formMap: Map<String, MgmtFormGroup<AbstractRegisteredService>>;
+  formMap: Map<string, MgmtFormGroup<AbstractRegisteredService>>;
 
   constructor(){
 

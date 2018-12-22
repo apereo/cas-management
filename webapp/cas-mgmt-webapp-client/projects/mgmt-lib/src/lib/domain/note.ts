@@ -2,10 +2,10 @@
  * Created by tsschmi on 3/8/17.
  */
 export class Note {
-  id: String;
-  text: String;
+  id: string;
+  text: string;
 
-  constructor(id: String, text: String) {
+  constructor(id: string, text: string) {
     this.id = id;
     this.text = text;
   }

@@ -3,10 +3,10 @@
  */
 
 export class Change {
-  id: String;
-  fileName: String;
-  changeType: String;
-  serviceName: String;
-  oldId: String;
-  newId: String;
+  id: string;
+  fileName: string;
+  changeType: string;
+  serviceName: string;
+  oldId: string;
+  newId: string;
 }

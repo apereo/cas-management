@@ -61,8 +61,8 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
 
   createContact(): FormGroup {
     return new FormGroup({
-      name: new MgmtFormControl(null, '', Validators.required),
-      email: new MgmtFormControl(null, '', Validators.required),
+      name: new MgmtFormControl(null, null, Validators.required),
+      email: new MgmtFormControl(null, null, Validators.required),
       phone: new MgmtFormControl(null),
       department: new MgmtFormControl(null)
     });
@@ -71,8 +71,8 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
   add(contact: DefaultRegisteredServiceContact) {
     (<FormArray>this.get('contacts')).push(
       new FormGroup({
-        name: new MgmtFormControl(contact.name, '', Validators.required),
-        email: new MgmtFormControl(contact.email, '', Validators.required),
+        name: new MgmtFormControl(contact.name, null, Validators.required),
+        email: new MgmtFormControl(contact.email, null, Validators.required),
         phone: new MgmtFormControl(contact.phone),
         department: new MgmtFormControl(contact.department)
       })

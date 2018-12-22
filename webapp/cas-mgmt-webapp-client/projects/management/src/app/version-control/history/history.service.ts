@@ -16,15 +16,15 @@ export class HistoryService extends Service {
     return this.post<History[]>(this.controller, fileName);
   }
 
-  checkout(id: string, path: String): Observable<String> {
+  checkout(id: string, path: string): Observable<string> {
     return this.postText(this.controller + 'checkout', {path, id});
   }
 
-  change(commit: String, path: String): Observable<String> {
+  change(commit: string, path: string): Observable<string> {
     return this.postText(this.controller + 'made', {path, commit});
   }
 
-  toHead(commit: String, path: String): Observable<String> {
+  toHead(commit: string, path: string): Observable<string> {
     return this.postText(this.controller + 'head', {path, commit});
   }
 }

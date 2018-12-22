@@ -1,6 +1,6 @@
 export class PendingItem {
-    id: String;
-    name: String;
-    serviceId: String;
-    submitted: String;
+    id: string;
+    name: string;
+    serviceId: string;
+    submitted: string;
 }

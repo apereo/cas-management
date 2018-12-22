@@ -3,12 +3,13 @@ import {
   MgmtFormControl
 } from 'mgmt-lib';
 import {BaseAccessForm} from './base-access-form';
+import {Validators} from '@angular/forms';
 
 export class GrouperAccessForm extends BaseAccessForm<GrouperRegisteredServiceAccessStrategy> {
 
   constructor(public strat: GrouperRegisteredServiceAccessStrategy) {
     super(strat);
-    this.addControl('groupField', new MgmtFormControl(null));
+    this.addControl('groupField', new MgmtFormControl(null, null, Validators.required));
     this.addControl('startingDatetime', new MgmtFormControl(null));
     this.addControl('endingDatetime', new MgmtFormControl(null));
     this.setValue(this.formMap());

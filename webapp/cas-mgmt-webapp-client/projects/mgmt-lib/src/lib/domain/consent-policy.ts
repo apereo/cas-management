@@ -2,8 +2,8 @@ export class RegisteredServiceConsentPolicy {
   static cName = 'org.apereo.cas.services.RegisteredServiceConsentPolicy';
 
   enabled: boolean;
-  excludedAttributes: String[];
-  includeOnlyAttributes: String[];
+  excludedAttributes: string[];
+  includeOnlyAttributes: string[];
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === RegisteredServiceConsentPolicy.cName

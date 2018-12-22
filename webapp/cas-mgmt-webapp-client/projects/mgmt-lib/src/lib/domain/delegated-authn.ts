@@ -1,5 +1,5 @@
 export abstract class RegisteredServiceDelegatedAuthenticationPolicy {
-  allowedProviders: String[];
+  allowedProviders: string[];
 
   constructor(policy?: RegisteredServiceDelegatedAuthenticationPolicy) {
     this.allowedProviders = (policy && policy.allowedProviders) || null;

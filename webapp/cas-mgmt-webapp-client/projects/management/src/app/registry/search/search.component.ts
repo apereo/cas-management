@@ -58,7 +58,7 @@ export class SearchComponent implements OnInit {
       .subscribe(f => this.openView(f, 'yaml', 'eclipse'));
   }
 
-  openView(text: String, mode: string, theme: string) {
+  openView(text: string, mode: string, theme: string) {
     this.dialog.open(ViewComponent, {
       data: [text, mode, theme],
       width: '900px',

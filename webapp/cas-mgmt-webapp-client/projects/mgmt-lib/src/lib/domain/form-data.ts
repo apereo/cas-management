@@ -1,28 +1,28 @@
 export class FormData {
-    availableAttributes: String[] = [];
+    availableAttributes: string[] = [];
     registeredServiceProperties: PropertyEnum[];
-    grouperFields: String[];
-    remoteCodes: String[];
-    timeUnits: String[];
-    mergingStrategies: String[];
-    logoutTypes: String[];
+    grouperFields: string[];
+    remoteCodes: string[];
+    timeUnits: string[];
+    mergingStrategies: string[];
+    logoutTypes: string[];
     serviceTypes: PropertyEnum[];
-    samlRoles: String[];
-    samlDirections: String[];
-    samlAttributeNameFormats: String[];
-    samlCredentialTypes: String[];
-    wsFederationClaims: String[];
+    samlRoles: string[];
+    samlDirections: string[];
+    samlAttributeNameFormats: string[];
+    samlCredentialTypes: string[];
+    wsFederationClaims: string[];
     mfaProviders: PropertyEnum[];
-    mfaFailureModes: String[];
+    mfaFailureModes: string[];
     oidcScopes: PropertyEnum[];
-    encodingAlgOptions: String[];
-    encryptAlgOptions: String[];
+    encodingAlgOptions: string[];
+    encryptAlgOptions: string[];
     oidcSubjectTypes: PropertyEnum[];
-    canonicalizationModes: String[];
-    delegatedAuthnProviders: String[];
+    canonicalizationModes: string[];
+    delegatedAuthnProviders: string[];
 }
 
 export interface PropertyEnum {
-    propertyName: String;
-    defaultValue: String;
+    propertyName: string;
+    defaultValue: string;
 }

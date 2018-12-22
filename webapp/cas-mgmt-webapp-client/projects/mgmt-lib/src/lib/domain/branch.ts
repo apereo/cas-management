@@ -2,12 +2,12 @@
  * Created by tschmidt on 2/13/17.
  */
 export class Branch {
-  name: String;
-  msg: String;
+  name: string;
+  msg: string;
   accepted: boolean;
-  committer: String;
+  committer: string;
   time: number;
-  id: String;
+  id: string;
   rejected: boolean;
   reverted: boolean;
 }

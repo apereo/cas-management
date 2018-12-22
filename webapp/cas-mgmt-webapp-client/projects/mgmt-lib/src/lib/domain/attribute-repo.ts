@@ -1,7 +1,7 @@
 export abstract class PrincipalAttributesRepository {
   expiration: number;
-  timeUnit: String;
-  mergingStrategy: String;
+  timeUnit: string;
+  mergingStrategy: string;
 
   constructor(repo?: PrincipalAttributesRepository) {
     this.expiration = (repo && repo.expiration) || 0;

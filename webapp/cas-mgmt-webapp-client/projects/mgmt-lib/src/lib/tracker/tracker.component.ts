@@ -23,7 +23,7 @@ export class TrackerComponent implements OnInit {
       position: { top: '100px'}
     }).afterClosed().subscribe((result) => {
       if (result) {
-        window.location.href = '../logout.html';
+        window.location.href = 'logout.html';
       } else {
         this.setTimer();
       }

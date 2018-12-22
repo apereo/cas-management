@@ -1,11 +1,12 @@
 import {BaseReleaseForm} from './base-release-form';
 import {GroovyScriptAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {Validators} from '@angular/forms';
 
 export class GroovyReleaseForm extends BaseReleaseForm<GroovyScriptAttributeReleasePolicy> {
 
   constructor(public data: GroovyScriptAttributeReleasePolicy) {
     super(data);
-    this.addControl('groovy', new MgmtFormControl(null));
+    this.addControl('groovy', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 

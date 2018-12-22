@@ -28,7 +28,7 @@ export class Service {
       );
   }
 
-  postText(url: string , data: any): Observable<String> {
+  postText(url: string , data: any): Observable<string> {
     return this.http.post(this.base + url, data, {responseType: 'text'})
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
@@ -49,7 +49,7 @@ export class Service {
       );
   }
 
-  getText(url: string): Observable<String> {
+  getText(url: string): Observable<string> {
     return this.http.get(this.base + url, {responseType: 'text'})
       .pipe(
         catchError(e => this.handleError(e, this.dialog))

@@ -9,7 +9,7 @@ export abstract class RegisteredServiceAttributeReleasePolicy {
   authorizedToReleaseProxyGrantingTicket: boolean;
   excludeDefaultAttributes: boolean;
   authorizedToReleaseAuthenticationAttributes: boolean;
-  principalIdAttribute: String;
+  principalIdAttribute: string;
   consentPolicy: RegisteredServiceConsentPolicy;
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
@@ -59,7 +59,7 @@ export class DenyAllAttributeReleasePolicy extends AbstractRegisteredServiceAttr
 export class ReturnMappedAttributeReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName = 'org.apereo.cas.services.ReturnMappedAttributeReleasePolicy';
 
-  allowedAttributes: Map<String, String[]>;
+  allowedAttributes: Map<string, string[]>;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === ReturnMappedAttributeReleasePolicy.cName;
@@ -76,7 +76,7 @@ export class ReturnMappedAttributeReleasePolicy extends AbstractRegisteredServic
 export class ReturnAllowedAttributeReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName = 'org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy';
 
-  allowedAttributes: String[];
+  allowedAttributes: string[];
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === ReturnAllowedAttributeReleasePolicy.cName;
@@ -93,7 +93,7 @@ export class ReturnAllowedAttributeReleasePolicy extends AbstractRegisteredServi
 export class ScriptedRegisteredServiceAttributeReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName = 'org.apereo.cas.services.ScriptedRegisteredServiceAttributeReleasePolicy';
 
-  scriptFile: String;
+  scriptFile: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === ScriptedRegisteredServiceAttributeReleasePolicy.cName;
@@ -110,7 +110,7 @@ export class ScriptedRegisteredServiceAttributeReleasePolicy extends AbstractReg
 export class ReturnRestfulAttributeReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName = 'org.apereo.cas.services.ReturnRestfulAttributeReleasePolicy';
 
-  endpoint: String;
+  endpoint: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === ReturnRestfulAttributeReleasePolicy.cName;
@@ -127,7 +127,7 @@ export class ReturnRestfulAttributeReleasePolicy extends AbstractRegisteredServi
 export class GroovyScriptAttributeReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName =  'org.apereo.cas.services.GroovyScriptAttributeReleasePolicy';
 
-  groovyScript: String;
+  groovyScript: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === GroovyScriptAttributeReleasePolicy.cName;
@@ -144,7 +144,7 @@ export class GroovyScriptAttributeReleasePolicy extends AbstractRegisteredServic
 export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAllowedAttributeReleasePolicy {
   static cName =  'org.apereo.cas.support.saml.services.GroovySamlRegisteredServiceAttributeReleasePolicy';
 
-  groovyScript: String;
+  groovyScript: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === GroovySamlRegisteredServiceAttributeReleasePolicy.cName;
@@ -161,7 +161,7 @@ export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAll
 export class WsFederationClaimsReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName = 'org.apereo.cas.ws.idp.services.WsFederationClaimsReleasePolicy';
 
-  allowedAttributes: Map<String, String>;
+  allowedAttributes: Map<string, string>;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === WsFederationClaimsReleasePolicy.cName;
@@ -204,9 +204,9 @@ export class PatternMatchingEntityIdAttributeReleasePolicy extends RegisteredSer
 export class MetadataEntityAttributesAttributeReleasePolicy extends ReturnAllowedAttributeReleasePolicy {
   static cName = 'org.apereo.cas.support.saml.services.MetadataEntityAttributesAttributeReleasePolicy';
 
-  entityAttribute: String;
-  entityAttributeFormat: String;
-  entityAttributeValues: String[];
+  entityAttribute: string;
+  entityAttributeFormat: string;
+  entityAttributeValues: string[];
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === MetadataEntityAttributesAttributeReleasePolicy.cName;

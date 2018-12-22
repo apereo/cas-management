@@ -8,7 +8,6 @@ export class WsFedReleaseForm extends FormGroup implements MgmtFormGroup<WsFeder
     super({
       allowedAttributes: new AttributeForm(policy.allowedAttributes)
     });
-    console.log("Setting WSFED VaLUE")
     this.setValue(this.formMap());
   }
 

@@ -204,6 +204,7 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
       base.mapForm(policy);
       this.policy = new AllReleaseForm(policy);
     }
+    this.setControl('policy', this.policy);
   }
 
   getPolicy(type: ReleasePolicyType): MgmtFormGroup<RegisteredServiceAttributeReleasePolicy> {

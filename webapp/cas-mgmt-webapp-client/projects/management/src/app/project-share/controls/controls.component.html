@@ -58,6 +58,12 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
   </div>
+
+  <div style="display: inline" *ngIf="showEditorOptions">
+    <button mat-icon-button (click)="editorOptions.emit()">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
 </div>
 <input #open type="file" (change)="openFile.emit($event);" style="display:none;">
 

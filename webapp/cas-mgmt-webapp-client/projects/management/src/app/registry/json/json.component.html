@@ -5,7 +5,12 @@
   </div>
   <div style="flex: 1 1 auto"></div>
   <div>
-    <app-controls [showEdit]="changed" (save)="save()" (reset)="reset()"></app-controls>
+    <app-controls [showEdit]="changed"
+                  (save)="save()"
+                  (reset)="reset()"
+                  [showEditorOptions]="true"
+                  (editorOptions)="editor.showOptions()">
+    </app-controls>
   </div>
 </div>
 

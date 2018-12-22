@@ -1,0 +1,45 @@
+<div>
+  <h3 matDialogTitle i18n>Editor Options</h3>
+</div>
+<mat-dialog-content>
+  <div style="width: 400px;">
+    <mat-form-field style="width:400px;">
+      <mat-select #theme i18n-placeHolder [(ngModel)]="data.theme" placeholder="Select Theme">
+        <mat-option value="github">Github</mat-option>
+        <mat-option value="eclipse">Eclipse</mat-option>
+        <mat-option value="dreamweaver">Dreamweaver</mat-option>
+        <mat-option value="xcode">XCode</mat-option>
+        <mat-option value="cobalt">Cobalt</mat-option>
+        <mat-option value="dracula">Dracula</mat-option>
+        <mat-option value="ambiance">Ambiance</mat-option>
+        <mat-option value="twilight">Twilight</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width:400px;">
+      <mat-select #keybinding i18n-placeholder [(ngModel)]="data.keybinding" placeholder="Select Key Bindings">
+        <mat-option value="default">Default</mat-option>
+        <mat-option value="keybinding-emacs">Emacs</mat-option>
+        <mat-option value="keybinding-vim">Vim</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select #fontSize i18n-placeholder [(ngModel)]="data.fontSize" placeholder="Select Font Size">
+        <mat-option value="10px">Small</mat-option>
+        <mat-option value="15px">Medium</mat-option>
+        <mat-option value="20px">Large</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button matDialogClose>
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button mat-button [matDialogClose]="data">
+      <mat-icon>thumb_up</mat-icon>
+      <ng-container i18n>OK</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -36,6 +36,9 @@ export class ControlsComponent implements OnInit {
   @Input()
   showBack = true;
 
+  @Input()
+  showEditorOptions = false;
+
   @ViewChild('publishModal')
   submitComp: PublishComponent;
 
@@ -50,6 +53,9 @@ export class ControlsComponent implements OnInit {
 
   @Output()
   reset: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
+  editorOptions: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(public service: ControlsService,
               public userService: UserService,

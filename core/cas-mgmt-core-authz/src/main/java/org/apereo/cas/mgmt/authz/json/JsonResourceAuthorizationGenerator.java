@@ -41,9 +41,9 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
     }
 
     private void watchResource(final Resource usersFile) {
-        try {
+        try (
             val watcher = new FileWatcherService(usersFile.getFile(),
-                Unchecked.consumer(file -> loadResource(usersFile)));
+                Unchecked.consumer(file -> loadResource(usersFile)))) {
             watcher.start(getClass().getSimpleName());
         } catch (final Exception e) {
             LOGGER.debug(e.getMessage(), e);

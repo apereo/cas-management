@@ -347,11 +347,12 @@ public class GitUtil implements AutoCloseable {
      */
     @SuppressWarnings("DefaultCharset")
     public String readObject(final ObjectId id) throws Exception {
-        val reader = git.getRepository().newObjectReader();
-        if (reader.has(id)) {
-            return new String(reader.open(id).getBytes());
-        } else {
-            return readFormWorkingTree(id);
+        try (val reader = git.getRepository().newObjectReader()) {
+            if (reader.has(id)) {
+                return new String(reader.open(id).getBytes());
+            } else {
+                return readFormWorkingTree(id);
+            }
         }
     }
 
@@ -830,11 +831,12 @@ public class GitUtil implements AutoCloseable {
      */
     public List<DiffEntry> getDiffs(final String first, final String second) throws Exception {
         val oldTreeIter = new CanonicalTreeParser();
-        val reader = git.getRepository().newObjectReader();
-        oldTreeIter.reset(reader, git.getRepository().resolve(first));
-        val newTreeIter = new CanonicalTreeParser();
-        newTreeIter.reset(reader, git.getRepository().resolve(second));
-        return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+        try (val reader = git.getRepository().newObjectReader()) {
+            oldTreeIter.reset(reader, git.getRepository().resolve(first));
+            val newTreeIter = new CanonicalTreeParser();
+            newTreeIter.reset(reader, git.getRepository().resolve(second));
+            return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+        }
     }
 
     /**
@@ -897,11 +899,12 @@ public class GitUtil implements AutoCloseable {
      */
     public List<DiffEntry> getDiffsToRevert(final String branch) throws Exception {
         val oldTreeIter = new CanonicalTreeParser();
-        val reader = git.getRepository().newObjectReader();
-        oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
-        val newTreeIter = new CanonicalTreeParser();
-        newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
-        return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+        try (val reader = git.getRepository().newObjectReader()) {
+            oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
+            val newTreeIter = new CanonicalTreeParser();
+            newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
+            return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+        }
     }
 
     /**
@@ -955,11 +958,12 @@ public class GitUtil implements AutoCloseable {
                     null, "algorithm", DiffAlgorithm.SupportedAlgorithm.HISTOGRAM));
             val editList = diffAlgorithm.diff(RawTextComparator.DEFAULT, oldText, newText);
             val bytes = new ByteArrayOutputStream();
-            val df = new DiffFormatter(bytes);
-            df.setRepository(git.getRepository());
-            df.format(editList, oldText, newText);
-            df.flush();
-            return bytes.toByteArray();
+            try (val df = new DiffFormatter(bytes)) {
+                df.setRepository(git.getRepository());
+                df.format(editList, oldText, newText);
+                df.flush();
+                return bytes.toByteArray();
+            }
         }
         return StringUtils.EMPTY.getBytes(StandardCharsets.UTF_8);
     }

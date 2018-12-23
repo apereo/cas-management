@@ -40,7 +40,7 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
     }
 
     private void watchResource(final Resource usersFile) {
-        try {
+        try (
             val watcher = new FileWatcherService(usersFile.getFile(),
                 Unchecked.consumer(file -> {
                     val newProps = new Properties();
@@ -48,7 +48,7 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
                     newProps.load(input);
                     input.close();
                     this.generator = new SpringSecurityPropertiesAuthorizationGenerator(newProps);
-                }));
+                }))) {
             watcher.start(getClass().getSimpleName());
         } catch (final Exception e) {
             LOGGER.debug(e.getMessage(), e);

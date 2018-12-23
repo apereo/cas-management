@@ -7,8 +7,8 @@ import {Validators} from '@angular/forms';
 
 export class RemoteAccessForm extends BaseAccessForm<RemoteEndpointServiceAccessStrategy> {
 
-  constructor(public strat: RemoteEndpointServiceAccessStrategy) {
-    super(strat);
+  constructor(public strategy: RemoteEndpointServiceAccessStrategy) {
+    super(strategy);
     this.addControl('endpointUrl', new MgmtFormControl(null, null, Validators.required));
     this.addControl('responseCodes', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
@@ -16,8 +16,8 @@ export class RemoteAccessForm extends BaseAccessForm<RemoteEndpointServiceAccess
 
   formMap(): any {
     const frm = super.formMap();
-    frm['endpointUrl'] = this.strat.endpointUrl;
-    frm['responseCodes'] = this.strat.acceptableResponseCodes;
+    frm['endpointUrl'] = this.strategy.endpointUrl;
+    frm['responseCodes'] = this.strategy.acceptableResponseCodes;
     return frm;
   }
 

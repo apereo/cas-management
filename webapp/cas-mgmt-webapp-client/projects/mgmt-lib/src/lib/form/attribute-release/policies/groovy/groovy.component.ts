@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-groovy',
-  templateUrl: './groovy.component.html',
-  styleUrls: ['./groovy.component.css']
+  templateUrl: './groovy.component.html'
 })
 export class GroovyComponent implements OnInit {
 

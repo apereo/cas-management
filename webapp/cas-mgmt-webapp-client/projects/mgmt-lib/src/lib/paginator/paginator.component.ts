@@ -4,8 +4,7 @@ import {AppConfigService} from '../app-config.service';
 
 @Component({
   selector: 'lib-paginator',
-  templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.css']
+  templateUrl: './paginator.component.html'
 })
 export class PaginatorComponent implements OnInit {
 

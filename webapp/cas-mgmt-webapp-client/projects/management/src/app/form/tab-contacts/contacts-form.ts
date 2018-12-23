@@ -1,7 +1,6 @@
 import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {
   MgmtFormGroup,
-  DataRecord,
   AbstractRegisteredService,
   MgmtFormControl,
   DefaultRegisteredServiceContact}
@@ -9,7 +8,7 @@ from 'mgmt-lib';
 
 export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
+  constructor(public service: AbstractRegisteredService) {
     super({
       contacts: new FormArray([])
     });
@@ -17,8 +16,8 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
 
   init() {
     const contacts = new FormArray([]);
-    if (this.data.service.contacts) {
-      for (let i = 0; i < this.data.service.contacts.length; i++) {
+    if (this.service.contacts) {
+      for (let i = 0; i < this.service.contacts.length; i++) {
         contacts.push(this.createContact());
       }
     }
@@ -29,8 +28,8 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
     const contacts = {
       contacts: []
     };
-    if (this.data.service.contacts) {
-      for (let c of this.data.service.contacts) {
+    if (this.service.contacts) {
+      for (let c of this.service.contacts) {
         contacts.contacts.push(this.createContactMap(c));
       }
     }

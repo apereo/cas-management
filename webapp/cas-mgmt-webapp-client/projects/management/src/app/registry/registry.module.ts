@@ -7,7 +7,7 @@ import {ImportComponent} from './import/import.component';
 import {JSONComponent} from './json/json.component';
 import {SearchComponent} from './search/search.component';
 import {YamlComponent} from './yaml/yaml.component';
-import {ProjectShareModule} from '../project-share/project-share.module';
+import {ProjectShareModule} from '@app/project-share';
 import {ServicesComponent} from './services/services.component';
 
 @NgModule({

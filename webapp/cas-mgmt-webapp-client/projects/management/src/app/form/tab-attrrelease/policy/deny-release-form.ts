@@ -3,8 +3,8 @@ import {DenyAllAttributeReleasePolicy} from 'mgmt-lib';
 
 export class DenyReleaseForm extends BaseReleaseForm<DenyAllAttributeReleasePolicy> {
 
-  constructor(public data: DenyAllAttributeReleasePolicy) {
-    super(data);
+  constructor(public policy: DenyAllAttributeReleasePolicy) {
+    super(policy);
     this.setValue(super.formMap());
   }
 }

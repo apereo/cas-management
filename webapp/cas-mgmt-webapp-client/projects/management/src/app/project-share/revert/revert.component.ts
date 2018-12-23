@@ -3,8 +3,7 @@ import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-revert',
-  templateUrl: './revert.component.html',
-  styleUrls: ['./revert.component.css']
+  templateUrl: './revert.component.html'
 })
 export class RevertComponent implements OnInit {
 

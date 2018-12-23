@@ -4,8 +4,7 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-time',
-  templateUrl: './time.component.html',
-  styleUrls: ['./time.component.css']
+  templateUrl: './time.component.html'
 })
 export class TimeComponent implements OnInit {
 

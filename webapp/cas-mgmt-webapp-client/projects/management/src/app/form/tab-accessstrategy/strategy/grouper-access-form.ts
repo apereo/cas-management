@@ -7,8 +7,8 @@ import {Validators} from '@angular/forms';
 
 export class GrouperAccessForm extends BaseAccessForm<GrouperRegisteredServiceAccessStrategy> {
 
-  constructor(public strat: GrouperRegisteredServiceAccessStrategy) {
-    super(strat);
+  constructor(public strategy: GrouperRegisteredServiceAccessStrategy) {
+    super(strategy);
     this.addControl('groupField', new MgmtFormControl(null, null, Validators.required));
     this.addControl('startingDatetime', new MgmtFormControl(null));
     this.addControl('endingDatetime', new MgmtFormControl(null));
@@ -17,9 +17,9 @@ export class GrouperAccessForm extends BaseAccessForm<GrouperRegisteredServiceAc
 
   formMap(): any {
     const frm = super.formMap();
-    frm['groupField'] = this.strat.groupField;
-    frm['startingDatetime'] = this.strat.startingDateTime;
-    frm['endingDatetime'] = this.strat.endingDateTime;
+    frm['groupField'] = this.strategy.groupField;
+    frm['startingDatetime'] = this.strategy.startingDateTime;
+    frm['endingDatetime'] = this.strategy.endingDateTime;
     return frm;
   }
 

@@ -8,8 +8,7 @@ import {ContactsForm} from './contacts-form';
 
 @Component({
   selector: 'app-tab-contacts',
-  templateUrl: './tab-contacts.component.html',
-  styleUrls: ['./tab-contacts.component.css']
+  templateUrl: './tab-contacts.component.html'
 })
 export class TabContactsComponent {
 
@@ -21,7 +20,7 @@ export class TabContactsComponent {
       this.contacts = this.data.formMap.get('contacts') as ContactsForm;
       return;
     }
-    this.contacts = new ContactsForm(this.data);
+    this.contacts = new ContactsForm(this.data.service);
     if (!this.user.user.administrator
         && (!this.data.service.contacts || this.data.service.contacts.length === 0)) {
       const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();

@@ -1,14 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ImportService} from './import.service';
 import {Router} from '@angular/router';
-import {EditorComponent} from '../../project-share/editor.component';
+import {EditorComponent} from '@app/project-share';
 import {SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-import',
-  templateUrl: './import.component.html',
-  styleUrls: ['./import.component.css']
+  templateUrl: './import.component.html'
 })
 export class ImportComponent implements OnInit {
 

@@ -3,8 +3,8 @@ import {DefaultRegisteredServiceUsernameProvider} from 'mgmt-lib';
 
 export class DefaultAttrForm extends BaseAttrForm<DefaultRegisteredServiceUsernameProvider> {
 
-  constructor(public data: DefaultRegisteredServiceUsernameProvider) {
-    super(data);
+  constructor(public provider: DefaultRegisteredServiceUsernameProvider) {
+    super(provider);
     this.setValue(super.formMap());
   }
 }

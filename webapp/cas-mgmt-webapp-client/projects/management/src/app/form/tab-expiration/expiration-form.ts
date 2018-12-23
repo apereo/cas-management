@@ -1,6 +1,5 @@
 import {
   MgmtFormGroup,
-  DataRecord,
   MgmtFormControl,
   AbstractRegisteredService
 } from 'mgmt-lib';
@@ -8,7 +7,7 @@ import {FormGroup} from '@angular/forms';
 
 export class ExpirationForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
+  constructor(public service: AbstractRegisteredService) {
     super({
       expirationDate: new MgmtFormControl(null),
       deleteWhenExpired: new MgmtFormControl(null),
@@ -19,9 +18,9 @@ export class ExpirationForm extends FormGroup implements MgmtFormGroup<AbstractR
 
   formMap(): any {
     return {
-      expirationDate: this.data.service.expirationPolicy.expirationDate,
-      deleteWhenExpired: this.data.service.expirationPolicy.deleteWhenExpired,
-      notifyWhenDeleted: this.data.service.expirationPolicy.notifyWhenDeleted
+      expirationDate: this.service.expirationPolicy.expirationDate,
+      deleteWhenExpired: this.service.expirationPolicy.deleteWhenExpired,
+      notifyWhenDeleted: this.service.expirationPolicy.notifyWhenDeleted
     }
   }
 

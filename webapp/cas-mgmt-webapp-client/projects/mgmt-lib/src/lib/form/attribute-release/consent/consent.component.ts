@@ -5,8 +5,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-attribute-release-consent',
-  templateUrl: './consent.component.html',
-  styleUrls: ['./consent.component.css']
+  templateUrl: './consent.component.html'
 })
 export class ConsentComponent implements OnInit {
 

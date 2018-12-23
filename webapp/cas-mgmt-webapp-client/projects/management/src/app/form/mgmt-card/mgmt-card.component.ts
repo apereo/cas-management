@@ -2,8 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-card',
-  templateUrl: './mgmt-card.component.html',
-  styleUrls: ['./mgmt-card.component.css']
+  templateUrl: './mgmt-card.component.html'
 })
 export class MgmtCardComponent implements OnInit {
 

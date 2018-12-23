@@ -5,8 +5,7 @@ import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-security',
-  templateUrl: './security.component.html',
-  styleUrls: ['./security.component.css']
+  templateUrl: './security.component.html'
 })
 export class SamlSecurityComponent implements OnInit {
 

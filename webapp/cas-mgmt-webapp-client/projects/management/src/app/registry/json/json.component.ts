@@ -2,7 +2,7 @@ import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ServiceViewService} from '../services/service.service';
-import {EditorComponent} from '../../project-share/editor.component';
+import {EditorComponent} from '@app/project-share';
 import {MatSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SpinnerService} from 'mgmt-lib';

@@ -6,7 +6,7 @@ import {CommitHistoryComponent} from './commit-history/commit-history.component'
 import {HistoryComponent} from './history/history.component';
 import {LocalChangesComponent} from './local-changes/local-changes.component';
 import {RepoHistoryComponent} from './repo-history/repo-history.component';
-import {ProjectShareModule} from '../project-share/project-share.module';
+import {ProjectShareModule} from '@app/project-share';
 
 @NgModule({
   declarations: [

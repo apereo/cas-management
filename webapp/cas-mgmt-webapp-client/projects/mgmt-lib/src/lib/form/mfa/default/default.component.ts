@@ -5,8 +5,7 @@ import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-default',
-  templateUrl: './default.component.html',
-  styleUrls: ['./default.component.css']
+  templateUrl: './default.component.html'
 })
 export class DefaultComponent implements OnInit {
 

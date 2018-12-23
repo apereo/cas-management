@@ -7,7 +7,7 @@ import {FormGroup, Validators} from '@angular/forms';
 
 export class RegexProxyForm extends FormGroup implements MgmtFormGroup<RegexMatchingRegisteredServiceProxyPolicy> {
 
-  constructor(public data: RegexMatchingRegisteredServiceProxyPolicy) {
+  constructor(public policy: RegexMatchingRegisteredServiceProxyPolicy) {
     super({
       regex: new MgmtFormControl(null, null, Validators.required)
     });
@@ -16,7 +16,7 @@ export class RegexProxyForm extends FormGroup implements MgmtFormGroup<RegexMatc
 
   formMap(): any {
     return {
-      regex: this.data.pattern
+      regex: this.policy.pattern
     }
   }
 

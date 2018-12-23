@@ -12,7 +12,7 @@ export class ServiceViewService extends Service {
 
   controller = 'api/services';
 
-  getServices(domain: String): Observable<ServiceItem[]> {
+  getServices(domain: string): Observable<ServiceItem[]> {
     return this.get<ServiceItem[]>(this.controller + '?domain=' + domain);
   }
 

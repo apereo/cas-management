@@ -3,15 +3,15 @@ import {BaseReleaseForm} from './base-release-form';
 
 export class AllowedReleaseForm extends BaseReleaseForm<ReturnAllowedAttributeReleasePolicy> {
 
-  constructor(public data: ReturnAllowedAttributeReleasePolicy) {
-    super(data);
+  constructor(public policy: ReturnAllowedAttributeReleasePolicy) {
+    super(policy);
     this.addControl('allowed', new MgmtFormControl(null));
     this.setValue(this.formMap());
   }
 
   formMap(): any {
     const frm = super.formMap();
-    frm['allowed'] = this.data.allowedAttributes;
+    frm['allowed'] = this.policy.allowedAttributes;
     return frm;
   }
 

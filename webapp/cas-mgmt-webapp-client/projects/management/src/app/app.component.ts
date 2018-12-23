@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ControlsService} from './project-share/controls/controls.service';
-import {FormDataService, AppConfigService} from 'mgmt-lib';
+import {AppConfigService, FormDataService} from 'mgmt-lib';
+import {ControlsService} from '@app/project-share';
 
 @Component({
   selector: 'mgmt-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
 

@@ -2,8 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'lib-hint',
-  templateUrl: './hint.component.html',
-  styleUrls: ['./hint.component.css']
+  templateUrl: './hint.component.html'
 })
 export class HintComponent implements OnInit {
 

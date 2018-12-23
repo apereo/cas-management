@@ -6,8 +6,7 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-service-id',
-  templateUrl: './service-id.component.html',
-  styleUrls: ['./service-id.component.css']
+  templateUrl: './service-id.component.html'
 })
 export class ServiceIdComponent implements OnInit {
 

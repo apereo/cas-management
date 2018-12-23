@@ -6,8 +6,8 @@ import {BaseMfaForm} from './base-mfa-form';
 
 export class DefaultMFAForm extends BaseMfaForm<DefaultRegisteredServiceMultifactorPolicy> {
 
-  constructor(public data: DefaultRegisteredServiceMultifactorPolicy) {
-    super(data);
+  constructor(public policy: DefaultRegisteredServiceMultifactorPolicy) {
+    super(policy);
     this.addControl('multifactorAuthenticationProviders', new MgmtFormControl(null));
     this.addControl('failureMode', new MgmtFormControl(null));
     this.addControl('principalAttributeNameTrigger', new MgmtFormControl(null));
@@ -18,11 +18,11 @@ export class DefaultMFAForm extends BaseMfaForm<DefaultRegisteredServiceMultifac
 
   formMap(): any {
     return {
-      multifactorAuthenticationProviders: this.data.multifactorAuthenticationProviders,
-      failureMode: this.data.failureMode,
-      principalAttributeNameTrigger: this.data.principalAttributeNameTrigger,
-      principalAttributeValueToMatch: this.data.principalAttributeValueToMatch,
-      bypassEnabled: this.data.bypassEnabled
+      multifactorAuthenticationProviders: this.policy.multifactorAuthenticationProviders,
+      failureMode: this.policy.failureMode,
+      principalAttributeNameTrigger: this.policy.principalAttributeNameTrigger,
+      principalAttributeValueToMatch: this.policy.principalAttributeValueToMatch,
+      bypassEnabled: this.policy.bypassEnabled
     }
   }
 

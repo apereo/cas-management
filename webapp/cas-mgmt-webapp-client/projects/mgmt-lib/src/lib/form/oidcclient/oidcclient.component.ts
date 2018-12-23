@@ -5,8 +5,7 @@ import {FormDataService} from '../../form-data.service';
 
 @Component({
   selector: 'lib-oidcclient',
-  templateUrl: './oidcclient.component.html',
-  styleUrls: ['./oidcclient.component.css']
+  templateUrl: './oidcclient.component.html'
 })
 export class OidcclientComponent implements OnInit {
 

@@ -17,9 +17,9 @@ export class MultiauthForm extends FormGroup implements MgmtFormGroup<AbstractRe
   type: MgmtFormControl;
   policy: BaseMfaForm<RegisteredServiceMultifactorPolicy>;
 
-  constructor(public data: RegisteredServiceMultifactorPolicy) {
+  constructor(public multifactorPolicy: RegisteredServiceMultifactorPolicy) {
     super({});
-    const type = this.findType(data);
+    const type = this.findType(multifactorPolicy);
     this.type = new MgmtFormControl(type);
     this.policy = this.getPolicy(type);
     this.addControl('type', this.type);
@@ -63,10 +63,10 @@ export class MultiauthForm extends FormGroup implements MgmtFormGroup<AbstractRe
 
   getPolicy(type: MfaPolicyType): BaseMfaForm<RegisteredServiceMultifactorPolicy> {
     if (type === MfaPolicyType.GROOVY) {
-      return new GroovyMfaForm(this.data as GroovyRegisteredServiceMultifactorPolicy);
+      return new GroovyMfaForm(this.multifactorPolicy as GroovyRegisteredServiceMultifactorPolicy);
     }
     if (type === MfaPolicyType.DEFAULT) {
-      return new DefaultMFAForm(this.data as DefaultRegisteredServiceMultifactorPolicy);
+      return new DefaultMFAForm(this.multifactorPolicy as DefaultRegisteredServiceMultifactorPolicy);
     }
     return new BaseMfaForm<RegisteredServiceMultifactorPolicy>(null);
   }

@@ -7,7 +7,7 @@ import {
 
 export class BaseAttrForm<T extends RegisteredServiceUsernameAttributeProvider> extends FormGroup implements MgmtFormGroup<T> {
 
-  constructor(public data: RegisteredServiceUsernameAttributeProvider) {
+  constructor(public provider: RegisteredServiceUsernameAttributeProvider) {
     super({
       encryptUsername: new MgmtFormControl(null),
       canonicalizationMode: new MgmtFormControl(null)
@@ -16,8 +16,8 @@ export class BaseAttrForm<T extends RegisteredServiceUsernameAttributeProvider> 
 
   formMap(): any {
     return {
-      encryptUsername: this.data.encryptUsername,
-      canonicalizationMode: this.data.canonicalizationMode
+      encryptUsername: this.provider.encryptUsername,
+      canonicalizationMode: this.provider.canonicalizationMode
     }
   }
 

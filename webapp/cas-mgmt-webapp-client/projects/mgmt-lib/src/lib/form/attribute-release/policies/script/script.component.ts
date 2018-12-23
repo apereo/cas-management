@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-script',
-  templateUrl: './script.component.html',
-  styleUrls: ['./script.component.css']
+  templateUrl: './script.component.html'
 })
 export class ScriptComponent implements OnInit {
 

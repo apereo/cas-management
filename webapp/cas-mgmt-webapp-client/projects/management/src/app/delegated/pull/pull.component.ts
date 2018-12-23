@@ -4,10 +4,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PullService} from './pull.service';
 import { Location } from '@angular/common';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {ControlsService} from '@app/project-share';
+import {finalize} from 'rxjs/operators';
 import {AcceptComponent} from '../accept/accept.component';
 import {RejectComponent} from '../reject/reject.component';
-import {ControlsService} from '../../project-share/controls/controls.service';
-import {finalize} from 'rxjs/operators';
 
 @Component({
 

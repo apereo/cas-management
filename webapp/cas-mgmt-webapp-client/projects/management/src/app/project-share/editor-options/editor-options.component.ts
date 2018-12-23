@@ -3,8 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-editor-options',
-  templateUrl: './editor-options.component.html',
-  styleUrls: ['./editor-options.component.css'],
+  templateUrl: './editor-options.component.html'
 })
 export class EditorOptionsComponent implements OnInit {
 

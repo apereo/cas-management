@@ -5,8 +5,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-required',
-  templateUrl: './required.component.html',
-  styleUrls: ['./required.component.css']
+  templateUrl: './required.component.html'
 })
 export class RequiredComponent implements OnInit {
 

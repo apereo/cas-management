@@ -3,8 +3,7 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-responsetype',
-  templateUrl: './responsetype.component.html',
-  styleUrls: ['./responsetype.component.css']
+  templateUrl: './responsetype.component.html'
 })
 export class ResponsetypeComponent implements OnInit {
 

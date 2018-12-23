@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {ViewComponent} from '../../project-share/view/view.component';
+import {ViewComponent} from '@app/project-share/view/view.component';
 import {ChangesService} from './changes.service';
 import {DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';

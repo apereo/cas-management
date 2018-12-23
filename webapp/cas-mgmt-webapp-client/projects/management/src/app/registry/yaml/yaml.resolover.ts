@@ -4,7 +4,7 @@
 
 import {Injectable} from '@angular/core';
 import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
-import {ChangesService} from '../../version-control/changes/changes.service';
+import {ChangesService} from '@app/version-control/changes/changes.service';
 import {ServiceViewService} from '../services/service.service';
 import {finalize, take} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';

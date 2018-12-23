@@ -4,8 +4,7 @@ import {DiffEntry} from 'mgmt-lib';
 
 @Component({
   selector: 'app-accept',
-  templateUrl: './accept.component.html',
-  styleUrls: ['./accept.component.css']
+  templateUrl: './accept.component.html'
 })
 export class AcceptComponent implements OnInit {
 

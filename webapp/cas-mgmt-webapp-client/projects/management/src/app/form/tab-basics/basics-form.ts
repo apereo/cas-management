@@ -1,9 +1,9 @@
 import {FormGroup, Validators} from '@angular/forms';
-import {MgmtFormGroup, DataRecord, MgmtFormControl, AbstractRegisteredService} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl, AbstractRegisteredService} from 'mgmt-lib';
 
 export class BasicsForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(private data: DataRecord) {
+  constructor(private service: AbstractRegisteredService) {
     super({
       enabled: new MgmtFormControl(null),
       serviceId: new MgmtFormControl(null, null, Validators.required),
@@ -20,15 +20,15 @@ export class BasicsForm extends FormGroup implements MgmtFormGroup<AbstractRegis
 
   formMap(): any {
     return {
-      enabled: this.data.service.accessStrategy.enabled,
-      serviceId: this.data.service.serviceId,
-      serviceName: this.data.service.name,
-      description: this.data.service.description,
-      theme: this.data.service.theme,
-      logo: this.data.service.logo,
-      informationUrl: this.data.service.informationUrl,
-      privacyUrl: this.data.service.privacyUrl,
-      serviceType: this.data.service['@class']
+      enabled: this.service.accessStrategy.enabled,
+      serviceId: this.service.serviceId,
+      serviceName: this.service.name,
+      description: this.service.description,
+      theme: this.service.theme,
+      logo: this.service.logo,
+      informationUrl: this.service.informationUrl,
+      privacyUrl: this.service.privacyUrl,
+      serviceType: this.service['@class']
     }
   }
 

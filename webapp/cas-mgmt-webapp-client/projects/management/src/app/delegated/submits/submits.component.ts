@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {SubmitService} from './submits.service';
 import {Branch, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {RevertComponent} from '../../project-share/revert/revert.component';
+import {RevertComponent} from '@app/project-share';
 import {ActivatedRoute, Router} from '@angular/router';
 import {finalize} from 'rxjs/operators';
 
@@ -81,7 +81,7 @@ export class SubmitsComponent implements OnInit {
 
   revert() {
     this.spinner.start('Reverting');
-    this.service.revert(this.revertBranch.name as string)
+    this.service.revert(this.revertBranch.name)
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(() => {
         this.snackBar

@@ -4,15 +4,15 @@ import {Validators} from '@angular/forms';
 
 export class PrincipalAttrForm extends BaseAttrForm<PrincipalAttributeRegisteredServiceUsernameProvider> {
 
-  constructor(public data: PrincipalAttributeRegisteredServiceUsernameProvider) {
-    super(data);
+  constructor(public provider: PrincipalAttributeRegisteredServiceUsernameProvider) {
+    super(provider);
     this.addControl('usernameAttribute',new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 
   formMap(): any {
     const frm = super.formMap();
-    frm['usernameAttribute'] = this.data.usernameAttribute;
+    frm['usernameAttribute'] = this.provider.usernameAttribute;
     return frm;
   }
 

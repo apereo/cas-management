@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-expiration',
-  templateUrl: './expiration.component.html',
-  styleUrls: ['./expiration.component.css']
+  templateUrl: './expiration.component.html'
 })
 export class ExpirationComponent implements OnInit {
 

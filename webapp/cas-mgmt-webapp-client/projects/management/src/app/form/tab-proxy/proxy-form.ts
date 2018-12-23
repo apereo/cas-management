@@ -15,9 +15,9 @@ export class ProxyForm extends FormGroup implements MgmtFormGroup<AbstractRegist
   type: MgmtFormControl;
   policy: FormGroup;
 
-  constructor(public data: RegisteredServiceProxyPolicy) {
+  constructor(public proxyPolicy: RegisteredServiceProxyPolicy) {
     super({});
-    const type = this.findType(data);
+    const type = this.findType(proxyPolicy);
     this.policy = this.getPolicy(type);
     this.type = new MgmtFormControl(type);
     this.addControl('type',this.type);
@@ -58,7 +58,7 @@ export class ProxyForm extends FormGroup implements MgmtFormGroup<AbstractRegist
 
   getPolicy(type: ProxyType) {
     if (type === ProxyType.REGEX) {
-      return new RegexProxyForm(this.data as RegexMatchingRegisteredServiceProxyPolicy);
+      return new RegexProxyForm(this.proxyPolicy as RegexMatchingRegisteredServiceProxyPolicy);
     }
     return new FormGroup({});
   }

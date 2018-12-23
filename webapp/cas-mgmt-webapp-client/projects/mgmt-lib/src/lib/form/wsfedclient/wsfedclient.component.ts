@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-wsfedclient',
-  templateUrl: './wsfedclient.component.html',
-  styleUrls: ['./wsfedclient.component.css']
+  templateUrl: './wsfedclient.component.html'
 })
 export class WsfedclientComponent implements OnInit {
 

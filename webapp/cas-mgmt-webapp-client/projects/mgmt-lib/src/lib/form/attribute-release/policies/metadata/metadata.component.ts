@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-metadata',
-  templateUrl: './metadata.component.html',
-  styleUrls: ['./metadata.component.css']
+  templateUrl: './metadata.component.html'
 })
 export class MetadataComponent implements OnInit {
 

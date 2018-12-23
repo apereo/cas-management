@@ -4,15 +4,15 @@ import {Validators} from '@angular/forms';
 
 export class GroovyReleaseForm extends BaseReleaseForm<GroovyScriptAttributeReleasePolicy> {
 
-  constructor(public data: GroovyScriptAttributeReleasePolicy) {
-    super(data);
+  constructor(public policy: GroovyScriptAttributeReleasePolicy) {
+    super(policy);
     this.addControl('groovy', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 
   formMap(): any {
     const frm = super.formMap();
-    frm['groovy'] = this.data.groovyScript;
+    frm['groovy'] = this.policy.groovyScript;
     return frm;
   }
 

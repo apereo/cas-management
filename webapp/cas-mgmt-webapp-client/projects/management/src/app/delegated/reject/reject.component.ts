@@ -3,8 +3,7 @@ import {MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-reject',
-  templateUrl: './reject.component.html',
-  styleUrls: ['./reject.component.css']
+  templateUrl: './reject.component.html'
 })
 export class RejectComponent implements OnInit {
 

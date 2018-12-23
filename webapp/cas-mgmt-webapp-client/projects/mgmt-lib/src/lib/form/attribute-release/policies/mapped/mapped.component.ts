@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-mapped',
-  templateUrl: './mapped.component.html',
-  styleUrls: ['./mapped.component.css']
+  templateUrl: './mapped.component.html'
 })
 export class MappedComponent implements OnInit {
 

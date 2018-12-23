@@ -6,8 +6,7 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-attribute-release-policies',
-  templateUrl: './policies.component.html',
-  styleUrls: ['./policies.component.css']
+  templateUrl: './policies.component.html'
 })
 export class PoliciesComponent implements OnInit {
   type: ReleasePolicyType;

@@ -5,8 +5,7 @@ import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-surrogate',
-  templateUrl: './surrogate.component.html',
-  styleUrls: ['./surrogate.component.css']
+  templateUrl: './surrogate.component.html'
 })
 export class SurrogateComponent implements OnInit {
 

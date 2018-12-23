@@ -4,8 +4,7 @@ import {DataRecord} from 'mgmt-lib';
 
 @Component({
   selector: 'app-tab-expiration',
-  templateUrl: './tab-expiration.component.html',
-  styleUrls: ['./tab-expiration.component.css']
+  templateUrl: './tab-expiration.component.html'
 })
 export class TabExpirationComponent {
 
@@ -16,7 +15,7 @@ export class TabExpirationComponent {
       this.expiration = this.data.formMap.get('expiration') as ExpirationForm;
       return;
     }
-    this.expiration = new ExpirationForm(this.data);
+    this.expiration = new ExpirationForm(this.data.service);
     this.data.formMap.set('expiration', this.expiration);
   }
 

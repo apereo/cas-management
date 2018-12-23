@@ -1,7 +1,6 @@
 import {FormGroup, Validators} from '@angular/forms';
 import {
   MgmtFormGroup,
-  DataRecord,
   MgmtFormControl,
   AbstractRegisteredService,
   OidcRegisteredService
@@ -9,7 +8,7 @@ import {
 
 export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
+  constructor(public service: OidcRegisteredService) {
     super({
       clientId: new MgmtFormControl(null, null, Validators.required),
       clientSecret: new MgmtFormControl(null, null, Validators.required),
@@ -30,22 +29,21 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
   }
 
   formMap(): any {
-    const oidc: OidcRegisteredService = this.data.service as OidcRegisteredService;
     return {
-      clientId: oidc.clientId,
-      clientSecret: oidc.clientSecret,
-      bypassApprovalPrompt: oidc.bypassApprovalPrompt,
-      generateRefreshToken: oidc.generateRefreshToken,
-      jwks: oidc.jwks,
-      scopes_userdefined: oidc.scopes_userdefined,
-      signIdToken: oidc.signIdToken,
-      implicit: oidc.implicit,
-      encryptIdToken: oidc.encryptIdToken,
-      idTokenEncryptionAlg: oidc.idTokenEncryptionAlg,
-      idTokenEncryptionEncoding: oidc.idTokenEncryptionEncoding,
-      subjectType: oidc.subjectType,
-      sectorIdentifierUri: oidc.sectorIdentifierUri,
-      dynamicRegistrationDateTime: oidc.dynamicRegistrationDateTime
+      clientId: this.service.clientId,
+      clientSecret: this.service.clientSecret,
+      bypassApprovalPrompt: this.service.bypassApprovalPrompt,
+      generateRefreshToken: this.service.generateRefreshToken,
+      jwks: this.service.jwks,
+      scopes_userdefined: this.service.scopes_userdefined,
+      signIdToken: this.service.signIdToken,
+      implicit: this.service.implicit,
+      encryptIdToken: this.service.encryptIdToken,
+      idTokenEncryptionAlg: this.service.idTokenEncryptionAlg,
+      idTokenEncryptionEncoding: this.service.idTokenEncryptionEncoding,
+      subjectType: this.service.subjectType,
+      sectorIdentifierUri: this.service.sectorIdentifierUri,
+      dynamicRegistrationDateTime: this.service.dynamicRegistrationDateTime
     }
   }
 

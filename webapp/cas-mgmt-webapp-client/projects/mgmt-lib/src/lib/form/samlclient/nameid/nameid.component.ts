@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-nameid',
-  templateUrl: './nameid.component.html',
-  styleUrls: ['./nameid.component.css']
+  templateUrl: './nameid.component.html'
 })
 export class SamlNameidComponent implements OnInit {
 

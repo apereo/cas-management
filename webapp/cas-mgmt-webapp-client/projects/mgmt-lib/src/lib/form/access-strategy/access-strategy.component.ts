@@ -5,8 +5,7 @@ import {AccessStrategyType} from '../../domain/access-strategy';
 
 @Component({
   selector: 'lib-access-strategy',
-  templateUrl: './access-strategy.component.html',
-  styleUrls: ['./access-strategy.component.css']
+  templateUrl: './access-strategy.component.html'
 })
 export class AccessStrategyComponent implements OnInit {
 

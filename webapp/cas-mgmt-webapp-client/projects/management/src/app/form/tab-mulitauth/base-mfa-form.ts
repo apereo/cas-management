@@ -3,7 +3,7 @@ import {FormGroup} from '@angular/forms';
 
 export class BaseMfaForm<T extends RegisteredServiceMultifactorPolicy> extends FormGroup implements MgmtFormGroup<T> {
 
-  constructor(public data: RegisteredServiceMultifactorPolicy) {
+  constructor(public policy: RegisteredServiceMultifactorPolicy) {
     super({});
   }
 

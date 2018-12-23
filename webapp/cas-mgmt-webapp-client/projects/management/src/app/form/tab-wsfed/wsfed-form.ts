@@ -1,7 +1,6 @@
 import {FormGroup, Validators} from '@angular/forms';
 import {
   MgmtFormGroup,
-  DataRecord,
   MgmtFormControl,
   WSFederationRegisterdService,
   AbstractRegisteredService
@@ -9,7 +8,7 @@ import {
 
 export class WsfedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
+  constructor(public service: WSFederationRegisterdService) {
     super({
       realm: new MgmtFormControl(null, null, Validators.required),
       appliesTo: new MgmtFormControl(null, null, Validators.required)
@@ -18,10 +17,9 @@ export class WsfedForm extends FormGroup implements MgmtFormGroup<AbstractRegist
   }
 
   formMap(): any {
-    const ws: WSFederationRegisterdService = this.data.service as WSFederationRegisterdService;
     return {
-      realm: ws.realm,
-      appliesTo: ws.appliesTo
+      realm: this.service.realm,
+      appliesTo: this.service.appliesTo
     };
   }
 

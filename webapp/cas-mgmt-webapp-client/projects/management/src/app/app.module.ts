@@ -3,8 +3,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {ProjectShareModule} from './project-share/project-share.module';
-import {CoreModule} from './core/core.module';
+import {ProjectShareModule} from '@app/project-share/';
+import {CoreModule} from '@app/core';
 import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
 

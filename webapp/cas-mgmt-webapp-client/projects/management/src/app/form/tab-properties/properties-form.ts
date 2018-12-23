@@ -9,13 +9,13 @@ import {
 
 export class PropertiesForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(private data: DataRecord) {
+  constructor(private service: AbstractRegisteredService) {
     super({
       properties: new FormArray([])
     });
     const props = new FormArray([]);
-    if (this.data.service.properties) {
-      for (let i = 0; i < Array.from(Object.keys(this.data.service.properties)).length; i++) {
+    if (this.service.properties) {
+      for (let i = 0; i < Array.from(Object.keys(this.service.properties)).length; i++) {
         props.push(new FormGroup({
           key: new MgmtFormControl(null, null, Validators.required),
           value: new MgmtFormControl(null, null, Validators.required)
@@ -30,11 +30,11 @@ export class PropertiesForm extends FormGroup implements MgmtFormGroup<AbstractR
     const props = {
       properties: []
     }
-    if (this.data.service.properties) {
-      for (let p of Array.from(Object.keys(this.data.service.properties))) {
+    if (this.service.properties) {
+      for (let p of Array.from(Object.keys(this.service.properties))) {
         props.properties.push({
           key: p,
-          value: this.data.service.properties[p].values.toString()
+          value: this.service.properties[p].values.toString()
         });
       }
     }

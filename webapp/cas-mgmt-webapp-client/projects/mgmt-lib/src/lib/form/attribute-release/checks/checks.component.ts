@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-attribute-release-checks',
-  templateUrl: './checks.component.html',
-  styleUrls: ['./checks.component.css']
+  templateUrl: './checks.component.html'
 })
 export class ChecksComponent implements OnInit {
 

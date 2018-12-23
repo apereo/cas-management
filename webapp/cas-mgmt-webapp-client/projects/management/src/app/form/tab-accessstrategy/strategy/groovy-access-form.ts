@@ -7,15 +7,15 @@ import {Validators} from '@angular/forms';
 
 export class GroovyAccessForm extends BaseAccessForm<GroovyRegisteredServiceAccessStrategy> {
 
-  constructor(public strat: GroovyRegisteredServiceAccessStrategy) {
-    super(strat);
+  constructor(public strategy: GroovyRegisteredServiceAccessStrategy) {
+    super(strategy);
     this.addControl('groovyScript', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 
   formMap(): any {
     const frm = super.formMap();
-    frm['groovyScript'] = this.strat.groovyScript;
+    frm['groovyScript'] = this.strategy.groovyScript;
     return frm;
   }
 

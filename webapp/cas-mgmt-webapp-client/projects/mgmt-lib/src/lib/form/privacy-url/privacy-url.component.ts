@@ -3,8 +3,7 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-privacy-url',
-  templateUrl: './privacy-url.component.html',
-  styleUrls: ['./privacy-url.component.css']
+  templateUrl: './privacy-url.component.html'
 })
 export class PrivacyUrlComponent implements OnInit {
 

@@ -5,8 +5,7 @@ import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-metadata',
-  templateUrl: './metadata.component.html',
-  styleUrls: ['./metadata.component.css']
+  templateUrl: './metadata.component.html'
 })
 export class SamlMetadataComponent implements OnInit {
 

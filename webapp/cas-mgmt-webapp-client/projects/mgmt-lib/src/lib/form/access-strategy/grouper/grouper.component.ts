@@ -5,8 +5,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-grouper',
-  templateUrl: './grouper.component.html',
-  styleUrls: ['./grouper.component.css']
+  templateUrl: './grouper.component.html'
 })
 export class GrouperComponent implements OnInit {
 

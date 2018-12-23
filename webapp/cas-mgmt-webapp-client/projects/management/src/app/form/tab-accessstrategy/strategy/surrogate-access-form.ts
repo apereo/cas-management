@@ -7,16 +7,16 @@ import {AttributeForm} from '../../attribute-form';
 
 export class SurrogateAccessForm extends BaseAccessForm<SurrogateRegisteredServiceAccessStrategy> {
 
-  constructor(public strat: SurrogateRegisteredServiceAccessStrategy) {
-    super(strat);
+  constructor(public strategy: SurrogateRegisteredServiceAccessStrategy) {
+    super(strategy);
     this.addControl('surrogateEnabled', new MgmtFormControl(null));
-    this.addControl('attributes', new AttributeForm(strat.surrogateRequiredAttributes));
+    this.addControl('attributes', new AttributeForm(strategy.surrogateRequiredAttributes));
     this.setValue(this.formMap());
   }
 
   formMap(): any {
     const frm = super.formMap();
-    frm['surrogateEnabled'] = this.strat.surrogateEnabled;
+    frm['surrogateEnabled'] = this.strategy.surrogateEnabled;
     frm['attributes'] = (<AttributeForm>this.get('attributes')).formMap();
     return frm;
   }

@@ -23,9 +23,9 @@ export class UsernameattrForm extends FormGroup implements MgmtFormGroup<Abstrac
   type: MgmtFormControl;
   provider: MgmtFormGroup<RegisteredServiceUsernameAttributeProvider>;
 
-  constructor(public data: RegisteredServiceUsernameAttributeProvider) {
+  constructor(public usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider) {
     super({});
-    const type = this.findType(data);
+    const type = this.findType(usernameAttributeProvider);
     this.type = new MgmtFormControl(type);
     this.provider = this.getProvider(type);
     this.addControl('type', this.type);
@@ -75,19 +75,19 @@ export class UsernameattrForm extends FormGroup implements MgmtFormGroup<Abstrac
 
   getProvider(type: UserAttributeType): BaseAttrForm<RegisteredServiceUsernameAttributeProvider> {
     if (type === UserAttributeType.GROOVY) {
-      return new GroovyAttrForm(this.data as GroovyRegisteredServiceUsernameProvider);
+      return new GroovyAttrForm(this.usernameAttributeProvider as GroovyRegisteredServiceUsernameProvider);
     }
     if (type === UserAttributeType.SCRIPTED) {
-      return new ScriptAttrForm(this.data as ScriptedRegisteredServiceUsernameProvider);
+      return new ScriptAttrForm(this.usernameAttributeProvider as ScriptedRegisteredServiceUsernameProvider);
     }
     if (type === UserAttributeType.ANONYMOUS) {
-      return new AnonAttrForm(this.data as AnonymousRegisteredServiceUsernameProvider);
+      return new AnonAttrForm(this.usernameAttributeProvider as AnonymousRegisteredServiceUsernameProvider);
     }
     if (type === UserAttributeType.PRINCIPAL_ATTRIBUTE) {
-      return new PrincipalAttrForm(this.data as PrincipalAttributeRegisteredServiceUsernameProvider);
+      return new PrincipalAttrForm(this.usernameAttributeProvider as PrincipalAttributeRegisteredServiceUsernameProvider);
     }
-    if (this.data) {
-      return new DefaultAttrForm(this.data as DefaultRegisteredServiceUsernameProvider);
+    if (this.usernameAttributeProvider) {
+      return new DefaultAttrForm(this.usernameAttributeProvider as DefaultRegisteredServiceUsernameProvider);
     } else {
       return new DefaultAttrForm(new DefaultRegisteredServiceUsernameProvider());
     }

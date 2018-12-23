@@ -5,8 +5,7 @@ import {Commit} from 'mgmt-lib';
 
 @Component({
   selector: 'app-publish',
-  templateUrl: './publish.component.html',
-  styleUrls: ['./publish.component.css']
+  templateUrl: './publish.component.html'
 })
 
 export class PublishComponent implements OnInit {

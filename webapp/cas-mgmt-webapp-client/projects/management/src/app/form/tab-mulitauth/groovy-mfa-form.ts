@@ -4,15 +4,15 @@ import {Validators} from '@angular/forms';
 
 export class GroovyMfaForm extends BaseMfaForm<GroovyRegisteredServiceMultifactorPolicy> {
 
-  constructor(public data: GroovyRegisteredServiceMultifactorPolicy) {
-    super(data);
+  constructor(public policy: GroovyRegisteredServiceMultifactorPolicy) {
+    super(policy);
     this.addControl('groovy', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 
   formMap(): any {
     return {
-      groovy: this.data.groovyScript
+      groovy: this.policy.groovyScript
     }
   }
 

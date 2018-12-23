@@ -7,8 +7,8 @@ import {Validators} from '@angular/forms';
 
 export class TimeAccessForm extends BaseAccessForm<TimeBasedRegisteredServiceAccessStrategy> {
 
-  constructor(public strat: TimeBasedRegisteredServiceAccessStrategy) {
-    super(strat);
+  constructor(public strategy: TimeBasedRegisteredServiceAccessStrategy) {
+    super(strategy);
     this.addControl('startingDatetime', new MgmtFormControl(null, null, Validators.required));
     this.addControl('endingDatetime', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
@@ -16,8 +16,8 @@ export class TimeAccessForm extends BaseAccessForm<TimeBasedRegisteredServiceAcc
 
   formMap(): any {
     const frm  = super.formMap();
-    frm['startingDatetime'] = this.strat.startingDateTime;
-    frm['endingDatetime'] = this.strat.endingDateTime;
+    frm['startingDatetime'] = this.strategy.startingDateTime;
+    frm['endingDatetime'] = this.strategy.endingDateTime;
     return frm;
   }
 

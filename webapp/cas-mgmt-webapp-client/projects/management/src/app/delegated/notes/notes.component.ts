@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { EditorComponent } from '../../project-share/editor.component';
+import { EditorComponent } from '@app/project-share';
 import {ActivatedRoute} from '@angular/router';
 import {NotesService} from './notes.service';
 import {SpinnerService} from 'mgmt-lib';
@@ -7,8 +7,7 @@ import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-notes',
-  templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.css']
+  templateUrl: './notes.component.html'
 })
 
 export class NotesComponent implements OnInit {

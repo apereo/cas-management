@@ -4,9 +4,9 @@ import {AttributeForm} from '../../attribute-form';
 
 export class MappedReleaseForm extends BaseReleaseForm<ReturnMappedAttributeReleasePolicy> {
 
-  constructor(public data: ReturnMappedAttributeReleasePolicy) {
-    super(data);
-    this.addControl('attributes', new AttributeForm(data.allowedAttributes));
+  constructor(public policy: ReturnMappedAttributeReleasePolicy) {
+    super(policy);
+    this.addControl('attributes', new AttributeForm(policy.allowedAttributes));
     this.setValue(this.formMap());
   }
 

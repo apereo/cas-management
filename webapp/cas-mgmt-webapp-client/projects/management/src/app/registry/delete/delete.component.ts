@@ -4,8 +4,7 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-delete',
-  templateUrl: './delete.component.html',
-  styleUrls: ['./delete.component.css']
+  templateUrl: './delete.component.html'
 })
 export class DeleteComponent implements OnInit {
 

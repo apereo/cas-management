@@ -16,7 +16,7 @@ export class TabPropertiesComponent {
       this.properties = this.data.formMap.get('properties') as PropertiesForm;
       return;
     }
-    this.properties = new PropertiesForm(this.data);
+    this.properties = new PropertiesForm(this.data.service);
     this.data.formMap.set('properties', this.properties);
   }
 }

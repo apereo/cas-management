@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/internal/Observable';
 })
 export class SearchService extends Service {
 
-  search(query: String): Observable<ServiceItem[]> {
+  search(query: string): Observable<ServiceItem[]> {
     return this.post('api/search', query);
   }
 

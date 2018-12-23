@@ -59,7 +59,7 @@ export class NavigationComponent {
         });
     }
 
-    getUser(): String {
+    getUser(): string {
         return this.userService.user ? this.userService.user.firstName : '';
     }
 

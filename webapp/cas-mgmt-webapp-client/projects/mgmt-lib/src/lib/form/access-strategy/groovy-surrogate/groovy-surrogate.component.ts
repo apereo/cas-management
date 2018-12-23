@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-groovy-surrogate',
-  templateUrl: './groovy-surrogate.component.html',
-  styleUrls: ['./groovy-surrogate.component.css']
+  templateUrl: './groovy-surrogate.component.html'
 })
 export class GroovySurrogateComponent implements OnInit {
 

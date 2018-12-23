@@ -4,8 +4,7 @@ import {GitStatus} from 'mgmt-lib';
 
 @Component({
   selector: 'app-commit',
-  templateUrl: './commit.component.html',
-  styleUrls: ['./commit.component.css']
+  templateUrl: './commit.component.html'
 })
 export class CommitComponent implements OnInit {
 

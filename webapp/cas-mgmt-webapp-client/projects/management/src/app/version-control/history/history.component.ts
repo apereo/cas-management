@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {HistoryService} from './history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {ViewComponent} from '../../project-share/view/view.component';
+import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
 import {finalize} from 'rxjs/operators';
 

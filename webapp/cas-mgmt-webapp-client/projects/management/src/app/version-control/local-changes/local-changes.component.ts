@@ -1,12 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Change, PaginatorComponent, SpinnerService} from 'mgmt-lib';
-import {ControlsService} from '../../project-share/controls/controls.service';
+import {ControlsService, RevertComponent, ViewComponent} from '@app/project-share';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {RevertComponent} from '../../project-share/revert/revert.component';
-import {ServiceViewService} from '../../registry/services/service.service';
+import {ServiceViewService} from '@app/registry/services/service.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
-import {ViewComponent} from '../../project-share/view/view.component';
 import {finalize} from 'rxjs/operators';
 
 @Component({

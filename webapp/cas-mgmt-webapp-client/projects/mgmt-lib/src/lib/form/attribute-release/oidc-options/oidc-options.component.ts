@@ -4,8 +4,7 @@ import {FormDataService} from '../../../form-data.service';
 
 @Component({
   selector: 'lib-oidc-options',
-  templateUrl: './oidc-options.component.html',
-  styleUrls: ['./oidc-options.component.css']
+  templateUrl: './oidc-options.component.html'
 })
 export class OidcOptionsComponent implements OnInit {
 

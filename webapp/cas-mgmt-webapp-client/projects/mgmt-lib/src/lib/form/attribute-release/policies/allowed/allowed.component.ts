@@ -5,8 +5,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-allowed',
-  templateUrl: './allowed.component.html',
-  styleUrls: ['./allowed.component.css']
+  templateUrl: './allowed.component.html'
 })
 export class AllowedComponent implements OnInit {
 

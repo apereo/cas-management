@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
-import {RevertComponent} from '../../project-share/revert/revert.component';
+import {RevertComponent} from '@app/project-share';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {finalize} from 'rxjs/operators';
 

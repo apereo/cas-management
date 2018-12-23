@@ -1,16 +1,15 @@
 import {Component, OnInit, Output, EventEmitter, ViewChild, Input} from '@angular/core';
 import {UserService, Commit, AppConfigService, SpinnerService} from 'mgmt-lib';
-import {ControlsService} from './controls.service';
 import {Location} from '@angular/common';
 import {PublishComponent} from '../publish/publish.component';
-import {MatDialog, MatSnackBar} from '@angular/material';
 import {CommitComponent} from '../commit/commit.component';
+import {ControlsService} from './controls.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-controls',
-  templateUrl: './controls.component.html',
-  styleUrls: ['./controls.component.css']
+  templateUrl: './controls.component.html'
 })
 
 export class ControlsComponent implements OnInit {

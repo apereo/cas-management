@@ -6,8 +6,7 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-delegated',
-  templateUrl: './delegated.component.html',
-  styleUrls: ['./delegated.component.css']
+  templateUrl: './delegated.component.html'
 })
 export class DelegatedComponent implements OnInit {
 

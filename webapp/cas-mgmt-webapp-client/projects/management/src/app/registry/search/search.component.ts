@@ -4,7 +4,7 @@ import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/mate
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {SearchService} from './SearchService';
-import {ViewComponent} from '../../project-share/view/view.component';
+import {ViewComponent} from '@app/project-share';
 import {finalize} from 'rxjs/operators';
 
 @Component({

@@ -1,5 +1,4 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Row, RowDataSource} from '../row';
 import {DataRecord} from '../data';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormArray, FormGroup} from '@angular/forms';
@@ -15,12 +14,12 @@ export class AttributesComponent implements OnInit {
   control: FormGroup;
 
   @Input()
-  keys: String[];
+  keys: string[];
 
   selectedRow;
 
   @Input()
-  arrayName: String;
+  arrayName: string;
 
   entries: FormArray;
 
@@ -28,7 +27,7 @@ export class AttributesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entries = this.control.get(this.arrayName as string) as FormArray;
+    this.entries = this.control.get(this.arrayName) as FormArray;
   }
 
   addRow() {

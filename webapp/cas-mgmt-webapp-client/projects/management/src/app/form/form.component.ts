@@ -177,23 +177,6 @@ export class FormComponent implements OnInit {
     }
   }
 
-  textareaArrParse(dir, value) {
-    let newValue;
-    if (dir === 'load') {
-      newValue = value ? value.join('\n') : '';
-    } else {
-      if (value !== undefined) {
-        newValue = value.split('\n');
-        for (let i = newValue.length - 1; i >= 0; i--) {
-          newValue[i] = newValue[i].trim();
-        }
-      } else {
-        newValue = [];
-      }
-    }
-    return newValue;
-  };
-
   handleSave(id: number) {
     const hasIdAssignedAlready = this.data.service.id && this.data.service.id > 0;
 
@@ -222,44 +205,6 @@ export class FormComponent implements OnInit {
         'Dismiss',
         {duration: 5000}
       );
-  }
-
-  validateRegex(pattern): boolean {
-    try {
-      if (pattern === '') {
-        return false;
-      }
-      const patt = new RegExp(pattern);
-      return true;
-    } catch (e) {
-      console.log('Failed regex');
-    }
-    return false;
-  }
-
-  validateDomain(service: string): boolean {
-    if (this.userService.user.permissions.indexOf('*') > -1) {
-      return true;
-    }
-    try {
-      const domain = this.domainPattern.exec(service);
-      if (domain != null) {
-        return this.userService.user.permissions.indexOf(domain[1]) > -1;
-      }
-    } catch (e) {
-      console.log('Failed Domain parse');
-    }
-    return false;
-  }
-
-  extractDomain(service: string): string {
-    const domain = this.domainPattern.exec(service.toLowerCase() as string);
-    if (domain != null) {
-      if (this.validDomain.exec(domain[1]) != null) {
-        return domain[1];
-      }
-    }
-    return 'default';
   }
 
   validate(): boolean {
@@ -293,7 +238,7 @@ export class FormComponent implements OnInit {
     let touched: boolean = this.imported;
     for (let key of Array.from(this.data.formMap.keys())) {
       const form = this.data.formMap.get(key);
-      if (form.status === 'VALID' && form.touched) {
+      if (form.valid && form.touched) {
         form.mapForm(this.data.service);
         touched = true;
       }

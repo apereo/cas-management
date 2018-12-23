@@ -4,8 +4,8 @@ import {Validators} from '@angular/forms';
 
 export class AnonAttrForm extends BaseAttrForm<AnonymousRegisteredServiceUsernameProvider> {
 
-  constructor(public data: AnonymousRegisteredServiceUsernameProvider) {
-    super(data);
+  constructor(public provider: AnonymousRegisteredServiceUsernameProvider) {
+    super(provider);
     this.addControl('salt', new MgmtFormControl(null, null, Validators.required));
     this.addControl('attribute', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
@@ -13,8 +13,8 @@ export class AnonAttrForm extends BaseAttrForm<AnonymousRegisteredServiceUsernam
 
   formMap(): any {
     const frm = super.formMap();
-    frm['salt'] = this.data.persistentIdGenerator.salt;
-    frm['attribute'] = this.data.persistentIdGenerator.attribute;
+    frm['salt'] = this.provider.persistentIdGenerator.salt;
+    frm['attribute'] = this.provider.persistentIdGenerator.attribute;
     return frm;
   }
 

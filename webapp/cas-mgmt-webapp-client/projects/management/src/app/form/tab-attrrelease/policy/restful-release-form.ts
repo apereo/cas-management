@@ -4,15 +4,15 @@ import {ReturnRestfulAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
 
 export class RestfulReleaseForm extends BaseReleaseForm<ReturnRestfulAttributeReleasePolicy> {
 
-  constructor(public data: ReturnRestfulAttributeReleasePolicy) {
-    super(data);
+  constructor(public policy: ReturnRestfulAttributeReleasePolicy) {
+    super(policy);
     this.addControl('restful',  new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 
   formMap(): any {
     const frm = super.formMap();
-    frm['restful'] = this.data.endpoint;
+    frm['restful'] = this.policy.endpoint;
     return frm;
   }
 

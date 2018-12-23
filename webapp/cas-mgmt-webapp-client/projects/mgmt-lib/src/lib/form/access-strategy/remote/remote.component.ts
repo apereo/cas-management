@@ -5,8 +5,7 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-remote',
-  templateUrl: './remote.component.html',
-  styleUrls: ['./remote.component.css']
+  templateUrl: './remote.component.html'
 })
 export class RemoteComponent implements OnInit {
 

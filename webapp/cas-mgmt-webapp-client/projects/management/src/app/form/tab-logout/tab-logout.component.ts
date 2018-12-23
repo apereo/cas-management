@@ -15,7 +15,7 @@ export class TabLogoutComponent {
       this.logout = this.data.formMap.get('logout') as LogoutForm;
       return;
     }
-    this.logout = new LogoutForm(this.data);
+    this.logout = new LogoutForm(this.data.service);
     this.data.formMap.set('logout', this.logout);
   }
 }

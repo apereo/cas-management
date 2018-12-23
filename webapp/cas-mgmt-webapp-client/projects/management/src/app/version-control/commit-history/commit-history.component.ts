@@ -4,7 +4,7 @@ import {CommitHistoryService} from './commit-history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {ViewComponent} from '../../project-share/view/view.component';
+import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
 import {finalize} from 'rxjs/operators';
 

@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-optional',
-  templateUrl: './optional.component.html',
-  styleUrls: ['./optional.component.css']
+  templateUrl: './optional.component.html'
 })
 export class SamlOptionalComponent implements OnInit {
 

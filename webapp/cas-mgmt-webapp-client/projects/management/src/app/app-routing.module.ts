@@ -3,7 +3,7 @@
  */
 import { NgModule } from '@angular/core'
 import {RouterModule, Routes} from '@angular/router';
-import {InitComponent} from './core/init.component';
+import {InitComponent} from '@app/core';
 
 const routes: Routes = [
   {

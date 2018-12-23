@@ -17,7 +17,7 @@ export class ServicesResolve implements Resolve<ServiceItem[]> {
   constructor(private service: ServiceViewService, private spinner: SpinnerService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ServiceItem[]> | ServiceItem[] {
-    const param: String = route.params['domain'];
+    const param: string = route.params['domain'];
     if (param) {
       this.spinner.start('Loading services');
       return this.service.getServices(param).pipe(finalize(() => this.spinner.stop()));

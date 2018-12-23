@@ -9,7 +9,7 @@ import {
 
 export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleasePolicy> extends FormGroup implements MgmtFormGroup<RegisteredServiceAttributeReleasePolicy> {
 
-  constructor(public data: RegisteredServiceAttributeReleasePolicy) {
+  constructor(public policy: RegisteredServiceAttributeReleasePolicy) {
     super({
       checks: new FormGroup({
         excludeDefaultAttributes: new MgmtFormControl(null),
@@ -32,7 +32,7 @@ export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleas
   }
 
   formMap(): any {
-    const policy: RegisteredServiceAttributeReleasePolicy = this.data;
+    const policy: RegisteredServiceAttributeReleasePolicy = this.policy;
     const principalRepoType = CachingPrincipalAttributesRepository.instanceOf(policy) ? PrincipalRepoType.CACHING : PrincipalRepoType.DEFAULT;
     const frm = {
       checks: {

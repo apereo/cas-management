@@ -1,7 +1,6 @@
 import {FormGroup} from '@angular/forms';
 import {
   MgmtFormGroup,
-  DataRecord,
   MgmtFormControl,
   AbstractRegisteredService,
   RegisteredServicePublicKeyImpl
@@ -9,7 +8,7 @@ import {
 
 export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
+  constructor(public service: AbstractRegisteredService) {
     super({
       evalOrder: new MgmtFormControl(null),
       required: new MgmtFormControl(null),
@@ -25,13 +24,13 @@ export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractReg
 
   formMap(): any {
     return  {
-      evalOrder: this.data.service.evaluationOrder,
-      required: this.data.service.requiredHandlers,
-      environments: this.data.service.environments,
-      responseType: this.data.service.responseType,
+      evalOrder: this.service.evaluationOrder,
+      required: this.service.requiredHandlers,
+      environments: this.service.environments,
+      responseType: this.service.responseType,
       publicKey: {
-        location: this.data.service.publicKey && this.data.service.publicKey.location,
-        algorithm: this.data.service.publicKey && this.data.service.publicKey.algorithm
+        location: this.service.publicKey && this.service.publicKey.location,
+        algorithm: this.service.publicKey && this.service.publicKey.algorithm
       }
     }
   }

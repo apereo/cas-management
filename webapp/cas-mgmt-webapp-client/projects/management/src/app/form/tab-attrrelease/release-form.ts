@@ -54,12 +54,12 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
   policy: MgmtFormGroup<RegisteredServiceAttributeReleasePolicy>;
   filter: BaseFilterForm<RegisteredServiceAttributeFilter>;
 
-  constructor(public data: RegisteredServiceAttributeReleasePolicy, public isWsFed?: boolean) {
+  constructor(public releasePolicy: RegisteredServiceAttributeReleasePolicy, public isWsFed?: boolean) {
     super({});
-    const type = this.findType(data);
+    const type = this.findType(releasePolicy);
     this.type = new MgmtFormControl(type);
     this.policy = this.getPolicy(type);
-    this.filter = this.getFilter(data.attributeFilter);
+    this.filter = this.getFilter(releasePolicy.attributeFilter);
     this.addControl('type', this.type);
     this.addControl('policy', this.policy);
     this.addControl('filter', this.filter);
@@ -209,34 +209,34 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
 
   getPolicy(type: ReleasePolicyType): MgmtFormGroup<RegisteredServiceAttributeReleasePolicy> {
     if (type === ReleasePolicyType.RESTFUL) {
-      return new RestfulReleaseForm(this.data as ReturnRestfulAttributeReleasePolicy);
+      return new RestfulReleaseForm(this.releasePolicy as ReturnRestfulAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.GROOVY_SAML) {
-      return new GroovySamlReleaseForm(this.data as GroovySamlRegisteredServiceAttributeReleasePolicy);
+      return new GroovySamlReleaseForm(this.releasePolicy as GroovySamlRegisteredServiceAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.GROOVY) {
-      return new GroovyReleaseForm(this.data as GroovyScriptAttributeReleasePolicy);
+      return new GroovyReleaseForm(this.releasePolicy as GroovyScriptAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.SCRIPT) {
-      return new ScriptReleaseForm(this.data as ScriptedRegisteredServiceAttributeReleasePolicy);
+      return new ScriptReleaseForm(this.releasePolicy as ScriptedRegisteredServiceAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.DENY_ALL) {
-      return new DenyReleaseForm(this.data as DenyAllAttributeReleasePolicy);
+      return new DenyReleaseForm(this.releasePolicy as DenyAllAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.RETURN_MAPPED) {
-      return new MappedReleaseForm(this.data as ReturnMappedAttributeReleasePolicy);
+      return new MappedReleaseForm(this.releasePolicy as ReturnMappedAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.METADATA) {
-      return new MetadataReleaseForm(this.data as MetadataEntityAttributesAttributeReleasePolicy);
+      return new MetadataReleaseForm(this.releasePolicy as MetadataEntityAttributesAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.RETURN_ALLOWED) {
-      return new AllowedReleaseForm(this.data as ReturnAllowedAttributeReleasePolicy);
+      return new AllowedReleaseForm(this.releasePolicy as ReturnAllowedAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.RETURN_ALL) {
-      return new AllReleaseForm(this.data as ReturnAllAttributeReleasePolicy);
+      return new AllReleaseForm(this.releasePolicy as ReturnAllAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.WS_FED) {
-      return new WsFedReleaseForm(this.data as WsFederationClaimsReleasePolicy);
+      return new WsFedReleaseForm(this.releasePolicy as WsFederationClaimsReleasePolicy);
     }
   }
 

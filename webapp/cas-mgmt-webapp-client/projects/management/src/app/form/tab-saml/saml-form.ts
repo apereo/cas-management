@@ -10,7 +10,7 @@ import {AttributeForm} from '../attribute-form';
 
 export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
+  constructor(public service: SamlRegisteredService) {
     super({
       metadata: new FormGroup({
         location: new MgmtFormControl(null, null, Validators.required),
@@ -44,45 +44,44 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
         assertionAudiences: new MgmtFormControl(null)
       }),
       nameFormats: new FormGroup({
-        nameIds: new AttributeForm((<SamlRegisteredService>data.service).attributeNameFormats)
+        nameIds: new AttributeForm(service.attributeNameFormats)
       })
     });
     this.setValue(this.formMap());
   }
 
   formMap(): any {
-    const saml: SamlRegisteredService = this.data.service as SamlRegisteredService;
     const frm = {
       metadata: {
-        location: saml.metadataLocation,
-        maxValidity: saml.metadataMaxValidity,
-        signatureLocation: saml.metadataSignatureLocation,
-        expirationDuration: saml.metadataExpirationDuration,
-        criteriaPattern: saml.metadataCriteriaPattern,
-        criteriaDirection: saml.metadataCriteriaDirection,
-        criteriaRoles: saml.metadataCriteriaRoles,
-        criteriaRemoveEmptyEntitiesDescriptors: saml.metadataCriteriaRemoveEmptyEntitiesDescriptors,
-        criteriaRemoveRolelessEntityDescriptors: saml.metadataCriteriaRemoveRolelessEntityDescriptors
+        location: this.service.metadataLocation,
+        maxValidity: this.service.metadataMaxValidity,
+        signatureLocation: this.service.metadataSignatureLocation,
+        expirationDuration: this.service.metadataExpirationDuration,
+        criteriaPattern: this.service.metadataCriteriaPattern,
+        criteriaDirection: this.service.metadataCriteriaDirection,
+        criteriaRoles: this.service.metadataCriteriaRoles,
+        criteriaRemoveEmptyEntitiesDescriptors: this.service.metadataCriteriaRemoveEmptyEntitiesDescriptors,
+        criteriaRemoveRolelessEntityDescriptors: this.service.metadataCriteriaRemoveRolelessEntityDescriptors
       },
       nameId: {
-        requiredNameIdFormat: saml.requiredNameIdFormat,
-        serviceProviderNameIdQualifier: saml.serviceProviderNameIdQualifier,
-        nameIdQualifier: saml.nameIdQualifier
+        requiredNameIdFormat: this.service.requiredNameIdFormat,
+        serviceProviderNameIdQualifier: this.service.serviceProviderNameIdQualifier,
+        nameIdQualifier: this.service.nameIdQualifier
       },
       optionalSaml: {
-        skipGeneratingAssertionNameId: saml.skipGeneratingAssertionNameId,
-        skipGeneratingSubjectConfirmationInResponseTo: saml.skipGeneratingSubjectConfirmationInResponseTo,
-        skipGeneratingSubjectConfirmationNotOnOrAfter: saml.skipGeneratingSubjectConfirmationNotOnOrAfter,
-        skipGeneratingSubjectConfirmationRecipient: saml.skipGeneratingSubjectConfirmationRecipient,
-        skipGeneratingSubjectConfirmationNotBefore: saml.skipGeneratingSubjectConfirmationNotBefore,
+        skipGeneratingAssertionNameId: this.service.skipGeneratingAssertionNameId,
+        skipGeneratingSubjectConfirmationInResponseTo: this.service.skipGeneratingSubjectConfirmationInResponseTo,
+        skipGeneratingSubjectConfirmationNotOnOrAfter: this.service.skipGeneratingSubjectConfirmationNotOnOrAfter,
+        skipGeneratingSubjectConfirmationRecipient: this.service.skipGeneratingSubjectConfirmationRecipient,
+        skipGeneratingSubjectConfirmationNotBefore: this.service.skipGeneratingSubjectConfirmationNotBefore,
       },
       security: {
-        signAssertions: saml.signAssertions,
-        signResponses: saml.signResponses,
-        encryptAssertions: saml.encryptAssertions,
-        signingCredentialType: saml.signingCredentialType,
-        requiredAuthenticationContextClass: saml.requiredAuthenticationContextClass,
-        assertionAudiences: saml.assertionAudiences
+        signAssertions: this.service.signAssertions,
+        signResponses: this.service.signResponses,
+        encryptAssertions: this.service.encryptAssertions,
+        signingCredentialType: this.service.signingCredentialType,
+        requiredAuthenticationContextClass: this.service.requiredAuthenticationContextClass,
+        assertionAudiences: this.service.assertionAudiences
       },
       nameFormats: {
         nameIds: (<AttributeForm>this.get('nameIds')).formMap()

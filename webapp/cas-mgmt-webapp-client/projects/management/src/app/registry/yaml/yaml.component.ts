@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { Location } from '@angular/common';
 import {ServiceViewService} from '../services/service.service';
-import {EditorComponent} from '../../project-share/editor.component';
+import {EditorComponent} from '@app/project-share';
 import {HttpErrorResponse} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import {SpinnerService} from 'mgmt-lib';
@@ -10,8 +10,7 @@ import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-yaml',
-  templateUrl: './yaml.component.html',
-  styleUrls: ['./yaml.component.css']
+  templateUrl: './yaml.component.html'
 })
 export class YamlComponent implements OnInit, AfterViewInit {
 

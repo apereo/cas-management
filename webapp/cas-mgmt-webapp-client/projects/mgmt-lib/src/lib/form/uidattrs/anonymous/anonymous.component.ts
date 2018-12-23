@@ -5,8 +5,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-anonymous',
-  templateUrl: './anonymous.component.html',
-  styleUrls: ['./anonymous.component.css']
+  templateUrl: './anonymous.component.html'
 })
 export class AnonymousComponent implements OnInit {
 

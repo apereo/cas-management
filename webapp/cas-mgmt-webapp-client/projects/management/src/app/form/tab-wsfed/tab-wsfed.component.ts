@@ -1,11 +1,10 @@
 import {Component} from '@angular/core';
-import {DataRecord} from 'mgmt-lib';
+import {DataRecord, WSFederationRegisterdService} from 'mgmt-lib';
 import {WsfedForm} from './wsfed-form';
 
 @Component({
   selector: 'app-tab-wsfed',
-  templateUrl: './tab-wsfed.component.html',
-  styleUrls: ['./tab-wsfed.component.css']
+  templateUrl: './tab-wsfed.component.html'
 })
 export class TabWsfedComponent {
 
@@ -16,7 +15,7 @@ export class TabWsfedComponent {
       this.wsfed = this.data.formMap.get('wsfed') as WsfedForm;
       return;
     }
-    this.wsfed = new WsfedForm(this.data);
+    this.wsfed = new WsfedForm(this.data.service as WSFederationRegisterdService);
     this.data.formMap.set('wsfed', this.wsfed);
   }
 }

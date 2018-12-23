@@ -3,8 +3,7 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({
   selector: 'lib-environments',
-  templateUrl: './environments.component.html',
-  styleUrls: ['./environments.component.css']
+  templateUrl: './environments.component.html'
 })
 export class EnvironmentsComponent implements OnInit {
 

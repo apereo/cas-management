@@ -27,9 +27,9 @@ export class StrategyAccessForm extends FormGroup implements MgmtFormGroup<Abstr
   type: MgmtFormControl;
   strategy: FormGroup;
 
-  constructor(private data: RegisteredServiceAccessStrategy) {
+  constructor(private serviceAccessStrategy: RegisteredServiceAccessStrategy) {
     super({});
-    const strat: RegisteredServiceAccessStrategy = this.data;
+    const strat: RegisteredServiceAccessStrategy = this.serviceAccessStrategy;
     const type: AccessStrategyType = this.findType(strat);
     this.type = new MgmtFormControl(type);
     this.strategy = this.getStrategy(type);
@@ -112,24 +112,24 @@ export class StrategyAccessForm extends FormGroup implements MgmtFormGroup<Abstr
 
   getStrategy(type: AccessStrategyType)  {
     if (type === AccessStrategyType.REMOTE) {
-      return new RemoteAccessForm(this.data as RemoteEndpointServiceAccessStrategy);
+      return new RemoteAccessForm(this.serviceAccessStrategy as RemoteEndpointServiceAccessStrategy);
     }
     if (type === AccessStrategyType.TIME) {
-      return new TimeAccessForm(this.data as TimeBasedRegisteredServiceAccessStrategy);
+      return new TimeAccessForm(this.serviceAccessStrategy as TimeBasedRegisteredServiceAccessStrategy);
     }
     if (type === AccessStrategyType.GROUPER) {
-      return new GrouperAccessForm(this.data as GrouperRegisteredServiceAccessStrategy);
+      return new GrouperAccessForm(this.serviceAccessStrategy as GrouperRegisteredServiceAccessStrategy);
     }
     if (type === AccessStrategyType.SURROGATE) {
-      return new SurrogateAccessForm(this.data as SurrogateRegisteredServiceAccessStrategy);
+      return new SurrogateAccessForm(this.serviceAccessStrategy as SurrogateRegisteredServiceAccessStrategy);
     }
     if (type === AccessStrategyType.GROOVY_SURROGATE) {
-      return new GroovySurrogateAccesForm(this.data as GroovySurrogateRegisteredServiceAccessStrategy);
+      return new GroovySurrogateAccesForm(this.serviceAccessStrategy as GroovySurrogateRegisteredServiceAccessStrategy);
     }
     if (type === AccessStrategyType.GROOVY) {
-      return new GroovyAccessForm(this.data as GroovyRegisteredServiceAccessStrategy);
+      return new GroovyAccessForm(this.serviceAccessStrategy as GroovyRegisteredServiceAccessStrategy);
     }
-    return new DefaultAccessForm(this.data);
+    return new DefaultAccessForm(this.serviceAccessStrategy);
   }
 
   findType(strat: RegisteredServiceAccessStrategy) {

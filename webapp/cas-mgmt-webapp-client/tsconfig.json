@@ -24,7 +24,8 @@
       ],
       "mgmt-lib/*": [
         "dist/mgmt-lib/*"
-      ]
+      ],
+      "@app/*": ["projects/management/src/app/*"]
     }
   }
 }

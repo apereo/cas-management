@@ -30,7 +30,7 @@ export class TabBasicsComponent implements OnInit {
       this.basics = this.data.formMap.get('basics') as BasicsForm;
       return;
     }
-    this.basics = new BasicsForm(this.data);
+    this.basics = new BasicsForm(this.data.service);
     this.basics.get('serviceType').valueChanges.subscribe(val => {
       if (val === OAuthRegisteredService.cName) {
         this.data.service = new OAuthRegisteredService(this.data.service);
@@ -45,25 +45,6 @@ export class TabBasicsComponent implements OnInit {
       }
     });
     this.data.formMap.set('basics', this.basics);
-  }
-
-  validateDomain = function(user: UserProfile) {
-    return function (service: string): boolean {
-      const domainPattern = new RegExp('^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)');
-
-      if (user.administrator || user.permissions.indexOf('*') > -1) {
-        return true;
-      }
-      try {
-        const domain = domainPattern.exec(service);
-        if (domain != null) {
-          return user.permissions.indexOf(domain[1]) > -1;
-        }
-      } catch (e) {
-        console.log('Failed Domain parse');
-      }
-      return false;
-    };
   }
 
 }

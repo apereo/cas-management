@@ -4,8 +4,7 @@ import {FormArray, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-attribute-release-filters',
-  templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.css']
+  templateUrl: './filters.component.html'
 })
 
 export class FiltersComponent implements OnInit {

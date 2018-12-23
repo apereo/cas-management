@@ -4,8 +4,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-groovy-saml',
-  templateUrl: './groovy-saml.component.html',
-  styleUrls: ['./groovy-saml.component.css']
+  templateUrl: './groovy-saml.component.html'
 })
 export class GroovySamlComponent implements OnInit {
 

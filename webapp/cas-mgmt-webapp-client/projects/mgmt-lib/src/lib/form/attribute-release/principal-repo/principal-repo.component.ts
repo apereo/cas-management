@@ -6,8 +6,7 @@ import {PrincipalRepoType} from '../../../domain/attribute-release';
 
 @Component({
   selector: 'lib-attribute-release-principal-repo',
-  templateUrl: './principal-repo.component.html',
-  styleUrls: ['./principal-repo.component.css']
+  templateUrl: './principal-repo.component.html'
 })
 export class PrincipalRepoComponent implements OnInit {
   type: PrincipalRepoType;

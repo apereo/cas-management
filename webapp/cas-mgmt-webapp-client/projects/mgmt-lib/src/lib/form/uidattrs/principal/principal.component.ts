@@ -5,8 +5,7 @@ import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-principal',
-  templateUrl: './principal.component.html',
-  styleUrls: ['./principal.component.css']
+  templateUrl: './principal.component.html'
 })
 export class PrincipalComponent implements OnInit {
 

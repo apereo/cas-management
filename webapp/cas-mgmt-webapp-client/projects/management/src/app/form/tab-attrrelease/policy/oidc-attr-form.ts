@@ -3,7 +3,7 @@ import {MgmtFormGroup, OidcRegisteredService, MgmtFormControl} from 'mgmt-lib';
 
 export class OidcAttrForm extends FormGroup implements MgmtFormGroup<OidcRegisteredService> {
 
-  constructor(public data: OidcRegisteredService) {
+  constructor(public service: OidcRegisteredService) {
     super({
       scopes: new MgmtFormControl(null)
     });
@@ -12,7 +12,7 @@ export class OidcAttrForm extends FormGroup implements MgmtFormGroup<OidcRegiste
 
   formMap(): any {
     return {
-      scopes: this.data.scopes
+      scopes: this.service.scopes
     }
   }
 

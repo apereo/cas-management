@@ -11,8 +11,7 @@ import {AppConfigService} from '../../app-config.service';
 
 @Component({
   selector: 'lib-contacts',
-  templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css']
+  templateUrl: './contacts.component.html'
 })
 export class ContactsComponent implements OnInit {
 

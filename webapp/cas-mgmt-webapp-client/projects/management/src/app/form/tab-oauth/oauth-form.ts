@@ -1,7 +1,6 @@
 import {Validators, FormGroup} from '@angular/forms';
 import {
   MgmtFormGroup,
-  DataRecord,
   OAuthRegisteredService,
   MgmtFormControl,
   AbstractRegisteredService
@@ -9,7 +8,7 @@ import {
 
 export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
-  constructor(public data: DataRecord) {
+  constructor(public service: OAuthRegisteredService) {
     super({
       clientId: new MgmtFormControl(null, null, Validators.required),
       clientSecret: new MgmtFormControl(null, null, Validators.required),
@@ -20,12 +19,11 @@ export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegist
   }
 
   formMap(): any {
-    const oauth: OAuthRegisteredService = this.data.service as OAuthRegisteredService;
     return {
-      clientId: oauth.clientId,
-      clientSecret: oauth.clientSecret,
-      bypassApprovalPrompt: oauth.bypassApprovalPrompt,
-      generateRefreshToken: oauth.generateRefreshToken,
+      clientId: this.service.clientId,
+      clientSecret: this.service.clientSecret,
+      bypassApprovalPrompt: this.service.bypassApprovalPrompt,
+      generateRefreshToken: this.service.generateRefreshToken,
     }
   }
 

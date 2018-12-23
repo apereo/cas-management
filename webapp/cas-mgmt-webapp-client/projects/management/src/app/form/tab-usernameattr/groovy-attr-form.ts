@@ -4,15 +4,15 @@ import {Validators} from '@angular/forms';
 
 export class GroovyAttrForm extends BaseAttrForm<GroovyRegisteredServiceUsernameProvider> {
 
-  constructor(public data: GroovyRegisteredServiceUsernameProvider) {
-    super(data);
+  constructor(public provider: GroovyRegisteredServiceUsernameProvider) {
+    super(provider);
     this.addControl('groovyScript', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 
   formMap(): any{
     const frm = super.formMap();
-    frm['groovyScript'] = this.data.groovyScript;
+    frm['groovyScript'] = this.provider.groovyScript;
     return frm;
   }
 

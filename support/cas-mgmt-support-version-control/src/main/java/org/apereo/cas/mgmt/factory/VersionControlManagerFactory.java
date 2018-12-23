@@ -6,7 +6,7 @@ import org.apereo.cas.configuration.model.core.services.ServiceRegistryPropertie
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
-import org.apereo.cas.mgmt.VersionControlImpl;
+import org.apereo.cas.mgmt.VersionControlServicesManager;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.DefaultServicesManager;
@@ -62,7 +62,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
                 return;
             }
             try (GitUtil git = repositoryFactory.masterRepository()) {
-                val manager = new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
+                val manager = new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();
                 git.commit("Initial commit");
@@ -103,8 +103,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @return - manager
      */
     public ManagementServicesManager from(final GitUtil git) {
-        val versionControl = new VersionControlImpl(git);
-        return new ManagementServicesManager(createJSONServiceManager(git), versionControl);
+        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
     }
 
 
@@ -117,9 +116,9 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     }
 
     private ManagementServicesManager getSessionManager(final HttpSession session, final CasUserProfile user) {
-        val manager = (ManagementServicesManager) session.getAttribute(SERVICES_MANAGER_KEY);
+        val manager = (VersionControlServicesManager) session.getAttribute(SERVICES_MANAGER_KEY);
         if (!user.isAdministrator()) {
-            manager.getVersionControl().rebase();
+            manager.rebase();
         }
         manager.load();
         return manager;
@@ -127,18 +126,17 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
 
     private ManagementServicesManager createNewManager(final CasUserProfile user) {
         val git = !user.isAdministrator() ? repositoryFactory.from(user).rebase() : repositoryFactory.masterRepository();
-        return new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
+        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
     }
 
     /**
      * Returns the master repo.
      *
      * @return - maste repo manager
-     * @throws Exception -failed
      */
     public ManagementServicesManager master() {
         val git = repositoryFactory.masterRepository();
-        return new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
+        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
     }
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {

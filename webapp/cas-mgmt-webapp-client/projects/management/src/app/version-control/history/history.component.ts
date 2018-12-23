@@ -60,13 +60,7 @@ export class HistoryComponent implements OnInit {
     this.spinner.start('Checking out verison');
     this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(
-        () => this.snackBar
-          .open('Service successfully restored from history.',
-            'dismiss',
-            {duration: 5000}
-        )
-      );
+      .subscribe(() => this.showSnackbar('Service successfully restored from history.'));
   }
 
   viewChangeMade() {
@@ -75,11 +69,7 @@ export class HistoryComponent implements OnInit {
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => {
         if (resp.status !== 200) {
-          this.snackBar.open(
-            'No Difference',
-            'Dismiss',
-            {duration: 5000}
-          );
+          this.showSnackbar('No Difference');
         } else {
           this.openView(resp.body, 'diff', 'github');
         }
@@ -93,11 +83,7 @@ export class HistoryComponent implements OnInit {
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => {
         if (resp.status !== 200) {
-          this.snackBar.open(
-            'No Difference',
-            'Dismiss',
-            {duration: 5000}
-          );
+          this.showSnackbar('No Difference');
         } else {
           this.openView(resp.body, 'diff', 'github');
         }
@@ -133,5 +119,9 @@ export class HistoryComponent implements OnInit {
 
   last(): boolean {
     return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) == this.dataSource.data.length -1
+  }
+
+  showSnackbar(msg: string) {
+    this.snackBar.open(msg, 'Dismiss', {duration: 5000});
   }
 }

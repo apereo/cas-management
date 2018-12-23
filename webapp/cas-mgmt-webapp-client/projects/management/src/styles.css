@@ -1,20 +1,4 @@
-html {
-  font-family: sans-serif;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-}
-body {
-  margin: 0;
-  height: 100%;
-}
 
-a {
-  background-color: transparent;
-}
-a:active,
-a:hover {
-  outline: 0;
-}
 abbr[title] {
   border-bottom: 1px dotted;
 }
@@ -70,7 +54,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: monospace;
   font-size: 1em;
 }
 button,

@@ -94,7 +94,7 @@ export class ControlsComponent implements OnInit {
       this.submit(msg);
     } else {
       if (msg !== null && msg !== '') {
-        this.spinner.start('Committng changes');
+        this.spinner.start('Committing changes');
         this.service.commit(msg)
           .pipe(finalize(() => this.spinner.stop()))
           .subscribe(
@@ -107,20 +107,14 @@ export class ControlsComponent implements OnInit {
 
   handleCommit() {
     this.service.gitStatus();
-    this.snackBar
-      .open('Service changes successfully committed.',
-        'Dismiss',
-        {duration: 5000}
-      );
-    this.refresh.emit();
+    this.showSnackbarAndRefresh('Service changes successfully committed.', true);
   }
 
   handleNotCommitted() {
-    this.snackBar
-      .open('A problem has occurred while trying to commit service changes. Please check system logs for additional information.',
-        'Dismiss',
-        {duration: 5000}
-      );
+    this.showSnackbarAndRefresh(
+      'A problem has occurred while trying to commit service changes. Please check system logs for additional information.',
+      true
+    );
   }
 
   openModalPublish() {
@@ -149,20 +143,14 @@ export class ControlsComponent implements OnInit {
 
   handlePublish() {
     this.service.gitStatus();
-    this.snackBar
-      .open('Service changes successfully published.',
-        'Dismiss',
-        {duration: 5000}
-      );
-    this.refresh.emit();
+    this.showSnackbarAndRefresh('Service changes successfully published.', true);
   }
 
   handleNotPublished() {
-    this.snackBar
-      .open('A problem has occurred while trying to publish services to CAS nodes.  Please check system logs for additional information.',
-        'Dismiss',
-        {duration: 5000}
-      );
+    this.showSnackbarAndRefresh(
+      'A problem has occurred while trying to publish services to CAS nodes.  Please check system logs for additional information.',
+      false
+    );
   }
 
   callSubmit() {
@@ -181,20 +169,11 @@ export class ControlsComponent implements OnInit {
 
   handleSubmit() {
     this.service.gitStatus();
-    this.snackBar
-      .open('Your commit has been submitted for review',
-        'Dismiss',
-        {duration: 5000}
-      );
-    this.refresh.emit();
+    this.showSnackbarAndRefresh('Your commit has been submitted for review', true);
   }
 
   handleNotSubmitted() {
-    this.snackBar
-      .open('Something went wrong and your commit was not able to be submitted',
-        'Dismiss',
-        {duration: 5000}
-      );
+    this.showSnackbarAndRefresh('Something went wrong and your commit was not able to be submitted', false);
   }
 
   isAdmin(): boolean {
@@ -214,5 +193,12 @@ export class ControlsComponent implements OnInit {
     return this.appService.config.versionControl &&
            this.service.status &&
            this.service.status.unpublished;
+  }
+
+  showSnackbarAndRefresh(msg: string, refresh: boolean) {
+    this.snackBar.open(msg, 'Dismiss', {duration: 50000});
+    if (refresh) {
+      this.refresh.emit();
+    }
   }
 }

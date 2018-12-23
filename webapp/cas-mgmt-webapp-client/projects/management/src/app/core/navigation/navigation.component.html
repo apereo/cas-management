@@ -60,8 +60,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <!--<div style="width:100%;">-->
-      <mat-toolbar color="primary" style="position: fixed; z-index: 1000; width: 100vw">
+    <mat-toolbar color="primary" style="position: fixed; z-index: 1000; width: 100vw">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -83,11 +82,9 @@
         </div>
       </div>
     </mat-toolbar>
-      <div style="padding-top:65px;padding-bottom:70px;background-color:#f2f2f2;">
-        <router-outlet></router-outlet>
-      </div>
-      <app-footer></app-footer>
-    <!--</div>-->
-    <!-- Add Content Here -->
+    <div style="padding-top:65px;padding-bottom:70px;background-color:#f2f2f2;">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

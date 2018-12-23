@@ -2,8 +2,8 @@ package org.apereo.cas.mgmt.factory;
 
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
-import org.apereo.cas.mgmt.NoOpVersionControl;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ServicesManagerFactory implements MgmtManagerFactory {
 
     private final ServicesManager servicesManager;
+    private final RegisteredServiceResourceNamingStrategy namingStrategy;
 
     /**
      * Method will look up the CasUserProfile for the logged in user and the return the GitServicesManager for
@@ -33,7 +34,7 @@ public class ServicesManagerFactory implements MgmtManagerFactory {
      * @return - GitServicesManager for the logged in user
      */
     public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
-        return new ManagementServicesManager(servicesManager, new NoOpVersionControl());
+        return new ManagementServicesManager(servicesManager, namingStrategy);
     }
 
     /**
@@ -42,10 +43,9 @@ public class ServicesManagerFactory implements MgmtManagerFactory {
      * @param request - HttpServletRequest
      * @param user    - CasUserProfile of logged in user
      * @return - GitServicesManager for the logged in user
-     * @throws Exception the exception
      */
     public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) {
-        return new ManagementServicesManager(servicesManager, new NoOpVersionControl());
+        return new ManagementServicesManager(servicesManager, namingStrategy);
     }
 
 }

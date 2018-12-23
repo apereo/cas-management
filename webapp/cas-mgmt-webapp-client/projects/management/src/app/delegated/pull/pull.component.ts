@@ -82,15 +82,7 @@ export class PullComponent implements OnInit {
     this.spinner.start('Accepting request');
     this.service.accept(this.acceptBranch, note)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(() => {
-          this.snackBar
-            .open('Branch has been merged',
-              'Dismiss',
-              {duration: 5000}
-            );
-          this.refresh();
-        }
-      );
+      .subscribe(() => this.showSnackAndRefresh("Branch has been merged"));
   }
 
   openRejectModal() {
@@ -111,15 +103,7 @@ export class PullComponent implements OnInit {
     this.spinner.start('Rejecting request');
     this.service.reject(this.rejectBranch, note)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(() => {
-        this.snackBar
-          .open('Branch has beem marked as rejected',
-                'Dismiss',
-                {duration: 5000}
-          );
-          this.refresh();
-        }
-      );
+      .subscribe(() => this.showSnackAndRefresh('Branch has been marked as rejected'));
   }
 
   addNote() {
@@ -150,4 +134,8 @@ export class PullComponent implements OnInit {
     }
   }
 
+  showSnackAndRefresh(msg: string) {
+    this.snackBar.open(msg, "Dismiss", {duration: 5000});
+    this.refresh();
+  }
  }

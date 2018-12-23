@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
+import org.apereo.cas.mgmt.exception.SearchException;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -43,6 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,32 +79,37 @@ public class LuceneSearch {
      * @param response - the response
      * @param queryString - the query
      * @return - List of RegisteredServiceItem
-     * @throws Exception - failed
+     * @throws SearchException - failed
      */
     @PostMapping
     public List<RegisteredServiceItem> search(final HttpServletRequest request,
                                               final HttpServletResponse response,
-                                              final @RequestBody String queryString) throws Exception {
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val analyzer = new StandardAnalyzer();
-        val query = new QueryParser("body", analyzer).parse(queryString);
-        val fields = getFields(query, new ArrayList<String>());
-        val manager = (ManagementServicesManager) mgmtManagerFactory.from(request, response);
-        val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()));
-        val docs = manager.getAllServices().stream()
-                .filter(casUserProfile::hasPermission)
-                .map(CasManagementUtils::toJson)
-                .map(JsonObject::readHjson)
-                .map(r -> createDocument(r.asObject(), fields))
-                .collect(Collectors.toList());
-        writeDocs(analyzer, memoryIndex, docs);
-        val results = results(memoryIndex, query).stream()
-                .map(d -> d.getField("id"))
-                .map(id -> manager.findServiceBy(Long.parseLong(id.stringValue())))
-                .map(manager::createServiceItem)
-                .collect(Collectors.toList());
-        FileUtils.deleteDirectory(memoryIndex.getDirectory().toFile());
-        return results;
+                                              final @RequestBody String queryString) throws SearchException {
+        try {
+            val casUserProfile = casUserProfileFactory.from(request, response);
+            val analyzer = new StandardAnalyzer();
+            val query = new QueryParser("body", analyzer).parse(queryString);
+            val fields = getFields(query, new ArrayList<String>());
+            val manager = (ManagementServicesManager) mgmtManagerFactory.from(request, response);
+            val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()));
+            val docs = manager.getAllServices().stream()
+                    .filter(casUserProfile::hasPermission)
+                    .map(CasManagementUtils::toJson)
+                    .map(JsonObject::readHjson)
+                    .map(r -> createDocument(r.asObject(), fields))
+                    .collect(Collectors.toList());
+            writeDocs(analyzer, memoryIndex, docs);
+            val results = results(memoryIndex, query).stream()
+                    .map(d -> d.getField("id"))
+                    .map(id -> manager.findServiceBy(Long.parseLong(id.stringValue())))
+                    .map(manager::createServiceItem)
+                    .collect(Collectors.toList());
+            FileUtils.deleteDirectory(memoryIndex.getDirectory().toFile());
+            return results;
+        } catch (final IOException | ParseException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new SearchException();
+        }
     }
 
     /**

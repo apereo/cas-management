@@ -5,9 +5,11 @@ import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.DigestUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 public class ManagementServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
-    private final VersionControl versionControl;
+    private final RegisteredServiceResourceNamingStrategy namingStrategy;
 
     /**
      * Loads Services form an existing ServiceManger to initialize a new repository.
@@ -50,7 +52,6 @@ public class ManagementServicesManager implements ServicesManager {
         val services = new ArrayList<RegisteredService>(getServicesForDomain(domain));
         return services.stream()
             .map(this::createServiceItem)
-            .map(versionControl::attachStatus)
             .collect(Collectors.toList());
     }
 
@@ -184,11 +185,23 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     /**
-     * Returns the versionControl.
+     * Checks for existing service and if a name change will occur delete the existing service.
      *
-     * @return - VersionControl
+     * @param service - the service
      */
-    public VersionControl getVersionControl() {
-        return versionControl;
+    @SneakyThrows
+    public void checkForRename(final RegisteredService service) {
+        val existing = findServiceBy(service.getId());
+        if (existing != null) {
+            val oldName = this.namingStrategy.build(existing, "");
+            val newName = this.namingStrategy.build(service, "");
+            if (!oldName.equals(newName)) {
+                delete(service.getId());
+            }
+        }
+    }
+
+    protected RegisteredServiceResourceNamingStrategy getNamingStrategy() {
+        return namingStrategy;
     }
 }

@@ -55,7 +55,7 @@ public class CasManagementCoreServicesConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "managerFactory")
     public MgmtManagerFactory managerFactory() {
-        return new ServicesManagerFactory(servicesManager);
+        return new ServicesManagerFactory(servicesManager, namingStrategy());
     }
 
     @Bean

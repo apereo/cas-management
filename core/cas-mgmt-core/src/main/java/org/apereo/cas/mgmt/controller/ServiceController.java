@@ -116,7 +116,7 @@ public class ServiceController {
         }
 
         if (service.getId() > -1) {
-            manager.getVersionControl().checkForRename(service, manager);
+            manager.checkForRename(service);
         }
 
         manager.save(service);

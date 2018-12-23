@@ -1,12 +1,13 @@
 {
   "extends": [ "config:base" ],
   "packageRules" : [
-    
+    {
     "packageNames": [
       "angular",
       "angular-animate",
       "angular-scroll",
       "angular-sanitize"
     ]
+    }
   ]
 }

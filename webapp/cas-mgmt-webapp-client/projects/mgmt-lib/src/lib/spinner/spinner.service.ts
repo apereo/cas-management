@@ -8,6 +8,7 @@ import {SpinnerComponent} from './spinner.component';
 export class SpinnerService {
 
   timer;
+  snack;
 
   constructor(public dialog: MatDialog,
               public snackBar: MatSnackBar) {
@@ -15,7 +16,7 @@ export class SpinnerService {
 
   start(msg?: string){
     this.timer = setTimeout(() => {
-      this.snackBar.openFromComponent(SpinnerComponent, {
+      this.snack = this.snackBar.openFromComponent(SpinnerComponent, {
         data: msg || 'Loading',
         verticalPosition: 'top'
       });
@@ -24,7 +25,7 @@ export class SpinnerService {
 
   stop() {
     clearTimeout(this.timer);
-    this.snackBar.dismiss();
+    this.snack.dismiss();
   }
 
 }

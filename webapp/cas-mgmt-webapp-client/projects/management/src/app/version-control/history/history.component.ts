@@ -73,14 +73,35 @@ export class HistoryComponent implements OnInit {
     this.spinner.start('Loading change');
     this.service.change(this.selectedItem.commit, this.selectedItem.path)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(f => this.openView(f, 'diff', 'github'));
+      .subscribe(resp => {
+        if (resp.status !== 200) {
+          this.snackBar.open(
+            'No Difference',
+            'Dismiss',
+            {duration: 5000}
+          );
+        } else {
+          this.openView(resp.body, 'diff', 'github');
+        }
+      },
+        (error) => this.snackBar.open(error.error, 'Dismiss'));
   }
 
   viewDiff() {
     this.spinner.start('Loading diff');
     this.service.toHead(this.selectedItem.commit, this.selectedItem.path)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(f => this.openView(f, 'diff', 'github'),
+      .subscribe(resp => {
+        if (resp.status !== 200) {
+          this.snackBar.open(
+            'No Difference',
+            'Dismiss',
+            {duration: 5000}
+          );
+        } else {
+          this.openView(resp.body, 'diff', 'github');
+        }
+      },
         (error) => this.snackBar.open(error.error, 'Dismiss'));
   }
 

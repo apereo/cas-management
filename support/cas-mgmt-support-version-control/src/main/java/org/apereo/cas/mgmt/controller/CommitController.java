@@ -6,6 +6,9 @@ import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.GitStatus;
+import org.apereo.cas.mgmt.exception.PublishFailureException;
+import org.apereo.cas.mgmt.exception.SyncScriptFailureException;
+import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.ServicesManager;
@@ -14,6 +17,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.AbbreviatedObjectId;
 import org.eclipse.jgit.treewalk.TreeWalk;
@@ -30,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.SyncFailedException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +48,8 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "api/commit", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class CommitController extends AbstractVersionControlController {
+
+    private static final int NO_CHANGES_FOUND = 244;
 
     private final RepositoryFactory repositoryFactory;
     private final CasManagementConfigurationProperties managementProperties;
@@ -79,7 +84,8 @@ public class CommitController extends AbstractVersionControlController {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
-                throw new IllegalArgumentException("No changes to commit");
+                response.setStatus(NO_CHANGES_FOUND);
+                return;
             }
             git.addWorkingChanges();
             git.commit(user, msg);
@@ -91,12 +97,13 @@ public class CommitController extends AbstractVersionControlController {
      *
      * @param response - HttpServletResponse.
      * @param request  - HttpServletRequest.
-     * @throws IOException - failed
+     * @throws PublishFailureException - failed
+     * @throws SyncScriptFailureException - failed
      */
     @GetMapping(value = "/publish")
     @ResponseStatus(HttpStatus.OK)
-    @SneakyThrows
-    public void publish(final HttpServletResponse response, final HttpServletRequest request) {
+    public void publish(final HttpServletResponse response, final HttpServletRequest request)
+            throws PublishFailureException, SyncScriptFailureException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.getUnpublishedCommits().forEach(commit -> {
@@ -109,7 +116,8 @@ public class CommitController extends AbstractVersionControlController {
             });
             git.setPublished();
         } catch (final Exception e) {
-            throw new SyncFailedException("Services were not published because of a failure.  Please review logs and try again");
+            LOGGER.error(e.getMessage(), e);
+            throw new PublishFailureException();
         }
         runSyncScript();
     }
@@ -129,13 +137,12 @@ public class CommitController extends AbstractVersionControlController {
      *
      * @param request  - the request
      * @param response - their resposne
-     * @throws Exception - failed
+     * @throws SyncScriptFailureException - failed
      */
     @GetMapping("/sync")
     @ResponseStatus(HttpStatus.OK)
-    @SneakyThrows
     public void sync(final HttpServletRequest request,
-                     final HttpServletResponse response) {
+                     final HttpServletResponse response) throws SyncScriptFailureException {
         isAdministrator(request, response);
         runSyncScript();
     }
@@ -143,13 +150,18 @@ public class CommitController extends AbstractVersionControlController {
     /**
      * If a syncScript is configured it will be executed.
      *
-     * @throws Exception - failed.
+     * @throws SyncScriptFailureException - failed.
      */
-    private void runSyncScript() throws IOException, InterruptedException {
+    private void runSyncScript() throws SyncScriptFailureException {
         if (managementProperties.getVersionControl().getSyncScript() != null) {
-            val status = Runtime.getRuntime().exec(managementProperties.getVersionControl().getSyncScript()).waitFor();
-            if (status > 0) {
-                throw new SyncFailedException("Services Sync Failed");
+            try {
+                val status = Runtime.getRuntime().exec(managementProperties.getVersionControl().getSyncScript()).waitFor();
+                if (status > 0) {
+                    throw new SyncScriptFailureException();
+                }
+            } catch (final IOException | InterruptedException e) {
+                LOGGER.error(e.getMessage(), e);
+                throw new SyncScriptFailureException();
             }
         }
     }
@@ -160,14 +172,17 @@ public class CommitController extends AbstractVersionControlController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return - List of Commit
-     * @throws Exception - failed.
+     * @throws VersionControlException - failed.
      */
     @GetMapping("unpublished")
     public List<Commit> commits(final HttpServletRequest request,
-                                final HttpServletResponse response) throws Exception {
+                                final HttpServletResponse response) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.getUnpublishedCommits();
+        } catch (final IOException | GitAPIException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new VersionControlException();
         }
     }
 

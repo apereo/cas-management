@@ -4,7 +4,7 @@
 
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import {catchError} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
 import {MatDialog} from '@angular/material';
 import {Injectable} from '@angular/core';

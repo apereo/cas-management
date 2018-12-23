@@ -65,7 +65,6 @@ public class VersionControlUtil {
      * @param git   - GitUtil
      * @param entry - DiffEntry for the change.
      * @return - Change
-     * @throws Exception - failed
      */
     @SneakyThrows
     public static Change createDeleteChange(final GitUtil git, final DiffEntry entry) {
@@ -85,7 +84,6 @@ public class VersionControlUtil {
      * @param git   - GitUtil
      * @param entry - DiffEntry for the change
      * @return - Change
-     * @throws Exception - failed
      */
     @SuppressWarnings("DefaultCharset")
     @SneakyThrows

@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.Diff;
 import org.apereo.cas.mgmt.domain.History;
+import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 
@@ -43,6 +44,7 @@ import static java.util.stream.Collectors.toList;
 public class HistoryController extends AbstractVersionControlController {
 
     private static final int MAX_COMMITS = 100;
+    private static final int NO_CHANGES_FOUND = 244;
 
     private final RepositoryFactory repositoryFactory;
     private final MgmtManagerFactory managerFactory;
@@ -163,7 +165,8 @@ public class HistoryController extends AbstractVersionControlController {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
-                throw new IllegalArgumentException("No changes to revert");
+                response.setStatus(NO_CHANGES_FOUND);
+                return;
             }
             VersionControlUtil.insertService(git, path);
             git.checkoutFile(path);
@@ -196,26 +199,25 @@ public class HistoryController extends AbstractVersionControlController {
      * @param response - the response
      * @param request  - the request
      * @param id       - Id of the commit
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @GetMapping("checkout/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void checkoutCommit(final HttpServletResponse response,
                                final HttpServletRequest request,
-                               final @PathVariable String id) throws Exception {
+                               final @PathVariable String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            git.getDiffsToRevert(id).stream().forEach(d -> {
-                try {
-                    if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
-                        git.rm(d.getNewPath());
-                    } else {
-                        git.checkout(d.getOldPath(), id + "~1");
-                    }
-                } catch (final Exception e) {
-                    LOGGER.error(e.getMessage(), e);
+            for (val d : git.getDiffsToRevert(id)) {
+                if (d.getChangeType() == DiffEntry.ChangeType.ADD) {
+                    git.rm(d.getNewPath());
+                } else {
+                    git.checkout(d.getOldPath(), id + "~1");
                 }
-            });
+            }
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new VersionControlException();
         }
     }
 

@@ -4,6 +4,7 @@
 import {Injectable} from '@angular/core';
 import {History, Service} from 'mgmt-lib';
 import {Observable} from 'rxjs/internal/Observable';
+import {HttpResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +21,11 @@ export class HistoryService extends Service {
     return this.postText(this.controller + 'checkout', {path, id});
   }
 
-  change(commit: string, path: string): Observable<string> {
-    return this.postText(this.controller + 'made', {path, commit});
+  change(commit: string, path: string): Observable<HttpResponse<string>> {
+    return this.http.post('api/change/made', [path, commit], {observe: 'response', responseType: 'text'});
   }
 
-  toHead(commit: string, path: string): Observable<string> {
-    return this.postText(this.controller + 'head', {path, commit});
+  toHead(commit: string, path: string): Observable<HttpResponse<string>> {
+    return this.http.post('api/change/compare', [path, commit], {observe: 'response', responseType: 'text'});
   }
 }

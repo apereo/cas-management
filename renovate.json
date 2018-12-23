@@ -1,8 +1,12 @@
 {
-  "packageNames": [
-    "angular",
-    "angular-animate",
-    "angular-scroll",
-    "angular-sanitize"
+  "extends": [ "config:base" ],
+  "packageRules" : [
+    
+    "packageNames": [
+      "angular",
+      "angular-animate",
+      "angular-scroll",
+      "angular-sanitize"
+    ]
   ]
 }

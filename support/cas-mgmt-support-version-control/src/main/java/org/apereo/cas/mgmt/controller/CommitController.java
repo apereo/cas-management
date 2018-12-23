@@ -94,7 +94,6 @@ public class CommitController extends AbstractVersionControlController {
      */
     @GetMapping(value = "/publish")
     @ResponseStatus(HttpStatus.OK)
-    @RolesAllowed("ROLE_ADMIN")
     public void publish(final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
@@ -234,7 +233,7 @@ public class CommitController extends AbstractVersionControlController {
     private static String getDeletedServiceName(final GitUtil git, final String path) {
         try {
             val treeWalk = new TreeWalk(git.getRepository());
-            treeWalk.addTree(git.getLastNCommits(1).findFirst().get().getTree());
+            treeWalk.addTree(git.getLastNCommits(1).findFirst().orElseThrow().getTree());
             while (treeWalk.next()) {
                 if (treeWalk.getPathString().endsWith(path)) {
                     return CasManagementUtils.fromJson(git.readObject(treeWalk.getObjectId(0))).getName() + " - " + path;

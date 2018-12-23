@@ -703,7 +703,7 @@ public class GitUtil implements AutoCloseable {
 
         @Override
         public TreeFilter clone() {
-            return null;
+            return new HistoryTreeFilter(this.path);
         }
 
     }
@@ -1023,7 +1023,9 @@ public class GitUtil implements AutoCloseable {
             .stream()
             .map(this::mapBranches)
             .filter(r -> r.getRef().getName().contains(Iterables.get(Splitter.on('_').split(branchName), 1)))
-            .findFirst().get().revCommit;
+            .findFirst()
+            .orElseThrow(() -> new Exception("Submit '" + branchName + "' was not found"))
+            .revCommit;
     }
 
     /**

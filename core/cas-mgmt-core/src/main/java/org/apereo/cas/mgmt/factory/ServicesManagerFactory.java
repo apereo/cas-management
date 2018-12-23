@@ -31,9 +31,8 @@ public class ServicesManagerFactory implements MgmtManagerFactory {
      * @param request  - HttpServeltRequest
      * @param response - HttpServletRespone
      * @return - GitServicesManager for the logged in user
-     * @throws Exception - failed
      */
-    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
         return new ManagementServicesManager(servicesManager, new NoOpVersionControl());
     }
 
@@ -45,7 +44,7 @@ public class ServicesManagerFactory implements MgmtManagerFactory {
      * @return - GitServicesManager for the logged in user
      * @throws Exception the exception
      */
-    public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) throws Exception {
+    public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) {
         return new ManagementServicesManager(servicesManager, new NoOpVersionControl());
     }
 

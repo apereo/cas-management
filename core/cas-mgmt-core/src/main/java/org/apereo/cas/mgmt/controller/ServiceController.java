@@ -8,7 +8,6 @@ import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -51,17 +51,15 @@ public class ServiceController {
      * @param response - HttpServletResponse
      * @param domain   the domain for which services will be retrieved
      * @return the services
-     * @throws Exception - failed
+     * @throws IllegalAccessException - Auth failed
      */
     @GetMapping
     public List<RegisteredServiceItem> getServices(final HttpServletRequest request,
                                                    final HttpServletResponse response,
-                                                   final @RequestParam String domain) throws Exception {
+                                                   final @RequestParam String domain) throws IllegalAccessException {
         val casUserProfile = casUserProfileFactory.from(request, response);
-        if (!casUserProfile.isAdministrator()) {
-            if (!casUserProfile.hasPermission(domain)) {
-                throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
-            }
+        if (!casUserProfile.isAdministrator() && !casUserProfile.hasPermission(domain)) {
+            throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
         }
         val manager = managerFactory.from(request, casUserProfile);
         return ((ManagementServicesManager) manager).getServiceItemsForDomain(domain);
@@ -81,12 +79,12 @@ public class ServiceController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteRegisteredService(final HttpServletRequest request,
                                         final HttpServletResponse response,
-                                        @PathVariable("id") final long id) throws Exception {
+                                        @PathVariable("id") final long id) {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val manager = managerFactory.from(request, casUserProfile);
         val svc = manager.findServiceBy(id);
         if (svc == null) {
-            throw new Exception("No Such Service");
+            throw new IllegalArgumentException("No Such Service");
         }
         LOGGER.debug("Deleting service [{}]", id);
         manager.delete(id);
@@ -98,19 +96,18 @@ public class ServiceController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param service  the edit bean
-     * @throws Exception - failed
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void saveService(final HttpServletRequest request,
                             final HttpServletResponse response,
-                            @RequestBody final RegisteredService service) throws Exception {
+                            @RequestBody final RegisteredService service) {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
         save(service, manager);
     }
 
-    private void save(final RegisteredService service, final ManagementServicesManager manager) throws Exception {
+    private void save(final RegisteredService service, final ManagementServicesManager manager) {
         if (service.getEvaluationOrder() < 0) {
             val domain = manager.extractDomain(service.getServiceId());
             service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
@@ -120,7 +117,7 @@ public class ServiceController {
             manager.getVersionControl().checkForRename(service, manager);
         }
 
-        val newSvc = manager.save(service);
+        manager.save(service);
         LOGGER.info("Saved changes to service [{}]", service.getId());
     }
 
@@ -136,7 +133,7 @@ public class ServiceController {
     @GetMapping("/{id}")
     public RegisteredService getServiceById(final HttpServletRequest request,
                                             final HttpServletResponse response,
-                                            @PathVariable(value = "id") final Long id) throws Exception {
+                                            @PathVariable(value = "id") final Long id) {
         return getService(request, response, id);
     }
 
@@ -152,7 +149,7 @@ public class ServiceController {
     @GetMapping("/yaml/{id}")
     public String getYaml(final HttpServletRequest request,
                           final HttpServletResponse response,
-                          final @PathVariable("id") Long id) throws Exception {
+                          final @PathVariable("id") Long id) {
         val service = getService(request, response, id);
         return CasManagementUtils.toYaml(service);
     }
@@ -164,24 +161,20 @@ public class ServiceController {
      * @param response - the response
      * @param id - the id of the service
      * @param yaml - the service as a yaml string
-     * @throws Exception - failed
+     * @throws IOException - failed
      */
     @PostMapping("yaml/{id}")
     public void saveYaml(final HttpServletRequest request,
                          final HttpServletResponse response,
                          final @PathVariable("id") Long id,
-                         final @RequestBody String yaml) throws Exception {
-        try {
-            val service = CasManagementUtils.parseYaml(yaml);
-            if (!id.equals(service.getId())) {
-                throw new Exception("Changes to assigned id are not allowed");
-            }
-            val casUserProfile = casUserProfileFactory.from(request, response);
-            val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
-            save(service, manager);
-        } catch (final UnrecognizedPropertyException urp) {
-            throw new Exception("Unrecognized property '" + urp.getPropertyName() + "'");
+                         final @RequestBody String yaml) throws IOException {
+        val service = CasManagementUtils.parseYaml(yaml);
+        if (!id.equals(service.getId())) {
+            throw new IllegalArgumentException("Changes to assigned id are not allowed");
         }
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+        save(service, manager);
     }
     /**
      * Method that will return the service as an HJson string.
@@ -195,7 +188,7 @@ public class ServiceController {
     @GetMapping("/json/{id}")
     public String getJson(final HttpServletRequest request,
                           final HttpServletResponse response,
-                          final @PathVariable("id") Long id) throws Exception {
+                          final @PathVariable("id") Long id) {
         val service = getService(request, response, id);
         return CasManagementUtils.toJson(service);
     }
@@ -207,30 +200,25 @@ public class ServiceController {
      * @param response - the response
      * @param id - the service id
      * @param json - the sevice as a json string
-     * @throws Exception - failed
+     * @throws IOException - failed
      */
     @PostMapping("/json/{id}")
     public void saveJson(final HttpServletRequest request,
                          final HttpServletResponse response,
                          final @PathVariable("id") Long id,
-                         final @RequestBody String json) throws Exception {
-
-        try {
-            val service = CasManagementUtils.parseJson(json);
-            if (!id.equals(service.getId())) {
-                throw new Exception("Changes to assigned id are not allowed.");
-            }
-            val casUserProfile = casUserProfileFactory.from(request, response);
-            val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
-            save(service, manager);
-        } catch (final UnrecognizedPropertyException urp) {
-            throw new Exception("Unknown property '" + urp.getPropertyName() + "'");
+                         final @RequestBody String json) throws IOException {
+        val service = CasManagementUtils.parseJson(json);
+        if (!id.equals(service.getId())) {
+            throw new IllegalArgumentException("Changes to assigned id are not allowed.");
         }
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+        save(service, manager);
     }
 
     private RegisteredService getService(final HttpServletRequest request,
                                          final HttpServletResponse response,
-                                         final Long id) throws Exception {
+                                         final Long id) {
         val manager = managerFactory.from(request, response);
         val service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
 
@@ -250,7 +238,7 @@ public class ServiceController {
      * @throws Exception - failed
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public RegisteredService importService(final @RequestBody String service) throws Exception {
+    public RegisteredService importService(final @RequestBody String service) {
         val svc = service.startsWith("{") ? CasManagementUtils.fromJson(service) : CasManagementUtils.fromYaml(service);
         svc.setId(-1);
         return svc;
@@ -262,16 +250,16 @@ public class ServiceController {
      * @param request  the request
      * @param response the response
      * @param svcs     the services to be updated
-     * @throws Exception the exception
+     * @throws IllegalAccessException the exception
      */
     @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final HttpServletRequest request,
                             final HttpServletResponse response,
-                            @RequestBody final RegisteredServiceItem[] svcs) throws Exception {
+                            @RequestBody final RegisteredServiceItem[] svcs) throws IllegalAccessException {
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.hasPermission(svcs[0].getServiceId())) {
-            throw new Exception("You do not have permission");
+            throw new IllegalAccessException("You do not have permission");
         }
         val manager = managerFactory.from(request, casUserProfile);
         val id = svcs[0].getAssignedId();

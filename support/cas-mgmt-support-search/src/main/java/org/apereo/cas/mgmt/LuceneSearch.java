@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -164,9 +165,9 @@ public class LuceneSearch {
      * @param analyzer - the analyzer
      * @param memoryIndex - the directory
      * @param docs - List of Document
-     * @throws Exception - failed
      */
-    private void writeDocs(final StandardAnalyzer analyzer, final MMapDirectory memoryIndex, final List<Document> docs) throws Exception {
+    @SneakyThrows
+    private void writeDocs(final StandardAnalyzer analyzer, final MMapDirectory memoryIndex, final List<Document> docs) {
         val indexWriterConfig = new IndexWriterConfig(analyzer);
         val writer = new IndexWriter(memoryIndex, indexWriterConfig);
         writer.deleteAll();
@@ -183,9 +184,9 @@ public class LuceneSearch {
      * @param memoryIndex - the Directory
      * @param query - the query
      * @return -List of Document
-     * @throws Exception - failed
      */
-    private List<Document> results(final MMapDirectory memoryIndex, final Query query) throws Exception {
+    @SneakyThrows
+    private List<Document> results(final MMapDirectory memoryIndex, final Query query) {
         val indexReader = DirectoryReader.open(memoryIndex);
         val searcher = new IndexSearcher(indexReader);
         return Arrays.stream(searcher.search(query, MAX_RESULTS).scoreDocs)

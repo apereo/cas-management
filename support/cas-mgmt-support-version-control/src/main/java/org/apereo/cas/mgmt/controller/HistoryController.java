@@ -9,6 +9,7 @@ import org.apereo.cas.mgmt.domain.History;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -67,14 +68,13 @@ public class HistoryController extends AbstractVersionControlController {
                                 final HttpServletResponse response) throws Exception {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            val commits = git.getLastNCommits(MAX_COMMITS)
+            return git.getLastNCommits(MAX_COMMITS)
                     .filter(c -> !c.getFullMessage().equals("Created"))
                     .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
                             c.getFullMessage(),
                             CasManagementUtils.formatDateTime(c.getCommitTime()))
                     )
                     .collect(toList());
-            return commits;
         }
     }
 
@@ -156,13 +156,14 @@ public class HistoryController extends AbstractVersionControlController {
      */
     @GetMapping("revertDelete")
     @ResponseStatus(HttpStatus.OK)
+    @SneakyThrows
     public void revertDelete(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @RequestParam String path) throws Exception {
+                             final @RequestParam String path) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
-                throw new Exception("No changes to revert");
+                throw new IllegalArgumentException("No changes to revert");
             }
             VersionControlUtil.insertService(git, path);
             git.checkoutFile(path);
@@ -204,7 +205,6 @@ public class HistoryController extends AbstractVersionControlController {
                                final @PathVariable String id) throws Exception {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            val r = git.getCommit(id);
             git.getDiffsToRevert(id).stream().forEach(d -> {
                 try {
                     if (d.getChangeType() == DiffEntry.ChangeType.ADD) {

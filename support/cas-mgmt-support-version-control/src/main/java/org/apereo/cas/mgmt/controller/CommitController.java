@@ -10,10 +10,12 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.ServicesManager;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.lib.AbbreviatedObjectId;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.SyncFailedException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,8 +51,6 @@ public class CommitController extends AbstractVersionControlController {
     private final ServicesManager servicesManager;
     private final ObjectProvider<PendingRequests> pendingRequests;
 
-    private boolean publishError;
-
     public CommitController(final RepositoryFactory repositoryFactory,
                             final CasUserProfileFactory casUserProfileFactory,
                             final CasManagementConfigurationProperties managementProperties,
@@ -67,17 +69,17 @@ public class CommitController extends AbstractVersionControlController {
      * @param response - HttpServletResponse.
      * @param request  - HttpServletRequest.
      * @param msg      - Commit msg entered by the user.
-     * @throws Exception - failed.
      */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @SneakyThrows
     public void commit(final HttpServletResponse response,
                        final HttpServletRequest request,
-                       final @RequestBody String msg) throws Exception {
+                       final @RequestBody String msg) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
-                throw new Exception("No changes to commit");
+                throw new IllegalArgumentException("No changes to commit");
             }
             git.addWorkingChanges();
             git.commit(user, msg);
@@ -89,48 +91,37 @@ public class CommitController extends AbstractVersionControlController {
      *
      * @param response - HttpServletResponse.
      * @param request  - HttpServletRequest.
-     * @throws Exception - failed
+     * @throws IOException - failed
      */
     @GetMapping(value = "/publish")
     @ResponseStatus(HttpStatus.OK)
-    public void publish(final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+    @SneakyThrows
+    public void publish(final HttpServletResponse response, final HttpServletRequest request) {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            this.publishError = false;
             git.getUnpublishedCommits().forEach(commit -> {
-                try {
-                    val diffs = git.getPublishDiffs(commit.getId());
-
-                    // Run through deletes first in case of name change
-                    diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
-                            .forEach(c -> {
-                                try {
-                                    this.servicesManager.delete(CasManagementUtils.fromJson(git.readObject(c.getOldId().toObjectId())).getId());
-                                } catch (final Exception e) {
-                                    this.publishError = true;
-                                    LOGGER.error(e.getMessage(), e);
-                                }
-                            });
-                    diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)
-                            .forEach(c -> {
-                                try {
-                                    this.servicesManager.save(CasManagementUtils.fromJson(git.readObject(c.getNewId().toObjectId())));
-                                } catch (final Exception e) {
-                                    this.publishError = true;
-                                    LOGGER.error(e.getMessage(), e);
-                                }
-                            });
-                } catch (final Exception e) {
-                    this.publishError = true;
-                    LOGGER.error(e.getMessage(), e);
-                }
+                val diffs = publishDiffs(git, commit);
+                // Run through deletes first in case of name change
+                diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
+                        .forEach(c -> this.servicesManager.delete(CasManagementUtils.fromJson(getService(git, c.getOldId())).getId()));
+                diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)
+                        .forEach(c -> this.servicesManager.save(CasManagementUtils.fromJson(getService(git, c.getNewId()))));
             });
-            if (this.publishError) {
-                throw new Exception("Services were not published because of a failure.  Please review logs and try again");
-            }
             git.setPublished();
+        } catch (final Exception e) {
+            throw new SyncFailedException("Services were not published because of a failure.  Please review logs and try again");
         }
         runSyncScript();
+    }
+
+    @SneakyThrows
+    private String getService(final GitUtil git, final AbbreviatedObjectId id) {
+        return git.readObject(id.toObjectId());
+    }
+
+    @SneakyThrows
+    private List<DiffEntry> publishDiffs(final GitUtil git, final Commit commit) {
+        return git.getPublishDiffs(commit.getId());
     }
 
     /**
@@ -142,8 +133,9 @@ public class CommitController extends AbstractVersionControlController {
      */
     @GetMapping("/sync")
     @ResponseStatus(HttpStatus.OK)
+    @SneakyThrows
     public void sync(final HttpServletRequest request,
-                     final HttpServletResponse response) throws Exception {
+                     final HttpServletResponse response) {
         isAdministrator(request, response);
         runSyncScript();
     }
@@ -153,11 +145,11 @@ public class CommitController extends AbstractVersionControlController {
      *
      * @throws Exception - failed.
      */
-    private void runSyncScript() throws Exception {
+    private void runSyncScript() throws IOException, InterruptedException {
         if (managementProperties.getVersionControl().getSyncScript() != null) {
             val status = Runtime.getRuntime().exec(managementProperties.getVersionControl().getSyncScript()).waitFor();
             if (status > 0) {
-                throw new Exception("Services Sync Failed");
+                throw new SyncFailedException("Services Sync Failed");
             }
         }
     }
@@ -185,7 +177,7 @@ public class CommitController extends AbstractVersionControlController {
      * @return - true if there are commits to publish.
      * @throws Exception - failed.
      */
-    private boolean isPublishedBehind() throws Exception {
+    private boolean isPublishedBehind() throws IOException {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return !git.getRepository().resolve("HEAD").equals(git.getPublished().getPeeledObjectId());
         }
@@ -230,8 +222,7 @@ public class CommitController extends AbstractVersionControlController {
     }
 
     private static String getDeletedServiceName(final GitUtil git, final String path) {
-        try {
-            val treeWalk = new TreeWalk(git.getRepository());
+        try (val treeWalk = new TreeWalk(git.getRepository())) {
             treeWalk.addTree(git.getLastNCommits(1).findFirst().orElseThrow().getTree());
             while (treeWalk.next()) {
                 if (treeWalk.getPathString().endsWith(path)) {

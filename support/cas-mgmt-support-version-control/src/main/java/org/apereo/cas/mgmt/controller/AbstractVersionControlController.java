@@ -5,6 +5,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,10 +34,9 @@ public class AbstractVersionControlController {
      * @param request - the request
      * @param response - the response
      * @return - True if user has ROLE_ADMIN
-     * @throws Exception - Thrown if user does not have ROLE_ADMIN.
      */
     protected boolean isAdministrator(final HttpServletRequest request,
-                                      final HttpServletResponse response) throws Exception {
+                                      final HttpServletResponse response) {
         return isAdministrator(casUserProfileFactory.from(request, response));
     }
 
@@ -50,9 +50,9 @@ public class AbstractVersionControlController {
      * @return - True if user has ROLE_ADMIN
      * @throws Exception -Thrown if user does not have ROLE_ADMIN.
      */
-    protected boolean isAdministrator(final CasUserProfile casUserProfile) throws Exception {
+    protected boolean isAdministrator(final CasUserProfile casUserProfile) {
         if (!casUserProfile.isAdministrator()) {
-            throw new Exception("You do not have permission");
+            throw new InsufficientAuthenticationException("You do not have permission");
         }
         return true;
     }

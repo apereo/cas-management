@@ -32,10 +32,9 @@ public class ContactLookupController {
      *
      * @param query - the query
      * @return - List of RegisteredServiceContact
-     * @throws Exception - failed
      */
     @GetMapping
-    public Collection<RegisteredServiceContact> lookupContact(final @RequestParam String query) throws Exception {
+    public Collection<RegisteredServiceContact> lookupContact(final @RequestParam String query) {
         return contactLookup.query(query);
     }
 }

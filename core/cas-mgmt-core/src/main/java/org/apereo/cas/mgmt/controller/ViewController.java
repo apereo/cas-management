@@ -38,7 +38,6 @@ public class ViewController {
      */
     @GetMapping({"index.html", "/"})
     public ModelAndView manage() {
-        //ensureDefaultServiceExists();
         val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         model.put("defaultServiceUrl", this.defaultService.getId());

@@ -1,7 +1,5 @@
 package org.apereo.cas.mgmt.authz;
 
-import org.apereo.cas.configuration.CasConfigurationProperties;
-
 import lombok.val;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
@@ -17,17 +15,7 @@ import java.util.List;
  * @since 5.2.0
  */
 public class ChainingAuthorizationGenerator implements AuthorizationGenerator<CommonProfile> {
-    private final CasConfigurationProperties casProperties;
     private final List<AuthorizationGenerator<CommonProfile>> genenerators = new ArrayList<>();
-
-    /**
-     * Instantiates a new Chaining authorization generator.
-     *
-     * @param casProperties the cas properties
-     */
-    public ChainingAuthorizationGenerator(final CasConfigurationProperties casProperties) {
-        this.casProperties = casProperties;
-    }
 
     @Override
     public CommonProfile generate(final WebContext webContext, final CommonProfile commonProfile) {

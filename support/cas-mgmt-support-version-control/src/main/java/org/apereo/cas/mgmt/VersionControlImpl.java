@@ -6,6 +6,7 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -29,13 +30,12 @@ public class VersionControlImpl implements VersionControl {
     private final GitUtil git;
 
     @Override
-    public void checkForRename(final RegisteredService service, final ServicesManager servicesManager) throws Exception {
+    @SneakyThrows
+    public void checkForRename(final RegisteredService service, final ServicesManager servicesManager) {
         val oldSvc = servicesManager.findServiceBy(service.getId());
-        if (oldSvc != null) {
-            if (!service.getName().equals(oldSvc.getName())) {
-                try (git) {
-                    git.move(makeFileName(oldSvc), makeFileName(service));
-                }
+        if (oldSvc != null && !service.getName().equals(oldSvc.getName())) {
+            try (git) {
+                git.move(makeFileName(oldSvc), makeFileName(service));
             }
         }
     }
@@ -62,7 +62,7 @@ public class VersionControlImpl implements VersionControl {
         this.git.rebase();
     }
 
-    private String makeFileName(final RegisteredService service) throws Exception {
+    private String makeFileName(final RegisteredService service) {
         return StringUtils.remove(service.getName() + '-' + service.getId() + ".json", " ");
     }
 

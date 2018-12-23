@@ -45,12 +45,12 @@ public class DomainController {
      */
     @GetMapping
     public Collection<DomainRpc> getDomains(final HttpServletRequest request,
-                                         final HttpServletResponse response) throws Exception {
+                                         final HttpServletResponse response) {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val manager = managerFactory.from(request, casUserProfile);
         return manager.getDomains().stream()
                 .filter(casUserProfile::hasPermission)
-                .map(d -> new DomainRpc(d))
+                .map(DomainRpc::new)
                 .collect(Collectors.toList());
     }
 

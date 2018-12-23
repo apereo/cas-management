@@ -6,6 +6,8 @@ import org.apereo.cas.mgmt.domain.Diff;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -22,6 +24,7 @@ import java.nio.file.Paths;
  * @since 6.0
  */
 @Slf4j
+@UtilityClass
 public class VersionControlUtil {
 
     /**
@@ -29,9 +32,9 @@ public class VersionControlUtil {
      *
      * @param git  - GitUtil
      * @param path - path of the file
-     * @throws Exception - failed
      */
-    public static void insertService(final GitUtil git, final String path) throws Exception {
+    @SneakyThrows
+    public static void insertService(final GitUtil git, final String path) {
         val ser = new DefaultRegisteredServiceJsonSerializer();
         ser.from(git.readObject(git.history(path).get(0).getId()));
     }
@@ -64,7 +67,8 @@ public class VersionControlUtil {
      * @return - Change
      * @throws Exception - failed
      */
-    public static Change createDeleteChange(final GitUtil git, final DiffEntry entry) throws Exception {
+    @SneakyThrows
+    public static Change createDeleteChange(final GitUtil git, final DiffEntry entry) {
         val json = git.readObject(entry.getOldId().toObjectId());
         val svc = CasManagementUtils.fromJson(json);
         return new Change(String.valueOf(svc.getId()),
@@ -84,7 +88,8 @@ public class VersionControlUtil {
      * @throws Exception - failed
      */
     @SuppressWarnings("DefaultCharset")
-    public static Change createModifyChange(final GitUtil git, final DiffEntry entry) throws Exception {
+    @SneakyThrows
+    public static Change createModifyChange(final GitUtil git, final DiffEntry entry) {
         val file = git.repoPath() + '/' + entry.getNewPath();
         val json = new String(Files.readAllBytes(Paths.get(file)));
         val svc = CasManagementUtils.fromJson(json);

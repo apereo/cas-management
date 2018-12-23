@@ -13,6 +13,7 @@ import org.hjson.JsonValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -85,7 +86,7 @@ public final class CasManagementUtils {
      * @return - RegisteredService
      * @throws Exception - Parse failure
      */
-    public static RegisteredService fromYaml(final String yaml) throws Exception {
+    public static RegisteredService fromYaml(final String yaml) {
         return YAML_SERIALIZER.from(yaml);
     }
 
@@ -95,7 +96,7 @@ public final class CasManagementUtils {
      * @return - RegisteredService
      * @throws Exception - Parse failure
      */
-    public static RegisteredService fromJson(final String json) throws Exception {
+    public static RegisteredService fromJson(final String json) {
         return JSON_SERIALIZER.from(json);
     }
 
@@ -113,9 +114,9 @@ public final class CasManagementUtils {
      *
      * @param yaml - the yaml
      * @return - RegisteredService
-     * @throws Exception - Parse failure
+     * @throws IOException - IO failure
      */
-    public static RegisteredService parseYaml(final String yaml) throws Exception {
+    public static RegisteredService parseYaml(final String yaml) throws IOException {
         val om = YAML_SERIALIZER.getObjectMapper().copy();
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         return om.readValue(yaml, RegisteredService.class);
@@ -125,9 +126,9 @@ public final class CasManagementUtils {
      * Parses the passed json into a RegisteredService.
      * @param json - the json
      * @return - RegisteredService
-     * @throws Exception - Parse failure
+     * @throws IOException - IO failure
      */
-    public static RegisteredService parseJson(final String json) throws Exception {
+    public static RegisteredService parseJson(final String json) throws IOException {
         val om = JSON_SERIALIZER.getObjectMapper().copy();
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         val jsonString = JsonValue.readHjson(json).toString();

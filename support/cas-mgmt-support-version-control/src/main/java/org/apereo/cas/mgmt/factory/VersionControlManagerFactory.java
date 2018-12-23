@@ -78,9 +78,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @param request  - HttpServeltRequest
      * @param response - HttpServletRespone
      * @return - GitServicesManager for the logged in user
-     * @throws Exception - failed
      */
-    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
         return from(request, casUserProfileFactory.from(request, response));
     }
 
@@ -90,9 +89,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @param request - HttpServletRequest
      * @param user    - CasUserProfile of logged in user
      * @return - GitServicesManager for the logged in user
-     * @throws Exception the exception
      */
-    public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) throws Exception {
+    public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) {
         return getManagementServicesManager(request, user);
     }
 
@@ -101,9 +99,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      *
      * @param git - the repo
      * @return - manager
-     * @throws Exception - failed
      */
-    public ManagementServicesManager from(final GitUtil git) throws Exception {
+    public ManagementServicesManager from(final GitUtil git) {
         val versionControl = new VersionControlImpl(git);
         return new ManagementServicesManager(createJSONServiceManager(git), versionControl);
     }
@@ -137,7 +134,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @return - maste repo manager
      * @throws Exception -failed
      */
-    public ManagementServicesManager master() throws Exception {
+    public ManagementServicesManager master() {
         val git = repositoryFactory.masterRepository();
         return new ManagementServicesManager(createJSONServiceManager(git), new VersionControlImpl(git));
     }

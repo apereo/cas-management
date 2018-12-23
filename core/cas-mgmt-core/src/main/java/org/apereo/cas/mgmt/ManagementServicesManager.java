@@ -48,12 +48,10 @@ public class ManagementServicesManager implements ServicesManager {
     public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
         LOGGER.debug("Loading services for domain [{}]", domain);
         val services = new ArrayList<RegisteredService>(getServicesForDomain(domain));
-        val items = services.stream()
+        return services.stream()
             .map(this::createServiceItem)
             .map(versionControl::attachStatus)
             .collect(Collectors.toList());
-
-        return items;
     }
 
     /**
@@ -69,7 +67,7 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        val id = service.getId();
+        service.getId();
         LOGGER.debug("Created service item [{}] based on registered service [{}]", serviceItem, service.getServiceId());
         return serviceItem;
     }

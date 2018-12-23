@@ -9,6 +9,7 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.util.io.CommunicationsManager;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -56,13 +57,14 @@ public class SubmitController {
      * @throws Exception - failed.
      */
     @PostMapping
+    @SneakyThrows
     public void submitPull(final HttpServletResponse response,
                            final HttpServletRequest request,
-                           final @RequestBody String msg) throws Exception {
+                           final @RequestBody String msg) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
-                throw new Exception("No changes to submit");
+                throw new IllegalArgumentException("No changes to submit");
             }
             val timestamp = new Date().getTime();
             val branchName = "submit-" + timestamp;
@@ -98,11 +100,11 @@ public class SubmitController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return - List of BranchData
-     * @throws Exception - failed
      */
     @GetMapping
+    @SneakyThrows
     public List<BranchData> submits(final HttpServletRequest request,
-                                    final HttpServletResponse response) throws Exception {
+                                    final HttpServletResponse response) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.branches()
@@ -119,17 +121,17 @@ public class SubmitController {
      * @param request    - HttpServletRequest
      * @param response   - HttpServletResponse
      * @param branchName - Name of the pull requet
-     * @throws Exception - failed
      */
     @GetMapping("revert/{bracnch}")
     @ResponseStatus(HttpStatus.OK)
+    @SneakyThrows
     public void revertSubmit(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @PathVariable String branchName) throws Exception {
+                             final @PathVariable String branchName) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(user)) {
             if (git.isUndefined()) {
-                throw new Exception("No changes to revert");
+                throw new IllegalArgumentException("No changes to revert");
             }
             git.reset(git.findCommitBeforeSubmit(branchName));
         }
@@ -137,6 +139,4 @@ public class SubmitController {
             master.markAsReverted(branchName, user);
         }
     }
-
-
 }

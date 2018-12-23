@@ -67,10 +67,9 @@ public class ChangeController extends AbstractVersionControlController {
             if (git.isUndefined()) {
                 return new ArrayList<>();
             }
-            val changes = git.scanWorkingDiffs().stream()
+            return git.scanWorkingDiffs().stream()
                     .map(d -> VersionControlUtil.createChange(d, git))
                     .collect(toList());
-            return changes;
         }
     }
 
@@ -206,8 +205,7 @@ public class ChangeController extends AbstractVersionControlController {
             val change = CasManagementUtils.fromJson(git.readObject(id));
             val casUserProfile = casUserProfileFactory.from(request, response);
             val orig = managerFactory.from(request, casUserProfile).findServiceBy(change.getId());
-            val resp = new RegisteredService[]{change, orig};
-            return resp;
+            return new RegisteredService[]{change, orig};
         }
     }
 

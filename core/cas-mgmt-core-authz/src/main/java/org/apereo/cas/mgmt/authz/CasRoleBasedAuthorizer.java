@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.exception.HttpAction;
 import org.pac4j.core.profile.CommonProfile;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
     }
 
     @Override
-    protected boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) throws HttpAction {
+    protected boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) {
         LOGGER.debug("Evaluating profile [{}]", profile);
         val result = super.isProfileAuthorized(context, profile);
         if (!result) {

@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.domain.CNote;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -43,10 +44,10 @@ public class NoteController {
      *
      * @param response - HttpServletResponse
      * @param id       - id of note
-     * @throws Exception - failed
      */
     @GetMapping("/{id}")
-    public void getNotes(final HttpServletResponse response, final @PathVariable String id) throws Exception {
+    @SneakyThrows
+    public void getNotes(final HttpServletResponse response, final @PathVariable String id) {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val note = git.note(id);
             if (note != null) {
@@ -65,9 +66,10 @@ public class NoteController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @SneakyThrows
     public void addNote(final HttpServletRequest request,
                         final HttpServletResponse response,
-                        final @RequestBody CNote cnote) throws Exception {
+                        final @RequestBody CNote cnote) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(cnote.getId());

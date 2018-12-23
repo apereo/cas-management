@@ -21,9 +21,8 @@ public interface MgmtManagerFactory<T extends ServicesManager> {
      * @param request  - HttpServeltRequest
      * @param response - HttpServletRespone
      * @return - GitServicesManager for the logged in user
-     * @throws Exception - failed
      */
-    T from(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    T from(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * Method will create the GitServicesManager for the user passed in the CasUserProfile.
@@ -31,7 +30,6 @@ public interface MgmtManagerFactory<T extends ServicesManager> {
      * @param request - HttpServletRequest
      * @param user    - CasUserProfile of logged in user
      * @return - GitServicesManager for the logged in user
-     * @throws Exception the exception
      */
-    T from(HttpServletRequest request, UserProfile user) throws Exception;
+    T from(HttpServletRequest request, UserProfile user);
 }

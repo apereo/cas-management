@@ -23,7 +23,7 @@ public interface VersionControl {
      * @param servicesManager - the servicesManager
      * @throws Exception - failed
      */
-    void checkForRename(RegisteredService service, ServicesManager servicesManager) throws Exception;
+    void checkForRename(RegisteredService service, ServicesManager servicesManager);
 
     /**
      * Looks up git status for the passed item and sets it on the item.

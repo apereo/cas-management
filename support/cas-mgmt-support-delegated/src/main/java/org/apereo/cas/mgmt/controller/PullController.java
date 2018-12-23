@@ -40,6 +40,8 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class PullController extends AbstractVersionControlController {
 
+    private static final String NEW_LINE_INDENT = "\n   ";
+
     private final RepositoryFactory repositoryFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CommunicationsManager communicationsManager;
@@ -97,8 +99,8 @@ public class PullController extends AbstractVersionControlController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.merge(branch.getId());
             val com = git.getCommit(branch.getId());
-            val msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + "\n    "
-                    + text.replaceAll("\\n", "\n    ");
+            val msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + NEW_LINE_INDENT
+                    + text.replaceAll("\\n", NEW_LINE_INDENT);
             git.appendNote(com, msg);
             sendAcceptMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), com.getCommitterIdent().getEmailAddress());
         }
@@ -136,8 +138,8 @@ public class PullController extends AbstractVersionControlController {
         val text = rejection.getNote();
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(branch.getId());
-            val msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + "\n    "
-                    + text.replaceAll("\\n", "\n    ");
+            val msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + NEW_LINE_INDENT
+                    + text.replaceAll("\\n", NEW_LINE_INDENT);
             git.appendNote(com, msg);
 
             sendRejectMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), text, com.getCommitterIdent().getEmailAddress());

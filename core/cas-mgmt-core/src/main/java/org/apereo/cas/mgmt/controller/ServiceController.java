@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ import java.util.List;
 @Slf4j
 public class ServiceController {
 
+    private static final String NOT_FOUND_PATTERN = "Service '{}' not found";
     private final CasUserProfileFactory casUserProfileFactory;
     private final MgmtManagerFactory managerFactory;
 
@@ -84,7 +86,7 @@ public class ServiceController {
         val manager = managerFactory.from(request, casUserProfile);
         val svc = manager.findServiceBy(id);
         if (svc == null) {
-            throw new IllegalArgumentException("No Such Service");
+            throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));
         }
         LOGGER.debug("Deleting service [{}]", id);
         manager.delete(id);
@@ -224,7 +226,7 @@ public class ServiceController {
 
         if (service == null) {
             LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
-            throw new IllegalArgumentException("Service id " + id + " cannot be found");
+            throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));
         }
         return service;
     }
@@ -265,12 +267,12 @@ public class ServiceController {
         val id = svcs[0].getAssignedId();
         val svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {
-            throw new IllegalArgumentException("Service " + id + " cannot be found");
+            throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));
         }
         val id2 = svcs[1].getAssignedId();
         val svcB = manager.findServiceBy(Long.parseLong(id2));
         if (svcB == null) {
-            throw new IllegalArgumentException("Service " + id2 + " cannot be found");
+            throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id2));
         }
         svcA.setEvaluationOrder(svcs[0].getEvalOrder());
         svcB.setEvaluationOrder(svcs[1].getEvalOrder());

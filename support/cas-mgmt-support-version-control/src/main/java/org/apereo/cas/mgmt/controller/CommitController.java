@@ -157,10 +157,14 @@ public class CommitController extends AbstractVersionControlController {
             try {
                 val status = Runtime.getRuntime().exec(managementProperties.getVersionControl().getSyncScript()).waitFor();
                 if (status > 0) {
+                    LOGGER.error("SyncScript returned value > 0");
                     throw new SyncScriptFailureException();
                 }
             } catch (final IOException | InterruptedException e) {
                 LOGGER.error(e.getMessage(), e);
+                if (e instanceof InterruptedException) {
+                    Thread.currentThread().interrupt();
+                }
                 throw new SyncScriptFailureException();
             }
         }

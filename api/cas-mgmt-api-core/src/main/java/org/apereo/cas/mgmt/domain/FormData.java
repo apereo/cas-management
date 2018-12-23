@@ -142,7 +142,7 @@ public class FormData implements Serializable {
      */
     @Data
     @AllArgsConstructor
-    public static class Option {
+    public static class Option implements Serializable {
         private String display;
         private String value;
     }

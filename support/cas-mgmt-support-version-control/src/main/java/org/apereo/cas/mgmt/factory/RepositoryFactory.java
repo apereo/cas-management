@@ -27,6 +27,8 @@ import java.nio.file.Paths;
 @Slf4j
 public class RepositoryFactory {
 
+    private static final String REPO_DIR = "/.git";
+
     private final CasManagementConfigurationProperties casProperties;
     private final CasUserProfileFactory casUserProfileFactory;
 
@@ -67,19 +69,17 @@ public class RepositoryFactory {
      */
     @SneakyThrows
     public GitUtil masterRepository() {
-        val path = casProperties.getVersionControl().getServicesRepo() + "/.git";
-        return buildGitUtil(path);
+        return buildGitUtil(casProperties.getVersionControl().getServicesRepo());
     }
 
     @SneakyThrows
     private GitUtil userRepository(final String user) {
-        val path = casProperties.getDelegated().getUserReposDir() + '/' + user + "/.git";
-        return buildGitUtil(path);
+        return buildGitUtil(casProperties.getDelegated().getUserReposDir() + '/' + user);
     }
 
     @SneakyThrows
     private static GitUtil buildGitUtil(final String path) {
-        return new GitUtil(path);
+        return new GitUtil(path + REPO_DIR);
     }
 
     /**
@@ -90,7 +90,7 @@ public class RepositoryFactory {
      */
     public GitUtil clone(final String clone) {
         try {
-            val uri = casProperties.getVersionControl().getServicesRepo() + "/.git";
+            val uri = casProperties.getVersionControl().getServicesRepo() + REPO_DIR;
             LOGGER.debug("Cloning repository [{}] to path [{}]", uri, clone);
             return new GitUtil(Git.cloneRepository()
                 .setURI(uri)

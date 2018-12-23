@@ -40,6 +40,8 @@ import java.util.HashSet;
 @Slf4j
 public class VersionControlManagerFactory implements MgmtManagerFactory<ManagementServicesManager> {
 
+    private static final String SERVICES_MANAGER_KEY = "servicesManager";
+
     private final ServicesManager servicesManager;
     private final CasManagementConfigurationProperties managementProperties;
     private final RepositoryFactory repositoryFactory;
@@ -109,13 +111,13 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final UserProfile userProfile) {
         val user = (CasUserProfile) userProfile;
         val session = request.getSession();
-        val manager = session.getAttribute("servicesManager") != null ? getSessionManager(session, user) : createNewManager(user);
-        session.setAttribute("servicesManager", manager);
+        val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session, user) : createNewManager(user);
+        session.setAttribute(SERVICES_MANAGER_KEY, manager);
         return manager;
     }
 
     private ManagementServicesManager getSessionManager(final HttpSession session, final CasUserProfile user) {
-        val manager = (ManagementServicesManager) session.getAttribute("servicesManager");
+        val manager = (ManagementServicesManager) session.getAttribute(SERVICES_MANAGER_KEY);
         if (!user.isAdministrator()) {
             manager.getVersionControl().rebase();
         }

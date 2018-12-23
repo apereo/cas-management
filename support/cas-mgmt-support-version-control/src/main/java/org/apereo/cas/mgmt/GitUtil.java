@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.History;
+import org.apereo.cas.mgmt.exception.NoDifferenceException;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
@@ -17,10 +18,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffAlgorithm;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -46,6 +49,7 @@ import org.eclipse.jgit.treewalk.filter.TreeFilter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -80,6 +84,14 @@ public class GitUtil implements AutoCloseable {
      * Constant representing length of Object ID to return.
      */
     public static final int NAME_LENGTH = 40;
+    /**
+     * Most current commit of a branch.
+     */
+    public static final String TOP = "^{tree}";
+    /**
+     * The previous commit in a branch before the current.
+     */
+    public static final String TOP_MINUS_1 = "~1^{tree}";
 
     private final Git git;
 
@@ -102,9 +114,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param n - number of commits to return
      * @return - List of Commit objects
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public Stream<RevCommit> getLastNCommits(final int n) throws Exception {
+    public Stream<RevCommit> getLastNCommits(final int n) throws GitAPIException {
         return StreamSupport.stream(git.log().setMaxCount(n).call().spliterator(), false);
     }
 
@@ -122,9 +134,10 @@ public class GitUtil implements AutoCloseable {
      * published.
      *
      * @return - List of Commit objects
-     * @throws Exception - failed
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
      */
-    public List<Commit> getUnpublishedCommits() throws Exception {
+    public List<Commit> getUnpublishedCommits() throws GitAPIException, IOException {
         final List<Commit> commits = StreamSupport
             .stream(git.log()
                 .addRange(getPublished().getPeeledObjectId(), git.getRepository().resolve("HEAD"))
@@ -140,9 +153,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param branchName - The name of the new branch to create.
      * @param startPoint - The commit from which to start the branch.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void createBranch(final String branchName, final String startPoint) throws Exception {
+    public void createBranch(final String branchName, final String startPoint) throws GitAPIException {
         git.checkout()
             .setCreateBranch(true)
             .setName(branchName)
@@ -155,9 +168,9 @@ public class GitUtil implements AutoCloseable {
      * Cherry picks a single commit to be merge in the current branch.
      *
      * @param commit - RevCommit to be included.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void cherryPickCommit(final RevCommit commit) throws Exception {
+    public void cherryPickCommit(final RevCommit commit) throws GitAPIException {
         git.cherryPick().include(commit).setNoCommit(true).call();
     }
 
@@ -167,9 +180,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param commit     - RevCommit that is to be pushed.
      * @param submitName - The name of the remote branch to be created.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
      */
-    public void createPullRequest(final RevCommit commit, final String submitName) throws Exception {
+    public void createPullRequest(final RevCommit commit, final String submitName) throws GitAPIException, IOException {
         markAsSubmitted(commit);
         git.push()
             .setRemote("origin")
@@ -184,9 +198,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param message the message
      * @return the rev commit
-     * @throws Exception the exception
+     * @throws GitAPIException the exception
      */
-    public RevCommit commit(final String message) throws Exception {
+    public RevCommit commit(final String message) throws GitAPIException {
         if (!isUndefined()) {
             return git.commit().setAll(true).setMessage(message).call();
         }
@@ -199,9 +213,9 @@ public class GitUtil implements AutoCloseable {
      * @param user - CasUserProfile of the logged in user.
      * @param msg  - Commit message.
      * @return - RevCommit of the new commit.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public RevCommit commit(final CasUserProfile user, final String msg) throws Exception {
+    public RevCommit commit(final CasUserProfile user, final String msg) throws GitAPIException {
         return git.commit()
             .setAll(true)
             .setCommitter(getCommitterId(user))
@@ -216,9 +230,9 @@ public class GitUtil implements AutoCloseable {
      * @param file - the file
      * @param msg - commit msg
      * @return - Commit Id
-     * @throws Exception -failed
+     * @throws GitAPIException -failed
      */
-    public RevCommit commitSingleFile(final CasUserProfile user, final String file, final String msg) throws Exception {
+    public RevCommit commitSingleFile(final CasUserProfile user, final String file, final String msg) throws GitAPIException {
         git.add().addFilepattern(file).call();
         return git.commit()
                 .setCommitter(getCommitterId(user))
@@ -230,9 +244,9 @@ public class GitUtil implements AutoCloseable {
      * Checks out the passed ref to be the current branch of the repository.
      *
      * @param ref - String representing a commit in the repository.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void checkout(final String ref) throws Exception {
+    public void checkout(final String ref) throws GitAPIException {
         git.checkout()
             .setName(ref)
             .call();
@@ -243,9 +257,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param path - Full path to the file.
      * @param ref  - String representing a commit in the repository.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void checkout(final String path, final String ref) throws Exception {
+    public void checkout(final String path, final String ref) throws GitAPIException {
         git.checkout()
             .setStartPoint(ref)
             .addPath(path)
@@ -255,9 +269,9 @@ public class GitUtil implements AutoCloseable {
     /**
      * Adds unversioned files to be tracked by the repository.
      *
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void addWorkingChanges() throws Exception {
+    public void addWorkingChanges() throws GitAPIException {
         val status = git.status().call();
         status.getUntracked().forEach(this::addFile);
     }
@@ -266,9 +280,9 @@ public class GitUtil implements AutoCloseable {
      * Status.
      *
      * @return the status
-     * @throws Exception the exception
+     * @throws GitAPIException the exception
      */
-    public Status status() throws Exception {
+    public Status status() throws GitAPIException {
         if (!isUndefined()) {
             return git.status().call();
         }
@@ -303,9 +317,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param id - ObjectId of the file in the repository
      * @return - Contents of the object as String.
-     * @throws Exception - failed.
+     * @throws IOException - failed
      */
-    public String readFormWorkingTree(final ObjectId id) throws Exception {
+    public String readFormWorkingTree(final ObjectId id) throws IOException {
         val workTreeIterator = new FileTreeIterator(git.getRepository());
         while (!workTreeIterator.eof() && !workTreeIterator.getEntryObjectId().equals(id)) {
             workTreeIterator.next(1);
@@ -319,9 +333,9 @@ public class GitUtil implements AutoCloseable {
      * @param repo - The repository to pull the change.
      * @param path - The path to the file.
      * @return - RawText representation of the file.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
-    public RawText raw(final Repository repo, final String path) throws Exception {
+    public RawText raw(final Repository repo, final String path) throws IOException {
         val file = new File(repo.getWorkTree().getAbsolutePath() + "/" + path);
         return new RawText(FileUtils.readFileToByteArray(file));
     }
@@ -332,9 +346,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param id - String id of a file in the repository.
      * @return - File returned as String.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
-    public String readObject(final String id) throws Exception {
+    public String readObject(final String id) throws IOException {
         return readObject(ObjectId.fromString(id));
     }
 
@@ -343,10 +357,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param id - ObjectID of the file.
      * @return - File returned as String.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
     @SuppressWarnings("DefaultCharset")
-    public String readObject(final ObjectId id) throws Exception {
+    public String readObject(final ObjectId id) throws IOException {
         try (val reader = git.getRepository().newObjectReader()) {
             if (reader.has(id)) {
                 return new String(reader.open(id).getBytes());
@@ -360,9 +374,9 @@ public class GitUtil implements AutoCloseable {
      * Merges the branch represented by the passed branchId in the current branch.
      *
      * @param branchId - String representation of an ObjectId
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void merge(final String branchId) throws Exception {
+    public void merge(final String branchId) throws GitAPIException {
         git.merge()
             .setCommit(true)
             .include(ObjectId.fromString(branchId))
@@ -374,9 +388,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param id - String representing an ObjectID for a RevCommit.
      * @return - RevCommit
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
-    public RevCommit getCommit(final String id) throws Exception {
+    public RevCommit getCommit(final String id) throws IOException {
         return new RevWalk(git.getRepository())
             .parseCommit(ObjectId.fromString(id));
     }
@@ -386,9 +400,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param com - RevObject representing the commit to add the note to.
      * @param msg - The note to append.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
      */
-    public void appendNote(final RevObject com, final String msg) throws Exception {
+    public void appendNote(final RevObject com, final String msg) throws GitAPIException, IOException {
         val note = note(com);
         val buffer = new StringBuilder(msg.length());
         if (note != null) {
@@ -407,9 +422,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param com  - the RevObject fo the commit
      * @param note - the note text.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void addNote(final RevObject com, final String note) throws Exception {
+    public void addNote(final RevObject com, final String note) throws GitAPIException {
         git.notesAdd()
             .setObjectId(com)
             .setMessage(note)
@@ -421,9 +436,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param id - String representing a commit id.
      * @return - Note attached to commit.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
+     * @throws IOException - failed
      */
-    public Note note(final String id) throws Exception {
+    public Note note(final String id) throws GitAPIException, IOException {
         return note(getCommit(id));
     }
 
@@ -432,9 +448,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param com - RevObject of the commit.
      * @return - Returns Note from the commit.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public Note note(final RevObject com) throws Exception {
+    public Note note(final RevObject com) throws GitAPIException {
         return git.notesShow()
             .setObjectId(com)
             .call();
@@ -445,9 +461,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param com - the commit
      * @return - the note
-     * @throws Exception - failed
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
      */
-    public String noteText(final RevCommit com) throws Exception {
+    public String noteText(final RevCommit com) throws GitAPIException, IOException {
         return noteText(note(com));
     }
 
@@ -456,9 +473,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param com - The RevObkect of the commit to pull the note from.
      * @return - Returns the note text as a String.
-     * @throws Exception -failed.
+     * @throws GitAPIException -failed
+     * @throws IOException - failed
      */
-    public String noteText(final RevObject com) throws Exception {
+    public String noteText(final RevObject com) throws GitAPIException, IOException {
         if (!isUndefined()) {
             val note = note(com);
             if (note != null) {
@@ -475,9 +493,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param note - the note
      * @return - the text
-     * @throws Exception - failed
+     * @throws IOException - failed
      */
-    public String noteText(final Note note) throws Exception {
+    public String noteText(final Note note) throws IOException {
         val buffer = new StringBuilder();
         try (OutputStream bytes = new ByteArrayOutputStream()) {
             git.getRepository().open(note.getData()).copyTo(bytes);
@@ -492,9 +510,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param path - the file path
      * @return - List of History objects
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public List<History> history(final String path) throws Exception {
+    public List<History> history(final String path) throws GitAPIException {
         return logs(path)
             .map(r -> createHistory(r, path))
             .filter(Objects::nonNull)
@@ -506,9 +524,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param path - The file path.
      * @return - Stream of RevCommits the file is in.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public Stream<RevCommit> logs(final String path) throws Exception {
+    public Stream<RevCommit> logs(final String path) throws GitAPIException {
         return StreamSupport.stream(git.log().addPath(path).call().spliterator(), false);
     }
 
@@ -516,9 +534,9 @@ public class GitUtil implements AutoCloseable {
      * Checks out a file into the working directory.
      *
      * @param path - The file path.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void checkoutFile(final String path) throws Exception {
+    public void checkoutFile(final String path) throws GitAPIException {
         git.checkout()
             .addPath(path)
             .call();
@@ -529,9 +547,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param com - The commit to retrieive logs for.
      * @return - Stream of RevCommits contained in the passed commit.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
      */
-    public Stream<RevCommit> commitLogs(final RevCommit com) throws Exception {
+    public Stream<RevCommit> commitLogs(final RevCommit com) throws GitAPIException, IOException {
         return StreamSupport.stream(git.log().add(com).call().spliterator(), false);
     }
 
@@ -539,9 +558,9 @@ public class GitUtil implements AutoCloseable {
      * Peforms a hard reset on the repository to the passed commit.
      *
      * @param reset - the RevCommit to reset the repository to.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void reset(final RevCommit reset) throws Exception {
+    public void reset(final RevCommit reset) throws GitAPIException {
         if (!isUndefined()) {
             git.reset()
                 .setRef(reset.abbreviate(NAME_LENGTH).name())
@@ -554,9 +573,9 @@ public class GitUtil implements AutoCloseable {
      * Reset.
      *
      * @param path the path
-     * @throws Exception the exception
+     * @throws GitAPIException the exception
      */
-    public void reset(final String path) throws Exception {
+    public void reset(final String path) throws GitAPIException {
         if (!isUndefined()) {
             git.reset().addPath(path).call();
         }
@@ -600,9 +619,9 @@ public class GitUtil implements AutoCloseable {
      * @param r    - The commit to start the walk from.
      * @param path - The file path.
      * @return - TreeWalk
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
-    public TreeWalk historyWalk(final RevCommit r, final String path) throws Exception {
+    public TreeWalk historyWalk(final RevCommit r, final String path) throws IOException {
         val treeWalk = new TreeWalk(git.getRepository());
         treeWalk.addTree(r.getTree());
         treeWalk.setFilter(new HistoryTreeFilter(path));
@@ -625,9 +644,10 @@ public class GitUtil implements AutoCloseable {
      * Marks a commit as being submitted for a pull request.
      *
      * @param c - The RevObject of the commit to mark as submitted.
-     * @throws Exception -failed.
+     * @throws GitAPIException -failed
+     * @throws IOException - failed
      */
-    public void markAsSubmitted(final RevObject c) throws Exception {
+    public void markAsSubmitted(final RevObject c) throws GitAPIException, IOException {
         appendNote(c, "SUBMITTED on " + new Date().toString() + "\n    ");
     }
 
@@ -673,9 +693,9 @@ public class GitUtil implements AutoCloseable {
      * Rm.
      *
      * @param newPath the new path
-     * @throws Exception the exception
+     * @throws GitAPIException the exception
      */
-    public void rm(final String newPath) throws Exception {
+    public void rm(final String newPath) throws GitAPIException {
         if (!isUndefined()) {
             git.rm().addFilepattern(newPath).call();
         }
@@ -752,9 +772,9 @@ public class GitUtil implements AutoCloseable {
      * Returns a stream of Branches that are contained in the repository.
      *
      * @return - Stream of Branch Refs
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public Stream<Ref> branches() throws Exception {
+    public Stream<Ref> branches() throws GitAPIException {
         if (!isUndefined()) {
             return git.branchList().call().stream();
         }
@@ -762,22 +782,13 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
-     * Returns the repository wrapped by this utility.
-     *
-     * @return - Git repository.
-     */
-    private Git getGit() {
-        return git;
-    }
-
-    /**
      * Pulls the text form a Note object and writes it to the passes Outputstream.
      *
      * @param note   - The Note contained in the repository to read.
      * @param output - The stream to ouput the note text.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
-    public void writeNote(final Note note, final OutputStream output) throws Exception {
+    public void writeNote(final Note note, final OutputStream output) throws IOException {
         if (!isUndefined()) {
             git.getRepository().open(note.getData()).copyTo(output);
         }
@@ -786,9 +797,9 @@ public class GitUtil implements AutoCloseable {
     /**
      * Pulls changes form the default remote repository into the wrapped repository.
      *
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
      */
-    public void pull() throws Exception {
+    public void pull() throws GitAPIException {
         if (!isUndefined()) {
             git.pull().call();
         }
@@ -815,10 +826,11 @@ public class GitUtil implements AutoCloseable {
      *
      * @param branch - The branch to check for differences against.
      * @return - List of DiffEntry.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
+     * @throws IOException -failed
      */
-    public List<DiffEntry> getDiffsMinus1(final String branch) throws Exception {
-        return getDiffs(branch + "^{tree}", branch + "~1^{tree}");
+    public List<DiffEntry> getDiffsMinus1(final String branch) throws GitAPIException, IOException {
+        return getDiffs(branch + TOP, branch + TOP_MINUS_1);
     }
 
     /**
@@ -827,9 +839,10 @@ public class GitUtil implements AutoCloseable {
      * @param first  - the first branch
      * @param second - the second branch
      * @return - List of DiffEntry
-     * @throws Exception - failed
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
      */
-    public List<DiffEntry> getDiffs(final String first, final String second) throws Exception {
+    public List<DiffEntry> getDiffs(final String first, final String second) throws GitAPIException, IOException {
         val oldTreeIter = new CanonicalTreeParser();
         try (val reader = git.getRepository().newObjectReader()) {
             oldTreeIter.reset(reader, git.getRepository().resolve(first));
@@ -844,9 +857,11 @@ public class GitUtil implements AutoCloseable {
      *
      * @param path - path to file
      * @return - DiffEntry
-     * @throws Exception -failed
+     * @throws GitAPIException -failed
+     * @throws IOException - failed
+     * @throws NoDifferenceException - No Difference
      */
-    public DiffEntry getChange(final String path) throws Exception {
+    public DiffEntry getChange(final String path) throws GitAPIException, IOException, NoDifferenceException {
         return getChange("HEAD", path);
     }
 
@@ -856,12 +871,14 @@ public class GitUtil implements AutoCloseable {
      * @param commit - the commit
      * @param path   - the file path
      * @return - DiffEntry
-     * @throws Exception - No difference
+     * @throws GitAPIException - No difference
+     * @throws IOException - failed
+     * @throws NoDifferenceException - No Difference
      */
-    public DiffEntry getChange(final String commit, final String path) throws Exception {
+    public DiffEntry getChange(final String commit, final String path) throws GitAPIException, IOException, NoDifferenceException {
         return getDiffsMinus1(commit).stream()
             .filter(d -> d.getNewPath().contains(path))
-            .findFirst().orElseThrow(() -> new Exception("No Difference"));
+            .findFirst().orElseThrow(() -> new NoDifferenceException("No Difference"));
     }
 
     /**
@@ -871,12 +888,15 @@ public class GitUtil implements AutoCloseable {
      * @param second - the second commit
      * @param path   - the file
      * @return - DiffEntry
-     * @throws Exception - No Difference
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
+     * @throws NoDifferenceException - No Diffrence to show
      */
-    public DiffEntry getChange(final String first, final String second, final String path) throws Exception {
-        return getDiffs(first + "^{tree}", second + "^{tree}").stream()
+    public DiffEntry getChange(final String first, final String second, final String path)
+            throws GitAPIException, IOException, NoDifferenceException {
+        return getDiffs(first + TOP, second + TOP).stream()
             .filter(d -> d.getNewPath().contains(path))
-            .findFirst().orElseThrow(() -> new Exception("No Difference"));
+            .findFirst().orElseThrow(() -> new NoDifferenceException("No Difference"));
     }
 
     /**
@@ -884,10 +904,11 @@ public class GitUtil implements AutoCloseable {
      *
      * @param branch - The branch to check for differences against.
      * @return - List of DiffEntry.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed
+     * @throws IOException - failed
      */
-    public List<DiffEntry> getPublishDiffs(final String branch) throws Exception {
-        return getDiffs(branch + "~1^{tree}", branch + "^{tree}");
+    public List<DiffEntry> getPublishDiffs(final String branch) throws GitAPIException, IOException {
+        return getDiffs(branch + TOP_MINUS_1, branch + TOP);
     }
 
     /**
@@ -895,14 +916,15 @@ public class GitUtil implements AutoCloseable {
      *
      * @param branch - The branch to check for differences against.
      * @return - List of DiffEntry.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
+     * @throws IOException - failed
      */
-    public List<DiffEntry> getDiffsToRevert(final String branch) throws Exception {
+    public List<DiffEntry> getDiffsToRevert(final String branch) throws GitAPIException, IOException {
         val oldTreeIter = new CanonicalTreeParser();
         try (val reader = git.getRepository().newObjectReader()) {
-            oldTreeIter.reset(reader, git.getRepository().resolve(branch + "^{tree}"));
+            oldTreeIter.reset(reader, git.getRepository().resolve(branch + TOP));
             val newTreeIter = new CanonicalTreeParser();
-            newTreeIter.reset(reader, git.getRepository().resolve(branch + "~1^{tree}"));
+            newTreeIter.reset(reader, git.getRepository().resolve(branch + TOP_MINUS_1));
             return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
         }
     }
@@ -913,9 +935,9 @@ public class GitUtil implements AutoCloseable {
      * @param oldId - ObjectId.
      * @param newId - ObectId.
      * @return - Formatted diff in a byte[].
-     * @throws Exception -failed.
+     * @throws IOException -failed.
      */
-    public byte[] getFormatter(final ObjectId oldId, final ObjectId newId) throws Exception {
+    public byte[] getFormatter(final ObjectId oldId, final ObjectId newId) throws IOException {
         return getFormatter(rawText(oldId), rawText(newId));
     }
 
@@ -925,9 +947,9 @@ public class GitUtil implements AutoCloseable {
      * @param oldText - RawText.
      * @param newId   - ObjectId.
      * @return - Formatted diff in a byte[].
-     * @throws Exception -failed.
+     * @throws IOException -failed.
      */
-    public byte[] getFormatter(final RawText oldText, final ObjectId newId) throws Exception {
+    public byte[] getFormatter(final RawText oldText, final ObjectId newId) throws IOException {
         return getFormatter(oldText, rawText(newId));
     }
 
@@ -937,9 +959,9 @@ public class GitUtil implements AutoCloseable {
      * @param oldId   - ObjectId.
      * @param newText - RawText.
      * @return - Formatted diff in a byte[].
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
-    public byte[] getFormatter(final ObjectId oldId, final RawText newText) throws Exception {
+    public byte[] getFormatter(final ObjectId oldId, final RawText newText) throws IOException {
         return getFormatter(rawText(oldId), newText);
     }
 
@@ -949,9 +971,9 @@ public class GitUtil implements AutoCloseable {
      * @param oldText - RawText.
      * @param newText - RawText.
      * @return - Formatted diff in a byte[].
-     * @throws Exception -failed.
+     * @throws IOException -failed.
      */
-    public byte[] getFormatter(final RawText oldText, final RawText newText) throws Exception {
+    public byte[] getFormatter(final RawText oldText, final RawText newText) throws IOException {
         if (!isUndefined()) {
             val diffAlgorithm = DiffAlgorithm.getAlgorithm(
                 git.getRepository().getConfig().getEnum("diff",
@@ -973,10 +995,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param id - ObjectId of a file.
      * @return - RawText.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
     @SuppressWarnings("DefaultCharset")
-    public RawText rawText(final ObjectId id) throws Exception {
+    public RawText rawText(final ObjectId id) throws IOException {
         val objectReader = objectReader();
         if (objectReader.has(id)) {
             return new RawText(objectReader.open(id).getBytes());
@@ -990,9 +1012,9 @@ public class GitUtil implements AutoCloseable {
      *
      * @param path - File path.
      * @return - RawText.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
-    public RawText rawText(final String path) throws Exception {
+    public RawText rawText(final String path) throws IOException {
         val file = new File(git.getRepository().getWorkTree().getAbsolutePath() + "/" + path);
         return new RawText(FileUtils.readFileToByteArray(file));
     }
@@ -1002,12 +1024,13 @@ public class GitUtil implements AutoCloseable {
      *
      * @param branchName - Name given to the branch when submitted.
      * @return - RevCommit of the previous commit.
-     * @throws Exception - failed.
+     * @throws IOException - failed
+     * @throws GitAPIException - failed
+     * @throws NoSuchFieldException - failed
      */
-    public RevCommit findCommitBeforeSubmit(final String branchName) throws Exception {
+    public RevCommit findCommitBeforeSubmit(final String branchName) throws GitAPIException, IOException, NoSuchFieldException {
         val com = findSubmitCommit(branchName);
-        val before = commitLogs(com).skip(1).findFirst().get();
-        return before;
+        return commitLogs(com).skip(1).findFirst().get();
     }
 
     /**
@@ -1015,16 +1038,17 @@ public class GitUtil implements AutoCloseable {
      *
      * @param branchName - Name given to the branch when submitted.
      * @return - RevCommit used to submit the pull request.
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed
+     * @throws NoSuchFieldException - failed
      */
-    public RevCommit findSubmitCommit(final String branchName) throws Exception {
+    public RevCommit findSubmitCommit(final String branchName) throws GitAPIException, NoSuchFieldException {
         return git.branchList()
             .call()
             .stream()
             .map(this::mapBranches)
             .filter(r -> r.getRef().getName().contains(Iterables.get(Splitter.on('_').split(branchName), 1)))
             .findFirst()
-            .orElseThrow(() -> new Exception("Submit '" + branchName + "' was not found"))
+            .orElseThrow(() -> new NoSuchFieldException("Submit '" + branchName + "' was not found"))
             .revCommit;
     }
 
@@ -1033,9 +1057,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param branch - Ref of the branch to revert.
      * @param user   - CasUserProfile of the logged in user.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
+     * @throws GitAPIException - failed
      */
-    public void markAsReverted(final String branch, final CasUserProfile user) throws Exception {
+    public void markAsReverted(final String branch, final CasUserProfile user) throws GitAPIException, IOException {
         val revWalk = new RevWalk(git.getRepository());
         val com = revWalk.parseCommit(git.getRepository().resolve(branch));
         val msg = "REVERTED by " + user.getId() + " on " + new Date().toString() + "\n    ";
@@ -1046,9 +1071,9 @@ public class GitUtil implements AutoCloseable {
      * Returns the name of the current branch in the repository.
      *
      * @return - the name of the branch.
-     * @throws Exception - failed
+     * @throws IOException - failed
      */
-    public String currentBranchName() throws Exception {
+    public String currentBranchName() throws IOException {
         return git.getRepository().getBranch();
     }
 
@@ -1070,13 +1095,13 @@ public class GitUtil implements AutoCloseable {
         return this;
     }
 
-    private boolean checkMaster() throws Exception {
+    private boolean checkMaster() throws GitAPIException {
         val fr = git.fetch().setDryRun(true).call();
         git.close();
         return !fr.getTrackingRefUpdates().isEmpty();
     }
 
-    private Collection<String> attemptRebase() throws Exception {
+    private Collection<String> attemptRebase() throws GitAPIException {
         val conflicts = new HashSet<String>();
         createStashIfNeeded();
         val pr = git.pull().setStrategy(MergeStrategy.RESOLVE).setRebase(true).call();
@@ -1096,13 +1121,13 @@ public class GitUtil implements AutoCloseable {
         }
     }
 
-    private void createStashIfNeeded() throws Exception {
+    private void createStashIfNeeded() throws GitAPIException {
         if (!git.status().call().isClean()) {
             git.stashCreate().call();
         }
     }
 
-    private Collection<String> applyStashIfNeeded() throws Exception {
+    private Collection<String> applyStashIfNeeded() throws GitAPIException {
         if (!git.stashList().call().isEmpty()) {
             try {
                 git.stashApply().call();
@@ -1165,9 +1190,10 @@ public class GitUtil implements AutoCloseable {
      *
      * @param oldName - the old name
      * @param newName - the new mame
-     * @throws Exception - failed.
+     * @throws GitAPIException - failed.
+     * @throws IOException - failed.
      */
-    public void move(final String oldName, final String newName) throws Exception {
+    public void move(final String oldName, final String newName) throws GitAPIException, IOException {
         val repoPath = repoPath();
         LOGGER.debug("Attempting to move [{}] to [{}]", oldName, newName);
         val oldPath = Paths.get(repoPath + '/' + oldName);
@@ -1241,7 +1267,7 @@ public class GitUtil implements AutoCloseable {
             return new Git(builder.build());
         } catch (final RepositoryNotFoundException e) {
             LOGGER.error("Git repository not found/initialized at [{}]", path.getCanonicalPath());
-            throw new RuntimeException(e.getMessage(), e);
         }
+        return null;
     }
 }

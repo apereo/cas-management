@@ -16,9 +16,8 @@ export class ServiceIdComponent implements OnInit {
   @Input()
   serviceType: MgmtFormControl;
 
-  prompt: String;
-  tip: String;
-  invalidDomain: boolean;
+  prompt: string;
+  tip: string;
 
   constructor() {
   }
@@ -35,7 +34,7 @@ export class ServiceIdComponent implements OnInit {
    }
 
 
-  placeholder(type: String) {
+  placeholder(type: string) {
     if (SamlRegisteredService.cName === type) {
       this.prompt = 'Entity ID';
     } else if (OidcRegisteredService.cName === type ||
@@ -48,7 +47,7 @@ export class ServiceIdComponent implements OnInit {
     }
   }
 
-  tooltip(type: String) {
+  tooltip(type: string) {
     if (SamlRegisteredService.cName === type) {
       this.tip = 'An string that represents the EntityId of the SAML2 SP. This can be a regex pattern.';
     } else if (OidcRegisteredService.cName === type ||

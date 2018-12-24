@@ -62,7 +62,7 @@ export class ContactsComponent implements OnInit {
     contact.get('department').setValue(selection.department);
   }
 
-  contactName(contact?: DefaultRegisteredServiceContact): String | undefined {
+  contactName(contact?: DefaultRegisteredServiceContact): string | undefined {
     return contact ? contact.name : undefined;
   }
 

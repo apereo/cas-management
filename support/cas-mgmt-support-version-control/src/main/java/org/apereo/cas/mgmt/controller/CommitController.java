@@ -160,11 +160,11 @@ public class CommitController extends AbstractVersionControlController {
                     LOGGER.error("SyncScript returned value > 0");
                     throw new SyncScriptFailureException();
                 }
-            } catch (final IOException | InterruptedException e) {
+            } catch (final IOException e) {
                 LOGGER.error(e.getMessage(), e);
-                if (e instanceof InterruptedException) {
-                    Thread.currentThread().interrupt();
-                }
+                throw new SyncScriptFailureException();
+            } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new SyncScriptFailureException();
             }
         }

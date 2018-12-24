@@ -14,6 +14,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -63,11 +65,11 @@ public class HistoryController extends AbstractVersionControlController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return - List of Commit
-     * @throws Exception - failed.
+     * @throws VersionControlException - failed.
      */
     @GetMapping
     public List<Commit> history(final HttpServletRequest request,
-                                final HttpServletResponse response) throws Exception {
+                                final HttpServletResponse response) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.getLastNCommits(MAX_COMMITS)
@@ -77,6 +79,9 @@ public class HistoryController extends AbstractVersionControlController {
                             CasManagementUtils.formatDateTime(c.getCommitTime()))
                     )
                     .collect(toList());
+        } catch (final GitAPIException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 
@@ -87,15 +92,18 @@ public class HistoryController extends AbstractVersionControlController {
      * @param response - HttpServletResponse
      * @param path     - path of file
      * @return - List of History
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public List<History> history(final HttpServletRequest request,
                                  final HttpServletResponse response,
-                                 final @RequestBody String path) throws Exception {
+                                 final @RequestBody String path) throws VersionControlException {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return git.history(path);
+        } catch (final GitAPIException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 
@@ -106,12 +114,12 @@ public class HistoryController extends AbstractVersionControlController {
      * @param request  - the request
      * @param id       - String representing an id of a commit
      * @return - List of Differences
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @GetMapping("commit/{id}")
     public List<Diff> commitHistoryList(final HttpServletResponse response,
                                         final HttpServletRequest request,
-                                        final @PathVariable String id) throws Exception {
+                                        final @PathVariable String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val r = git.getCommit(id);
@@ -124,6 +132,9 @@ public class HistoryController extends AbstractVersionControlController {
                         return d;
                     })
                     .collect(toList());
+        } catch (final GitAPIException | IOException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 
@@ -179,17 +190,20 @@ public class HistoryController extends AbstractVersionControlController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param data     - String[] {path, id}
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @PostMapping("checkout")
     public void checkout(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         final @RequestBody String[] data) throws Exception{
+                         final @RequestBody String[] data) throws VersionControlException {
         val path = data[0];
         val id = data[1];
         try (GitUtil git = repositoryFactory.from(request, response)) {
             git.checkout(path, id);
             git.reset(path);
+        } catch (final GitAPIException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 

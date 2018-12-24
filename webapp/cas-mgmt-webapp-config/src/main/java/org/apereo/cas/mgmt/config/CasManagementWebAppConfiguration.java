@@ -48,7 +48,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -184,7 +184,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
+        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         resolver.setCacheable(false);
         resolver.setOrder(0);
         resolver.setCheckExistence(true);

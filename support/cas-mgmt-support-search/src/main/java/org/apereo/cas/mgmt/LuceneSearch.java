@@ -91,21 +91,22 @@ public class LuceneSearch {
             val query = new QueryParser("body", analyzer).parse(queryString);
             val fields = getFields(query, new ArrayList<String>());
             val manager = (ManagementServicesManager) mgmtManagerFactory.from(request, response);
-            val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()));
-            val docs = manager.getAllServices().stream()
-                    .filter(casUserProfile::hasPermission)
-                    .map(CasManagementUtils::toJson)
-                    .map(JsonObject::readHjson)
-                    .map(r -> createDocument(r.asObject(), fields))
-                    .collect(Collectors.toList());
-            writeDocs(analyzer, memoryIndex, docs);
-            val results = results(memoryIndex, query).stream()
-                    .map(d -> d.getField("id"))
-                    .map(id -> manager.findServiceBy(Long.parseLong(id.stringValue())))
-                    .map(manager::createServiceItem)
-                    .collect(Collectors.toList());
-            FileUtils.deleteDirectory(memoryIndex.getDirectory().toFile());
-            return results;
+            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()))) {
+                val docs = manager.getAllServices().stream()
+                        .filter(casUserProfile::hasPermission)
+                        .map(CasManagementUtils::toJson)
+                        .map(JsonObject::readHjson)
+                        .map(r -> createDocument(r.asObject(), fields))
+                        .collect(Collectors.toList());
+                writeDocs(analyzer, memoryIndex, docs);
+                val results = results(memoryIndex, query).stream()
+                        .map(d -> d.getField("id"))
+                        .map(id -> manager.findServiceBy(Long.parseLong(id.stringValue())))
+                        .map(manager::createServiceItem)
+                        .collect(Collectors.toList());
+                FileUtils.deleteDirectory(memoryIndex.getDirectory().toFile());
+                return results;
+            }
         } catch (final IOException | ParseException ex) {
             LOGGER.error(ex.getMessage(), ex);
             throw new SearchException();

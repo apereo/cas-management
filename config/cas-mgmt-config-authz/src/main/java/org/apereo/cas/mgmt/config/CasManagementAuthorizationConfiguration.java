@@ -68,17 +68,13 @@ public class CasManagementAuthorizationConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "springSecurityPropertiesAuthorizationGenerator")
     public AuthorizationGenerator springSecurityPropertiesAuthorizationGenerator() {
-        try {
-            val userPropertiesFile = casProperties.getUserPropertiesFile();
-            if (userPropertiesFile.getFilename().endsWith("json")) {
-                return new JsonResourceAuthorizationGenerator(userPropertiesFile);
-            }
-            if (userPropertiesFile.getFilename().endsWith("yml")) {
-                return new YamlResourceAuthorizationGenerator(userPropertiesFile);
-            }
-            return new CasSpringSecurityAuthorizationGenerator(userPropertiesFile);
-        } catch (final Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+        val userPropertiesFile = casProperties.getUserPropertiesFile();
+        if (userPropertiesFile.getFilename().endsWith("json")) {
+            return new JsonResourceAuthorizationGenerator(userPropertiesFile);
         }
+        if (userPropertiesFile.getFilename().endsWith("yml")) {
+            return new YamlResourceAuthorizationGenerator(userPropertiesFile);
+        }
+        return new CasSpringSecurityAuthorizationGenerator(userPropertiesFile);
     }
 }

@@ -11,7 +11,7 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class DelegatedComponent implements OnInit {
 
   separatorKeysCodes = [ENTER, COMMA];
-  delegatedAuthn: String[] = [];
+  delegatedAuthn: string[] = [];
 
   @ViewChild( MatAutocompleteTrigger )
   autoTrigger: MatAutocompleteTrigger;

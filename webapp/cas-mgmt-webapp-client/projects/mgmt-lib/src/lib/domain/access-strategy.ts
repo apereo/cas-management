@@ -1,11 +1,11 @@
 import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn';
 
 export abstract class RegisteredServiceAccessStrategy {
-  enabled = true;
-  ssoEnabled = false;
+  enabled: boolean
+  ssoEnabled: boolean;
   unauthorizedRedirectUrl: string;
   delegatedAuthenticationPolicy: RegisteredServiceDelegatedAuthenticationPolicy;
-  requireAllAttributes = false;
+  requireAllAttributes: boolean;
   requiredAttributes: Map<string, string[]>;
   rejectedAttributes: Map<string, string[]>;
   caseInsensitive: boolean;

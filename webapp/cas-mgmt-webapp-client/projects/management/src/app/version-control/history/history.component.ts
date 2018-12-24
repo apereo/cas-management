@@ -7,6 +7,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
 import {finalize} from 'rxjs/operators';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-history',
@@ -58,7 +59,7 @@ export class HistoryComponent implements OnInit {
 
   checkout() {
     this.spinner.start('Checking out verison');
-    this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
+    this.service.checkout(this.selectedItem.commit, this.selectedItem.path)
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(() => this.showSnackbar('Service successfully restored from history.'));
   }
@@ -67,13 +68,7 @@ export class HistoryComponent implements OnInit {
     this.spinner.start('Loading change');
     this.service.change(this.selectedItem.commit, this.selectedItem.path)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(resp => {
-        if (resp.status !== 200) {
-          this.showSnackbar('No Difference');
-        } else {
-          this.openView(resp.body, 'diff', 'github');
-        }
-      },
+      .subscribe(resp => this.handleDiff(resp),
         (error) => this.snackBar.open(error.error, 'Dismiss'));
   }
 
@@ -81,13 +76,7 @@ export class HistoryComponent implements OnInit {
     this.spinner.start('Loading diff');
     this.service.toHead(this.selectedItem.commit, this.selectedItem.path)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(resp => {
-        if (resp.status !== 200) {
-          this.showSnackbar('No Difference');
-        } else {
-          this.openView(resp.body, 'diff', 'github');
-        }
-      },
+      .subscribe(resp => this.handleDiff(resp),
         (error) => this.snackBar.open(error.error, 'Dismiss'));
   }
 
@@ -123,5 +112,13 @@ export class HistoryComponent implements OnInit {
 
   showSnackbar(msg: string) {
     this.snackBar.open(msg, 'Dismiss', {duration: 5000});
+  }
+
+  handleDiff(resp: HttpResponse<string>) {
+    if (resp.status !== 200) {
+      this.showSnackbar('No Difference');
+    } else {
+      this.openView(resp.body, 'diff', 'github');
+    }
   }
 }

@@ -59,7 +59,7 @@ export class CommitHistoryComponent implements OnInit {
 
   checkout() {
     this.spinner.start('Checking out change');
-    this.service.checkout(this.selectedItem.commit as string, this.selectedItem.path)
+    this.service.checkout(this.selectedItem.commit, this.selectedItem.path)
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(
         resp => this.snackBar
@@ -72,7 +72,7 @@ export class CommitHistoryComponent implements OnInit {
 
   revert() {
     this.spinner.start('Reverting change');
-    this.service.revert(this.selectedItem.oldId as string)
+    this.service.revert(this.selectedItem.oldId)
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(
         resp => this.snackBar

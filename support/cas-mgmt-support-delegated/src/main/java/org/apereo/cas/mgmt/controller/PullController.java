@@ -5,6 +5,7 @@ import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.BranchActionData;
 import org.apereo.cas.mgmt.domain.BranchData;
+import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.util.io.CommunicationsManager;
 
@@ -13,6 +14,7 @@ import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -63,12 +66,12 @@ public class PullController extends AbstractVersionControlController {
      * @param request  - HttpsServletRequest
      * @param options  - List of Branch statuses filter the returned branches by
      * @return - List of BranchData
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @PostMapping
     public List<BranchData> branches(final HttpServletResponse response,
                                      final HttpServletRequest request,
-                                     final @RequestBody boolean[] options) throws Exception {
+                                     final @RequestBody boolean[] options) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.branches()
@@ -76,6 +79,9 @@ public class PullController extends AbstractVersionControlController {
                     .filter(r -> DelegatedUtil.filterPulls(r, options))
                     .map(DelegatedUtil::createBranch)
                     .collect(toList());
+        } catch (final GitAPIException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 
@@ -85,13 +91,13 @@ public class PullController extends AbstractVersionControlController {
      * @param request   - HttpServletRequest
      * @param response  - HttpServletResponse
      * @param acception - BranchActionData
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @PostMapping(value = "/accept", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void acceptChange(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @RequestBody BranchActionData acception) throws Exception {
+                             final @RequestBody BranchActionData acception) throws VersionControlException {
         val user = casUserProfileFactory.from(request, response);
         isAdministrator(user);
         val branch = acception.getBranch();
@@ -103,6 +109,9 @@ public class PullController extends AbstractVersionControlController {
                     + text.replaceAll("\\n", NEW_LINE_INDENT);
             git.appendNote(com, msg);
             sendAcceptMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), com.getCommitterIdent().getEmailAddress());
+        } catch (final GitAPIException | IOException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 

@@ -12,7 +12,7 @@ export class GrouperComponent implements OnInit {
   @Input()
   control: FormGroup;
   groupField: MgmtFormControl;
-  fields: String[];
+  fields: string[];
 
   constructor(public formData: FormDataService) {
     this.fields = formData.options.grouperFields;

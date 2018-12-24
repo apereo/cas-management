@@ -52,7 +52,7 @@ export class EditorComponent implements OnInit {
   }
 
   @Input()
-  set file(file: String) {
+  set file(file: string) {
     if (this.editor) {
       this.editor.setValue(file ? file as string : '');
       this.editor.once("change", (event) => {

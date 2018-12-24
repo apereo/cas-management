@@ -17,7 +17,7 @@ export class ValidateServiceIdDirective implements Validator {
   }
 
   validate(control: AbstractControl): {[key: string]: any} {
-    const val: string = control.value as string;
+    const val: string = control.value;
     if (!this.isTls.test(val).valueOf()) {
       return {'noTls': {value: val}};
     }
@@ -25,7 +25,7 @@ export class ValidateServiceIdDirective implements Validator {
       return {'invalidUrl': {value: val}};
     }
     if (!this.user.user.administrator) {
-      if (!this.validateDomain(control.value as string)) {
+      if (!this.validateDomain(control.value)) {
         return {'invalidDomain': {value: control.value}};
       }
     }
@@ -33,7 +33,7 @@ export class ValidateServiceIdDirective implements Validator {
   }
 
   validateDomain(service: string): boolean {
-    const domain = this.domainPattern.exec(service.toLowerCase() as string);
+    const domain = this.domainPattern.exec(service.toLowerCase());
     if (domain != null) {
       return this.validDomain.test(domain[1]).valueOf();
     }

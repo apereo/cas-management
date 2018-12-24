@@ -18,7 +18,7 @@ export class FormService extends Service {
       .pipe(
         take(1),
         map(resp => {
-          return resp as AbstractRegisteredService;
+          return resp;
         }),
         catchError(e => this.handleError(e, this.dialog))
       );

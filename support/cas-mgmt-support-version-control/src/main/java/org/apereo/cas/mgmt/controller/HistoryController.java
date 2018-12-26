@@ -144,18 +144,21 @@ public class HistoryController extends AbstractVersionControlController {
      * @param request  - the request
      * @param response - the response
      * @param id       - the id of the commit
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @GetMapping("revert/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void revertRepo(final HttpServletRequest request,
                            final HttpServletResponse response,
-                           final @PathVariable String id) throws Exception {
+                           final @PathVariable String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val svc = CasManagementUtils.fromJson(git.readObject(id));
             val mgmtServicesManager = managerFactory.from(request, response);
             mgmtServicesManager.save(svc);
+        } catch (final IOException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 

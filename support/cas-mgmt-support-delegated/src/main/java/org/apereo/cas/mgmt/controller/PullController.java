@@ -135,12 +135,12 @@ public class PullController extends AbstractVersionControlController {
      * @param request   - HttpServletRequest
      * @param response  - HttpServletResponse
      * @param rejection - BranchActionData
-     * @throws Exception - failed
+     * @throws VersionControlException - failed
      */
     @PostMapping(value = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void rejectChange(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @RequestBody BranchActionData rejection) throws Exception {
+                             final @RequestBody BranchActionData rejection) throws VersionControlException {
         val user = casUserProfileFactory.from(request, response);
         isAdministrator(user);
         val branch = rejection.getBranch();
@@ -152,6 +152,9 @@ public class PullController extends AbstractVersionControlController {
             git.appendNote(com, msg);
 
             sendRejectMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), text, com.getCommitterIdent().getEmailAddress());
+        } catch (final GitAPIException | IOException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            throw new VersionControlException();
         }
     }
 

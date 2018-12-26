@@ -25,7 +25,9 @@ export class SpinnerService {
 
   stop() {
     clearTimeout(this.timer);
-    this.snack.dismiss();
+    if (this.snack) {
+      this.snack.dismiss();
+    }
   }
 
 }

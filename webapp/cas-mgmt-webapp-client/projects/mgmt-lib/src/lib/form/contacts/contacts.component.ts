@@ -60,6 +60,7 @@ export class ContactsComponent implements OnInit {
     contact.get('email').setValue(selection.email);
     contact.get('phone').setValue(selection.phone);
     contact.get('department').setValue(selection.department);
+    this.foundContacts = null;
   }
 
   contactName(contact?: DefaultRegisteredServiceContact): string | undefined {

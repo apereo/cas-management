@@ -372,12 +372,37 @@
         </module>
 
         <module name="RegexpSinglelineJava">
+            <property name="id" value="tests-suite-classname"/>
+            <metadata name="net.sf.eclipsecs.core.comment" value="Name the test suite class consistently to match the CAS codebase"/>
+            <property name="severity" value="error"/>
+            <property name="format" value="public\sclass\s\w+TestSuite\s*\{"/>
+            <property name="message" value="Test suite class names should end with TestSuite (i.e. AllAuthenticationTestsSuite)"/>
+        </module>
+
+
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="zero-length-array"/>
+            <metadata name="net.sf.eclipsecs.core.comment" value="Using a zero-length array is not recommended."/>
+            <property name="severity" value="error"/>
+            <property name="format" value="new\s+(String|Object|byte|int|long|double|float|Class|char|boolean)\[(\d*)*\]\s*\{\}"/>
+            <property name="message" value="Use constants in org.apache.commons.lang3.ArrayUtils instead of declaring zero-length arrays"/>
+        </module>
+
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="streamed-foreach-loop"/>
+            <metadata name="net.sf.eclipsecs.core.comment" value="Using stream().forEach() is unnecessary where forEach() can be used directly."/>
+            <property name="severity" value="error"/>
+            <property name="format" value="\.stream\(\)\.forEach\("/>
+            <property name="message" value="Simplify the Stream API. Using stream().forEach() is unnecessary where forEach() can be used directly."/>
+        </module>
+
+        <module name="RegexpSinglelineJava">
             <property name="id" value="collectionsEmpty"/>
             <metadata name="net.sf.eclipsecs.core.comment" value="Avoid using an empty immutable collection"/>
             <property name="severity" value="error"/>
             <property name="format" value="Collections\.empty(List|Map|Set)"/>
             <property name="message"
-                      value="Returning an empty immutable collection is specially problematic for serialization tasks. To avoid future side effects try using an empty collection of size zero instead"/>
+                      value="Returning an empty immutable collection is specially problematic for serialization tasks. Try using an empty collection of size zero instead"/>
         </module>
 
         <module name="RegexpSinglelineJava">
@@ -405,6 +430,7 @@
             <property name="message"
                       value="Avoid string concatenation for constructing log messages. Use parametric messages instead"/>
         </module>
+
         <module name="RegexpSinglelineJava">
             <metadata name="net.sf.eclipsecs.core.comment" value="JavaDoc @version tag"/>
             <property name="severity" value="error"/>
@@ -494,6 +520,13 @@
                       value="Consider not checking for logging levels. Let the logging framework handle that."/>
         </module>
         <module name="RegexpSinglelineJava">
+            <property name="id" value="usingAutowiredInApiClasses"/>
+            <metadata name="net.sf.eclipsecs.core.comment" value="Using Autowired outside configuration components"/>
+            <property name="severity" value="error"/>
+            <property name="format" value="@Autowired"/>
+            <property name="message" value="Consider injecting the reference from a @Configuration class instead."/>
+        </module>
+        <module name="RegexpSinglelineJava">
             <property name="id" value="useLombokVarForGenerics"/>
             <metadata name="net.sf.eclipsecs.core.comment" value="Using val for variable definitions"/>
             <property name="severity" value="error"/>
@@ -501,7 +534,7 @@
             <property name="message" value="Use lombok.val when declaring collections with generics"/>
         </module>
         <module name="RegexpSinglelineJava">
-            <property name="id" value="useLombokVaLForFinalVar"/>
+            <property name="id" value="useLombokValForFinalVar"/>
             <metadata name="net.sf.eclipsecs.core.comment" value="Using val for variable definitions"/>
             <property name="severity" value="error"/>
             <property name="format" value="final\s+var\s+"/>
@@ -539,6 +572,24 @@
     <module name="UniqueProperties">
         <property name="severity" value="error"/>
     </module>
+
+    <module name="RegexpMultiline">
+        <property name="id" value="objectProvider"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="@Autowired\s*@Qualifier\(&quot;(\w+)&quot;\)\s*(private|public|protected)\s+(\w+)\s+(\w+)\s*;"/>
+        <property name="message" value="Use ObjectProvider&lt;T&gt; for dependency injections to avoid premature/circular bean initializations"/>
+        <property name="fileExtensions" value="java" />
+    </module>
+
+    <module name="RegexpMultiline">
+        <property name="id" value="useQualifier"/>
+        <property name="severity" value="error"/>
+        <property name="format"
+                  value="@Autowired\s*(private|public|protected)\s+(?!.*Properties|.*Environment|FlowBuilderServices|SpringTemplateEngine|.*EventPublisher|.*ApplicationContext|ResourceLoader)\w+\s+\w+\s*;"/>
+        <property name="message" value="Use @Qualifier annotation when injecting dependencies"/>
+        <property name="fileExtensions" value="java" />
+    </module>
+
     <module name="NewlineAtEndOfFile">
         <property name="fileExtensions" value="java, xml, properties, txt"/>
         <property name="lineSeparator" value="lf"/>
@@ -633,6 +684,7 @@
         <property name="format" value="new.*Set&lt;&gt;\((Arrays\.asList\([^,]+\)|Collections\.singletonList\(.*\))\)"/>
         <property name="message" value="Consider using Collections.singleton instead"/>
     </module>
+
 
     <module name="RegexpSingleline">
         <metadata name="net.sf.eclipsecs.core.comment" value="Use specific request annotation"/>

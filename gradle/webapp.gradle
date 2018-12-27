@@ -34,7 +34,7 @@ if (!Boolean.getBoolean("skipClientBuild")) {
 
 dependencies {
   
-    apply from: rootProject.file("config/delegated-config.gradle")
+    apply from: rootProject.file("config/core-config.gradle")
     
     implementation project(":webapp:cas-mgmt-webapp-config")
     implementation project(":webapp:cas-mgmt-webapp-init")

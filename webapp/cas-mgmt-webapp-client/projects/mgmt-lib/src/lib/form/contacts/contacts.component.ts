@@ -38,7 +38,7 @@ export class ContactsComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((query: string) => {
         if (query && query !== '' && query.length >= 3) {
-          this.spinner.start("Searching");
+          this.spinner.start('Searching');
           return this.user.lookupContact(query)
             .pipe(finalize(() => this.spinner.stop()));
         } else {
@@ -88,7 +88,7 @@ export class ContactsComponent implements OnInit {
       email: new MgmtFormControl(contact.email, '', Validators.required),
       phone: new MgmtFormControl(contact.phone),
       department: new MgmtFormControl(contact.department)
-    })
+    });
   }
 
 }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroovyComponent } from './groovy.component';
+import { EnvironmentsComponent } from './environments.component';
 
-describe('GroovyComponent', () => {
-  let component: GroovyComponent;
-  let fixture: ComponentFixture<GroovyComponent>;
+describe('EnvironmentsComponent', () => {
+  let component: EnvironmentsComponent;
+  let fixture: ComponentFixture<EnvironmentsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroovyComponent ]
+      declarations: [ EnvironmentsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroovyComponent);
+    fixture = TestBed.createComponent(EnvironmentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

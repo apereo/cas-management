@@ -2,10 +2,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import { AttributesComponent } from './attributemapping.component';
 import {SharedModule} from '../../shared/shared.module';
+import {AttributesComponent} from './attributes.component';
 
-describe('AttributemappingComponent', () => {
+describe('AttributesComponent', () => {
   let component: AttributesComponent;
   let fixture: ComponentFixture<AttributesComponent>;
 

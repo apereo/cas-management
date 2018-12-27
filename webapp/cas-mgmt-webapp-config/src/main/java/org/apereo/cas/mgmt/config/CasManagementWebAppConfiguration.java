@@ -18,6 +18,7 @@ import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -82,7 +83,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
     @Qualifier("managementWebappAuthorizer")
-    private Authorizer managementWebappAuthorizer;
+    private ObjectProvider<Authorizer> managementWebappAuthorizer;
 
 
     @Autowired
@@ -211,7 +212,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Bean
     public Config casManagementSecurityConfiguration() {
         val cfg = new Config(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients);
-        cfg.setAuthorizer(this.managementWebappAuthorizer);
+        cfg.setAuthorizer(this.managementWebappAuthorizer.getIfAvailable());
         return cfg;
     }
 

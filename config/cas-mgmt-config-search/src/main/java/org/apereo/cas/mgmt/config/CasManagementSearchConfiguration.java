@@ -8,7 +8,9 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,13 +30,15 @@ public class CasManagementSearchConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    private MgmtManagerFactory mgmtManagerFactory;
+    @Qualifier("mgmtManagerFactory")
+    private ObjectProvider<MgmtManagerFactory> mgmtManagerFactory;
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Bean
     public LuceneSearch luceneSearch() {
-        return new LuceneSearch(mgmtManagerFactory, casUserProfileFactory, managementProperties);
+        return new LuceneSearch(mgmtManagerFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(), managementProperties);
     }
 }

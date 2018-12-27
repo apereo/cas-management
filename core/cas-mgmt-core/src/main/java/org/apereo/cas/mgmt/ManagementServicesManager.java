@@ -38,7 +38,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @param manager - ServicesManger to load from
      */
     public void loadFrom(final ServicesManager manager) {
-        manager.getAllServices().stream().forEach(this::save);
+        manager.getAllServices().forEach(this::save);
     }
 
     /**

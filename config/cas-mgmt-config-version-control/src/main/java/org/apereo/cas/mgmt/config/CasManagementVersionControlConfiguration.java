@@ -40,43 +40,46 @@ public class CasManagementVersionControlConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
-    private ServicesManager servicesManager;
+    @Qualifier("servicesManager")
+    private ObjectProvider<ServicesManager> servicesManager;
 
     @Autowired
     private ObjectProvider<PendingRequests> pendingRequests;
 
     @Autowired
     @Qualifier("namingStrategy")
-    private RegisteredServiceResourceNamingStrategy namingStrategy;
+    private ObjectProvider<RegisteredServiceResourceNamingStrategy> namingStrategy;
 
 
     @Bean
     public MgmtManagerFactory managerFactory() {
-        return new VersionControlManagerFactory(servicesManager, managementProperties, repositoryFactory(), casUserProfileFactory, casProperties, namingStrategy);
+        return new VersionControlManagerFactory(servicesManager.getIfAvailable(), managementProperties,
+                repositoryFactory(), casUserProfileFactory.getIfAvailable(), casProperties, namingStrategy.getIfAvailable());
     }
 
     @Bean
     public RepositoryFactory repositoryFactory() {
-        return new RepositoryFactory(managementProperties, casUserProfileFactory);
+        return new RepositoryFactory(managementProperties, casUserProfileFactory.getIfAvailable());
     }
 
     @Bean
     public CommitController commitController() {
-        return new CommitController(repositoryFactory(), casUserProfileFactory,
-                managementProperties, servicesManager, pendingRequests);
+        return new CommitController(repositoryFactory(), casUserProfileFactory.getIfAvailable(),
+                managementProperties, servicesManager.getIfAvailable(), pendingRequests);
     }
 
     @Bean
     public ChangeController changeController() {
-        return new ChangeController(repositoryFactory(), managerFactory(), casUserProfileFactory);
+        return new ChangeController(repositoryFactory(), managerFactory(), casUserProfileFactory.getIfAvailable());
     }
 
     @Bean
     public HistoryController historyController() {
-        return new HistoryController(repositoryFactory(), managerFactory(), casUserProfileFactory);
+        return new HistoryController(repositoryFactory(), managerFactory(), casUserProfileFactory.getIfAvailable());
     }
 
 }

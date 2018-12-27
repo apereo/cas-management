@@ -20,6 +20,7 @@ import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apereo.services.persondir.IPersonAttributeDao;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -46,16 +47,17 @@ public class CasManagementCoreServicesConfiguration {
 
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
     @Qualifier("servicesManager")
-    private ServicesManager servicesManager;
+    private ObjectProvider<ServicesManager> servicesManager;
 
     @Bean
     @ConditionalOnMissingBean(name = "managerFactory")
     public MgmtManagerFactory managerFactory() {
-        return new ServicesManagerFactory(servicesManager, namingStrategy());
+        return new ServicesManagerFactory(servicesManager.getIfAvailable(), namingStrategy());
     }
 
     @Bean
@@ -76,18 +78,18 @@ public class CasManagementCoreServicesConfiguration {
     }
     @Bean
     public ApplicationDataController applicationDataController() {
-        return new ApplicationDataController(formDataFactory(), casUserProfileFactory, managerFactory(),
+        return new ApplicationDataController(formDataFactory(), casUserProfileFactory.getIfAvailable(), managerFactory(),
                 managementProperties, casProperties, contactLookup());
     }
 
     @Bean
     public ServiceController serviceController() {
-        return new ServiceController(casUserProfileFactory, managerFactory());
+        return new ServiceController(casUserProfileFactory.getIfAvailable(), managerFactory());
     }
 
     @Bean
     public DomainController domainController() {
-        return new DomainController(casUserProfileFactory, managerFactory());
+        return new DomainController(casUserProfileFactory.getIfAvailable(), managerFactory());
     }
 
     @ConditionalOnMissingBean(name ="contactLookup")

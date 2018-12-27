@@ -8,6 +8,7 @@ import org.apereo.cas.mgmt.authz.json.JsonResourceAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.yaml.YamlResourceAuthorizationGenerator;
 
 import lombok.val;
+import org.apache.commons.lang3.ArrayUtils;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.FromAttributesAuthorizationGenerator;
@@ -40,7 +41,7 @@ public class CasManagementAuthorizationConfiguration {
             if (authzAttributes.stream().anyMatch(a -> a.equals("*"))) {
                 return staticAdminRolesAuthorizationGenerator();
             }
-            return new FromAttributesAuthorizationGenerator(authzAttributes.toArray(new String[]{}), new String[]{});
+            return new FromAttributesAuthorizationGenerator(authzAttributes.toArray(ArrayUtils.EMPTY_STRING_ARRAY), ArrayUtils.EMPTY_STRING_ARRAY);
         }
 
         return springSecurityPropertiesAuthorizationGenerator();

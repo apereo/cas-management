@@ -14,6 +14,7 @@ import org.apereo.cas.util.io.CommunicationsManager;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -35,36 +36,39 @@ public class CasManagementDelegatedConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
-    private RepositoryFactory repositoryFactory;
+    private ObjectProvider<RepositoryFactory> repositoryFactory;
 
     @Autowired
     @Qualifier("communicationsManager")
-    private CommunicationsManager communicationsManager;
+    private ObjectProvider<CommunicationsManager> communicationsManager;
 
     @Bean
     public SubmitController submitController() {
-        return new SubmitController(repositoryFactory, casUserProfileFactory, managementProperties, communicationsManager);
+        return new SubmitController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
+                managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean
     public PullController pullController() {
-        return new PullController(repositoryFactory, casUserProfileFactory, managementProperties, communicationsManager);
+        return new PullController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
+                managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean
     public NoteController noteController() {
-        return new NoteController(repositoryFactory, casUserProfileFactory);
+        return new NoteController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable());
     }
 
     @Bean
     public PendingRequests pendingRequests() {
         return (request, response) -> {
-            val user = casUserProfileFactory.from(request, response);
+            val user = casUserProfileFactory.getIfAvailable().from(request, response);
             if (user.isAdministrator()) {
-                val git = repositoryFactory.masterRepository();
+                val git = repositoryFactory.getIfAvailable().masterRepository();
                 try {
                     return (int) git.branches()
                             .map(git::mapBranches)

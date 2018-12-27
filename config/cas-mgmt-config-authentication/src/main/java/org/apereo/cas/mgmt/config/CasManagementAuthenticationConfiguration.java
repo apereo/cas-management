@@ -14,6 +14,7 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.client.direct.AnonymousClient;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -45,11 +46,11 @@ public class CasManagementAuthenticationConfiguration {
 
     @Autowired
     @Qualifier("authorizationGenerator")
-    private AuthorizationGenerator authorizationGenerator;
+    private ObjectProvider<AuthorizationGenerator> authorizationGenerator;
 
     @Autowired
     @Qualifier("staticAdminRolesAuthorizationGenerator")
-    private AuthorizationGenerator staticAdminRolesAuthorizationGenerator;
+    private ObjectProvider<AuthorizationGenerator> staticAdminRolesAuthorizationGenerator;
 
     @ConditionalOnMissingBean(name = "authenticationClients")
     @Bean
@@ -60,7 +61,7 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
             val cfg = new CasConfiguration(casProperties.getServer().getLoginUrl());
             val client = new DirectCasClient(cfg);
-            client.setAuthorizationGenerator(authorizationGenerator);
+            client.setAuthorizationGenerator(authorizationGenerator.getIfAvailable());
             client.setName("CasClient");
             clients.add(client);
         } else {
@@ -71,7 +72,7 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.info("Configuring an authentication strategy based on authorized IP addresses matching [{}]", managementProperties.getAuthzIpRegex());
             val ipClient = new IpClient(new IpRegexpAuthenticator(managementProperties.getAuthzIpRegex()));
             ipClient.setName("IpClient");
-            ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
+            ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getIfAvailable());
             clients.add(ipClient);
         } else {
             LOGGER.debug("Skipping IP address authentication strategy configuration; no pattern is defined");
@@ -81,7 +82,7 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.warn("No authentication strategy is defined, CAS will establish an anonymous authentication mode whereby access is immediately granted. "
                 + "This may NOT be relevant for production purposes. Consider configuring alternative authentication strategies for maximum security.");
             val anon = new AnonymousClient();
-            anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
+            anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getIfAvailable());
             clients.add(anon);
         }
         return clients;

@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt;
 import org.apereo.cas.mgmt.controller.ApplicationDataController;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +16,7 @@ import static org.junit.Assert.*;
 public class ApplicationDataControllerTests extends BaseCoreTests {
 
     @Autowired
+    @Qualifier("applicationDataController")
     private ApplicationDataController applicationDataController;
 
     @Test

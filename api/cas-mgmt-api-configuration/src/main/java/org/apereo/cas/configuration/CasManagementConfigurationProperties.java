@@ -1,18 +1,20 @@
 package org.apereo.cas.configuration;
 
-import org.apereo.cas.configuration.model.NotificationsProperties;
+import lombok.Getter;
+import lombok.Setter;
+import org.apereo.cas.configuration.model.BulkNotifications;
+import org.apereo.cas.configuration.model.DelegatedNotifications;
+import org.apereo.cas.configuration.model.RegisterNotifications;
+import org.apereo.cas.configuration.model.SubmissionNotifications;
 import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
+import org.apereo.cas.configuration.model.support.ldap.LdapAuthenticationProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
 import org.apereo.cas.util.CollectionUtils;
-
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.ClassUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,6 +69,12 @@ public class CasManagementConfigurationProperties implements Serializable {
     private Ldap ldap = new Ldap();
 
     /**
+     * LDAP for contact lookup.
+     */
+    private LdapAuthenticationProperties ldapAuth = new LdapAuthenticationProperties();
+
+
+    /**
      * Location of the resource that contains the authorized accounts.
      * This file lists the set of users that are allowed access to the CAS sensitive/admin endpoints.
      * The syntax of each entry should be in the form of:
@@ -86,7 +94,7 @@ public class CasManagementConfigurationProperties implements Serializable {
      * }
      * </pre>
      */
-    private transient Resource userPropertiesFile = new ClassPathResource("users.json");
+    private transient Resource userPropertiesFile = new ClassPathResource("user-details.properties");
 
     /**
      * Flag to enable/disable calling cas discovery endpoint.
@@ -102,6 +110,16 @@ public class CasManagementConfigurationProperties implements Serializable {
      * Properties for delegated mgmt.
      */
     private Delegated delegated = new Delegated();
+
+    /**
+     * Properties for submissions.
+     */
+    private Submissions submissions = new Submissions();
+
+    /**
+     * Properties for register.
+     */
+    private Register register = new Register();
 
     /**
      * Lucence directory for writting indexes.
@@ -137,8 +155,7 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Version Control flag.
          */
-        private boolean enabled = ClassUtils.isPresent("org.apereo.cas.mgmt.config.CasManagementVersionControlConfiguration",
-                this.getClass().getClassLoader());
+        private boolean enabled;
     }
 
     @Getter
@@ -153,13 +170,55 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Delegated auth flag.
          */
-        private boolean enabled = ClassUtils.isPresent("org.apereo.cas.mgmt.config.CasManagementDelegatedConfiguration", this.getClass().getClassLoader());
+        private boolean enabled;
 
         /**
          * Notifications.
          */
         @NestedConfigurationProperty
-        private NotificationsProperties notifications = new NotificationsProperties();
+        private DelegatedNotifications notifications = new DelegatedNotifications();
+    }
+
+    @Getter
+    @Setter
+    @RequiresModule(name = "cas-management-config-submissions")
+    public static class Submissions implements Serializable {
+        /**
+         * Directory to store submitted services.
+         */
+        private String submitDir = "/etc/cas/submitted";
+
+        /**
+         * Submissions flag.
+         */
+        private boolean enabled;
+
+        /**
+         * Notifications.
+         */
+        @NestedConfigurationProperty
+        private SubmissionNotifications notifications = new SubmissionNotifications();
+    }
+
+    @Getter
+    @Setter
+    @RequiresModule(name = "cas-management-config-register")
+    public static class Register implements Serializable {
+        /**
+         * Register enabled flag.
+         */
+        private boolean enabled;
+
+        /**
+         * Register Notifications.
+         */
+        private RegisterNotifications notifications = new RegisterNotifications();
+
+        /**
+         * Bulk action notifications.
+         */
+        private BulkNotifications bulkNotifications = new BulkNotifications();
+
     }
 }
 

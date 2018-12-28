@@ -1,0 +1,92 @@
+<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+  <div style="padding-top: 3px;">
+    <div>
+      <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
+      <h4 style="display: inline;position: relative;top: -5px;">
+        <ng-container i18n>
+          Add CAS Service
+        </ng-container>
+      </h4>
+    </div>
+  </div>
+</div>
+<div style="width:100%;text-align: center">You can visit <a href="" routerLink="/lookup">Look Up Services</a> to check existing services in the registry.</div>
+<div style="display: flex; flex-direction: column;margin-right:25px;margin-left:25px;">
+  <mat-card class="tabCard" style="max-width: 750px; min-width: 300px;">
+    <div class="cardContent" style="max-width: 600px;">
+      <div [formGroup]="form" autocomplete="false">
+        <mat-horizontal-stepper style="max-width: 600px; min-width: 250px;">
+          <mat-step label="Service Info"  [stepControl]="form.get('basics')">
+            <div [formGroup]="form.get('basics')">
+              <lib-service-id [control]="form.get('basics').get('serviceId')"
+                              [serviceType]="serviceType()"></lib-service-id>
+              <lib-servicename [control]="form.get('basics').get('name')"></lib-servicename>
+              <lib-servicedesc [control]="form.get('basics').get('description')"></lib-servicedesc>
+            </div>
+            <div style="display: flex; flex-direction: row;margin-top: 20px; width: 510px">
+              <div style="flex: 1 1 auto;"></div>
+              <button mat-icon-button matStepperNext type="button">
+              <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </mat-step>
+          <mat-step label="Contacts" [stepControl]="form.get('contacts')">
+            <lib-contacts [control]="form"></lib-contacts>
+            <div style="display: flex; flex-direction: row; margin-top: 30px; width: 510px">
+              <button mat-icon-button matStepperPrevious type="button">
+                <mat-icon>arrow_back</mat-icon>
+              </button>
+              <div style="flex: 1 1 auto"></div>
+              <button mat-icon-button matStepperNext type="button">
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </mat-step>
+          <mat-step label="Advanced" [stepControl]="form.get('advanced')">
+            <div style="padding-bottom: 15px;">
+              <mat-checkbox [formControl]="form.get('advanced').get('requiresDuo')">
+                <ng-container i18n>Requires Duo</ng-container>
+                <mat-icon style="font-size: medium"
+                          i18n-matTooltip
+                          matTooltip="Checking this box will require all users who sign into this to perform second factor authentication through Duo">help
+                </mat-icon>
+              </mat-checkbox>
+            </div>
+            <div style="padding-bottom: 15px;">
+              <mat-checkbox [formControl]="form.get('advanced').get('ssoEnabled')">
+                <ng-container i18n>Allow Single Sign-On</ng-container>
+              </mat-checkbox>
+              <mat-icon style="font-size: medium" i18n-matTooltip
+                        matTooltip="Decides whether this service is allowed to participate in SSO.">help
+              </mat-icon>
+            </div>
+            <lib-logouttypeeval [control]="form.get('advanced').get('logoutType')"></lib-logouttypeeval>
+            <lib-logout [control]="form.get('advanced').get('logoutUrl')"></lib-logout>
+            <div style="display: flex; flex-direction: row; margin-top: 20px; width: 510px;">
+              <button mat-icon-button matStepperPrevious type="button">
+                <mat-icon>arrow_back</mat-icon>
+              </button>
+              <div style="flex: 1 1 auto;"></div>
+              <button mat-icon-button matStepperNext type="button">
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </mat-step>
+          <mat-step label="Submit">
+            <div>
+              Confirm you submission for adding this service to the CAS Service Registry by pressing Submit.
+            </div>
+            <div style="display: flex; flex-direction: row; margin-top: 20px; width: 510px;">
+              <button mat-icon-button matStepperPrevious type="button">
+                <mat-icon>arrow_back</mat-icon>
+              </button>
+              <div style="flex: 1 1 auto;"></div>
+              <button mat-flat-button (click)="save()">Submit</button>
+            </div>
+            <div></div>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </div>
+    </div>
+  </mat-card>
+</div>

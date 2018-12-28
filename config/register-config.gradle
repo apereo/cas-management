@@ -1,0 +1,7 @@
+description "Apereo CAS Management Register Config"
+
+dependencies {
+    apply from: rootProject.file("config/submission-config.gradle")
+
+    implementation project(":config:cas-mgmt-config-register")
+}

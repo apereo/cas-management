@@ -50,4 +50,11 @@ public class RegisteredServiceItem implements Serializable {
      */
     private String status;
 
+    private boolean duo;
+    private boolean sso;
+    private String expires;
+    private String ucdRole;
+    private String submitter;
+    private String submitted;
+
 }

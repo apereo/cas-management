@@ -1,0 +1,139 @@
+<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
+  <div style="padding-top: 3px;">
+    <mat-icon style="padding-top: 3px;">apps</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;">
+      <ng-container i18n>
+        Your Services
+      </ng-container>
+    </h4>
+  </div>
+  <div style="flex: 1 1 auto">
+  </div>
+  <div style="display: inline-flex">
+    <button mat-button *ngIf="bulk" (click)="bulkAdd()">
+      <mat-icon>person_add</mat-icon>
+      <ng-container>Add Contacts</ng-container>
+    </button>
+    <button mat-button *ngIf="bulk" (click)="bulkUnclaim()">
+      <mat-icon>person_outline</mat-icon>
+      <ng-container i18n>Remove Me</ng-container>
+    </button>
+    <app-controls (refresh)="refresh()"
+                  [showBack]="false">
+    </app-controls>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
+  <mat-slide-toggle [(ngModel)]="bulk" (change)="clear()" style="width:50px;"
+                    matTooltip="When toggled on the table will be put into bulk selection mode and bulk options will be displayed in the control line."
+                    matTooltipPosition="above">
+  </mat-slide-toggle>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          <mat-checkbox #allSelect *ngIf="bulk" (change)="selectAll(allSelect.checked)"></mat-checkbox>
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button style="left:-10px;" mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row" *ngIf="!bulk">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-checkbox *ngIf="bulk" [(ngModel)]="row.selected"></mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'nameWidth'">
+        <ng-container i18n>
+          Name
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <a (click)="edit(row)">
+          {{ row.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'serviceIdWidth'">
+        <ng-container i18n>
+          Service Url
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceIdWidth'">
+        {{ row.serviceId }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'descriptionWidth'">
+        <ng-container i18n>
+          Description
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'descriptionWidth'">
+        {{ row.description }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="duo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'duoWidth'">
+        <ng-container i18n>Duo</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'duoWidth'">
+        <mat-icon *ngIf="row.duo">check_box</mat-icon>
+        <mat-icon *ngIf="!row.duo">check_box_outline_blank</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sso">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'duoWidth'">
+        <ng-container i18n>SSO</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'duoWidth'">
+        <mat-icon *ngIf="row.sso">check_box</mat-icon>
+        <mat-icon *ngIf="!row.sso">check_box_outline_blank</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="expires">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'expiresWidth'">
+        <ng-container i18n>Renewal</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'expiresWidth'">
+        {{ row.expires }}
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #serviceMenu>
+  <button mat-menu-item (click)="edit()">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>Edit</ng-container>
+  </button>
+  <button mat-menu-item (click)="remove()">
+    <mat-icon>delete</mat-icon>
+    <ng-container i18n>Delete</ng-container>
+  </button>
+  <!--
+  <button mat-menu-item (click)="renew()" *ngIf="showRenew()">
+    <mat-icon>restore</mat-icon>
+    <ng-container i18n>Renew</ng-container>
+  </button>
+  -->
+  <button mat-menu-item (click)="unclaim()">
+    <mat-icon>person_outline</mat-icon>
+    <ng-container i18n>Remove Me</ng-container>
+  </button>
+</mat-menu>

@@ -13,9 +13,21 @@ task buildClientDev(type: NpmTask, dependsOn: "buildLibrary",
   enabled = !Boolean.getBoolean("skipClientBuild")
 }
 
+task buildRegisterDev(type: NpmTask, dependsOn: "buildLibrary",
+  description: "Compile client side folder for development") {
+  args = ['run', 'build-register']
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
 task buildClient(type: NpmTask, dependsOn: "buildLibrary",
   description: "Compile client side folder for production") {
   args = ['run', 'build-management-prod']
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildRegister(type: NpmTask, dependsOn: "buildLibrary",
+  description: "Compile register client") {
+  args = ['run', 'build-register-prod']
   enabled = !Boolean.getBoolean("skipClientBuild")
 }
 

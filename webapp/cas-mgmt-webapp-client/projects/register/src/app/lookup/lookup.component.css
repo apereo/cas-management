@@ -1,0 +1,17 @@
+.actionWidth {
+    flex: 0 0 50px;
+}
+
+.serviceIdWidth {
+    flex: 0 1 325px;
+    margin-left: 10px;
+}
+
+.nameWidth {
+    flex: 0 1 325px;
+}
+
+.contactsWidth {
+    flex: 1 1 300px;
+    margin-left: 10px;
+}

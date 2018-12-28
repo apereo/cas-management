@@ -7,6 +7,8 @@
     "start": "ng serve",
     "build-management": "ng build",
     "build-management-prod": "ng build --prod",
+    "build-register": "ng build --project register",
+    "build-register-prod": "ng build --prod --project register",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

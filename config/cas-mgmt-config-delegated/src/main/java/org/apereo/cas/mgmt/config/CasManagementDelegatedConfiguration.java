@@ -5,6 +5,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.DelegatedUtil;
+import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.controller.NoteController;
 import org.apereo.cas.mgmt.controller.PullController;
 import org.apereo.cas.mgmt.controller.SubmitController;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * Configuration class for version control.
@@ -44,23 +46,33 @@ public class CasManagementDelegatedConfiguration {
 
     @Autowired
     @Qualifier("communicationsManager")
-    private ObjectProvider<CommunicationsManager> communicationsManager;
+    private CommunicationsManager communicationsManager;
+
+    @Autowired
+    @Qualifier("mailSender")
+    private ObjectProvider<JavaMailSender> mailSender;
+
 
     @Bean
     public SubmitController submitController() {
         return new SubmitController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
-                managementProperties, communicationsManager.getIfAvailable());
+                managementProperties, communicationsManager);
     }
 
     @Bean
     public PullController pullController() {
         return new PullController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
-                managementProperties, communicationsManager.getIfAvailable());
+                managementProperties, communicationsManager);
     }
 
     @Bean
     public NoteController noteController() {
         return new NoteController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable());
+    }
+
+    @Bean
+    public EmailManager emailManager() {
+        return new EmailManager(mailSender.getIfAvailable());
     }
 
     @Bean

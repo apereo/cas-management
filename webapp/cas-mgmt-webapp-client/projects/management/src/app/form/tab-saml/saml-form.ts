@@ -84,7 +84,7 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
         assertionAudiences: this.service.assertionAudiences
       },
       nameFormats: {
-        nameIds: (<AttributeForm>this.get('nameIds')).formMap()
+        nameIds: (<AttributeForm>this.get('nameFormats').get('nameIds')).formMap()
       }
     };
     return frm;
@@ -116,6 +116,6 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
     saml.signingCredentialType = frm.security.signingCredentialType;
     saml.requiredAuthenticationContextClass = frm.security.requiredAuthenticationContextClass;
     saml.assertionAudiences = frm.security.assertionAudiences;
-    saml.attributeNameFormats = (<AttributeForm>this.get('nameIds')).mapFormString();
+    saml.attributeNameFormats = (<AttributeForm>this.get('nameFormats').get('nameIds')).mapFormString();
   }
 }

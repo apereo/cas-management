@@ -135,7 +135,7 @@ export class PullComponent implements OnInit {
   }
 
   showSnackAndRefresh(msg: string) {
-    this.snackBar.open(msg, "Dismiss", {duration: 5000});
+    this.snackBar.open(msg, 'Dismiss', {duration: 5000});
     this.refresh();
   }
  }

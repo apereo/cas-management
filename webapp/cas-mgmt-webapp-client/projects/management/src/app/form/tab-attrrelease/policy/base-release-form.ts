@@ -15,7 +15,8 @@ export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleas
         excludeDefaultAttributes: new MgmtFormControl(null),
         authorizedToReleaseCredentialPassword: new MgmtFormControl(null),
         authorizedToReleaseProxyGrantingTicket: new MgmtFormControl(null),
-        authorizedToReleaseAuthenticationAttributes: new MgmtFormControl(null)
+        authorizedToReleaseAuthenticationAttributes: new MgmtFormControl(null),
+        principalIdAttribute: new MgmtFormControl(null)
       }),
       consent: new FormGroup({
         enabled: new MgmtFormControl(null),
@@ -39,7 +40,8 @@ export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleas
         excludeDefaultAttributes: policy.excludeDefaultAttributes,
         authorizedToReleaseCredentialPassword: policy.authorizedToReleaseCredentialPassword,
         authorizedToReleaseProxyGrantingTicket: policy.authorizedToReleaseProxyGrantingTicket,
-        authorizedToReleaseAuthenticationAttributes: policy.authorizedToReleaseAuthenticationAttributes
+        authorizedToReleaseAuthenticationAttributes: policy.authorizedToReleaseAuthenticationAttributes,
+        principalIdAttribute: policy.principalIdAttribute
       },
       consent: {
         enabled: policy.consentPolicy.enabled,
@@ -62,6 +64,7 @@ export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleas
     service.authorizedToReleaseCredentialPassword = frm.checks.authorizedToReleaseCredentialPassword;
     service.authorizedToReleaseProxyGrantingTicket = frm.checks.authorizedToReleaseProxyGrantingTicket;
     service.authorizedToReleaseAuthenticationAttributes = frm.checks.authorizedToReleaseAuthenticationAttributes;
+    service.principalIdAttribute = frm.checks.principalIdAttribute;
     service.consentPolicy.enabled = frm.consent.enabled;
     service.consentPolicy.includeOnlyAttributes = frm.consent.includeOnlyAttributes;
     service.consentPolicy.excludedAttributes = frm.consent.excludedAttributes;

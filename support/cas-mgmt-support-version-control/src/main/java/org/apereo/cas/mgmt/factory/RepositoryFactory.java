@@ -89,13 +89,10 @@ public class RepositoryFactory {
      * @return - GitUtil
      */
     public GitUtil clone(final String clone) {
-        try {
-            val uri = casProperties.getVersionControl().getServicesRepo() + REPO_DIR;
-            LOGGER.debug("Cloning repository [{}] to path [{}]", uri, clone);
-            return new GitUtil(Git.cloneRepository()
-                .setURI(uri)
-                .setDirectory(new File(clone))
-                .call());
+        val uri = casProperties.getVersionControl().getServicesRepo() + REPO_DIR;
+        LOGGER.debug("Cloning repository [{}] to path [{}]", uri, clone);
+        try (val git = Git.cloneRepository().setURI(uri).setDirectory(new File(clone)).call()) {
+                return new GitUtil(git);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             return null;

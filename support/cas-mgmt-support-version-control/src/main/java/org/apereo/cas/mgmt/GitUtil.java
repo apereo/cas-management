@@ -1258,16 +1258,12 @@ public class GitUtil implements AutoCloseable {
     @SneakyThrows
     private static Git initializeGitRepository(final File path, final boolean mustExist) {
         LOGGER.debug("Initializing git repository directory at [{}] with strict path checking [{}]", path, BooleanUtils.toStringOnOff(mustExist));
-        val builder = new FileRepositoryBuilder()
-            .setGitDir(path)
-            .setMustExist(mustExist)
-            .findGitDir()
-            .readEnvironment();
-        try {
-            return new Git(builder.build());
-        } catch (final RepositoryNotFoundException e) {
-            LOGGER.error("Git repository not found/initialized at [{}]", path.getCanonicalPath());
+        try (val git = new FileRepositoryBuilder()
+                .setGitDir(path)
+                .setMustExist(mustExist)
+                .findGitDir()
+                .readEnvironment().build()) {
+            return new Git(git);
         }
-        return null;
     }
 }

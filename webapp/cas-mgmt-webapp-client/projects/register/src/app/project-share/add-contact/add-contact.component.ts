@@ -23,15 +23,15 @@ export class AddContactComponent implements OnInit {
 
   ngOnInit() {
       this.selectedContact[0].name = '';
-      this.spinner.start('Looking up contact');
       this.lookupContact.pipe(
           debounceTime(500),
           distinctUntilChanged(),
           switchMap((query: string) => {
               if (query && query !== '' && query.length >= 3) {
-                  return this.user.lookupContact(query);
+                this.spinner.start('Looking Up Contact');
+                return this.user.lookupContact(query);
               } else {
-                  return Observable.create((observer) => observer.next([]));
+                return Observable.create((observer) => observer.next([]));
               }
           }),
           finalize(() => this.spinner.stop())

@@ -1,6 +1,8 @@
 description "Apereo CAS Management Default Core Config"
 
 dependencies {
+   // apply from: rootProject.file("config/iet-config.gradle")
+    implementation project(":config:cas-mgmt-config-iet")
     implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
     implementation project(":config:cas-mgmt-config-audit")
     implementation project(":config:cas-mgmt-config-authentication")

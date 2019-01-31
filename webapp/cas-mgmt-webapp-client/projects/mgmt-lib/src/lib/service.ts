@@ -4,7 +4,7 @@
 
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
 import {MatDialog} from '@angular/material';
 import {Injectable} from '@angular/core';
@@ -15,7 +15,7 @@ import {UnknownComponent} from '../lib/unknown/unknown.component';
 })
 export class Service {
 
-  base = '';
+  base = '../';
 
   constructor(protected http: HttpClient,
               protected dialog: MatDialog) {

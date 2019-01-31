@@ -41,7 +41,7 @@ export class SearchComponent implements OnInit {
     if (item) {
       this.selectedItem = item;
     }
-    this.router.navigate(['/form', this.selectedItem.assignedId]);
+    this.router.navigate(['/registry/form', this.selectedItem.assignedId]);
   }
 
   viewJson() {

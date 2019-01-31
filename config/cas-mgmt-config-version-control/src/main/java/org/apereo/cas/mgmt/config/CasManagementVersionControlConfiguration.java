@@ -4,6 +4,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.PendingRequests;
+import org.apereo.cas.mgmt.SubmissionRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ChangeController;
 import org.apereo.cas.mgmt.controller.CommitController;
@@ -51,6 +52,9 @@ public class CasManagementVersionControlConfiguration {
     private ObjectProvider<PendingRequests> pendingRequests;
 
     @Autowired
+    private ObjectProvider<SubmissionRequests> submissionRequests;
+
+    @Autowired
     @Qualifier("namingStrategy")
     private ObjectProvider<RegisteredServiceResourceNamingStrategy> namingStrategy;
 
@@ -69,7 +73,7 @@ public class CasManagementVersionControlConfiguration {
     @Bean
     public CommitController commitController() {
         return new CommitController(repositoryFactory(), casUserProfileFactory.getIfAvailable(),
-                managementProperties, servicesManager.getIfAvailable(), pendingRequests);
+                managementProperties, servicesManager.getIfAvailable(), pendingRequests, submissionRequests);
     }
 
     @Bean

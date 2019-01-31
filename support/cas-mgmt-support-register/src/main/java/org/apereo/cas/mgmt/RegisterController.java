@@ -235,7 +235,7 @@ public class RegisterController {
         val email = casUserProfile.getEmail();
         val manager = managerFactory.master();
         return manager.getAllServices().stream()
-                .filter(s -> s.getContacts().stream().anyMatch(c -> email.equals(c.getEmail())))
+                .filter(s -> s.getContacts().stream().anyMatch(c -> email != null && email.equals(c.getEmail())))
                 .map(s -> manager.createServiceItem(s))
                 .collect(toList());
     }
@@ -315,7 +315,7 @@ public class RegisterController {
             val email = new byte[100];
             Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
                     .read("original_author", ByteBuffer.wrap(email));
-            return new String(email, StandardCharsets.UTF_8).trim().split(":");
+            return new String(email).trim().split(":");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             return new String[] {"", ""};
@@ -367,6 +367,6 @@ public class RegisterController {
         val payload = casUserProfile.getEmail() + ":" + casUserProfile.getFirstName() + " "
                 + casUserProfile.getFamilyName();
         Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
-                .write("original_author", ByteBuffer.wrap(payload.getBytes(StandardCharsets.UTF_8)));
+                .write("original_author", ByteBuffer.wrap(payload.getBytes()));
     }
 }

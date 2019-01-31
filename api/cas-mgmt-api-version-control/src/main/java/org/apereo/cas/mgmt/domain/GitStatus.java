@@ -31,6 +31,11 @@ public class GitStatus implements Serializable {
     private int pullRequests;
 
     /**
+     * List of submissions to be reviewed.
+     */
+    private int submissions;
+
+    /**
      * List added files that are uncommitted.
      */
     private Set<String> added;

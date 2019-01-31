@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: './delegated/delegated.module#DelegatedModule'
   },
   {
+    path: 'submissions',
+    loadChildren: './submissions/submissions.module#SubmissionsModule'
+  },
+  {
     path: '',
     component: InitComponent
   }

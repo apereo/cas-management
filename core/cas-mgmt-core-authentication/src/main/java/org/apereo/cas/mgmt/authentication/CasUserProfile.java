@@ -48,6 +48,11 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     }
 
     @Override
+    public String getUsername() {
+        return findFirstMatchingAttribute("username|id");
+    }
+
+    @Override
     public String getFamilyName() {
         return findFirstMatchingAttribute(CommonProfileDefinition.FAMILY_NAME + "|familyName");
     }

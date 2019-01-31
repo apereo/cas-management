@@ -30,6 +30,14 @@
   <lib-mapped [control]="control"></lib-mapped>
 </ng-container>
 
+<ng-container *ngIf="typeControl.value == TYPE.SAML_LDAP">
+  <lib-saml-ldap [control]="control"></lib-saml-ldap>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value == TYPE.OAUTH">
+  <lib-oauth [control]="control"></lib-oauth>
+</ng-container>
+
 <ng-container *ngIf="typeControl.value == TYPE.METADATA" style="padding-top:25px;">
   <lib-metadata [control]="control"></lib-metadata>
 </ng-container>

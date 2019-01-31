@@ -17,6 +17,8 @@ import { RestfulComponent } from './policies/restful/restful.component';
 import { GroovySamlComponent } from './policies/groovy-saml/groovy-saml.component';
 import {FilterMappedComponent} from './filters/filter-mapped/filter-mapped.component';
 import {SharedModule} from '../../shared/shared.module';
+import {SamlLdapComponent} from './policies/saml-ldap/saml-ldap.component';
+import {OauthComponent} from './policies/oauth/oauth.component';
 
 @NgModule({
   imports: [
@@ -40,7 +42,9 @@ import {SharedModule} from '../../shared/shared.module';
     AllowedComponent,
     MetadataComponent,
     RestfulComponent,
-    GroovySamlComponent
+    GroovySamlComponent,
+    SamlLdapComponent,
+    OauthComponent
   ],
   exports: [
     ChecksComponent,

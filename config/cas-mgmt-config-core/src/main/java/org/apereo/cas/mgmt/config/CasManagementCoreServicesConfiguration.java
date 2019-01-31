@@ -1,7 +1,10 @@
 package org.apereo.cas.mgmt.config;
 
+import lombok.SneakyThrows;
+import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
@@ -13,6 +16,9 @@ import org.apereo.cas.mgmt.controller.DomainController;
 import org.apereo.cas.mgmt.controller.ServiceController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
+import org.apereo.cas.services.DefaultServicesManager;
+import org.apereo.cas.services.DomainServicesManager;
+import org.apereo.cas.services.JsonServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
@@ -27,6 +33,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.nio.file.Paths;
+import java.util.HashSet;
 
 /**
  * Configuration class for core services.
@@ -50,14 +59,16 @@ public class CasManagementCoreServicesConfiguration {
     @Qualifier("casUserProfileFactory")
     private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
+    /*
     @Autowired
     @Qualifier("servicesManager")
     private ObjectProvider<ServicesManager> servicesManager;
+    */
 
     @Bean
     @ConditionalOnMissingBean(name = "managerFactory")
     public MgmtManagerFactory managerFactory() {
-        return new ServicesManagerFactory(servicesManager.getIfAvailable(), namingStrategy());
+        return new ServicesManagerFactory(servicesManager(), namingStrategy());
     }
 
     @Bean
@@ -101,5 +112,18 @@ public class CasManagementCoreServicesConfiguration {
     @Bean
     public ContactLookupController contactLookupController() {
         return new ContactLookupController(contactLookup());
+    }
+
+    @SneakyThrows
+    private ServicesManager servicesManager() {
+        val path = casProperties.getServiceRegistry().getJson().getLocation().getFile().toPath();
+
+        val serviceRegistryDAO = new JsonServiceRegistry(path,
+                false, null, null, namingStrategy());
+        val manager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
+                ? new DomainServicesManager(serviceRegistryDAO, null, new HashSet<>())
+                : new DefaultServicesManager(serviceRegistryDAO, null, new HashSet<>()));
+        manager.load();
+        return manager;
     }
 }

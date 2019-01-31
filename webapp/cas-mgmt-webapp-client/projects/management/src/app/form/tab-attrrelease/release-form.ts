@@ -27,7 +27,9 @@ import {
   RegisteredServiceMutantRegexAttributeFilter,
   RegisteredServiceRegexAttributeFilter,
   RegisteredServiceReverseMappedRegexAttributeFilter,
-  RegisteredServiceScriptedAttributeFilter
+  RegisteredServiceScriptedAttributeFilter,
+  LdapSamlRegisteredServiceAttributeReleasePolicy,
+  OAuthAttributeReleasePolicy
 } from 'mgmt-lib';
 import {RestfulReleaseForm} from './policy/restful-release-form';
 import {ScriptReleaseForm} from './policy/script-release-form';
@@ -47,6 +49,8 @@ import {MutantMappedFilterForm} from './filter/mutant-mapped-filter-form';
 import {ScriptFilterForm} from './filter/script-filter-form';
 import {ChainingFilterForm} from './filter/chaining-filter-form';
 import {BaseFilterForm} from './filter/filter-form';
+import {SamlLdapReleaseForm} from '@app/form/tab-attrrelease/policy/saml-ldap-release-form';
+import {OAuthReleaseForm} from '@app/form/tab-attrrelease/policy/oauth-release-form';
 
 export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
@@ -106,6 +110,12 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
     }
     if (type === ReleasePolicyType.RETURN_ALL) {
       service.attributeReleasePolicy = new ReturnAllAttributeReleasePolicy();
+    }
+    if (type === ReleasePolicyType.SAML_LDAP) {
+      service.attributeReleasePolicy = new LdapSamlRegisteredServiceAttributeReleasePolicy();
+    }
+    if (type === ReleasePolicyType.OAUTH) {
+      service.attributeReleasePolicy = new OAuthAttributeReleasePolicy();
     }
     this.policy.mapForm(service.attributeReleasePolicy);
     if ((<ChainingFilterForm>this.filter).size() > 0) {
@@ -204,6 +214,16 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
       base.mapForm(policy);
       this.policy = new AllReleaseForm(policy);
     }
+    if (type === ReleasePolicyType.SAML_LDAP) {
+      const policy = new LdapSamlRegisteredServiceAttributeReleasePolicy();
+      base.mapForm(policy);
+      this.policy = new SamlLdapReleaseForm(policy);
+    }
+    if (type === ReleasePolicyType.OAUTH) {
+      const policy = new OAuthAttributeReleasePolicy();
+      base.mapForm(policy);
+      this.policy = new OAuthReleaseForm(policy);
+    }
     this.setControl('policy', this.policy);
   }
 
@@ -237,6 +257,12 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
     }
     if (type === ReleasePolicyType.WS_FED) {
       return new WsFedReleaseForm(this.releasePolicy as WsFederationClaimsReleasePolicy);
+    }
+    if (type === ReleasePolicyType.SAML_LDAP) {
+      return new SamlLdapReleaseForm(this.releasePolicy as LdapSamlRegisteredServiceAttributeReleasePolicy);
+    }
+    if (type === ReleasePolicyType.OAUTH) {
+      return new OAuthReleaseForm(this.releasePolicy as OAuthAttributeReleasePolicy);
     }
   }
 
@@ -299,6 +325,12 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
     }
     if (this.isWsFed || WsFederationClaimsReleasePolicy.instanceOf(policy)){
       return ReleasePolicyType.WS_FED;
+    }
+    if (LdapSamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
+      return ReleasePolicyType.SAML_LDAP;
+    }
+    if (OAuthAttributeReleasePolicy.instanceOf(policy)) {
+      return ReleasePolicyType.OAUTH;
     }
     return ReleasePolicyType.DENY_ALL;
   }

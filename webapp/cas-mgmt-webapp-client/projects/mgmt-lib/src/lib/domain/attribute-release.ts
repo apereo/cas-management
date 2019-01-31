@@ -158,6 +158,34 @@ export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAll
   }
 }
 
+export class LdapSamlRegisteredServiceAttributeReleasePolicy extends ReturnMappedAttributeReleasePolicy {
+  static cName =  'org.apereo.cas.support.saml.services.LdapSamlRegisteredServiceAttributeReleasePolicy';
+
+  static instanceOf(obj: any): boolean {
+    return obj && obj['@class'] === LdapSamlRegisteredServiceAttributeReleasePolicy.cName;
+  }
+
+  constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
+    super(policy);
+    const p: LdapSamlRegisteredServiceAttributeReleasePolicy = policy as LdapSamlRegisteredServiceAttributeReleasePolicy;
+    this['@class'] = LdapSamlRegisteredServiceAttributeReleasePolicy.cName;
+  }
+}
+
+export class OAuthAttributeReleasePolicy extends ReturnMappedAttributeReleasePolicy {
+  static cName =  'org.apereo.cas.support.oauth.services.OAuthAttributeReleasePolicy';
+
+  static instanceOf(obj: any): boolean {
+    return obj && obj['@class'] === OAuthAttributeReleasePolicy.cName;
+  }
+
+  constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
+    super(policy);
+    const p: OAuthAttributeReleasePolicy = policy as OAuthAttributeReleasePolicy;
+    this['@class'] = OAuthAttributeReleasePolicy.cName;
+  }
+}
+
 export class WsFederationClaimsReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
   static cName = 'org.apereo.cas.ws.idp.services.WsFederationClaimsReleasePolicy';
 
@@ -234,7 +262,9 @@ export enum ReleasePolicyType {
   METADATA,
   RESTFUL,
   GROOVY_SAML,
-  WS_FED
+  WS_FED,
+  SAML_LDAP,
+  OAUTH
 }
 
 export enum PrincipalRepoType {

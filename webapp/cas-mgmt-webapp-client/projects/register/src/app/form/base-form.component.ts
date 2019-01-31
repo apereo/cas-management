@@ -41,20 +41,19 @@ export class BaseFormComponent implements OnInit {
   }
 
   save() {
-    if (this.form.touched) {
-      if (this.validate() && this.mapForm()) {
-        this.saveInternal();
-      } else {
-        this.showErrors();
-        this.snackBar.open(
-          'Please correct errors before service can be submitted.',
-          'Dismiss',
-          {
-            duration: 5000
-          }
-        );
-      }
-
+    if (!this.form.touched) {
+      return;
+    }
+    if (this.validate()) {
+      this.mapForm();
+      this.saveInternal();
+    } else {
+      this.showErrors();
+      this.snackBar.open(
+        'Please correct errors before service can be submitted.',
+        'Dismiss',
+        { duration: 5000 }
+      );
     }
   }
 
@@ -87,13 +86,8 @@ export class BaseFormComponent implements OnInit {
     });
   }
 
-  mapForm(): boolean {
-    let touched = false;
-    if (this.form.invalid && this.form.touched) {
-      this.form.mapForm(this.data.service);
-      touched = true;
-    }
-    return touched;
+  mapForm() {
+    this.form.mapForm(this.data.service);
   }
 
   showSubmit() {

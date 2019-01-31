@@ -16,29 +16,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ForwardingController {
 
     /**
-     * Forwards requests that match client routes back to the client.
      *
      * @return string url
      */
     @RequestMapping({
-            "registry/domains",
-            "registry/services/{domain}",
-            "registry/search",
-            "registry/json/{id}",
-            "registry/yaml/{id}",
-            "registry/import",
-            "version-control/history/{fileName}",
-            "version-control/localChanges",
-            "version-control/changes/{branch}",
-            "version-control/repo-history",
-            "version-control/commit-history/{id}",
-            "form/edit/{id}",
-            "form/duplicate/{id}",
-            "form/view/{id}",
-            "form/importService",
-            "delegated/pulls",
-            "delegated/submits",
-            "delegated/notes/{id}"
+            "register/form/edit/{id}",
+            "register/form/wizard",
+            "register/services",
+            "register/lookup",
+            "register/pending"
+    })
+    public String forwardRegister() {
+        return "register/index.html";
+    }
+
+    /**
+     *
+     * @return string url
+     */
+    @RequestMapping({
+            "management/registry/domains",
+            "management/registry/services/{domain}",
+            "management/registry/search",
+            "management/registry/json/{id}",
+            "management/registry/yaml/{id}",
+            "management/registry/import",
+            "management/version-control/history/{fileName}",
+            "management/version-control/localChanges",
+            "management/version-control/changes/{branch}",
+            "management/version-control/repo-history",
+            "management/version-control/commit-history/{id}",
+            "management/form/edit/{id}",
+            "management/form/duplicate/{id}",
+            "management/form/view/{id}",
+            "management/form/importService",
+            "management/delegated/pulls",
+            "management/delegated/submits",
+            "management/delegated/notes/{id}",
+            "management/submissions"
     })
     public String forwardManagement() {
         return "index.html";

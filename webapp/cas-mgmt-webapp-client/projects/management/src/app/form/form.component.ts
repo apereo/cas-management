@@ -19,6 +19,7 @@ import {
   MgmtFormGroup,
   SpinnerService
 } from 'mgmt-lib';
+import {SubmissionsService} from '../submissions/submissions.service';
 import {ImportService} from '../registry/import/import.service';
 import {FormArray, FormGroup} from '@angular/forms';
 
@@ -65,6 +66,7 @@ export class FormComponent implements OnInit {
               private router: Router,
               private service: FormService,
               private importService: ImportService,
+              private submissionService: SubmissionsService,
               public data: DataRecord,
               private location: Location,
               public snackBar: MatSnackBar,
@@ -196,7 +198,16 @@ export class FormComponent implements OnInit {
     }
 
     this.data.service.id = id;
-    this.location.back();
+    if (this.imported && this.importService.submissionFile) {
+      this.spinner.start('Adding to registry');
+      this.submissionService.added(this.importService.submissionFile)
+        .pipe(finalize(() => this.spinner.stop()))
+        .subscribe(resp => {
+          this.location.back();
+        });
+    } else {
+      this.location.back();
+    }
   }
 
   handleNotSaved() {

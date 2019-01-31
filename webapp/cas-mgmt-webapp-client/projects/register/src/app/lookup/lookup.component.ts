@@ -153,7 +153,7 @@ export class LookupComponent implements OnInit {
       data: [type, msg],
       width: '500px',
       position: {top: '100px'}
-    });
+    }).afterClosed().subscribe(() => this.router.navigate(['pending']));
   }
 
   bulkUnclaim() {

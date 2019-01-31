@@ -26,13 +26,9 @@ export class WizardComponent extends BaseFormComponent {
   showErrors() {
     if (this.form.get('basics').invalid) {
       this.stepper.selectedIndex = 0;
-      return;
-    }
-    if (this.form.get('contacts').invalid) {
+    } else if (this.form.get('contacts').invalid) {
       this.stepper.selectedIndex = 1;
-      return;
-    }
-    if (this.form.get('advanced').invalid) {
+    } else if (this.form.get('advanced').invalid) {
       this.stepper.selectedIndex = 2;
     }
   }

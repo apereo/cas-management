@@ -20,7 +20,6 @@ export class ServicesResolve implements Resolve<ServiceItem[]> {
     this.spinner.start('Loading your services');
     return this.service.getServices()
       .pipe(
-        map(resp => resp && resp.length > 0 ? resp : null),
         finalize(() => this.spinner.stop())
       );
   }

@@ -15,7 +15,6 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./services.component.css']
 })
 export class ServicesComponent implements OnInit {
-  domain: string;
   selectedItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'duo', 'sso', 'expires'];
@@ -40,15 +39,10 @@ export class ServicesComponent implements OnInit {
   ngOnInit() {
     this.route.data
       .subscribe((data: { resp: ServiceItem[]}) => {
-        if (!data.resp || data.resp.length === 0) {
-          this.router.navigate(['form/wizard']);
-        } else {
           this.dataSource = new MatTableDataSource(data.resp);
           this.dataSource.paginator = this.paginator.paginator;
           this.dataSource.sort = this.sort;
-        }
       });
-    this.route.params.subscribe((params) => this.domain = params['domain']);
     this.breakObserver.observe(['(max-width: 499px)'])
       .subscribe(r => {
         if (r.matches) {

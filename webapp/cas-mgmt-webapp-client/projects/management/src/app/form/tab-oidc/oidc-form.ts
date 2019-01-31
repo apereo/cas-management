@@ -63,6 +63,6 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
     srv.idTokenEncryptionEncoding = frm.idTokenEncryptionEncoding;
     srv.subjectType = frm.subjectType;
     srv.sectorIdentifierUri = frm.sectorIdentifierUri;
-    srv.dynamicRegistrationDateTime = frm.oidc.dynamicRegistrationDateTime;
+    srv.dynamicRegistrationDateTime = frm.dynamicRegistrationDateTime;
   }
 }

@@ -48,7 +48,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "../resources/dist",
+            "outputPath": "../resources/dist/management",
             "index": "projects/management/src/index.html",
             "main": "projects/management/src/main.ts",
             "polyfills": "projects/management/src/polyfills.ts",
@@ -176,7 +176,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/register",
+            "outputPath": "../resources/dist/register",
             "index": "projects/register/src/index.html",
             "main": "projects/register/src/main.ts",
             "polyfills": "projects/register/src/polyfills.ts",
@@ -186,6 +186,7 @@
               "projects/register/src/assets"
             ],
             "styles": [
+              "projects/register/src/cas-theme.scss",
               "projects/register/src/styles.css"
             ],
             "scripts": []

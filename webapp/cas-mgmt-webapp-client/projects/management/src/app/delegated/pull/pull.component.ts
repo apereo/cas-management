@@ -6,8 +6,8 @@ import { Location } from '@angular/common';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ControlsService} from '@app/project-share';
 import {finalize} from 'rxjs/operators';
-import {AcceptComponent} from '../accept/accept.component';
-import {RejectComponent} from '../reject/reject.component';
+import {AcceptComponent} from '../../admin/accept/accept.component';
+import {RejectComponent} from '../../admin/reject/reject.component';
 
 @Component({
 
@@ -61,7 +61,7 @@ export class PullComponent implements OnInit {
     if (branch) {
       this.selectedBranch = branch;
     }
-    this.router.navigate(['/changes', this.selectedBranch.name]);
+    this.router.navigate(['../version-control/changes', this.selectedBranch.name]);
   }
 
   openAcceptModal() {
@@ -82,7 +82,7 @@ export class PullComponent implements OnInit {
     this.spinner.start('Accepting request');
     this.service.accept(this.acceptBranch, note)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(() => this.showSnackAndRefresh("Branch has been merged"));
+      .subscribe(() => this.showSnackAndRefresh('Branch has been merged'));
   }
 
   openRejectModal() {
@@ -135,7 +135,7 @@ export class PullComponent implements OnInit {
   }
 
   showSnackAndRefresh(msg: string) {
-    this.snackBar.open(msg, "Dismiss", {duration: 5000});
+    this.snackBar.open(msg, 'Dismiss', {duration: 5000});
     this.refresh();
   }
  }

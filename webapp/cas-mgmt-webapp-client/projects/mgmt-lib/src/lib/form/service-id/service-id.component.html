@@ -1,8 +1,11 @@
 <lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder>{{ prompt }}</mat-placeholder>
-    <input matInput pattern="^\S+" required [formControl]="control">
+    <input matInput libValidateServiceId pattern="^\S+" required [formControl]="control">
+    <mat-error i18n *ngIf="control.hasError('invalidUrl')">Invalid URL</mat-error>
+    <mat-error i18n *ngIf="control.hasError('invalidDomain')">You do not have permissions to create a service for the domain entered in the service id</mat-error>
     <mat-error i18n *ngIf="control.hasError('pattern')">Please remove any leading or trailing spaces from your service id.</mat-error>
+    <mat-error i18n *ngIf="control.hasError('noTls')">Please make sure your service url starts with 'https://'.</mat-error>
     <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip [matTooltip]="tip"></mat-icon>

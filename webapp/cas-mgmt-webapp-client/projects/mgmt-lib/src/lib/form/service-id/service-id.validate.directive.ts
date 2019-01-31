@@ -3,7 +3,7 @@ import {Directive} from '@angular/core';
 import {UserService} from '../../user.service';
 
 @Directive({
-    selector: '[appValidateServiceId]',
+    selector: '[libValidateServiceId]',
     providers: [{provide: NG_VALIDATORS, useExisting: ValidateServiceIdDirective, multi: true}]
 })
 
@@ -18,13 +18,13 @@ export class ValidateServiceIdDirective implements Validator {
 
   validate(control: AbstractControl): {[key: string]: any} {
     const val: string = control.value;
-    if (!this.isTls.test(val).valueOf()) {
-      return {'noTls': {value: val}};
-    }
-    if (!this.validUrl.test(val).valueOf()) {
-      return {'invalidUrl': {value: val}};
-    }
     if (!this.user.user.administrator) {
+      if (!this.isTls.test(val).valueOf()) {
+        return {'noTls': {value: val}};
+      }
+      if (!this.validUrl.test(val).valueOf()) {
+        return {'invalidUrl': {value: val}};
+      }
       if (!this.validateDomain(control.value)) {
         return {'invalidDomain': {value: control.value}};
       }

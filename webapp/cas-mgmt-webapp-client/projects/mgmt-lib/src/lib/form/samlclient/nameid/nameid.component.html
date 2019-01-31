@@ -11,17 +11,6 @@
 
 <lib-input>
   <mat-form-field class="textInput">
-    <mat-placeholder i18n>Required NameID Format</mat-placeholder>
-    <input matInput [formControl]="serviceProviderNameIdQualifier">
-    <mat-hint align="end"><lib-hint [difference]="serviceProviderNameIdQualifier.difference()"></lib-hint></mat-hint>
-  </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
-            matTooltip="Overwrite the SPNameQualifier attribute of the produced subject name id.">
-  </mat-icon>
-</lib-input>
-
-<lib-input>
-  <mat-form-field class="textInput">
     <mat-placeholder i18n>Name Qualifier</mat-placeholder>
     <input matInput [formControl]="nameIdQualifier">
     <mat-hint align="end"><lib-hint [difference]="nameIdQualifier.difference()"></lib-hint></mat-hint>

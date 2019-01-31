@@ -32,7 +32,7 @@ export class NavigationComponent {
               public snackBar: MatSnackBar) { }
 
     logout() {
-        window.location.href = 'logout.html';
+        window.location.href = '../logout.html';
     }
 
     isAdmin(): boolean {

@@ -14,11 +14,12 @@ export class SpinnerService {
               public snackBar: MatSnackBar) {
   }
 
-  start(msg?: string){
+  start(msg?: string) {
     this.timer = setTimeout(() => {
       this.snack = this.snackBar.openFromComponent(SpinnerComponent, {
         data: msg || 'Loading',
-        verticalPosition: 'top'
+        verticalPosition: 'top',
+        duration: 30000
       });
     }, 100);
   }

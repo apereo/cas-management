@@ -32,4 +32,12 @@ public interface MgmtManagerFactory<T extends ServicesManager> {
      * @return - GitServicesManager for the logged in user
      */
     T from(HttpServletRequest request, UserProfile user);
+
+    /**
+     * Returns the Master repository.
+     *
+     * @return GitServicesManager
+     * @throws Exception - failed
+     */
+    T master() throws Exception;
 }

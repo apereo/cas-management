@@ -14,6 +14,7 @@ export class ChecksComponent implements OnInit {
   authorizedToReleaseCredentialPassword: MgmtFormControl;
   authorizedToReleaseProxyGrantingTicket: MgmtFormControl;
   authorizedToReleaseAuthenticationAttributes: MgmtFormControl;
+  principalIdAttribute: MgmtFormControl;
 
 
   constructor() {
@@ -24,6 +25,7 @@ export class ChecksComponent implements OnInit {
     this.authorizedToReleaseCredentialPassword = this.control.get('authorizedToReleaseCredentialPassword') as MgmtFormControl;
     this.authorizedToReleaseProxyGrantingTicket = this.control.get('authorizedToReleaseProxyGrantingTicket') as MgmtFormControl;
     this.authorizedToReleaseAuthenticationAttributes = this.control.get('authorizedToReleaseAuthenticationAttributes') as MgmtFormControl;
+    this.principalIdAttribute = this.control.get('principalIdAttribute') as MgmtFormControl;
   }
 
 }

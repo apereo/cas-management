@@ -30,7 +30,7 @@ public class CasManagementSearchConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    @Qualifier("mgmtManagerFactory")
+    @Qualifier("managerFactory")
     private ObjectProvider<MgmtManagerFactory> mgmtManagerFactory;
 
     @Autowired

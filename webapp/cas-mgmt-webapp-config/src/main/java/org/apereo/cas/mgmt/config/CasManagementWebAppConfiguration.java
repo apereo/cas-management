@@ -5,11 +5,15 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ForwardingController;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
 import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
+import org.apereo.cas.services.RegisteredService;
+import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,16 +48,18 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
+import org.springframework.web.servlet.mvc.UrlFilenameViewController;
 import org.springframework.web.servlet.view.RedirectView;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 /**
@@ -85,6 +91,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Qualifier("managementWebappAuthorizer")
     private ObjectProvider<Authorizer> managementWebappAuthorizer;
 
+    @Autowired
+    private CasUserProfileFactory casUserProfileFactory;
 
     @Autowired
     private CasConfigurationProperties casProperties;
@@ -98,8 +106,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
             @Override
             protected ModelAndView handleRequestInternal(final HttpServletRequest request,
                                                          final HttpServletResponse response) {
-                val url = request.getContextPath() + "/management/index.html";
-                return new ModelAndView(new RedirectView(response.encodeURL(url)));
+                val url = request.getContextPath() + "/";
+                return new ModelAndView(new RedirectView(url));
             }
 
         };
@@ -109,14 +117,13 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Lazy
     public SimpleUrlHandlerMapping handlerMapping() {
         val mapping = new SimpleUrlHandlerMapping();
-
-        val root = rootController();
-        mapping.setOrder(1);
+        mapping.setOrder(0);
         mapping.setAlwaysUseFullPath(true);
-        mapping.setRootHandler(root);
-        val urls = new HashMap();
-        urls.put("/", root);
-        mapping.setUrlMap(urls);
+        mapping.setRootHandler(rootController());
+
+        val properties = new Properties();
+        properties.put("/*.html", new UrlFilenameViewController());
+        mapping.setMappings(properties);
         return mapping;
     }
 
@@ -153,8 +160,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(casManagementLocaleChangeInterceptor());
         registry.addInterceptor(casManagementSecurityInterceptor())
-            .addPathPatterns("/**")
-                .excludePathPatterns("/images/**", "/css/**", "callback*", "logout*", "authorizationFailure*", "error*");
+            .addPathPatterns("/**").excludePathPatterns("/callback*", "/logout*", "/authorizationFailure");
     }
 
     @Bean
@@ -179,28 +185,57 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public SpringResourceTemplateResolver casManagementTemplateResolver() {
+    @RefreshScope
+    public RegisteredServiceResourceNamingStrategy registeredServiceResourceNamingStrategy() {
+        return new RegisteredServiceResourceNamingStrategy() {
+            @Override
+            public String build(final RegisteredService service, final String extenstion) {
+                return "service-" + service.getId() + ".json";
+            }
+        };
+    }
+
+    @Bean
+    public SpringResourceTemplateResolver manageStaticTemplateResolver() {
         val resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
         resolver.setCacheable(false);
-        resolver.setOrder(0);
+        resolver.setOrder(1);
         resolver.setCheckExistence(true);
+        resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("management/**"));
         return resolver;
     }
 
+    @Bean SpringResourceTemplateResolver staticTemplateResolver() {
+        val resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(this.context);
+        resolver.setPrefix("classpath:/dist/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML");
+        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
+        resolver.setCacheable(false);
+        resolver.setOrder(1);
+        resolver.setCheckExistence(true);
+        resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("register/**"));
+        return resolver;
+    }
+
+
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/dist/", "classpath:/static/");
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/dist/", "classpath:/static/");
     }
 
     @Bean
     public ViewController viewController() {
         val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
+        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl),
+                                  casUserProfileFactory);
     }
 
     @Bean
@@ -225,7 +260,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
      */
     public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("management/index.html");
+            LOGGER.info("Cas Properties = " + casProperties + " Server properties = " + serverProperties);
+            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("register/index.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }

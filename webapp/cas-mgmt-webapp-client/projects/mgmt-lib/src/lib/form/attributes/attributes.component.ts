@@ -2,6 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {DataRecord} from '../data';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormArray, FormGroup} from '@angular/forms';
+import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 @Component({
   selector: 'lib-attributes',
@@ -20,6 +21,9 @@ export class AttributesComponent implements OnInit {
 
   @Input()
   arrayName: string;
+
+  @Input()
+  defaultToAttributeName: boolean;
 
   entries: FormArray;
 
@@ -40,6 +44,12 @@ export class AttributesComponent implements OnInit {
   delete(row: number) {
     this.entries.removeAt(row);
     this.control.markAsTouched();
+  }
+
+  selection(sel: MatAutocompleteSelectedEvent) {
+    if (this.defaultToAttributeName) {
+      this.entries.at(this.selectedRow).get('value').setValue(sel.option.value);
+    }
   }
 
 }

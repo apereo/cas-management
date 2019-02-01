@@ -40,6 +40,8 @@ import { TrackerComponent } from './tracker/tracker.component';
 import {TimeoutComponent} from './timeout/timeout.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ServiceInterceptor} from './interceptor';
+import {OauthComponent} from './form/attribute-release/policies/oauth/oauth.component';
+import {MappedComponent} from './form/attribute-release/policies/mapped/mapped.component';
 
 @NgModule({
   imports: [
@@ -129,7 +131,8 @@ import {ServiceInterceptor} from './interceptor';
     EnvironmentsComponent,
     SharedModule,
     TrackerComponent,
-    TimeoutComponent
+    TimeoutComponent,
+    MappedComponent
   ]
 })
 export class MgmtLibModule { }

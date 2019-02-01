@@ -49,3 +49,29 @@
     <mat-hint align="end"><lib-hint [difference]="generateRefreshToken.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Allowed Response Types</mat-placeholder>
+    <mat-select multiple [formControl]="responseTypes">
+      <mat-option *ngFor="let t of formData.options.oauth20ResponseTypes" [value]="t">{{ t }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Set of allowed response types that can be used with this service.  If no values are chosen all response types are allowed implicitly.">
+  </mat-icon>
+  <mat-hint align="end"><lib-hint [difference]="responseTypes.difference()"></lib-hint></mat-hint>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Allowed Grant Types</mat-placeholder>
+    <mat-select multiple [formControl]="grantTypes">
+      <mat-option *ngFor="let t of formData.options.oauth20GrantTypes" [value]="t">{{ t }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Set of allowed grant types that can be used with this service.  If no values are chosen all grant types are allowed implicitly.">
+  </mat-icon>
+  <mat-hint align="end"><lib-hint [difference]="grantTypes.difference()"></lib-hint></mat-hint>
+</lib-input>

@@ -42,7 +42,7 @@ export class ContactsComponent implements OnInit {
           return this.user.lookupContact(query)
             .pipe(finalize(() => this.spinner.stop()));
         } else {
-          return Observable.create((observer) => observer.next([]));
+          return new Observable((observer) => observer.next([]));
         }
       })
     ).subscribe((resp: DefaultRegisteredServiceContact[])  => this.foundContacts = resp);
@@ -55,11 +55,12 @@ export class ContactsComponent implements OnInit {
   }
 
   selection(sel: MatAutocompleteSelectedEvent ) {
-    const selection = sel.option.value as DefaultRegisteredServiceContact;
+    const selection = this.foundContacts.filter(c => c.name === sel.option.value)[0];
     const contact = this.contactsArray.at(this.selectedTab);
     contact.get('email').setValue(selection.email);
     contact.get('phone').setValue(selection.phone);
     contact.get('department').setValue(selection.department);
+    contact.get('name').setValue(selection.name);
     this.foundContacts = null;
   }
 

@@ -62,6 +62,17 @@ public class ViewController {
         return new ModelAndView("register/index", model);
     }
 
+    /**
+     * Mapped method to return the register.html.
+     *
+     * @return - ModelAndView
+     */
+    @GetMapping({"oauth/index.html", "oauth/", "oauth"})
+    public ModelAndView oauth() {
+        final Map<String, Object> model = new HashMap<>();
+        model.put(STATUS, HttpServletResponse.SC_OK);
+        return new ModelAndView("oauth/index", model);
+    }
 
     /**
      * Root mapping that navigates to managment or register depending on user role.

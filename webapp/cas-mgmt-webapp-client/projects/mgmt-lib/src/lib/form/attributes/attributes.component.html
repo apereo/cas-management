@@ -30,6 +30,6 @@
   <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
 </div>
 
-<mat-autocomplete #auto="matAutocomplete">
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)">
   <mat-option *ngFor="let opt of keys" [value]="opt">{{ opt }}</mat-option>
 </mat-autocomplete>

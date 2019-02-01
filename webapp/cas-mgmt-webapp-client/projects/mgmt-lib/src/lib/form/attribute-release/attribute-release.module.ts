@@ -53,7 +53,8 @@ import {OauthComponent} from './policies/oauth/oauth.component';
     OidcOptionsComponent,
     PoliciesComponent,
     PrincipalRepoComponent,
-    MappedComponent
+    MappedComponent,
+    OauthComponent
   ]
 })
 

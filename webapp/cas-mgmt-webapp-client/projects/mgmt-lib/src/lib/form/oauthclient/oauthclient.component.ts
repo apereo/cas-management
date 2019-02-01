@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../form-data.service';
 
 @Component({
   selector: 'lib-oauthclient',
@@ -15,8 +16,10 @@ export class OauthclientComponent implements OnInit {
   clientSecret: MgmtFormControl;
   bypassApprovalPrompt: MgmtFormControl;
   generateRefreshToken: MgmtFormControl;
+  responseTypes: MgmtFormControl;
+  grantTypes: MgmtFormControl;
 
-  constructor() {
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
@@ -24,6 +27,8 @@ export class OauthclientComponent implements OnInit {
     this.clientSecret = this.control.get('clientSecret') as MgmtFormControl;
     this.bypassApprovalPrompt = this.control.get('bypassApprovalPrompt') as MgmtFormControl;
     this.generateRefreshToken = this.control.get('generateRefreshToken') as MgmtFormControl;
+    this.responseTypes = this.control.get('responseTypes') as MgmtFormControl;
+    this.grantTypes = this.control.get('grantTypes') as MgmtFormControl;
   }
 
 }

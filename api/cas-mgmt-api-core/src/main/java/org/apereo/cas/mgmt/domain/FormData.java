@@ -8,6 +8,8 @@ import org.apereo.cas.services.OidcSubjectTypes;
 import org.apereo.cas.services.RegisteredServiceLogoutType;
 import org.apereo.cas.services.RegisteredServiceMultifactorPolicy;
 import org.apereo.cas.services.RegisteredServiceProperty;
+import org.apereo.cas.support.oauth.OAuth20GrantTypes;
+import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.ws.idp.WSFederationClaims;
 
@@ -123,6 +125,10 @@ public class FormData implements Serializable {
     public CaseCanonicalizationMode[] getCanonicalizationModes() {
         return CaseCanonicalizationMode.values();
     }
+
+    public OAuth20GrantTypes[] getOauth20GrantTypes() { return OAuth20GrantTypes.values(); }
+
+    public OAuth20ResponseTypes[] getOauth20ResponseTypes() { return OAuth20ResponseTypes.values(); }
 
     private static List<String> locateKeyAlgorithmsSupported() {
         return CollectionUtils.wrapList(

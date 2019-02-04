@@ -30,8 +30,8 @@ public class CasManagementSearchConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    @Qualifier("mgmtManagerFactory")
-    private ObjectProvider<MgmtManagerFactory> mgmtManagerFactory;
+    @Qualifier("managerFactory")
+    private ObjectProvider<MgmtManagerFactory> managerFactory;
 
     @Autowired
     @Qualifier("casUserProfileFactory")
@@ -39,6 +39,6 @@ public class CasManagementSearchConfiguration {
 
     @Bean
     public LuceneSearch luceneSearch() {
-        return new LuceneSearch(mgmtManagerFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(), managementProperties);
+        return new LuceneSearch(managerFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(), managementProperties);
     }
 }

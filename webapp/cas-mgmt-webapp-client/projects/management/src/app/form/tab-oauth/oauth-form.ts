@@ -14,6 +14,8 @@ export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegist
       clientSecret: new MgmtFormControl(null, null, Validators.required),
       bypassApprovalPrompt: new MgmtFormControl(null),
       generateRefreshToken: new MgmtFormControl(null),
+      responseTypes: new MgmtFormControl(null),
+      grantTypes: new MgmtFormControl(null)
     });
     this.setValue(this.formMap());
   }
@@ -24,6 +26,8 @@ export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegist
       clientSecret: this.service.clientSecret,
       bypassApprovalPrompt: this.service.bypassApprovalPrompt,
       generateRefreshToken: this.service.generateRefreshToken,
+      responseTypes: this.service.supportedResponseTypes,
+      grantTypes: this.service.supportedGrantTypes
     }
   }
 
@@ -34,5 +38,7 @@ export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegist
     srv.bypassApprovalPrompt = frm.bypassApprovalPrompt;
     srv.clientSecret = frm.clientSecret;
     srv.clientId = frm.clientId;
+    srv.supportedResponseTypes = frm.responseTypes;
+    srv.supportedGrantTypes = frm.grantTypes;
   }
 }

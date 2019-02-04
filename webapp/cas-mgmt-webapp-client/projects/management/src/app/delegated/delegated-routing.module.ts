@@ -1,30 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {PullComponent} from './pull/pull.component';
-import {PullResolver} from './pull/pull.resolver';
-import {SubmitsComponent} from './submits/submits.component';
-import {SubmitsResolver} from './submits/submits.resolver';
-import {NotesComponent} from './notes/notes.component';
 
 const routes: Routes = [
   {
     path: 'pulls',
-    component: PullComponent,
-    resolve: {
-      resp: PullResolver
-    }
+    loadChildren: './pull/pull.module#PullModule'
   },
   {
     path: 'submits',
-    component: SubmitsComponent,
-    resolve: {
-      resp: SubmitsResolver
-    }
+    loadChildren: './submits/submits.module#SubmitsModule'
   },
-
   {
-    path: 'notes/:id',
-    component: NotesComponent
+    path: 'notes',
+    loadChildren: './notes/notes.module#NotesModule'
   },
 ];
 

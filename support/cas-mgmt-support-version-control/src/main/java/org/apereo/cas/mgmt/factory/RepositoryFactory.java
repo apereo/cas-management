@@ -52,7 +52,7 @@ public class RepositoryFactory {
     @SneakyThrows
     public GitUtil from(final CasUserProfile user) {
         if (user.isAdministrator()) {
-            LOGGER.debug("User [{}] is not an administrator. Loading objects from master repository", user);
+            LOGGER.debug("User [{}] is an administrator. Loading objects from master repository", user);
             return masterRepository();
         }
         val path = Paths.get(casProperties.getDelegated().getUserReposDir() + '/' + user.getId());

@@ -1,52 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {DomainsComponent} from './domains/domains.component';
-import {DomainsResolver} from './domains/domains.resolver';
-import {ServicesComponent} from './services/services.component';
-import {ServicesResolve} from './services/services.resolover';
-import {SearchComponent} from './search/search.component';
-import {JSONComponent} from './json/json.component';
-import {JSONResolver} from './json/json.resolover';
-import {YamlComponent} from './yaml/yaml.component';
-import {YamlResolver} from './yaml/yaml.resolover';
-import {ImportComponent} from './import/import.component';
 
 const routes: Routes = [
   {
     path: 'domains',
-    component: DomainsComponent,
-    resolve: {
-      resp: DomainsResolver
-    }
+    loadChildren: './domains/domains.module#DomainsModule'
   },
   {
-    path: 'services/:domain',
-    component: ServicesComponent,
-    resolve: {
-      resp: ServicesResolve
-    }
+    path: 'services',
+    loadChildren: './services/services.module#ServicesModule'
   },
   {
     path: 'search',
-    component: SearchComponent
+    loadChildren: './search/search.module#SearchModule'
   },
   {
-    path: 'json/:id',
-    component: JSONComponent,
-    resolve: {
-      resp: JSONResolver
-    }
+    path: 'json',
+    loadChildren: './json/json.module#JsonModule'
   },
   {
-    path: 'yaml/:id',
-    component: YamlComponent,
-    resolve: {
-      resp: YamlResolver
-    }
+    path: 'yaml',
+    loadChildren: './yaml/yaml.module#YamlModule'
   },
   {
     path: 'import',
-    component: ImportComponent
+    loadChildren: './import/import.module#ImportModule'
   }
 ];
 

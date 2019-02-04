@@ -55,7 +55,7 @@ public class CasManagementVersionControlConfiguration {
     private ObjectProvider<RegisteredServiceResourceNamingStrategy> namingStrategy;
 
 
-    @Bean
+    @Bean(name = "managerFactory")
     public MgmtManagerFactory managerFactory() {
         return new VersionControlManagerFactory(servicesManager.getIfAvailable(), managementProperties,
                 repositoryFactory(), casUserProfileFactory.getIfAvailable(), casProperties, namingStrategy.getIfAvailable());

@@ -41,11 +41,11 @@ export class SearchComponent implements OnInit {
     if (item) {
       this.selectedItem = item;
     }
-    this.router.navigate(['/form', this.selectedItem.assignedId]);
+    this.router.navigate(['form/edit', this.selectedItem.assignedId]);
   }
 
   viewJson() {
-    this.spinner.start("Loading json");
+    this.spinner.start('Loading json');
     this.service.getJson(+this.selectedItem.assignedId)
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'hjson', 'eclipse'));

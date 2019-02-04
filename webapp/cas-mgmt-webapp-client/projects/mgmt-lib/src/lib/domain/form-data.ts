@@ -20,6 +20,8 @@ export class FormData {
     oidcSubjectTypes: PropertyEnum[];
     canonicalizationModes: string[];
     delegatedAuthnProviders: string[];
+    oauth20GrantTypes: string[];
+    oauth20ResponseTypes: string[];
 }
 
 export interface PropertyEnum {

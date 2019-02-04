@@ -1,7 +1,7 @@
 /**
  * Created by tschmidt on 2/23/17.
  */
-import { NgModule } from '@angular/core'
+import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {InitComponent} from '@app/core';
 

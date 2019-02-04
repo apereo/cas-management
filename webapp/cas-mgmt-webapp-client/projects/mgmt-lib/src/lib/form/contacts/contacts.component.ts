@@ -45,7 +45,8 @@ export class ContactsComponent implements OnInit {
           return new Observable((observer) => observer.next([]));
         }
       })
-    ).subscribe((resp: DefaultRegisteredServiceContact[])  => this.foundContacts = resp);
+    ).subscribe((resp: DefaultRegisteredServiceContact[])  => this.foundContacts = resp,
+      error => this.foundContacts = []);
   }
 
   doLookupContact(val: string) {

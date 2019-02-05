@@ -15,7 +15,6 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
       bypassApprovalPrompt: new MgmtFormControl(null),
       generateRefreshToken: new MgmtFormControl(null),
       jwks: new MgmtFormControl(null, null, Validators.required),
-      scopes_userdefined: new MgmtFormControl(null),
       signIdToken: new MgmtFormControl(null),
       implicit: new MgmtFormControl(null),
       encryptIdToken: new MgmtFormControl(null),
@@ -23,7 +22,9 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
       idTokenEncryptionEncoding: new MgmtFormControl(null, null, Validators.required),
       subjectType: new MgmtFormControl(null),
       sectorIdentifierUri: new MgmtFormControl(null),
-      dynamicRegistrationDateTime: new MgmtFormControl(null)
+      dynamicRegistrationDateTime: new MgmtFormControl(null),
+      responseTypes: new MgmtFormControl(null),
+      grantTypes: new MgmtFormControl(null)
     });
     this.setValue(this.formMap());
   }
@@ -35,7 +36,6 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
       bypassApprovalPrompt: this.service.bypassApprovalPrompt,
       generateRefreshToken: this.service.generateRefreshToken,
       jwks: this.service.jwks,
-      scopes_userdefined: this.service.scopes_userdefined,
       signIdToken: this.service.signIdToken,
       implicit: this.service.implicit,
       encryptIdToken: this.service.encryptIdToken,
@@ -43,7 +43,9 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
       idTokenEncryptionEncoding: this.service.idTokenEncryptionEncoding,
       subjectType: this.service.subjectType,
       sectorIdentifierUri: this.service.sectorIdentifierUri,
-      dynamicRegistrationDateTime: this.service.dynamicRegistrationDateTime
+      dynamicRegistrationDateTime: this.service.dynamicRegistrationDateTime,
+      responseTypes: this.service.supportedResponseTypes,
+      grantTypes: this.service.supportedGrantTypes
     }
   }
 
@@ -55,7 +57,6 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
     srv.bypassApprovalPrompt = frm.bypassApprovalPrompt;
     srv.generateRefreshToken = frm.generateRefreshToken;
     srv.jwks = frm.jwks;
-    srv.scopes_userdefined = frm.scopes_userdefined;
     srv.signIdToken = frm.signIdToken;
     srv.implicit = frm.implicit;
     srv.encryptIdToken = frm.encryptIdToken;
@@ -64,5 +65,7 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
     srv.subjectType = frm.subjectType;
     srv.sectorIdentifierUri = frm.sectorIdentifierUri;
     srv.dynamicRegistrationDateTime = frm.dynamicRegistrationDateTime;
+    srv.supportedResponseTypes = frm.responseTypes;
+    srv.supportedGrantTypes = frm.grantTypes;
   }
 }

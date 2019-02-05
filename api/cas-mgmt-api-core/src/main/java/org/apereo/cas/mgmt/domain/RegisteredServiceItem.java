@@ -56,5 +56,6 @@ public class RegisteredServiceItem implements Serializable {
     private String ucdRole;
     private String submitter;
     private String submitted;
+    private String cName;
 
 }

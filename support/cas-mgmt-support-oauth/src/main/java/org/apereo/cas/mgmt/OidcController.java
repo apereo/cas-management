@@ -1,30 +1,22 @@
 package org.apereo.cas.mgmt;
 
 import lombok.Data;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.core.appender.ManagerFactory;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.RegisterNotifications;
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.LookupServiceItem;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
-import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
-import org.apereo.cas.services.AbstractRegisteredService;
-import org.apereo.cas.services.DefaultRegisteredServiceExpirationPolicy;
+import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.DigestUtils;
-
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,16 +33,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
-import java.text.MessageFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,9 +51,9 @@ import static java.util.stream.Collectors.toList;
  * @since 5.3.0
  */
 @RestController("casManagementRegisterController")
-@RequestMapping(path = "api/oauth", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/oidc", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-public class OauthController {
+public class OidcController {
 
     private final CasUserProfileFactory casUserProfileFactory;
     private final MgmtManagerFactory<ManagementServicesManager> managerFactory;
@@ -74,11 +62,11 @@ public class OauthController {
     private final ServicesManager published;
     private final RegisterNotifications notifications;
 
-    public OauthController(final CasUserProfileFactory casUserProfileFactory,
-                           final MgmtManagerFactory managerFactory,
-                           final CasManagementConfigurationProperties managementProperties,
-                           //final EmailManager communicationsManager,
-                           final ServicesManager published){
+    public OidcController(final CasUserProfileFactory casUserProfileFactory,
+                          final MgmtManagerFactory managerFactory,
+                          final CasManagementConfigurationProperties managementProperties,
+                          //final EmailManager communicationsManager,
+                          final ServicesManager published){
         this.casUserProfileFactory = casUserProfileFactory;
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
@@ -133,7 +121,7 @@ public class OauthController {
     @Data
     private static class DataPair {
         private Long left;
-        private OAuthRegisteredService right;
+        private OidcRegisteredService right;
     }
 
     /*
@@ -200,11 +188,7 @@ public class OauthController {
         return manager.getAllServices().stream()
                 .filter(s -> s instanceof OAuthRegisteredService)
                 .filter(s -> s.getContacts().stream().anyMatch(c -> email != null && email.equals(c.getEmail())))
-                .map(s -> {
-                    val si = manager.createServiceItem(s);
-                    si.setCName(s.getClass().getName());
-                    return si;
-                })
+                .map(s -> manager.createServiceItem(s))
                 .collect(toList());
     }
 

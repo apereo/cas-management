@@ -12,13 +12,9 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
     super({
       contacts: new FormArray([])
     });
-  }
-
-  init() {
-    const contacts = new FormArray([]);
     if (this.service.contacts) {
       for (let i = 0; i < this.service.contacts.length; i++) {
-        contacts.push(this.createContact());
+        (<FormArray>this.get('contacts')).push(this.createContact());
       }
     }
     this.setValue(this.formMap());
@@ -75,6 +71,6 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
         phone: new MgmtFormControl(contact.phone),
         department: new MgmtFormControl(contact.department)
       })
-    )
+    );
   }
 }

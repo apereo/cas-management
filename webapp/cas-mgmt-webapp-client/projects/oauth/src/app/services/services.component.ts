@@ -54,7 +54,11 @@ export class ServicesComponent implements OnInit {
     if (item) {
       this.selectedItem = item;
     }
-    this.router.navigate(['form/oauth', this.selectedItem.assignedId]);
+    if (this.selectedItem.cname.indexOf('oauth') > -1) {
+      this.router.navigate(['form/oauth', this.selectedItem.assignedId]);
+    } else {
+      this.router.navigate(['form/oidc', this.selectedItem.assignedId]);
+    }
   }
 
   remove() {

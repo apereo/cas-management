@@ -52,6 +52,32 @@
 
 <lib-input>
   <mat-form-field class="textInput">
+    <mat-placeholder i18n>Allowed Response Types</mat-placeholder>
+    <mat-select multiple [formControl]="responseTypes">
+      <mat-option *ngFor="let t of formData.options.oauth20ResponseTypes" [value]="t">{{ t }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Set of allowed response types that can be used with this service.  If no values are chosen all response types are allowed implicitly.">
+  </mat-icon>
+  <mat-hint align="end"><lib-hint [difference]="responseTypes.difference()"></lib-hint></mat-hint>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Allowed Grant Types</mat-placeholder>
+    <mat-select multiple [formControl]="grantTypes">
+      <mat-option *ngFor="let t of formData.options.oauth20GrantTypes" [value]="t">{{ t }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon appHelp i18n-matTooltip
+            matTooltip="Set of allowed grant types that can be used with this service.  If no values are chosen all grant types are allowed implicitly.">
+  </mat-icon>
+  <mat-hint align="end"><lib-hint [difference]="grantTypes.difference()"></lib-hint></mat-hint>
+</lib-input>
+
+<lib-input *ngIf="!hideKeys">
+  <mat-form-field class="textInput">
     <mat-placeholder i18n>JSON Web Keystore</mat-placeholder>
     <input matInput required [formControl]="jwks">
     <mat-hint align="end"><lib-hint [difference]="jwks.difference()"></lib-hint></mat-hint>
@@ -60,19 +86,6 @@
             matTooltip="Location of the JSON web keystore to sign id tokens with.">
   </mat-icon>
 </lib-input>
-
-<ng-container *ngIf="user_defined">
-  <lib-input>
-    <mat-form-field class="textInput">
-      <mat-placeholder i18n>User Defined Scopes</mat-placeholder>
-      <input matInput [formControl]="scopes_userdefined"/>
-    </mat-form-field>
-    <mat-hint align="end"><lib-hint [difference]="scopes_userdefined.difference()"></lib-hint></mat-hint>
-    <mat-icon appHelp i18n-matTooltip
-              matTooltip="List any custom defined scopes that should be released.">
-    </mat-icon>
-  </lib-input>
-</ng-container>
 
 <lib-input>
   <mat-checkbox [formControl]="signIdToken">
@@ -104,7 +117,7 @@
   </mat-checkbox>
 </lib-input>
 
-<lib-input>
+<lib-input *ngIf="!hideKeys">
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Encryption Algorithm</mat-placeholder>
     <input matInput required [matAutocomplete]="encryptAlgAuto"
@@ -119,7 +132,7 @@
   </mat-autocomplete>
 </lib-input>
 
-<lib-input>
+<lib-input *ngIf="!hideKeys">
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Encryption Encoding Algorithm</mat-placeholder>
     <input matInput required [matAutocomplete]="encodingAlgAuto"
@@ -134,7 +147,7 @@
   </mat-autocomplete>
 </lib-input>
 
-<lib-input>
+<lib-input *ngIf="!hideKeys">
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Subject Type</mat-placeholder>
     <mat-select [formControl]="subjectType">

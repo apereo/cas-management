@@ -16,7 +16,7 @@
         <mat-icon>add_circle</mat-icon>
         <span i18n>Add OAuth Service</span>
       </a>
-      <a mat-list-item disabled="true" (click)="drawer.mode === 'over' ? drawer.close() : ''">
+      <a mat-list-item routerLink="form/oidc/-1" (click)="drawer.mode === 'over' ? drawer.close() : ''">
         <mat-icon>add_circle</mat-icon>
         <span i18n>Add OIDC Service</span>
       </a>

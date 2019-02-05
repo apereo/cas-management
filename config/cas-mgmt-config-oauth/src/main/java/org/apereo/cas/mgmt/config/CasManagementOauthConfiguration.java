@@ -5,6 +5,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.OauthController;
+import org.apereo.cas.mgmt.OidcController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
@@ -45,6 +46,11 @@ public class CasManagementOauthConfiguration {
     public OauthController oauthController() {
         return new OauthController(casUserProfileFactory, managerFactory,
                 managementProperties, servicesManager);
+    }
+
+    @Bean
+    public OidcController oidcController() {
+        return new OidcController(casUserProfileFactory, managerFactory, managementProperties, servicesManager);
     }
 
 }

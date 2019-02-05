@@ -12,4 +12,5 @@ export class ServiceItem {
   submitter: string;
   submitted: string;
   selected: boolean;
+  cname: string;
 }

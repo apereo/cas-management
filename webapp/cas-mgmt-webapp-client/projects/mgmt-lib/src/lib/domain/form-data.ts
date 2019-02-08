@@ -22,6 +22,8 @@ export class FormData {
     delegatedAuthnProviders: string[];
     oauth20GrantTypes: string[];
     oauth20ResponseTypes: string[];
+    samlIdpAttributes: string[];
+    samlIdpFriendlyNames: Map<string, string>;
 }
 
 export interface PropertyEnum {

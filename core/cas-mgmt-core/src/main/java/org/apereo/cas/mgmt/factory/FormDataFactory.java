@@ -8,6 +8,7 @@ import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
+import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.HttpUtils;
 import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
 
@@ -56,6 +57,8 @@ public class FormDataFactory {
         loadMfaProviders(formData);
         loadDelegatedClientTypes(formData);
         loadAvailableAttributes(formData);
+        loadSamlIdpAttributes(formData);
+        loadSamlIdpFriendyNames(formData);
         return formData;
     }
 
@@ -159,5 +162,14 @@ public class FormDataFactory {
         } else {
             formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames());
         }
+    }
+
+    private void loadSamlIdpAttributes(final FormData formData) {
+        formData.setSamlIdpAttributes(
+                new HashSet(casProperties.getAuthn().getSamlIdp().getLdap().getAttributes().values()));
+    }
+
+    private void loadSamlIdpFriendyNames(final FormData formData) {
+        formData.setSamlIdpFriendlyNames(casProperties.getAuthn().getSamlIdp().getFriendlyNames());
     }
 }

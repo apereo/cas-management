@@ -23,8 +23,10 @@ import org.springframework.http.HttpStatus;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -67,6 +69,10 @@ public class FormData implements Serializable {
     private List<Option> mfaProviders = new ArrayList<>();
 
     private Set<String> delegatedAuthnProviders = new HashSet<>();
+
+    private Set<String> samlIdpAttributes = new HashSet<>();
+
+    private Map<String, String> samlIdpFriendlyNames = new HashMap<>();
 
     public RegisteredServiceProperty.RegisteredServiceProperties[] getRegisteredServiceProperties() {
         return RegisteredServiceProperty.RegisteredServiceProperties.values();

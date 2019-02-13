@@ -1,0 +1,19 @@
+description "Apereo CAS Management Support OAuth"
+
+dependencies {
+    compile fileTree(dir:'/home/tsschmi/sources/aggregator-cli-0.9.2/lib',include:'aggr*.jar', exclude:'spring-*')
+    implementation libraries.git
+    implementation libraries.casServer.saml
+    implementation libraries.shibboleth
+    
+    api project(":api:cas-mgmt-api-core")
+    api project(":api:cas-mgmt-api-version-control")
+    api project(":api:cas-mgmt-api-delegated")
+    
+    implementation project(":core:cas-mgmt-core")
+    implementation project(":support:cas-mgmt-support-version-control")
+    implementation project(":support:cas-mgmt-support-delegated")
+    implementation project(":core:cas-mgmt-core-authentication")
+    implementation project(":core:cas-mgmt-core-util")
+    
+}

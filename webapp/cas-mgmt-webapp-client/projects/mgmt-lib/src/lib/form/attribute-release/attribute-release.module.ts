@@ -54,7 +54,8 @@ import {OauthComponent} from './policies/oauth/oauth.component';
     PoliciesComponent,
     PrincipalRepoComponent,
     MappedComponent,
-    OauthComponent
+    OauthComponent,
+    SamlLdapComponent
   ]
 })
 

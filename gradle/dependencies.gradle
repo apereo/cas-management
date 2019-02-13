@@ -690,5 +690,6 @@ ext.libraries = [
                 dependencies.create("org.apache.lucene:lucene-core:7.5.0"),
                 dependencies.create("org.apache.lucene:lucene-queryparser:7.5.0"),
                 dependencies.create("org.apache.lucene:lucene-analyzers-common:7.5.0")
-        ]
+        ],
+        shibboleth             : dependencies.create("net.shibboleth.utilities:java-support:7.3.0")
 ]

@@ -126,6 +126,11 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private String luceneIndexDir = "/etc/cas/lucene";
 
+    /**
+     * Directory for storing SAML Metadata.
+     */
+    private String metadataDir = "/etc/cas/metadata";
+
     @Getter
     @Setter
     @RequiresModule(name = "cas-management-config-ldap-authz")

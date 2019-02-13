@@ -75,6 +75,18 @@ public class ViewController {
     }
 
     /**
+     * Mapped method to return the register.html.
+     *
+     * @return - ModelAndView
+     */
+    @GetMapping({"saml/index.html", "saml/", "saml"})
+    public ModelAndView saml() {
+        final Map<String, Object> model = new HashMap<>();
+        model.put(STATUS, HttpServletResponse.SC_OK);
+        return new ModelAndView("saml/index", model);
+    }
+
+    /**
      * Root mapping that navigates to managment or register depending on user role.
      *
      * @param request - the request

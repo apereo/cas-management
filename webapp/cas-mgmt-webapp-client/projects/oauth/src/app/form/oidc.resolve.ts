@@ -2,10 +2,8 @@ import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/rou
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
 import {finalize} from 'rxjs/operators';
-import {SpinnerService, OAuthRegisteredService} from 'mgmt-lib';
-import {OAuthService} from '../core/oauth.service';
-import {OAuthAttributeReleasePolicy} from '../../../../mgmt-lib/src/lib/domain/attribute-release';
-import {OidcRegisteredService} from '../../../../mgmt-lib/src/lib/domain/oauth-service';
+import {SpinnerService} from 'mgmt-lib';
+import {OidcRegisteredService} from 'mgmt-lib';
 import {OidcService} from '../core/oidc.service';
 
 @Injectable({

@@ -10,27 +10,31 @@
     </div>
   </div>
 
-  <div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
+  <div style="margin-right:10px;margin-left:10px;">
     <mat-card class="tabCard">
       <mat-card-title>Edit Service</mat-card-title>
       <div class="cardContent">
         <mat-tab-group>
           <mat-tab label="Service Info">
-            <div style="padding-bottom: 50px; padding-top: 10px;" [formGroup]="form.get('basics')">
-              <lib-service-id [control]="form.get('basics').get('serviceId')"
-                              [serviceType]="serviceType()"></lib-service-id>
-              <lib-servicename [control]="form.get('basics').get('name')"></lib-servicename>
-              <lib-servicedesc [control]="form.get('basics').get('description')"></lib-servicedesc>
+            <div style="display: flex; justify-content: center; padding-top: 15px">
+              <div style="display: flex; flex-direction: column; justify-content: center; padding-bottom: 50px; padding-top: 10px;width: 550px" [formGroup]="form.get('basics')">
+                <lib-service-id [control]="form.get('basics').get('serviceId')"
+                                [serviceType]="serviceType()"></lib-service-id>
+                <lib-servicename [control]="form.get('basics').get('name')"></lib-servicename>
+                <lib-servicedesc [control]="form.get('basics').get('description')"></lib-servicedesc>
+              </div>
             </div>
           </mat-tab>
           <mat-tab label="Contacts">
-            <div style="padding-bottom: 50px;pading-top: 10px">
-              <lib-contacts [control]="form"></lib-contacts>
+            <div style="display: flex; justify-content: center;">
+              <div style="display: flex; flex-direction: column; justify-content: center; padding-bottom: 50px;pading-top: 10px; width: 550px">
+                <lib-contacts [control]="form"></lib-contacts>
+              </div>
             </div>
           </mat-tab>
           <mat-tab label="Advanced">
-            <div style="padding-bottom: 50px" [formGroup]="form.get('advanced')">
-              <div style="padding-top: 10px; padding-bottom: 10px;">
+            <div style="display: flex; justify-content: center; padding-top: 15px; padding-bottom: 50px" [formGroup]="form.get('advanced')">
+              <div style="display: flex; flex-direction: column; justify-content: center; padding-top: 10px; padding-bottom: 10px; width: 550px">
                 <mat-checkbox [formControl]="form.get('advanced').get('requiresDuo')">
                   <ng-container i18n>Requires Duo</ng-container>
                   <mat-icon style="font-size: medium"
@@ -38,17 +42,15 @@
                             matTooltip="Checking this box will require all uses who sign into this to perform second factor authentication through Duo">help
                   </mat-icon>
                 </mat-checkbox>
-              </div>
-              <div style="padding-bottom: 15px;">
                 <mat-checkbox [formControl]="form.get('advanced').get('ssoEnabled')">
                   <ng-container i18n>Allow Single Sign-On</ng-container>
+                  <mat-icon style="font-size: medium" i18n-matTooltip
+                            matTooltip="Decides whether this service is allowed to participate in SSO.">help
+                  </mat-icon>
                 </mat-checkbox>
-                <mat-icon style="font-size: medium" i18n-matTooltip
-                          matTooltip="Decides whether this service is allowed to participate in SSO.">help
-                </mat-icon>
+                <lib-logouttypeeval [control]="form.get('advanced').get('logoutType')"></lib-logouttypeeval>
+                <lib-logout [control]="form.get('advanced').get('logoutUrl')"></lib-logout>
               </div>
-              <lib-logouttypeeval [control]="form.get('advanced').get('logoutType')"></lib-logouttypeeval>
-              <lib-logout [control]="form.get('advanced').get('logoutUrl')"></lib-logout>
             </div>
           </mat-tab>
         </mat-tab-group>

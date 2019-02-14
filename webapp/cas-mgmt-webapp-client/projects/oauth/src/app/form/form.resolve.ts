@@ -18,9 +18,7 @@ export class OAuthFormResolve implements Resolve<OAuthRegisteredService> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<OAuthRegisteredService> | OAuthRegisteredService {
     const param: number = +route.params['id'];
     if (param < 0) {
-      const srv = new OAuthRegisteredService();
-      srv.attributeReleasePolicy = new OAuthAttributeReleasePolicy();
-      return srv;
+      return this.service.getNewService().pipe(finalize(() => this.spinner.stop()));
     }
     this.spinner.start('Loading service');
     return this.service.getService(param).pipe(finalize(() => this.spinner.stop()));

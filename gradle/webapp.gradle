@@ -36,6 +36,7 @@ dependencies {
   
     apply from: rootProject.file("config/core-config.gradle")
     
+    implementation project(":config:cas-mgmt-config-register")
     implementation project(":config:cas-mgmt-config-oauth")
     implementation project(":config:cas-mgmt-config-saml")
     implementation project(":webapp:cas-mgmt-webapp-config")

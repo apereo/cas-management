@@ -10,9 +10,11 @@ dependencies {
     api project(":api:cas-mgmt-api-version-control")
     api project(":api:cas-mgmt-api-delegated")
     
+    
     implementation project(":core:cas-mgmt-core")
     implementation project(":support:cas-mgmt-support-version-control")
     implementation project(":support:cas-mgmt-support-delegated")
+    implementation project(":support:cas-mgmt-support-register")
     implementation project(":core:cas-mgmt-core-authentication")
     implementation project(":core:cas-mgmt-core-util")
     

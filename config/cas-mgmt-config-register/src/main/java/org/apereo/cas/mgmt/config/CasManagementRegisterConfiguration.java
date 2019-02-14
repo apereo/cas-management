@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.BulkActionController;
+import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.RegisterController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
@@ -28,11 +29,13 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CasManagementRegisterConfiguration {
 
+    /*
     @Autowired
     private RepositoryFactory repositoryFactory;
+    */
 
     @Autowired
-    private VersionControlManagerFactory managerFactory;
+    private MgmtManagerFactory managerFactory;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
@@ -40,8 +43,10 @@ public class CasManagementRegisterConfiguration {
     @Autowired
     private CasUserProfileFactory casUserProfileFactory;
 
+    /*
     @Autowired
     private EmailManager emailManager;
+    */
 
     @Autowired
     private ServicesManager servicesManager;
@@ -49,13 +54,15 @@ public class CasManagementRegisterConfiguration {
     @Bean
     public RegisterController registerController() {
         return new RegisterController(casUserProfileFactory, managerFactory,
-                managementProperties, emailManager, servicesManager);
+                managementProperties, null, servicesManager);
     }
 
+    /*
     @Bean
     public BulkActionController bulkActionController() {
         return new BulkActionController(casUserProfileFactory, managerFactory, managementProperties,
                 repositoryFactory, emailManager);
     }
+    */
 
 }

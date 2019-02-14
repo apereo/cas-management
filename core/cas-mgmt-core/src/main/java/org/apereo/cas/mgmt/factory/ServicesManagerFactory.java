@@ -50,7 +50,7 @@ public class ServicesManagerFactory implements MgmtManagerFactory {
 
     @Override
     public ServicesManager master() throws Exception {
-        return null;
+        return new ManagementServicesManager(servicesManager, namingStrategy);
     }
 
 }

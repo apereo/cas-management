@@ -33,6 +33,10 @@ export class OAuthService extends Service {
     return this.delete(this.controller + '/' + id);
   }
 
+  getNewService(): Observable<OAuthRegisteredService> {
+    return this.get<OAuthRegisteredService>(this.controller + '/generate');
+  }
+
   /*
   pending(id: string): Observable<AbstractRegisteredService> {
     return this.post('api/submissions/import', id);

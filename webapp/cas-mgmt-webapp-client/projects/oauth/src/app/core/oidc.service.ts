@@ -33,6 +33,10 @@ export class OidcService extends Service {
     return this.delete(this.controller + '/' + id);
   }
 
+  getNewService(): Observable<OidcRegisteredService> {
+    return this.get<OidcRegisteredService>(this.controller + '/generate');
+  }
+
   /*
   pending(id: string): Observable<AbstractRegisteredService> {
     return this.post('api/submissions/import', id);

@@ -14,6 +14,7 @@ import org.apereo.cas.mgmt.domain.LookupServiceItem;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.mgmt.xml.EntitiesDescriptor;
 import org.apereo.cas.mgmt.xml.EntityDescriptor;
 import org.apereo.cas.services.AbstractRegisteredService;
 import org.apereo.cas.services.DefaultRegisteredServiceExpirationPolicy;
@@ -51,6 +52,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -323,9 +325,6 @@ public class SamlController {
                 .write("original_author", ByteBuffer.wrap(payload.getBytes()));
     }
 
-    /**
-     *
-     */
     @PostMapping("upload")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
@@ -366,6 +365,52 @@ public class SamlController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @GetMapping("search")
+    public List<String> search(final @RequestParam String query) {
+        val ent = fromInCommon();
+        return ent.stream().filter(e -> e.getEntityId().contains(query))
+                .map(e -> e.getEntityId())
+                .collect(Collectors.toList());
+    }
+
+    public List<EntityDescriptor> fromInCommon() {
+        try {
+            val jaxbContext = JAXBContext.newInstance(EntitiesDescriptor.class);
+            val jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            val doc = (EntitiesDescriptor) jaxbUnmarshaller.unmarshal(new File(managementProperties.getMetadataDir() +"/InCommon-metadata.xml"));
+            return doc.getEntityDescriptorList();
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GetMapping("add")
+    public SamlRegisteredService add(final @RequestParam String id) {
+        val entity = fromInCommon().stream()
+                .filter(e -> e.getEntityId().equals(id))
+                .findFirst().get();
+        SamlRegisteredService service = new SamlRegisteredService();
+        service.setServiceId(entity.getEntityId());
+        service.setSignAssertions(entity.getSPSSODescriptor().isWantAssertionsSigned());
+        service.setRequiredNameIdFormat(entity.getSPSSODescriptor().getNameIDFormat());
+        val policy = new LdapSamlRegisteredServiceAttributeReleasePolicy();
+        if (entity.getSPSSODescriptor().getAttributeConsumingService() != null) {
+            val map = new HashMap<String, Object>();
+            entity.getSPSSODescriptor().getAttributeConsumingService().getRequestedAttribute().forEach(ra -> {
+                map.put(ra.getName(), ra.getName());
+            });
+            policy.setAllowedAttributes(map);
+
+            service.setName(entity.getSPSSODescriptor().getAttributeConsumingService().getServiceName());
+            service.setDescription(entity.getSPSSODescriptor().getAttributeConsumingService().getServiceDescription());
+        }
+        service.setAttributeReleasePolicy(policy);
+        service.setMetadataCriteriaPattern(id);
+        service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + "/InCommon-metadata.xml");
+        return service;
     }
 
 }

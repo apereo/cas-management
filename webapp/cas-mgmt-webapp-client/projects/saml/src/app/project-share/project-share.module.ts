@@ -8,6 +8,7 @@ import {SubmitComponent} from './submit/submit.component';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import { AddComponent } from './add/add.component';
+import {SpinnerComponent} from 'mgmt-lib';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AddComponent } from './add/add.component';
   entryComponents: [
     DeleteComponent,
     SubmitComponent,
-    AddComponent
+    AddComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,

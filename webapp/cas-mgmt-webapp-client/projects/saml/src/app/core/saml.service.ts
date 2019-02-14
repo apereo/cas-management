@@ -39,6 +39,14 @@ export class SamlService extends Service {
     return this.post<SamlRegisteredService>(this.controller + '/upload', xml);
   }
 
+  lookupEntity(query: string): Observable<string[]> {
+    return this.get<string[]>(this.controller + "/search?query=" + query);
+  }
+
+  addEntity(id: string): Observable<SamlRegisteredService> {
+    return this.get<SamlRegisteredService>(this.controller + "/add?id=" + id);
+  }
+
   /*
   pending(id: string): Observable<AbstractRegisteredService> {
     return this.post('api/submissions/import', id);

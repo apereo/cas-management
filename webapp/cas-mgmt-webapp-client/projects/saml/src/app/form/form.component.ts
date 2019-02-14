@@ -36,6 +36,7 @@ export class FormComponent implements OnInit {
         if (data.resp) {
           this.data.service = data.resp;
           this.form = new SamlForm(this.data);
+          this.form.markAsDirty();
         }
       });
   }

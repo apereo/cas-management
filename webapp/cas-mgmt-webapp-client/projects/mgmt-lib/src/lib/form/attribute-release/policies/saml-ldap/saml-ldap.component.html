@@ -1,8 +1,8 @@
 <div [formGroup]="control">
   <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
   border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
-    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Name</div>
-    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>Value</div>
+    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Friendly Name</div>
+    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>URN/Custom Mapping</div>
     <div [ngClass]="'actionWidth'" i18n></div>
   </div>
   <div formArrayName="attributes">
@@ -30,6 +30,6 @@
   <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
 </div>
 
-<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith" (optionSelected)="selection($event)">
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith" (optionSelected)="selection($event)" panelWidth="400px">
   <mat-option *ngFor="let opt of options" [value]="opt">{{ opt.value }}</mat-option>
 </mat-autocomplete>

@@ -45,8 +45,6 @@ export class NavigationComponent {
       dialogRef.afterClosed().subscribe(resp => {
           if (resp === 'upload') {
             this.router.navigate(['form', 0]);
-          } else {
-            this.router.navigate(['form', -1])
           }
         }
       );

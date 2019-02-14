@@ -17,6 +17,7 @@ import org.apereo.cas.services.RegisteredServiceContact;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.DigestUtils;
+import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -290,5 +291,14 @@ public class OidcController {
                 + casUserProfile.getFamilyName();
         Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
                 .write("original_author", ByteBuffer.wrap(payload.getBytes()));
+    }
+
+    @GetMapping("generate")
+    public OidcRegisteredService generate() {
+        val service = new OidcRegisteredService();
+        val rg = new DefaultRandomStringGenerator();
+        service.setClientId(rg.getNewString());
+        service.setClientSecret(rg.getNewString());
+        return service;
     }
 }

@@ -1,8 +1,8 @@
 <div [formGroup]="control">
   <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
   border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
-    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Name</div>
-    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>Value</div>
+    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>{{ sourceHeader }}</div>
+    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>{{ valueHeader }}</div>
     <div [ngClass]="'actionWidth'" i18n></div>
   </div>
   <div [formArrayName]="arrayName">

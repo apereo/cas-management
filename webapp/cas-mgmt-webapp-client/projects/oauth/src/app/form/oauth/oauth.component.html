@@ -35,7 +35,11 @@
           <mat-tab label="Attributes">
             <div style="display: flex; justify-content: center; padding-top: 15px">
               <div style="display: flex; flex-direction: column; justify-content: center; padding-bottom: 50px;pading-top: 10px; width: 550px">
-                <lib-attributes [control]="form" [keys]="keys" [defaultToAttributeName]="true" arrayName="attributes"></lib-attributes>
+                <lib-attributes [control]="form" [keys]="keys"
+                                [defaultToAttributeName]="true"
+                                arrayName="attributes"
+                                sourceHeader="Source" valueHeader="Mapped To">
+                </lib-attributes>
               </div>
             </div>
           </mat-tab>

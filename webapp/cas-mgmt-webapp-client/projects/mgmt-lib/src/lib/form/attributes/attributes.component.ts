@@ -25,6 +25,12 @@ export class AttributesComponent implements OnInit {
   @Input()
   defaultToAttributeName: boolean;
 
+  @Input()
+  sourceHeader = 'Name';
+
+  @Input()
+  valueHeader = 'Value';
+
   entries: FormArray;
 
   constructor(public data: DataRecord) {

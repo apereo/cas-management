@@ -13,7 +13,7 @@ services:
 - docker
 branches:
   only:
-  - master
+  - 6.0.x
 before_cache:
 - rm -rf $HOME/.gradle/caches/4.*/
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -79,7 +79,7 @@ jobs:
     name: "Build CAS Management"
     ############################################
   - stage: publish
-    if: NOT commit_message =~ ^\[skip\s+snapshots\] and type != "pull_request" and (branch =~ /^\d+\.\d+\.x$/ or branch = master)
+    if: NOT commit_message =~ ^\[skip\s+snapshots\] and type != "pull_request" and (branch =~ /^\d+\.\d+\.x$/ or branch = 6.0.x)
     script: ./ci/publish-snapshots-release.sh
     name: "Publish Artifacts"
     ############################################
@@ -92,7 +92,7 @@ jobs:
     name: "Checkstyle Analysis"
   - stage: postbuild
     script: ./ci/push-docs-ghpages.sh
-    if: type != pull_request and (branch =~ /^\d+\.\d+\.x$/ or branch = master)
+    if: type != pull_request and (branch =~ /^\d+\.\d+\.x$/ or branch = 6.0.x)
     name: "Publish Documentation"
   - stage: postbuild
     script: ./ci/build-javadocs.sh
@@ -105,7 +105,7 @@ jobs:
     script: ./ci/analyze-dependencies.sh
     name: "Dependency Security Analysis"
   - stage: dependencies
-    if: type != pull_request and (branch =~ /^\d+\.\d+\.x$/ or branch = master)
+    if: type != pull_request and (branch =~ /^\d+\.\d+\.x$/ or branch = 6.0.x)
     script: ./ci/report-dependency-updates.sh
     name: "Dependency Update Report"
     ############################################

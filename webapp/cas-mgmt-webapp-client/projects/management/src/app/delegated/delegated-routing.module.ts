@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: 'notes',
     loadChildren: './notes/notes.module#NotesModule'
-  },
+  }
 ];
 
 @NgModule({

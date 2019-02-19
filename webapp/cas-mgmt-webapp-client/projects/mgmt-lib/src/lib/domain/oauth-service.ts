@@ -39,7 +39,6 @@ export class OidcRegisteredService extends OAuthRegisteredService {
   implicit: boolean;
   dynamicRegistrationDateTime: string;
   scopes: string[];
-  scopes_userdefined: string[];
   subjectType: string;
   sectorIdentifierUri: string;
 
@@ -59,7 +58,6 @@ export class OidcRegisteredService extends OAuthRegisteredService {
     this.implicit = (s && s.implicit) || false;
     this.dynamicRegistrationDateTime = (s && s.dynamicRegistrationDateTime) || null;
     this.scopes = (s && s.scopes) || null;
-    this.scopes_userdefined = (s && s.scopes_userdefined) || null;
     this.subjectType = (s && s.subjectType) || 'PUBLIC';
     this.sectorIdentifierUri = (s && s.sectorIdentifierUri) || null;
     this['@class'] = OidcRegisteredService.cName;

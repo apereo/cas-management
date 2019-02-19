@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: 'commit-history',
     loadChildren: './commit-history/commit-history.module#CommitHistoryModule'
-  },
+  }
 ];
 
 @NgModule({

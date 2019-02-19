@@ -61,7 +61,7 @@ export class PullComponent implements OnInit {
     if (branch) {
       this.selectedBranch = branch;
     }
-    this.router.navigate(['/changes', this.selectedBranch.name]);
+    this.router.navigate(['../version-control/changes', this.selectedBranch.name]);
   }
 
   openAcceptModal() {
@@ -82,7 +82,7 @@ export class PullComponent implements OnInit {
     this.spinner.start('Accepting request');
     this.service.accept(this.acceptBranch, note)
       .pipe(finalize(() => this.spinner.stop()))
-      .subscribe(() => this.showSnackAndRefresh("Branch has been merged"));
+      .subscribe(() => this.showSnackAndRefresh('Branch has been merged'));
   }
 
   openRejectModal() {

@@ -10,7 +10,7 @@ const routes: Routes = [
     resolve: {
       resp: PullResolver
     }
-  },
+  }
 ];
 
 @NgModule({

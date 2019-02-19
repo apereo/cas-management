@@ -62,7 +62,6 @@ public class NoteController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param cnote    - CNote
-     * @throws Exception - failed
      */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)

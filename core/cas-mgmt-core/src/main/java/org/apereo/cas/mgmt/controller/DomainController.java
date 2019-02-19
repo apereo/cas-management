@@ -41,7 +41,6 @@ public class DomainController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return the domains
-     * @throws Exception the exception
      */
     @GetMapping
     public Collection<DomainRpc> getDomains(final HttpServletRequest request,

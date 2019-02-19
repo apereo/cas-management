@@ -168,7 +168,6 @@ public class HistoryController extends AbstractVersionControlController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param path     - path of the file
-     * @throws Exception - failed
      */
     @GetMapping("revertDelete")
     @ResponseStatus(HttpStatus.OK)

@@ -84,7 +84,6 @@ public final class CasManagementUtils {
      *
      * @param yaml - the yaml
      * @return - RegisteredService
-     * @throws Exception - Parse failure
      */
     public static RegisteredService fromYaml(final String yaml) {
         return YAML_SERIALIZER.from(yaml);
@@ -94,7 +93,6 @@ public final class CasManagementUtils {
      * Parses the passed json into a RegisteredService.
      * @param json - the json
      * @return - RegisteredService
-     * @throws Exception - Parse failure
      */
     public static RegisteredService fromJson(final String json) {
         return JSON_SERIALIZER.from(json);

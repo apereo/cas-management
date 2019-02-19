@@ -23,10 +23,8 @@ import org.springframework.http.HttpStatus;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -128,9 +126,13 @@ public class FormData implements Serializable {
         return CaseCanonicalizationMode.values();
     }
 
-    public OAuth20GrantTypes[] getOauth20GrantTypes() { return OAuth20GrantTypes.values(); }
+    public OAuth20GrantTypes[] getOauth20GrantTypes() {
+        return OAuth20GrantTypes.values();
+    }
 
-    public OAuth20ResponseTypes[] getOauth20ResponseTypes() { return OAuth20ResponseTypes.values(); }
+    public OAuth20ResponseTypes[] getOauth20ResponseTypes() {
+        return OAuth20ResponseTypes.values();
+    }
 
     private static List<String> locateKeyAlgorithmsSupported() {
         return CollectionUtils.wrapList(

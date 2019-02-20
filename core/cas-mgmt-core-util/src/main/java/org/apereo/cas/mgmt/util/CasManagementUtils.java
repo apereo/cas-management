@@ -1,7 +1,7 @@
 package org.apereo.cas.mgmt.util;
 
 import org.apereo.cas.services.RegisteredService;
-import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
+import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.RegexUtils;
 
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public final class CasManagementUtils {
 
-    private static final DefaultRegisteredServiceJsonSerializer JSON_SERIALIZER = new DefaultRegisteredServiceJsonSerializer();
+    private static final RegisteredServiceJsonSerializer JSON_SERIALIZER = new RegisteredServiceJsonSerializer();
     private static final RegisteredServiceYamlSerializer YAML_SERIALIZER = new RegisteredServiceYamlSerializer();
     private static final Pattern DOMAIN_EXTRACTOR = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
     private static final Pattern DOMAIN_PATTERN = RegexUtils.createPattern("^[a-z0-9-.]*$");

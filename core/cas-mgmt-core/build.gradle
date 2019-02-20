@@ -1,6 +1,7 @@
 description "Apereo CAS Management Core"
 
 dependencies {
+    api libraries.casServer.oauth
     api project(":api:cas-mgmt-api-core")
     api project(":api:cas-mgmt-api-configuration")
 

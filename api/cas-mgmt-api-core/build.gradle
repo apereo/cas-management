@@ -3,6 +3,10 @@ description "Apereo CAS Management API Core"
 dependencies {
     api libraries.pac4j
     api libraries.casServer.core
+    api libraries.casServer.services
+    api libraries.casServer.personDirectory
+    api libraries.casServer.oauth
+    api libraries.casServer.authentication
     api libraries.git
     
 }

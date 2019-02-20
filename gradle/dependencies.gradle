@@ -36,7 +36,25 @@ ext.libraries = [
                     force = true
                 }
         ],
+        slf4j                   : [
+                dependencies.create("org.slf4j:slf4j-api:$slf4jVersion"),
+                dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion"),
+                dependencies.create("org.slf4j:jcl-over-slf4j:$slf4jVersion"),
+        ],
         log4j                   : [
+                dependencies.create("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion") {
+                    exclude(group: "org.springframework", module: "spring-web")
+                    exclude(group: "org.springframework", module: "spring-webmvc")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.springframework", module: "spring-context")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "org.slf4j", module: "jul-to-slf4j")
+                    exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
+                    exclude(group: "org.apache.logging.log4j", module: "log4j-core")
+                    exclude(group: "org.apache.logging.log4j", module: "log4j-api")
+                    exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
+                    force = true
+                },
                 dependencies.create("org.apache.logging.log4j:log4j-api:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     force = true
@@ -57,9 +75,6 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     force = true
                 },
-                dependencies.create("org.slf4j:slf4j-api:$slf4jVersion"),
-                dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion"),
-                dependencies.create("org.slf4j:jcl-over-slf4j:$slf4jVersion"),
                 dependencies.create("com.lmax:disruptor:$disruptorVersion")
         ],
         commons                 : [
@@ -607,7 +622,10 @@ ext.libraries = [
                     },
                     dependencies.create("org.apereo.cas:cas-server-core-logging-api:$casVersion")  {
                         force = true
-                    }
+                    },
+                    dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
+                        force = true
+                    }    
                 ],
                 core                 : [
                    
@@ -660,12 +678,28 @@ ext.libraries = [
                     },
                     dependencies.create("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
                         force = true
-                    }
+                    },
+                    dependencies.create("org.apereo.cas:cas-server-core-services-registry:$casVersion") {
+                        force = true
+                    }    
                 ],
-                authentication       :
+                authentication       : [
                     dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
                         force = true
                     },
+                    dependencies.create("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
+                        force = true
+                    }    
+
+                ],
+                oauth                 : [
+                        dependencies.create("org.apereo.cas:cas-server-support-oauth-api:$casVersion") {
+                            force = true
+                        },
+                        dependencies.create("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
+                            force = true
+                        }
+                ],
                 oidc                 :
                     dependencies.create("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
                         force = true

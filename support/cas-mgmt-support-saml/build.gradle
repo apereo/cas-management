@@ -5,6 +5,7 @@ dependencies {
     implementation libraries.git
     implementation libraries.casServer.saml
     implementation libraries.shibboleth
+    implementation libraries.casServer.configuration
     
     api project(":api:cas-mgmt-api-core")
     api project(":api:cas-mgmt-api-version-control")

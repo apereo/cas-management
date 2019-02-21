@@ -20,6 +20,10 @@ import {TabWsfedComponent} from './tab-wsfed/tab-wsfed.component';
 import {TabContactsComponent} from './tab-contacts/tab-contacts.component';
 import {TabExpirationComponent} from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
+import {SamlFormResolve} from '../../../../saml/src/app/form/form.resolve';
+import {SamlResolve} from '@app/form/saml-resolve';
+import {OAuthResolve} from '@app/form/oauth-resolve';
+import {OidcResolve} from '@app/form/oidc-resolve';
 
 const childRoutes: Routes = [
   {
@@ -131,6 +135,39 @@ const childRoutes: Routes = [
           resp: FormResolve
         },
         children: childRoutes
+      },
+      {
+        path: 'saml',
+        component: FormComponent,
+        resolve : {
+          resp: SamlResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
+      },
+      {
+        path: 'oauth',
+        component: FormComponent,
+        resolve: {
+          resp: OAuthResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
+      },
+      {
+        path: 'oidc',
+        component: FormComponent,
+        resolve: {
+          resp: OidcResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
       },
       {
         path: 'importService',

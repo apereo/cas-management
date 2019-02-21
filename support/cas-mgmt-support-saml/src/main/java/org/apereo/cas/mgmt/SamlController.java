@@ -52,12 +52,15 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class SamlController extends BaseRegisterController {
 
+    private final List<EntityDescriptor> sps;
+
     public SamlController(final CasUserProfileFactory casUserProfileFactory,
                            final MgmtManagerFactory managerFactory,
                            final CasManagementConfigurationProperties managementProperties,
                            //final EmailManager communicationsManager,
                            final ServicesManager published){
         super(casUserProfileFactory, managerFactory, managementProperties, null, published, managementProperties.getRegister().getNotifications());
+        this.sps = fromInCommon().stream().filter(e -> e.getSPSSODescriptor() != null).collect(toList());
     }
 
     /**
@@ -87,8 +90,8 @@ public class SamlController extends BaseRegisterController {
 
     @GetMapping("search")
     public List<String> search(final @RequestParam String query) {
-        val ent = fromInCommon();
-        return ent.stream().filter(e -> e.getEntityId().contains(query))
+        //val ent = fromInCommon();
+        return sps.stream().filter(e -> e.getEntityId().contains(query))
                 .map(e -> e.getEntityId())
                 .collect(Collectors.toList());
     }
@@ -107,7 +110,7 @@ public class SamlController extends BaseRegisterController {
 
     @GetMapping("add")
     public SamlRegisteredService add(final @RequestParam String id) {
-        val entity = fromInCommon().stream()
+        val entity = sps.stream()
                 .filter(e -> e.getEntityId().equals(id))
                 .findFirst().get();
         val service = createService(entity);
@@ -119,18 +122,35 @@ public class SamlController extends BaseRegisterController {
     private SamlRegisteredService createService(final EntityDescriptor entity) {
         SamlRegisteredService service = new SamlRegisteredService();
         service.setServiceId(entity.getEntityId());
-        service.setSignAssertions(entity.getSPSSODescriptor().isWantAssertionsSigned());
-        service.setRequiredNameIdFormat(entity.getSPSSODescriptor().getNameIDFormat());
+        val spDescriptor = entity.getSPSSODescriptor();
+        service.setSignAssertions(spDescriptor.isWantAssertionsSigned());
+        service.setRequiredNameIdFormat(spDescriptor.getNameIDFormat());
         val policy = new LdapSamlRegisteredServiceAttributeReleasePolicy();
-        if (entity.getSPSSODescriptor().getAttributeConsumingService() != null) {
+        if (spDescriptor.getAttributeConsumingService() != null) {
             val map = new HashMap<String, Object>();
-            entity.getSPSSODescriptor().getAttributeConsumingService().getRequestedAttribute().forEach(ra -> {
-                map.put(ra.getName(), ra.getName());
+            spDescriptor.getAttributeConsumingService().getRequestedAttribute().forEach(ra -> {
+                if (ra.getRequired() == null || ra.getRequired()) {
+                    map.put(ra.getName(), ra.getName());
+                }
             });
             policy.setAllowedAttributes(map);
 
             service.setName(entity.getSPSSODescriptor().getAttributeConsumingService().getServiceName());
             service.setDescription(entity.getSPSSODescriptor().getAttributeConsumingService().getServiceDescription());
+        }
+        if (spDescriptor.getKeyDescriptor() != null) {
+            val kdEncryption = spDescriptor.getKeyDescriptor().stream().filter(k -> "encryption".equals(k.getUse())).findFirst();
+            if (kdEncryption.isPresent()) {
+                service.setEncryptAssertions(true);
+            }
+            val kdSigning = spDescriptor.getKeyDescriptor().stream().filter(k -> "signing".equals(k.getUse())).findFirst();
+            if (kdSigning.isPresent()) {
+                if (kdSigning.get().getKeyInfo().getX509Data() != null) {
+                    service.setSigningCredentialType("X509");
+                } else {
+                    service.setSigningCredentialType("BASIC");
+                }
+            }
         }
         service.setAttributeReleasePolicy(policy);
         return service;

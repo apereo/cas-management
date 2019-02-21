@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @Data
 @XmlRootElement(name = "SPSSODescriptor")
@@ -21,10 +22,13 @@ public class SPSSODescriptor {
     @XmlAttribute(name = "WantAssertionsSigned")
     private boolean wantAssertionsSigned;
 
-    @XmlElement(name = "NameIDFormat")
+    @XmlElement(name = "NameIDFormat", namespace = "urn:oasis:names:tc:SAML:2.0:metadata")
     private String nameIDFormat;
 
     @XmlElement(name = "AttributeConsumingService", namespace = "urn:oasis:names:tc:SAML:2.0:metadata")
     private AttributeConsumingService attributeConsumingService;
+
+    @XmlElement(name = "KeyDescriptor", namespace = "urn:oasis:names:tc:SAML:2.0:metadata")
+    private List<KeyDescriptor> keyDescriptor;
 
 }

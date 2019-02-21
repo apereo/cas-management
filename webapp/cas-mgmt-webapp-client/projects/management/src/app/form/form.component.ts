@@ -48,6 +48,7 @@ export class FormComponent implements OnInit {
 
   id: string;
   view: boolean;
+  created: false;
 
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
@@ -78,6 +79,7 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
     this.imported = this.route.snapshot.data.import;
+    this.created = this.route.snapshot.data.created;
     this.route.data
       .subscribe((data: { resp: AbstractRegisteredService[] }) => {
         if (data.resp && data.resp[1]) {
@@ -222,7 +224,6 @@ export class FormComponent implements OnInit {
     for (let key of Array.from(this.data.formMap.keys())) {
       const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
       if (frm.invalid) {
-        console.log("errors = " +frm.errors);
         this.touch(frm);
         this.nav(key);
         return false;
@@ -238,7 +239,6 @@ export class FormComponent implements OnInit {
         this.touch(control);
       } else {
         if (control.invalid) {
-          console.log("touched : " + k);
           control.markAsTouched();
         }
       }
@@ -246,7 +246,7 @@ export class FormComponent implements OnInit {
   }
 
   mapForm(): boolean {
-    let touched: boolean = this.imported;
+    let touched: boolean = this.imported || this.created
     for (let key of Array.from(this.data.formMap.keys())) {
       const form = this.data.formMap.get(key);
       if (form.valid && form.touched) {
@@ -320,7 +320,7 @@ export class FormComponent implements OnInit {
   }
 
   dirty(): boolean {
-    if (this.imported) {
+    if (this.imported || this.created) {
       return true;
     }
     for (let fg of Array.from(this.data.formMap.values())) {

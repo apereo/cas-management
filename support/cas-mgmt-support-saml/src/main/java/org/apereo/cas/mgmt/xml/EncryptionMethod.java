@@ -6,23 +6,19 @@ import lombok.NoArgsConstructor;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Data
-@XmlRootElement(name = "EntityDescriptor")
+@XmlRootElement(name = "EncryptionMethod")
 @XmlAccessorType(XmlAccessType.FIELD)
 @NoArgsConstructor
-public class RequestedAttribute {
+public class EncryptionMethod {
 
-    @XmlAttribute(name = "FriendlyName")
-    private String friendlyName;
+    @XmlAttribute(name = "Algorithm")
+    private String algorithm;
 
-    @XmlAttribute(name = "Name")
-    private String name;
+    @XmlElement(name = "KeySize", namespace = "http://www.w3.org/2001/04/xmlenc#")
+    private Integer keySize;
 
-    @XmlAttribute(name = "NameFormat")
-    private String nameFormat;
-
-    @XmlAttribute(name = "isRequired")
-    private Boolean required;
 }

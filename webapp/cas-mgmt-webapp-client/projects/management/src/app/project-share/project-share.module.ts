@@ -12,6 +12,7 @@ import {CommitComponent} from './commit/commit.component';
 import {PublishComponent} from './publish/publish.component';
 import {RevertComponent} from './revert/revert.component';
 import { EditorOptionsComponent } from './editor-options/editor-options.component';
+import {AddComponent} from '@app/project-share/add/add.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { EditorOptionsComponent } from './editor-options/editor-options.componen
     CommitComponent,
     PublishComponent,
     RevertComponent,
-    EditorOptionsComponent
+    EditorOptionsComponent,
+    AddComponent
   ],
   entryComponents: [
     ViewComponent,
@@ -29,7 +31,8 @@ import { EditorOptionsComponent } from './editor-options/editor-options.componen
     PublishComponent,
     RevertComponent,
     SpinnerComponent,
-    EditorOptionsComponent
+    EditorOptionsComponent,
+    AddComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +54,8 @@ import { EditorOptionsComponent } from './editor-options/editor-options.componen
     ControlsComponent,
     ViewComponent,
     EditorComponent,
-    EditorOptionsComponent
+    EditorOptionsComponent,
+    AddComponent
   ]
 })
 export class ProjectShareModule { }

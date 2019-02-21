@@ -4,11 +4,16 @@
 import {Injectable} from '@angular/core';
 import {ServiceItem, Service} from 'mgmt-lib';
 import {Observable} from 'rxjs/internal/Observable';
+import {OAuthRegisteredService, OidcRegisteredService} from '../../../../../mgmt-lib/src/lib/domain/oauth-service';
+import {SamlRegisteredService} from '../../../../../mgmt-lib/src/lib/domain/saml-service';
+import {RegisteredService} from '../../../../../mgmt-lib/src/lib/domain/registered-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceViewService extends Service {
+
+  uploaded: RegisteredService;
 
   controller = 'api/services';
 
@@ -42,5 +47,25 @@ export class ServiceViewService extends Service {
 
   updateOrder(a: ServiceItem, b: ServiceItem): Observable<string> {
     return this.postText(this.controller + '/updateOrder', [a, b]);
+  }
+
+  createOAuthService(): Observable<OAuthRegisteredService> {
+    return this.get<OAuthRegisteredService>('api/oauth/generate');
+  }
+
+  createOidcService(): Observable<OidcRegisteredService> {
+    return this.get<OidcRegisteredService>('api/oidc/generate');
+  }
+
+  upload(xml: string): Observable<SamlRegisteredService> {
+    return this.post<SamlRegisteredService>('api/saml/upload', xml);
+  }
+
+  lookupEntity(query: string): Observable<string[]> {
+    return this.get<string[]>('api/saml/search?query=' + query);
+  }
+
+  addEntity(id: string): Observable<SamlRegisteredService> {
+    return this.get<SamlRegisteredService>('api/saml/add?id=' + id);
   }
 }

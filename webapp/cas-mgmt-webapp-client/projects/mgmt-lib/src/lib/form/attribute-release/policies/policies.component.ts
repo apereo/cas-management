@@ -22,7 +22,8 @@ export class PoliciesComponent implements OnInit {
     ReleasePolicyType.SAML_LDAP,
     ReleasePolicyType.OAUTH
   ];
-  display = ['Script Engine', 'Groovy Script', 'Return All', 'Deny All', 'Return Allowed', 'Return Mapped', 'Return Restful', 'SAML LDAP', 'OAUTH LDAP'];
+  display = ['Script Engine', 'Groovy Script', 'Return All',
+    'Deny All', 'Return Allowed', 'Return Mapped', 'Return Restful', 'SAML LDAP', 'OAUTH LDAP'];
 
   @Input()
   isSaml: boolean;

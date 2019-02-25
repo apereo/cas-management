@@ -1,9 +1,5 @@
 package org.apereo.cas.mgmt;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.RegisterNotifications;
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
@@ -11,13 +7,18 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.LookupServiceItem;
-import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.util.DigestUtils;
+
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,15 +43,46 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Base Controller for handling requests from Staff and Faculty.
+ *
+ * @author Travis Schmidt
+ * @since 6.0
+ */
 @RequiredArgsConstructor
 @Slf4j
 public abstract class BaseRegisterController {
 
+    private static final int MAX_EMAIL_LENGTH = 100;
+
+    /**
+     * User Profile Factory.
+     */
     protected final CasUserProfileFactory casUserProfileFactory;
+
+    /**
+     * Manager Factory.
+     */
     protected final MgmtManagerFactory managerFactory;
+
+    /**
+     * Management Configuration properties.
+     */
     protected final CasManagementConfigurationProperties managementProperties;
+
+    /**
+     * EMail Manager.
+     */
     protected final EmailManager communicationsManager;
+
+    /**
+     * Services Manager.
+     */
     protected final ServicesManager published;
+
+    /**
+     * Notifications Text.
+     */
     protected final RegisterNotifications notifications;
 
     /**
@@ -81,7 +113,7 @@ public abstract class BaseRegisterController {
      *
      * @param response - the response
      * @param request - the request
-     * @param pair- the Service to update
+     * @param pair - the Service to update
      * @throws Exception - failed
      */
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -140,6 +172,14 @@ public abstract class BaseRegisterController {
         return svc;
     }
 
+    /**
+     * Method will cancel a pending submission.
+     *
+     * @param response - the response
+     * @param request - the request
+     * @param id - id of pending submission
+     * @throws Exception - failed
+     */
     @DeleteMapping("cancel")
     @ResponseStatus(HttpStatus.OK)
     public void cancel(final HttpServletResponse response,
@@ -159,7 +199,7 @@ public abstract class BaseRegisterController {
 
     private String[] getSubmitter(final Path path) {
         try {
-            val email = new byte[100];
+            val email = new byte[MAX_EMAIL_LENGTH];
             Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
                     .read("original_author", ByteBuffer.wrap(email));
             return new String(email).trim().split(":");
@@ -184,10 +224,18 @@ public abstract class BaseRegisterController {
         }
     }
 
+    /**
+     * Saves a submitted service.
+     *
+     * @param service - the service
+     * @param id - the id of the service
+     * @param casUserProfile - user profile
+     * @throws Exception - failed
+     */
     protected void saveService(final RegisteredService service, final String id, final CasUserProfile casUserProfile) throws Exception {
         val serializer = new DefaultRegisteredServiceJsonSerializer();
-        val path = isNumber(id) ? Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/edit-" + service.getId() + ".json") :
-                Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + id);
+        val path = isNumber(id) ? Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/edit-" + service.getId() + ".json")
+                : Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + id);
         val out = Files.newOutputStream(path);
         serializer.to(out, service);
         out.close();
@@ -195,6 +243,12 @@ public abstract class BaseRegisterController {
         //sendMessage(casUserProfile, notifications.getChange(), service.getName(), service.getName());
     }
 
+    /**
+     * Creates a Service Line Item from the passed service.
+     *
+     * @param service - the service
+     * @return - LookupServiceItem
+     */
     protected LookupServiceItem createServiceItem(final RegisteredService service) {
         val serviceItem = new LookupServiceItem();
         serviceItem.setAssignedId(String.valueOf(service.getId()));
@@ -205,6 +259,13 @@ public abstract class BaseRegisterController {
         return serviceItem;
     }
 
+    /**
+     * Returns the contact if the passed email is an owner of the service or null.
+     *
+     * @param contacts - List of contacts for a service.
+     * @param email - Email to search for
+     * @return - RegisteredServiceContact or null
+     */
     protected RegisteredServiceContact owner(final List<RegisteredServiceContact> contacts, final String email) {
         return contacts.stream().filter(c -> email.equalsIgnoreCase(c.getEmail())).findAny().orElse(null);
     }

@@ -9,6 +9,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * EncryptionMethod element form SAML Metadata.
+ *
+ * @author Travis Schmidt
+ * @since 6.0.0
+ */
 @Data
 @XmlRootElement(name = "EncryptionMethod")
 @XmlAccessorType(XmlAccessType.FIELD)

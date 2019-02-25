@@ -9,6 +9,15 @@ import {
   OidcRegisteredService
 } from 'mgmt-lib';
 
+export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const type = control.get('logoutType');
+  const url = control.get('logoutUrl');
+  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
+    url.setErrors({'logoutUrlRequired': {value: url.value}});
+  }
+  return null;
+};
+
 export class OidcForm extends FormGroup implements MgmtFormGroup<OidcRegisteredService> {
 
   constructor(private data: DataRecord) {
@@ -162,13 +171,3 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<OidcRegisteredS
     };
   }
 }
-
-export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
-  const type = control.get('logoutType');
-  const url = control.get('logoutUrl');
-  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
-    url.setErrors({'logoutUrlRequired': {value: url.value}});
-  }
-  return null;
-};
-

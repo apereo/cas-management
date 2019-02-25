@@ -1,11 +1,9 @@
 package org.apereo.cas.mgmt;
 
-import lombok.SneakyThrows;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
-import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.xml.EntitiesDescriptor;
 import org.apereo.cas.mgmt.xml.EntityDescriptor;
 import org.apereo.cas.services.RegisteredService;
@@ -13,6 +11,7 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.saml.services.LdapSamlRegisteredServiceAttributeReleasePolicy;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -76,7 +75,7 @@ public class SamlController extends BaseRegisterController {
                                                            final HttpServletRequest request) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val email = casUserProfile.getEmail();
-        val manager = (ManagementServicesManager) managerFactory.from(request,casUserProfile);
+        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
         return manager.getAllServices().stream()
                 .filter(s -> s instanceof SamlRegisteredService)
                 .filter(s -> s.getContacts().stream().anyMatch(c -> email != null && email.equals(c.getEmail())))
@@ -88,14 +87,25 @@ public class SamlController extends BaseRegisterController {
                 .collect(toList());
     }
 
+    /**
+     * Searches SPs from InCommon that match the passed string.
+     *
+     * @param query - the string to match
+     * @return - List of Entity Ids
+     */
     @GetMapping("search")
     public List<String> search(final @RequestParam String query) {
-        //val ent = fromInCommon();
         return sps.stream().filter(e -> e.getEntityId().contains(query))
                 .map(e -> e.getEntityId())
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Uploads a SAML Metadta from the client as XML string and creates a registered service from the parsed XML.
+     *
+     * @param xml - the metada as string.
+     * @return - SamlRegistered Service
+     */
     @PostMapping("upload")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
@@ -108,6 +118,12 @@ public class SamlController extends BaseRegisterController {
         return service;
     }
 
+    /**
+     * Creates a new SamlRegistered Service from metadata from InCommon represented by the passed Entity Id.
+     *
+     * @param id - the entity id of the SP
+     * @return - SamlRegisteredService
+     */
     @GetMapping("add")
     public SamlRegisteredService add(final @RequestParam String id) {
         val entity = sps.stream()
@@ -120,7 +136,7 @@ public class SamlController extends BaseRegisterController {
     }
 
     private SamlRegisteredService createService(final EntityDescriptor entity) {
-        SamlRegisteredService service = new SamlRegisteredService();
+        val service = new SamlRegisteredService();
         service.setServiceId(entity.getEntityId());
         val spDescriptor = entity.getSPSSODescriptor();
         service.setSignAssertions(spDescriptor.isWantAssertionsSigned());
@@ -180,7 +196,7 @@ public class SamlController extends BaseRegisterController {
     }
 
     @Override
-    protected void saveService(RegisteredService service, String id, CasUserProfile casUserProfile) throws Exception {
+    protected void saveService(final RegisteredService service, final String id, final CasUserProfile casUserProfile) throws Exception {
         val manager = managerFactory.master();
         manager.save(service);
     }

@@ -69,7 +69,7 @@ export class SubmissionsComponent implements OnInit {
       } else {
         this.displayedColumns = ['actions', 'name', 'serviceId', 'submitter', 'submitted'];
       }
-    })
+    });
   }
 
   serviceEdit() {
@@ -107,7 +107,7 @@ export class SubmissionsComponent implements OnInit {
       data: [value, mode],
       width: '900px',
       position: { top: '50px'}
-    })
+    });
   }
 
   accept() {

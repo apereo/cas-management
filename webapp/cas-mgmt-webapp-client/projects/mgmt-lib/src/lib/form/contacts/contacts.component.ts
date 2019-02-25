@@ -87,7 +87,7 @@ export class ContactsComponent implements OnInit {
   createContactGroup(contact: RegisteredServiceContact): FormGroup {
     return new FormGroup({
       name: new MgmtFormControl(contact.name, '', Validators.required),
-      email: new MgmtFormControl(contact.email, '', Validators.required),
+      email: new MgmtFormControl(contact.email, '', [Validators.required, Validators.email]),
       phone: new MgmtFormControl(contact.phone),
       department: new MgmtFormControl(contact.department)
     });

@@ -13,7 +13,9 @@ import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,39 +31,46 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CasManagementRegisterConfiguration {
 
-    /*
     @Autowired
-    private RepositoryFactory repositoryFactory;
-    */
+    @Qualifier("repositoryFactory")
+    private ObjectProvider<RepositoryFactory> repositoryFactory;
 
     @Autowired
-    private MgmtManagerFactory managerFactory;
+    @Qualifier("managerFactory")
+    private ObjectProvider<MgmtManagerFactory> managerFactory;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
-
-    /*
-    @Autowired
-    private EmailManager emailManager;
-    */
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
+    @Qualifier("emailManager")
+    private ObjectProvider<EmailManager> emailManager;
+
+    @Autowired
+    @Qualifier("servicesManager")
     private ServicesManager servicesManager;
 
     @Bean
     public RegisterController registerController() {
-        return new RegisterController(casUserProfileFactory, managerFactory,
-                managementProperties, null, servicesManager);
+        return new RegisterController(casUserProfileFactory.getIfAvailable(),
+                managerFactory.getIfAvailable(),
+                managementProperties,
+                null,
+                servicesManager);
     }
 
     /*
     @Bean
     public BulkActionController bulkActionController() {
-        return new BulkActionController(casUserProfileFactory, managerFactory, managementProperties,
-                repositoryFactory, emailManager);
+        return new BulkActionController(casUserProfileFactory.getIfAvailable(),
+                managerFactory.getIfAvailable(),
+                managementProperties.getIfAvailable(),
+                repositoryFactory.getIfAvailable(),
+                emailManager.getIfAvailable());
     }
     */
 

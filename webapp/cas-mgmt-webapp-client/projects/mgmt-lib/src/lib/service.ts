@@ -68,7 +68,7 @@ export class Service {
       dialog.open(UnknownComponent, {
         width: '500px',
         position: {top: '100px'}
-      })
+      });
     } else {
       console.log('An error Occurred: ' + e.message);
       return throwError(e);

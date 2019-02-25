@@ -12,7 +12,7 @@ export class MgmtCardComponent implements OnInit {
   title: string;
 
   @Input()
-  collapse: boolean = true;
+  collapse = true;
 
   constructor() { }
 

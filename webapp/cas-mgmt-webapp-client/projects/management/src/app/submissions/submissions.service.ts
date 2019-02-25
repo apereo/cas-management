@@ -10,7 +10,7 @@ import {Service, ServiceItem} from 'mgmt-lib';
 })
 export class SubmissionsService extends Service {
 
-  controller = "api/submissions";
+  controller = 'api/submissions';
 
   getSubmissions(): Observable<ServiceItem[]> {
     return this.get<ServiceItem[]>(this.controller);
@@ -25,7 +25,7 @@ export class SubmissionsService extends Service {
   }
 
   reject(id: string, note: string): Observable<void> {
-    return this.post(this.controller +'/reject', {id: id, note: note});
+    return this.post(this.controller + '/reject', {id: id, note: note});
   }
 
   diff(id: string): Observable<string> {

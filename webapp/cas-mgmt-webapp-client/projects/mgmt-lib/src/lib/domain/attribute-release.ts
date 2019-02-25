@@ -68,7 +68,7 @@ export class ReturnMappedAttributeReleasePolicy extends AbstractRegisteredServic
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
     const p: ReturnMappedAttributeReleasePolicy = policy as ReturnMappedAttributeReleasePolicy;
-    this.allowedAttributes = (p && p.allowedAttributes) || null
+    this.allowedAttributes = (p && p.allowedAttributes) || null;
     this['@class'] = ReturnMappedAttributeReleasePolicy.cName;
   }
 }

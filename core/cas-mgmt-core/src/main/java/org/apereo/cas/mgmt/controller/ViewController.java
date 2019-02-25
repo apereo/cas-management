@@ -1,12 +1,12 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Contoller for rendered views.
@@ -57,7 +56,7 @@ public class ViewController {
      */
     @GetMapping({"register/index.html", "register/", "register"})
     public ModelAndView register() {
-        final Map<String, Object> model = new HashMap<>();
+        val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         return new ModelAndView("register/index", model);
     }
@@ -69,7 +68,7 @@ public class ViewController {
      */
     @GetMapping({"oauth/index.html", "oauth/", "oauth"})
     public ModelAndView oauth() {
-        final Map<String, Object> model = new HashMap<>();
+        val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         return new ModelAndView("oauth/index", model);
     }
@@ -81,7 +80,7 @@ public class ViewController {
      */
     @GetMapping({"saml/index.html", "saml/", "saml"})
     public ModelAndView saml() {
-        final Map<String, Object> model = new HashMap<>();
+        val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         return new ModelAndView("saml/index", model);
     }
@@ -103,7 +102,7 @@ public class ViewController {
         } else if (reqUrl.contains("manage.html") && casUserProfile.isAdministrator()) {
             url += "/management";
         } else {
-            url += (casUserProfile.isAdministrator() ? "/management" : "/register");
+            url += casUserProfile.isAdministrator() ? "/management" : "/register";
         }
         return new ModelAndView(new RedirectView(url));
     }

@@ -11,7 +11,9 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,30 +34,38 @@ import java.util.stream.Stream;
 public class CasManagementSubmissionsConfiguration {
 
     @Autowired
-    private RepositoryFactory repositoryFactory;
+    @Qualifier("repositoryFactory")
+    private ObjectProvider<RepositoryFactory> repositoryFactory;
 
     @Autowired
-    private MgmtManagerFactory managerFactory;
+    @Qualifier("managerFactory")
+    private ObjectProvider<MgmtManagerFactory> managerFactory;
 
     @Autowired
-    private CasManagementConfigurationProperties managementProperties;
+    @Qualifier("managementProperties")
+    private ObjectProvider<CasManagementConfigurationProperties> managementProperties;
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
-    private EmailManager emailManager;
+    @Qualifier("emailManager")
+    private ObjectProvider<EmailManager> emailManager;
 
     @Bean
     public SubmissionController submissionController() {
-        return new SubmissionController(repositoryFactory, managerFactory,
-                managementProperties, casUserProfileFactory, emailManager);
+        return new SubmissionController(repositoryFactory.getIfAvailable(),
+                managerFactory.getIfAvailable(),
+                managementProperties.getIfAvailable(),
+                casUserProfileFactory.getIfAvailable(),
+                emailManager.getIfAvailable());
     }
 
     @Bean
     public SubmissionRequests submissionRequests() {
         return () -> {
-            try(Stream submissions = Files.list(Paths.get(managementProperties.getSubmissions().getSubmitDir()))) {
+            try(Stream submissions = Files.list(Paths.get(managementProperties.getIfAvailable().getSubmissions().getSubmitDir()))) {
                 return (int) submissions.count();
             } catch (final Exception e) {
                 return 0;

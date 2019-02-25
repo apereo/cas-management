@@ -37,7 +37,7 @@ export class DelegatedComponent implements OnInit {
       this.delegatedAuthn.push(value.trim());
       this.autoTrigger.closePanel();
       this.control.setValue(this.delegatedAuthn);
-      this.control.markAsTouched()
+      this.control.markAsTouched();
     }
 
     if (input) {
@@ -51,7 +51,7 @@ export class DelegatedComponent implements OnInit {
     if (index >= 0) {
       this.delegatedAuthn.splice(index, 1);
       this.control.setValue(this.delegatedAuthn);
-      this.control.markAsTouched()
+      this.control.markAsTouched();
     }
   }
 

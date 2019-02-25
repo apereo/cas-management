@@ -31,7 +31,7 @@ export class AddContactComponent implements OnInit {
                 this.spinner.start('Looking Up Contact');
                 return this.user.lookupContact(query);
               } else {
-                return Observable.create((observer) => observer.next([]));
+                return new Observable((observer) => observer.next([]));
               }
           }),
           finalize(() => this.spinner.stop())

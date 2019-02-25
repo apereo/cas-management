@@ -13,7 +13,8 @@ export class SamlResolve implements Resolve<AbstractRegisteredService[]> {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService[]> | AbstractRegisteredService[] {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService[]>
+                                                                    | AbstractRegisteredService[] {
     return [this.service.uploaded, null];
   }
 }

@@ -8,6 +8,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * EntityDescriptor element from SAML Metadata.
+ *
+ * @author Travis Schmidt
+ * @since 6.0.0
+ */
 @Data
 @XmlRootElement(name = "EntityDescriptor")
 @XmlAccessorType(XmlAccessType.FIELD)

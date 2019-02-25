@@ -23,7 +23,7 @@ export class DefaultMFAForm extends BaseMfaForm<DefaultRegisteredServiceMultifac
       principalAttributeNameTrigger: this.policy.principalAttributeNameTrigger,
       principalAttributeValueToMatch: this.policy.principalAttributeValueToMatch,
       bypassEnabled: this.policy.bypassEnabled
-    }
+    };
   }
 
   mapForm(policy: DefaultRegisteredServiceMultifactorPolicy) {

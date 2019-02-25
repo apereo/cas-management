@@ -1,7 +1,7 @@
 import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn';
 
 export abstract class RegisteredServiceAccessStrategy {
-  enabled: boolean
+  enabled: boolean;
   ssoEnabled: boolean;
   unauthorizedRedirectUrl: string;
   delegatedAuthenticationPolicy: RegisteredServiceDelegatedAuthenticationPolicy;
@@ -96,7 +96,7 @@ export class GrouperRegisteredServiceAccessStrategy extends TimeBasedRegisteredS
     super(strat);
     const s: GrouperRegisteredServiceAccessStrategy = strat as GrouperRegisteredServiceAccessStrategy;
     this.groupField = (s && s.groupField) || null;
-    this['@class'] = GrouperRegisteredServiceAccessStrategy.cName
+    this['@class'] = GrouperRegisteredServiceAccessStrategy.cName;
   }
 }
 
@@ -109,7 +109,7 @@ export class BaseSurrogateRegisteredServiceAccessStrategy extends DefaultRegiste
 
   constructor(strat?: RegisteredServiceAccessStrategy) {
     super(strat);
-    this['@class'] = BaseSurrogateRegisteredServiceAccessStrategy.cName
+    this['@class'] = BaseSurrogateRegisteredServiceAccessStrategy.cName;
   }
 }
 

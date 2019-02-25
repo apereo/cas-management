@@ -132,9 +132,13 @@ public class FormData implements Serializable {
         return CaseCanonicalizationMode.values();
     }
 
-    public OAuth20GrantTypes[] getOauth20GrantTypes() { return OAuth20GrantTypes.values(); }
+    public OAuth20GrantTypes[] getOauth20GrantTypes() {
+        return OAuth20GrantTypes.values();
+    }
 
-    public OAuth20ResponseTypes[] getOauth20ResponseTypes() { return OAuth20ResponseTypes.values(); }
+    public OAuth20ResponseTypes[] getOauth20ResponseTypes() {
+        return OAuth20ResponseTypes.values();
+    }
 
     private static List<String> locateKeyAlgorithmsSupported() {
         return CollectionUtils.wrapList(

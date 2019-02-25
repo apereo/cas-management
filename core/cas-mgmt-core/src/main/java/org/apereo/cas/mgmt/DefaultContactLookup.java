@@ -1,11 +1,13 @@
 package org.apereo.cas.mgmt;
 
+import org.apereo.cas.services.DefaultRegisteredServiceContact;
+import org.apereo.cas.services.RegisteredServiceContact;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apereo.cas.services.DefaultRegisteredServiceContact;
-import org.apereo.cas.services.RegisteredServiceContact;
+
 import org.ldaptive.ConnectionFactory;
 import org.ldaptive.LdapEntry;
 import org.ldaptive.SearchExecutor;
@@ -13,6 +15,12 @@ import org.ldaptive.SearchExecutor;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * Default implementation of the ContactLookup interface.
+ *
+ * @author Travis Schmidt
+ * @since 6.0.0
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultContactLookup implements ContactLookup {
@@ -22,7 +30,7 @@ public class DefaultContactLookup implements ContactLookup {
 
     @Override
     @SneakyThrows
-    public Collection<RegisteredServiceContact> query(String query) {
+    public Collection<RegisteredServiceContact> query(final String query) {
         val executor = new SearchExecutor();
         executor.setBaseDn("ou=People,dc=ucdavis,dc=edu");
         val result = executor.search(connectionFactory,

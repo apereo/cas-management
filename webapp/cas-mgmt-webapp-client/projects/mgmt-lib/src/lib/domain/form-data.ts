@@ -1,23 +1,23 @@
 export class FormData {
     availableAttributes: string[] = [];
-    registeredServiceProperties: PropertyEnum[];
+    registeredServiceProperties: Option[];
     grouperFields: string[];
     remoteCodes: string[];
     timeUnits: string[];
     mergingStrategies: string[];
     logoutTypes: string[];
-    serviceTypes: PropertyEnum[];
+    serviceTypes: Option[];
     samlRoles: string[];
     samlDirections: string[];
     samlAttributeNameFormats: string[];
     samlCredentialTypes: string[];
     wsFederationClaims: string[];
-    mfaProviders: PropertyEnum[];
+    mfaProviders: Option[];
     mfaFailureModes: string[];
-    oidcScopes: PropertyEnum[];
+    oidcScopes: Option[];
     encodingAlgOptions: string[];
     encryptAlgOptions: string[];
-    oidcSubjectTypes: PropertyEnum[];
+    oidcSubjectTypes: Option[];
     canonicalizationModes: string[];
     delegatedAuthnProviders: string[];
     oauth20GrantTypes: string[];
@@ -26,7 +26,7 @@ export class FormData {
     samlIdpFriendlyNames: Map<string, string>;
 }
 
-export interface PropertyEnum {
-    propertyName: string;
-    defaultValue: string;
+export interface Option {
+  display: string;
+  value: string;
 }

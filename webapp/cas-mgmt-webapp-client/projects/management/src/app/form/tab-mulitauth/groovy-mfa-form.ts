@@ -13,7 +13,7 @@ export class GroovyMfaForm extends BaseMfaForm<GroovyRegisteredServiceMultifacto
   formMap(): any {
     return {
       groovy: this.policy.groovyScript
-    }
+    };
   }
 
   mapForm(policy: GroovyRegisteredServiceMultifactorPolicy) {

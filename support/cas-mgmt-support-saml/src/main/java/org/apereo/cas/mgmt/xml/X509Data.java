@@ -9,6 +9,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.security.cert.X509Certificate;
 
+/**
+ * X509Data element from SAML Metadata.
+ *
+ * @author Travis Schmidt
+ * @since 6.0.0
+ */
 @Data
 @XmlRootElement(name = "X509Data")
 @XmlAccessorType(XmlAccessType.FIELD)

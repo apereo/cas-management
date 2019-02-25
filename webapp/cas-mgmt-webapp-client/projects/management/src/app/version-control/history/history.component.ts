@@ -90,7 +90,7 @@ export class HistoryComponent implements OnInit {
   viewYaml() {
     this.spinner.start('Loading yaml');
     this.changeService.viewYaml(this.selectedItem.id)
-      .pipe(finalize(()=> this.spinner.stop()))
+      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'yaml', 'eclipse'));
   }
 
@@ -103,11 +103,11 @@ export class HistoryComponent implements OnInit {
   }
 
   first(): boolean {
-    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) == 0;
+    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) === 0;
   }
 
   last(): boolean {
-    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) == this.dataSource.data.length -1
+    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) === this.dataSource.data.length - 1;
   }
 
   showSnackbar(msg: string) {

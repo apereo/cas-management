@@ -9,6 +9,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * EntityDescriptor element from SAML Metadata.
+ *
+ * @author Travis Schmidt
+ * @since 6.0.0
+ */
 @Data
 @XmlRootElement(name = "EntityDescriptor", namespace = "urn:oasis:names:tc:SAML:2.0:metadata")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -19,7 +25,7 @@ public class EntityDescriptor {
     private String entityId;
 
     @XmlElement(name = "SPSSODescriptor", namespace = "urn:oasis:names:tc:SAML:2.0:metadata")
-    private SPSSODescriptor SPSSODescriptor;
+    private SPSSODescriptor sPSSODescriptor;
 
 }
 

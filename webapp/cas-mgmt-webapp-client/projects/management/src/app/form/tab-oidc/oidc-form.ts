@@ -46,7 +46,7 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
       dynamicRegistrationDateTime: this.service.dynamicRegistrationDateTime,
       responseTypes: this.service.supportedResponseTypes,
       grantTypes: this.service.supportedGrantTypes
-    }
+    };
   }
 
   mapForm(service: AbstractRegisteredService) {

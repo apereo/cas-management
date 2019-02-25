@@ -28,7 +28,7 @@ export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegist
       generateRefreshToken: this.service.generateRefreshToken,
       responseTypes: this.service.supportedResponseTypes,
       grantTypes: this.service.supportedGrantTypes
-    }
+    };
   }
 
   mapForm(service: AbstractRegisteredService) {

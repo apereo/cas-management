@@ -87,7 +87,7 @@ export class FormComponent implements OnInit {
         }
         if (data.resp && data.resp[0]) {
           this.loadService(data.resp[0]);
-          this.goto(Tabs.BASICS)
+          this.goto(Tabs.BASICS);
         }
       });
   }
@@ -99,7 +99,7 @@ export class FormComponent implements OnInit {
 
   save() {
     if (this.validate() && this.mapForm()) {
-      this.spinner.start("Saving service");
+      this.spinner.start('Saving service');
       this.service.saveService(this.data.service)
         .pipe(finalize(() => this.spinner.stop()))
         .subscribe(
@@ -139,7 +139,7 @@ export class FormComponent implements OnInit {
       return 'clear';
     }
     if (tab > 0 && this.isCas()) {
-      tab++
+      tab++;
     }
     switch (tab) {
       case Tabs.BASICS :
@@ -221,7 +221,7 @@ export class FormComponent implements OnInit {
   }
 
   validate(): boolean {
-    for (let key of Array.from(this.data.formMap.keys())) {
+    for (const key of Array.from(this.data.formMap.keys())) {
       const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
       if (frm.invalid) {
         this.touch(frm);
@@ -246,8 +246,8 @@ export class FormComponent implements OnInit {
   }
 
   mapForm(): boolean {
-    let touched: boolean = this.imported || this.created
-    for (let key of Array.from(this.data.formMap.keys())) {
+    let touched: boolean = this.imported || this.created;
+    for (const key of Array.from(this.data.formMap.keys())) {
       const form = this.data.formMap.get(key);
       if (form.valid && form.touched) {
         form.mapForm(this.data.service);
@@ -302,7 +302,7 @@ export class FormComponent implements OnInit {
   }
 
   reset() {
-    for(let fg of Array.from(this.data.formMap.values())) {
+    for (const fg of Array.from(this.data.formMap.values())) {
       fg.reset(fg.formMap());
     }
   }
@@ -311,7 +311,7 @@ export class FormComponent implements OnInit {
     if (this.imported) {
       return true;
     }
-    for (let fg of Array.from(this.data.formMap.values())) {
+    for (const fg of Array.from(this.data.formMap.values())) {
       if (fg.touched) {
         return true;
       }
@@ -323,7 +323,7 @@ export class FormComponent implements OnInit {
     if (this.imported || this.created) {
       return true;
     }
-    for (let fg of Array.from(this.data.formMap.values())) {
+    for (const fg of Array.from(this.data.formMap.values())) {
       if (fg.dirty) {
         return true;
       }

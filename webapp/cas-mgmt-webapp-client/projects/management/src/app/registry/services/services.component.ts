@@ -87,7 +87,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       }
     });
     this.deleteItem = this.selectedItem;
-  };
+  }
 
   openModalRevert() {
     const dialogRef = this.dialog.open(RevertComponent, {
@@ -101,7 +101,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       }
     });
     this.revertItem = this.selectedItem;
-  };
+  }
 
   delete() {
     this.spinner.start('Deleting service');
@@ -114,7 +114,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
            {duration: 5000}
          )
       );
-  };
+  }
 
   handleDelete(name: string) {
     this.snackBar

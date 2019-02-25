@@ -11,6 +11,15 @@ import {
 } from 'mgmt-lib';
 import {AttributeForm} from '@app/form/attribute-form';
 
+export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const type = control.get('logoutType');
+  const url = control.get('logoutUrl');
+  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
+    url.setErrors({'logoutUrlRequired': {value: url.value}});
+  }
+  return null;
+};
+
 export class OAuthForm extends FormGroup implements MgmtFormGroup<OAuthRegisteredService> {
 
   constructor(private data: DataRecord) {
@@ -138,12 +147,5 @@ export class OAuthForm extends FormGroup implements MgmtFormGroup<OAuthRegistere
   }
 }
 
-export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
-  const type = control.get('logoutType');
-  const url = control.get('logoutUrl');
-  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
-    url.setErrors({'logoutUrlRequired': {value: url.value}});
-  }
-  return null;
-};
+
 

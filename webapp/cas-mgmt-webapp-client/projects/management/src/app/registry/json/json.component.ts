@@ -49,8 +49,8 @@ export class JSONComponent implements AfterViewInit, OnInit {
 
   handleSuccess() {
     this.snackBar.open(
-      "Service successfully saved",
-      "Dismiss",
+      'Service successfully saved',
+      'Dismiss',
       { duration: 5000 }
     );
     this.location.back();
@@ -59,7 +59,7 @@ export class JSONComponent implements AfterViewInit, OnInit {
   handleError(error: HttpErrorResponse) {
     this.snackBar.open(
       error.error.message,
-      "Dismiss",
+      'Dismiss',
       { duration: 5000 }
     );
   }

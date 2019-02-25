@@ -20,7 +20,7 @@ export class FiltersComponent implements OnInit {
   filters: FormArray;
 
   @Output()
-  addFilter: EventEmitter<FilterType> = new EventEmitter<FilterType>()
+  addFilter: EventEmitter<FilterType> = new EventEmitter<FilterType>();
 
   TYPE = FilterType;
 
@@ -60,12 +60,12 @@ export class FiltersComponent implements OnInit {
     if (filter.get('patterns').value) {
       const parry = filter.get('patterns') as FormArray;
       const keys: string[] = [];
-      for (let pg of parry.controls) {
+      for (const pg of parry.controls) {
         keys.push(pg.get('key').value);
       }
       return keys;
     }
-    return [""];
+    return [''];
   }
 
   moveUp() {

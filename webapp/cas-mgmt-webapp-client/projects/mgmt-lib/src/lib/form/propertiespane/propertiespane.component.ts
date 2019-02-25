@@ -38,7 +38,7 @@ export class PropertiespaneComponent implements OnInit {
 
   selection(event: MatAutocompleteSelectedEvent) {
     const index = event.source.options.toArray().indexOf(event.option);
-    const val = this.formData.options.registeredServiceProperties[index].defaultValue;
+    const val = this.formData.options.registeredServiceProperties[index].value;
     this.entries.at(this.selectedRow).get('value').setValue(val);
   }
 }

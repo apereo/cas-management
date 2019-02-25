@@ -19,7 +19,7 @@ export class LogoutForm extends FormGroup implements MgmtFormGroup<AbstractRegis
     return {
       logout: this.service.logoutUrl,
       logoutType: this.service.logoutType
-    }
+    };
   }
 
   mapForm(service: AbstractRegisteredService) {

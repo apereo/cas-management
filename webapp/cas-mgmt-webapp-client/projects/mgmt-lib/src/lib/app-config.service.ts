@@ -24,7 +24,7 @@ export class AppConfigService extends Service {
     return this.get<AppConfig>('api/appConfig')
       .pipe(
         tap(resp => {
-          this.config = resp
+          this.config = resp;
         })
       );
   }

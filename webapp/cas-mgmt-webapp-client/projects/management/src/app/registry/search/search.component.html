@@ -34,17 +34,6 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'statusWidth'">
-        <ng-container i18n>Status</ng-container>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row" [ngClass]="'statusWidth'">
-        <span *ngIf="added(row)" style="color:green;">A</span>
-        <span *ngIf="modified(row)" style="color:blue;">M</span>
-        <span *ngIf="deleted(row)" style="color:red;">D</span>
-      </mat-cell>
-    </ng-container>
-
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'nameWidth'">
         <ng-container i18n>

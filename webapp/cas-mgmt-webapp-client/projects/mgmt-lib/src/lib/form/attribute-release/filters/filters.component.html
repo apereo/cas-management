@@ -14,11 +14,11 @@
         <span *ngIf="isScripted(filter)">Scripted</span>
       </mat-panel-title>
       <mat-panel-description>
-        <span *ngIf="isRegEx(filter)">{{ filter.pattern }}</span>
+        <span *ngIf="isRegEx(filter)">{{ filter.get('pattern').value }}</span>
         <span *ngIf="isMutantMappedRegEx(filter)">{{ getAttributes(filter) }}</span>
         <span *ngIf="isMappedRegEx(filter)">{{ getAttributes(filter) }} </span>
         <span *ngIf="isReverseMapped(filter)">{{ getAttributes(filter) }}</span>
-        <span *ngIf="isScripted(filter)">{{ filter.script }}</span>
+        <span *ngIf="isScripted(filter)">{{ filter.get('script').value }}</span>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-container *ngIf="isRegEx(filter)">

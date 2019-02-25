@@ -4,17 +4,15 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
-import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
-import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthAttributeReleasePolicy;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,7 +56,7 @@ public class OauthController extends BaseRegisterController {
                                                            final HttpServletRequest request) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val email = casUserProfile.getEmail();
-        val manager = (ManagementServicesManager) managerFactory.from(request,casUserProfile);
+        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
         return manager.getAllServices().stream()
                 .filter(s -> s instanceof OAuthRegisteredService)
                 .filter(s -> s.getContacts().stream().anyMatch(c -> email != null && email.equals(c.getEmail())))
@@ -70,6 +68,11 @@ public class OauthController extends BaseRegisterController {
                 .collect(toList());
     }
 
+    /**
+     * Endpoint to create a new OAuthRegisteredService with generated client id and secret along with a ReleasePolicy.
+     *
+     * @return - OAuthRegisteredService
+     */
     @GetMapping("generate")
     public OAuthRegisteredService generate() {
         val service = new OAuthRegisteredService();
@@ -81,7 +84,7 @@ public class OauthController extends BaseRegisterController {
     }
 
     @Override
-    protected void saveService(RegisteredService service, String id, CasUserProfile casUserProfile) throws Exception {
+    protected void saveService(final RegisteredService service, final String id, final CasUserProfile casUserProfile) throws Exception {
         val manager = managerFactory.master();
         manager.save(service);
     }

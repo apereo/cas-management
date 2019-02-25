@@ -7,8 +7,8 @@ import {
   DataRecord,
   SpinnerService,
   SamlRegisteredService,
-  MgmtFormControl}
-from 'mgmt-lib';
+  MgmtFormControl
+} from 'mgmt-lib';
 import {SamlService} from '../core/saml.service';
 import {SamlForm} from './saml-form';
 import {SubmitComponent} from '../project-share/submit/submit.component';
@@ -19,6 +19,10 @@ import {SubmitComponent} from '../project-share/submit/submit.component';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
+
+  @ViewChild(MatTabGroup)
+  tabs: MatTabGroup;
+
   public form: SamlForm;
 
   constructor(public data: DataRecord,
@@ -53,13 +57,10 @@ export class FormComponent implements OnInit {
       this.snackBar.open(
         'Please correct errors before service can be submitted.',
         'Dismiss',
-        { duration: 5000 }
+        {duration: 5000}
       );
     }
   }
-
-  @ViewChild(MatTabGroup)
-  tabs: MatTabGroup;
 
   saveInternal() {
     this.spinner.start();

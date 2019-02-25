@@ -1,5 +1,5 @@
 export class RegisteredServiceContact {
-  static cName = "org.apereo.cas.services.RegisteredServiceContact";
+  static cName = 'org.apereo.cas.services.RegisteredServiceContact';
 
   name: string;
   email: string;

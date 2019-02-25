@@ -14,7 +14,8 @@ export class OAuthResolve implements Resolve<AbstractRegisteredService[]> {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService[]> | AbstractRegisteredService[] {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService[]>
+                                                                    | AbstractRegisteredService[] {
     this.spinner.start('Creating OAuth Service');
     return this.service.createOAuthService()
       .pipe(

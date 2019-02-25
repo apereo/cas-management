@@ -4,7 +4,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.DefaultContactLookup;
-import org.apereo.cas.mgmt.controller.ContactLookupController;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.LdapUtils;
 

@@ -89,7 +89,7 @@ export class SubmitsComponent implements OnInit {
             'Dismiss',
             {duration: 5000}
           );
-        this.refresh()
+        this.refresh();
       });
   }
 }

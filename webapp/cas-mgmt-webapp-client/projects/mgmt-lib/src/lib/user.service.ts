@@ -20,7 +20,7 @@ export class UserService extends Service {
     }
 
     getUser(): Observable<UserProfile> {
-        return this.get<UserProfile>('api/user')
+        return this.get<UserProfile>('api/user');
     }
 
     lookupContact(query: string): Observable<DefaultRegisteredServiceContact[]> {

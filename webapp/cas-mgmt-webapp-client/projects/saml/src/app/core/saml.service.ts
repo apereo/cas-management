@@ -40,11 +40,11 @@ export class SamlService extends Service {
   }
 
   lookupEntity(query: string): Observable<string[]> {
-    return this.get<string[]>(this.controller + "/search?query=" + query);
+    return this.get<string[]>(this.controller + '/search?query=' + query);
   }
 
   addEntity(id: string): Observable<SamlRegisteredService> {
-    return this.get<SamlRegisteredService>(this.controller + "/add?id=" + id);
+    return this.get<SamlRegisteredService>(this.controller + '/add?id=' + id);
   }
 
   /*

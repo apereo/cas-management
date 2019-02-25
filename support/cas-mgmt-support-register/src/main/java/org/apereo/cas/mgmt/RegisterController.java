@@ -5,14 +5,11 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.LookupServiceItem;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
-import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
-import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

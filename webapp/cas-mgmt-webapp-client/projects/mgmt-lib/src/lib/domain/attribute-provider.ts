@@ -90,7 +90,7 @@ export class ShibbolethCompatiblePersistentIdGenerator {
   constructor(generator?: ShibbolethCompatiblePersistentIdGenerator) {
     this.salt = (generator && generator.salt) || null;
     this.attribute = (generator && generator.attribute) || null;
-    this['@class'] = ShibbolethCompatiblePersistentIdGenerator.cName
+    this['@class'] = ShibbolethCompatiblePersistentIdGenerator.cName;
   }
 }
 

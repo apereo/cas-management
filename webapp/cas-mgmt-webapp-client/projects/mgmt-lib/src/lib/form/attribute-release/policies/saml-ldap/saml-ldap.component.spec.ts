@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {SamlLdapComponent} from './saml-ldap.component';
 
-import { SamlLdapComponent } from './mapped.component';
 
-describe('MappedComponent', () => {
+describe('SamlLdapComponent', () => {
   let component: SamlLdapComponent;
   let fixture: ComponentFixture<SamlLdapComponent>;
 

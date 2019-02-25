@@ -62,7 +62,7 @@ export class LookupComponent implements OnInit {
           return this.service.lookUp(domain)
             .pipe(finalize(() => this.spinner.stop()));
         } else {
-          return Observable.create((observer) => observer.next([]));
+          return new Observable((observer) => observer.next([]));
         }
       })
     ).subscribe((resp: LookupItem[])  => this.dataSource.data = resp);
@@ -76,7 +76,7 @@ export class LookupComponent implements OnInit {
           return this.service.lookUpByContact(contact)
             .pipe(finalize(() => this.spinner.stop()));
         } else {
-          return Observable.create((observer) => observer.next([]));
+          return new Observable((observer) => observer.next([]));
         }
       })
     ).subscribe((resp: LookupItem[])  => this.dataSource.data = resp);
@@ -90,7 +90,7 @@ export class LookupComponent implements OnInit {
           return this.user.lookupContact(query)
             .pipe(finalize(() => this.spinner.stop()));
         } else {
-          return Observable.create((observer) => observer.next([]));
+          return new Observable((observer) => observer.next([]));
         }
       })
     ).subscribe((resp: DefaultRegisteredServiceContact[])  => this.foundContacts = resp);

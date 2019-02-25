@@ -29,7 +29,8 @@ export class BaseAccessForm<T extends RegisteredServiceAccessStrategy> extends F
       requiredAttributes: (<AttributeForm>this.get('requiredAttributes')).formMap(),
       caseInsensitive: this.strategy.caseInsensitive,
       rejectedAttributes: (<AttributeForm>this.get('rejectedAttributes')).formMap(),
-      allowedProviders: (this.strategy.delegatedAuthenticationPolicy && this.strategy.delegatedAuthenticationPolicy.allowedProviders) || null
+      allowedProviders: (this.strategy.delegatedAuthenticationPolicy
+        && this.strategy.delegatedAuthenticationPolicy.allowedProviders) || null
     };
     return frm;
   }

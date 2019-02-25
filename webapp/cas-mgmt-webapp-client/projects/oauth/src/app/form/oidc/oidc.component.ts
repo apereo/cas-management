@@ -20,6 +20,9 @@ import {OidcService} from '../../core/oidc.service';
 })
 export class OidcComponent implements OnInit {
 
+  @ViewChild(MatTabGroup)
+  tabs: MatTabGroup;
+
   form: OidcForm;
 
   constructor(public data: DataRecord,
@@ -57,9 +60,6 @@ export class OidcComponent implements OnInit {
       );
     }
   }
-
-  @ViewChild(MatTabGroup)
-  tabs: MatTabGroup;
 
   saveInternal() {
     this.spinner.start();

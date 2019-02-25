@@ -47,7 +47,7 @@ export class ChangesComponent implements OnInit {
             data: [f, 'diff', 'github'],
             width: '900px',
             position: {top: '50px'}
-          })
+          });
         },
         (error) => this.snackBar.open(error.error.message, 'Dismiss'));
   }

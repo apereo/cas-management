@@ -6,7 +6,7 @@ export class RegisteredServiceConsentPolicy {
   includeOnlyAttributes: string[];
 
   static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === RegisteredServiceConsentPolicy.cName
+    return obj && obj['@class'] === RegisteredServiceConsentPolicy.cName;
   }
 
   constructor(policy?: RegisteredServiceConsentPolicy) {

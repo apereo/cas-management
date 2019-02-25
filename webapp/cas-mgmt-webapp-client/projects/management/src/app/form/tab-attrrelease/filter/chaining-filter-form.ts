@@ -25,8 +25,8 @@ export class ChainingFilterForm extends BaseFilterForm<RegisteredServiceChaining
     const filters = new FormArray([]);
     this.addControl('filters', filters);
     this.addControl('type', new FormControl(this.type));
-    if(filter && filter.filters) {
-      for (let f of filter.filters) {
+    if (filter && filter.filters) {
+      for (const f of filter.filters) {
         if (RegisteredServiceMappedRegexAttributeFilter.instanceof(f)) {
           filters.push(new MappedFilterForm(f as RegisteredServiceMappedRegexAttributeFilter));
         }
@@ -60,7 +60,7 @@ export class ChainingFilterForm extends BaseFilterForm<RegisteredServiceChaining
 
   mapForm(filter: RegisteredServiceChainingAttributeFilter) {
     filter.filters = [];
-    for(let c of (<FormArray>this.get('filters')).controls) {
+    for (const c of (<FormArray>this.get('filters')).controls) {
       if (c.get('type').value === FilterType.MAPPED_REGEX) {
         const f = new RegisteredServiceMappedRegexAttributeFilter();
         (<MappedFilterForm>c).mapForm(f);

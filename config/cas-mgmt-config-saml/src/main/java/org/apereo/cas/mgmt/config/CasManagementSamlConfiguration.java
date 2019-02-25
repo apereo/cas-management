@@ -9,7 +9,9 @@ import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,20 +28,25 @@ import org.springframework.context.annotation.Configuration;
 public class CasManagementSamlConfiguration {
 
     @Autowired
-    private MgmtManagerFactory managerFactory;
+    @Qualifier("managerFactory")
+    private ObjectProvider<MgmtManagerFactory> managerFactory;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    @Qualifier("casUserProfielFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
+    @Qualifier("servicesManager")
     private ServicesManager servicesManager;
 
     @Bean
     public SamlController samlController() {
-        return new SamlController(casUserProfileFactory, managerFactory,
-                managementProperties, servicesManager);
+        return new SamlController(casUserProfileFactory.getIfAvailable(),
+                managerFactory.getIfAvailable(),
+                managementProperties,
+                servicesManager);
     }
 }

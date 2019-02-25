@@ -21,7 +21,7 @@ export class AttributeForm extends FormArray {
   formMap(): any {
     const frm = [];
     if (this.map) {
-      for (let a of Array.from(Object.keys(this.map))) {
+      for (const a of Array.from(Object.keys(this.map))) {
         frm.push({
           key: a,
           value: this.map[a].toString()
@@ -34,8 +34,8 @@ export class AttributeForm extends FormArray {
   mapForm(): Map<string, string[]> {
     if (this.length > 0) {
       const map = new Map<string, string[]>();
-      for (let c of this.value) {
-        map[c.key] = c.value.split(",")
+      for (const c of this.value) {
+        map[c.key] = c.value.split(',');
       }
       return map;
     }
@@ -45,8 +45,8 @@ export class AttributeForm extends FormArray {
   mapFormString(): Map<string, string> {
     if (this.length > 0) {
       const map = new Map<string, string>();
-      for (let c of this.value) {
-        map[c.key] = c.value
+      for (const c of this.value) {
+        map[c.key] = c.value;
       }
       return map;
     }

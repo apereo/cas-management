@@ -7,7 +7,8 @@ import {
   CachingPrincipalAttributesRepository,
 } from 'mgmt-lib';
 
-export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleasePolicy> extends FormGroup implements MgmtFormGroup<RegisteredServiceAttributeReleasePolicy> {
+export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleasePolicy>
+  extends FormGroup implements MgmtFormGroup<RegisteredServiceAttributeReleasePolicy> {
 
   constructor(public policy: RegisteredServiceAttributeReleasePolicy) {
     super({
@@ -34,7 +35,9 @@ export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleas
 
   formMap(): any {
     const policy: RegisteredServiceAttributeReleasePolicy = this.policy;
-    const principalRepoType = CachingPrincipalAttributesRepository.instanceOf(policy) ? PrincipalRepoType.CACHING : PrincipalRepoType.DEFAULT;
+    const principalRepoType = CachingPrincipalAttributesRepository.instanceOf(policy)
+      ? PrincipalRepoType.CACHING
+      : PrincipalRepoType.DEFAULT;
     const frm = {
       checks: {
         excludeDefaultAttributes: policy.excludeDefaultAttributes,
@@ -50,9 +53,12 @@ export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleas
       },
       principalRepo: {
         type: principalRepoType,
-        timeUnit: principalRepoType === PrincipalRepoType.CACHING ? (<CachingPrincipalAttributesRepository>policy.principalAttributesRepository).timeUnit : null,
-        expiration: principalRepoType === PrincipalRepoType.CACHING ? (<CachingPrincipalAttributesRepository>policy.principalAttributesRepository).expiration : null,
-        mergingStrategy: principalRepoType === PrincipalRepoType.CACHING ? (<CachingPrincipalAttributesRepository>policy.principalAttributesRepository).mergingStrategy : null
+        timeUnit: principalRepoType === PrincipalRepoType.CACHING
+          ? (<CachingPrincipalAttributesRepository>policy.principalAttributesRepository).timeUnit : null,
+        expiration: principalRepoType === PrincipalRepoType.CACHING
+          ? (<CachingPrincipalAttributesRepository>policy.principalAttributesRepository).expiration : null,
+        mergingStrategy: principalRepoType === PrincipalRepoType.CACHING
+          ? (<CachingPrincipalAttributesRepository>policy.principalAttributesRepository).mergingStrategy : null
       }
     };
     return frm;

@@ -14,8 +14,7 @@ export class DataRecord {
   original: AbstractRegisteredService | undefined;
   formMap: Map<string, MgmtFormGroup<AbstractRegisteredService>>;
 
-  constructor(){
-
+  constructor() {
   }
 }
 

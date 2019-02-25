@@ -9,6 +9,15 @@ import {
   AbstractRegisteredService
 } from 'mgmt-lib';
 
+export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const type = control.get('logoutType');
+  const url = control.get('logoutUrl');
+  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
+    url.setErrors({'logoutUrlRequired': {value: url.value}});
+  }
+  return null;
+};
+
 export class RegisterForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(private data: DataRecord) {
@@ -108,13 +117,3 @@ export class RegisterForm extends FormGroup implements MgmtFormGroup<AbstractReg
     };
   }
 }
-
-export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
-  const type = control.get('logoutType');
-  const url = control.get('logoutUrl');
-  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
-    url.setErrors({'logoutUrlRequired': {value: url.value}});
-  }
-  return null;
-};
-

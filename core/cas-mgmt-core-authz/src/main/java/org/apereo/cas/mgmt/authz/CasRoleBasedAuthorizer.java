@@ -24,7 +24,7 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
     @Override
     protected boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) {
         LOGGER.debug("Evaluating profile [{}]", profile);
-        final boolean result = isStaffOrFaculty(profile);
+        val result = isStaffOrFaculty(profile);
         if (!result) {
             LOGGER.warn("Unable to authorize access, since the authenticated profile [{}] does not contain any required roles", profile);
         } else {
@@ -33,16 +33,16 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
         return result;
     }
 
-    private boolean isStaffOrFaculty(CommonProfile profile) {
-        final Object aff = profile.getAttribute("eduPersonAffiliation");
+    private boolean isStaffOrFaculty(final CommonProfile profile) {
+        val aff = profile.getAttribute("eduPersonAffiliation");
         if (aff == null) {
             LOGGER.error("Person is neither staff or faculty");
             return false;
         }
         if (aff instanceof String) {
-            return ((String)aff).contains("staff") || ((String)aff).contains("faculty");
+            return ((String) aff).contains("staff") || ((String) aff).contains("faculty");
         } else {
-            return ((List)aff).contains("staff") || ((List)aff).contains("faculty");
+            return ((List) aff).contains("staff") || ((List) aff).contains("faculty");
         }
 
     }

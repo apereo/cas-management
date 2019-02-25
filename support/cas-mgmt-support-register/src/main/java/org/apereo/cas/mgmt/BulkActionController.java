@@ -78,8 +78,8 @@ public class BulkActionController {
             } else {
                 git.close();
                 removeClone(clone);
-                throw new Exception("You are the only contact for service: '" + service.getName() +
-                        "'.  A second contact must be added before you can remove yourself.");
+                throw new Exception("You are the only contact for service: '" + service.getName()
+                        + "'.  A second contact must be added before you can remove yourself.");
             }
         }
         if (git.scanWorkingDiffs().isEmpty()) {

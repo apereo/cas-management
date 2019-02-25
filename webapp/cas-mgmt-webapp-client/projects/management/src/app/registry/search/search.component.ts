@@ -45,7 +45,7 @@ export class SearchComponent implements OnInit {
   }
 
   viewJson() {
-    this.spinner.start("Loading json");
+    this.spinner.start('Loading json');
     this.service.getJson(+this.selectedItem.assignedId)
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'hjson', 'eclipse'));

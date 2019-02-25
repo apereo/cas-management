@@ -4,7 +4,7 @@ import {AppConfigService, FormDataService} from 'mgmt-lib';
 import {ControlsService} from '@app/project-share';
 
 @Component({
-  selector: 'mgmt-root',
+  selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {

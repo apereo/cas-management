@@ -5,7 +5,6 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
-import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ForwardingController;
 import org.apereo.cas.mgmt.controller.ViewController;
@@ -56,7 +55,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -92,7 +90,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     private ObjectProvider<Authorizer> managementWebappAuthorizer;
 
     @Autowired
-    private CasUserProfileFactory casUserProfileFactory;
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
     private CasConfigurationProperties casProperties;
@@ -263,7 +262,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public ViewController viewController() {
         val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
         return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl),
-                                  casUserProfileFactory);
+                                  casUserProfileFactory.getIfAvailable());
     }
 
     @Bean

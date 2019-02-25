@@ -14,7 +14,8 @@ export class OidcResolve implements Resolve<AbstractRegisteredService[]> {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService[]> | AbstractRegisteredService[] {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService[]>
+                                                                    | AbstractRegisteredService[] {
     this.spinner.start('Creating OIDC Service');
     return this.service.createOidcService()
       .pipe(

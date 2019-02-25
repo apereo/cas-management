@@ -30,20 +30,20 @@ export class AddComponent implements OnInit {
           return this.service.lookupEntity(query)
             .pipe(finalize(() => this.spinner.stop()));
         } else {
-          return Observable.create((observer) => observer.next([]));
+          return new Observable((observer) => observer.next([]));
         }
       })
     ).subscribe((resp: string[])  => this.foundEntities = resp);
   }
 
   upload(evt: Event) {
-    const input: HTMLInputElement = evt.srcElement as HTMLInputElement;
+    const input: HTMLInputElement = evt.currentTarget as HTMLInputElement;
     const reader = new FileReader();
     reader.onload = (function(fe: AddComponent) {
       return function (e: Event) {
         fe.service.upload(<string> reader.result).subscribe(service => {
           fe.service.uploaded = service;
-          fe.dialogRef.close('upload')
+          fe.dialogRef.close('upload');
         });
       };
     })(this);
@@ -58,6 +58,6 @@ export class AddComponent implements OnInit {
     this.service.addEntity(id).subscribe(service => {
       this.service.uploaded = service;
       this.dialogRef.close('upload');
-    })
+    });
   }
 }

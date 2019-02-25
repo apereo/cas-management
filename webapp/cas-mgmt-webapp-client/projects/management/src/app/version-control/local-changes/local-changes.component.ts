@@ -59,7 +59,7 @@ export class LocalChangesComponent implements OnInit {
       }
     });
     this.revertItem = this.selectedItem;
-  };
+  }
 
   revert() {
     this.spinner.start('Reverting change');

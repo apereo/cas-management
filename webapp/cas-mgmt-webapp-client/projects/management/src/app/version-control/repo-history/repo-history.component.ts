@@ -39,7 +39,7 @@ export class RepoHistoryComponent implements OnInit {
         } else {
           this.displayedColumns = ['actions', 'id', 'message', 'time'];
         }
-      })
+      });
   }
 
   refresh() {

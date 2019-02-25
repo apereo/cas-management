@@ -29,7 +29,6 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.diff.RawTextComparator;
-import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.PersonIdent;
@@ -1085,7 +1084,7 @@ public class GitUtil implements AutoCloseable {
     public GitUtil rebase() {
         try {
             if (checkMaster()) {
-                attemptRebase().stream().forEach(this::resolveConflict);
+                attemptRebase().forEach(this::resolveConflict);
             }
         } catch (final Exception e) {
             LOGGER.error("Error Rebasing git ", e);

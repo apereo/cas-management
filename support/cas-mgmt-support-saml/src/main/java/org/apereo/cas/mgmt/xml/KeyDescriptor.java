@@ -9,13 +9,19 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * KeyDescriptor element from SAML Metadata.
+ *
+ * @author Travis Schmidt
+ * @since 6.0.0
+ */
 @Data
 @XmlRootElement(name = "KeyDescriptor")
 @XmlAccessorType(XmlAccessType.FIELD)
 @NoArgsConstructor
 public class KeyDescriptor {
 
-    @XmlAttribute( name = "use")
+    @XmlAttribute(name = "use")
     private String use;
 
     @XmlElement(name = "KeyInfo", namespace = "http://www.w3.org/2000/09/xmldsig#")

@@ -36,7 +36,7 @@ export class ImportComponent implements OnInit {
   }
 
   getFile(evt: Event) {
-    const input: HTMLInputElement = evt.srcElement as HTMLInputElement;
+    const input: HTMLInputElement = evt.currentTarget as HTMLInputElement;
     const reader = new FileReader();
     reader.onload = (function(fe: ImportComponent) {
       return function (e: Event) {

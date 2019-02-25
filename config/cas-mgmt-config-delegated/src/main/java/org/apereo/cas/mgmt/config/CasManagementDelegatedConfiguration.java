@@ -46,7 +46,7 @@ public class CasManagementDelegatedConfiguration {
 
     @Autowired
     @Qualifier("communicationsManager")
-    private CommunicationsManager communicationsManager;
+    private ObjectProvider<CommunicationsManager> communicationsManager;
 
     @Autowired
     @Qualifier("mailSender")
@@ -56,13 +56,13 @@ public class CasManagementDelegatedConfiguration {
     @Bean
     public SubmitController submitController() {
         return new SubmitController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
-                managementProperties, communicationsManager);
+                managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean
     public PullController pullController() {
         return new PullController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
-                managementProperties, communicationsManager);
+                managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean

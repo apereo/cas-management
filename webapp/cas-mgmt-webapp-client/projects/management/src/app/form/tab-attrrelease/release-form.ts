@@ -168,7 +168,8 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
   }
 
   changeType(type: ReleasePolicyType) {
-    const base: BaseReleaseForm<RegisteredServiceAttributeReleasePolicy> = this.policy as BaseReleaseForm<RegisteredServiceAttributeReleasePolicy>;
+    const base: BaseReleaseForm<RegisteredServiceAttributeReleasePolicy> =
+      this.policy as BaseReleaseForm<RegisteredServiceAttributeReleasePolicy>;
     if (type === ReleasePolicyType.RESTFUL) {
       const policy = new ReturnRestfulAttributeReleasePolicy();
       base.mapForm(policy);
@@ -323,7 +324,7 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
     if (GroovySamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
       return ReleasePolicyType.GROOVY_SAML;
     }
-    if (this.isWsFed || WsFederationClaimsReleasePolicy.instanceOf(policy)){
+    if (this.isWsFed || WsFederationClaimsReleasePolicy.instanceOf(policy)) {
       return ReleasePolicyType.WS_FED;
     }
     if (LdapSamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {

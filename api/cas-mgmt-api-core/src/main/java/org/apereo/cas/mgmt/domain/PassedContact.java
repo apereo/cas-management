@@ -1,10 +1,17 @@
 package org.apereo.cas.mgmt.domain;
 
+import org.apereo.cas.services.DefaultRegisteredServiceContact;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apereo.cas.services.DefaultRegisteredServiceContact;
 
+/**
+ * Data class for sending looked up contacts between the client and the server.
+ *
+ * @author Travis Schmidt
+ * @since 6.0.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

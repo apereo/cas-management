@@ -10,6 +10,15 @@ import {
   LdapSamlRegisteredServiceAttributeReleasePolicy
 } from 'mgmt-lib';
 
+export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const type = control.get('logoutType');
+  const url = control.get('logoutUrl');
+  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
+    url.setErrors({'logoutUrlRequired': {value: url.value}});
+  }
+  return null;
+};
+
 export class SamlForm extends FormGroup implements MgmtFormGroup<SamlRegisteredService> {
 
   constructor(private data: DataRecord) {
@@ -126,7 +135,7 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<SamlRegisteredS
     }
     const policy = this.data.service.attributeReleasePolicy as LdapSamlRegisteredServiceAttributeReleasePolicy;
     if (policy.allowedAttributes) {
-      for (let a of Array.from(Object.keys(policy.allowedAttributes))) {
+      for (const a of Array.from(Object.keys(policy.allowedAttributes))) {
         frm.attributes.attributes.push({
           key: {key: a, value: ''},
           value: policy.allowedAttributes[a].toString()
@@ -178,8 +187,8 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<SamlRegisteredS
     const attr = this.get('attributes').get('attributes') as FormArray;
     if (attr.length > 0) {
       const map = new Map<string, string[]>();
-      for (let c of attr.value) {
-        map[c.key.key] = c.value.split(",")
+      for (const c of attr.value) {
+        map[c.key.key] = c.value.split(',');
       }
       (<LdapSamlRegisteredServiceAttributeReleasePolicy>service.attributeReleasePolicy).allowedAttributes = map;
     }
@@ -202,13 +211,4 @@ export class SamlForm extends FormGroup implements MgmtFormGroup<SamlRegisteredS
     };
   }
 }
-
-export const logoutUrlRequired: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
-  const type = control.get('logoutType');
-  const url = control.get('logoutUrl');
-  if (type.value === 'FRONT_CHANNEL' && url.value === null) {
-    url.setErrors({'logoutUrlRequired': {value: url.value}});
-  }
-  return null;
-};
 

@@ -19,6 +19,9 @@ import {finalize} from 'rxjs/operators';
 })
 export class OauthComponent implements OnInit {
 
+  @ViewChild(MatTabGroup)
+  tabs: MatTabGroup;
+
   public form: OAuthForm;
 
   public keys = ['name', 'family_name', 'given_name', 'nickname', 'uid',
@@ -59,9 +62,6 @@ export class OauthComponent implements OnInit {
       );
     }
   }
-
-  @ViewChild(MatTabGroup)
-  tabs: MatTabGroup;
 
   saveInternal() {
     this.spinner.start();

@@ -18,7 +18,7 @@ export class BaseAttrForm<T extends RegisteredServiceUsernameAttributeProvider> 
     return {
       encryptUsername: this.provider.encryptUsername,
       canonicalizationMode: this.provider.canonicalizationMode
-    }
+    };
   }
 
   mapForm(provider: RegisteredServiceUsernameAttributeProvider) {

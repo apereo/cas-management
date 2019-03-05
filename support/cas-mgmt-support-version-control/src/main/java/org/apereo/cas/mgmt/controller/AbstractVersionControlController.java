@@ -48,7 +48,6 @@ public class AbstractVersionControlController {
      *
      * @param casUserProfile - the user profile
      * @return - True if user has ROLE_ADMIN
-     * @throws Exception -Thrown if user does not have ROLE_ADMIN.
      */
     protected boolean isAdministrator(final CasUserProfile casUserProfile) {
         if (!casUserProfile.isAdministrator()) {

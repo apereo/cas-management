@@ -75,7 +75,6 @@ public class ServiceController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @param id -  the id
-     * @throws Exception the exception
      */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -130,7 +129,6 @@ public class ServiceController {
      * @param response - HttpServletResponse
      * @param id       the id
      * @return the service by id
-     * @throws Exception the exception
      */
     @GetMapping("/{id}")
     public RegisteredService getServiceById(final HttpServletRequest request,
@@ -146,7 +144,6 @@ public class ServiceController {
      * @param response - HttpServletResponse
      * @param id       - Long representing id of the service
      * @return - String representing the service in Yaml notation.
-     * @throws Exception - failed
      */
     @GetMapping("/yaml/{id}")
     public String getYaml(final HttpServletRequest request,
@@ -185,7 +182,6 @@ public class ServiceController {
      * @param response - HttpServletResponse
      * @param id       - Long representing the id of the service
      * @return - String representing the service in HJson
-     * @throws Exception -failed
      */
     @GetMapping("/json/{id}")
     public String getJson(final HttpServletRequest request,
@@ -237,7 +233,6 @@ public class ServiceController {
      *
      * @param service  - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
-     * @throws Exception - failed
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
     public RegisteredService importService(final @RequestBody String service) {

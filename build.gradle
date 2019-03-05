@@ -130,14 +130,10 @@ dependencyCheck {
 allprojects {
     apply plugin: "idea"
     apply plugin: "eclipse"
-    apply plugin: "signing"
     apply plugin: "jacoco"
     apply plugin: "java"
 
-    if (projectShouldBePublished(project)) {
-        apply plugin: "maven-publish"
-    }
-
+    
     project.ext["forceBootifulArtifact"] = null
 
     if (!rootProject.publishSnapshots && !Boolean.getBoolean("skipGradleLint")) {
@@ -145,18 +141,13 @@ allprojects {
         gradleLint.rules = ["dependency-parentheses", "dependency-tuple"]
     }
 
-    if (projectShouldBePublished(project)) {
-        apply from: rootProject.file("gradle/maven.gradle")
-    }
+
 
     jacoco {
         toolVersion = "$gradleJacocoVersion"
     }
 
-    signing {
-        required = isArtifactSigningRequired
-        sign configurations.archives
-    }
+    
 
     idea {
         module {
@@ -169,7 +160,6 @@ allprojects {
         }
     }
 
-    signArchives.enabled = rootProject.publishReleases || rootProject.publishSnapshots
 
     repositories {
         mavenLocal()
@@ -212,9 +202,21 @@ subprojects {
     apply plugin: "propdeps-maven"
     apply plugin: "propdeps-idea"
     apply plugin: "propdeps-eclipse"
-
+    
+    
     apply from: rootProject.file("gradle/tasks.gradle")
     apply from: rootProject.file("gradle/tests.gradle")
+
+    if (projectShouldBePublished(project)) {
+        apply plugin: "maven-publish"
+        apply plugin: "signing"
+        apply from: rootProject.file("gradle/maven.gradle")
+        signing {
+            required = isArtifactSigningRequired
+            sign publishing.publications
+        }
+        //signArchives.enabled = rootProject.publishReleases || rootProject.publishSnapshots
+    }
 
     ext.libraries = rootProject.ext.libraries
 
@@ -223,6 +225,7 @@ subprojects {
         mavenCentral()
         maven { url "https://build.shibboleth.net/nexus/content/repositories/releases" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases" }
         maven { url "https://repo.spring.io/plugins-release/" }
         maven { url "https://repo.spring.io/milestone/" }
         maven { url "https://repo.spring.io/snapshot/" }
@@ -528,5 +531,5 @@ task verifyRequiredJavaVersion {
 }
 
 boolean projectShouldBePublished(Project project) {
-    return !["api", "core", "docs", "support", "webapps", "cas-server-documentation"].contains(project.name)
+    return !["api", "core", "docs", "support", "webapp", "cas-server-documentation"].contains(project.name)
 }

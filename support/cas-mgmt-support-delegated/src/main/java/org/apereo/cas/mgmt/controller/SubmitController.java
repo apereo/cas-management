@@ -54,7 +54,6 @@ public class SubmitController {
      * @param response - HttpServletResponse
      * @param request  - HttpServletRequest
      * @param msg      - message from user
-     * @throws Exception - failed.
      */
     @PostMapping
     @SneakyThrows

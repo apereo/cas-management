@@ -126,12 +126,16 @@ public class FormData implements Serializable {
         return CaseCanonicalizationMode.values();
     }
 
-    public OAuth20GrantTypes[] getOauth20GrantTypes() {
-        return OAuth20GrantTypes.values();
+    public List<Option> getOauth20GrantTypes() {
+        return Arrays.stream(OAuth20GrantTypes.values())
+                .map(grant -> new Option(grant.name(), grant.getType()))
+                .collect(Collectors.toList());
     }
 
-    public OAuth20ResponseTypes[] getOauth20ResponseTypes() {
-        return OAuth20ResponseTypes.values();
+    public List<Option> getOauth20ResponseTypes() {
+        return Arrays.stream(OAuth20ResponseTypes.values())
+                .map(response -> new Option(response.name(), response.getType()))
+                .collect(Collectors.toList());
     }
 
     private static List<String> locateKeyAlgorithmsSupported() {

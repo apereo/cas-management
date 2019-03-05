@@ -11,12 +11,14 @@ import org.junit.Rule;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  * Base class for running tests in core.
@@ -29,6 +31,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
         CasManagementAuthenticationConfiguration.class,
         CasManagementAuthorizationConfiguration.class,
         CasCoreServicesConfiguration.class,
+        RefreshAutoConfiguration.class,
         AopAutoConfiguration.class
 })
 @EnableAspectJAutoProxy
@@ -36,6 +39,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 @EnableScheduling
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @TestPropertySource(properties = "mgmt.enableDiscoveryEndpointCall=false")
+@WebAppConfiguration
 public abstract class BaseCoreTests {
 
     @ClassRule

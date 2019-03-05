@@ -76,6 +76,7 @@ public class CasManagementCoreServicesConfiguration {
     public RegisteredServiceResourceNamingStrategy namingStrategy() {
         return new DefaultRegisteredServiceResourceNamingStrategy();
     }
+
     @Bean
     public ApplicationDataController applicationDataController() {
         return new ApplicationDataController(formDataFactory(), casUserProfileFactory.getIfAvailable(), managerFactory(),

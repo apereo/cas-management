@@ -1,5 +1,7 @@
 package org.apereo.cas.mgmt.config;
 
+import com.nimbusds.jose.EncryptionMethod;
+import com.nimbusds.jose.JWEAlgorithm;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
@@ -12,8 +14,15 @@ import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.direct.AnonymousClient;
+import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
+import org.pac4j.jwt.config.encryption.ECEncryptionConfiguration;
+import org.pac4j.jwt.config.encryption.EncryptionConfiguration;
+import org.pac4j.jwt.config.encryption.RSAEncryptionConfiguration;
+import org.pac4j.jwt.config.signature.RSASignatureConfiguration;
+import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
+import org.pac4j.jwt.util.JWKHelper;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,6 +65,25 @@ public class CasManagementAuthenticationConfiguration {
     @Bean
     public List<Client> authenticationClients() {
         val clients = new ArrayList<Client>();
+        val jwk = "{\"kty\":\"RSA\",\"n\":\"g6YQRvtdzGP27MRQL2OR2AKcd7AodolA6u6WHL-1XCIzEOI3qxD0MBd6tgmcc3ktPE2kToT26U3bYih-rrX7fIsGQg-kEPGuDmxTKXMgiTT8-3J27pjYYjycR7JgYGkmwsHjqTJQ7NhcxEk4tt6RJFAGMrcVLJP65_IcE1_VoAnJEbfzGiwfAHKmq60Yiry06vHJKxZYqWpQEEhaQLdGoU4ywmaAK-Nts-w-mZGgOS1CetuHhRiUsmfiabJq-Ae9gPr3PAPmzh9omzLATOrST0rVpG7pNKGM4qWY9H_0NEPEsUyomdPyqO1kal3M3uxe5ryg7Dmy5GX9xuDRK52YZQ\",\"e\":\"AQAB\"}";
+
+        //val secret = JWKHelper.buildSecretFromJwk(jwk);
+        val rsa = JWKHelper.buildRSAKeyPairFromJwk(jwk);
+        //val enc = JWKHelper.buildECKeyPairFromJwk(jwk);
+        val jwt = new JwtAuthenticator();
+        val encConfig = new RSAEncryptionConfiguration();
+        //encConfig.setAlgorithm(JWEAlgorithm.ECDH_ES_A128KW);
+        //encConfig.setMethod(EncryptionMethod.A192CBC_HS384);
+        encConfig.setKeyPair(rsa);
+        jwt.addEncryptionConfiguration(encConfig);
+        jwt.addSignatureConfiguration(new RSASignatureConfiguration(rsa));
+        val jwtClient = new HeaderClient();
+        jwtClient.setHeaderName("Authorization");
+        jwtClient.setPrefixHeader("Bearer");
+        jwtClient.setAuthenticator(jwt);
+        jwtClient.addAuthorizationGenerator(authorizationGenerator.getIfAvailable());
+        jwtClient.setName("JWTAuth");
+        clients.add(jwtClient);
 
         if (StringUtils.hasText(casProperties.getServer().getName())) {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
@@ -87,8 +115,6 @@ public class CasManagementAuthenticationConfiguration {
         }
         return clients;
     }
-
-
 
     @ConditionalOnMissingBean(name = "casUserProfileFactory")
     @Bean

@@ -20,8 +20,8 @@ export class FormData {
     oidcSubjectTypes: Option[];
     canonicalizationModes: string[];
     delegatedAuthnProviders: string[];
-    oauth20GrantTypes: string[];
-    oauth20ResponseTypes: string[];
+    oauth20GrantTypes: Option[];
+    oauth20ResponseTypes: Option[];
     samlIdpAttributes: string[];
     samlIdpFriendlyNames: Map<string, string>;
 }

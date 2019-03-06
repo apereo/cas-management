@@ -54,7 +54,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Allowed Response Types</mat-placeholder>
     <mat-select multiple [formControl]="responseTypes">
-      <mat-option *ngFor="let t of formData.options.oauth20ResponseTypes" [value]="t">{{ t }}</mat-option>
+      <mat-option *ngFor="let t of formData.options.oauth20ResponseTypes" [value]="t.value">{{ t.display }}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip
@@ -67,7 +67,7 @@
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Allowed Grant Types</mat-placeholder>
     <mat-select multiple [formControl]="grantTypes">
-      <mat-option *ngFor="let t of formData.options.oauth20GrantTypes" [value]="t">{{ t }}</mat-option>
+      <mat-option *ngFor="let t of formData.options.oauth20GrantTypes" [value]="t.value">{{ t.display }}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-icon appHelp i18n-matTooltip

@@ -35,7 +35,7 @@ public class CasManagementSamlConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    @Qualifier("casUserProfielFactory")
+    @Qualifier("casUserProfileFactory")
     private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired

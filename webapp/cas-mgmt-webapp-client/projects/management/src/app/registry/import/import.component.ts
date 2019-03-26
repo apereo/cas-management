@@ -30,7 +30,7 @@ export class ImportComponent implements OnInit {
     this.service.import(this.editor.getFile())
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(
-        () => this.router.navigate(['importService']),
+        () => this.router.navigate(['form/importService']),
         () => alert('The system was not able to parse your imported service as a valid Registered Service.')
       );
   }

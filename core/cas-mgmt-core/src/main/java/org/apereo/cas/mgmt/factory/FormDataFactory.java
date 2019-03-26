@@ -20,6 +20,7 @@ import lombok.val;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
+import org.apereo.services.persondir.IPersonAttributeDaoFilter;
 import org.springframework.http.HttpStatus;
 
 import javax.annotation.PostConstruct;
@@ -157,7 +158,7 @@ public class FormDataFactory {
             val p = profile.get();
             formData.setAvailableAttributes(p.getAvailableAttributes());
         } else {
-            formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames());
+            formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames(IPersonAttributeDaoFilter.alwaysChoose()));
         }
     }
 }

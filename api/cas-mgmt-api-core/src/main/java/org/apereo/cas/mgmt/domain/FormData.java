@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.domain;
 
-import org.apereo.cas.authentication.principal.cache.AbstractPrincipalAttributesRepository;
+import org.apereo.cas.authentication.AttributeMergingStrategy;
 import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPResponseProperties;
 import org.apereo.cas.grouper.GrouperGroupField;
 import org.apereo.cas.oidc.OidcConstants;
@@ -84,8 +84,8 @@ public class FormData implements Serializable {
         return TimeUnit.values();
     }
 
-    public AbstractPrincipalAttributesRepository.MergingStrategy[] getMergingStrategies() {
-        return AbstractPrincipalAttributesRepository.MergingStrategy.values();
+    public AttributeMergingStrategy[] getMergingStrategies() {
+        return AttributeMergingStrategy.values();
     }
 
     public RegisteredServiceLogoutType[] getLogoutTypes() {
@@ -128,14 +128,14 @@ public class FormData implements Serializable {
 
     public List<Option> getOauth20GrantTypes() {
         return Arrays.stream(OAuth20GrantTypes.values())
-                .map(grant -> new Option(grant.name(), grant.getType()))
-                .collect(Collectors.toList());
+            .map(grant -> new Option(grant.name(), grant.getType()))
+            .collect(Collectors.toList());
     }
 
     public List<Option> getOauth20ResponseTypes() {
         return Arrays.stream(OAuth20ResponseTypes.values())
-                .map(response -> new Option(response.name(), response.getType()))
-                .collect(Collectors.toList());
+            .map(response -> new Option(response.name(), response.getType()))
+            .collect(Collectors.toList());
     }
 
     private static List<String> locateKeyAlgorithmsSupported() {

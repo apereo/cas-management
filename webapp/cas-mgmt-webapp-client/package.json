@@ -28,7 +28,7 @@
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.4.0",
-    "zone.js": "~0.8.29"
+    "zone.js": "~0.9.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.7",

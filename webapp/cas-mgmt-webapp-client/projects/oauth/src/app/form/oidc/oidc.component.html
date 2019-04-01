@@ -28,7 +28,10 @@
           <mat-tab label="Oidc">
             <div style="display: flex; justify-content: center; padding-top: 15px">
               <div style="display: flex; flex-direction: column; justify-content: center; padding-bottom: 50px;pading-top: 15px; width: 550px">
-                <lib-oidcclient [control]="form.get('oidc')" [hideKeys]="true"></lib-oidcclient>
+                <lib-oidcclient [control]="form.get('oidc')"
+                                (generateId)="generateId()"
+                                (generateSecret)="generateSecret()"
+                                [hideKeys]="true"></lib-oidcclient>
               </div>
             </div>
           </mat-tab>

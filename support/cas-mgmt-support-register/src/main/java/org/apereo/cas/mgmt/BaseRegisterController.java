@@ -240,7 +240,7 @@ public abstract class BaseRegisterController {
         serializer.to(out, service);
         out.close();
         setSubmitter(path, casUserProfile);
-        //sendMessage(casUserProfile, notifications.getChange(), service.getName(), service.getName());
+        sendMessage(casUserProfile, notifications.getChange(), service.getName(), service.getName());
     }
 
     /**

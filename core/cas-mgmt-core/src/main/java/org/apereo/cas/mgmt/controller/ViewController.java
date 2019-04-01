@@ -86,6 +86,18 @@ public class ViewController {
     }
 
     /**
+     * Mapped method to return the register.html.
+     *
+     * @return - ModelAndView
+     */
+    @GetMapping({"dashboard/index.html", "dashboard/", "dashboard"})
+    public ModelAndView dashboard() {
+        val model = new HashMap<String, Object>();
+        model.put(STATUS, HttpServletResponse.SC_OK);
+        return new ModelAndView("dashboard/index", model);
+    }
+
+    /**
      * Root mapping that navigates to managment or register depending on user role.
      *
      * @param request - the request

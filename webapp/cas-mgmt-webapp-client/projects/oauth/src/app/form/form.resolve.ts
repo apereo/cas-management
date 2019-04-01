@@ -4,7 +4,6 @@ import {Observable} from 'rxjs/internal/Observable';
 import {finalize} from 'rxjs/operators';
 import {SpinnerService, OAuthRegisteredService} from 'mgmt-lib';
 import {OAuthService} from '../core/oauth.service';
-import {OAuthAttributeReleasePolicy} from '../../../../mgmt-lib/src/lib/domain/attribute-release';
 
 @Injectable({
   providedIn: 'root'

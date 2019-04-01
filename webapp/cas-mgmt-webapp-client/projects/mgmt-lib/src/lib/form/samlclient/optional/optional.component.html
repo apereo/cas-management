@@ -1,7 +1,7 @@
 <lib-input>
   <mat-checkbox [formControl]="skipGeneratingAssertionNameId">
     <ng-container i18n>Skip generating assertion name id</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of a name identifier should be skipped for assertions">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="skipGeneratingAssertionNameId.difference()"></lib-hint></mat-hint>
@@ -11,7 +11,7 @@
 <lib-input>
   <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationInResponseTo">
     <ng-container i18n>Skip generating subject confirmation InRespsonseTo</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the InResponseTo element should be skipped for subject confirmations.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationInResponseTo.difference()"></lib-hint></mat-hint>
@@ -21,7 +21,7 @@
 <lib-input>
   <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationNotOnOrAfter">
     <ng-container i18n>Skip generating subject confirmation NotOnOrAfter</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the NotOnOrAfter element should be skipped for subject confirmations.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationNotOnOrAfter.difference()"></lib-hint></mat-hint>
@@ -31,7 +31,7 @@
 <lib-input>
   <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationRecipient">
     <ng-container i18n>Skip generating subject confirmation Recipient</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the Recipient element should be skipped for subject confirmations.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationRecipient.difference()"></lib-hint></mat-hint>
@@ -41,7 +41,7 @@
 <lib-input>
   <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationNotBefore">
     <ng-container i18n>Skip generating subject confirmation NotBefore</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the NotBefore element should be skipped for subject confirmations.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationNotBefore.difference()"></lib-hint></mat-hint>

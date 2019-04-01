@@ -37,6 +37,14 @@ export class OAuthService extends Service {
     return this.get<OAuthRegisteredService>(this.controller + '/generate');
   }
 
+  generateId(): Observable<string> {
+    return this.getText(this.controller + '/generateId');
+  }
+
+  generateSecret(): Observable<string> {
+    return this.getText(this.controller + '/generateSecret');
+  }
+
   /*
   pending(id: string): Observable<AbstractRegisteredService> {
     return this.post('api/submissions/import', id);

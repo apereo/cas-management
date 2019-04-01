@@ -5,6 +5,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SamlController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,11 +43,16 @@ public class CasManagementSamlConfiguration {
     @Qualifier("servicesManager")
     private ServicesManager servicesManager;
 
+    @Autowired
+    @Qualifier("emailManager")
+    private ObjectProvider<EmailManager> emailManager;
+
     @Bean
     public SamlController samlController() {
         return new SamlController(casUserProfileFactory.getIfAvailable(),
                 managerFactory.getIfAvailable(),
                 managementProperties,
+                emailManager.getIfAvailable(),
                 servicesManager);
     }
 }

@@ -59,19 +59,19 @@ public class CasManagementRegisterConfiguration {
         return new RegisterController(casUserProfileFactory.getIfAvailable(),
                 managerFactory.getIfAvailable(),
                 managementProperties,
-                null,
+                emailManager.getIfAvailable(),
                 servicesManager);
     }
 
-    /*
+
     @Bean
     public BulkActionController bulkActionController() {
         return new BulkActionController(casUserProfileFactory.getIfAvailable(),
-                managerFactory.getIfAvailable(),
-                managementProperties.getIfAvailable(),
+                (VersionControlManagerFactory) managerFactory.getIfAvailable(),
+                managementProperties,
                 repositoryFactory.getIfAvailable(),
                 emailManager.getIfAvailable());
     }
-    */
+
 
 }

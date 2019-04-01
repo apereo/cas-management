@@ -37,15 +37,15 @@
         <mat-icon>add_circle</mat-icon>
         <span i18n>Add New Service</span>
       </a>
-      <a mat-list-item (click)="addSaml();close()">
+      <a mat-list-item *ngIf="isSaml()" (click)="addSaml();close()">
         <mat-icon>add_circle</mat-icon>
         <span i18n>Add SAML SP</span>
       </a>
-      <a mat-list-item routerLink="/form/oauth" (click)="close()">
+      <a mat-list-item *ngIf="isOauth()" routerLink="/form/oauth" (click)="close()">
         <mat-icon>add_circle</mat-icon>
         <span i18n>Add OAuth Client</span>
       </a>
-      <a mat-list-item routerLink="/form/oidc" (click)="close()">
+      <a mat-list-item *ngIf="isOauth()" routerLink="/form/oidc" (click)="close()">
         <mat-icon>add_circle</mat-icon>
         <span i18n>Add OIDC Client</span>
       </a>

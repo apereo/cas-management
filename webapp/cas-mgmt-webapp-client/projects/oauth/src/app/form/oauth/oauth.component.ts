@@ -137,4 +137,16 @@ export class OauthComponent implements OnInit {
     return new MgmtFormControl(OAuthRegisteredService.cName);
   }
 
+  generateId() {
+    this.oauthService.generateId().subscribe(id => {
+      this.form.get('oauth').get('clientId').setValue(id);
+    });
+  }
+
+  generateSecret() {
+    this.oauthService.generateSecret().subscribe(secret => {
+      this.form.get('oauth').get('clientSecret').setValue(secret);
+    });
+  }
+
 }

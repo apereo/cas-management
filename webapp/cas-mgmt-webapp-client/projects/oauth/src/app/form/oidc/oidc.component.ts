@@ -135,5 +135,17 @@ export class OidcComponent implements OnInit {
     return new MgmtFormControl(OidcRegisteredService.cName);
   }
 
+  generateId() {
+    this.oidcService.generateId().subscribe(id => {
+      this.form.get('oidc').get('clientId').setValue(id);
+    });
+  }
+
+  generateSecret() {
+    this.oidcService.generateSecret().subscribe(secret => {
+      this.form.get('oidc').get('clientSecret').setValue(secret);
+    });
+  }
+
 
 }

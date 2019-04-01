@@ -8,7 +8,7 @@
     <mat-error i18n *ngIf="control.hasError('noTls')">Please make sure your service url starts with 'https://'.</mat-error>
     <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip [matTooltip]="tip"></mat-icon>
+  <mat-icon libHelp i18n-matTooltip [matTooltip]="tip"></mat-icon>
 </lib-input>
 
 

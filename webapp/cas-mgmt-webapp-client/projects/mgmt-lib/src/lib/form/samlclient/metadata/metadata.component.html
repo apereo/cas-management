@@ -4,7 +4,7 @@
     <input matInput [formControl]="location">
     <mat-hint align="end"><lib-hint [difference]="location.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Metadata location for this particular service provider.">
   </mat-icon>
 </lib-input>
@@ -15,7 +15,7 @@
     <input matInput [formControl]="maxValidity">
     <mat-hint align="end"><lib-hint [difference]="maxValidity.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Indicates how long should metadata be considered valid.">
   </mat-icon>
 </lib-input>
@@ -26,7 +26,7 @@
     <input matInput [formControl]="signatureLocation">
     <mat-hint align="end"><lib-hint [difference]="signatureLocation.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Location of the metadata signing public key so its authenticity can be verified.">
   </mat-icon>
 </lib-input>
@@ -37,7 +37,7 @@
     <input matInput [formControl]="expirationDuration">
     <mat-hint align="end"><lib-hint [difference]="expirationDuration.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="If defined, will expire metadata in the cache after the indicated duration which will force CAS to retrieve and resolve the metadata again.">
   </mat-icon>
 </lib-input>
@@ -48,7 +48,7 @@
     <input matInput [formControl]="criteriaPattern">
     <mat-hint align="end"><lib-hint [difference]="criteriaPattern.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Regex applied to entity ids in a metadata aggregate.">
   </mat-icon>
 </lib-input>
@@ -63,7 +63,7 @@
     </mat-select>
     <mat-hint align="end"><lib-hint [difference]="criteriaDirection.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Whether to include/exclude entity ids that match the filter pattern.">
   </mat-icon>
 </lib-input>
@@ -78,7 +78,7 @@
     </mat-select>
     <mat-hint align="end"><lib-hint [difference]="criteriaRoles.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Whitelisted roles to keep in the metadata.">
   </mat-icon>
 </lib-input>
@@ -86,7 +86,7 @@
 <lib-input>
   <mat-checkbox [formControl]="criteriaRemoveEmptyEntitiesDescriptors">
     <ng-container i18n>Remove Empty Entities Descriptors</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Controls whether to keep entities descriptors that contain no entity descriptors">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="criteriaRemoveEmptyEntitiesDescriptors.difference()"></lib-hint></mat-hint>
@@ -96,7 +96,7 @@
 <lib-input>
   <mat-checkbox [formControl]="criteriaRemoveRolelessEntityDescriptors">
     <ng-container i18n>Remove Empty Roles</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Controls whether to keep entity descriptors that contain no roles.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="criteriaRemoveRolelessEntityDescriptors"></lib-hint></mat-hint>

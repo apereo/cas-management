@@ -1,21 +1,21 @@
 <div [formGroup]="saml">
-  <app-card i18n-title title="Metadata">
+  <app-card i18n-heading heading="Metadata">
     <lib-metadata [control]="saml.get('metadata')"></lib-metadata>
   </app-card>
 
-  <app-card i18n-title title="Security">
+  <app-card i18n-heading heading="Security">
     <lib-security [control]="saml.get('security')"></lib-security>
   </app-card>
 
-  <app-card i18n-title title="Optional Fields">
+  <app-card i18n-heading heading="Optional Fields">
     <lib-optional [control]="saml.get('optionalSaml')"></lib-optional>
   </app-card>
 
-  <app-card i18n-title title="Name ID">
+  <app-card i18n-heading heading="Name ID">
     <lib-nameid [control]="saml.get('nameId')"></lib-nameid>
   </app-card>
 
-  <app-card i18n-title title="Name Formats">
+  <app-card i18n-heading heading="Name Formats">
     <lib-samlservicespane [control]="saml.get('nameFormats')"></lib-samlservicespane>
   </app-card>
 </div>

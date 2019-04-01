@@ -251,6 +251,20 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return resolver;
     }
 
+    @Bean SpringResourceTemplateResolver dashboardTemplateResolver() {
+        val resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(this.context);
+        resolver.setPrefix("classpath:/dist/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML");
+        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
+        resolver.setCacheable(false);
+        resolver.setOrder(2);
+        resolver.setCheckExistence(true);
+        resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("dashboard/**"));
+        return resolver;
+    }
+
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {

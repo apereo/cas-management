@@ -4,4 +4,6 @@ export class AppConfig {
   delegatedMgmt: boolean;
   syncScript: boolean;
   contactLookup: boolean;
+  oauthEnabled: boolean;
+  samlEnabled: boolean;
 }

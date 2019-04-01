@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {InitComponent} from './core/init.component';
+import {InitComponent} from '../../../oauth/src/app/core/init.component';
 
 const routes: Routes = [
   {

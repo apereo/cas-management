@@ -2,7 +2,7 @@
   <mat-card-title>
     <div style="display:flex; flex-direction: row">
       <div style="flex: 1 1 auto;">
-        <h5 i18n>{{title}}</h5>
+        <h5 i18n>{{ heading }}</h5>
       </div>
       <div *ngIf="collapse" style="flex: 0 0 30px;margin-top:auto;margin-bottom:auto;" (click)="showContent = !showContent">
         <mat-icon *ngIf="showContent">expand_less</mat-icon>

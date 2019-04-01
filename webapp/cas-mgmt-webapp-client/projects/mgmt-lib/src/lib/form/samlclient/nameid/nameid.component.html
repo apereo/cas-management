@@ -4,7 +4,7 @@
     <input matInput [formControl]="requiredNameIdFormat">
     <mat-hint align="end"><lib-hint [difference]="requiredNameIdFormat.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Force the indicated Name ID format in the final SAML response.">
   </mat-icon>
 </lib-input>
@@ -15,7 +15,7 @@
     <input matInput [formControl]="nameIdQualifier">
     <mat-hint align="end"><lib-hint [difference]="nameIdQualifier.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Overwrite the NameQualifier attribute of the produced subject name id.">
   </mat-icon>
 </lib-input>

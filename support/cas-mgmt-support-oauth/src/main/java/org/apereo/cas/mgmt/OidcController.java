@@ -1,11 +1,10 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.services.OidcRegisteredService;
-import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
@@ -38,7 +37,7 @@ public class OidcController extends BaseRegisterController {
     public OidcController(final CasUserProfileFactory casUserProfileFactory,
                           final MgmtManagerFactory managerFactory,
                           final CasManagementConfigurationProperties managementProperties,
-                          //final EmailManager communicationsManager,
+                          final EmailManager communicationsManager,
                           final ServicesManager published){
         super(casUserProfileFactory, managerFactory, managementProperties, null, published, managementProperties.getRegister().getNotifications());
     }
@@ -78,9 +77,21 @@ public class OidcController extends BaseRegisterController {
         return service;
     }
 
+    /**
+     * Generates a new random string used for client Id and Secrets.
+     *
+     * @return - Random String value
+     */
+    @GetMapping({"generateId", "generateSecret"})
+    public String generateId() {
+        return new DefaultRandomStringGenerator().getNewString();
+    }
+
+    /*
     @Override
     protected void saveService(final RegisteredService service, final String id, final CasUserProfile casUserProfile) throws Exception {
         val manager = managerFactory.master();
         manager.save(service);
     }
+    */
 }

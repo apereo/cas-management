@@ -93,11 +93,16 @@ public class ApplicationDataController {
     @GetMapping("/appConfig")
     public AppConfig appConfig() {
         val config = new AppConfig();
+        val formData = formDataFactory.create();
         config.setMgmtType(casProperties.getServiceRegistry().getManagementType().toString());
         config.setVersionControl(managementProperties.getVersionControl().isEnabled());
         config.setDelegatedMgmt(managementProperties.getDelegated().isEnabled());
         config.setSyncScript(managementProperties.getVersionControl().getSyncScript() != null);
         config.setContactLookup(!(contactLookup instanceof NoOpContactLookup));
+        config.setOauthEnabled(formData.getServiceTypes().stream()
+                .anyMatch(s -> s.getValue().contains("OAuth") || s.getValue().contains("Oidc")));
+        config.setSamlEnabled(formData.getServiceTypes().stream()
+                .anyMatch(s -> s.getValue().contains("Saml")));
         return config;
     }
 

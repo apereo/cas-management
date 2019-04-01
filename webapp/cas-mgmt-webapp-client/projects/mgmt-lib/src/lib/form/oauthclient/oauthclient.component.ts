@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormGroup} from '@angular/forms';
 import {FormDataService} from '../../form-data.service';
@@ -18,6 +18,12 @@ export class OauthclientComponent implements OnInit {
   generateRefreshToken: MgmtFormControl;
   responseTypes: MgmtFormControl;
   grantTypes: MgmtFormControl;
+
+  @Output()
+  generateId: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
+  generateSecret: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(public formData: FormDataService) {
   }

@@ -28,7 +28,9 @@
           <mat-tab label="OAuth">
             <div style="display: flex; justify-content: center; padding-top: 15px">
               <div style="display: flex; flex-direction: column; justify-content: center; padding-bottom: 50px;pading-top: 15px; width: 550px">
-                <lib-oauthclient [control]="form.get('oauth')"></lib-oauthclient>
+                <lib-oauthclient [control]="form.get('oauth')"
+                                 (generateId)="generateId()"
+                                 (generateSecret)="generateSecret()"></lib-oauthclient>
               </div>
             </div>
           </mat-tab>

@@ -1,7 +1,7 @@
 <lib-input>
   <mat-checkbox [formControl]="control">
     <ng-container i18n>Enable Service</ng-container>
-    <mat-icon appHelp i18n-matTooltip matTooltip="Decides whether access to this service is authorized by CAS."></mat-icon>
+    <mat-icon libHelp i18n-matTooltip matTooltip="Decides whether access to this service is authorized by CAS."></mat-icon>
     <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>

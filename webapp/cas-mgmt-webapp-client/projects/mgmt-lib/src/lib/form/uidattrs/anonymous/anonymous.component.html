@@ -4,7 +4,7 @@
     <input matInput [formControl]="salt" required>
     <mat-hint align="end"><lib-hint [difference]="salt.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="The salt used for anonymous id generation.">
   </mat-icon>
 </lib-input>
@@ -15,7 +15,7 @@
     <input matInput [matAutocomplete]="auto" [formControl]="attribute" required>
     <mat-hint align="end"><lib-hint [difference]="attribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Username attribute used for anonymous id generation.">
   </mat-icon>
 </lib-input>

@@ -1,0 +1,10 @@
+description "Apereo CAS Management Support Dashboard"
+
+dependencies {
+    api project(":api:cas-mgmt-api-core")
+    api project(":api:cas-mgmt-api-configuration")
+    api project(":api:cas-mgmt-api-dashboard")
+
+    implementation project(":core:cas-mgmt-core-authentication")
+    
+}

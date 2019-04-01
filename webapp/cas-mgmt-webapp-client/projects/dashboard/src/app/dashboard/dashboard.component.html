@@ -1,0 +1,58 @@
+  <mat-grid-list cols="2" rowHeight="325px">
+
+    <mat-grid-tile *ngFor="let server of servers; let i = index" [colspan]="1" [rowspan]="1">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-slide-toggle [checked]="timers[i] !== null" (change)="update($event, i)"></mat-slide-toggle>
+            {{server.name}}
+            <div class="more-button">
+              <div style="width: 24px; height: 24px; margin: 10px;" [ngClass]="statusLight(server.status.status)"></div>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div>
+            <div style="margin: 5px">
+              <div style="display: inline-flex; margin-left: 15px;" [ngClass]="statusLight(server.status.details.memory.status)"></div>
+              <div style="display: inline; margin-left: 5px;">Memory:</div>
+              <div style="display:flex; flex-direction: row; width: 100%;">
+                <div style="flex: 0 0 50%; width: 100%">
+                  <div style="display: flex; flex-direction: column; justify-content: space-evenly; height: 100%; width: 100%;">
+                    <div style="flex: 0 0 50%;text-align:center">
+                      <div style="padding: 10px">Free: {{ mbs(server.status.details.memory.details.freeMemory) }} MB</div>
+                    </div>
+                    <div style="flex: 0 0 50%;text-align: center;">
+                      <div style="padding: 10px">Total: {{ mbs(server.status.details.memory.details.totalMemory) }} MB</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="flex: 0 0 50%;">
+                  <mat-progress-spinner style="margin: auto"
+                                        mode="determinate"
+                                        [value]="memory(server)" >
+                  </mat-progress-spinner>
+                </div>
+                <div style="position: relative; left:-29%; top: 32px; font-size: 24px;">{{percent(server)}}%</div>
+              </div>
+            </div>
+            <div style="margin: 5px">
+              <div style="display: inline-flex; margin-left: 15px" [ngClass]="statusLight(server.status.details.session.status)"></div>
+              <div style="display: inline; margin-left: 5px;">Session:</div>
+              <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                <div style="flex: 0 0 33%;text-align:center">
+                  <div style="padding: 10px">Session Count: {{ server.status.details.session.details.sessionCount }}</div>
+                </div>
+                <div style="flex: 0 0 33%;text-align: center;">
+                  <div style="padding: 10px">Ticket Count: {{ server.status.details.session.details.ticketCount }}</div>
+                </div>
+                <div style="flex: 0 0 33%;text-align: center;">
+                  <div style="padding: 10px">Message: {{ server.status.details.session.details.message }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>

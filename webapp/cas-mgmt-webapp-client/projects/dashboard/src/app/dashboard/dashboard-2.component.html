@@ -1,0 +1,126 @@
+  <mat-grid-list cols="2" rowHeight="325px">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title> <mat-slide-toggle [checked]="healthTimer" (change)="updateHealth($event)"></mat-slide-toggle>CAS Health</mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="display: flex; flex-direction: row; justify-content: space-around;" class="dashboard-card-content">
+          <div style="flex: 0 0 50%; display: flex; flex-direction: column; justify-content: space-evenly;">
+            <div style="white-space: nowrap">Ticket Granting Tickets - </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-around">
+              <div style="flex: 0 0 33%;text-align: center;">Size: {{ mapSize('ticketGrantingTicketsCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Memory: {{mapMemory('ticketGrantingTicketsCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Used: {{mapUsed('ticketGrantingTicketsCache')}}</div>
+            </div>
+            <div style="white-space: nowrap">Service Tickets - </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-around">
+              <div style="flex: 0 0 33%;text-align: center;">Size: {{ mapSize('serviceTicketsCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Memory: {{mapMemory('serviceTicketsCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Used: {{mapUsed('serviceTicketsCache')}}</div>
+            </div>
+            <div style="white-space: nowrap">Access Tokens - </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-around">
+              <div style="flex: 0 0 33%;text-align: center;">Size: {{ mapSize('oauthAccessTokensCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Memory: {{mapMemory('oauthAccessTokensCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Used: {{mapUsed('oauthAccessTokensCache')}}</div>
+            </div>
+            <div style="white-space: nowrap">Refresh Tokens - </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-around">
+              <div style="flex: 0 0 33%;text-align: center;">Size: {{ mapSize('oauthRefreshTokensCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Memory: {{mapMemory('oauthRefreshTokensCache')}}</div>
+              <div style="flex: 0 0 33%;text-align: center;">Used: {{mapUsed('oauthRefreshTokensCache')}}</div>
+            </div>
+          </div>
+          <div style="flex: 0 0 50%; display: flex; flex-direction: column; justify-content: space-evenly;">
+            <div style="display: flex; flex-direction: row;">
+              <div style="flex: 0 0 50%;text-align: right">Duo Security:</div>
+              <div style="flex: 0 0 50%;text-align: left; margin-left: 10px">
+                <div style="width: 15px; height: 15px; margin-left: 5px; margin-top: 3px;" [ngClass]="statusLight(duoStatus())"></div>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+              <div style="flex: 0 0 50%;text-align: right">HZ Health:</div>
+              <div style="flex: 0 0 50%;text-align: left; margin-left: 10px">
+                <div style="width: 15px; height: 15px; margin-left: 5px; margin-top: 3px;" [ngClass]="statusLight(hzHealth())"></div>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+              <div style="flex: 0 0 50%;text-align: right">HZ Master:</div>
+              <div style="flex: 0 0 50%;text-align: left; margin-left: 10px">{{ master() }}</div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile *ngFor="let server of servers; let i = index" [colspan]="1" [rowspan]="1">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-slide-toggle [checked]="timers && timers[i] !== null" (change)="update($event, i)"></mat-slide-toggle>
+            {{server.name}}
+            <div class="more-button">
+              <div style="width: 24px; height: 24px; margin: 10px;" [ngClass]="statusLight(server.status.status)"></div>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
+          <div style="display: flex; flex-direction: row; justify-content: space-around">
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ load(server) }}</div>
+              <div style="text-align: center;">Load</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ uptime(server) }}</div>
+              <div style="text-align: center;">Uptime</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ maxRequest(server) }}</div>
+              <div style="text-align: center;">Max Request</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ threads(server) }}</div>
+              <div style="text-align: center;">requests</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: row; justify-content: space-around">
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    diameter="50"
+                                    mode="determinate"
+                                    [value]="memory(server)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percent(server)}}%</div>
+              <div style="text-align: center;">Memory</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    mode="determinate"
+                                    diameter="50"
+                                    [value]="cpu(server)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpu(server)}}%</div>
+              <div style="text-align: center;">CPU</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    mode="determinate"
+                                    diameter="50"
+                                    [value]="cpuProcess(server)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpuProcess(server)}}%</div>
+              <div style="text-align: center;">Process</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    mode="determinate"
+                                    diameter="50"
+                                    [value]="memoryJvm(server)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentJvm(server)}}%</div>
+              <div style="text-align: center;">Jvm</div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>

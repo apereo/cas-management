@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.OauthController;
 import org.apereo.cas.mgmt.OidcController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +45,16 @@ public class CasManagementOauthConfiguration {
     @Qualifier("servicesManager")
     private ServicesManager servicesManager;
 
+    @Autowired
+    @Qualifier("emailManager")
+    private ObjectProvider<EmailManager> emailManager;
+
     @Bean
     public OauthController oauthController() {
         return new OauthController(casUserProfileFactory.getIfAvailable(),
                 managerFactory.getIfAvailable(),
                 managementProperties,
+                emailManager.getIfAvailable(),
                 servicesManager);
     }
 
@@ -57,6 +63,7 @@ public class CasManagementOauthConfiguration {
         return new OidcController(casUserProfileFactory.getIfAvailable(),
                 managerFactory.getIfAvailable(),
                 managementProperties,
+                emailManager.getIfAvailable(),
                 servicesManager);
     }
 }

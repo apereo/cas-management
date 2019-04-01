@@ -1,5 +1,5 @@
 <div [formGroup]="oidc">
-  <app-card i18n-title title="OIDC Client Options" [collapse]="false">
-    <lib-oidcclient [control]="oidc"></lib-oidcclient>
+  <app-card i18n-heading heading="OIDC Client Options" [collapse]="false">
+    <lib-oidcclient [control]="oidc" (generateSecret)="generateSecret()" (generateId)="generateId()"></lib-oidcclient>
   </app-card>
 </div>

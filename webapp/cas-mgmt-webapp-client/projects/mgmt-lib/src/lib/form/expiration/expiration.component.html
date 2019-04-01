@@ -4,7 +4,7 @@
     <input matInput [formControl]="expirationDate">
     <mat-hint align="end"><lib-hint [difference]="expirationDate.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
               matTooltip="The date on which the registration record is deemed expired. The expiration date may be
                specified in 2011-12-03T10:15:30, 09/24/1980 04:30 PM, 09/24/2014 6:30 AM, 09/24/2013 18:45, 09/24/2017
                 or 2017-10-25 formats.">
@@ -14,7 +14,7 @@
 <lib-input>
   <mat-checkbox [formControl]="deleteWhenExpired">
     <ng-container i18n>Delete service when expired</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="When true, removes the application from the CAS service registry if and when expired.
                Otherwise the application record will be marked as disabled.">
     </mat-icon>
@@ -25,7 +25,7 @@
 <lib-input>
   <mat-checkbox [formControl]="notifyWhenDeleted">
     <ng-container i18n>Notifiy contacts when service is deleted</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Notifies contacts of the application via email or text, assuming valid contacts with email
                addresses or phone numbers are defined and CAS is configured to send email messages or SMS notifications.
                 The notification is only sent if the application is expired and is about to be deleted from the registry.">

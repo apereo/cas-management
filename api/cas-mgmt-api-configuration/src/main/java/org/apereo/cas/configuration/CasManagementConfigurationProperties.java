@@ -1,6 +1,7 @@
 package org.apereo.cas.configuration;
 
 import org.apereo.cas.configuration.model.BulkNotifications;
+import org.apereo.cas.configuration.model.CasServers;
 import org.apereo.cas.configuration.model.DelegatedNotifications;
 import org.apereo.cas.configuration.model.RegisterNotifications;
 import org.apereo.cas.configuration.model.SubmissionNotifications;
@@ -104,6 +105,11 @@ public class CasManagementConfigurationProperties implements Serializable {
     private boolean enableDiscoveryEndpointCall = true;
 
     /**
+     * Path to discovery endpoint.
+     */
+    private String discoveryEndpointPath = "/actuator/discoveryProfile";
+
+    /**
      * Properties for version control.
      */
     private VersionControl versionControl = new VersionControl();
@@ -132,6 +138,11 @@ public class CasManagementConfigurationProperties implements Serializable {
      * Directory for storing SAML Metadata.
      */
     private String metadataDir = "/etc/cas/metadata";
+
+    /**
+     * List of cas servers that available in the Dashboard.
+     */
+    private List<CasServers> casServers = new ArrayList<>();
 
     @Getter
     @Setter

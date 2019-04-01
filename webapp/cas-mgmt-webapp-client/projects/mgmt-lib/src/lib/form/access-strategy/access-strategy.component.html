@@ -9,7 +9,7 @@
       <lib-hint></lib-hint>
     </mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18-matTooltip
+  <mat-icon libHelp i18-matTooltip
             matTooltip="Access strategy type">
   </mat-icon>
 </lib-input>
@@ -18,7 +18,7 @@
   <mat-checkbox [formControl]="sso">
     <ng-container i18n>Allow Single Sign-On</ng-container>
   </mat-checkbox>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Decides whether this service is allowed to participate in SSO.">
   </mat-icon>
   <mat-hint align="end"><lib-hint [difference]="sso.difference()"></lib-hint></mat-hint>
@@ -28,7 +28,7 @@
   <mat-checkbox [formControl]="requireAll">
     <ng-container i18n>Require All Attributes</ng-container>
   </mat-checkbox>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Decides whether all attributes AND corresponding values should be evaluated before access can be granted. If left unchecked, the first successful match on attribute name and value will allow access.">
   </mat-icon>
   <mat-hint align="end"><lib-hint [difference]="requireAll.difference()"></lib-hint></mat-hint>
@@ -40,7 +40,7 @@
     <input matInput [formControl]="unauthorizedUrl">
     <mat-hint align="end"><lib-hint [difference]="unauthorizedUrl.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="URL to which CAS should direct in the event that service access is defined.">
   </mat-icon>
 </lib-input>

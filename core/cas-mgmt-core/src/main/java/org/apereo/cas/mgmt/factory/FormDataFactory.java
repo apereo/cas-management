@@ -73,7 +73,7 @@ public class FormDataFactory {
         }
 
         val params = new HashMap<String, Object>();
-        val url = casProperties.getServer().getPrefix() + "/status/discovery";
+        val url = casProperties.getServer().getPrefix() + mgmtProperties.getDiscoveryEndpointPath();
         try {
             val response = HttpUtils.executeGet(url, params);
             if (response != null) {
@@ -96,7 +96,7 @@ public class FormDataFactory {
         if (profile.isPresent() && !profile.get().getRegisteredServiceTypes().isEmpty()) {
             val p = profile.get();
 
-            val types = p.getRegisteredServiceTypes().entrySet().stream()
+            val types = p.getRegisteredServiceTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
                 .collect(Collectors.toList());
             formData.setServiceTypes(types);

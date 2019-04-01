@@ -1,0 +1,7 @@
+description "Apereo CAS Management API Dashboard"
+
+dependencies {
+    api libraries.jackson
+    api libraries.casServer.authentication
+    api libraries.casServer.oidc
+}

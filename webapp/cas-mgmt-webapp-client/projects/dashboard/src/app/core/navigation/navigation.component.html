@@ -1,0 +1,54 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar color="primary">{{ getUser() }}</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/sessions"  (click)="drawer.mode === 'over' ? drawer.close() : ''">
+        <mat-icon>people</mat-icon>
+        <span i18n>SSO Sessions</span>
+      </a>
+      <a mat-list-item routerLink="/tokens"  (click)="drawer.mode === 'over' ? drawer.close() : ''">
+        <mat-icon>local_play</mat-icon>
+        <span i18n>OAuth Tokens</span>
+      </a>
+      <a mat-list-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <ng-container i18n>Logout</ng-container>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" style="position: fixed; z-index: 1000; width: 100%">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon"
+                  matBadgePosition="above after">menu</mat-icon>
+      </button>
+      <div style="width: 100%;">
+        <div>
+          <a class="brand" href="manage.html" target="_self" id="homepageUrlLink">
+            <img src="../images/logo_cas.png" alt="apereo CAS logo" />
+            <h4>
+              <ng-container i18n="management.services.header.apptitle">
+                Management
+              </ng-container>
+            </h4>
+          </a>
+         </div>
+      </div>
+    </mat-toolbar>
+    <div style="padding-top:65px;padding-bottom:70px;background-color:#f2f2f2;">
+      <router-outlet></router-outlet>
+    </div>
+    <lib-footer></lib-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

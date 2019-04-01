@@ -7,7 +7,7 @@
     </mat-hint>
     <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Determines the starting date/time from which service access is allowed.">
   </mat-icon>
   <mat-datepicker #startPicker></mat-datepicker>
@@ -20,7 +20,7 @@
     <mat-hint align="end"><lib-hint [difference]="endingDatetime.difference()"></lib-hint></mat-hint>
     <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Determines the ending date/time from which service access is allowed.">
   </mat-icon>
   <mat-datepicker #endPicker></mat-datepicker>

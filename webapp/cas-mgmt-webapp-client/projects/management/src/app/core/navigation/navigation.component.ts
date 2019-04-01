@@ -91,4 +91,12 @@ export class NavigationComponent {
       this.drawer.close();
     }
   }
+
+  isSaml(): boolean {
+    return this.appService.config.samlEnabled;
+  }
+
+  isOauth(): boolean {
+    return this.appService.config.oauthEnabled;
+  }
 }

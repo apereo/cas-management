@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Version control implementation of ServicesManager.
  *
  * @author Travis Schmidt
- * @since 6.0
+ * @since 6.0.0
  */
 @Slf4j
 public class VersionControlServicesManager extends ManagementServicesManager {

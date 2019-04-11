@@ -26,13 +26,13 @@ export class SearchComponent implements OnInit {
   constructor(public router: Router,
               public route: ActivatedRoute,
               public location: Location,
-              private service: SearchService,
+              public service: SearchService,
               public snackBar: MatSnackBar,
               public dialog: MatDialog,
               public spinner: SpinnerService) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource([]);
+    this.dataSource = new MatTableDataSource(this.service.results || []);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator.paginator;
   }

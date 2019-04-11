@@ -126,7 +126,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   history() {
-    const fileName: string = (this.selectedItem.name + '-' + this.selectedItem.assignedId + '.json').replace(/ /g, '');
+    const fileName: string = ('service-' + this.selectedItem.assignedId + '.json').replace(/ /g, '');
     this.router.navigate(['version-control/history', fileName]);
   }
 
@@ -146,7 +146,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         {duration: 5000}
       );
   }
-
 
   refresh() {
     this.getServices();

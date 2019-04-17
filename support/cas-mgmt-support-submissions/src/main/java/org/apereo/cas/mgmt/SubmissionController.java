@@ -90,6 +90,7 @@ public class SubmissionController extends AbstractVersionControlController {
     public List<RegisteredServiceItem> getSubmissions(final HttpServletResponse response,
                                                       final HttpServletRequest request) throws Exception {
         isAdministrator(request, response);
+        LOGGER.debug(managementProperties.getSubmissions().getSubmitDir());
         try (Stream<Path> stream = Files.list(Paths.get(managementProperties.getSubmissions().getSubmitDir()))) {
             return stream.map(this::createServiceItem).collect(toList());
         } catch (final Exception e) {

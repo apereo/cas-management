@@ -42,8 +42,7 @@ public class CasManagementSubmissionsConfiguration {
     private ObjectProvider<MgmtManagerFactory> managerFactory;
 
     @Autowired
-    @Qualifier("managementProperties")
-    private ObjectProvider<CasManagementConfigurationProperties> managementProperties;
+    private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
     @Qualifier("casUserProfileFactory")
@@ -57,7 +56,7 @@ public class CasManagementSubmissionsConfiguration {
     public SubmissionController submissionController() {
         return new SubmissionController(repositoryFactory.getIfAvailable(),
                 managerFactory.getIfAvailable(),
-                managementProperties.getIfAvailable(),
+                managementProperties,
                 casUserProfileFactory.getIfAvailable(),
                 emailManager.getIfAvailable());
     }
@@ -65,7 +64,7 @@ public class CasManagementSubmissionsConfiguration {
     @Bean
     public SubmissionRequests submissionRequests() {
         return () -> {
-            try(Stream submissions = Files.list(Paths.get(managementProperties.getIfAvailable().getSubmissions().getSubmitDir()))) {
+            try(Stream submissions = Files.list(Paths.get(managementProperties.getSubmissions().getSubmitDir()))) {
                 return (int) submissions.count();
             } catch (final Exception e) {
                 return 0;

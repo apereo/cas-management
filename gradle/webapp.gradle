@@ -42,7 +42,9 @@ dependencies {
     //implementation project(":config:cas-mgmt-config-saml")
     implementation project(":webapp:cas-mgmt-webapp-config")
     implementation project(":webapp:cas-mgmt-webapp-init")
+    implementation project(":config:cas-mgmt-config-delegated")
     implementation project(":config:cas-mgmt-config-dashboard")
+    implementation project(":config:cas-mgmt-config-submissions")
     
     implementation libraries.nimbus
     implementation libraries.cassecurityfilter

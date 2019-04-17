@@ -79,4 +79,8 @@ export class RegisterService extends Service {
   deletePending(id: string): Observable<void> {
     return this.delete('api/register/cancel?id=' + id);
   }
+
+  promote(id: number): Observable<void> {
+    return this.get('api/register/promote/' + id);
+  }
 }

@@ -112,11 +112,11 @@
     <mat-icon>arrow_downward</mat-icon>
     <ng-container i18n>Move Down</ng-container>
   </button>
-  <button mat-menu-item (click)="promote(selectedItem)" *ngIf="staged()">
+  <button mat-menu-item (click)="promote()" *ngIf="staged()">
     <mat-icon>call_made</mat-icon>
     <ng-container i18n>Promte</ng-container>
   </button>
-  <button mat-menu-item (click)="demote(selectedItem)" *ngIf="!staged()">
+  <button mat-menu-item (click)="demote()" *ngIf="!staged()">
     <mat-icon>call_received</mat-icon>
     <ng-container i18n>Demote</ng-container>
   </button>

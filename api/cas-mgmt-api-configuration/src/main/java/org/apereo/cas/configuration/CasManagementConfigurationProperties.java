@@ -146,7 +146,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-ldap-authz")
+    @RequiresModule(name = "cas-mgmt-config-ldap-authz")
     public static class Ldap extends AbstractLdapProperties {
         private static final long serialVersionUID = -8129280052479631538L;
         /**
@@ -158,7 +158,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-version-control")
+    @RequiresModule(name = "cas-mgmt-config-version-control")
     public static class VersionControl implements Serializable {
         /**
          * A writable location where the Git repository will be created to track changes.
@@ -178,7 +178,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-delegated")
+    @RequiresModule(name = "cas-mgmt-config-delegated")
     public static class Delegated implements Serializable {
         /**
          * A writable location where the users Git repositories will be created.
@@ -199,7 +199,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-submissions")
+    @RequiresModule(name = "cas-mgmt-config-submissions")
     public static class Submissions implements Serializable {
         /**
          * Directory to store submitted services.
@@ -220,7 +220,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-register")
+    @RequiresModule(name = "cas-mgmt-config-register")
     public static class Register implements Serializable {
         /**
          * Register enabled flag.

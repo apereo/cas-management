@@ -180,4 +180,15 @@ export class ServicesComponent implements OnInit {
   clear() {
     this.selectAll(false);
   }
+
+  staged() {
+    return this.selectedItem && this.selectedItem.staged;
+  }
+
+  promote() {
+    this.service.promote(+this.selectedItem.assignedId)
+      .subscribe(resp => this.showSubmit('promoteService', ''),
+      error => this.showSubmit('promoteFailed', error.error.message)
+    );
+  }
 }

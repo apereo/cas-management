@@ -41,6 +41,14 @@ export class ServiceViewService extends Service {
     return this.post(this.controller + '/yaml/' + id,  yaml);
   }
 
+  promote(id: number): Observable<void> {
+    return this.get(this.controller + '/promote/' + id);
+  }
+
+  demote(id: number): Observable<void> {
+    return this.get(this.controller + '/demote/' + id);
+  }
+
   revert(fileName: string): Observable<string> {
     return this.getText('api/history/revert/' + fileName);
   }
@@ -68,4 +76,6 @@ export class ServiceViewService extends Service {
   addEntity(id: string): Observable<SamlRegisteredService> {
     return this.get<SamlRegisteredService>('api/saml/add?id=' + id);
   }
+
+
 }

@@ -153,10 +153,9 @@ public class HistoryController extends AbstractVersionControlController {
                            final @PathVariable String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
-            val svc = CasManagementUtils.fromJson(git.readObject(id));
-            val mgmtServicesManager = managerFactory.from(request, response);
-            mgmtServicesManager.save(svc);
-        } catch (final IOException ex) {
+            git.reset(id);
+            git.checkoutFile(id);
+        } catch (final GitAPIException ex) {
             LOGGER.error(ex.getMessage(), ex);
             throw new VersionControlException();
         }

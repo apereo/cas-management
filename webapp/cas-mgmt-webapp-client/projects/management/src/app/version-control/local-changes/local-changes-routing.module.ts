@@ -5,7 +5,7 @@ import {LocalChangesResolver} from '@app/version-control/local-changes/local-cha
 
 const routes: Routes = [
   {
-    path: 'localChanges',
+    path: '',
     component: LocalChangesComponent,
     resolve: {
       resp: LocalChangesResolver

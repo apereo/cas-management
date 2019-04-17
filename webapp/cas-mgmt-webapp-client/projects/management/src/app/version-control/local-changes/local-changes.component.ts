@@ -68,7 +68,7 @@ export class LocalChangesComponent implements OnInit {
         .pipe(finalize(() => this.spinner.stop()))
         .subscribe(resp => this.handleRevert());
     } else {
-      this.service.revert(this.revertItem.oldId)
+      this.service.revert(this.revertItem.fileName)
         .pipe(finalize(() => this.spinner.stop()))
         .subscribe(resp => this.handleRevert());
     }

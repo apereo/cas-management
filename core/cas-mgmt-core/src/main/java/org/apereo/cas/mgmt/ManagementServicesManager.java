@@ -73,6 +73,7 @@ public class ManagementServicesManager implements ServicesManager {
             serviceItem.setDuo(service.getMultifactorPolicy().getMultifactorAuthenticationProviders().contains("mfa-duo"));
         }
         serviceItem.setSso(service.getAccessStrategy().isServiceAccessAllowedForSso());
+        serviceItem.setStaged(service.getEnvironments().contains("staged"));
         val id = service.getId();
         LOGGER.debug("Created service item [{}] based on registered service [{}]", serviceItem, service.getServiceId());
         return serviceItem;

@@ -73,5 +73,21 @@ export class SearchComponent implements OnInit {
       .subscribe(resp => this.dataSource.data = resp);
   }
 
+  promote() {
+    this.service.promote(+this.selectedItem.assignedId).subscribe(() => {
+      this.selectedItem.staged = false;
+    });
+  }
+
+  demote() {
+    this.service.demote(+this.selectedItem.assignedId).subscribe(() => {
+      this.selectedItem.staged = true;
+    });
+  }
+
+  staged(): boolean {
+    return this.selectedItem && this.selectedItem.staged;
+  }
+
 }
 

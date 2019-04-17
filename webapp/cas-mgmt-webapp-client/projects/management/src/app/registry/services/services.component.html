@@ -40,6 +40,9 @@
         <ng-container i18n>Name</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <mat-chip-list *ngIf="row.staged">
+          <mat-chip color="cas-primary">Staged</mat-chip>
+        </mat-chip-list>
         <a (click)="serviceEdit(row)">
           {{ row.name }}
         </a>
@@ -108,5 +111,13 @@
   <button mat-menu-item (click)="moveDown(selectedItem)" *ngIf="showMoveDown()">
     <mat-icon>arrow_downward</mat-icon>
     <ng-container i18n>Move Down</ng-container>
+  </button>
+  <button mat-menu-item (click)="promote(selectedItem)" *ngIf="staged()">
+    <mat-icon>call_made</mat-icon>
+    <ng-container i18n>Promte</ng-container>
+  </button>
+  <button mat-menu-item (click)="demote(selectedItem)" *ngIf="!staged()">
+    <mat-icon>call_received</mat-icon>
+    <ng-container i18n>Demote</ng-container>
   </button>
 </mat-menu>

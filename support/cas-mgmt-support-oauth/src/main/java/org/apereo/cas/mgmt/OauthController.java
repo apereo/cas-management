@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -79,6 +80,9 @@ public class OauthController extends BaseRegisterController {
         service.setClientId(rg.getNewString());
         service.setClientSecret(rg.getNewString());
         service.setAttributeReleasePolicy(new ReturnMappedAttributeReleasePolicy());
+        val env = new HashSet<String>();
+        env.add("staged");
+        service.setEnvironments(env);
         return service;
     }
 

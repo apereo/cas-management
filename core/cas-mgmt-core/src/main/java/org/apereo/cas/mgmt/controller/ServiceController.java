@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -278,6 +279,52 @@ public class ServiceController {
         svcB.setEvaluationOrder(svcs[1].getEvalOrder());
         manager.save(svcA);
         manager.save(svcB);
+    }
+
+    /**
+     * Promotes a service to be included in production registry.
+     *
+     * @param id - the id
+     * @param request - the request
+     * @param response - the response
+     * @throws IllegalAccessException - failed
+     */
+    @GetMapping("promote/{id}")
+    public void promote(final @PathVariable Long id,
+                        final HttpServletRequest request,
+                        final HttpServletResponse response) throws IllegalAccessException {
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        if (!casUserProfile.isAdministrator()) {
+            throw new IllegalAccessException("You do not have permission");
+        }
+        val manager = managerFactory.from(request, casUserProfile);
+        val service = (RegexRegisteredService) manager.findServiceBy(id);
+        service.setEnvironments(null);
+        manager.save(service);
+    }
+
+    /**
+     * Demotes a service to be only available in stage.
+     *
+     * @param id - the id
+     * @param request - the request
+     * @param response - the response
+     * @throws IllegalAccessException - failed
+     */
+    @GetMapping("demote/{id}")
+    public void demote(final @PathVariable Long id,
+                        final HttpServletRequest request,
+                        final HttpServletResponse response) throws IllegalAccessException {
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        if (!casUserProfile.isAdministrator()) {
+            throw new IllegalAccessException("You do not have permission");
+        }
+        val manager = managerFactory.from(request, casUserProfile);
+        val service = (RegexRegisteredService) manager.findServiceBy(id);
+        val env = new HashSet<String>();
+        env.add("staged");
+        service.setEnvironments(env);
+        manager.save(service);
     }
 
 }

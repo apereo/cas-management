@@ -236,4 +236,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   status(row: ServiceItem): string {
     return this.appService.config.versionControl ? row.status : '';
   }
+
+  staged(): boolean {
+    return this.selectedItem && this.selectedItem.staged;
+  }
+
+  promote() {
+    this.service.promote(+this.selectedItem.assignedId).subscribe(() => {
+      this.refresh();
+    });
+  }
+
+  demote() {
+    this.service.demote(+this.selectedItem.assignedId).subscribe(() => {
+      this.refresh();
+    });
+  }
 }

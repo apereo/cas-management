@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -74,6 +76,9 @@ public class OidcController extends BaseRegisterController {
         val rg = new DefaultRandomStringGenerator();
         service.setClientId(rg.getNewString());
         service.setClientSecret(rg.getNewString());
+        val env = new HashSet<String>();
+        env.add("staged");
+        service.setEnvironments(env);
         return service;
     }
 

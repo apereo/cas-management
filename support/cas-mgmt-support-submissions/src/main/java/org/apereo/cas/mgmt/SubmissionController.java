@@ -146,6 +146,7 @@ public class SubmissionController extends AbstractVersionControlController {
         serviceItem.setSubmitter(getSubmitter(p)[1]);
         serviceItem.setSubmitted(getSubmitted(p));
         serviceItem.setStatus(status(p.getFileName().toString()));
+        serviceItem.setStaged(service.getEnvironments().contains("staged"));
         return serviceItem;
     }
 

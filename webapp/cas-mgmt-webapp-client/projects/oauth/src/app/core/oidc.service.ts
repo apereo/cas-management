@@ -45,6 +45,10 @@ export class OidcService extends Service {
     return this.getText(this.controller + '/generateSecret');
   }
 
+  promote(id: number): Observable<void> {
+    return this.get(this.controller + '/promote/' + id);
+  }
+
   /*
   pending(id: string): Observable<AbstractRegisteredService> {
     return this.post('api/submissions/import', id);

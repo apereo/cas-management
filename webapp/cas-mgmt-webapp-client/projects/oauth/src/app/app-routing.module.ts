@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: './services/services.module#ServicesModule'
   },
   {
+    path: 'pending',
+    loadChildren: './pending/pending.module#PendingModule'
+  },
+  {
     path: '',
     component: InitComponent
   }

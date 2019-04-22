@@ -41,7 +41,7 @@ public class OidcController extends BaseRegisterController {
                           final CasManagementConfigurationProperties managementProperties,
                           final EmailManager communicationsManager,
                           final ServicesManager published){
-        super(casUserProfileFactory, managerFactory, managementProperties, null, published, managementProperties.getRegister().getNotifications());
+        super(casUserProfileFactory, managerFactory, managementProperties, communicationsManager, published, managementProperties.getRegister().getNotifications());
     }
 
     /**

@@ -5,7 +5,6 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.LookupServiceItem;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
-import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -140,24 +138,5 @@ public class RegisterController extends BaseRegisterController {
                 .filter(s -> owner(s.getContacts(), query) != null)
                 .map(this::createServiceItem)
                 .collect(toList());
-    }
-
-    /**
-     * Submits a request to promote a service.
-     *
-     * @param id - the id
-     * @param request - the request
-     * @param response - the response
-     * @throws Exception - failed
-     */
-    @GetMapping("promote/{id}")
-    public void promote(final @PathVariable Long id,
-                        final HttpServletRequest request,
-                        final HttpServletResponse response) throws Exception {
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = managerFactory.master();
-        val service = manager.findServiceBy(id);
-        ((RegexRegisteredService) service).setEnvironments(null);
-        saveService(service, String.valueOf(id), casUserProfile);
     }
 }

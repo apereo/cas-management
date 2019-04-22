@@ -122,4 +122,24 @@ export class ServicesComponent implements OnInit {
     });
   }
 
+  staged(): boolean {
+    return this.selectedItem && this.selectedItem.staged;
+  }
+
+  promote() {
+    this.service.promote(+this.selectedItem.assignedId)
+      .pipe(finalize(() => this.spinner.stop()))
+      .subscribe(() => this.snackBar
+          .open('Service Submitted for promotion',
+            'Dismiss',
+            {duration: 5000}
+          ),
+        () => this.snackBar
+          .open('Request to promote service has failed',
+            'Dismiss',
+            {duration: 5000}
+          )
+      );
+  }
+
 }

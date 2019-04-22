@@ -50,7 +50,11 @@ export class OidcComponent implements OnInit {
     }
     if (this.validate()) {
       this.mapForm();
-      this.saveInternal();
+      if (this.data.service.id > -1) {
+        this.saveInternal();
+      } else {
+        this.submit();
+      }
     } else {
       this.showErrors();
       this.snackBar.open(
@@ -64,6 +68,13 @@ export class OidcComponent implements OnInit {
   saveInternal() {
     this.spinner.start();
     this.oidcService.saveService(this.data.service as OidcRegisteredService, this.route.snapshot.params['id'])
+      .pipe(finalize(() => this.spinner.stop()))
+      .subscribe(resp => this.showSubmit());
+  }
+
+  submit() {
+    this.spinner.start();
+    this.oidcService.submitService(this.data.service as OidcRegisteredService)
       .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.showSubmit());
   }

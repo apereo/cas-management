@@ -1,0 +1,40 @@
+.EDIT {
+    color: blue;
+}
+
+.SUBMITTED{
+    color:green;
+}
+
+.REMOVE {
+    color:red;
+}
+
+.descriptionWidth {
+    flex: 1 1 auto;
+    color: inherit;
+}
+
+.serviceIdWidth {
+    flex: 1 1 240px;
+    color: inherit;
+}
+
+.nameWidth {
+    flex: 0 1 240px;
+    color:inherit !important;
+}
+
+.nameWidth a {
+    color:inherit;
+}
+
+.submittedWidth {
+    flex: 0 1 200px;
+    color:inherit !important;
+}
+
+.actionWidth {
+    flex: 0 0 50px;
+}
+

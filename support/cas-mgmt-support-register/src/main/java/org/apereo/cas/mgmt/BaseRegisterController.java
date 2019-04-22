@@ -8,6 +8,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.LookupServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
 import org.apereo.cas.services.ServicesManager;
@@ -191,6 +192,25 @@ public abstract class BaseRegisterController {
             throw new Exception("You are not the original submitter of the request");
         }
         Files.delete(service);
+    }
+
+    /**
+     * Submits a request to promote a service.
+     *
+     * @param id - the id
+     * @param request - the request
+     * @param response - the response
+     * @throws Exception - failed
+     */
+    @GetMapping("promote/{id}")
+    public void promote(final @PathVariable Long id,
+                        final HttpServletRequest request,
+                        final HttpServletResponse response) throws Exception {
+        val casUserProfile = casUserProfileFactory.from(request, response);
+        val manager = managerFactory.master();
+        val service = manager.findServiceBy(id);
+        ((RegexRegisteredService) service).setEnvironments(null);
+        saveService(service, String.valueOf(id), casUserProfile);
     }
 
     private boolean isSubmitter(final Path p, final CasUserProfile casUserProfile) {

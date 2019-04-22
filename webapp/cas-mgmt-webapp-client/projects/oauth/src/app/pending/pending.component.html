@@ -1,0 +1,70 @@
+<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
+  <div style="padding-top: 3px;">
+    <mat-icon style="padding-top: 3px;">hourglass_empty</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>Your Pending Submissions</h4>
+  </div>
+  <div style="flex: 1 1 auto"></div>
+  <div>
+    <app-controls [showEdit]="false" (refresh)="refresh()" [showRefresh]="true"></app-controls>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>&nbsp;</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button style="left:-10px;" mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
+        <ng-container i18n>Name</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        {{ row.name }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceId">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceIdWidth'">
+        <ng-container i18n>Service Url</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceIdWidth'">
+        {{ row.serviceId }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="submitted">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'submittedWidth'">
+        <ng-container i18n>Submitted</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'submittedWidth'">
+        {{ row.submitted }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="row.status"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #serviceMenu>
+  <button mat-menu-item (click)="edit()">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>View/Edit</ng-container>
+  </button>
+  <button mat-menu-item (click)="remove()">
+    <mat-icon>cancel</mat-icon>
+    <ng-container i18n>Cancel</ng-container>
+  </button>
+</mat-menu>
+
+

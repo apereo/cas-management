@@ -36,6 +36,9 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <mat-chip-list *ngIf="row.staged">
+          <mat-chip color="cas-primary">Staged</mat-chip>
+        </mat-chip-list>
         <a (click)="edit(row)">
           {{ row.name }}
         </a>
@@ -100,10 +103,8 @@
     <mat-icon>delete</mat-icon>
     <ng-container i18n>Delete</ng-container>
   </button>
-  <!--
-  <button mat-menu-item (click)="renew()" *ngIf="showRenew()">
-    <mat-icon>restore</mat-icon>
-    <ng-container i18n>Renew</ng-container>
+  <button mat-menu-item (click)="promote()" *ngIf="staged()">
+    <mat-icon>call_made</mat-icon>
+    <ng-container i18n>Promote</ng-container>
   </button>
-  -->
 </mat-menu>

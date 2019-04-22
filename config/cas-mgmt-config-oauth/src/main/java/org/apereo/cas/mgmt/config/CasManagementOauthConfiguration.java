@@ -34,7 +34,6 @@ public class CasManagementOauthConfiguration {
     private ObjectProvider<MgmtManagerFactory> managerFactory;
 
     @Autowired
-    //@Qualifier("managementProperties")
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired

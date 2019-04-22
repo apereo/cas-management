@@ -12,6 +12,7 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
+import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.DigestUtils;
 
 import com.google.common.base.Splitter;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -104,21 +106,24 @@ public class SubmissionController extends AbstractVersionControlController {
      *
      * @param response - the response
      * @param request - the request
+     * @param type - the type
      * @return - List of PendingItem
      * @throws Exception - failed
      */
-    @GetMapping("/pending")
+    @GetMapping("/pending/{type}")
     public List<PendingItem> getPendingSubmissions(final HttpServletResponse response,
-                                                   final HttpServletRequest request) throws Exception {
+                                                   final HttpServletRequest request,
+                                                   final @PathVariable String type) throws Exception {
         val casUserProfile = casUserProfileFactory.from(request, response);
         try (Stream<Path> stream = Files.list(Paths.get(managementProperties.getSubmissions().getSubmitDir()))) {
             val list = stream.filter(p -> isSubmitter(p, casUserProfile))
+                    .filter(p -> isType(p, type))
                     .map(this::createPendingItem).collect(toList());
 
             val git = repositoryFactory.masterRepository();
             val bulks = git.branches()
                     .map(git::mapBranches)
-                    .filter(b -> b.getCommitter().equalsIgnoreCase(casUserProfile.getId()))
+                    .filter(b -> !b.getName().endsWith("master") && b.getCommitter().equalsIgnoreCase(casUserProfile.getId()))
                     .filter(r -> !r.isAccepted() && !r.isRejected())
                     .map(p -> createPendingItem(p, git))
                     .collect(toList());
@@ -133,6 +138,17 @@ public class SubmissionController extends AbstractVersionControlController {
 
     private boolean isSubmitter(final Path p, final CasUserProfile casUserProfile) {
         return getSubmitter(p)[0].equals(casUserProfile.getEmail());
+    }
+
+    private boolean isType(final Path p, final String type) {
+        val service = CasManagementUtils.fromJson(p.toFile());
+        if (service instanceof OAuthRegisteredService) {
+            return "oauth".equals(type);
+        }
+        if (service.getClass().getName().contains("Saml")) {
+            return "saml".equals(type);
+        }
+        return "cas".equals(type);
     }
 
     private RegisteredServiceItem createServiceItem(final Path p) {

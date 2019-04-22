@@ -73,7 +73,7 @@ export class RegisterService extends Service {
   }
 
   getSubmissions(): Observable<PendingItem[]> {
-    return this.get<PendingItem[]>('api/submissions/pending');
+    return this.get<PendingItem[]>('api/submissions/pending/cas');
   }
 
   deletePending(id: string): Observable<void> {

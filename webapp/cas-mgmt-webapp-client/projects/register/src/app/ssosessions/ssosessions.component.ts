@@ -3,9 +3,8 @@ import {MatDialog, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {SsoSession, SsoSessionsResponse} from '../domain/sessions';
 import {SsosessionsService} from './ssosessions-service';
-import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
-import {SsodetailComponent} from '../ssodetail/ssodetail.component';
+import {ActivatedRoute} from '@angular/router';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-ssosessions',
@@ -13,7 +12,7 @@ import {SsodetailComponent} from '../ssodetail/ssodetail.component';
   styleUrls: ['./ssosessions.component.css']
 })
 export class SsosessionsComponent implements OnInit {
-  displayedColumns = ['actions', 'id', 'user', 'creation', 'uses'];
+  displayedColumns = ['actions', 'id', 'creation', 'uses'];
   dataSource: MatTableDataSource<SsoSession>;
   selectedItem: SsoSession;
 
@@ -23,28 +22,17 @@ export class SsosessionsComponent implements OnInit {
 
   constructor(private service: SsosessionsService,
               private spinner: SpinnerService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
    this.dataSource = new MatTableDataSource<SsoSession>([]);
    this.dataSource.paginator = this.paginator.paginator;
-    this.searchText.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap((user: string) => {
-        if (user && user !== '') {
-          this.spinner.start('Searching');
-          return this.service.getSessions(user)
-            .pipe(finalize(() => this.spinner.stop()));
-        } else {
-          return new Observable((observer) => observer.next(null));
-        }
-      })
-    ).subscribe((resp: SsoSessionsResponse)  => {
-      if (resp !== null) {
-        this.dataSource.data = resp.activeSsoSessions;
+   this.route.data.subscribe((data: {resp: SsoSessionsResponse})  => {
+      if (data.resp !== null) {
+        this.dataSource.data = data.resp.activeSsoSessions;
         this.dataSource._updateChangeSubscription();
       } else {
         this.dataSource.data = [];
@@ -57,18 +45,9 @@ export class SsosessionsComponent implements OnInit {
     this.searchText.next(val);
   }
 
-  view(session: SsoSession) {
-    const dialogRef = this.dialog.open(SsodetailComponent, {
-      data: session,
-      width: '800px',
-      position: {top: '100px'}
-    });
-  }
-
   delete() {
     this.service.revokeSession(this.selectedItem.ticketGrantingTicket).subscribe(r => {
-      this.dataSource.data = this.dataSource.data.splice(1,
-        this.dataSource.data.findIndex(value => value.ticketGrantingTicket === this.selectedItem.ticketGrantingTicket));
+      this.dataSource.data = this.dataSource.data.splice(this.dataSource.data.indexOf(this.selectedItem), 1);
       this.dataSource._updateChangeSubscription();
     });
   }

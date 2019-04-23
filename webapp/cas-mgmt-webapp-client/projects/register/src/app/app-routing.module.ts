@@ -20,6 +20,14 @@ const routes: Routes = [
     loadChildren: './pending/pending.module#PendingModule'
   },
   {
+    path: 'sessions',
+    loadChildren: './ssosessions/ssosessions.module#SsosessionsModule'
+  },
+  {
+    path: 'tokens',
+    loadChildren: './tokens/tokens.module#TokensModule'
+  },
+  {
     path: '',
     component: InitComponent
   }

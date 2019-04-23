@@ -30,6 +30,11 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
         } else {
             LOGGER.debug("Successfully authorized access for profile [{}]", profile);
         }
+        if ((context.getPath().contains("management")
+             || context.getPath().contains("dashboard"))
+             && !profile.getRoles().contains("ROLE_ADMIN")) {
+            return false;
+        }
         return result;
     }
 

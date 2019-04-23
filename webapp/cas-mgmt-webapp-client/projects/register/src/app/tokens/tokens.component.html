@@ -1,16 +1,13 @@
 <div style="display:flex;margin-bottom:10px;margin-left: 10px;margin-right:10px;">
   <div style="padding-top: 10px;">
-    <mat-icon style="padding-top: 3px;">local_activity</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>SSO Sessions</h4>
+    <mat-icon style="padding-top: 3px;">album</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>OAuth Tokens</h4>
   </div>
   <div style="flex: 1 1 auto;text-align: center">
   </div>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
-  <mat-form-field floatLabel="never" style="margin-left: 10px">
-    <input matInput (keyup)="doLookup($event.target.value)" placeholder="Enter user id to find sessions" >
-  </mat-form-field>
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="actions">
@@ -28,30 +25,26 @@
 
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef [ngClass]="'idWidth'">
-        <mat-form-field floatLabel="never" style="width:100%;min-width:250px;max-width:750px;">
-          <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter Sessions" >
-        </mat-form-field>
+        Token ID
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'idWidth'">
-        <a (click)="view(row)">
-          {{ row.ticketGrantingTicket }}
-        </a>
+          {{ row.id }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="user">
       <mat-header-cell *matHeaderCellDef [ngClass]="'userWidth'"><ng-container>User</ng-container></mat-header-cell>
-      <mat-cell *matCellDef="let row" [ngClass]="'userWidth'">{{ row.authenticatedPrincipal }}</mat-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'userWidth'">{{ row.principal }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="creation">
       <mat-header-cell *matHeaderCellDef [ngClass]="'creationWidth'"><ng-container>Created</ng-container></mat-header-cell>
-      <mat-cell *matCellDef="let row" [ngClass]="'creationWidth'">{{ row.authenticationDate }}</mat-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'creationWidth'">{{ row.creationTime }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="uses">
       <mat-header-cell *matHeaderCellDef [ngClass]="'usesWidth'"><ng-container>Uses</ng-container></mat-header-cell>
-      <mat-cell *matCellDef="let row" [ngClass]="'usesWidth'">{{ row.numberOfUses }}</mat-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'usesWidth'">{{ row.countOfUses }}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

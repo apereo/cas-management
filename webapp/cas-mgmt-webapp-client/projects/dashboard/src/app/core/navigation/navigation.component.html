@@ -9,11 +9,11 @@
     <mat-toolbar color="primary">{{ getUser() }}</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="/sessions"  (click)="drawer.mode === 'over' ? drawer.close() : ''">
-        <mat-icon>people</mat-icon>
+        <mat-icon>local_activity</mat-icon>
         <span i18n>SSO Sessions</span>
       </a>
       <a mat-list-item routerLink="/tokens"  (click)="drawer.mode === 'over' ? drawer.close() : ''">
-        <mat-icon>local_play</mat-icon>
+        <mat-icon>album</mat-icon>
         <span i18n>OAuth Tokens</span>
       </a>
       <a mat-list-item (click)="logout()">

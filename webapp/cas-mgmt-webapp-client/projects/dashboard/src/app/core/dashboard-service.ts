@@ -14,6 +14,10 @@ export class DashboardService extends Service {
     super(http, dialog);
   }
 
+  getHealth(): Observable<Server> {
+    return this.get<Server>('api/dashboard/health');
+  }
+
   getStatus(): Observable<Server[]> {
     return this.get<Server[]>('api/dashboard');
   }

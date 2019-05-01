@@ -7,6 +7,9 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import org.apereo.cas.util.JsonUtils;
+import org.apereo.cas.util.http.HttpClient;
+import org.jose4j.json.JsonUtil;
 import org.pac4j.cas.client.direct.DirectCasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
@@ -27,9 +30,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
+import javax.json.Json;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is {@link CasManagementAuthenticationConfiguration}.
@@ -61,15 +67,9 @@ public class CasManagementAuthenticationConfiguration {
     @Bean
     public List<Client> authenticationClients() {
         val clients = new ArrayList<Client>();
-        val jwk = "{\"kty\":\"RSA\",\"n\":\"g6YQRvtdzGP27MRQL2OR2AKcd7AodolA6u6WHL-1XCIzEOI3qxD0MBd6tgmcc3ktPE2kToT26U3bYih-rrX7fIsGQg-kEPGuDmxTKXMgiTT8-3J27pjYYjycR7JgYGkmwsHjqTJQ7NhcxEk4tt6RJFAGMrcVLJP65_IcE1_VoAnJEbfzGiwfAHKmq60Yiry06vHJKxZYqWpQEEhaQLdGoU4ywmaAK-Nts-w-mZGgOS1CetuHhRiUsmfiabJq-Ae9gPr3PAPmzh9omzLATOrST0rVpG7pNKGM4qWY9H_0NEPEsUyomdPyqO1kal3M3uxe5ryg7Dmy5GX9xuDRK52YZQ\",\"e\":\"AQAB\"}";
-
-        //val secret = JWKHelper.buildSecretFromJwk(jwk);
-        val rsa = JWKHelper.buildRSAKeyPairFromJwk(jwk);
-        //val enc = JWKHelper.buildECKeyPairFromJwk(jwk);
+        val rsa = JWKHelper.buildRSAKeyPairFromJwk(jwk());
         val jwt = new JwtAuthenticator();
         val encConfig = new RSAEncryptionConfiguration();
-        //encConfig.setAlgorithm(JWEAlgorithm.ECDH_ES_A128KW);
-        //encConfig.setMethod(EncryptionMethod.A192CBC_HS384);
         encConfig.setKeyPair(rsa);
         jwt.addEncryptionConfiguration(encConfig);
         jwt.addSignatureConfiguration(new RSASignatureConfiguration(rsa));
@@ -116,5 +116,16 @@ public class CasManagementAuthenticationConfiguration {
     @Bean
     public CasUserProfileFactory casUserProfileFactory() {
         return new CasUserProfileFactory(managementProperties);
+    }
+
+    @Bean
+    public String jwk() {
+        val restTemplate = new RestTemplate();
+        val serverUrl = casProperties.getServer().getPrefix() + "/oidc/jwks";
+        val resp = restTemplate.getForEntity(serverUrl, Map.class);
+        val keys = resp.getBody();
+        val jwk = JsonUtil.toJson((Map<String, Object>) ((List) keys.get("keys")).get(0));
+        LOGGER.debug(jwk);
+        return jwk;
     }
 }

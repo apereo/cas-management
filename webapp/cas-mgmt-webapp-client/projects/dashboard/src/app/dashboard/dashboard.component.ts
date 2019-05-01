@@ -21,9 +21,9 @@ export class DashboardComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver, private service: DashboardService) {}
 
   ngOnInit(): void {
+    this.service.getHealth().subscribe(s => this.health = s);
     this.service.getStatus().subscribe(s => {
       this.servers = s;
-      this.health = s[0];
       this.timers = [];
       for (const server of this.servers) {
         this.timers.push(null);
@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
   updateHealth(event: MatSlideToggleChange) {
     if (event.checked) {
       this.healthTimer = () => {
-        this.service.getUpdate(0).subscribe(server => {
+        this.service.getHealth().subscribe(server => {
           this.health = server;
           if (this.healthTimer) {
             setTimeout(this.healthTimer, 1000);

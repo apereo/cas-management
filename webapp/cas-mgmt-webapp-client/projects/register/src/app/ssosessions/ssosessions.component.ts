@@ -5,6 +5,7 @@ import {SsoSession, SsoSessionsResponse} from '../domain/sessions';
 import {SsosessionsService} from './ssosessions-service';
 import {ActivatedRoute} from '@angular/router';
 import {Subject} from 'rxjs';
+import {UserService} from 'mgmt-lib';
 
 @Component({
   selector: 'app-ssosessions',
@@ -21,6 +22,7 @@ export class SsosessionsComponent implements OnInit {
   private searchText = new Subject<string>();
 
   constructor(private service: SsosessionsService,
+              private user: UserService,
               private spinner: SpinnerService,
               private dialog: MatDialog,
               private route: ActivatedRoute) {
@@ -46,8 +48,8 @@ export class SsosessionsComponent implements OnInit {
   }
 
   delete() {
-    this.service.revokeSession(this.selectedItem.ticketGrantingTicket).subscribe(r => {
-      this.dataSource.data = this.dataSource.data.splice(this.dataSource.data.indexOf(this.selectedItem), 1);
+    this.service.revokeSession(this.selectedItem.ticketGrantingTicket, this.user.user.id).subscribe(r => {
+      this.dataSource.data.splice(this.dataSource.data.indexOf(this.selectedItem), 1);
       this.dataSource._updateChangeSubscription();
     });
   }

@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
+import org.apereo.cas.mgmt.OAuthForwardingController;
 import org.apereo.cas.mgmt.OauthController;
 import org.apereo.cas.mgmt.OidcController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
@@ -64,5 +65,10 @@ public class CasManagementOauthConfiguration {
                 managementProperties,
                 emailManager.getIfAvailable(),
                 servicesManager);
+    }
+
+    @Bean(name = "oauthForwarding")
+    public OAuthForwardingController oauthForwardingController() {
+        return new OAuthForwardingController();
     }
 }

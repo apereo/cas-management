@@ -20,21 +20,6 @@ public class ForwardingController {
      * @return string url
      */
     @RequestMapping({
-            "register/form/edit/{id}",
-            "register/form/wizard",
-            "register/services",
-            "register/lookup",
-            "register/pending"
-    })
-    public String forwardRegister() {
-        return "register/index.html";
-    }
-
-    /**
-     *
-     * @return string url
-     */
-    @RequestMapping({
             "management/registry/domains",
             "management/registry/services/{domain}",
             "management/registry/search",
@@ -55,7 +40,7 @@ public class ForwardingController {
             "management/delegated/notes/{id}",
             "management/submissions"
     })
-    public String forwardManagement() {
-        return "index.html";
+    public String forward() {
+        return "management/index.html";
     }
 }

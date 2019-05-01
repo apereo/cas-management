@@ -4,10 +4,6 @@ import {InitComponent} from './core/init.component';
 
 const routes: Routes = [
   {
-    path: 'dashboard',
-    loadChildren: './dashboard/dashboard.module#DashboardModule'
-  },
-  {
     path: 'sessions',
     loadChildren: './ssosessions/ssosessions.module#SsosessionsModule'
   },
@@ -17,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: InitComponent
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
   }
 ];
 

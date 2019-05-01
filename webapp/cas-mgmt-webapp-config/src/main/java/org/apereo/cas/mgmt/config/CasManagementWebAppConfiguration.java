@@ -159,7 +159,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(casManagementLocaleChangeInterceptor());
         registry.addInterceptor(casManagementSecurityInterceptor())
-            .addPathPatterns("/**").excludePathPatterns("/callback*", "/logout*", "/authorizationFailure");
+            .addPathPatterns("/**").excludePathPatterns("/callback*", "/logout*", "/authorizationFailure", "/css/**");
     }
 
     @Bean
@@ -279,11 +279,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
                                   casUserProfileFactory.getIfAvailable());
     }
 
-    @Bean
-    public ForwardingController forwardingController() {
-        return new ForwardingController();
-    }
-
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
     @Bean
     public Config casManagementSecurityConfiguration() {
@@ -301,7 +296,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
      */
     public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            LOGGER.info("Cas Properties = " + casProperties + " Server properties = " + serverProperties);
             return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("register/index.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);

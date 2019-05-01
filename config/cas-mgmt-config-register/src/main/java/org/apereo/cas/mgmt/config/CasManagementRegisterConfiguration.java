@@ -5,6 +5,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.BulkActionController;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.RegisterController;
+import org.apereo.cas.mgmt.RegisterForwardingController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
@@ -73,5 +74,9 @@ public class CasManagementRegisterConfiguration {
                 emailManager.getIfAvailable());
     }
 
+    @Bean(name = "registerForwarding")
+    public RegisterForwardingController registerForwardingController() {
+        return new RegisterForwardingController();
+    }
 
 }

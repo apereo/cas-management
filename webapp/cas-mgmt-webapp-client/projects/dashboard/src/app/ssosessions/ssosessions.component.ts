@@ -16,6 +16,7 @@ export class SsosessionsComponent implements OnInit {
   displayedColumns = ['actions', 'id', 'user', 'creation', 'uses'];
   dataSource: MatTableDataSource<SsoSession>;
   selectedItem: SsoSession;
+  searched: string;
 
   @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
 
@@ -36,6 +37,7 @@ export class SsosessionsComponent implements OnInit {
       switchMap((user: string) => {
         if (user && user !== '') {
           this.spinner.start('Searching');
+          this.searched = user;
           return this.service.getSessions(user)
             .pipe(finalize(() => this.spinner.stop()));
         } else {
@@ -66,9 +68,9 @@ export class SsosessionsComponent implements OnInit {
   }
 
   delete() {
-    this.service.revokeSession(this.selectedItem.ticketGrantingTicket).subscribe(r => {
-      this.dataSource.data = this.dataSource.data.splice(1,
-        this.dataSource.data.findIndex(value => value.ticketGrantingTicket === this.selectedItem.ticketGrantingTicket));
+    this.service.revokeSession(this.selectedItem.ticketGrantingTicket, this.searched).subscribe(r => {
+      const index = this.dataSource.data.indexOf(this.selectedItem);
+      this.dataSource.data.splice(index, 1);
       this.dataSource._updateChangeSubscription();
     });
   }

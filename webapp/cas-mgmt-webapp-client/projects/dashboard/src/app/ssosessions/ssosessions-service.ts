@@ -12,7 +12,7 @@ export class SsosessionsService extends Service {
     return this.get<SsoSessionsResponse>('api/sessions/' + user);
   }
 
-  revokeSession(tgt: string): Observable<void> {
-    return this.delete('api/sessions/' + tgt);
+  revokeSession(tgt: string, user: string): Observable<void> {
+    return this.delete('api/sessions/' + tgt + '?user=' + user);
   }
 }

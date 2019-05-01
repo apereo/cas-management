@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.domain.Server;
 import org.apereo.cas.mgmt.domain.Status;
@@ -30,6 +31,8 @@ public class DashboardController {
 
     private final CasManagementConfigurationProperties mgmtProperties;
 
+    private final CasConfigurationProperties casProperties;
+
     /**
      * Method returns a list of Server statuses for all configured cas servers in the cluster.
      *
@@ -59,6 +62,18 @@ public class DashboardController {
         val server = new Server();
         server.setName(props.getName());
         server.setStatus(queryServer(props.getUrl()));
+        return server;
+    }
+
+    /**
+     * Method calls the CAS Cluster pool for health info.
+     *
+     * @return - Server health
+     */
+    @GetMapping("/health")
+    public Server health() {
+        val server = new Server();
+        server.setStatus(queryServer(casProperties.getServer().getPrefix()));
         return server;
     }
 

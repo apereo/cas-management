@@ -11,6 +11,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ApplicationDataController;
 import org.apereo.cas.mgmt.controller.ContactLookupController;
 import org.apereo.cas.mgmt.controller.DomainController;
+import org.apereo.cas.mgmt.controller.ForwardingController;
 import org.apereo.cas.mgmt.controller.ServiceController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
@@ -124,5 +125,10 @@ public class CasManagementCoreServicesConfiguration {
                 : new DefaultServicesManager(serviceRegistryDAO, null, new HashSet<>()));
         manager.load();
         return manager;
+    }
+
+    @Bean(name = "managementForwarding")
+    public ForwardingController managementForwardingController() {
+        return new ForwardingController();
     }
 }

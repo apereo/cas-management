@@ -4,6 +4,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SamlController;
+import org.apereo.cas.mgmt.SamlForwardingController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.services.ServicesManager;
@@ -54,5 +55,10 @@ public class CasManagementSamlConfiguration {
                 managementProperties,
                 emailManager.getIfAvailable(),
                 servicesManager);
+    }
+
+    @Bean("name = samlForwarding")
+    public SamlForwardingController samlForwardingController() {
+        return new SamlForwardingController();
     }
 }

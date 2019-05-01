@@ -5,7 +5,7 @@ import {RepoHistoryResolver} from '@app/version-control/repo-history/repo-histor
 
 const routes: Routes = [
   {
-    path: 'repo-history',
+    path: '',
     component: RepoHistoryComponent,
     resolve: {
       resp: RepoHistoryResolver

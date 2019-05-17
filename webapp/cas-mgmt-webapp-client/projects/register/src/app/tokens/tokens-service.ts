@@ -16,4 +16,12 @@ export class TokensService extends Service {
     return this.delete('api/tokens/' + id);
   }
 
+  bulkRevoke(tokens: string[]): Observable<void> {
+    return this.post<void>('api/tokens/bulkRevoke', tokens);
+  }
+
+  revokeAll(): Observable<void> {
+    return this.get<void>('api/tokens/revokeAll');
+  }
+
 }

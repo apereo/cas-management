@@ -3,13 +3,45 @@
     <mat-icon style="padding-top: 3px;">local_activity</mat-icon>
     <h4 style="display: inline;position: relative;top: -5px;" i18n>SSO Sessions</h4>
   </div>
-  <div style="flex: 1 1 auto;text-align: center">
+  <div style="flex: 1 1 auto;text-align: center"></div>
+  <div>
+    <button mat-button *ngIf="bulk" (click)="bulkRevoke()">
+      <mat-icon>block</mat-icon>
+      <ng-container i18n>Revoke Selected</ng-container>
+    </button>
+    <button mat-button (click)="revokeAll()">
+      <mat-icon>block</mat-icon>
+      <ng-container i18n>Revoke All</ng-container>
+    </button>
+    <button mat-button (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+      <ng-container i18n>Refresh</ng-container>
+    </button>
   </div>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
+  <mat-slide-toggle [(ngModel)]="bulk" (change)="clear()" style="width:50px;"
+                    matTooltip="When toggled on the table will be put into bulk selection mode and bulk options will be displayed in the control line."
+                    matTooltipPosition="above">
+  </mat-slide-toggle>
   <mat-table #table [dataSource]="dataSource">
 
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          <mat-checkbox #allSelect *ngIf="bulk" (change)="selectAll(allSelect.checked)"></mat-checkbox>
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row" *ngIf="!bulk">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-checkbox *ngIf="bulk" [(ngModel)]="row.selected"></mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <!--
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
         <ng-container i18n>
@@ -22,7 +54,7 @@
         </button>
       </mat-cell>
     </ng-container>
-
+-->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef [ngClass]="'idWidth'">
         TGT ID

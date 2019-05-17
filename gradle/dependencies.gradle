@@ -730,7 +730,11 @@ ext.libraries = [
                 logging             :
                     dependencies.create("org.apereo.cas:cas-server-core-logging-api:$casVersion") {
                         force = true
-                    }
+                    },
+                ucdavis             :
+                    dependencies.create("org.apereo.cas:cas-server-ucdavis-api:$casVersion") {
+                        force = true
+                    } 
         ],
         validationapi           : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),
         git                   :

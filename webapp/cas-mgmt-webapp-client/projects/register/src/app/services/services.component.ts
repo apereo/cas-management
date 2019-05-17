@@ -17,7 +17,7 @@ import {finalize} from 'rxjs/operators';
 export class ServicesComponent implements OnInit {
   selectedItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
-  displayedColumns = ['actions', 'name', 'serviceId', 'duo', 'sso', 'expires'];
+  displayedColumns = ['actions', 'name', 'serviceId', 'staged'];
   loading = false;
   bulk = false;
   allSelected = false;
@@ -48,7 +48,7 @@ export class ServicesComponent implements OnInit {
         if (r.matches) {
           this.displayedColumns = ['actions', 'name', 'serviceId'];
         } else {
-          this.displayedColumns = ['actions', 'name', 'serviceId', 'duo', 'sso'];
+          this.displayedColumns = ['actions', 'name', 'serviceId', 'staged'];
         }
     });
   }

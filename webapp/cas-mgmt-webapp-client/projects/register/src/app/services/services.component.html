@@ -52,9 +52,6 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
-        <mat-chip-list *ngIf="row.staged">
-          <mat-chip color="cas-primary">Staged</mat-chip>
-        </mat-chip-list>
         <a (click)="edit(row)">
           {{ row.name }}
         </a>
@@ -103,12 +100,13 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="expires">
+    <ng-container matColumnDef="staged">
       <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'expiresWidth'">
-        <ng-container i18n>Renewal</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'expiresWidth'">
-        {{ row.expires }}
+        <mat-chip-list *ngIf="row.staged">
+          <mat-chip color="cas-primary">Staged</mat-chip>
+        </mat-chip-list>
       </mat-cell>
     </ng-container>
 

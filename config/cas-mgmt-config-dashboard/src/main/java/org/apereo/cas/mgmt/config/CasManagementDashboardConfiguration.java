@@ -42,7 +42,7 @@ public class CasManagementDashboardConfiguration {
 
     @Bean
     public TokensController tokensController() {
-        return new TokensController(managementProperties, casUserProfileFactory.getIfAvailable());
+        return new TokensController(managementProperties, casUserProfileFactory.getIfAvailable(), casProperties);
     }
 
     @Bean(name = "dashboardForwarding")

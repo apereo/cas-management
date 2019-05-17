@@ -1,11 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {SsoSession, SsoSessionsResponse} from '../domain/sessions';
 import {SsosessionsService} from './ssosessions-service';
 import {ActivatedRoute} from '@angular/router';
 import {Subject} from 'rxjs';
 import {UserService} from 'mgmt-lib';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-ssosessions',
@@ -16,6 +17,7 @@ export class SsosessionsComponent implements OnInit {
   displayedColumns = ['actions', 'id', 'creation', 'uses'];
   dataSource: MatTableDataSource<SsoSession>;
   selectedItem: SsoSession;
+  bulk = false;
 
   @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
 
@@ -25,7 +27,8 @@ export class SsosessionsComponent implements OnInit {
               private user: UserService,
               private spinner: SpinnerService,
               private dialog: MatDialog,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private snackBar: MatSnackBar) {
 
   }
 
@@ -48,7 +51,7 @@ export class SsosessionsComponent implements OnInit {
   }
 
   delete() {
-    this.service.revokeSession(this.selectedItem.ticketGrantingTicket, this.user.user.id).subscribe(r => {
+    this.service.revokeSession(this.selectedItem.ticketGrantingTicket, '-1').subscribe(r => {
       this.dataSource.data.splice(this.dataSource.data.indexOf(this.selectedItem), 1);
       this.dataSource._updateChangeSubscription();
     });
@@ -59,4 +62,72 @@ export class SsosessionsComponent implements OnInit {
     this.dataSource.filter = val;
   }
 
+  bulkRevoke() {
+    const sess = this.getSelections();
+    this.spinner.start('Revoking sessions');
+    this.service.bulkRevoke(sess)
+      .pipe(finalize(() => this.spinner.stop()))
+      .subscribe(resp => {
+          this.bulk = false;
+          this.refresh();
+          this.snackBar.open(
+            sess.length + ' Sessions Revoked',
+            'Dismiss',
+            { duration: 5000 }
+          );
+        },
+        error => this.snackBar.open(
+          'Bulk Revoke Failed',
+          'Dismiss',
+          { duration: 5000 })
+      );
+  }
+
+  revokeAll() {
+    this.spinner.start('Revoking all sessions');
+    this.service.revokeAll()
+      .pipe(finalize(() => this.spinner.stop()))
+      .subscribe(resp => {
+          this.bulk = false;
+          this.dataSource.data = [];
+          this.dataSource._updateChangeSubscription();
+          this.snackBar.open(
+            'All Sessions Revoked',
+            'Dismiss',
+            { duration: 5000 }
+          );
+        },
+        error => this.snackBar.open(
+          'Revoke Failed',
+          'Dismiss',
+          { duration: 5000 })
+      );
+  }
+
+  getSelections(): string[] {
+    const sess = [];
+    for (const item of this.dataSource.data) {
+      if (item.selected) {
+        sess.push(item.ticketGrantingTicket);
+      }
+    }
+    return sess;
+  }
+
+  selectAll(all: boolean) {
+    for (const item of this.dataSource.data) {
+      item.selected = all;
+    }
+  }
+
+  clear() {
+    this.selectAll(false);
+  }
+
+  refresh() {
+    this.service.getUserSessions().subscribe(sess => {
+      this.dataSource.data = sess.activeSsoSessions;
+      this.dataSource._updateChangeSubscription();
+    });
+  }
 }

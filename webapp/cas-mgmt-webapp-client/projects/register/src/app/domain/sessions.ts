@@ -30,6 +30,8 @@ export class SsoSession {
   principalAttributes: Map<String, String[]>;
 
   ticketGrantingTicket: string;
+
+  selected: boolean;
 }
 
 export class AuthenticatedService {
@@ -68,6 +70,7 @@ export class OAuthToken {
   countOfUses: number;
   principal: string;
   clientId: string;
+  selected: boolean;
 }
 
 export class ExpirationPolicy {

@@ -41,7 +41,7 @@ public class DashboardController {
     @GetMapping
     public List<Server> status() {
         val servers = new ArrayList();
-        mgmtProperties.getCasServers().parallelStream().forEach(s -> {
+        mgmtProperties.getCasServers().forEach(s -> {
             val server = new Server();
             server.setName(s.getName());
             server.setStatus(queryServer(s.getUrl()));

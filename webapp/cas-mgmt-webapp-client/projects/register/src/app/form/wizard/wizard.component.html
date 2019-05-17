@@ -60,6 +60,14 @@
                         matTooltip="Decides whether this service is allowed to participate in SSO.">help
               </mat-icon>
             </div>
+            <div style="padding-bottom: 15px;">
+              <mat-checkbox [formControl]="form.get('advanced').get('staged')">
+                <ng-container i18n>Stage Only</ng-container>
+              </mat-checkbox>
+              <mat-icon style="font-size: medium" i18n-matTooltip
+                        matTooltip="If checked this service will only be avaialable at stage.cas.ucdavis.edu.">help
+              </mat-icon>
+            </div>
             <lib-logouttypeeval [control]="form.get('advanced').get('logoutType')"></lib-logouttypeeval>
             <lib-logout [control]="form.get('advanced').get('logoutUrl')"></lib-logout>
             <div style="display: flex; flex-direction: row; margin-top: 20px; width: 510px;">

@@ -15,4 +15,12 @@ export class SsosessionsService extends Service {
   revokeSession(tgt: string, user: string): Observable<void> {
     return this.delete('api/sessions/' + tgt + '?user=' + user);
   }
+
+  bulkRevoke(tgts: string[]): Observable<void> {
+    return this.post<void>('api/sessions/bulkRevoke', tgts);
+  }
+
+  revokeAll(): Observable<void> {
+    return this.get<void>('api/sessions/revokeAll');
+  }
 }

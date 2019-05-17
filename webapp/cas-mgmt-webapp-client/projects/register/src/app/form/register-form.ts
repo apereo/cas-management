@@ -31,6 +31,7 @@ export class RegisterForm extends FormGroup implements MgmtFormGroup<AbstractReg
       advanced: new FormGroup({
         requiresDuo: new MgmtFormControl(null),
         ssoEnabled: new MgmtFormControl(null),
+        staged: new MgmtFormControl(null),
         logoutType: new MgmtFormControl(null),
         logoutUrl: new MgmtFormControl(null)
       }, {validators: logoutUrlRequired })
@@ -59,6 +60,7 @@ export class RegisterForm extends FormGroup implements MgmtFormGroup<AbstractReg
       contacts: [],
       advanced: {
         requiresDuo: this.requiresDuo(this.data.service.multifactorPolicy),
+        staged: this.isStaged(this.data.service.environments),
         ssoEnabled: this.data.service.accessStrategy.ssoEnabled,
         logoutType: this.data.service.logoutType,
         logoutUrl: this.data.service.logoutUrl
@@ -95,6 +97,12 @@ export class RegisterForm extends FormGroup implements MgmtFormGroup<AbstractReg
     } else {
       service.multifactorPolicy = null;
     }
+    if (frm.advanced.staged) {
+      service.environments = [];
+      service.environments.push('staged');
+    } else {
+      service.environments = [];
+    }
     service.accessStrategy.ssoEnabled = frm.advanced.ssoEnabled;
     service.logoutType = frm.advanced.logoutType;
     service.logoutUrl = frm.advanced.logoutUrl;
@@ -106,6 +114,10 @@ export class RegisterForm extends FormGroup implements MgmtFormGroup<AbstractReg
       return (<DefaultRegisteredServiceMultifactorPolicy>policy).multifactorAuthenticationProviders.indexOf('mfa-duo') > -1;
     }
     return false;
+  }
+
+  isStaged(environments: string[]) {
+    return environments && environments.indexOf('staged') > -1;
   }
 
   createContactMap(contact: DefaultRegisteredServiceContact): any {

@@ -36,9 +36,6 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
-        <mat-chip-list *ngIf="row.staged">
-          <mat-chip color="cas-primary">Staged</mat-chip>
-        </mat-chip-list>
         <a (click)="edit(row)">
           {{ row.name }}
         </a>
@@ -67,13 +64,13 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="duo">
+    <ng-container matColumnDef="staged">
       <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'duoWidth'">
-        <ng-container i18n>Duo</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'duoWidth'">
-        <mat-icon *ngIf="row.duo">check_box</mat-icon>
-        <mat-icon *ngIf="!row.duo">check_box_outline_blank</mat-icon>
+        <mat-chip-list *ngIf="row.staged">
+          <mat-chip color="cas-primary">Staged</mat-chip>
+        </mat-chip-list>
       </mat-cell>
     </ng-container>
 

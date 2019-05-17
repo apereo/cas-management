@@ -16,7 +16,7 @@ import {OAuthService} from '../core/oauth.service';
 export class ServicesComponent implements OnInit {
   selectedItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
-  displayedColumns = ['actions', 'name', 'serviceId', 'duo', 'sso'];
+  displayedColumns = ['actions', 'name', 'serviceId', 'staged'];
   loading = false;
 
   @ViewChild(PaginatorComponent)
@@ -40,14 +40,6 @@ export class ServicesComponent implements OnInit {
           this.dataSource.paginator = this.paginator.paginator;
           this.dataSource.sort = this.sort;
       });
-    this.breakObserver.observe(['(max-width: 499px)'])
-      .subscribe(r => {
-        if (r.matches) {
-          this.displayedColumns = ['actions', 'name', 'serviceId'];
-        } else {
-          this.displayedColumns = ['actions', 'name', 'serviceId', 'duo', 'sso'];
-        }
-    });
   }
 
   edit(item?: ServiceItem) {

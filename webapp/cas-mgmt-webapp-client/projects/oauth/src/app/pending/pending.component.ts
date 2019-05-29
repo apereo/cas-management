@@ -1,6 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {AppConfigService, PaginatorComponent, PendingItem, SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';

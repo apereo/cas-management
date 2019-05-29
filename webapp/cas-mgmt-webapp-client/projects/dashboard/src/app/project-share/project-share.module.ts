@@ -4,7 +4,9 @@ import {MgmtLibModule, SharedModule} from 'mgmt-lib';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
-import {MatProgressSpinnerModule, MatStepperModule, MatTreeModule} from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTreeModule } from '@angular/material/tree';
 import {SpinnerComponent} from 'mgmt-lib';
 
 @NgModule({

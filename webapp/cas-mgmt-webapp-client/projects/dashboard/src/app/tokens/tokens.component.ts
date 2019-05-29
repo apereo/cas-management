@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {OAuthToken} from '../domain/sessions';
 import {TokensService} from './tokens-service';
-import {MatTableDataSource} from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import {PaginatorComponent} from 'mgmt-lib';
 
 @Component({

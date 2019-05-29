@@ -1,6 +1,6 @@
 import {Service} from 'mgmt-lib';
 import {HttpClient} from '@angular/common/http';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Server, Status} from '../domain/status';

@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {BaseFormComponent} from '../base-form.component';
 import {finalize} from 'rxjs/operators';
-import {MatStepper} from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({

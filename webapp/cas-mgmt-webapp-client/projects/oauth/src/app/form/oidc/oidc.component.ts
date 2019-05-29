@@ -1,6 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MatDialog, MatSnackBar, MatTabGroup} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabGroup } from '@angular/material/tabs';
 import {finalize} from 'rxjs/operators';
 import {FormArray, FormGroup} from '@angular/forms';
 import {SubmitComponent} from '../../project-share/submit/submit.component';

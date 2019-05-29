@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {OAuthToken} from '../domain/sessions';
 import {TokensService} from './tokens-service';
-import {MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {ActivatedRoute} from '@angular/router';
 import {finalize} from 'rxjs/operators';

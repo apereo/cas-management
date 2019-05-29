@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {BaseFormComponent} from '../base-form.component';
 import {finalize} from 'rxjs/operators';
-import {MatTabGroup} from '@angular/material';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-register-form',

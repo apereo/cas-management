@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import {SamlService} from '../../core/saml.service';
 import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';

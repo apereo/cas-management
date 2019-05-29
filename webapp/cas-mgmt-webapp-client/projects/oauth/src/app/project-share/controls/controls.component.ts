@@ -1,7 +1,8 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {AppConfigService} from 'mgmt-lib';
 import {Location} from '@angular/common';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-controls',

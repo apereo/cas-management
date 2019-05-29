@@ -4,7 +4,7 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import {DashboardService} from '../core/dashboard-service';
 import {Observable} from 'rxjs';
 import {MapDetails, Server, Status} from '../domain/status';
-import {MatSlideToggleChange} from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-dashboard',

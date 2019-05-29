@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {SsoSession, SsoSessionsResponse} from '../domain/sessions';
 import {SsosessionsService} from './ssosessions-service';

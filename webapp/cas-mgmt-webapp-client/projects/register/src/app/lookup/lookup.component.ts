@@ -1,5 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatAutocompleteSelectedEvent, MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SubmitComponent} from '../project-share/submit/submit.component';
 import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';

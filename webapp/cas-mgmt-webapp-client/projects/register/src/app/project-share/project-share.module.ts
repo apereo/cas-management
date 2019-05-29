@@ -8,7 +8,7 @@ import {DeleteComponent} from './delete/delete.component';
 import {SubmitComponent} from './submit/submit.component';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
-import {MatStepperModule} from '@angular/material';
+import { MatStepperModule } from '@angular/material/stepper';
 import {SpinnerComponent} from 'mgmt-lib';
 
 @NgModule({

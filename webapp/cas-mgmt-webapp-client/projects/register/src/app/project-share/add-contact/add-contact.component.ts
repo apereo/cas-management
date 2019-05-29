@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MatAutocompleteSelectedEvent, MatDialogRef} from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatDialogRef } from '@angular/material/dialog';
 import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {DefaultRegisteredServiceContact, UserService, SpinnerService} from 'mgmt-lib';

@@ -3,7 +3,8 @@ import { BreakpointObserver} from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {MatSidenav, MatSnackBar} from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {AppConfigService, UserService} from 'mgmt-lib';
 import {Location} from '@angular/common';
 import {ControlsService} from '../../project-share/controls/controls.service';
@@ -15,7 +16,7 @@ import {ControlsService} from '../../project-share/controls/controls.service';
 })
 export class NavigationComponent {
 
-  @ViewChild(MatSidenav)
+  @ViewChild(MatSidenav, { static: true })
    drawer: MatSidenav;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])

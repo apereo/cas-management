@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ServiceViewService} from '../services/service.service';
 import {EditorComponent} from '@app/project-share';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class JSONComponent implements AfterViewInit, OnInit {
 
   changed = false;
 
-  @ViewChild('editor')
+  @ViewChild('editor', { static: true })
   editor: EditorComponent;
 
   constructor(private service: ServiceViewService,

@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommitHistoryService} from './commit-history.service';
-import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {ViewComponent} from '@app/project-share';
@@ -18,7 +20,7 @@ export class CommitHistoryComponent implements OnInit {
   displayedColumns = ['actions', 'name', 'message', 'committer', 'time'];
   dataSource: MatTableDataSource<DiffEntry>;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   commit: string;

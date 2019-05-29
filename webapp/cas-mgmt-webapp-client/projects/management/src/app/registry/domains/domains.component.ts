@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSnackBar, MatTableDataSource } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {PaginatorComponent, DomainRpc} from 'mgmt-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -14,7 +15,7 @@ export class DomainsComponent implements OnInit {
   selectedItem: DomainRpc;
 
 
-  @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
+  @ViewChild(PaginatorComponent, { static: true }) paginator: PaginatorComponent;
 
   constructor(private router: Router,
               private route: ActivatedRoute,

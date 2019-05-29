@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Commit, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {RepoHistoryService} from './repo-history.service';
-import {MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {finalize} from 'rxjs/operators';
@@ -17,7 +18,7 @@ export class RepoHistoryComponent implements OnInit {
   displayedColumns = ['actions', 'id', 'message', 'time'];
   selectedItem: Commit;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   constructor(private service: RepoHistoryService,

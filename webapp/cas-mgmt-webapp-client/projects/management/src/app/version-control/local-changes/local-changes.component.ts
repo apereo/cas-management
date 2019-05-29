@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Change, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {ControlsService, RevertComponent, ViewComponent} from '@app/project-share';
-import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {ServiceViewService} from '@app/registry/services/service.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
@@ -20,7 +22,7 @@ export class LocalChangesComponent implements OnInit {
   datasource: MatTableDataSource<Change>;
   loading: boolean;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   constructor(private router: Router,

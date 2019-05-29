@@ -5,7 +5,7 @@ import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs/index';
 
 @Component({
-  selector: 'app-footer',
+  selector: 'lib-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })

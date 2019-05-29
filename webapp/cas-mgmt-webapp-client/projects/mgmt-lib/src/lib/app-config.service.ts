@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/internal/Observable';
 import {tap} from 'rxjs/operators';
 import {AppConfig} from './domain/app-config';
 import {Service} from './service';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class AppConfigService extends Service {
     return this.get<AppConfig>('api/appConfig')
       .pipe(
         tap(resp => {
-          this.config = resp
+          this.config = resp;
         })
       );
   }

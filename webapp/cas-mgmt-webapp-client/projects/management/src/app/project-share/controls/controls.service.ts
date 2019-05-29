@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
 import {Service, Change, Commit, GitStatus} from 'mgmt-lib';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'

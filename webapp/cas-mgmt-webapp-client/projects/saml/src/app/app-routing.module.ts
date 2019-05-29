@@ -5,11 +5,11 @@ import {InitComponent} from './core/init.component';
 const routes: Routes = [
   {
     path: 'form',
-    loadChildren: './form/form.module#FormModule'
+    loadChildren: () => import('./form/form.module').then(m => m.FormModule)
   },
   {
     path: 'services',
-    loadChildren: './services/services.module#ServicesModule'
+    loadChildren: () => import('./services/services.module').then(m => m.ServicesModule)
   },
   {
     path: '',

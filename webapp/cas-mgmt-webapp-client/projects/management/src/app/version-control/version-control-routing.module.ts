@@ -4,23 +4,23 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'history',
-    loadChildren: './history/history.module#HistoryModule'
+    loadChildren: () => import('./history/history.module').then(m => m.HistoryModule)
   },
   {
     path: 'localChanges',
-    loadChildren: './local-changes/local-changes.module#LocalChangesModule'
+    loadChildren: () => import('./local-changes/local-changes.module').then(m => m.LocalChangesModule)
   },
   {
     path: 'changes',
-    loadChildren: './changes/changes.module#ChangesModule'
+    loadChildren: () => import('./changes/changes.module').then(m => m.ChangesModule)
   },
   {
     path: 'repo-history',
-    loadChildren: './repo-history/repo-history.module#RepoHistoryModule'
+    loadChildren: () => import('./repo-history/repo-history.module').then(m => m.RepoHistoryModule)
   },
   {
     path: 'commit-history',
-    loadChildren: './commit-history/commit-history.module#CommitHistoryModule'
+    loadChildren: () => import('./commit-history/commit-history.module').then(m => m.CommitHistoryModule)
   }
 ];
 

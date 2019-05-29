@@ -5,27 +5,27 @@ import {InitComponent} from './core/init.component';
 const routes: Routes = [
   {
     path: 'form',
-    loadChildren: './form/form.module#FormModule'
+    loadChildren: () => import('./form/form.module').then(m => m.FormModule)
   },
   {
     path: 'services',
-    loadChildren: './services/services.module#ServicesModule'
+    loadChildren: () => import('./services/services.module').then(m => m.ServicesModule)
   },
   {
     path: 'lookup',
-    loadChildren: './lookup/lookup.module#LookupModule'
+    loadChildren: () => import('./lookup/lookup.module').then(m => m.LookupModule)
   },
   {
     path: 'pending',
-    loadChildren: './pending/pending.module#PendingModule'
+    loadChildren: () => import('./pending/pending.module').then(m => m.PendingModule)
   },
   {
     path: 'sessions',
-    loadChildren: './ssosessions/ssosessions.module#SsosessionsModule'
+    loadChildren: () => import('./ssosessions/ssosessions.module').then(m => m.SsosessionsModule)
   },
   {
     path: 'tokens',
-    loadChildren: './tokens/tokens.module#TokensModule'
+    loadChildren: () => import('./tokens/tokens.module').then(m => m.TokensModule)
   },
   {
     path: '',

@@ -4,27 +4,27 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'domains',
-    loadChildren: './domains/domains.module#DomainsModule'
+    loadChildren: () => import('./domains/domains.module').then(m => m.DomainsModule)
   },
   {
     path: 'services',
-    loadChildren: './services/services.module#ServicesModule'
+    loadChildren: () => import('./services/services.module').then(m => m.ServicesModule)
   },
   {
     path: 'search',
-    loadChildren: './search/search.module#SearchModule'
+    loadChildren: () => import('./search/search.module').then(m => m.SearchModule)
   },
   {
     path: 'json',
-    loadChildren: './json/json.module#JsonModule',
+    loadChildren: () => import('./json/json.module').then(m => m.JsonModule),
   },
   {
     path: 'yaml',
-    loadChildren: './yaml/yaml.module#YamlModule'
+    loadChildren: () => import('./yaml/yaml.module').then(m => m.YamlModule)
   },
   {
     path: 'import',
-    loadChildren: './import/import.module#ImportModule'
+    loadChildren: () => import('./import/import.module').then(m => m.ImportModule)
   }
 ];
 

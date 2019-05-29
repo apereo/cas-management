@@ -5,15 +5,15 @@ import {InitComponent} from './core/init.component';
 const routes: Routes = [
   {
     path: 'sessions',
-    loadChildren: './ssosessions/ssosessions.module#SsosessionsModule'
+    loadChildren: () => import('./ssosessions/ssosessions.module').then(m => m.SsosessionsModule)
   },
   {
     path: 'tokens',
-    loadChildren: './tokens/tokens.module#TokensModule'
+    loadChildren: () => import('./tokens/tokens.module').then(m => m.TokensModule)
   },
   {
     path: '',
-    loadChildren: './dashboard/dashboard.module#DashboardModule'
+    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   }
 ];
 

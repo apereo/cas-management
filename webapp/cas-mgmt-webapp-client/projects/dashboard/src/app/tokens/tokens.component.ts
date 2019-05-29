@@ -14,7 +14,7 @@ export class TokensComponent implements OnInit {
   dataSource: MatTableDataSource<OAuthToken>;
   selectedItem: OAuthToken;
 
-  @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
+  @ViewChild(PaginatorComponent, {static: true}) paginator: PaginatorComponent;
 
   constructor(private service: TokensService) {
 

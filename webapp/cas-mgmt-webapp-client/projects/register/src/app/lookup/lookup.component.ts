@@ -31,10 +31,10 @@ export class LookupComponent implements OnInit {
   displayedColumns = ['actions', 'name', 'serviceId', 'contacts'];
   bulk = false;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: false})
   paginator: PaginatorComponent;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   private searchText = new Subject<string>();
   private searchContact = new Subject<string>();

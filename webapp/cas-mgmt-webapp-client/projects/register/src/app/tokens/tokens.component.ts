@@ -18,7 +18,7 @@ export class TokensComponent implements OnInit {
   selectedItem: OAuthToken;
   bulk = false;
 
-  @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
+  @ViewChild(PaginatorComponent, {static: true}) paginator: PaginatorComponent;
 
   constructor(private service: TokensService,
               private spinner: SpinnerService,

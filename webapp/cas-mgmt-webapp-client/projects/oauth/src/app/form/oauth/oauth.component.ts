@@ -21,7 +21,7 @@ import {finalize} from 'rxjs/operators';
 })
 export class OauthComponent implements OnInit {
 
-  @ViewChild(MatTabGroup)
+  @ViewChild(MatTabGroup, {static: true})
   tabs: MatTabGroup;
 
   public form: OAuthForm;

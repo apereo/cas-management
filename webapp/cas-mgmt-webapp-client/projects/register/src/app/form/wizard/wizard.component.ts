@@ -13,7 +13,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 })
 export class WizardComponent extends BaseFormComponent {
 
-  @ViewChild(MatStepper)
+  @ViewChild(MatStepper, {static: true})
   stepper: MatStepper;
 
   saveInternal() {

@@ -18,10 +18,10 @@ export class SearchComponent implements OnInit {
 
   selectedItem: ServiceItem;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: false})
   paginator: PaginatorComponent;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(public router: Router,
               public route: ActivatedRoute,

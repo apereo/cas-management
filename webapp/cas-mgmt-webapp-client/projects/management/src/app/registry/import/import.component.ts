@@ -13,7 +13,7 @@ export class ImportComponent implements OnInit {
 
   file: string;
 
-  @ViewChild(EditorComponent)
+  @ViewChild(EditorComponent, {static: true})
   editor: EditorComponent;
 
   constructor(public service: ImportService,

@@ -9,7 +9,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 })
 export class RegisterFormComponent extends BaseFormComponent {
 
-  @ViewChild(MatTabGroup)
+  @ViewChild(MatTabGroup, {static: true})
   tabs: MatTabGroup;
 
   saveInternal() {

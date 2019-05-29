@@ -24,10 +24,10 @@ export class SubmissionsComponent implements OnInit {
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'submitter', 'submitted'];
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: false})
   paginator: PaginatorComponent;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   isHandSet$: Observable<boolean> = this.breakPointObserver.observe(['(max-width: 499px)'])
     .pipe(

@@ -38,7 +38,7 @@ export class ControlsComponent implements OnInit {
   @Input()
   showEditorOptions = false;
 
-  @ViewChild('publishModal')
+  @ViewChild('publishModal', {static: true})
   submitComp: PublishComponent;
 
   @Output()

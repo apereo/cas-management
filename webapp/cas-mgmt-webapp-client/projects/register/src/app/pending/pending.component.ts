@@ -20,7 +20,7 @@ export class PendingComponent implements OnInit {
   loading = false;
   selectedItem: PendingItem;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
   constructor(private route: ActivatedRoute,

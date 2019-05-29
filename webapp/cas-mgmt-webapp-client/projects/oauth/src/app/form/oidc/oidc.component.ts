@@ -22,7 +22,7 @@ import {OidcService} from '../../core/oidc.service';
 })
 export class OidcComponent implements OnInit {
 
-  @ViewChild(MatTabGroup)
+  @ViewChild(MatTabGroup, {static: true})
   tabs: MatTabGroup;
 
   form: OidcForm;

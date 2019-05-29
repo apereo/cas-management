@@ -21,7 +21,7 @@ export class PullComponent implements OnInit {
   displayedColumns = ['actions', 'branch', 'status', 'message'];
   dataSource: MatTableDataSource<Branch>;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
   rejectBranch: Branch;

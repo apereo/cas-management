@@ -19,7 +19,7 @@ export class SsosessionsComponent implements OnInit {
   selectedItem: SsoSession;
   searched: string;
 
-  @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
+  @ViewChild(PaginatorComponent, {static: true}) paginator: PaginatorComponent;
 
   private searchText = new Subject<string>();
 

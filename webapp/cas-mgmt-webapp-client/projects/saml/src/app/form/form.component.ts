@@ -22,7 +22,7 @@ import {SubmitComponent} from '../project-share/submit/submit.component';
 })
 export class FormComponent implements OnInit {
 
-  @ViewChild(MatTabGroup)
+  @ViewChild(MatTabGroup, {static: true})
   tabs: MatTabGroup;
 
   public form: SamlForm;

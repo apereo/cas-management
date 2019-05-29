@@ -14,7 +14,7 @@ export class DomainsComponent implements OnInit {
   selectedItem: DomainRpc;
 
 
-  @ViewChild(PaginatorComponent) paginator: PaginatorComponent;
+  @ViewChild(PaginatorComponent, {static: true}) paginator: PaginatorComponent;
 
   constructor(private router: Router,
               private route: ActivatedRoute,

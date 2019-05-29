@@ -50,7 +50,7 @@ export class FormComponent implements OnInit {
   view: boolean;
   created: false;
 
-  @ViewChild('tabGroup')
+  @ViewChild('tabGroup', {static: true})
   tabGroup: MatTabGroup;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])

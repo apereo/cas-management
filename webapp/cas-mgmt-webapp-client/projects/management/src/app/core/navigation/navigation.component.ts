@@ -16,7 +16,7 @@ import {AddComponent} from '@app/project-share/add/add.component';
 })
 export class NavigationComponent {
 
-  @ViewChild(MatSidenav)
+  @ViewChild(MatSidenav, {static: true})
    drawer: MatSidenav;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])

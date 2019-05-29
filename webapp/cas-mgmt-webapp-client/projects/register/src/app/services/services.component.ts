@@ -25,10 +25,10 @@ export class ServicesComponent implements OnInit {
   bulk = false;
   allSelected = false;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: false})
   paginator: PaginatorComponent;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private route: ActivatedRoute,
               private router: Router,

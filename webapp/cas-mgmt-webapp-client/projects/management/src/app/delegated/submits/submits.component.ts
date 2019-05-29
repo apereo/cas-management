@@ -17,7 +17,7 @@ export class SubmitsComponent implements OnInit {
   displayedColumns = ['actions', 'status', 'name', 'message'];
   dataSource: MatTableDataSource<Branch>;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
   selectedItem: Branch;

@@ -19,7 +19,7 @@ export class JSONComponent implements AfterViewInit, OnInit {
 
   changed = false;
 
-  @ViewChild('editor')
+  @ViewChild('editor', {static: true})
   editor: EditorComponent;
 
   constructor(private service: ServiceViewService,

@@ -17,7 +17,7 @@ export class ChangesComponent implements OnInit {
     displayedColumns = ['actions', 'file', 'change'];
     dataSource: MatTableDataSource<DiffEntry>;
 
-    @ViewChild(PaginatorComponent)
+    @ViewChild(PaginatorComponent, {static: true})
     paginator: PaginatorComponent;
 
     selectedItem: DiffEntry;

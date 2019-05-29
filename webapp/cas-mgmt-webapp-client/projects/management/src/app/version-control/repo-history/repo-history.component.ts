@@ -17,7 +17,7 @@ export class RepoHistoryComponent implements OnInit {
   displayedColumns = ['actions', 'id', 'message', 'time'];
   selectedItem: Commit;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
   constructor(private service: RepoHistoryService,

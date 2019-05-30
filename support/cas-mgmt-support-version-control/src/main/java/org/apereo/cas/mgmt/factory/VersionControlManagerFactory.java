@@ -10,9 +10,10 @@ import org.apereo.cas.mgmt.VersionControlServicesManager;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.DefaultServicesManager;
-import org.apereo.cas.services.DomainServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
+import org.apereo.cas.services.domain.DomainServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import lombok.RequiredArgsConstructor;
@@ -145,7 +146,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         val serviceRegistryDAO = new JsonServiceRegistry(path,
             false, null, null, namingStrategy);
         val manager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
-                ? new DomainServicesManager(serviceRegistryDAO, null, new HashSet<>())
+                ? new DomainServicesManager(serviceRegistryDAO, null, new DefaultRegisteredServiceDomainExtractor(), new HashSet<>())
                 : new DefaultServicesManager(serviceRegistryDAO, null, new HashSet<>()));
         manager.load();
         return manager;

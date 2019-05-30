@@ -118,14 +118,8 @@ public class PullController extends AbstractVersionControlController {
     private void sendAcceptMessage(final String submitName, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getDelegated().getNotifications().getAccept();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), submitName),
-                    emailProps.getFrom(),
-                    MessageFormat.format(emailProps.getSubject(), submitName),
-                    email,
-                    emailProps.getCc(),
-                    emailProps.getBcc()
-            );
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
         }
     }
 
@@ -161,14 +155,8 @@ public class PullController extends AbstractVersionControlController {
     private void sendRejectMessage(final String submitName, final String note, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getDelegated().getNotifications().getReject();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), submitName, note),
-                    emailProps.getFrom(),
-                    MessageFormat.format(emailProps.getSubject(), submitName),
-                    email,
-                    emailProps.getCc(),
-                    emailProps.getBcc()
-            );
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
         }
     }
 }

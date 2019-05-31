@@ -15,7 +15,7 @@ export class NotesComponent implements OnInit {
   @Output()
   commit: EventEmitter<string> = new EventEmitter<string>();
 
-  @ViewChild('editor')
+  @ViewChild('editor', { static: false })
   editor: EditorComponent;
 
   @Input()

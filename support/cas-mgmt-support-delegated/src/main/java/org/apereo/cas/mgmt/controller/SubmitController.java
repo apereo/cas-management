@@ -83,13 +83,8 @@ public class SubmitController {
     private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getDelegated().getNotifications().getSubmit();
-            communicationsManager.email(
-                    emailProps.getText(),
-                    emailProps.getFrom(),
-                    MessageFormat.format(emailProps.getSubject(), submitName),
-                    user.getEmail(),
-                    emailProps.getCc(),
-                    emailProps.getBcc());
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, user.getEmail(), emailProps.getText());
         }
     }
 

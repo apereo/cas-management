@@ -8,19 +8,19 @@ import {InitComponent} from '@app/core';
 const routes: Routes = [
   {
     path: 'registry',
-    loadChildren: './registry/registry.module#RegistryModule'
+    loadChildren: () => import('./registry/registry.module').then(m => m.RegistryModule)
   },
   {
     path: 'form',
-    loadChildren: './form/form.module#FormModule'
+    loadChildren: () => import('./form/form.module').then(m => m.FormModule)
   },
   {
     path: 'version-control',
-    loadChildren: './version-control/version-control.module#VersionControlModule'
+    loadChildren: () => import('./version-control/version-control.module').then(m => m.VersionControlModule)
   },
   {
     path: 'delegated',
-    loadChildren: './delegated/delegated.module#DelegatedModule'
+    loadChildren: () => import('./delegated/delegated.module').then(m => m.DelegatedModule)
   },
   {
     path: '',

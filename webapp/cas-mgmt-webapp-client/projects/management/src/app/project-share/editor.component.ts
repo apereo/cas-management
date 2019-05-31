@@ -1,7 +1,7 @@
 import {Input, Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Ace} from 'ace-builds';
 import Editor = Ace.Editor;
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {EditorOptionsComponent} from './editor-options/editor-options.component';
 
 declare var ace: any;

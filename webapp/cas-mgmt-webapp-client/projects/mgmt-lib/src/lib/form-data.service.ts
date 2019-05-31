@@ -3,7 +3,7 @@ import {catchError} from 'rxjs/operators';
 import {Service} from './service';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {FormData} from './domain/form-data';
 
 @Injectable({

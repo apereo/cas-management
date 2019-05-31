@@ -1,6 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceItem, PaginatorComponent, SpinnerService} from 'mgmt-lib';
-import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {SearchService} from './SearchService';
@@ -18,10 +21,10 @@ export class SearchComponent implements OnInit {
 
   selectedItem: ServiceItem;
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(public router: Router,
               public route: ActivatedRoute,

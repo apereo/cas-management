@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormDataService} from '../../form-data.service';
 import {FormArray, FormGroup} from '@angular/forms';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'lib-propertiespane',

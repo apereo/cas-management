@@ -3,7 +3,7 @@ import {Service} from './service';
 import {UserProfile} from './domain/user-profile';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {DefaultRegisteredServiceContact} from './domain/contact';
 
 @Injectable({

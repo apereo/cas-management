@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import {ServiceViewService} from '../services/service.service';
 import {EditorComponent} from '@app/project-share';
 import {HttpErrorResponse} from '@angular/common/http';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ export class YamlComponent implements OnInit, AfterViewInit {
 
   changed = false;
 
-  @ViewChild('editor')
+  @ViewChild('editor', { static: true })
   editor: EditorComponent;
 
   constructor(private service: ServiceViewService,

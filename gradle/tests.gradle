@@ -1,20 +1,29 @@
 test {
-    include "**/*Tests.*"
-    useJUnit {
+    useJUnitPlatform {
+        excludeTags "Cassandra", "CosmosDb", "Couchbase", "DynamoDb",
+                "FileSystem", "Ignite", "InfluxDb", "CouchDb",
+                "Ldap", "Mail", "MariaDb", "Memcached",
+                "MongoDb", "MsSqlServer", "MySQL", "Postgres", "Redis",
+                "Radius", "AmazonWebServicesS3", "RestfulApi", "Groovy",
+                "OAuth", "OIDC", "SAML"
     }
-    onlyIf {
-        "SIMPLE".equalsIgnoreCase(rootProject.testCategoryType)
-    }
+    enabled = "SIMPLE".equalsIgnoreCase(rootProject.testCategoryType) && !Boolean.getBoolean("skipTests")
 }
 
 tasks.withType(Test) {
-    exclude "**/Abstract*.*", "**/Base*.*", "**/*Suite.*"
-    enabled = !Boolean.getBoolean("skipTests")
     scanForTestClasses = false
     ignoreFailures = Boolean.getBoolean("ignoreTestFailures")
-    maxParallelForks = 1
+
+    doFirst {
+        maxParallelForks = project.ext.properties.get("maxParallelForksForTests", 4)
+        if (maxParallelForks != 2) {
+            println "Maximum number of parallel forks is set to ${maxParallelForks}"
+        }
+    }
+
+    systemProperty("spring.main.banner-mode", "off")
     failFast = true
-    jvmArgs "-Xmx1024m"
+    jvmArgs.addAll(["-Xms512m", "-Xmx4g"])
     classpath = it.classpath + files("${projectDir}/src/main/resources") + files("${projectDir}/src/test/resources")
     testLogging {
         events = ["FAILED", "STANDARD_OUT"]
@@ -23,4 +32,32 @@ tasks.withType(Test) {
         showExceptions = true
         showCauses = true
     }
+}
+
+def shouldTest(Project project, String category) {
+    !Boolean.getBoolean("skipTests") && category.equalsIgnoreCase(rootProject.testCategoryType) && hasTestsOfCategory(project, category)
+}
+
+def hasTestsOfCategory(Project project, String category) {
+    def testSrc = project.sourceSets.test.java.srcDirs
+    def res = srcTagMap.computeIfAbsent(testSrc) {
+        def tags = new HashSet()
+        testSrc.each { src ->
+            try {
+                src.eachFileRecurse { file ->
+                    if (file ==~ /.*Tests\.\w+/) {
+                        file.readLines().parallelStream().forEach() { line ->
+                            def m = line =~ /^\s*@Tag\("(\w+)"\)\s*$/
+                            if (m) {
+                                tags.addAll(m.collect { it[1] })
+                            }
+                        }
+                    }
+                }
+            } catch (ignored) {
+            }
+        }
+        tags
+    }
+    res.contains(category)
 }

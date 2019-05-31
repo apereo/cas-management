@@ -6,7 +6,7 @@ import org.apereo.cas.grouper.GrouperGroupField;
 import org.apereo.cas.oidc.OidcConstants;
 import org.apereo.cas.services.OidcSubjectTypes;
 import org.apereo.cas.services.RegisteredServiceLogoutType;
-import org.apereo.cas.services.RegisteredServiceMultifactorPolicy;
+import org.apereo.cas.services.RegisteredServiceMultifactorPolicyFailureModes;
 import org.apereo.cas.services.RegisteredServiceProperty;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
@@ -101,8 +101,8 @@ public class FormData implements Serializable {
      *
      * @return the registered service multifactor policy . failure modes [ ]
      */
-    public RegisteredServiceMultifactorPolicy.FailureModes[] getMfaFailureModes() {
-        return RegisteredServiceMultifactorPolicy.FailureModes.values();
+    public RegisteredServiceMultifactorPolicyFailureModes[] getMfaFailureModes() {
+        return RegisteredServiceMultifactorPolicyFailureModes.values();
     }
 
     /**

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, PageEvent} from '@angular/material';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import {AppConfigService} from '../app-config.service';
 
 @Component({
@@ -8,7 +8,7 @@ import {AppConfigService} from '../app-config.service';
 })
 export class PaginatorComponent implements OnInit {
 
-  @ViewChild(MatPaginator)
+  @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator;
 
   constructor(public appService: AppConfigService) {

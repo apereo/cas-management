@@ -11,7 +11,7 @@ export class FiltersComponent implements OnInit {
 
   selectedFilter: number;
 
-  @ViewChild('accordian')
+  @ViewChild('accordian', { static: true })
   accordian: ElementRef;
 
   @Input()

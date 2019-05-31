@@ -10,29 +10,23 @@ language: java
 sudo: required
 dist: trusty
 services:
-- docker
+  - docker
 branches:
   only:
-  - master
+    - master
 before_cache:
-- rm -rf $HOME/.gradle/caches/4.*/
-- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-- find ~/.gradle/caches/ -name "*.lock" -type f -delete
-# Remove once Travis CI fixes JDK setup
-before_script:
- - unset -v _JAVA_OPTIONS
- - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
- - chmod +x install-jdk.sh
- - export JAVA_HOME=$(./install-jdk.sh --emit-java-home -F 11 -c | tail --lines 1)
- - echo $JAVA_HOME
+  - rm -rf $HOME/.gradle/caches/5.*/
+  - rm -rf $HOME/.gradle/caches/4.*/
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - find ~/.gradle/caches/ -name "*.lock" -type f -delete
 cache:
   bundler: false
   cargo: false
   directories:
-  - $HOME/.m2
-  - $HOME/.npm/
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
+    - $HOME/.m2
+    - $HOME/.npm/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 git:
   depth: 2
 notifications:
@@ -50,38 +44,38 @@ env:
   - secure: "2r8sjiU6FOaaNiEdefUZ0wUA7DN9p37X3742yj52WriUd2EqjmHIm0lndJDyGgxoKq4EdZtey3pe3fhKLJIsTYKucDeE6IQQ91ptwW7C7QoPozvkPsdhVHOVvIbekx/TJ/tSzZjrwXHEj03PvgyheVlwMkWQJbneETq/BIRSh9he55Nq1whnZDv/J9j8hHWrKRWqpNyRYW6jAvF7CzKTdlvvKNYX/Wid33f93VTQ4pH/gL0ndW0jDcBLbTqZ9p+DhY8m5+Wir6MjWf4dV2ObKnIAABGedknuOO6W4zZUJE6f6vAo7RWBcG0/ZXpvrJRQ5hXjv68x8IaXIQkEa5kCXn9FHSswz8GfGU5w0XMpxNbCv4Eb3k0Ty9FAAY4YSRVltwK8OA/e8NbNgTkQWenzHitAHh6IjMTUfUygS47M/3ws36/F8rwu2R10COqxaeKS5TFSUue9obuVVOWvT9Z2bOVeCRhKSdWs+2XpbsecjJJgwIkxMFum66iGVc2DhK7JbHjfVWV7rFy2uCK6JU3/qsRmYsy856lBiMcknuJt+UHb+oIJJX0m1iesTANPKspRMjN6MXgRb59989kOGnk2tlv7XN39DmBxAFNePaGyNdOgllXJJ1N+vT13clJQXkLeNGyPIbSYo15aTtgpMmrdtCfn9MWnE3tVjlyZb+APe1Y="
   - secure: "yXHv0eLXSehCHONr5nOWtXqX6KCe19LlaXq/yLWeBl5kWxKCOSfU1lC3YSpVL9jIjhChn/DoBiwcpYPn2CmsftkySelhWLgdtwwIzHqSGhsPq6GX6/JJH8cwfQiZoiqLvAHOEinbk66lyxLg9lmDjbfJtIYDwBU7JmXbejO1cmkKCSjhwOI+24N8uXUikHpr2QqEFtRkzB4Q00w9LQXFSLrjru1wTkKrbbcFP0VLphjBlwsg2Ed1JqotaxQ0PirenpmncScnk497rSc0QHv0+UoBtHtN9J4M8yjH2lTpI4QOF/3c5kZCznZpCKCiPlrM/wcWpi9MbllPrkQuTwmIJ7X1J5Q0IF38r0m5YaRp2Kxqb2sR4AKQq3xtgDbPEzSt6l4e+PXdPalIDn4/SuaOBFZhBVipDEpXJ7snnOcisUpyszaMuMD+8Zu1N/umJL0fLrfRSa+o+FPIUwlIk4dLAztN6kMv2aBLsI9SvDo+Jk2Q7egA7lBJXMpGFoGB8HrVf7GUPnGOmgXPFeU+yySVJTAACpRoQoFOywsPt8JPBcg96TI3sWdrzlzreX5aIUAt8zeXNn9Q7oQP4CnmisEqfvGpvVdSv50lLztnDe01fBRX2/5M32V0RgYj9ZDk9mbF5saKZoB1FfEhrYS4RG00wsxRXZHHIKGYKxNxCTDKewU="
   - secure: "QR0UFpjrOnL+SYfnziW0VRQEMe9MweUwzzC0bYFjgMeq7kRKHGMNn9zOGLWa2fZcKglThjhghBtZ8044SgI5pML+QSHfYiFrrQ+VYJ/05mWrv2z2WUdJPIpdFtqTwL6XP8A9hyrw3bnF5GOC1LvCPPwVp2QGuEOTqFx6EMl0dOKsI3X4q3hT8pjprDVMt9kyjFTG6IMin3OMhQLH/hhxOm8zWyMDaIKYEAuJtK9CuEO5uVAIED57X1koJSub3LuRrRRQluxhYFhwJQ7yQATme2E8SiGmL0mZ6p0HF3IAvYy4FDelYgbwqjJWP7vfRhmG6vmrcRFcgevnw5cjjm2AUJzF4gHID8tvAhIoc33uwSV4y7iJLxDvtp8UdE/I3C1PnQdw0j94hcE+mE0X5LvxWY05drd9RcMxMoM5aWBE/t4IaCn8f3Sjgs3o++GDIyHisCoApKt8nhEjOT7K2OhNFlDKQFVCAv6pJRy3GUqxMSvwWcJSiK41LfIGoTC3FJQTBH8qbBJ605nC5hqrB+c6gTrPXq6/313JYx5mqONJoE1NbtxEi5qckGfYfXZHckERvI0Vi6EuEWVc3UES+MqQzn7zcYLfzF6ySmO4qnOBXmqIHNkzLkZVy94fWuqlsyXyPTvTmi9ZyoYrlqLY0ZnHJVJK19JLiifs2+30G6dRaxA="
+jdk:
+  - openjdk11
 before_install:
-- mkdir -p ~/.gradle && echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
-- unset _JAVA_OPTIONS
-- chmod -R 777 ./ci/*.sh
-- ./ci/init-travis-build.sh
+  - unset _JAVA_OPTIONS
+  - ./ci/init-travis-build.sh
 install: true
 script:
-- ./ci/script.sh
+  - ./ci/script.sh
 after_script:
-- ./ci/stop.sh
+  - ./ci/stop.sh
 stages:
-- initialize
-- build
-- publish
-- postbuild
-- test
-- dependencies
-- spotbugs
+  - initialize
+  - publish
+  - build
+  - postbuild
+  - test
+  - dependencies
+  - spotbugs
 jobs:
   include:
   - stage: initialize
     script: ./ci/download-dependencies.sh
     name: "Initialize Build System"
     ############################################
-  - stage: build
-    script: ./ci/build.sh
-    name: "Build CAS Management"
-    ############################################
   - stage: publish
     if: NOT commit_message =~ ^\[skip\s+snapshots\] and type != "pull_request" and (branch =~ /^\d+\.\d+\.x$/ or branch = master)
     script: ./ci/publish-snapshots-release.sh
-    name: "Publish Artifacts"
+    name: "Publish SNAPSHOT Artifacts"
+    ############################################
+  - stage: build
+    script: ./ci/build.sh
+    name: "Build CAS Management"
     ############################################
   - stage: postbuild
     script: ./ci/analyze-sonarqube.sh
@@ -112,5 +106,3 @@ jobs:
   - stage: test
     script: ./ci/tests/run-tests-simple.sh
     name: "Simple Unit Tests"
-after_success:
-  - bash <(curl -s https://codecov.io/bash)

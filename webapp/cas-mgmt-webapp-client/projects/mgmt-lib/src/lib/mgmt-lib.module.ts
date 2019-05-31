@@ -39,6 +39,7 @@ import { TrackerComponent } from './tracker/tracker.component';
 import {TimeoutComponent} from './timeout/timeout.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ServiceInterceptor} from './interceptor';
+import {ValidateServiceIdDirective} from './form/service-id/service-id.validate.directive';
 
 @NgModule({
   imports: [
@@ -82,7 +83,8 @@ import {ServiceInterceptor} from './interceptor';
     PrivacyUrlComponent,
     EnvironmentsComponent,
     TrackerComponent,
-    TimeoutComponent
+    TimeoutComponent,
+    ValidateServiceIdDirective
   ],
   entryComponents: [
     TimeoutComponent

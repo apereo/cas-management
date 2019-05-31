@@ -2,7 +2,9 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceItem, AppConfigService, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
-import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {DeleteComponent} from '../delete/delete.component';
 import {RevertComponent} from '@app/project-share';
 import {BreakpointObserver} from '@angular/cdk/layout';
@@ -21,7 +23,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'description'];
 
-  @ViewChild(PaginatorComponent)
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   constructor(private route: ActivatedRoute,

@@ -63,7 +63,7 @@ public class FormDataFactory {
     @PostConstruct
     private void callForProfile() {
         if (!mgmtProperties.isEnableDiscoveryEndpointCall()) {
-            LOGGER.warn("Call to cas/status/discovery disabled by management configuration.  Using default FormData values.");
+            LOGGER.warn("Call to cas/actuator/discoveryProfile disabled by management configuration.  Using default FormData values.");
             return;
         }
         if (StringUtils.isBlank(casProperties.getServer().getName())) {
@@ -72,7 +72,7 @@ public class FormDataFactory {
         }
 
         val params = new HashMap<String, Object>();
-        val url = casProperties.getServer().getPrefix() + "/status/discovery";
+        val url = casProperties.getServer().getPrefix() + "/actuator/discoveryProfile";
         try {
             val response = HttpUtils.executeGet(url, params);
             if (response != null) {

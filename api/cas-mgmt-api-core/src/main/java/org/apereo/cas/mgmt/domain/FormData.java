@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 public class FormData implements Serializable {
     private static final long serialVersionUID = -5201796557461644152L;
 
-    private Set<String> availableAttributes = new HashSet<>();
+    private List<String> availableAttributes = new ArrayList<>();
 
     private List<Integer> remoteCodes = Arrays.stream(HttpStatus.values()).map(HttpStatus::value).collect(Collectors.toList());
 

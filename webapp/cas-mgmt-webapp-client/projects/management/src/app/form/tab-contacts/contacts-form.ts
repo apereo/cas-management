@@ -3,8 +3,8 @@ import {
   MgmtFormGroup,
   AbstractRegisteredService,
   MgmtFormControl,
-  DefaultRegisteredServiceContact}
-from 'mgmt-lib';
+  DefaultRegisteredServiceContact
+} from 'mgmt-lib';
 
 export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
@@ -25,7 +25,7 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
       contacts: []
     };
     if (this.service.contacts) {
-      for (let c of this.service.contacts) {
+      for (const c of this.service.contacts) {
         contacts.contacts.push(this.createContactMap(c));
       }
     }
@@ -35,7 +35,7 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
   mapForm(service: AbstractRegisteredService) {
     service.contacts = [];
     const frm = this.value;
-    for (let c of frm.contacts) {
+    for (const c of frm.contacts) {
       const index = service.contacts.length;
       service.contacts.push(new DefaultRegisteredServiceContact());
       service.contacts[index].name = c.name;

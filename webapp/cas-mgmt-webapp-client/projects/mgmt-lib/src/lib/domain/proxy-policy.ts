@@ -41,6 +41,9 @@ export function proxyFactory(policy: any): RegisteredServiceProxyPolicy {
   if(RegexMatchingRegisteredServiceProxyPolicy.instanceOf(policy)) {
     return new RegexMatchingRegisteredServiceProxyPolicy(policy)
   }
+  if (!policy || RefuseRegisteredServiceProxyPolicy.instanceOf(policy)) {
+    return new RefuseRegisteredServiceProxyPolicy();
+  }
   return policy;
 }
 

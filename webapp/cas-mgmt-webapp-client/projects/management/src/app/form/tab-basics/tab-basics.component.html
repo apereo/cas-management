@@ -1,5 +1,5 @@
 <div [formGroup]="basics">
-  <app-card i18n-title title="Basics">
+  <app-card i18n-heading heading="Basics">
     <lib-enabled *ngIf="!groovyAccessStrategy" [control]="basics.get('enabled')"></lib-enabled>
     <lib-servicetype [control]="basics.get('serviceType')"></lib-servicetype>
     <lib-service-id [control]="basics.get('serviceId')"
@@ -9,7 +9,7 @@
     <lib-servicedesc [control]="basics.get('description')"></lib-servicedesc>
     <lib-themeid [control]="basics.get('theme')"></lib-themeid>
   </app-card>
-  <app-card i18n-title title="Reference Links">
+  <app-card i18n-heading heading="Reference Links">
     <lib-logo [control]="basics.get('logo')"></lib-logo>
     <lib-linkrefs [control]="basics.get('informationUrl')"></lib-linkrefs>
     <lib-privacy-url [control]="basics.get('privacyUrl')"></lib-privacy-url>

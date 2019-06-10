@@ -21,7 +21,7 @@ export class ExpirationForm extends FormGroup implements MgmtFormGroup<AbstractR
       expirationDate: this.service.expirationPolicy.expirationDate,
       deleteWhenExpired: this.service.expirationPolicy.deleteWhenExpired,
       notifyWhenDeleted: this.service.expirationPolicy.notifyWhenDeleted
-    }
+    };
   }
 
   mapForm(service: AbstractRegisteredService) {

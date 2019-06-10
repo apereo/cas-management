@@ -24,7 +24,7 @@ export class DefaultRegisteredServiceExpirationPolicy extends RegisteredServiceE
 }
 
 export function expirationPolicyFactory(policy?: any) {
-  if (DefaultRegisteredServiceExpirationPolicy.instanceOf(policy)) {
+  if (!policy || DefaultRegisteredServiceExpirationPolicy.instanceOf(policy)) {
     return new DefaultRegisteredServiceExpirationPolicy(policy);
   }
   return policy;

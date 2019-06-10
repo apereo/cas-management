@@ -637,6 +637,8 @@ ext.libraries = [
                     }, 
                     dependencies.create("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
                         force = true
+                        exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
+                        exclude group: 'org.apereo.cas', module: 'cas-server-core-web'
                     },
                     dependencies.create ("org.apereo.cas:cas-server-support-oidc-services:$casVersion") {
                         force = true
@@ -698,6 +700,10 @@ ext.libraries = [
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
                             force = true
+                        },
+                        dependencies.create("org.apereo.cas:cas-server-support-oauth-core-api:$casVersion") {
+                            force = true
+                            exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
                         }
                 ],
                 oidc                 :
@@ -708,9 +714,11 @@ ext.libraries = [
                     dependencies.create("org.apereo.cas:cas-server-core-web-api:$casVersion") {
                         force = true
                     },
-                initTomcat          :
+                initTomcat           :
                     dependencies.create("org.apereo.cas:cas-server-webapp-init-tomcat:$casVersion") {
                         force = true
+                        exclude group: 'org.apereo.cas', module: 'cas-server-webapp-init'
+                        exclude group: 'org.apereo.cas', module: 'cas-server-webapp-config'
                     }
         ],
         validationapi           : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),

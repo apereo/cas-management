@@ -144,7 +144,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         val path = Paths.get(git.repoPath());
 
         val serviceRegistryDAO = new JsonServiceRegistry(path,
-            false, null, null, namingStrategy);
+            false, null, null, namingStrategy, null);
         val manager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
                 ? new DomainServicesManager(serviceRegistryDAO, null, new DefaultRegisteredServiceDomainExtractor(), new HashSet<>())
                 : new DefaultServicesManager(serviceRegistryDAO, null, new HashSet<>()));

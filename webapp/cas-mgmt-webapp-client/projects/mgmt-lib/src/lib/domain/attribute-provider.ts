@@ -120,7 +120,7 @@ export enum UserAttributeType {
 }
 
 export function usernameProviderFactory(provider?: any): RegisteredServiceUsernameAttributeProvider {
-  if (DefaultRegisteredServiceUsernameProvider.instanceOf(provider)) {
+  if (!provider || DefaultRegisteredServiceUsernameProvider.instanceOf(provider)) {
     return new DefaultRegisteredServiceUsernameProvider(provider);
   }
   if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)) {
@@ -135,4 +135,5 @@ export function usernameProviderFactory(provider?: any): RegisteredServiceUserna
   if (AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)) {
     return new AnonymousRegisteredServiceUsernameProvider(provider);
   }
+  return provider;
 }

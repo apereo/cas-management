@@ -10,7 +10,7 @@ export class GroovyAttrForm extends BaseAttrForm<GroovyRegisteredServiceUsername
     this.setValue(this.formMap());
   }
 
-  formMap(): any{
+  formMap(): any {
     const frm = super.formMap();
     frm['groovyScript'] = this.provider.groovyScript;
     return frm;

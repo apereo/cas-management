@@ -1,11 +1,11 @@
 <div [formGroup]="advanced">
-  <app-card i18n-title title="Advanced">
+  <app-card i18n-heading heading="Advanced">
     <lib-evalorder [control]="advanced.get('evalOrder')"></lib-evalorder>
     <lib-reqhandlers [control]="advanced.get('required')"></lib-reqhandlers>
     <lib-responsetype [control]="advanced.get('responseType')"></lib-responsetype>
     <lib-environments [control]="advanced.get('environments')"></lib-environments>
   </app-card>
-  <app-card i18n-title title="Public Key Options">
+  <app-card i18n-heading heading="Public Key Options">
     <lib-pubkey [control]="advanced.get('publicKey')"></lib-pubkey>
   </app-card>
 </div>

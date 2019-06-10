@@ -146,7 +146,7 @@ export class StrategyAccessForm extends FormGroup implements MgmtFormGroup<Abstr
       return AccessStrategyType.SURROGATE;
     }
     if (GroovySurrogateRegisteredServiceAccessStrategy.instanceOf(strat)) {
-      return AccessStrategyType.GROOVY_SURROGATE
+      return AccessStrategyType.GROOVY_SURROGATE;
     }
     if (GroovyRegisteredServiceAccessStrategy.instanceOf(strat)) {
       return AccessStrategyType.GROOVY;

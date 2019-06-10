@@ -13,7 +13,7 @@ export class OidcAttrForm extends FormGroup implements MgmtFormGroup<OidcRegiste
   formMap(): any {
     return {
       scopes: this.service.scopes
-    }
+    };
   }
 
   mapForm(service: OidcRegisteredService) {

@@ -6,7 +6,7 @@ export class PrincipalAttrForm extends BaseAttrForm<PrincipalAttributeRegistered
 
   constructor(public provider: PrincipalAttributeRegisteredServiceUsernameProvider) {
     super(provider);
-    this.addControl('usernameAttribute',new MgmtFormControl(null, null, Validators.required));
+    this.addControl('usernameAttribute', new MgmtFormControl(null, null, Validators.required));
     this.setValue(this.formMap());
   }
 

@@ -1,7 +1,7 @@
 import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn';
 
 export abstract class RegisteredServiceAccessStrategy {
-  enabled: boolean
+  enabled: boolean;
   ssoEnabled: boolean;
   unauthorizedRedirectUrl: string;
   delegatedAuthenticationPolicy: RegisteredServiceDelegatedAuthenticationPolicy;
@@ -20,16 +20,6 @@ export abstract class RegisteredServiceAccessStrategy {
     this.rejectedAttributes = (strat && strat.rejectedAttributes) || null;
     this.caseInsensitive = (strat && strat.caseInsensitive) || false;
   }
-}
-
-export enum AccessStrategyType {
-  DEFAULT,
-  REMOTE,
-  TIME,
-  GROUPER,
-  GROOVY,
-  SURROGATE,
-  GROOVY_SURROGATE
 }
 
 export class DefaultRegisteredServiceAccessStrategy extends RegisteredServiceAccessStrategy {
@@ -96,7 +86,7 @@ export class GrouperRegisteredServiceAccessStrategy extends TimeBasedRegisteredS
     super(strat);
     const s: GrouperRegisteredServiceAccessStrategy = strat as GrouperRegisteredServiceAccessStrategy;
     this.groupField = (s && s.groupField) || null;
-    this['@class'] = GrouperRegisteredServiceAccessStrategy.cName
+    this['@class'] = GrouperRegisteredServiceAccessStrategy.cName;
   }
 }
 
@@ -109,7 +99,7 @@ export class BaseSurrogateRegisteredServiceAccessStrategy extends DefaultRegiste
 
   constructor(strat?: RegisteredServiceAccessStrategy) {
     super(strat);
-    this['@class'] = BaseSurrogateRegisteredServiceAccessStrategy.cName
+    this['@class'] = BaseSurrogateRegisteredServiceAccessStrategy.cName;
   }
 }
 
@@ -166,5 +156,40 @@ export class GroovyRegisteredServiceAccessStrategy extends RegisteredServiceAcce
     this.groovyScript = (s && s.groovyScript) || null;
     this['@class'] = GroovyRegisteredServiceAccessStrategy.cName;
   }
+}
+
+export enum AccessStrategyType {
+  DEFAULT,
+  REMOTE,
+  TIME,
+  GROUPER,
+  GROOVY,
+  SURROGATE,
+  GROOVY_SURROGATE
+}
+
+export function accessStrategyFactory(strat?: any): RegisteredServiceAccessStrategy {
+  if (DefaultRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new DefaultRegisteredServiceAccessStrategy(strat);
+  }
+  if (RemoteEndpointServiceAccessStrategy.instanceOf(strat)) {
+    return new RemoteEndpointServiceAccessStrategy(strat);
+  }
+  if (TimeBasedRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new TimeBasedRegisteredServiceAccessStrategy(strat);
+  }
+  if (GrouperRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new GrouperRegisteredServiceAccessStrategy(strat);
+  }
+  if (GroovyRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new GroovyRegisteredServiceAccessStrategy(strat);
+  }
+  if (SurrogateRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new SurrogateRegisteredServiceAccessStrategy(strat);
+  }
+  if (GroovySurrogateRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new GroovySurrogateRegisteredServiceAccessStrategy(strat);
+  }
+  return strat;
 }
 

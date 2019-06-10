@@ -22,3 +22,11 @@ export class DefaultRegisteredServiceExpirationPolicy extends RegisteredServiceE
     this['@class'] = DefaultRegisteredServiceExpirationPolicy.cName;
   }
 }
+
+export function expirationPolicyFactory(policy?: any) {
+  if (DefaultRegisteredServiceExpirationPolicy.instanceOf(policy)) {
+    return new DefaultRegisteredServiceExpirationPolicy(policy);
+  }
+  return policy;
+
+}

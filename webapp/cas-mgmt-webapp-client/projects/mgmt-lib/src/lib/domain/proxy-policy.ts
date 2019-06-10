@@ -36,3 +36,12 @@ export class RefuseRegisteredServiceProxyPolicy extends RegisteredServiceProxyPo
     this['@class'] = RefuseRegisteredServiceProxyPolicy.cName;
   }
 }
+
+export function proxyFactory(policy: any): RegisteredServiceProxyPolicy {
+  if(RegexMatchingRegisteredServiceProxyPolicy.instanceOf(policy)) {
+    return new RegexMatchingRegisteredServiceProxyPolicy(policy)
+  }
+  return policy;
+}
+
+

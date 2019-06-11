@@ -90,7 +90,7 @@ export class ShibbolethCompatiblePersistentIdGenerator {
   constructor(generator?: ShibbolethCompatiblePersistentIdGenerator) {
     this.salt = (generator && generator.salt) || null;
     this.attribute = (generator && generator.attribute) || null;
-    this['@class'] = ShibbolethCompatiblePersistentIdGenerator.cName
+    this['@class'] = ShibbolethCompatiblePersistentIdGenerator.cName;
   }
 }
 
@@ -117,4 +117,23 @@ export enum UserAttributeType {
   ANONYMOUS,
   SCRIPTED,
   GROOVY,
+}
+
+export function usernameProviderFactory(provider?: any): RegisteredServiceUsernameAttributeProvider {
+  if (!provider || DefaultRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new DefaultRegisteredServiceUsernameProvider(provider);
+  }
+  if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new PrincipalAttributeRegisteredServiceUsernameProvider(provider);
+  }
+  if (GroovyRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new GroovyRegisteredServiceUsernameProvider(provider);
+  }
+  if (ScriptedRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new ScriptedRegisteredServiceUsernameProvider(provider)
+  }
+  if (AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new AnonymousRegisteredServiceUsernameProvider(provider);
+  }
+  return provider;
 }

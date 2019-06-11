@@ -29,9 +29,9 @@ export class PropertiesForm extends FormGroup implements MgmtFormGroup<AbstractR
   formMap(): any {
     const props = {
       properties: []
-    }
+    };
     if (this.service.properties) {
-      for (let p of Array.from(Object.keys(this.service.properties))) {
+      for (const p of Array.from(Object.keys(this.service.properties))) {
         props.properties.push({
           key: p,
           value: this.service.properties[p].values.toString()
@@ -44,7 +44,7 @@ export class PropertiesForm extends FormGroup implements MgmtFormGroup<AbstractR
   mapForm(service: AbstractRegisteredService) {
     const frm = this.value;
     service.properties = new Map<string, DefaultRegisteredServiceProperty>();
-    for (let p of frm.properties) {
+    for (const p of frm.properties) {
       const drp = new DefaultRegisteredServiceProperty();
       drp.values = p.value.split(',');
       service.properties[p.key] = drp;

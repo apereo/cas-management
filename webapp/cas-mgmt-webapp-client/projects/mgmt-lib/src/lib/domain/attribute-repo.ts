@@ -49,3 +49,13 @@ export class CachingPrincipalAttributesRepository extends AbstractPrincipalAttri
     this['@class'] = CachingPrincipalAttributesRepository.cName;
   }
 }
+
+export function attributeRepoFactory(repo?: any): PrincipalAttributesRepository {
+  if (DefaultPrincipalAttributesRepository.instanceOf(repo)) {
+    return new DefaultPrincipalAttributesRepository(repo);
+  }
+  if (CachingPrincipalAttributesRepository.instanceOf(repo)) {
+    return new CachingPrincipalAttributesRepository(repo);
+  }
+  repo;
+}

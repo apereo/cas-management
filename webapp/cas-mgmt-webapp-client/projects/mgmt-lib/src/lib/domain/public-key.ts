@@ -3,7 +3,7 @@ export abstract class RegisteredServicePublicKey {
   algorithm: string;
   publicKeyFactoryBeanClass: any;
 
-  constructor(key?: RegisteredServicePublicKey){
+  constructor(key?: RegisteredServicePublicKey) {
     this.location = (key && key.location) || null;
     this.algorithm = (key && key.algorithm) || 'RSA';
     this.publicKeyFactoryBeanClass = (key && key.publicKeyFactoryBeanClass) || null;

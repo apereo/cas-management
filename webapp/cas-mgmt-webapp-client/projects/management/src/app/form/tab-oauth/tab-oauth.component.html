@@ -1,5 +1,5 @@
 <div [formGroup]="oauth">
-  <app-card i18n-title title="OAuth Client Options" [collapse]="false">
-    <lib-oauthclient [control]="oauth"></lib-oauthclient>
+  <app-card i18n-heading heading="OAuth Client Options" [collapse]="false">
+    <lib-oauthclient [control]="oauth" (generateId)="generateId()" (generateSecret)="generateSecret()"></lib-oauthclient>
   </app-card>
 </div>

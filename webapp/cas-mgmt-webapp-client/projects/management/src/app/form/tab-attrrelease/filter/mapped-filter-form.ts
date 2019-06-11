@@ -26,7 +26,7 @@ export class MappedFilterForm extends BaseFilterForm<RegisteredServiceMappedRege
       excludeUnmappedAttributes: this.filter.excludeUnmappedAttributes,
       order: this.filter.order,
       type: this.get('type').value
-    }
+    };
   }
 
   mapForm(filter: RegisteredServiceMappedRegexAttributeFilter) {

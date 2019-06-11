@@ -25,6 +25,6 @@ export class FormData {
 }
 
 export interface Option {
-    display: string;
-    value: string;
+  display: string;
+  value: string;
 }

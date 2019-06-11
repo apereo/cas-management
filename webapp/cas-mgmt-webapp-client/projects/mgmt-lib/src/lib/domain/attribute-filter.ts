@@ -71,7 +71,7 @@ export class RegisteredServiceReverseMappedRegexAttributeFilter extends Register
     return obj && obj['@class'] === RegisteredServiceReverseMappedRegexAttributeFilter.cName;
   }
 
-  constructor(filter?: RegisteredServiceMappedRegexAttributeFilter) {
+  constructor(filter?: RegisteredServiceAttributeFilter) {
     super(filter);
     this['@class'] = RegisteredServiceReverseMappedRegexAttributeFilter.cName;
   }
@@ -84,7 +84,7 @@ export class RegisteredServiceMutantRegexAttributeFilter extends RegisteredServi
         return obj && obj['@class'] === RegisteredServiceMutantRegexAttributeFilter.cName;
     }
 
-    constructor(filter?: RegisteredServiceMappedRegexAttributeFilter) {
+    constructor(filter?: RegisteredServiceAttributeFilter) {
         super(filter);
         this['@class'] = RegisteredServiceMutantRegexAttributeFilter.cName;
     }
@@ -116,4 +116,26 @@ export enum FilterType {
   SCRIPTED,
   MUTANT_REGEX,
   CHAINING
+}
+
+export function attributeFilterFactory(filter?: any, type?: FilterType): RegisteredServiceAttributeFilter {
+  if (type === FilterType.REGEX || RegisteredServiceRegexAttributeFilter.instanceOf(filter)) {
+    return new RegisteredServiceRegexAttributeFilter(filter);
+  }
+  if (type === FilterType.MAPPED_REGEX || RegisteredServiceMappedRegexAttributeFilter.instanceof(filter)) {
+    return new RegisteredServiceMappedRegexAttributeFilter(filter);
+  }
+  if (type === FilterType.REVERSE_MAPPED_REGEX || RegisteredServiceReverseMappedRegexAttributeFilter.instanceof(filter)) {
+    return new RegisteredServiceReverseMappedRegexAttributeFilter(filter);
+  }
+  if (type === FilterType.SCRIPTED || RegisteredServiceScriptedAttributeFilter.instanceof(filter)) {
+    return new RegisteredServiceScriptedAttributeFilter(filter);
+  }
+  if (type === FilterType.MUTANT_REGEX || RegisteredServiceMutantRegexAttributeFilter.instanceof(filter)) {
+    return new RegisteredServiceMutantRegexAttributeFilter(filter);
+  }
+  if (type === FilterType.CHAINING || RegisteredServiceChainingAttributeFilter.instanceof(filter)) {
+    return new RegisteredServiceChainingAttributeFilter(filter);
+  }
+  return filter;
 }

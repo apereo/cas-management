@@ -32,7 +32,7 @@ export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractReg
         location: this.service.publicKey && this.service.publicKey.location,
         algorithm: this.service.publicKey && this.service.publicKey.algorithm
       }
-    }
+    };
   }
 
   mapForm(service: AbstractRegisteredService) {

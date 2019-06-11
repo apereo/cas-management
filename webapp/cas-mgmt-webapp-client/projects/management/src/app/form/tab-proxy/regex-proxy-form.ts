@@ -17,7 +17,7 @@ export class RegexProxyForm extends FormGroup implements MgmtFormGroup<RegexMatc
   formMap(): any {
     return {
       regex: this.policy.pattern
-    }
+    };
   }
 
   mapForm(policy: RegexMatchingRegisteredServiceProxyPolicy) {

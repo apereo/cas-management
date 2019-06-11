@@ -1,6 +1,14 @@
-import {DefaultPrincipalAttributesRepository, PrincipalAttributesRepository} from './attribute-repo';
-import {RegisteredServiceAttributeFilter} from './attribute-filter';
-import {DefaultRegisteredServiceConsentPolicy, RegisteredServiceConsentPolicy} from './consent-policy';
+import {
+  attributeRepoFactory,
+  DefaultPrincipalAttributesRepository,
+  PrincipalAttributesRepository
+} from './attribute-repo';
+import {attributeFilterFactory, RegisteredServiceAttributeFilter} from './attribute-filter';
+import {
+  consentPolicyFactory,
+  DefaultRegisteredServiceConsentPolicy,
+  RegisteredServiceConsentPolicy
+} from './consent-policy';
 
 export abstract class RegisteredServiceAttributeReleasePolicy {
   attributeFilter: RegisteredServiceAttributeFilter;
@@ -11,16 +19,18 @@ export abstract class RegisteredServiceAttributeReleasePolicy {
   authorizedToReleaseAuthenticationAttributes: boolean;
   principalIdAttribute: string;
   consentPolicy: RegisteredServiceConsentPolicy;
+  order: number;
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
-    this.attributeFilter = (policy && policy.attributeFilter) || null;
-    this.principalAttributesRepository = (policy && policy.principalAttributesRepository) || new DefaultPrincipalAttributesRepository();
+    this.attributeFilter = attributeFilterFactory(policy && policy.attributeFilter);
+    this.principalAttributesRepository = attributeRepoFactory(policy && policy.principalAttributesRepository);
     this.authorizedToReleaseCredentialPassword = (policy && policy.authorizedToReleaseCredentialPassword) || null;
     this.authorizedToReleaseProxyGrantingTicket = (policy && policy.authorizedToReleaseProxyGrantingTicket) || null;
     this.excludeDefaultAttributes = (policy && policy.excludeDefaultAttributes) || null;
     this.principalIdAttribute = (policy && policy.principalIdAttribute) || null;
     this.authorizedToReleaseAuthenticationAttributes = (policy && policy.authorizedToReleaseAuthenticationAttributes) || true;
-    this.consentPolicy = (policy && policy.consentPolicy) || new DefaultRegisteredServiceConsentPolicy();
+    this.consentPolicy = consentPolicyFactory(policy && policy.consentPolicy);
+    this.order = (policy && policy.order) || 0;
   }
 }
 
@@ -68,7 +78,7 @@ export class ReturnMappedAttributeReleasePolicy extends AbstractRegisteredServic
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
     const p: ReturnMappedAttributeReleasePolicy = policy as ReturnMappedAttributeReleasePolicy;
-    this.allowedAttributes = (p && p.allowedAttributes) || null
+    this.allowedAttributes = (p && p.allowedAttributes) || null;
     this['@class'] = ReturnMappedAttributeReleasePolicy.cName;
   }
 }
@@ -242,5 +252,47 @@ export enum PrincipalRepoType {
   CACHING,
 }
 
+export function attributeReleaseFactory(policy?: any, type?: ReleasePolicyType): RegisteredServiceAttributeReleasePolicy {
+  if (type === ReleasePolicyType.RETURN_ALL || ReturnAllAttributeReleasePolicy.instanceOf(policy)) {
+    return new ReturnAllAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.DENY_ALL || DenyAllAttributeReleasePolicy.instanceOf(policy)) {
+    return new DenyAllAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.RETURN_MAPPED || ReturnMappedAttributeReleasePolicy.instanceOf(policy)) {
+    return new ReturnMappedAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.RETURN_ALLOWED || ReturnAllowedAttributeReleasePolicy.instanceOf(policy)) {
+    return new ReturnAllowedAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.SCRIPT || ScriptedRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
+    return new ScriptedRegisteredServiceAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.GROOVY || GroovyScriptAttributeReleasePolicy.instanceOf(policy)) {
+    return new GroovyScriptAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.INCOMMON || InCommonRSAttributeReleasePolicy.instanceOf(policy)) {
+    return new InCommonRSAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.MATCHING || PatternMatchingEntityIdAttributeReleasePolicy.instanceOf(policy)) {
+    return new PatternMatchingEntityIdAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.METADATA || MetadataEntityAttributesAttributeReleasePolicy.instanceOf(policy)) {
+    return new MetadataEntityAttributesAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.RESTFUL || ReturnRestfulAttributeReleasePolicy.instanceOf(policy)) {
+    return new ReturnRestfulAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.GROOVY_SAML || GroovySamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
+    return new GroovySamlRegisteredServiceAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.WS_FED || WsFederationClaimsReleasePolicy.instanceOf(policy)) {
+    return new WsFederationClaimsReleasePolicy(policy);
+  }
+  if (!type && !policy) {
+    return new ReturnAllowedAttributeReleasePolicy();
+  }
+  return policy;
+}
 
 

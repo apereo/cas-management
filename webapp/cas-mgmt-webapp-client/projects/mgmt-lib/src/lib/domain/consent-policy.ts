@@ -6,7 +6,7 @@ export class RegisteredServiceConsentPolicy {
   includeOnlyAttributes: string[];
 
   static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === RegisteredServiceConsentPolicy.cName
+    return obj && obj['@class'] === RegisteredServiceConsentPolicy.cName;
   }
 
   constructor(policy?: RegisteredServiceConsentPolicy) {
@@ -28,4 +28,12 @@ export class DefaultRegisteredServiceConsentPolicy extends RegisteredServiceCons
     super(policy);
     this['@class'] = DefaultRegisteredServiceConsentPolicy.cName;
   }
+}
+
+export function consentPolicyFactory(policy?: any): RegisteredServiceConsentPolicy  {
+  if (!policy || DefaultRegisteredServiceConsentPolicy.instanceOf(policy)) {
+    return new DefaultRegisteredServiceConsentPolicy(policy);
+  }
+  return policy;
+
 }

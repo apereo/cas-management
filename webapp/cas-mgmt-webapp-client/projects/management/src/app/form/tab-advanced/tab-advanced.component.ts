@@ -1,4 +1,4 @@
-import {Component, OnInit} from'@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
 import {AdvancedForm} from './advanced-form';
 

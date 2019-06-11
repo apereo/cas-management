@@ -169,6 +169,9 @@ export enum AccessStrategyType {
 }
 
 export function accessStrategyFactory(strat?: any): RegisteredServiceAccessStrategy {
+  if (!strat || DefaultRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new DefaultRegisteredServiceAccessStrategy(strat);
+  }
   if (RemoteEndpointServiceAccessStrategy.instanceOf(strat)) {
     return new RemoteEndpointServiceAccessStrategy(strat);
   }
@@ -186,9 +189,6 @@ export function accessStrategyFactory(strat?: any): RegisteredServiceAccessStrat
   }
   if (GroovySurrogateRegisteredServiceAccessStrategy.instanceOf(strat)) {
     return new GroovySurrogateRegisteredServiceAccessStrategy(strat);
-  }
-  if (!strat) {
-    return new DefaultRegisteredServiceAccessStrategy(strat);
   }
   return strat;
 }

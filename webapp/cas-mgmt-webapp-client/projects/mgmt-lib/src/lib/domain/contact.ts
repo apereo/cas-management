@@ -26,6 +26,10 @@ export class DefaultRegisteredServiceContact extends RegisteredServiceContact {
 
 export function contactsFactory(input: any[]) {
   const contacts: DefaultRegisteredServiceContact[] = [];
-  input.forEach((val) => { contacts.push(new DefaultRegisteredServiceContact(val))});
+  if (input) {
+    input.forEach((val) => {
+      contacts.push(new DefaultRegisteredServiceContact(val))
+    });
+  }
   return contacts;
 }

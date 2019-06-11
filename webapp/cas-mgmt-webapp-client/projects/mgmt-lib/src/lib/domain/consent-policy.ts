@@ -31,7 +31,7 @@ export class DefaultRegisteredServiceConsentPolicy extends RegisteredServiceCons
 }
 
 export function consentPolicyFactory(policy?: any): RegisteredServiceConsentPolicy  {
-  if (DefaultRegisteredServiceConsentPolicy.instanceOf(policy)) {
+  if (!policy || DefaultRegisteredServiceConsentPolicy.instanceOf(policy)) {
     return new DefaultRegisteredServiceConsentPolicy(policy);
   }
   return policy;

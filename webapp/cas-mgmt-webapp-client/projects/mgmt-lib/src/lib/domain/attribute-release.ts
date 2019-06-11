@@ -289,6 +289,9 @@ export function attributeReleaseFactory(policy?: any, type?: ReleasePolicyType):
   if (type === ReleasePolicyType.WS_FED || WsFederationClaimsReleasePolicy.instanceOf(policy)) {
     return new WsFederationClaimsReleasePolicy(policy);
   }
+  if (!type && !policy) {
+    return new ReturnAllowedAttributeReleasePolicy();
+  }
   return policy;
 }
 

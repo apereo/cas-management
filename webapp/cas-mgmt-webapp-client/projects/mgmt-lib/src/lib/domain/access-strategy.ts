@@ -169,7 +169,7 @@ export enum AccessStrategyType {
 }
 
 export function accessStrategyFactory(strat?: any): RegisteredServiceAccessStrategy {
-  if (DefaultRegisteredServiceAccessStrategy.instanceOf(strat)) {
+  if (!strat || DefaultRegisteredServiceAccessStrategy.instanceOf(strat)) {
     return new DefaultRegisteredServiceAccessStrategy(strat);
   }
   if (RemoteEndpointServiceAccessStrategy.instanceOf(strat)) {

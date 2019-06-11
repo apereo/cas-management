@@ -11,6 +11,7 @@ import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.util.CasVersion;
+import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,5 +102,14 @@ public class ApplicationDataController {
         return config;
     }
 
+    /**
+     * Generates a new random string used for client Id and Secrets.
+     *
+     * @return - Random String value
+     */
+    @GetMapping("generateRandom")
+    public String generateRandom() {
+        return new DefaultRandomStringGenerator().getNewString();
+    }
 }
 

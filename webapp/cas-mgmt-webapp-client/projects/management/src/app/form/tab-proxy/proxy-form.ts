@@ -20,13 +20,13 @@ export class ProxyForm extends FormGroup implements MgmtFormGroup<AbstractRegist
     const type = this.findType(proxyPolicy);
     this.policy = this.getPolicy(type);
     this.type = new MgmtFormControl(type);
-    this.addControl('type',this.type);
+    this.addControl('type', this.type);
     this.addControl('policy', this.policy);
-    this.type.valueChanges.subscribe(val => this.changeType(val))
+    this.type.valueChanges.subscribe(val => this.changeType(val));
   }
 
   formMap(): any {
-    return {}
+    return {};
   }
 
   mapForm(service: AbstractRegisteredService) {

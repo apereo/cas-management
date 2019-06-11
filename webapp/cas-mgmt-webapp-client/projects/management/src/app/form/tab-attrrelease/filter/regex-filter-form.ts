@@ -19,7 +19,7 @@ export class RegexFilterForm extends BaseFilterForm<RegisteredServiceRegexAttrib
       pattern: this.filter.pattern,
       order: this.filter.order,
       type: this.type
-    }
+    };
   }
 
   mapForm(filter: RegisteredServiceRegexAttributeFilter) {

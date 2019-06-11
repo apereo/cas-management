@@ -29,7 +29,7 @@ export class BasicsForm extends FormGroup implements MgmtFormGroup<AbstractRegis
       informationUrl: this.service.informationUrl,
       privacyUrl: this.service.privacyUrl,
       serviceType: this.service['@class']
-    }
+    };
   }
 
   mapForm(service: AbstractRegisteredService) {

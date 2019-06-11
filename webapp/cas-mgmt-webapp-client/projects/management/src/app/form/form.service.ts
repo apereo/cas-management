@@ -4,7 +4,14 @@
 import {Injectable} from '@angular/core';
 import {catchError, map, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {AbstractRegisteredService, Service} from 'mgmt-lib';
+import {AbstractRegisteredService,
+  Service,
+  RegexRegisteredService,
+  OAuthRegisteredService,
+  OidcRegisteredService,
+  SamlRegisteredService,
+  WSFederationRegisterdService
+} from 'mgmt-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +25,17 @@ export class FormService extends Service {
       .pipe(
         take(1),
         map(resp => {
-          return resp;
+          if (RegexRegisteredService.instanceOf(resp))
+            return new RegexRegisteredService(resp);
+          if (OAuthRegisteredService.instanceOf(resp))
+            return new OAuthRegisteredService(resp);
+          if (SamlRegisteredService.instanceOf(resp))
+            return new SamlRegisteredService(resp);
+          if (OidcRegisteredService.instanceOf(resp))
+            return new OidcRegisteredService(resp);
+          if (WSFederationRegisterdService.instanceOf(resp)) {
+            return new WSFederationRegisterdService(resp);
+          }
         }),
         catchError(e => this.handleError(e, this.dialog))
       );

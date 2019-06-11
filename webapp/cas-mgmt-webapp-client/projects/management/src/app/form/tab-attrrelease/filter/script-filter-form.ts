@@ -19,7 +19,7 @@ export class ScriptFilterForm extends BaseFilterForm<RegisteredServiceScriptedAt
       script: this.filter.script,
       order: this.filter.order,
       type: this.type
-    }
+    };
   }
 
   mapForm(filter: RegisteredServiceScriptedAttributeFilter) {

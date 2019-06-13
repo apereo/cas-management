@@ -13,6 +13,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -193,8 +195,8 @@ public class ManagementServicesManager implements ServicesManager {
     public void checkForRename(final RegisteredService service) {
         val existing = findServiceBy(service.getId());
         if (existing != null) {
-            val oldName = this.namingStrategy.build(existing, "");
-            val newName = this.namingStrategy.build(service, "");
+            val oldName = this.namingStrategy.build(existing, StringUtils.EMPTY);
+            val newName = this.namingStrategy.build(service, StringUtils.EMPTY);
             if (!oldName.equals(newName)) {
                 delete(service.getId());
             }

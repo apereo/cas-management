@@ -108,7 +108,7 @@ public class CommitController extends AbstractVersionControlController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.getUnpublishedCommits().forEach(commit -> {
                 val diffs = publishDiffs(git, commit);
-                // Run through deletes first in case of name change
+                /** Run through deletes first in case of name change */
                 diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
                         .forEach(c -> this.servicesManager.delete(CasManagementUtils.fromJson(getService(git, c.getOldId())).getId()));
                 diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)

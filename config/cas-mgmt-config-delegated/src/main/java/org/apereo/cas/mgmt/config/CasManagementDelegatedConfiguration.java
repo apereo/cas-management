@@ -75,11 +75,10 @@ public class CasManagementDelegatedConfiguration {
                             .filter(r -> DelegatedUtil.filterPulls(r, new boolean[]{true, false, false}))
                             .count();
                 } catch (final Exception e) {
-                    return 0;
+                    LOGGER.error(e.getMessage(), e);
                 }
-            } else {
-                return 0;
             }
+            return 0;
         };
     }
 }

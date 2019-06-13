@@ -48,11 +48,9 @@ public class VersionControlUtil {
      */
     public static Change createChange(final DiffEntry entry, final GitUtil git) {
         try {
-            if (entry.getChangeType() == DiffEntry.ChangeType.DELETE) {
-                return createDeleteChange(git, entry);
-            } else {
-                return createModifyChange(git, entry);
-            }
+            return entry.getChangeType() == DiffEntry.ChangeType.DELETE
+                ? createDeleteChange(git, entry)
+                : createModifyChange(git, entry);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

@@ -361,11 +361,7 @@ public class GitUtil implements AutoCloseable {
     @SuppressWarnings("DefaultCharset")
     public String readObject(final ObjectId id) throws IOException {
         try (val reader = git.getRepository().newObjectReader()) {
-            if (reader.has(id)) {
-                return new String(reader.open(id).getBytes());
-            } else {
-                return readFormWorkingTree(id);
-            }
+            return reader.has(id) ? new String(reader.open(id).getBytes()) : readFormWorkingTree(id);
         }
     }
 
@@ -999,11 +995,9 @@ public class GitUtil implements AutoCloseable {
     @SuppressWarnings("DefaultCharset")
     public RawText rawText(final ObjectId id) throws IOException {
         val objectReader = objectReader();
-        if (objectReader.has(id)) {
-            return new RawText(objectReader.open(id).getBytes());
-        } else {
-            return new RawText(readFormWorkingTree(id).getBytes());
-        }
+        return objectReader.has(id)
+                ? new RawText(objectReader.open(id).getBytes())
+                : new RawText(readFormWorkingTree(id).getBytes());
     }
 
     /**

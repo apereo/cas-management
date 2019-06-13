@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -159,7 +160,7 @@ public class LuceneSearch {
             }
             if (type == JsonType.STRING) {
                 if (field.endsWith("-reg")) {
-                    fields.add(new StringField(field.replace("-reg", ""), (String) value, Field.Store.NO));
+                    fields.add(new StringField(field.replace("-reg", StringUtils.EMPTY), (String) value, Field.Store.NO));
                 } else {
                     fields.add(new TextField(field, (String) value, Field.Store.NO));
                 }
@@ -281,14 +282,14 @@ public class LuceneSearch {
             val nextField = field.substring(period + 1);
             return getValue(nextObj, nextField);
         }
-        val tfield = field.replace("-reg", "");
+        val tfield = field.replace("-reg", StringUtils.EMPTY);
         val myVal = json.get(tfield);
         val type = myVal != null ? myVal.getType() : null;
         if (type == null) {
             return Pair.of(JsonType.NULL, null);
         }
         if (type == JsonType.STRING) {
-            return Pair.of(JsonType.STRING, json.getString(tfield, ""));
+            return Pair.of(JsonType.STRING, json.getString(tfield, StringUtils.EMPTY));
         }
         if (type == JsonType.BOOLEAN) {
             return Pair.of(JsonType.BOOLEAN, String.valueOf(json.getBoolean(tfield, false)));

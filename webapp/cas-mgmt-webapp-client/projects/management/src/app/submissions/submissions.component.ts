@@ -24,7 +24,7 @@ export class SubmissionsComponent implements OnInit {
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'submitter', 'submitted'];
 
-  @ViewChild(PaginatorComponent, {static: false})
+  @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;

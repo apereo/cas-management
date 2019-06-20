@@ -29,7 +29,9 @@ import {
   RegisteredServiceReverseMappedRegexAttributeFilter,
   RegisteredServiceScriptedAttributeFilter,
   LdapSamlRegisteredServiceAttributeReleasePolicy,
-  OAuthAttributeReleasePolicy
+  OAuthAttributeReleasePolicy,
+  attributeReleaseFactory,
+  attributeFilterFactory
 } from 'mgmt-lib';
 import {RestfulReleaseForm} from './policy/restful-release-form';
 import {ScriptReleaseForm} from './policy/script-release-form';
@@ -84,39 +86,7 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
 
   mapForm(service: AbstractRegisteredService) {
     const type = this.type.value;
-    if (type === ReleasePolicyType.RESTFUL) {
-      service.attributeReleasePolicy = new ReturnRestfulAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.GROOVY_SAML) {
-      service.attributeReleasePolicy = new GroovySamlRegisteredServiceAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.GROOVY) {
-      service.attributeReleasePolicy = new GroovyScriptAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.SCRIPT) {
-      service.attributeReleasePolicy = new ScriptedRegisteredServiceAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.DENY_ALL) {
-      service.attributeReleasePolicy = new DenyAllAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.RETURN_MAPPED) {
-      service.attributeReleasePolicy = new ReturnMappedAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.METADATA) {
-      service.attributeReleasePolicy = new MetadataEntityAttributesAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.RETURN_ALLOWED) {
-      service.attributeReleasePolicy = new ReturnAllowedAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.RETURN_ALL) {
-      service.attributeReleasePolicy = new ReturnAllAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.SAML_LDAP) {
-      service.attributeReleasePolicy = new LdapSamlRegisteredServiceAttributeReleasePolicy();
-    }
-    if (type === ReleasePolicyType.OAUTH) {
-      service.attributeReleasePolicy = new OAuthAttributeReleasePolicy();
-    }
+    service.attributeReleasePolicy = attributeReleaseFactory(service.attributeReleasePolicy, type);
     this.policy.mapForm(service.attributeReleasePolicy);
     if ((<ChainingFilterForm>this.filter).size() > 0) {
       if ((<ChainingFilterForm>this.filter).size() > 1) {
@@ -146,84 +116,47 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
   }
 
   createFilter(policy: RegisteredServiceAttributeReleasePolicy, filter: BaseFilterForm<RegisteredServiceAttributeFilter>) {
-    if (filter.type === FilterType.CHAINING) {
-      policy.attributeFilter = new RegisteredServiceChainingAttributeFilter();
-    }
-    if (filter.type === FilterType.REGEX) {
-      policy.attributeFilter = new RegisteredServiceRegexAttributeFilter();
-    }
-    if (filter.type === FilterType.SCRIPTED) {
-      policy.attributeFilter = new RegisteredServiceScriptedAttributeFilter();
-    }
-    if (filter.type === FilterType.MAPPED_REGEX) {
-      policy.attributeFilter = new RegisteredServiceMappedRegexAttributeFilter();
-    }
-    if (filter.type === FilterType.REVERSE_MAPPED_REGEX) {
-      policy.attributeFilter = new RegisteredServiceReverseMappedRegexAttributeFilter();
-    }
-    if (filter.type === FilterType.MUTANT_REGEX) {
-      policy.attributeFilter = new RegisteredServiceMutantRegexAttributeFilter();
-    }
+    policy.attributeFilter = attributeFilterFactory(filter.type);
     (<MgmtFormGroup<RegisteredServiceAttributeFilter>>filter).mapForm(policy.attributeFilter);
   }
 
   changeType(type: ReleasePolicyType) {
     const base: BaseReleaseForm<RegisteredServiceAttributeReleasePolicy> =
       this.policy as BaseReleaseForm<RegisteredServiceAttributeReleasePolicy>;
+    const policy = attributeReleaseFactory(base.policy, type);
+    base.mapForm(policy);
     if (type === ReleasePolicyType.RESTFUL) {
-      const policy = new ReturnRestfulAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new RestfulReleaseForm(policy);
+      this.policy = new RestfulReleaseForm(policy as ReturnRestfulAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.GROOVY_SAML) {
-      const policy = new GroovySamlRegisteredServiceAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new GroovySamlReleaseForm(policy);
+      this.policy = new GroovySamlReleaseForm(policy as GroovySamlRegisteredServiceAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.GROOVY) {
-      const policy = new GroovyScriptAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new GroovyReleaseForm(policy);
+      this.policy = new GroovyReleaseForm(policy as GroovyScriptAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.SCRIPT) {
-      const policy = new ScriptedRegisteredServiceAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new ScriptReleaseForm(policy);
+      this.policy = new ScriptReleaseForm(policy as ScriptedRegisteredServiceAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.DENY_ALL) {
-      const policy = new DenyAllAttributeReleasePolicy();
-      base.mapForm(policy);
       this.policy = new DenyReleaseForm(policy);
     }
     if (type === ReleasePolicyType.RETURN_MAPPED) {
-      const policy = new ReturnMappedAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new MappedReleaseForm(policy);
+      this.policy = new MappedReleaseForm(policy as ReturnMappedAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.METADATA) {
-      const policy = new MetadataEntityAttributesAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new MetadataReleaseForm(policy);
+      this.policy = new MetadataReleaseForm(policy as MetadataEntityAttributesAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.RETURN_ALLOWED) {
-      const policy = new ReturnAllowedAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new AllowedReleaseForm(policy);
+      this.policy = new AllowedReleaseForm(policy as ReturnAllowedAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.RETURN_ALL) {
-      const policy = new ReturnAllAttributeReleasePolicy();
-      base.mapForm(policy);
       this.policy = new AllReleaseForm(policy);
     }
     if (type === ReleasePolicyType.SAML_LDAP) {
-      const policy = new LdapSamlRegisteredServiceAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new SamlLdapReleaseForm(policy);
+      this.policy = new SamlLdapReleaseForm(policy as LdapSamlRegisteredServiceAttributeReleasePolicy);
     }
     if (type === ReleasePolicyType.OAUTH) {
-      const policy = new OAuthAttributeReleasePolicy();
-      base.mapForm(policy);
-      this.policy = new OAuthReleaseForm(policy);
+      this.policy = new OAuthReleaseForm(policy as OAuthAttributeReleasePolicy);
     }
     this.setControl('policy', this.policy);
   }

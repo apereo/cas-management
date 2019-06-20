@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/internal/Observable';
 import {tap} from 'rxjs/operators';
 import {AppConfig} from './domain/app-config';
 import {Service} from './service';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'

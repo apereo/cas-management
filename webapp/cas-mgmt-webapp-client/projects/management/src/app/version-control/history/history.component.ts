@@ -19,7 +19,7 @@ export class HistoryComponent implements OnInit {
   displayedColumns = ['actions', 'message', 'committer', 'time'];
   dataSource: MatTableDataSource<History>;
 
-  @ViewChild(PaginatorComponent, {static: true})
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   fileName: string;

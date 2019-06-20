@@ -18,7 +18,7 @@ export class YamlComponent implements OnInit, AfterViewInit {
 
   changed = false;
 
-  @ViewChild('editor', {static: true})
+  @ViewChild('editor', { static: true })
   editor: EditorComponent;
 
   constructor(private service: ServiceViewService,

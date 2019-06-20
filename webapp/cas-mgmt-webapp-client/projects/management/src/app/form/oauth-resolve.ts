@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {finalize, map} from 'rxjs/operators';
 import {AbstractRegisteredService, SpinnerService} from 'mgmt-lib';
 import {ServiceViewService} from '@app/registry/services/service.service';
+import {OAuthRegisteredService} from 'mgmt-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class OAuthResolve implements Resolve<AbstractRegisteredService[]> {
     this.spinner.start('Creating OAuth Service');
     return this.service.createOAuthService()
       .pipe(
-        map(v => [v, null]),
+        map(v => [new OAuthRegisteredService(v), null]),
         finalize(() => this.spinner.stop())
       );
   }

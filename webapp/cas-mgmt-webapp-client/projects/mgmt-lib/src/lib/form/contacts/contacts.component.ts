@@ -6,7 +6,7 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';
 import {SpinnerService} from '../../spinner/spinner.service';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {AppConfigService} from '../../app-config.service';
 
 @Component({

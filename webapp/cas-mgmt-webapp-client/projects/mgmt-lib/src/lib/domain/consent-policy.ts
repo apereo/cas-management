@@ -29,3 +29,11 @@ export class DefaultRegisteredServiceConsentPolicy extends RegisteredServiceCons
     this['@class'] = DefaultRegisteredServiceConsentPolicy.cName;
   }
 }
+
+export function consentPolicyFactory(policy?: any): RegisteredServiceConsentPolicy  {
+  if (!policy || DefaultRegisteredServiceConsentPolicy.instanceOf(policy)) {
+    return new DefaultRegisteredServiceConsentPolicy(policy);
+  }
+  return policy;
+
+}

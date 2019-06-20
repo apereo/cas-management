@@ -3,7 +3,9 @@ import {Branch, DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PullService} from './pull.service';
 import { Location } from '@angular/common';
-import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import {ControlsService} from '@app/project-share';
 import {finalize} from 'rxjs/operators';
 import {AcceptComponent} from '../../admin/accept/accept.component';
@@ -21,7 +23,7 @@ export class PullComponent implements OnInit {
   displayedColumns = ['actions', 'branch', 'status', 'message'];
   dataSource: MatTableDataSource<Branch>;
 
-  @ViewChild(PaginatorComponent, {static: true})
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   rejectBranch: Branch;

@@ -21,7 +21,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<ServiceItem>;
   displayedColumns = ['actions', 'name', 'serviceId', 'description'];
 
-  @ViewChild(PaginatorComponent, {static: true})
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   constructor(private route: ActivatedRoute,

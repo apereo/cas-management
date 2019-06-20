@@ -118,3 +118,22 @@ export enum UserAttributeType {
   SCRIPTED,
   GROOVY,
 }
+
+export function usernameProviderFactory(provider?: any): RegisteredServiceUsernameAttributeProvider {
+  if (!provider || DefaultRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new DefaultRegisteredServiceUsernameProvider(provider);
+  }
+  if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new PrincipalAttributeRegisteredServiceUsernameProvider(provider);
+  }
+  if (GroovyRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new GroovyRegisteredServiceUsernameProvider(provider);
+  }
+  if (ScriptedRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new ScriptedRegisteredServiceUsernameProvider(provider)
+  }
+  if (AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)) {
+    return new AnonymousRegisteredServiceUsernameProvider(provider);
+  }
+  return provider;
+}

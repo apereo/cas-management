@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {finalize, map} from 'rxjs/operators';
 import {AbstractRegisteredService, SpinnerService} from 'mgmt-lib';
 import {ServiceViewService} from '@app/registry/services/service.service';
+import {OidcRegisteredService} from 'mgmt-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class OidcResolve implements Resolve<AbstractRegisteredService[]> {
     this.spinner.start('Creating OIDC Service');
     return this.service.createOidcService()
       .pipe(
-        map(v => [v, null]),
+        map(v => [new OidcRegisteredService(v), null]),
         finalize(() => this.spinner.stop())
       );
   }

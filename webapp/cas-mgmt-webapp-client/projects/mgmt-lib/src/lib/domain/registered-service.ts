@@ -1,20 +1,33 @@
 
-import {DefaultRegisteredServiceAccessStrategy, RegisteredServiceAccessStrategy} from './access-strategy';
-import {DefaultRegisteredServiceMultifactorPolicy, RegisteredServiceMultifactorPolicy} from './multifactor';
-import {RefuseRegisteredServiceProxyPolicy, RegisteredServiceProxyPolicy} from './proxy-policy';
+import {
+  accessStrategyFactory,
+  DefaultRegisteredServiceAccessStrategy,
+  RegisteredServiceAccessStrategy
+} from './access-strategy';
+import {
+  DefaultRegisteredServiceMultifactorPolicy,
+  mfaPolicyFactory,
+  RegisteredServiceMultifactorPolicy
+} from './multifactor';
+import {proxyFactory, RefuseRegisteredServiceProxyPolicy, RegisteredServiceProxyPolicy} from './proxy-policy';
 import {
   DefaultRegisteredServiceUsernameProvider,
-  RegisteredServiceUsernameAttributeProvider
+  RegisteredServiceUsernameAttributeProvider, usernameProviderFactory
 } from './attribute-provider';
 import {
+  attributeReleaseFactory,
   DenyAllAttributeReleasePolicy,
   RegisteredServiceAttributeReleasePolicy,
   ReturnAllowedAttributeReleasePolicy
 } from './attribute-release';
 import {RegisteredServicePublicKey} from './public-key';
 import {DefaultRegisteredServiceProperty} from './property';
-import {RegisteredServiceContact} from './contact';
-import {DefaultRegisteredServiceExpirationPolicy, RegisteredServiceExpirationPolicy} from './expiration';
+import {contactsFactory, RegisteredServiceContact} from './contact';
+import {
+  DefaultRegisteredServiceExpirationPolicy,
+  expirationPolicyFactory,
+  RegisteredServiceExpirationPolicy
+} from './expiration';
 import {Form, FormGroup, Validators} from '@angular/forms';
 import {MgmtFormControl} from '../form/mgmt-formcontrol';
 
@@ -52,20 +65,20 @@ export abstract class RegisteredService {
     this.responseType = (service && service.responseType) || null;
     this.id = (service && service.id) || -1;
     this.description = (service && service.description) || null;
-    this.proxyPolicy = (service && service.proxyPolicy) || new RefuseRegisteredServiceProxyPolicy();
+    this.proxyPolicy = proxyFactory(service && service.proxyPolicy);
     this.evaluationOrder = (service && service.evaluationOrder) || -1;
-    this.usernameAttributeProvider = (service && service.usernameAttributeProvider) || new DefaultRegisteredServiceUsernameProvider();
+    this.usernameAttributeProvider = usernameProviderFactory(service && service.usernameAttributeProvider);
     this.requiredHandlers = (service && service.requiredHandlers) || null;
-    this.attributeReleasePolicy = (service && service.attributeReleasePolicy) || new DenyAllAttributeReleasePolicy();
-    this.multifactorPolicy = (service && service.multifactorPolicy) || null;
+    this.attributeReleasePolicy = attributeReleaseFactory(service && service.attributeReleasePolicy);
+    this.multifactorPolicy = mfaPolicyFactory(service && service.multifactorPolicy);
     this.logo = (service && service.logo) || null;
     this.logoutUrl = (service && service.logoutUrl) || null;
     this.logoutType = (service && service.logoutType) || 'BACK_CHANNEL';
-    this.accessStrategy = (service && service.accessStrategy) || new DefaultRegisteredServiceAccessStrategy();
+    this.accessStrategy = accessStrategyFactory(service && service.accessStrategy);
     this.publicKey = (service && service.publicKey) || null;
     this.properties = (service && service.properties) || null;
-    this.contacts = (service && service.contacts) || null;
-    this.expirationPolicy = (service && service.expirationPolicy) || new DefaultRegisteredServiceExpirationPolicy();
+    this.contacts = contactsFactory(service && service.contacts);
+    this.expirationPolicy = expirationPolicyFactory(service && service.expirationPolicy);
     this.environments = (service && service.environments) || null;
   }
 }

@@ -14,12 +14,22 @@ export class DefaultRegisteredServiceContact extends RegisteredServiceContact {
     return obj && obj['@class'] === DefaultRegisteredServiceContact.cName;
   }
 
-  constructor() {
+  constructor(contact?: RegisteredServiceContact) {
     super();
-    this.name = null;
-    this.email = null;
-    this.phone = null;
-    this.department = null;
+    this.name = contact && contact.name || null;
+    this.email = contact && contact.email || null;
+    this.phone = contact && contact.phone || null;
+    this.department = contact && contact.department || null;
     this['@class'] = DefaultRegisteredServiceContact.cName;
   }
+}
+
+export function contactsFactory(input: any[]) {
+  const contacts: DefaultRegisteredServiceContact[] = [];
+  if (input) {
+    input.forEach((val) => {
+      contacts.push(new DefaultRegisteredServiceContact(val))
+    });
+  }
+  return contacts;
 }

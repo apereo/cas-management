@@ -20,7 +20,7 @@ export class LocalChangesComponent implements OnInit {
   datasource: MatTableDataSource<Change>;
   loading: boolean;
 
-  @ViewChild(PaginatorComponent, {static: true})
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   constructor(private router: Router,

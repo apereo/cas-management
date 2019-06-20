@@ -31,7 +31,7 @@ export class LookupComponent implements OnInit {
   displayedColumns = ['actions', 'name', 'serviceId', 'contacts'];
   bulk = false;
 
-  @ViewChild(PaginatorComponent, {static: false})
+  @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;

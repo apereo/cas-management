@@ -22,16 +22,6 @@ export abstract class RegisteredServiceAccessStrategy {
   }
 }
 
-export enum AccessStrategyType {
-  DEFAULT,
-  REMOTE,
-  TIME,
-  GROUPER,
-  GROOVY,
-  SURROGATE,
-  GROOVY_SURROGATE
-}
-
 export class DefaultRegisteredServiceAccessStrategy extends RegisteredServiceAccessStrategy {
   static cName = 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy';
 
@@ -166,5 +156,40 @@ export class GroovyRegisteredServiceAccessStrategy extends RegisteredServiceAcce
     this.groovyScript = (s && s.groovyScript) || null;
     this['@class'] = GroovyRegisteredServiceAccessStrategy.cName;
   }
+}
+
+export enum AccessStrategyType {
+  DEFAULT,
+  REMOTE,
+  TIME,
+  GROUPER,
+  GROOVY,
+  SURROGATE,
+  GROOVY_SURROGATE
+}
+
+export function accessStrategyFactory(strat?: any): RegisteredServiceAccessStrategy {
+  if (!strat || DefaultRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new DefaultRegisteredServiceAccessStrategy(strat);
+  }
+  if (RemoteEndpointServiceAccessStrategy.instanceOf(strat)) {
+    return new RemoteEndpointServiceAccessStrategy(strat);
+  }
+  if (TimeBasedRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new TimeBasedRegisteredServiceAccessStrategy(strat);
+  }
+  if (GrouperRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new GrouperRegisteredServiceAccessStrategy(strat);
+  }
+  if (GroovyRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new GroovyRegisteredServiceAccessStrategy(strat);
+  }
+  if (SurrogateRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new SurrogateRegisteredServiceAccessStrategy(strat);
+  }
+  if (GroovySurrogateRegisteredServiceAccessStrategy.instanceOf(strat)) {
+    return new GroovySurrogateRegisteredServiceAccessStrategy(strat);
+  }
+  return strat;
 }
 

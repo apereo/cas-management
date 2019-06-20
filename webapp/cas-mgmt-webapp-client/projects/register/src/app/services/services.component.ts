@@ -25,7 +25,7 @@ export class ServicesComponent implements OnInit {
   bulk = false;
   allSelected = false;
 
-  @ViewChild(PaginatorComponent, {static: false})
+  @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;

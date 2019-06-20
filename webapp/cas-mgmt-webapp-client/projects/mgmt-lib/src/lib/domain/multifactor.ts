@@ -49,3 +49,13 @@ export enum MfaPolicyType {
   DEFAULT,
   GROOVY
 }
+
+export function mfaPolicyFactory(policy?: any): RegisteredServiceMultifactorPolicy {
+  if (DefaultRegisteredServiceMultifactorPolicy.instanceOf(policy)) {
+    return new DefaultRegisteredServiceMultifactorPolicy(policy);
+  }
+  if (GroovyRegisteredServiceMultifactorPolicy.instanceOf(policy)) {
+    return new GroovyRegisteredServiceMultifactorPolicy(policy);
+  }
+  return policy;
+}

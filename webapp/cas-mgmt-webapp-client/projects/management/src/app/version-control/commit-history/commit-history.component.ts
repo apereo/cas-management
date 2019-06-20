@@ -18,7 +18,7 @@ export class CommitHistoryComponent implements OnInit {
   displayedColumns = ['actions', 'name', 'message', 'committer', 'time'];
   dataSource: MatTableDataSource<DiffEntry>;
 
-  @ViewChild(PaginatorComponent, {static: true})
+  @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
 
   commit: string;

@@ -8,7 +8,7 @@ import {AppConfigService} from '../app-config.service';
 })
 export class PaginatorComponent implements OnInit {
 
-  @ViewChild(MatPaginator, {static: true})
+  @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator;
 
   constructor(public appService: AppConfigService) {

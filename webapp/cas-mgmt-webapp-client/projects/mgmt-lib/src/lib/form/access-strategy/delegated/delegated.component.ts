@@ -13,10 +13,10 @@ export class DelegatedComponent implements OnInit {
   separatorKeysCodes = [ENTER, COMMA];
   delegatedAuthn: string[] = [];
 
-  @ViewChild( MatAutocompleteTrigger, {static: true} )
+  @ViewChild(MatAutocompleteTrigger, { static: true })
   autoTrigger: MatAutocompleteTrigger;
 
-  @ViewChild('providerInput', {static: true})
+  @ViewChild('providerInput', { static: true })
   providerInput: ElementRef;
 
   @Input()

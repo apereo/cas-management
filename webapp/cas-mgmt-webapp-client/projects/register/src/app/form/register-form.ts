@@ -120,6 +120,15 @@ export class RegisterForm extends FormGroup implements MgmtFormGroup<AbstractReg
     return environments && environments.indexOf('staged') > -1;
   }
 
+  createContactControl(contact: DefaultRegisteredServiceContact): FormGroup {
+    return new FormGroup({
+      name: new MgmtFormControl(contact.name, null, Validators.required),
+      email: new MgmtFormControl(contact.email, null, Validators.required),
+      phone: new MgmtFormControl(contact.phone),
+      department: new MgmtFormControl(contact.department)
+    });
+  }
+
   createContactMap(contact: DefaultRegisteredServiceContact): any {
     return {
       name: contact.name,

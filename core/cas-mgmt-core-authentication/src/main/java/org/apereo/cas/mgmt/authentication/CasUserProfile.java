@@ -59,7 +59,7 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
 
     @Override
     public String getFirstName() {
-        return findFirstMatchingAttribute(CommonProfileDefinition.FIRST_NAME + "|firstName");
+        return findFirstMatchingAttribute(CommonProfileDefinition.FIRST_NAME + "|firstName|given_name");
     }
 
     @Override

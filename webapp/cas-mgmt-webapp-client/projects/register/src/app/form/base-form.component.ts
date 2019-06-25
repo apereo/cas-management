@@ -9,7 +9,8 @@ import {
   DataRecord,
   RegexRegisteredService,
   MgmtFormControl,
-  SpinnerService
+  SpinnerService,
+  UserService,
 } from 'mgmt-lib';
 import {RegisterService} from '../core/register.servivce';
 import {RegisterForm} from './register-form';
@@ -27,6 +28,7 @@ export class BaseFormComponent implements OnInit {
               public router: Router,
               public route: ActivatedRoute,
               public snackBar: MatSnackBar,
+              private user: UserService,
               public dialog: MatDialog,
               public spinner: SpinnerService) {
   }
@@ -37,6 +39,11 @@ export class BaseFormComponent implements OnInit {
         if (data.resp) {
           this.data.service = data.resp;
           this.form = new RegisterForm(this.data);
+          if (!this.data.service.contacts || this.data.service.contacts.length == 0) {
+            this.user.loggedInContact().subscribe(u => {
+              (<FormArray>this.form.get('contacts')).push(this.form.createContactControl(u));
+            });
+          }
         }
       });
   }

@@ -30,6 +30,15 @@ public class DefaultContactLookup implements ContactLookup {
 
     @Override
     @SneakyThrows
+    public RegisteredServiceContact loggedInContact(final String id) {
+        val executor = new SearchExecutor();
+        executor.setBaseDn("ou=People,dc=ucdavis,dc=edu");
+        val result = executor.search(connectionFactory,"(uid="+id+")").getResult();
+        return createContact(result.getEntry());
+    }
+
+    @Override
+    @SneakyThrows
     public Collection<RegisteredServiceContact> query(final String query) {
         val executor = new SearchExecutor();
         executor.setBaseDn("ou=People,dc=ucdavis,dc=edu");

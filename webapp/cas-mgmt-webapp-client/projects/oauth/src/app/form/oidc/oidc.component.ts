@@ -4,13 +4,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
 import {finalize} from 'rxjs/operators';
-import {FormArray, FormGroup} from '@angular/forms';
+import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {SubmitComponent} from '../../project-share/submit/submit.component';
 import {OidcForm} from '../oidc-form';
 import {
   DataRecord,
   SpinnerService,
   OidcRegisteredService,
+  UserService,
   MgmtFormControl
 } from 'mgmt-lib';
 import {OidcService} from '../../core/oidc.service';
@@ -29,6 +30,7 @@ export class OidcComponent implements OnInit {
 
   constructor(public data: DataRecord,
               public oidcService: OidcService,
+              private user: UserService,
               public router: Router,
               public route: ActivatedRoute,
               public snackBar: MatSnackBar,
@@ -42,6 +44,11 @@ export class OidcComponent implements OnInit {
         if (data.resp) {
           this.data.service = data.resp;
           this.form = new OidcForm(this.data);
+          if (!this.data.service.contacts || this.data.service.contacts.length == 0) {
+            this.user.loggedInContact().subscribe(u => {
+              (<FormArray>this.form.get('contacts')).push(this.form.createContactControl(u));
+            });
+          }
         }
       });
   }

@@ -3,12 +3,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
-import {FormArray, FormGroup} from '@angular/forms';
+import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {OAuthForm} from '../oauth-form';
 import {DataRecord,
   SpinnerService,
   OAuthRegisteredService,
-  MgmtFormControl
+  MgmtFormControl,
+  UserService
 } from 'mgmt-lib';
 import {OAuthService} from '../../core/oauth.service';
 import {SubmitComponent} from '../../project-share/submit/submit.component';
@@ -31,6 +32,7 @@ export class OauthComponent implements OnInit {
 
   constructor(public data: DataRecord,
               public oauthService: OAuthService,
+              private user: UserService,
               public router: Router,
               public route: ActivatedRoute,
               public snackBar: MatSnackBar,
@@ -44,6 +46,11 @@ export class OauthComponent implements OnInit {
         if (data.resp) {
           this.data.service = data.resp;
           this.form = new OAuthForm(this.data);
+          if (!this.data.service.contacts || this.data.service.contacts.length == 0) {
+            this.user.loggedInContact().subscribe(u => {
+              (<FormArray>this.form.get('contacts')).push(this.form.createContactControl(u));
+            });
+          }
         }
       });
   }

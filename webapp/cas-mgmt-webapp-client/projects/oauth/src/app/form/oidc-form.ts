@@ -162,6 +162,16 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<OidcRegisteredS
     return false;
   }
 
+
+  createContactControl(contact: DefaultRegisteredServiceContact): FormGroup {
+    return new FormGroup({
+      name: new MgmtFormControl(contact.name, null, Validators.required),
+      email: new MgmtFormControl(contact.email, null, Validators.required),
+      phone: new MgmtFormControl(contact.phone),
+      department: new MgmtFormControl(contact.department)
+    });
+  }
+
   createContactMap(contact: DefaultRegisteredServiceContact): any {
     return {
       name: contact.name,

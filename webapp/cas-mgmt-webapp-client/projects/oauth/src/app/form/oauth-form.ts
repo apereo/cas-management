@@ -49,12 +49,7 @@ export class OAuthForm extends FormGroup implements MgmtFormGroup<OAuthRegistere
     const contacts = this.get('contacts') as FormArray;
     if (this.data.service.contacts) {
       for (let i = 0; i < this.data.service.contacts.length; i++) {
-        contacts.push(new FormGroup({
-          name: new MgmtFormControl(null, null, Validators.required),
-          email: new MgmtFormControl(null, null, Validators.required),
-          phone: new MgmtFormControl(null),
-          department: new MgmtFormControl(null)
-        }));
+        contacts.push(this.createContactControl(new DefaultRegisteredServiceContact()));
       }
     }
     this.setValue(this.formMap());
@@ -135,6 +130,15 @@ export class OAuthForm extends FormGroup implements MgmtFormGroup<OAuthRegistere
       return (<DefaultRegisteredServiceMultifactorPolicy>policy).multifactorAuthenticationProviders.indexOf('mfa-duo') > -1;
     }
     return false;
+  }
+
+  createContactControl(contact: DefaultRegisteredServiceContact): FormGroup {
+    return new FormGroup({
+      name: new MgmtFormControl(contact.name, null, Validators.required),
+      email: new MgmtFormControl(contact.email, null, Validators.required),
+      phone: new MgmtFormControl(contact.phone),
+      department: new MgmtFormControl(contact.department)
+    });
   }
 
   createContactMap(contact: DefaultRegisteredServiceContact): any {

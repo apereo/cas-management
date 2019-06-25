@@ -57,7 +57,7 @@ export class ContactsComponent implements OnInit {
   }
 
   selection(sel: MatAutocompleteSelectedEvent ) {
-    const selection = this.foundContacts.filter(c => c.name === sel.option.value)[0];
+    const selection = this.foundContacts[+sel.option.value];
     const contact = this.contactsArray.at(this.selectedTab);
     contact.get('email').setValue(selection.email);
     contact.get('phone').setValue(selection.phone);

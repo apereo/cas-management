@@ -53,16 +53,11 @@ export class OAuthService extends Service {
   getSubmissions(): Observable<PendingItem[]> {
     return this.get<PendingItem[]>('api/submissions/pending/oauth');
   }
-  /*
-  pending(id: string): Observable<AbstractRegisteredService> {
+
+  pending(id: string): Observable<OAuthRegisteredService> {
     return this.post('api/submissions/import', id);
   }
 
-
-  getSubmissions(): Observable<PendingItem[]> {
-    return this.get<PendingItem[]>('api/submissions/pending');
-  }
-*/
   deletePending(id: string): Observable<void> {
     return this.delete('api/register/cancel?id=' + id);
   }

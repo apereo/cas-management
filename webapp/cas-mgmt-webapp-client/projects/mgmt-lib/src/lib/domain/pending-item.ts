@@ -3,4 +3,5 @@ export class PendingItem {
     name: string;
     serviceId: string;
     submitted: string;
+    type: string;
 }

@@ -10,6 +10,7 @@ import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.domain.RejectData;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.DefaultRegisteredServiceJsonSerializer;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
@@ -176,6 +177,7 @@ public class SubmissionController extends AbstractVersionControlController {
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setSubmitted(getSubmitted(p));
         serviceItem.setStatus(status(p.getFileName().toString()));
+        serviceItem.setType(getType(service));
         return serviceItem;
     }
 
@@ -202,6 +204,16 @@ public class SubmissionController extends AbstractVersionControlController {
         } else {
             return "SUBMITTED";
         }
+    }
+
+    private String getType(RegisteredService service) {
+        if (service instanceof OidcRegisteredService) {
+            return "oidc";
+        }
+        if (service instanceof OAuthRegisteredService) {
+            return "oauth";
+        }
+        return "";
     }
 
     /**

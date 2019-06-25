@@ -19,4 +19,5 @@ public class PendingItem {
     private String serviceId;
     private String submitted;
     private String status;
+    private String type;
 }

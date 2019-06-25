@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {AppConfigService, PaginatorComponent, PendingItem, SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';
-import {RegisterService} from '../../../../register/src/app/core/register.servivce';
 import {OAuthService} from '../core/oauth.service';
 
 @Component({
@@ -76,7 +75,7 @@ export class PendingComponent implements OnInit {
   }
 
   edit() {
-    this.router.navigate(['form/edit', this.selectedItem.id]);
+    this.router.navigate(['form/' + this.selectedItem.type, this.selectedItem.id]);
   }
 
   remove() {

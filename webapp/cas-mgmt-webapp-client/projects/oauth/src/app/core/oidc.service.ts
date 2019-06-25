@@ -3,7 +3,8 @@ import {Observable} from 'rxjs/internal/Observable';
 import {
   Service,
   ServiceItem,
-  OidcRegisteredService
+  OidcRegisteredService,
+  PendingItem
 } from 'mgmt-lib';
 
 @Injectable({
@@ -49,8 +50,7 @@ export class OidcService extends Service {
     return this.get(this.controller + '/promote/' + id);
   }
 
-  /*
-  pending(id: string): Observable<AbstractRegisteredService> {
+  pending(id: string): Observable<OidcRegisteredService> {
     return this.post('api/submissions/import', id);
   }
 
@@ -62,5 +62,4 @@ export class OidcService extends Service {
   deletePending(id: string): Observable<void> {
     return this.delete('api/register/cancel?id=' + id);
   }
-  */
 }

@@ -15,11 +15,14 @@ export class OAuthFormResolve implements Resolve<OAuthRegisteredService> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<OAuthRegisteredService> | OAuthRegisteredService {
-    const param: number = +route.params['id'];
-    if (param < 0) {
-      return this.service.getNewService().pipe(finalize(() => this.spinner.stop()));
-    }
     this.spinner.start('Loading service');
-    return this.service.getService(param).pipe(finalize(() => this.spinner.stop()));
+    const param: string = route.params['id'];
+    if (param.indexOf('json') > -1) {
+      return this.service.pending(param).pipe(finalize(() => this.spinner.stop()));
+    } else if (+param < 0) {
+      return this.service.getNewService().pipe(finalize(() => this.spinner.stop()));
+    } else {
+      return this.service.getService(+param).pipe(finalize(() => this.spinner.stop()));
+    }
   }
 }

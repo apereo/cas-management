@@ -1,0 +1,10 @@
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Time to Kill</mat-placeholder>
+    <input matInput [formControl]="timeToKill">
+  </mat-form-field>
+  <mat-hint align="end"><lib-hint [difference]="timeToKill.difference()"></lib-hint></mat-hint>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Amount of time before the token is deleted and can no longer be used in duration syntax(i.e. PT2H).">
+  </mat-icon>
+</lib-input>

@@ -39,7 +39,10 @@ import { TrackerComponent } from './tracker/tracker.component';
 import {TimeoutComponent} from './timeout/timeout.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ServiceInterceptor} from './interceptor';
-import {ValidateServiceIdDirective} from './form/service-id/service-id.validate.directive';
+import { CodeExpirationComponent } from './form/oauthclient/code-expiration/code-expiration.component';
+import { AccessTokenExpirationComponent } from './form/oauthclient/access-token-expiration/access-token-expiration.component';
+import { RefreshTokenExpirationComponent } from './form/oauthclient/refresh-token-expiration/refresh-token-expiration.component';
+import { DeviceTokenExpirationComponent } from './form/oauthclient/device-token-expiration/device-token-expiration.component';
 
 @NgModule({
   imports: [
@@ -84,7 +87,10 @@ import {ValidateServiceIdDirective} from './form/service-id/service-id.validate.
     EnvironmentsComponent,
     TrackerComponent,
     TimeoutComponent,
-    ValidateServiceIdDirective
+    CodeExpirationComponent,
+    AccessTokenExpirationComponent,
+    RefreshTokenExpirationComponent,
+    DeviceTokenExpirationComponent
   ],
   entryComponents: [
     TimeoutComponent
@@ -128,7 +134,11 @@ import {ValidateServiceIdDirective} from './form/service-id/service-id.validate.
     EnvironmentsComponent,
     SharedModule,
     TrackerComponent,
-    TimeoutComponent
+    TimeoutComponent,
+    CodeExpirationComponent,
+    AccessTokenExpirationComponent,
+    RefreshTokenExpirationComponent,
+    DeviceTokenExpirationComponent
   ]
 })
 export class MgmtLibModule { }

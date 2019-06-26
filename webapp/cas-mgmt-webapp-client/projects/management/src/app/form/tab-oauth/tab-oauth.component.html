@@ -2,4 +2,20 @@
   <app-card i18n-heading heading="OAuth Client Options" [collapse]="false">
     <lib-oauthclient [control]="oauth" (generateId)="generateId()" (generateSecret)="generateSecret()"></lib-oauthclient>
   </app-card>
+
+  <app-card i18n-heading heading="Code Expiration Policy" [collapse]="true">
+    <lib-code-expiration [control]="codeExpiration"></lib-code-expiration>
+  </app-card>
+
+  <app-card i18n-heading heading="Access Token Expiration Policy" [collapse]="true">
+    <lib-access-token-expiration [control]="accessTokenExpiration"></lib-access-token-expiration>
+  </app-card>
+
+  <app-card i18n-heading heading="Refresh Token Expiration Policy" [collapse]="true">
+    <lib-refresh-token-expiration [control]="refreshTokenExpiration"></lib-refresh-token-expiration>
+  </app-card>
+
+  <app-card i18n-heading heading="Device Token Expiration Policy" [collapse]="true">
+    <lib-device-token-expiration [control]="deviceTokenExpiration"></lib-device-token-expiration>
+  </app-card>
 </div>

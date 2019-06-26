@@ -51,6 +51,16 @@
 </lib-input>
 
 <lib-input>
+  <mat-checkbox [formControl]="jwtAccessToken">
+    <ng-container i18n>JWT Access Token</ng-container>
+    <mat-icon libHelp i18n-matTooltip
+              matTooltip="Indicates whether access token should be formatted as JWT.">
+    </mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="jwtAccessToken.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input>
   <mat-form-field class="textInput">
     <mat-placeholder i18n>Allowed Response Types</mat-placeholder>
     <mat-select multiple [formControl]="responseTypes">

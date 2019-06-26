@@ -5,6 +5,10 @@ import {
   AbstractRegisteredService,
   OidcRegisteredService
 } from 'mgmt-lib';
+import {CodeExpirationForm} from '@app/form/tab-oauth/code-expiration-form';
+import {AccessTokenExpirationForm} from '@app/form/tab-oauth/access-token-expiration-form';
+import {RefreshTokenExpirationForm} from '@app/form/tab-oauth/refresh-token-expiration-form';
+import {DeviceTokenExpirationForm} from '@app/form/tab-oauth/device-token-expiration-form';
 
 export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
@@ -24,7 +28,12 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
       sectorIdentifierUri: new MgmtFormControl(null),
       dynamicRegistrationDateTime: new MgmtFormControl(null),
       responseTypes: new MgmtFormControl(null),
-      grantTypes: new MgmtFormControl(null)
+      grantTypes: new MgmtFormControl(null),
+      jwtAccessToken: new MgmtFormControl(null),
+      codeExpirationPolicy: new CodeExpirationForm(service.codeExpirationPolicy),
+      accessTokenExpirationPolicy: new AccessTokenExpirationForm(service.accessTokenExpirationPolicy),
+      refreshTokenExpirationPolicy: new RefreshTokenExpirationForm(service.refreshTokenExpirationPolicy),
+      deviceTokenExpirationPolicy: new DeviceTokenExpirationForm(service.deviceTokenExpirationPolicy)
     });
     this.setValue(this.formMap());
   }
@@ -45,7 +54,12 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
       sectorIdentifierUri: this.service.sectorIdentifierUri,
       dynamicRegistrationDateTime: this.service.dynamicRegistrationDateTime,
       responseTypes: this.service.supportedResponseTypes,
-      grantTypes: this.service.supportedGrantTypes
+      grantTypes: this.service.supportedGrantTypes,
+      jwtAccessToken: this.service.jwtAccessToken,
+      codeExpirationPolicy: (<CodeExpirationForm>this.get('codeExpirationPolicy')).formMap(),
+      accessTokenExpirationPolicy: (<AccessTokenExpirationForm>this.get('accessTokenExpirationPolicy')).formMap(),
+      refreshTokenExpirationPolicy: (<RefreshTokenExpirationForm>this.get('refreshTokenExpirationPolicy')).formMap(),
+      deviceTokenExpirationPolicy: (<DeviceTokenExpirationForm>this.get('deviceTokenExpirationPolicy')).formMap()
     };
   }
 
@@ -67,5 +81,10 @@ export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegiste
     srv.dynamicRegistrationDateTime = frm.dynamicRegistrationDateTime;
     srv.supportedResponseTypes = frm.responseTypes;
     srv.supportedGrantTypes = frm.grantTypes;
+    srv.jwtAccessToken = frm.jwtAccessToken;
+    (<CodeExpirationForm>this.get('codeExpirationPolicy')).mapForm(srv.codeExpirationPolicy);
+    (<AccessTokenExpirationForm>this.get('accessTokenExpirationPolicy')).mapForm(srv.accessTokenExpirationPolicy);
+    (<RefreshTokenExpirationForm>this.get('refreshTokenExpirationPolicy')).mapForm(srv.refreshTokenExpirationPolicy);
+    (<DeviceTokenExpirationForm>this.get('deviceTokenExpirationPolicy')).mapForm(srv.deviceTokenExpirationPolicy);
   }
 }

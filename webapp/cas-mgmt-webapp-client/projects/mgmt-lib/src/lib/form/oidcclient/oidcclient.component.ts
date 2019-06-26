@@ -28,6 +28,7 @@ export class OidcclientComponent implements OnInit {
   dynamicRegistrationDateTime: MgmtFormControl;
   responseTypes: MgmtFormControl;
   grantTypes: MgmtFormControl;
+  jwtAccessToken: MgmtFormControl;
 
   constructor(public formData: FormDataService) {
   }
@@ -48,5 +49,6 @@ export class OidcclientComponent implements OnInit {
     this.dynamicRegistrationDateTime = this.control.get('dynamicRegistrationDateTime') as MgmtFormControl;
     this.responseTypes = this.control.get('responseTypes') as MgmtFormControl;
     this.grantTypes = this.control.get('grantTypes') as MgmtFormControl;
+    this.jwtAccessToken = this.control.get('jwtAccessToken') as MgmtFormControl;
   }
 }

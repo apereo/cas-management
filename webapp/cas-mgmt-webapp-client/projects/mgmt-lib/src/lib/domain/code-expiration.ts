@@ -19,7 +19,7 @@ export class DefaultRegisteredServiceOAuthCodeExpirationPolicy extends Registere
   static cName = 'org.apereo.cas.support.oauth.services.DefaultRegisteredServiceOAuthCodeExpirationPolicy';
 
   static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === RegisteredServiceOAuthCodeExpirationPolicy.cName;
+    return obj && obj['@class'] === DefaultRegisteredServiceOAuthCodeExpirationPolicy.cName;
   }
 
   constructor(policy?: RegisteredServiceOAuthCodeExpirationPolicy) {

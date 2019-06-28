@@ -8,8 +8,8 @@ import {OAuthToken} from '../domain/sessions';
 })
 export class TokensService extends Service {
 
-  getTokens(): Observable<OAuthToken[]> {
-    return this.get<OAuthToken[]>('api/tokens');
+  getTokens(user: string): Observable<OAuthToken[]> {
+    return this.get<OAuthToken[]>('api/tokens/' + user);
   }
 
   revokeToken(id: string): Observable<void> {

@@ -8,6 +8,9 @@
 </div>
 
 <div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
+  <mat-form-field floatLabel="never" style="margin-left: 10px">
+    <input matInput (keyup)="doLookup($event.target.value)" placeholder="Enter user id to find tokens" >
+  </mat-form-field>
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="actions">

@@ -7,6 +7,7 @@
   <mat-icon appHelp i18n-matTooltip
            matTooltip="OAuth client id for this OAuth client. Only applies to OAuth service types.">
   </mat-icon>
+  <mat-icon (click)="generateId.emit()">refresh</mat-icon>
 </lib-input>
 
 <lib-input>
@@ -19,6 +20,7 @@
   <mat-icon appHelp i18n-matTooltip
            matTooltip="Secret key for this OAuth client. Only applies to OAuth service types.">
   </mat-icon>
+  <mat-icon (click)="generateSecret.emit()">refresh</mat-icon>
 </lib-input>
 
 <div>
@@ -47,6 +49,16 @@
              matTooltip="Indicates whether a refresh token should be generated with the access token for this OAuth client.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="generateRefreshToken.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input>
+  <mat-checkbox [formControl]="jwtAccessToken">
+    <ng-container i18n>JWT Access Token</ng-container>
+    <mat-icon appHelp i18n-matTooltip
+              matTooltip="Indicates whether access token should be formatted as JWT.">
+    </mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="jwtAccessToken.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 

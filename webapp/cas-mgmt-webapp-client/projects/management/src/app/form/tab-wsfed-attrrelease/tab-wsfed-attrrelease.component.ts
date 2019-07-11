@@ -8,14 +8,14 @@ import {WsFederationClaimsReleasePolicy, DataRecord} from 'mgmt-lib';
 })
 export class TabWsfedAttrreleaseComponent {
 
-  attributeRelease: WsFedReleaseForm;
+  wsFedForm: WsFedReleaseForm;
 
   constructor(public data: DataRecord) {
     if (this.data.formMap.has('attributeRelease')) {
-      this.attributeRelease = this.data.formMap.get('attributeRelease') as WsFedReleaseForm;
+      this.wsFedForm = this.data.formMap.get('attributeRelease') as WsFedReleaseForm;
       return;
     }
-    this.attributeRelease = new WsFedReleaseForm(this.data.service.attributeReleasePolicy as WsFederationClaimsReleasePolicy);
-    this.data.formMap.set('attributeRelease', this.attributeRelease);
+    this.wsFedForm = new WsFedReleaseForm(this.data.service.attributeReleasePolicy as WsFederationClaimsReleasePolicy);
+    this.data.formMap.set('attributeRelease', this.wsFedForm);
   }
 }

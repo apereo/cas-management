@@ -33,7 +33,7 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
     this.wsdlService = (s && s.wsdlService) || null;
     this.wsdlEndpoint = (s && s.wsdlEndpoint) || null;
     this.appliesTo = (s && s.appliesTo) || null;
-    this.attributeReleasePolicy = WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy)
+    this.attributeReleasePolicy = s && s.attributeReleasePolicy && WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy)
       ? s.attributeReleasePolicy
       : new WsFederationClaimsReleasePolicy();
     this['@class'] = WSFederationRegisterdService.cName;

@@ -4,7 +4,7 @@
     <input matInput [formControl]="endpoint" required>
     <mat-hint align="end"><lib-hint [difference]="endpoint.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="The URL of the REST endpoint that will be called to retrieve a list of attributes that will be released.">
   </mat-icon>
 </lib-input>

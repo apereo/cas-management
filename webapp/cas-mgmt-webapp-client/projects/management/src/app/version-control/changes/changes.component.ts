@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ViewComponent} from '@app/project-share/view/view.component';
 import {ChangesService} from './changes.service';
 import {DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
@@ -19,7 +17,7 @@ export class ChangesComponent implements OnInit {
     displayedColumns = ['actions', 'file', 'change'];
     dataSource: MatTableDataSource<DiffEntry>;
 
-    @ViewChild(PaginatorComponent, { static: true })
+    @ViewChild(PaginatorComponent, {static: true})
     paginator: PaginatorComponent;
 
     selectedItem: DiffEntry;
@@ -49,7 +47,7 @@ export class ChangesComponent implements OnInit {
             data: [f, 'diff', 'github'],
             width: '900px',
             position: {top: '50px'}
-          })
+          });
         },
         (error) => this.snackBar.open(error.error.message, 'Dismiss'));
   }

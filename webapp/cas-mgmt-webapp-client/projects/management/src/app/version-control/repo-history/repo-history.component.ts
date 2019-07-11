@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Commit, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {RepoHistoryService} from './repo-history.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {finalize} from 'rxjs/operators';
@@ -40,7 +39,7 @@ export class RepoHistoryComponent implements OnInit {
         } else {
           this.displayedColumns = ['actions', 'id', 'message', 'time'];
         }
-      })
+      });
   }
 
   refresh() {

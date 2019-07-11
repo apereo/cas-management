@@ -1,7 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
+import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatChipInputEvent} from '@angular/material';
 import {FormDataService} from '../../../form-data.service';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
 
@@ -38,7 +37,7 @@ export class DelegatedComponent implements OnInit {
       this.delegatedAuthn.push(value.trim());
       this.autoTrigger.closePanel();
       this.control.setValue(this.delegatedAuthn);
-      this.control.markAsTouched()
+      this.control.markAsTouched();
     }
 
     if (input) {
@@ -52,7 +51,7 @@ export class DelegatedComponent implements OnInit {
     if (index >= 0) {
       this.delegatedAuthn.splice(index, 1);
       this.control.setValue(this.delegatedAuthn);
-      this.control.markAsTouched()
+      this.control.markAsTouched();
     }
   }
 

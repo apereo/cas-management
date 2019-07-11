@@ -1,0 +1,5 @@
+<div [formGroup]="oidcForm">
+  <app-card i18n-heading heading="Attribute Release Options" [collapse]="false">
+    <lib-oidc-options [control]="oidcForm.get('scopes')"></lib-oidc-options>
+  </app-card>
+</div>

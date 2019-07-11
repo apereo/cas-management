@@ -1,0 +1,104 @@
+<lib-input>
+  <mat-checkbox [formControl]="encryptAssertions">
+    <ng-container i18n>Encrypt Assertions</ng-container>
+    <mat-icon libHelp i18n-matTooltip matTooltip="Encrypt Assertions."></mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="encryptAssertions.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input>
+  <mat-checkbox [formControl]="encryptAttributes">
+    <ng-container i18n>Encrypt Attributes</ng-container>
+    <mat-icon libHelp i18n-matTooltip matTooltip="Whether assertion attributes should be encrypted."></mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="encryptAttributes.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input>
+  <mat-checkbox [formControl]="encryptionOptional">
+    <ng-container i18n>Encryption Optional</ng-container>
+    <mat-icon libHelp i18n-matTooltip matTooltip="Encrypt whenever possible (i.e a compatible key is found in the
+      peer’s metadata) or skip encryption otherwise."></mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="encryptionOptional.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Encryptable Attributes</mat-placeholder>
+    <mat-select multiple [formControl]="encryptableAttributes">
+      <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">
+        {{ opt }}
+      </mat-option>
+    </mat-select>
+    <mat-hint align="end"><lib-hint [difference]="encryptableAttributes.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Set of attributes nominated for encryption, disqualifying others absent in this collection.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Encryption Data Algorithms</mat-placeholder>
+    <mat-select multiple [formControl]="encryptionDataAlgorithms">
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#aes128-cbc">AES128-CBC</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#aes192-cbc">AES192-CBC</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#aes256-cbc">AES256-CBC</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc">TRIPLEDES-CBC</mat-option>
+    </mat-select>
+    <mat-hint align="end"><lib-hint [difference]="encryptionDataAlgorithms.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Collection of encryption data algorithms, if any, to override the global defaults.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Encryption Key Algorithms</mat-placeholder>
+    <mat-select multiple [formControl]="encryptionKeyAlgorithms">
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">RSA-OAEP-MGF1P</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#kw-aes128">KW-AES128</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#kw-aes192">KW-AES192</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#kw-aes256">KW-AES256</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#kw-tripledes">KW-TRIPLEDES</mat-option>
+    </mat-select>
+    <mat-hint align="end"><lib-hint [difference]="encryptionKeyAlgorithms.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Collection of encryption key transport algorithms, if any, to override the global defaults.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Encryption Black Listed Algorithms</mat-placeholder>
+    <mat-select multiple [formControl]="encryptionBlackListedAlgorithms">
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#rsa-1_5">RSA-1_5</mat-option>
+    </mat-select>
+    <mat-hint align="end"><lib-hint [difference]="encryptionBlackListedAlgorithms.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Collection of encryption blacklisted algorithms, if any, to override the global defaults.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Encryption White Listed Algorithms</mat-placeholder>
+    <mat-select multiple [formControl]="encryptionWhiteListedAlgorithms">
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#aes128-cbc">AES128-CBC</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#aes192-cbc">AES192-CBC</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#aes256-cbc">AES256-CBC</mat-option>
+      <mat-option value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc">TRIPLEDES-CBC</mat-option>
+    </mat-select>
+    <mat-hint align="end"><lib-hint [difference]="encryptionWhiteListedAlgorithms.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Collection of encryption whitelisted algorithms, if any, to override the global defaults.">
+  </mat-icon>
+</lib-input>
+
+
+

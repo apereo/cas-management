@@ -8,7 +8,7 @@
     </mat-select>
     <mat-hint align="end"><lib-hint [difference]="multifactorAuthenticationProviders.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="List of multifactor provider ids to assign to this service.">
   </mat-icon>
 </lib-input>
@@ -23,7 +23,7 @@
     </mat-select>
     <mat-hint align="end"><lib-hint [difference]="failureMode.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Decide what CAS should do in the event that a provider is not available.">
   </mat-icon>
 </lib-input>
@@ -34,7 +34,7 @@
     <input matInput [matAutocomplete]="auto" [formControl]="principalAttributeNameTrigger">
     <mat-hint align="end"><lib-hint [difference]="principalAttributeNameTrigger.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Principal attribute name to trigger MFA when accessing this service.">
   </mat-icon>
 </lib-input>
@@ -45,7 +45,7 @@
     <input matInput [formControl]="principalAttributeValueToMatch">
     <mat-hint align="end"><lib-hint [difference]="principalAttributeValueToMatch.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Principal attribute value to match in order to trigger MFA when accessing this service.">
   </mat-icon>
 </lib-input>
@@ -53,7 +53,7 @@
 <lib-input>
   <mat-checkbox [formControl]="bypassEnabled">
     <ng-container i18n>Enable Bypass</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
               matTooltip="Bypass multifactor authentication for this service.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="bypassEnabled.difference()"></lib-hint></mat-hint>

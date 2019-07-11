@@ -2,9 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {History, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HistoryService} from './history.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
@@ -92,7 +90,7 @@ export class HistoryComponent implements OnInit {
   viewYaml() {
     this.spinner.start('Loading yaml');
     this.changeService.viewYaml(this.selectedItem.id)
-      .pipe(finalize(()=> this.spinner.stop()))
+      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'yaml', 'eclipse'));
   }
 
@@ -105,11 +103,11 @@ export class HistoryComponent implements OnInit {
   }
 
   first(): boolean {
-    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) == 0;
+    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) === 0;
   }
 
   last(): boolean {
-    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) == this.dataSource.data.length -1
+    return this.selectedItem && this.dataSource.data.indexOf(this.selectedItem) === this.dataSource.data.length - 1;
   }
 
   showSnackbar(msg: string) {

@@ -16,68 +16,10 @@
       <app-controls (save)="save()" [showEdit]="dirty()" (reset)="reset()"></app-controls>
     </div>
 </div>
-  <mat-tab-group #tabGroup (selectedIndexChange)="goto($event)">
-    <mat-tab>
+  <mat-tab-group #tabGroup (selectedTabChange)="goto($event)">
+    <mat-tab *ngFor="let t of tabs">
       <ng-template mat-tab-label>
-          <ng-container i18n>Basics</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab *ngIf="isSaml() || isOauth() || isOidc() || isWsFed()">
-      <ng-template mat-tab-label>
-        <ng-container *ngIf="isSaml()" i18n>SAML2 SP</ng-container>
-        <ng-container *ngIf="isOauth()" i18n>OAuth2</ng-container>
-        <ng-container *ngIf="isOidc()" i18n>OpenID Connect</ng-container>
-        <ng-container *ngIf="isWsFed()" i18n>WS Federation</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <ng-container i18n>Contacts</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Logout</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Access Strategy</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <ng-container i18n>Expiration</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Multifactor Authentication</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Proxy Authentication</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Username Attribute</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Attribute Release</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Properties</ng-container>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-          <ng-container i18n>Advanced</ng-container>
+          <ng-container i18n>{{ t[1] }}</ng-container>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

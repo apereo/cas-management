@@ -8,7 +8,7 @@ export abstract class BaseRegisteredServiceUsernameAtttributeProvider extends Re
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super();
     this.canonicalizationMode = (provider && provider.canonicalizationMode) || 'NONE';
-    this.encryptUsername = provider && provider.encryptUsername || false;
+    this.encryptUsername = provider ? provider.encryptUsername : false;
   }
 
 }
@@ -37,7 +37,8 @@ export class PrincipalAttributeRegisteredServiceUsernameProvider extends BaseReg
 
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super(provider);
-    const p: PrincipalAttributeRegisteredServiceUsernameProvider = provider as PrincipalAttributeRegisteredServiceUsernameProvider;
+    const p: PrincipalAttributeRegisteredServiceUsernameProvider = PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)
+      ? provider as PrincipalAttributeRegisteredServiceUsernameProvider : undefined;
     this.usernameAttribute = (p && p.usernameAttribute) || null;
     this['@class'] = PrincipalAttributeRegisteredServiceUsernameProvider.cName;
   }
@@ -54,7 +55,8 @@ export class GroovyRegisteredServiceUsernameProvider extends BaseRegisteredServi
 
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super(provider);
-    const p: GroovyRegisteredServiceUsernameProvider = provider as GroovyRegisteredServiceUsernameProvider;
+    const p: GroovyRegisteredServiceUsernameProvider = GroovyRegisteredServiceUsernameProvider.instanceOf(provider)
+      ? provider as GroovyRegisteredServiceUsernameProvider : undefined;
     this.groovyScript = (p && p.groovyScript) || null;
     this['@class'] = GroovyRegisteredServiceUsernameProvider.cName;
   }
@@ -71,7 +73,8 @@ export class ScriptedRegisteredServiceUsernameProvider extends BaseRegisteredSer
 
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super(provider);
-    const p: ScriptedRegisteredServiceUsernameProvider = provider as ScriptedRegisteredServiceUsernameProvider;
+    const p: ScriptedRegisteredServiceUsernameProvider = ScriptedRegisteredServiceUsernameProvider.instanceOf(provider)
+      ? provider as ScriptedRegisteredServiceUsernameProvider : undefined;
     this.script = (p && p.script) || null;
     this['@class'] = ScriptedRegisteredServiceUsernameProvider.cName;
   }
@@ -105,7 +108,8 @@ export class AnonymousRegisteredServiceUsernameProvider extends BaseRegisteredSe
 
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super(provider);
-    const p: AnonymousRegisteredServiceUsernameProvider = provider as AnonymousRegisteredServiceUsernameProvider;
+    const p: AnonymousRegisteredServiceUsernameProvider = AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)
+      ? provider as AnonymousRegisteredServiceUsernameProvider : undefined;
     this.persistentIdGenerator = (p && this.persistentIdGenerator) || new ShibbolethCompatiblePersistentIdGenerator();
     this['@class'] = AnonymousRegisteredServiceUsernameProvider.cName;
   }

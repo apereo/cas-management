@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { RepoHistoryRoutingModule } from './repo-history-routing.module';
 import {RepoHistoryComponent} from '@app/version-control/repo-history/repo-history.component';

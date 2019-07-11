@@ -25,7 +25,7 @@ export class ControlsService extends Service {
     setTimeout(() => {
       this.gitStatus();
       this.callStatus();
-    }, 60 * 1000)
+    }, 60 * 1000);
   }
 
   commit(msg: string): Observable<string> {
@@ -40,13 +40,12 @@ export class ControlsService extends Service {
     return this.postText('api/submit', msg);
   }
 
-
   untracked(): Observable<Change[]> {
-    return this.get<Change[]>('api/change/untracked')
+    return this.get<Change[]>('api/change/untracked');
   }
 
   getCommits(): Observable<Commit[]> {
-    return this.get<Commit[]>('api/commit/unpublished')
+    return this.get<Commit[]>('api/commit/unpublished');
   }
 
   gitStatus() {

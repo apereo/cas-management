@@ -19,7 +19,7 @@
       <input matInput required [formControl]="regex()">
       <mat-hint align="end"><lib-hint [difference]="regex().difference()"></lib-hint></mat-hint>
     </mat-form-field>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="Matches the proxy callback url against a regex pattern. A successful match will authorize proxy authentication.">
     </mat-icon>
   </lib-input>

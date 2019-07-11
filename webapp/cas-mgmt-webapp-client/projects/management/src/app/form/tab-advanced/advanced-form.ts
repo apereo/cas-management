@@ -5,6 +5,7 @@ import {
   AbstractRegisteredService,
   RegisteredServicePublicKeyImpl
 } from 'mgmt-lib';
+import {ExpirationForm} from '@app/form/tab-expiration/expiration-form';
 
 export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
@@ -17,7 +18,8 @@ export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractReg
       publicKey: new FormGroup({
         location: new MgmtFormControl(null),
         algorithm: new MgmtFormControl(null)
-       })
+       }),
+      expirationPolicy: new ExpirationForm(service)
     });
     this.setValue(this.formMap());
   }
@@ -31,7 +33,8 @@ export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractReg
       publicKey: {
         location: this.service.publicKey && this.service.publicKey.location,
         algorithm: this.service.publicKey && this.service.publicKey.algorithm
-      }
+      },
+      expirationPolicy: (<ExpirationForm>this.get('expirationPolicy')).formMap()
     };
   }
 
@@ -48,5 +51,6 @@ export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractReg
       service.publicKey.location = frm.publicKey.location;
       service.publicKey.algorithm = frm.publicKey.algorithm;
     }
+    (<ExpirationForm>this.get('expirationPolicy')).mapForm(service)
   }
 }

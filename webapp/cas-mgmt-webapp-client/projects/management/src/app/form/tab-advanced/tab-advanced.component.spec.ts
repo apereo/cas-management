@@ -6,9 +6,6 @@ import { DebugElement } from '@angular/core';
 
 import { TabAdvancedComponent } from './tab-advanced.component';
 import {DataRecord, SharedModule} from 'mgmt-lib';
-import {PubkeyComponent} from 'mgmt-lib/lib/form/pubkey/pubkey.component';
-import {EvalorderComponent} from 'mgmt-lib/lib/form/evalorder/evalorder.component';
-import {RequiredHandlersComponent} from 'mgmt-lib/lib/form/reqhandlers/reqhandlers.component';
 
 describe('TabAdvancedComponent', () => {
   let component: TabAdvancedComponent;
@@ -17,7 +14,7 @@ describe('TabAdvancedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
-      declarations: [ TabAdvancedComponent, PubkeyComponent, EvalorderComponent, RequiredHandlersComponent ],
+      declarations: [ TabAdvancedComponent],
       providers: [ DataRecord ]
     })
     .compileComponents();

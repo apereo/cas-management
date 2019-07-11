@@ -10,7 +10,8 @@ export class ServicenameComponent implements OnInit {
   @Input()
   control: MgmtFormControl;
 
-  constructor(){}
+  constructor() {
+  }
 
   ngOnInit() {
   }

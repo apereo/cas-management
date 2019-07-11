@@ -18,6 +18,8 @@ export class SamlMetadataComponent implements OnInit {
   criteriaPattern: MgmtFormControl;
   criteriaDirection: MgmtFormControl;
   criteriaRoles: MgmtFormControl;
+  whiteListBlackListPrecedence: MgmtFormControl;
+  requireSignedRoot: MgmtFormControl;
   criteriaRemoveEmptyEntitiesDescriptors: MgmtFormControl;
   criteriaRemoveRolelessEntityDescriptors: MgmtFormControl;
 
@@ -32,6 +34,8 @@ export class SamlMetadataComponent implements OnInit {
     this.criteriaPattern = this.control.get('criteriaPattern') as MgmtFormControl;
     this.criteriaRoles = this.control.get('criteriaRoles') as MgmtFormControl;
     this.criteriaDirection = this.control.get('criteriaDirection') as MgmtFormControl;
+    this.whiteListBlackListPrecedence = this.control.get('whiteListBlackListPrecedence') as MgmtFormControl;
+    this.requireSignedRoot = this.control.get('requireSignedRoot') as MgmtFormControl;
     this.criteriaRemoveEmptyEntitiesDescriptors = this.control.get('criteriaRemoveEmptyEntitiesDescriptors') as MgmtFormControl;
     this.criteriaRemoveRolelessEntityDescriptors = this.control.get('criteriaRemoveRolelessEntityDescriptors') as MgmtFormControl;
   }

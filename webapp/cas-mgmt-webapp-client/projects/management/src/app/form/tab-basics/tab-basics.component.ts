@@ -43,6 +43,7 @@ export class TabBasicsComponent implements OnInit {
       } else {
         this.data.service = new RegexRegisteredService(this.data.service);
       }
+      this.data.typeChange.emit();
     });
     this.data.formMap.set('basics', this.basics);
   }

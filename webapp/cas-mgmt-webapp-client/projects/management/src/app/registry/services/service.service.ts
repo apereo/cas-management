@@ -2,13 +2,16 @@
  * Created by tschmidt on 2/13/17.
  */
 import {Injectable} from '@angular/core';
-import {ServiceItem, Service} from 'mgmt-lib';
+import {ServiceItem,
+  Service,
+} from 'mgmt-lib';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceViewService extends Service {
+
 
   controller = 'api/services';
 

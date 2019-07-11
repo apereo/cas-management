@@ -4,7 +4,7 @@
     <input matInput [formControl]="entityAttribute" required>
     <mat-hint align="end"><lib-hint [difference]="entityAttribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="The EntityId for the SP providing the metadata attributes.">
   </mat-icon>
 </lib-input>
@@ -15,7 +15,7 @@
     <input matInput [formControl]="entityAttributeFormat">
     <mat-hint align="end"><lib-hint [difference]="entityAttributeFormat.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Format description for the entity attribute. This field is optional.">
   </mat-icon>
 </lib-input>
@@ -26,7 +26,7 @@
     <input matInput [formControl]="entityAttributeValues">
     <mat-hint align="end"><lib-hint [difference]="entityAttributeValues.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="List of attributes that are defined as part of the SP Metadata.">
   </mat-icon>
 </lib-input>

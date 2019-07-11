@@ -14,12 +14,21 @@ import {TabUsernameattrComponent} from './tab-usernameattr/tab-usernameattr.comp
 import {TabAttrreleaseComponent} from './tab-attrrelease/tab-attrrelease.component';
 import {TabPropertiesComponent} from './tab-properties/tab-properties.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
-import {TabSamlComponent} from './tab-saml/tab-saml.component';
 import {TabOauthComponent} from './tab-oauth/tab-oauth.component';
 import {TabWsfedComponent} from './tab-wsfed/tab-wsfed.component';
 import {TabContactsComponent} from './tab-contacts/tab-contacts.component';
 import {TabExpirationComponent} from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
+import {TabOidcAttrreleaseComponent} from '@app/form/tab-oidc-attrrelease/tab-oidc-attrrelase.component';
+import {TabWsfedAttrreleaseComponent} from '@app/form/tab-wsfed-attrrelease/tab-wsfed-attrrelease.component';
+import {TabTokensComponent} from '@app/form/tab-tokens/tab-tokens.component';
+import {TabTicketsComponent} from '@app/form/tab-tickets/tab-tickets.component';
+import {TabSsoComponent} from '@app/form/tab-sso/tab-sso.component';
+import {TabSamlAttributesComponent} from '@app/form/tab-saml-attributes/tab-saml-attributes.component';
+import {TabSamlEncryptionComponent} from '@app/form/tab-saml-encryption/tab-saml-encryption.component';
+import {TabSamlSigningComponent} from '@app/form/tab-saml-signing/tab-saml-signing.component';
+import {TabSamlAssertionComponent} from '@app/form/tab-saml-assertion/tab-saml-assertion.component';
+import {TabSamlMetadataComponent} from '@app/form/tab-saml-metadata/tab-saml-metadata.component';
 
 const childRoutes: Routes = [
   {
@@ -28,13 +37,38 @@ const childRoutes: Routes = [
     outlet: 'form'
   },
   {
-    path: 'saml',
-    component: TabSamlComponent,
+    path: 'saml-metadata',
+    component: TabSamlMetadataComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'saml-assertion',
+    component: TabSamlAssertionComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'saml-attributes',
+    component: TabSamlAttributesComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'saml-encryption',
+    component: TabSamlEncryptionComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'saml-signing',
+    component: TabSamlSigningComponent,
     outlet: 'form'
   },
   {
     path: 'oauth',
     component: TabOauthComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'tokens',
+    component: TabTokensComponent,
     outlet: 'form'
   },
   {
@@ -63,6 +97,11 @@ const childRoutes: Routes = [
     outlet: 'form'
   },
   {
+    path: 'tickets',
+    component: TabTicketsComponent,
+    outlet: 'form'
+  },
+  {
     path: 'expiration',
     component: TabExpirationComponent,
     outlet: 'form'
@@ -85,6 +124,21 @@ const childRoutes: Routes = [
   {
     path: 'attrRelease',
     component: TabAttrreleaseComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'sso',
+    component: TabSsoComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'scopes',
+    component: TabOidcAttrreleaseComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'claims',
+    component: TabWsfedAttrreleaseComponent,
     outlet: 'form'
   },
   {

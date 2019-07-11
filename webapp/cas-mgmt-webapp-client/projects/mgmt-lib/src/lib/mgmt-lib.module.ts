@@ -29,7 +29,6 @@ import {SamlMetadataComponent} from './form/samlclient/metadata/metadata.compone
 import {SamlNameidComponent} from './form/samlclient/nameid/nameid.component';
 import {SamlOptionalComponent} from './form/samlclient/optional/optional.component';
 import {SamlSecurityComponent} from './form/samlclient/security/security.component';
-import {SamlservicespaneComponent} from './form/samlservicespane/samlservicespane.component';
 import {ThemeidComponent} from './form/themeid/themeid.component';
 import {UidattrsModule} from './form/uidattrs/uidattrs.module';
 import {WsfedclientComponent} from './form/wsfedclient/wsfedclient.component';
@@ -43,6 +42,19 @@ import { CodeExpirationComponent } from './form/oauthclient/code-expiration/code
 import { AccessTokenExpirationComponent } from './form/oauthclient/access-token-expiration/access-token-expiration.component';
 import { RefreshTokenExpirationComponent } from './form/oauthclient/refresh-token-expiration/refresh-token-expiration.component';
 import { DeviceTokenExpirationComponent } from './form/oauthclient/device-token-expiration/device-token-expiration.component';
+import { JwksComponent } from './form/oidcclient/jwks/jwks.component';
+import { IdtokenComponent } from './form/oidcclient/idtoken/idtoken.component';
+import { UserinfoComponent } from './form/oidcclient/userinfo/userinfo.component';
+import { ServiceTicketExpComponent } from './form/service-ticket-exp/service-ticket-exp.component';
+import { ProxyTicketExpComponent } from './form/proxy-ticket-exp/proxy-ticket-exp.component';
+import { SsoPolicyComponent } from './form/sso-policy/sso-policy.component';
+import {SsoChainComponent} from './form/sso-policy/sso-chain/sso-chain.component';
+import { SigningComponent } from './form/samlclient/signing/signing.component';
+import { AttributesComponent } from './form/samlclient/attributes/attributes.component';
+import { AssertionComponent } from './form/samlclient/assertion/assertion.component';
+import { FriendlyComponent } from './form/samlclient/friendly/friendly.component';
+import { ValueTypesComponent } from './form/samlclient/value-types/value-types.component';
+import {EncryptionComponent} from './form/samlclient/encryption/encryption.component';
 
 @NgModule({
   imports: [
@@ -80,7 +92,6 @@ import { DeviceTokenExpirationComponent } from './form/oauthclient/device-token-
     SamlNameidComponent,
     SamlOptionalComponent,
     SamlSecurityComponent,
-    SamlservicespaneComponent,
     ThemeidComponent,
     WsfedclientComponent,
     PrivacyUrlComponent,
@@ -90,7 +101,20 @@ import { DeviceTokenExpirationComponent } from './form/oauthclient/device-token-
     CodeExpirationComponent,
     AccessTokenExpirationComponent,
     RefreshTokenExpirationComponent,
-    DeviceTokenExpirationComponent
+    DeviceTokenExpirationComponent,
+    JwksComponent,
+    IdtokenComponent,
+    UserinfoComponent,
+    ServiceTicketExpComponent,
+    ProxyTicketExpComponent,
+    SsoPolicyComponent,
+    SsoChainComponent,
+    SigningComponent,
+    AttributesComponent,
+    AssertionComponent,
+    FriendlyComponent,
+    ValueTypesComponent,
+    EncryptionComponent
   ],
   entryComponents: [
     TimeoutComponent
@@ -126,7 +150,6 @@ import { DeviceTokenExpirationComponent } from './form/oauthclient/device-token-
     SamlNameidComponent,
     SamlOptionalComponent,
     SamlSecurityComponent,
-    SamlservicespaneComponent,
     ThemeidComponent,
     UidattrsModule,
     WsfedclientComponent,
@@ -138,7 +161,20 @@ import { DeviceTokenExpirationComponent } from './form/oauthclient/device-token-
     CodeExpirationComponent,
     AccessTokenExpirationComponent,
     RefreshTokenExpirationComponent,
-    DeviceTokenExpirationComponent
+    DeviceTokenExpirationComponent,
+    JwksComponent,
+    IdtokenComponent,
+    UserinfoComponent,
+    ServiceTicketExpComponent,
+    ProxyTicketExpComponent,
+    SsoPolicyComponent,
+    SsoChainComponent,
+    SigningComponent,
+    AttributesComponent,
+    AssertionComponent,
+    FriendlyComponent,
+    ValueTypesComponent,
+    EncryptionComponent
   ]
 })
 export class MgmtLibModule { }

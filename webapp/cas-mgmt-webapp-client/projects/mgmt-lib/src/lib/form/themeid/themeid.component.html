@@ -4,7 +4,7 @@
     <input matInput [formControl]="control">
     <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
            matTooltip="A token that represents the theme that should be applied to CAS when this service asks for
            authentication.  Valid values are a theme name configured in the CAS deployment, a REST endpoint or a groovy file location.">
   </mat-icon>

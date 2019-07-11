@@ -10,7 +10,7 @@ export class RegisteredServiceConsentPolicy {
   }
 
   constructor(policy?: RegisteredServiceConsentPolicy) {
-    this.enabled = (policy && policy.enabled) || true;
+    this.enabled = policy ? policy.enabled : true;
     this.excludedAttributes = (policy && policy.excludedAttributes) || null;
     this.includeOnlyAttributes = (policy && policy.includeOnlyAttributes) || null;
     this['@class'] = RegisteredServiceConsentPolicy.cName;

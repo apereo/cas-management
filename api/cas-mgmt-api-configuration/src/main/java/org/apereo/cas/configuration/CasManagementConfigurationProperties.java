@@ -94,6 +94,11 @@ public class CasManagementConfigurationProperties implements Serializable {
     private boolean enableDiscoveryEndpointCall = true;
 
     /**
+     * Path to discovery endpoint.
+     */
+    private String discoveryEndpointPath = "/actuator/discoveryProfile";
+
+    /**
      * Properties for version control.
      */
     private VersionControl versionControl = new VersionControl();
@@ -122,7 +127,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-version-control")
+    @RequiresModule(name = "cas-mgmt-config-version-control")
     public static class VersionControl implements Serializable {
         /**
          * A writable location where the Git repository will be created to track changes.
@@ -143,7 +148,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-delegated")
+    @RequiresModule(name = "cas-mgmt-config-delegated")
     public static class Delegated implements Serializable {
         /**
          * A writable location where the users Git repositories will be created.

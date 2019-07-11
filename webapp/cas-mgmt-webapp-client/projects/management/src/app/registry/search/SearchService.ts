@@ -1,14 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Service, ServiceItem} from 'mgmt-lib';
 import {Observable} from 'rxjs/internal/Observable';
+import {tap} from 'rxjs/internal/operators/tap';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService extends Service {
 
+  results: ServiceItem[];
+  query: String;
+
   search(query: string): Observable<ServiceItem[]> {
-    return this.post('api/search', query);
+    this.query = query;
+    return this.post<ServiceItem[]>('api/search', query)
+      .pipe(tap(r => this.results = r));
   }
 
   getYaml(id: number): Observable<string> {

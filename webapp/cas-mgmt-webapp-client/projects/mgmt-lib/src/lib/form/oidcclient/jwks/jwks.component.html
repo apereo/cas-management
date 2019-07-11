@@ -1,0 +1,32 @@
+<lib-input *ngIf="!hideKeys">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>JSON Web Keystore</mat-placeholder>
+    <input matInput [formControl]="jwks">
+    <mat-hint align="end"><lib-hint [difference]="jwks.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Location of the JSON web keystore to sign id tokens with.">
+  </mat-icon>
+</lib-input>
+
+<lib-input *ngIf="!hideKeys">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>JWKS Cache Duration</mat-placeholder>
+    <input matInput type="number" [formControl]="jwksCacheDuration">
+    <mat-hint align="end"><lib-hint [difference]="jwksCacheDuration.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Number representing how long JWKS Keys should be held based on the defined JWKS Cache Time Unit.">
+  </mat-icon>
+</lib-input>
+
+<lib-input *ngIf="!hideKeys">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>JWKS Cache Time Unit</mat-placeholder>
+    <input matInput [formControl]="jwksCacheTimeUnit">
+    <mat-hint align="end"><lib-hint [difference]="jwksCacheTimeUnit.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Units used in calcuting JWKS Cache duration.">
+  </mat-icon>
+</lib-input>

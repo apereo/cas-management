@@ -3,7 +3,7 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 
 @Component({
-  selector: 'app-spinner',
+  selector: 'lib-spinner',
   templateUrl: './spinner.component.html'
 })
 export class SpinnerComponent implements OnInit {

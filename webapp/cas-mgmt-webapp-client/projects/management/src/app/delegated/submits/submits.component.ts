@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {SubmitService} from './submits.service';
 import {Branch, PaginatorComponent, SpinnerService} from 'mgmt-lib';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {RevertComponent} from '@app/project-share';
 import {ActivatedRoute, Router} from '@angular/router';
 import {finalize} from 'rxjs/operators';
@@ -91,7 +89,7 @@ export class SubmitsComponent implements OnInit {
             'Dismiss',
             {duration: 5000}
           );
-        this.refresh()
+        this.refresh();
       });
   }
 }

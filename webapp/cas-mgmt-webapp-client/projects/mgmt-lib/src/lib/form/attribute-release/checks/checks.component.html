@@ -1,7 +1,7 @@
 <lib-input>
   <mat-checkbox [formControl]="excludeDefaultAttributes">
     <ng-container i18n>Exclude default bundle of attributes for release</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="Indicates whether global and default attributes set to release to all applications
     should be excluded for release for this specific application.">
     </mat-icon>
@@ -22,7 +22,7 @@
 <lib-input>
   <mat-checkbox [formControl]="authorizedToReleaseProxyGrantingTicket">
     <ng-container i18n>Authorized to release proxy granting ticket ID</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="Release proxy-granting ticket id to the application?">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="authorizedToReleaseProxyGrantingTicket.difference()"></lib-hint></mat-hint>
@@ -32,7 +32,7 @@
 <lib-input>
   <mat-checkbox [formControl]="authorizedToReleaseAuthenticationAttributes">
     <ng-container i18n>Authorized to release authentication attributes</ng-container>
-    <mat-icon appHelp  i18n-matTooltip
+    <mat-icon libHelp  i18n-matTooltip
              matTooltip="Determines whether this policy should exclude the authentication/protocol attributes for release.
              Authentication attributes are considered those that are not tied to a specific principal and define extra
              supplamentary metadata about the authentication event itself, such as the commencement date.">
@@ -47,7 +47,7 @@
     <input matInput [formControl]="principalIdAttribute">
     <mat-hint align="end"><lib-hint [difference]="principalIdAttribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp  i18n-matTooltip
+  <mat-icon libHelp  i18n-matTooltip
             matTooltip="Attribute to release as the Principal Id.  If not specified it will default to the attribute set for the authentication in cas.properties.">
   </mat-icon>
 </lib-input>

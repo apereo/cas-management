@@ -1,0 +1,64 @@
+<lib-input>
+  <mat-checkbox [formControl]="signIdToken">
+    <ng-container i18n>Sign ID Token</ng-container>
+    <mat-icon libHelp i18n-matTooltip
+              matTooltip="Whether ID tokens should be signed.">
+    </mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="signIdToken.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input>
+  <mat-checkbox [formControl]="encryptIdToken">
+    <ng-container i18n>Encrypt ID Token</ng-container>
+    <mat-icon libHelp i18n-matTooltip
+              matTooltip="Whether ID tokens should be encrypted.">
+    </mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="encryptIdToken.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input *ngIf="!hideKeys">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>ID Token Encryption Algorithm</mat-placeholder>
+    <input matInput [matAutocomplete]="encryptAlgAuto"
+           [formControl]="idTokenEncryptionAlg">
+    <mat-hint align="end"><lib-hint [difference]="idTokenEncryptionAlg.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Encryption algorithm to use with ID tokens.">
+  </mat-icon>
+  <mat-autocomplete #encryptAlgAuto="matAutocomplete">
+    <mat-option *ngFor="let opt of formData.options.encryptAlgOptions" [value]="opt">{{ opt }}</mat-option>
+  </mat-autocomplete>
+</lib-input>
+
+<lib-input *ngIf="!hideKeys">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>ID Encryption Encoding Algorithm</mat-placeholder>
+    <input matInput [matAutocomplete]="encodingAlgAuto"
+           [formControl]="idTokenEncryptionEncoding">
+    <mat-hint align="end"><lib-hint [difference]="idTokenEncryptionEncoding.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Encryption content encoding algorithm to use with ID tokens.">
+  </mat-icon>
+  <mat-autocomplete #encodingAlgAuto="matAutocomplete">
+    <mat-option *ngFor="let opt of formData.options.encodingAlgOptions" [value]="opt">{{ opt }}</mat-option>
+  </mat-autocomplete>
+</lib-input>
+
+<lib-input *ngIf="!hideKeys">
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>ID Token Signing Algorithm</mat-placeholder>
+    <input matInput [matAutocomplete]="encryptAlgAuto"
+           [formControl]="idTokenSigningAlg">
+    <mat-hint align="end"><lib-hint [difference]="idTokenSigningAlg.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Encryption algorithm to use with ID tokens.">
+  </mat-icon>
+  <mat-autocomplete #encryptAlgAuto="matAutocomplete">
+    <mat-option *ngFor="let opt of formData.options.encryptAlgOptions" [value]="opt">{{ opt }}</mat-option>
+  </mat-autocomplete>
+</lib-input>

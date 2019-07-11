@@ -4,8 +4,7 @@ import {Location} from '@angular/common';
 import {PublishComponent} from '../publish/publish.component';
 import {CommitComponent} from '../commit/commit.component';
 import {ControlsService} from './controls.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {finalize} from 'rxjs/operators';
 
 @Component({
@@ -39,7 +38,7 @@ export class ControlsComponent implements OnInit {
   @Input()
   showEditorOptions = false;
 
-  @ViewChild('publishModal', { static: false })
+  @ViewChild('publishModal', { static: true })
   submitComp: PublishComponent;
 
   @Output()

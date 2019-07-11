@@ -1,9 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommitHistoryService} from './commit-history.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {ViewComponent} from '@app/project-share';

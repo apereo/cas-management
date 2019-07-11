@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import {ServiceViewService} from '../services/service.service';
 import {EditorComponent} from '@app/project-share';
 import {HttpErrorResponse} from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material';
 import {SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';
 
@@ -52,8 +52,8 @@ export class YamlComponent implements OnInit, AfterViewInit {
 
   handleSuccess() {
     this.snackBar.open(
-      "Service successfully saved",
-      "Dismiss",
+      'Service successfully saved',
+      'Dismiss',
       { duration: 5000 }
     );
     this.location.back();
@@ -62,7 +62,7 @@ export class YamlComponent implements OnInit, AfterViewInit {
   handleError(error: HttpErrorResponse) {
     this.snackBar.open(
       error.error.message,
-      "Dismiss",
+      'Dismiss',
       { duration: 5000 }
     );
   }

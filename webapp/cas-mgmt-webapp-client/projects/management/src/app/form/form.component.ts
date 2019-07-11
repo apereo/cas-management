@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormService} from './form.service';
-import {MatSnackBar, MatTabGroup} from '@angular/material';
+import {MatSnackBar, MatTabChangeEvent, MatTabGroup} from '@angular/material';
 import {Observable} from 'rxjs/index';
 import {finalize, map} from 'rxjs/operators';
 import {BreakpointObserver} from '@angular/cdk/layout';
@@ -22,21 +22,6 @@ import {
 import {ImportService} from '../registry/import/import.service';
 import {FormArray, FormGroup} from '@angular/forms';
 
-enum Tabs {
-  BASICS,
-  TYPE,
-  CONTACTS,
-  LOGOUT,
-  ACCESS_STRATEGY,
-  EXPIRATION,
-  MULTIFACTOR,
-  PROXY,
-  USERNAME_ATTRIBUTE,
-  ATTRIBUTE_RELEASE,
-  PROPERTIES,
-  ADVANCED
-}
-
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -51,6 +36,8 @@ export class FormComponent implements OnInit {
 
   @ViewChild('tabGroup', { static: true })
   tabGroup: MatTabGroup;
+
+  tabs: Array<string[]> = [];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
     .pipe(
@@ -85,13 +72,18 @@ export class FormComponent implements OnInit {
         }
         if (data.resp && data.resp[0]) {
           this.loadService(data.resp[0]);
-          this.goto(Tabs.BASICS);
+          this.navTo('basics');
         }
       });
+    this.data.typeChange.subscribe(() => this.setNav());
   }
 
-  goto(tab: Tabs) {
-    const route: any[] = [{outlets: {form: [this.tabRoute(tab)]}}];
+  goto(event: MatTabChangeEvent) {
+    this.navTo(this.tabs[event.index][0]);
+  }
+
+  navTo(tab: String) {
+    const route: any[] = [{outlets: {form: [tab]}}];
     this.router.navigate(route, {skipLocationChange: true, relativeTo: this.route, replaceUrl: true});
   }
 
@@ -110,6 +102,7 @@ export class FormComponent implements OnInit {
   loadService(service: AbstractRegisteredService) {
     this.data.service = service;
     this.data.formMap = new Map<string, MgmtFormGroup<AbstractRegisteredService>>();
+    this.setNav();
   }
 
   isOidc(): boolean {
@@ -130,53 +123,6 @@ export class FormComponent implements OnInit {
 
   isCas() {
     return RegexRegisteredService.instanceOf(this.data.service);
-  }
-
-  tabRoute(tab: Tabs): string {
-    if (tab < 0) {
-      return 'clear';
-    }
-    if (tab > 0 && this.isCas()) {
-      tab++;
-    }
-    switch (tab) {
-      case Tabs.BASICS :
-        return 'basics';
-      case Tabs.TYPE :
-        if (this.isSaml()) {
-          return 'saml';
-        }
-        if (this.isOauth()) {
-          return 'oauth';
-        }
-        if (this.isOidc()) {
-          return 'oidc';
-        }
-        if (this.isWsFed()) {
-          return 'wsfed';
-        }
-        break;
-      case Tabs.CONTACTS :
-        return 'contacts';
-      case Tabs.LOGOUT :
-        return 'logout';
-      case Tabs.ACCESS_STRATEGY :
-        return 'accessstrategy';
-      case Tabs.EXPIRATION :
-        return 'expiration';
-      case Tabs.MULTIFACTOR :
-        return 'multiauth';
-      case Tabs.PROXY :
-        return 'proxy';
-      case Tabs.USERNAME_ATTRIBUTE :
-        return 'userattr';
-      case Tabs.ATTRIBUTE_RELEASE :
-        return 'attrRelease';
-      case Tabs.PROPERTIES :
-        return 'properties';
-      case Tabs.ADVANCED :
-        return 'advanced';
-    }
   }
 
   handleSave(id: number) {
@@ -214,7 +160,7 @@ export class FormComponent implements OnInit {
       const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
       if (frm.invalid) {
         this.touch(frm);
-        this.nav(key);
+        this.tabGroup.selectedIndex = this.tabs.findIndex(entry => entry[0] === key);
         return false;
       }
     }
@@ -246,48 +192,43 @@ export class FormComponent implements OnInit {
     return touched;
   }
 
-  nav(tab: string) {
-      switch (tab) {
-        case 'basics' :
-          this.tabGroup.selectedIndex = 0;
-          break;
-        case 'saml' :
-        case 'oauth':
-        case 'oidc' :
-        case 'wsfed':
-          this.tabGroup.selectedIndex = 1;
-          break;
-        case 'contacts' :
-          this.tabGroup.selectedIndex = this.isCas() ? 1 : 2;
-          break;
-        case 'logout' :
-          this.tabGroup.selectedIndex = this.isCas() ? 2 : 3;
-          break;
-        case 'accessstrategy' :
-          this.tabGroup.selectedIndex = this.isCas() ? 3 : 4;
-          break;
-        case 'expiration' :
-          this.tabGroup.selectedIndex = this.isCas() ? 4 : 5;
-          break;
-        case 'multiauth' :
-          this.tabGroup.selectedIndex = this.isCas() ? 5 : 6;
-          break;
-        case 'proxy' :
-          this.tabGroup.selectedIndex = this.isCas() ? 6 : 7;
-          break;
-        case 'userattr' :
-          this.tabGroup.selectedIndex = this.isCas() ? 7 : 8;
-          break;
-        case 'attrRelease' :
-          this.tabGroup.selectedIndex = this.isCas() ? 8 : 9;
-          break;
-        case 'properties' :
-          this.tabGroup.selectedIndex = this.isCas() ? 9 : 10;
-          break;
-        case 'advanced' :
-          this.tabGroup.selectedIndex = this.isCas() ? 10 : 11;
-          break;
-      }
+  setNav() {
+    this.tabs = [];
+    this.tabs.push(['basics', 'Basics']);
+    if (this.isSaml()) {
+      this.tabs.push(['saml-metadata', 'Metadata']);
+      this.tabs.push(['saml-assertion', 'Assertion']);
+      this.tabs.push(['saml-attributes', 'Attributes']);
+      this.tabs.push(['saml-encryption', 'Encryption']);
+      this.tabs.push(['saml-signing', 'Signing']);
+    }
+    if (this.isOauth() || this.isOidc()) {
+      this.tabs.push(['oauth', 'Client']);
+      this.tabs.push(['tokens', 'Tokens']);
+    }
+    if (this.isOidc()) {
+      this.tabs.push(['oidc', 'OIDC']);
+    }
+    if (this.isWsFed()) {
+      this.tabs.push(['wsfed', 'WS Fed']);
+    }
+    this.tabs.push(['contacts', 'Contacts']);
+    this.tabs.push(['logout', 'Logout']);
+    if (this.isOidc()) {
+      this.tabs.push(['scopes', 'Scopes'])
+    } else if (this.isWsFed()) {
+      this.tabs.push(['claims', 'Claims'])
+    } else {
+      this.tabs.push(['attrRelease', 'Attribute Release']);
+    }
+    this.tabs.push(['accessstrategy', 'Access Srategy']);
+    this.tabs.push(['sso', 'SSO Policy']);
+    this.tabs.push(['tickets', 'Tickets']);
+    this.tabs.push(['userattr', 'Username Attribute']);
+    this.tabs.push(['multiauth', 'Multifactor']);
+    this.tabs.push(['proxy', 'Proxy']);
+    this.tabs.push(['properties', 'Properties']);
+    this.tabs.push(['advanced', 'Advanced']);
   }
 
   reset() {
@@ -312,9 +253,11 @@ export class FormComponent implements OnInit {
     if (this.imported || this.created) {
       return true;
     }
-    for (const fg of Array.from(this.data.formMap.values())) {
-      if (fg.dirty) {
-        return true;
+    if (this.data.formMap) {
+      for (const fg of Array.from(this.data.formMap.values())) {
+        if (fg.dirty) {
+          return true;
+        }
       }
     }
     return false;

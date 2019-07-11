@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatSnackBar, MatTableDataSource } from '@angular/material';
 import {PaginatorComponent, DomainRpc} from 'mgmt-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 

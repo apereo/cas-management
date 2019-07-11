@@ -20,7 +20,7 @@ export class MgmtFormControl extends FormControl {
   }
 
   difference(): boolean {
-    return this.previous !== this.current
+    return this.previous !== this.current;
   }
 
 }

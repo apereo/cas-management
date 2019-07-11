@@ -101,6 +101,6 @@ public class CasManagementCoreServicesConfiguration {
 
     @Bean
     public ContactLookupController contactLookupController() {
-        return new ContactLookupController(contactLookup());
+        return new ContactLookupController(contactLookup(), casUserProfileFactory.getIfAvailable());
     }
 }

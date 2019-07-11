@@ -1,9 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Change, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {ControlsService, RevertComponent, ViewComponent} from '@app/project-share';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ServiceViewService} from '@app/registry/services/service.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
@@ -61,7 +59,7 @@ export class LocalChangesComponent implements OnInit {
       }
     });
     this.revertItem = this.selectedItem;
-  };
+  }
 
   revert() {
     this.spinner.start('Reverting change');
@@ -70,7 +68,7 @@ export class LocalChangesComponent implements OnInit {
         .pipe(finalize(() => this.spinner.stop()))
         .subscribe(resp => this.handleRevert());
     } else {
-      this.service.revert(this.revertItem.oldId)
+      this.service.revert(this.revertItem.fileName)
         .pipe(finalize(() => this.spinner.stop()))
         .subscribe(resp => this.handleRevert());
     }

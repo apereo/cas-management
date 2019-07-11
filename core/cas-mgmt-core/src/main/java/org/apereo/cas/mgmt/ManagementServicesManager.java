@@ -136,16 +136,6 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     @Override
-    public boolean matchesExistingService(final Service service) {
-        return this.manager.matchesExistingService(service);
-    }
-
-    @Override
-    public boolean matchesExistingService(final String s) {
-        return this.manager.matchesExistingService(s);
-    }
-
-    @Override
     public Collection<RegisteredService> load() {
         LOGGER.debug("Loading registered services from CAS service registry...");
         return this.manager.load();

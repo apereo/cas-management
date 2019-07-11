@@ -1,6 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
-import {AbstractRegisteredService, Service} from 'mgmt-lib';
+import {
+  AbstractRegisteredService,
+  Service,
+  RegexRegisteredService,
+  OAuthRegisteredService,
+  OidcRegisteredService,
+  SamlRegisteredService,
+  WSFederationRegisterdService
+} from 'mgmt-lib';
 import {catchError, tap} from 'rxjs/operators';
 
 @Injectable({
@@ -25,7 +33,17 @@ export class ImportService extends Service {
       .pipe(
         tap(resp => {
           this.submissionFile = file;
-          this.service = resp;
+          if (RegexRegisteredService.instanceOf(resp))
+            this.service = new RegexRegisteredService(resp);
+          if (OAuthRegisteredService.instanceOf(resp))
+            this.service = new OAuthRegisteredService(resp);
+          if (SamlRegisteredService.instanceOf(resp))
+            this.service = new SamlRegisteredService(resp);
+          if (OidcRegisteredService.instanceOf(resp))
+            this.service = new OidcRegisteredService(resp);
+          if (WSFederationRegisterdService.instanceOf(resp)) {
+            this.service = new WSFederationRegisterdService(resp);
+          }
         }),
         catchError((e) => this.handleError(e, this.dialog))
       );

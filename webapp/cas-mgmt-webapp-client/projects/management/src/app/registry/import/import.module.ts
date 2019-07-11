@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { ImportRoutingModule } from './import-routing.module';
+import {NgModule} from '@angular/core';
 import {ProjectShareModule} from '@app/project-share';
 import {ImportComponent} from '@app/registry/import/import.component';
+import {ImportRoutingModule} from '@app/registry/import/import-routing.module';
 
 @NgModule({
   declarations: [
@@ -12,4 +12,4 @@ import {ImportComponent} from '@app/registry/import/import.component';
     ImportRoutingModule
   ]
 })
-export class ImportModule { }
+export class ImportModule {}

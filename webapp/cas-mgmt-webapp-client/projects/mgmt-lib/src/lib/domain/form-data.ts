@@ -18,6 +18,7 @@ export class FormData {
     encodingAlgOptions: string[];
     encryptAlgOptions: string[];
     oidcSubjectTypes: Option[];
+    oidcApplicationTypes: Option[];
     canonicalizationModes: string[];
     delegatedAuthnProviders: string[];
     oauth20GrantTypes: Option[];

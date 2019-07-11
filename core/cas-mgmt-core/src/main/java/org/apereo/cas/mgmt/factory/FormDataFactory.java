@@ -72,7 +72,7 @@ public class FormDataFactory {
         }
 
         val params = new HashMap<String, Object>();
-        val url = casProperties.getServer().getPrefix() + "/actuator/discoveryProfile";
+        val url = casProperties.getServer().getPrefix() + mgmtProperties.getDiscoveryEndpointPath();
         try {
             val response = HttpUtils.executeGet(url, params);
             if (response != null) {

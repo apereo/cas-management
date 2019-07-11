@@ -4,7 +4,7 @@
     <input matInput [formControl]="realm" required>
     <mat-hint align="end"><lib-hint [difference]="realm.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="The realm identifier of the application, identified via the wtrealm parameter. This needs
             to match the realm defined for the identity provider. By default it’s set to the realm defined for the CAS identity provider.">
   </mat-icon>
@@ -16,7 +16,7 @@
     <input matInput required [formControl]="appliesTo" required>
     <mat-hint align="end"><lib-hint [difference]="appliesTo.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
            matTooltip="Controls to whom security tokens apply. Defaults to the realm.">
   </mat-icon>
 </lib-input>

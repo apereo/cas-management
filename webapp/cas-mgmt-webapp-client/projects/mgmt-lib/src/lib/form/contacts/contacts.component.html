@@ -68,5 +68,5 @@
 </div>
 
 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)" >
-  <mat-option *ngFor="let opt of foundContacts" [value]="opt.name" >{{ opt.name }}</mat-option>
+  <mat-option *ngFor="let opt of foundContacts;let i = index" [value]="i" >{{ opt.name }} - {{ opt.department}}</mat-option>
 </mat-autocomplete>

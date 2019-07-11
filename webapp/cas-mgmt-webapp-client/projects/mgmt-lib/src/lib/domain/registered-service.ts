@@ -30,6 +30,12 @@ import {
 } from './expiration';
 import {Form, FormGroup, Validators} from '@angular/forms';
 import {MgmtFormControl} from '../form/mgmt-formcontrol';
+import {
+  RegisteredServiceServiceTicketExpirationPolicy,
+  serviceTicketExpirationPolicy
+} from './service-ticket-expiration';
+import {proxyTicketExpirationPolicy, RegisteredServiceProxyTicketExpirationPolicy} from './proxy-ticket-expiration';
+import {RegisteredServiceSingleSignOnParticipationPolicy, ssoParticipationPolicy} from './sso-expiration';
 
 export abstract class RegisteredService {
   serviceId: string;
@@ -41,6 +47,9 @@ export abstract class RegisteredService {
   id: number;
   description: string;
   proxyPolicy: RegisteredServiceProxyPolicy;
+  proxyTicketExpirationPolicy: RegisteredServiceProxyTicketExpirationPolicy;
+  serviceTicketExpirationPolicy: RegisteredServiceServiceTicketExpirationPolicy;
+  singleSignOnParticipationPolicy: RegisteredServiceSingleSignOnParticipationPolicy;
   evaluationOrder: number;
   usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider;
   requiredHandlers: string[];
@@ -66,6 +75,9 @@ export abstract class RegisteredService {
     this.id = (service && service.id) || -1;
     this.description = (service && service.description) || null;
     this.proxyPolicy = proxyFactory(service && service.proxyPolicy);
+    this.proxyTicketExpirationPolicy = proxyTicketExpirationPolicy(service && service.proxyTicketExpirationPolicy);
+    this.serviceTicketExpirationPolicy = serviceTicketExpirationPolicy(service && service.serviceTicketExpirationPolicy);
+    this.singleSignOnParticipationPolicy = ssoParticipationPolicy(service && service.singleSignOnParticipationPolicy);
     this.evaluationOrder = (service && service.evaluationOrder) || -1;
     this.usernameAttributeProvider = usernameProviderFactory(service && service.usernameAttributeProvider);
     this.requiredHandlers = (service && service.requiredHandlers) || null;

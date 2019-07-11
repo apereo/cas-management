@@ -23,7 +23,7 @@
       </mat-select>
       <mat-hint align="end"><lib-hint [difference]="timeUnit.difference()"></lib-hint></mat-hint>
     </mat-form-field>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="Time unit of measure for the cache expiration policy.">
     </mat-icon>
   </lib-input>
@@ -34,7 +34,7 @@
       <input matInput [formControl]="expiration">
       <mat-hint align="end"><lib-hint [difference]="expiration.difference()"></lib-hint></mat-hint>
     </mat-form-field>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="The cache expiration time.">
     </mat-icon>
   </lib-input>
@@ -49,7 +49,7 @@
       </mat-select>
       <mat-hint align="end"><lib-hint [difference]="mergingStrategy.difference()"></lib-hint></mat-hint>
     </mat-form-field>
-    <mat-icon appHelp  i18n-matTooltip
+    <mat-icon libHelp  i18n-matTooltip
              matTooltip="Decides how attributes that are retrieved from the cache
     should be merged into the existing attribute repository. Attributes may be replaced, ignored or contain multiple
     values as a result of the merge action.">

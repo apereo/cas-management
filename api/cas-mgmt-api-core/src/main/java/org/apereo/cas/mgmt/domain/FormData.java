@@ -68,6 +68,11 @@ public class FormData implements Serializable {
 
     private Set<String> delegatedAuthnProviders = new HashSet<>();
 
+    private List<Option> oidcApplicationTypes = CollectionUtils.wrapList(
+            new Option("Web", "web"),
+            new Option("Native", "native")
+    );
+
     public RegisteredServiceProperty.RegisteredServiceProperties[] getRegisteredServiceProperties() {
         return RegisteredServiceProperty.RegisteredServiceProperties.values();
     }

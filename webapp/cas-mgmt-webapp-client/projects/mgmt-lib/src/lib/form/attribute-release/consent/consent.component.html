@@ -1,7 +1,7 @@
 <lib-input>
   <mat-checkbox [formControl]="consentEnabled">
     <ng-container i18n>User Consent Enabled</ng-container>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="Control whether consent is active/inactive for this service.">
     </mat-icon>
     <mat-hint align="end"><lib-hint [difference]="consentEnabled.difference()"></lib-hint></mat-hint>
@@ -19,7 +19,7 @@
       </mat-select>
       <mat-hint align="end"><lib-hint [difference]="excluded.difference()"></lib-hint></mat-hint>
     </mat-form-field>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="Exclude the indicated attributes from consent.">
     </mat-icon>
   </lib-input>
@@ -36,7 +36,7 @@
       </mat-select>
       <mat-hint align="end"><lib-hint [difference]="includeOnly.difference()"></lib-hint></mat-hint>
     </mat-form-field>
-    <mat-icon appHelp i18n-matTooltip
+    <mat-icon libHelp i18n-matTooltip
              matTooltip="Force-include the indicated attributes in consent, provided attributes are resolved.">
     </mat-icon>
   </lib-input>

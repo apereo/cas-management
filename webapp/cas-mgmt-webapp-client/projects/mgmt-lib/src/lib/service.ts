@@ -4,7 +4,7 @@
 
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
 import { MatDialog } from '@angular/material/dialog';
 import {Injectable} from '@angular/core';
@@ -68,7 +68,7 @@ export class Service {
       dialog.open(UnknownComponent, {
         width: '500px',
         position: {top: '100px'}
-      })
+      });
     } else {
       console.log('An error Occurred: ' + e.message);
       return throwError(e);

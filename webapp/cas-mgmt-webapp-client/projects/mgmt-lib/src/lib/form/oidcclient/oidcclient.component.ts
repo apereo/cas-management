@@ -11,44 +11,24 @@ export class OidcclientComponent implements OnInit {
 
   @Input()
   control: FormGroup;
-  showOAuthSecret: boolean;
+
   dynamicallyRegistered: boolean;
-  clientId: MgmtFormControl;
-  clientSecret: MgmtFormControl;
-  bypassApprovalPrompt: MgmtFormControl;
-  generateRefreshToken: MgmtFormControl;
-  jwks: MgmtFormControl;
-  signIdToken: MgmtFormControl;
+  tokenEndpointAuthenticationMethod: MgmtFormControl;
   implicit: MgmtFormControl;
-  encryptIdToken: MgmtFormControl;
-  idTokenEncryptionAlg: MgmtFormControl;
-  idTokenEncryptionEncoding: MgmtFormControl;
+  applicationType: MgmtFormControl;
   subjectType: MgmtFormControl;
   sectorIdentifierUri: MgmtFormControl;
   dynamicRegistrationDateTime: MgmtFormControl;
-  responseTypes: MgmtFormControl;
-  grantTypes: MgmtFormControl;
-  jwtAccessToken: MgmtFormControl;
 
   constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.clientId = this.control.get('clientId') as MgmtFormControl;
-    this.clientSecret = this.control.get('clientSecret') as MgmtFormControl;
-    this.bypassApprovalPrompt = this.control.get('bypassApprovalPrompt') as MgmtFormControl;
-    this.generateRefreshToken = this.control.get('generateRefreshToken') as MgmtFormControl;
-    this.jwks = this.control.get('jwks') as MgmtFormControl;
-    this.signIdToken = this.control.get('signIdToken') as MgmtFormControl;
+    this.tokenEndpointAuthenticationMethod = this.control.get('tokenEndpointAuthenticationMethod') as MgmtFormControl;
     this.implicit = this.control.get('implicit') as MgmtFormControl;
-    this.encryptIdToken = this.control.get('encryptIdToken') as MgmtFormControl;
-    this.idTokenEncryptionAlg = this.control.get('idTokenEncryptionAlg') as MgmtFormControl;
-    this.idTokenEncryptionEncoding = this.control.get('idTokenEncryptionEncoding') as MgmtFormControl;
+    this.applicationType = this.control.get('applicationType') as MgmtFormControl;
     this.subjectType = this.control.get('subjectType') as MgmtFormControl;
     this.sectorIdentifierUri = this.control.get('sectorIdentifierUri') as MgmtFormControl;
     this.dynamicRegistrationDateTime = this.control.get('dynamicRegistrationDateTime') as MgmtFormControl;
-    this.responseTypes = this.control.get('responseTypes') as MgmtFormControl;
-    this.grantTypes = this.control.get('grantTypes') as MgmtFormControl;
-    this.jwtAccessToken = this.control.get('jwtAccessToken') as MgmtFormControl;
   }
 }

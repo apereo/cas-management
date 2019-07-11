@@ -1,0 +1,39 @@
+<div [formGroup]="control">
+  <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
+  border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Attribute</div>
+    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>Name Format</div>
+    <div [ngClass]="'actionWidth'" i18n></div>
+  </div>
+  <div formArrayName="nameFormats">
+    <div *ngFor="let entry of entries.controls; let i = index;" [formGroupName]="i"
+         style="display: flex; flex-direction: row; border-bottom-width: 1px;
+         border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+      <div [ngClass]="'nameWidth'">
+        <mat-form-field>
+          <input matInput [matAutocomplete]="auto"
+                 formControlName="key" (click)="selectedRow = i">
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'valueWidth'">
+        <mat-form-field>
+          <input matInput [matAutocomplete]="formats" formControlName="value">
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'actionWidth'">
+        <button mat-icon-button (click)="delete(i)"><mat-icon style="font-size: medium">delete</mat-icon></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="height:25px;padding-top: 5px;">
+  <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
+</div>
+
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">{{ opt }}</mat-option>
+</mat-autocomplete>
+
+<mat-autocomplete #formats="matAutocomplete">
+  <mat-option *ngFor="let opt of formData.options.samlAttributeNameFormats" [value]="opt">{{ opt }}</mat-option>
+</mat-autocomplete>

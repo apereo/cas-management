@@ -20,4 +20,12 @@ public interface ContactLookup {
      */
     Collection<RegisteredServiceContact> query(String query);
 
+    /**
+     * Method called to create a contact for the logged in user.
+     *
+     * @param id - the id of the user to look up.
+     * @return - the logged in user a contact.
+     */
+    RegisteredServiceContact loggedInContact(String id);
+
 }

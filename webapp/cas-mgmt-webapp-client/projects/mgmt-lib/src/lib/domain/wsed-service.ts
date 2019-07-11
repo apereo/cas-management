@@ -21,7 +21,8 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
 
   constructor(service?: RegisteredService) {
     super(service);
-    const s: WSFederationRegisterdService = service as WSFederationRegisterdService;
+    const s: WSFederationRegisterdService = WSFederationRegisterdService.instanceOf(service)
+      ? service as WSFederationRegisterdService : undefined;
     this.realm = (s && s.realm) || null;
     this.protocol = (s && s.protocol) || null;
     this.tokenType = (s && s.tokenType) || null;

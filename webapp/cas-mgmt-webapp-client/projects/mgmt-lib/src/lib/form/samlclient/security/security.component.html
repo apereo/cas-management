@@ -1,7 +1,7 @@
 <lib-input>
   <mat-checkbox [formControl]="signAssertions">
     <ng-container i18n>Sign Assertions</ng-container>
-    <mat-icon appHelp i18n-matTooltip matTooltip="Sign Assertions."></mat-icon>
+    <mat-icon libHelp i18n-matTooltip matTooltip="Sign Assertions."></mat-icon>
     <mat-hint align="end"><lib-hint [difference]="signAssertions.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
@@ -9,7 +9,7 @@
 <lib-input>
   <mat-checkbox [formControl]="signResponses">
     <ng-container i18n>Sign Responses</ng-container>
-    <mat-icon appHelp i18n-matTooltip matTooltip="Sign Responses."></mat-icon>
+    <mat-icon libHelp i18n-matTooltip matTooltip="Sign Responses."></mat-icon>
     <mat-hint align="end"><lib-hint [difference]="signResponses.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
@@ -17,7 +17,7 @@
 <lib-input>
   <mat-checkbox [formControl]="encryptAssertions">
     <ng-container i18n>Encrypt Assertions</ng-container>
-    <mat-icon appHelp i18n-matTooltip matTooltip="Encrypt Assertions."></mat-icon>
+    <mat-icon libHelp i18n-matTooltip matTooltip="Encrypt Assertions."></mat-icon>
     <mat-hint align="end"><lib-hint [difference]="encryptAssertions.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
@@ -32,7 +32,7 @@
     </mat-select>
     <mat-hint align="end"><lib-hint [difference]="signingCredentialType.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="This setting controls the type of the signature block produced in the final SAML response
             for this application. The latter, being the default, encodes the signature in PEM format inside a X509Data
             block while the former encodes the signature based on the resolved public key under a DEREncodedKeyValue block.">
@@ -45,7 +45,7 @@
     <input matInput [formControl]="requiredAuthenticationContextClass">
     <mat-hint align="end"><lib-hint [difference]="requiredAuthenticationContextClass.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="The authentication context class that may be passed to the service provider. If
     none is defined here forcefully, metadata will be consulted instead.">
   </mat-icon>
@@ -57,7 +57,7 @@
     <input matInput [formControl]="assertionAudiences">
     <mat-hint align="end"><lib-hint [difference]="assertionAudiences.difference()"></lib-hint></mat-hint>
   </mat-form-field>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Comma-separated list of audience urls to include in the assertion, in addition to the entity id.">
   </mat-icon>
 </lib-input>

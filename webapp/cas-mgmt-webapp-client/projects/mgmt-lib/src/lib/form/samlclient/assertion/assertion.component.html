@@ -1,0 +1,46 @@
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Authentication Context Class</mat-placeholder>
+    <input matInput [formControl]="requiredAuthenticationContextClass">
+    <mat-hint align="end"><lib-hint [difference]="requiredAuthenticationContextClass.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="The authentication context class that may be passed to the service provider. If
+    none is defined here forcefully, metadata will be consulted instead.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Assertion Audiences</mat-placeholder>
+    <input matInput [formControl]="assertionAudiences">
+    <mat-hint align="end"><lib-hint [difference]="assertionAudiences.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Comma-separated list of audience urls to include in the assertion, in addition to the entity id.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Issuer Entity ID</mat-placeholder>
+    <input matInput [formControl]="issuerEntityId">
+    <mat-hint align="end"><lib-hint [difference]="issuerEntityId.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="If defined, will override the issue value with the given identity provider entity id.
+            This may be useful in cases where CAS needs to maintain multiple identity provider entity ids.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Skew Allowance</mat-placeholder>
+    <input matInput [formControl]="skewAllowance">
+    <mat-hint align="end"><lib-hint [difference]="skewAllowance.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="If defined, indicates number of seconds used to skew authentication dates such as valid-from
+            and valid-until elements, etc">
+  </mat-icon>
+</lib-input>

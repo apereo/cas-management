@@ -1,0 +1,14 @@
+<div [formGroup]="saml">
+  <app-card i18n-heading heading="Attribute Name Id Format">
+    <lib-saml-attributes [control]="saml"></lib-saml-attributes>
+  </app-card>
+
+  <app-card i18n-heading heading="Attribute Friendly Names">
+    <lib-friendly [control]="saml"></lib-friendly>
+  </app-card>
+
+  <app-card i18n-heading heading="Attribute Value Types">
+    <lib-value-types [control]="saml"></lib-value-types>
+  </app-card>
+
+</div>

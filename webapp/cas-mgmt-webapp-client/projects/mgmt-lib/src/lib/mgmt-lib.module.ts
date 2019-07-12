@@ -28,7 +28,6 @@ import {ResponsetypeComponent} from './form/responsetype/responsetype.component'
 import {SamlMetadataComponent} from './form/samlclient/metadata/metadata.component';
 import {SamlNameidComponent} from './form/samlclient/nameid/nameid.component';
 import {SamlOptionalComponent} from './form/samlclient/optional/optional.component';
-import {SamlSecurityComponent} from './form/samlclient/security/security.component';
 import {ThemeidComponent} from './form/themeid/themeid.component';
 import {UidattrsModule} from './form/uidattrs/uidattrs.module';
 import {WsfedclientComponent} from './form/wsfedclient/wsfedclient.component';
@@ -91,7 +90,6 @@ import {EncryptionComponent} from './form/samlclient/encryption/encryption.compo
     SamlMetadataComponent,
     SamlNameidComponent,
     SamlOptionalComponent,
-    SamlSecurityComponent,
     ThemeidComponent,
     WsfedclientComponent,
     PrivacyUrlComponent,
@@ -149,7 +147,6 @@ import {EncryptionComponent} from './form/samlclient/encryption/encryption.compo
     SamlMetadataComponent,
     SamlNameidComponent,
     SamlOptionalComponent,
-    SamlSecurityComponent,
     ThemeidComponent,
     UidattrsModule,
     WsfedclientComponent,

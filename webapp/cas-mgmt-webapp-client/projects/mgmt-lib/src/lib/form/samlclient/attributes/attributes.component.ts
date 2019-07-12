@@ -18,8 +18,14 @@ export class AttributesComponent implements OnInit {
 
   entries: FormArray;
 
+  display: Function;
+
   constructor(public data: DataRecord, public formData: FormDataService) {
+    this.display = (format?: string): string | undefined =>
+        format ? formData.options.samlAttributeNameFormats
+          .find(v => v.value === format).display : undefined;
   }
+
 
   ngOnInit() {
     this.entries = this.control.get('nameFormats') as FormArray;
@@ -36,5 +42,4 @@ export class AttributesComponent implements OnInit {
     this.entries.removeAt(row);
     this.control.markAsTouched();
   }
-
 }

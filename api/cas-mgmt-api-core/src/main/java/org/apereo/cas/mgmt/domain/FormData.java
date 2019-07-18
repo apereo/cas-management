@@ -48,10 +48,10 @@ public class FormData implements Serializable {
 
     private List<String> samlDirections = CollectionUtils.wrapList("INCLUDE", "EXCLUDE");
 
-    private List<String> samlAttributeNameFormats = CollectionUtils.wrapList(
-        "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
-        "urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified",
-        "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+    private List<Option> samlAttributeNameFormats = CollectionUtils.wrapList(
+        new Option("Basic", "urn:oasis:names:tc:SAML:2.0:attrname-format:basic"),
+        new Option("Unspecified", "urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"),
+        new Option("Uri", "urn:oasis:names:tc:SAML:2.0:attrname-format:uri")
     );
 
     private List<String> samlCredentialTypes = Arrays.stream(SamlIdPResponseProperties.SignatureCredentialTypes.values())
@@ -67,6 +67,11 @@ public class FormData implements Serializable {
     private List<Option> mfaProviders = new ArrayList<>();
 
     private Set<String> delegatedAuthnProviders = new HashSet<>();
+
+    private List<Option> oidcApplicationTypes = CollectionUtils.wrapList(
+            new Option("Web", "web"),
+            new Option("Native", "native")
+    );
 
     public RegisteredServiceProperty.RegisteredServiceProperties[] getRegisteredServiceProperties() {
         return RegisteredServiceProperty.RegisteredServiceProperties.values();

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+
 import { SubmitsRoutingModule } from './submits-routing.module';
-import {ProjectShareModule} from '@app/project-share';
 import {SubmitsComponent} from '@app/delegated/submits/submits.component';
+import {ProjectShareModule} from '@app/project-share';
 
 @NgModule({
   declarations: [

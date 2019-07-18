@@ -14,7 +14,6 @@ import {TabUsernameattrComponent} from './tab-usernameattr/tab-usernameattr.comp
 import {TabAttrreleaseComponent} from './tab-attrrelease/tab-attrrelease.component';
 import {TabPropertiesComponent} from './tab-properties/tab-properties.component';
 import { TabOauthComponent } from './tab-oauth/tab-oauth.component';
-import { TabSamlComponent } from './tab-saml/tab-saml.component';
 import { TabWsfedComponent } from './tab-wsfed/tab-wsfed.component';
 import { TabContactsComponent } from './tab-contacts/tab-contacts.component';
 import { TabExpirationComponent } from './tab-expiration/tab-expiration.component';
@@ -22,11 +21,23 @@ import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
 import { MgmtCardComponent } from './mgmt-card/mgmt-card.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
+import {MgmtLibModule} from 'mgmt-lib';
+import {TabOidcAttrreleaseComponent} from '@app/form/tab-oidc-attrrelease/tab-oidc-attrrelase.component';
+import {TabWsfedAttrreleaseComponent} from '@app/form/tab-wsfed-attrrelease/tab-wsfed-attrrelease.component';
+import { TabTokensComponent } from './tab-tokens/tab-tokens.component';
+import { TabTicketsComponent } from './tab-tickets/tab-tickets.component';
+import { TabSsoComponent } from './tab-sso/tab-sso.component';
+import { TabSamlAttributesComponent } from './tab-saml-attributes/tab-saml-attributes.component';
+import { TabSamlEncryptionComponent } from './tab-saml-encryption/tab-saml-encryption.component';
+import { TabSamlSigningComponent } from './tab-saml-signing/tab-saml-signing.component';
+import { TabSamlMetadataComponent } from './tab-saml-metadata/tab-saml-metadata.component';
+import { TabSamlAssertionComponent } from './tab-saml-assertion/tab-saml-assertion.component';
 
 @NgModule({
   imports: [
     ProjectShareModule,
-    FormRoutingModule
+    FormRoutingModule,
+    MgmtLibModule
   ],
   declarations: [
     FormComponent,
@@ -38,18 +49,26 @@ import {ProjectShareModule} from '../project-share/project-share.module';
     TabProxyComponent,
     TabUsernameattrComponent,
     TabAttrreleaseComponent,
+    TabOidcAttrreleaseComponent,
+    TabWsfedAttrreleaseComponent,
     TabPropertiesComponent,
-    TabSamlComponent,
     TabOauthComponent,
     TabOIDCComponent,
     TabWsfedComponent,
     FormComponent,
     TabOauthComponent,
-    TabSamlComponent,
     TabWsfedComponent,
     TabContactsComponent,
     TabExpirationComponent,
     MgmtCardComponent,
+    TabTokensComponent,
+    TabTicketsComponent,
+    TabSsoComponent,
+    TabSamlAttributesComponent,
+    TabSamlEncryptionComponent,
+    TabSamlSigningComponent,
+    TabSamlMetadataComponent,
+    TabSamlAssertionComponent,
   ]
 })
 

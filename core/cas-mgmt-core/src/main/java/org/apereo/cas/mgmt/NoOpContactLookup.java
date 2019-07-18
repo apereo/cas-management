@@ -17,4 +17,9 @@ public class NoOpContactLookup implements ContactLookup {
     public Collection<RegisteredServiceContact> query(final String query) {
         return new ArrayList<>();
     }
+
+    @Override
+    public RegisteredServiceContact loggedInContact(final String id) {
+        return null;
+    }
 }

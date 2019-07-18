@@ -1,4 +1,4 @@
-<div *ngIf="!isOidc && !isWsFed" [formGroup]="attributeRelease">
+<div [formGroup]="attributeRelease">
   <app-card i18n-heading heading="Attribute Release Policy">
     <lib-attribute-release-policies [typeControl]="attributeRelease.type" [control]="attributeRelease.policy"></lib-attribute-release-policies>
   </app-card>
@@ -15,13 +15,4 @@
     <lib-attribute-release-principal-repo [control]="attributeRelease.policy.get('principalRepo')"></lib-attribute-release-principal-repo>
   </app-card>
 </div>
-<div *ngIf="isOidc" [formGroup]="oidcForm">
-  <app-card i18n-heading heading="Attribute Release Options" [collapse]="false">
-    <lib-oidc-options [control]="oidcForm.get('scopes')"></lib-oidc-options>
-  </app-card>
-</div>
-<div *ngIf="isWsFed" [formGroup]="attributeRelease">
-  <app-card i18n-heading heading="Attribute Release Options" [collapse]="false">
-    <lib-wsfedattrrelpolicies [control]="attributeRelease.policy"></lib-wsfedattrrelpolicies>
-  </app-card>
-</div>
+

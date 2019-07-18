@@ -1,7 +1,7 @@
 import {Directive, ElementRef, OnInit} from '@angular/core';
 
 @Directive({
-  selector: '[appHelp]'
+  selector: '[libHelp]'
 })
 
 export class HelpDirective implements OnInit {

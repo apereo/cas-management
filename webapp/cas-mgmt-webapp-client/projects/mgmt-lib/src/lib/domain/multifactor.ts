@@ -17,12 +17,13 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
 
   constructor(policy?: RegisteredServiceMultifactorPolicy) {
     super();
-    const p: DefaultRegisteredServiceMultifactorPolicy = policy as DefaultRegisteredServiceMultifactorPolicy;
+    const p: DefaultRegisteredServiceMultifactorPolicy = DefaultRegisteredServiceMultifactorPolicy.instanceOf(policy)
+      ? policy as DefaultRegisteredServiceMultifactorPolicy : undefined;
     this.multifactorAuthenticationProviders = (p && p.multifactorAuthenticationProviders) || null;
     this.failureMode = (p && p.failureMode) ||  null;
     this.principalAttributeNameTrigger = (p && p.principalAttributeNameTrigger) || null;
     this.principalAttributeValueToMatch = (p && p.principalAttributeValueToMatch) || null;
-    this.bypassEnabled = (p && p.bypassEnabled) || null;
+    this.bypassEnabled = p ? p.bypassEnabled : null;
     this['@class'] = DefaultRegisteredServiceMultifactorPolicy.cName;
   }
 }
@@ -38,7 +39,8 @@ export class GroovyRegisteredServiceMultifactorPolicy extends RegisteredServiceM
 
   constructor(policy?: RegisteredServiceMultifactorPolicy) {
     super();
-    const p: GroovyRegisteredServiceMultifactorPolicy = policy as GroovyRegisteredServiceMultifactorPolicy;
+    const p: GroovyRegisteredServiceMultifactorPolicy = GroovyRegisteredServiceMultifactorPolicy.instanceOf(policy)
+      ? policy as GroovyRegisteredServiceMultifactorPolicy : undefined;
     this.groovyScript = (p && p.groovyScript) || null;
     this['@class'] = GroovyRegisteredServiceMultifactorPolicy.cName;
   }

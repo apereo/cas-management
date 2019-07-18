@@ -25,7 +25,6 @@ export class AccessStrategyComponent implements OnInit {
     AccessStrategyType.GROOVY
   ];
 
-  sso: MgmtFormControl;
   requireAll: MgmtFormControl;
   unauthorizedUrl: MgmtFormControl;
 
@@ -33,7 +32,6 @@ export class AccessStrategyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sso = this.control.get('sso') as MgmtFormControl;
     this.requireAll = this.control.get('requireAll') as MgmtFormControl;
     this.unauthorizedUrl = this.control.get('unauthorizedUrl') as MgmtFormControl;
   }

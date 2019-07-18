@@ -1,0 +1,25 @@
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-placeholder i18n>Duration</mat-placeholder>
+    <input matInput type="number" [formControl]="timeValue">
+    <mat-hint align="end"><lib-hint [difference]="timeValue.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Number representing how long to still honor the SSO session.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput">
+    <mat-select i18n-placeholder placeholder="Time Unit" [formControl]="timeUnit">
+      <mat-option value="SECONDS">Seconds</mat-option>
+      <mat-option value="MINUTES">Minutes</mat-option>
+      <mat-option value="HOURS">Hours</mat-option>
+      <mat-option value="DAYS">Days</mat-option>
+    </mat-select>
+    <mat-hint align="end"><lib-hint [difference]="timeUnit.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Units used in calculating SSO policy duration.">
+  </mat-icon>
+</lib-input>

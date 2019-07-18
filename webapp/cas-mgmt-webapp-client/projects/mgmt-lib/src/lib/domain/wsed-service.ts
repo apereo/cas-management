@@ -21,7 +21,8 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
 
   constructor(service?: RegisteredService) {
     super(service);
-    const s: WSFederationRegisterdService = service as WSFederationRegisterdService;
+    const s: WSFederationRegisterdService = WSFederationRegisterdService.instanceOf(service)
+      ? service as WSFederationRegisterdService : undefined;
     this.realm = (s && s.realm) || null;
     this.protocol = (s && s.protocol) || null;
     this.tokenType = (s && s.tokenType) || null;
@@ -32,7 +33,7 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
     this.wsdlService = (s && s.wsdlService) || null;
     this.wsdlEndpoint = (s && s.wsdlEndpoint) || null;
     this.appliesTo = (s && s.appliesTo) || null;
-    this.attributeReleasePolicy = WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy)
+    this.attributeReleasePolicy = s && s.attributeReleasePolicy && WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy)
       ? s.attributeReleasePolicy
       : new WsFederationClaimsReleasePolicy();
     this['@class'] = WSFederationRegisterdService.cName;

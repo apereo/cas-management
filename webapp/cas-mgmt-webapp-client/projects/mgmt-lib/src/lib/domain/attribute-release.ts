@@ -1,12 +1,10 @@
 import {
   attributeRepoFactory,
-  DefaultPrincipalAttributesRepository,
   PrincipalAttributesRepository
 } from './attribute-repo';
 import {attributeFilterFactory, RegisteredServiceAttributeFilter} from './attribute-filter';
 import {
   consentPolicyFactory,
-  DefaultRegisteredServiceConsentPolicy,
   RegisteredServiceConsentPolicy
 } from './consent-policy';
 
@@ -24,11 +22,11 @@ export abstract class RegisteredServiceAttributeReleasePolicy {
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     this.attributeFilter = attributeFilterFactory(policy && policy.attributeFilter);
     this.principalAttributesRepository = attributeRepoFactory(policy && policy.principalAttributesRepository);
-    this.authorizedToReleaseCredentialPassword = (policy && policy.authorizedToReleaseCredentialPassword) || null;
-    this.authorizedToReleaseProxyGrantingTicket = (policy && policy.authorizedToReleaseProxyGrantingTicket) || null;
-    this.excludeDefaultAttributes = (policy && policy.excludeDefaultAttributes) || null;
+    this.authorizedToReleaseCredentialPassword = policy ? policy.authorizedToReleaseCredentialPassword : false;
+    this.authorizedToReleaseProxyGrantingTicket = policy ? policy.authorizedToReleaseProxyGrantingTicket : false;
+    this.excludeDefaultAttributes = policy  ? policy.excludeDefaultAttributes :  null;
     this.principalIdAttribute = (policy && policy.principalIdAttribute) || null;
-    this.authorizedToReleaseAuthenticationAttributes = (policy && policy.authorizedToReleaseAuthenticationAttributes) || true;
+    this.authorizedToReleaseAuthenticationAttributes = policy ? policy.authorizedToReleaseAuthenticationAttributes : true;
     this.consentPolicy = consentPolicyFactory(policy && policy.consentPolicy);
     this.order = (policy && policy.order) || 0;
   }
@@ -77,7 +75,8 @@ export class ReturnMappedAttributeReleasePolicy extends AbstractRegisteredServic
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: ReturnMappedAttributeReleasePolicy = policy as ReturnMappedAttributeReleasePolicy;
+    const p: ReturnMappedAttributeReleasePolicy = ReturnMappedAttributeReleasePolicy.instanceOf(policy)
+      ? policy as ReturnMappedAttributeReleasePolicy : undefined;
     this.allowedAttributes = (p && p.allowedAttributes) || null;
     this['@class'] = ReturnMappedAttributeReleasePolicy.cName;
   }
@@ -94,7 +93,8 @@ export class ReturnAllowedAttributeReleasePolicy extends AbstractRegisteredServi
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: ReturnAllowedAttributeReleasePolicy = policy as ReturnAllowedAttributeReleasePolicy;
+    const p: ReturnAllowedAttributeReleasePolicy = ReturnAllowedAttributeReleasePolicy.instanceOf(policy)
+      ? policy as ReturnAllowedAttributeReleasePolicy : undefined;
     this.allowedAttributes = (p && p.allowedAttributes) || null;
     this['@class'] = ReturnAllowedAttributeReleasePolicy.cName;
   }
@@ -111,7 +111,8 @@ export class ScriptedRegisteredServiceAttributeReleasePolicy extends AbstractReg
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: ScriptedRegisteredServiceAttributeReleasePolicy = policy as ScriptedRegisteredServiceAttributeReleasePolicy;
+    const p: ScriptedRegisteredServiceAttributeReleasePolicy = ScriptedRegisteredServiceAttributeReleasePolicy.instanceOf(policy)
+      ? policy as ScriptedRegisteredServiceAttributeReleasePolicy : undefined;
     this.scriptFile = (p && p.scriptFile) || null;
     this['@class'] = ScriptedRegisteredServiceAttributeReleasePolicy.cName;
   }
@@ -128,7 +129,8 @@ export class ReturnRestfulAttributeReleasePolicy extends AbstractRegisteredServi
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: ReturnRestfulAttributeReleasePolicy = policy as ReturnRestfulAttributeReleasePolicy;
+    const p: ReturnRestfulAttributeReleasePolicy = ReturnRestfulAttributeReleasePolicy.instanceOf(policy)
+      ? policy as ReturnRestfulAttributeReleasePolicy : undefined;
     this.endpoint = (p && p.endpoint) || null;
     this['@class'] = ReturnRestfulAttributeReleasePolicy.cName;
   }
@@ -145,7 +147,8 @@ export class GroovyScriptAttributeReleasePolicy extends AbstractRegisteredServic
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: GroovyScriptAttributeReleasePolicy = policy as GroovyScriptAttributeReleasePolicy;
+    const p: GroovyScriptAttributeReleasePolicy = GroovyScriptAttributeReleasePolicy.instanceOf(policy)
+      ? policy as GroovyScriptAttributeReleasePolicy : undefined;
     this.groovyScript = (p && p.groovyScript) || null;
     this['@class'] = GroovyScriptAttributeReleasePolicy.cName;
   }
@@ -162,7 +165,8 @@ export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAll
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: GroovySamlRegisteredServiceAttributeReleasePolicy = policy as GroovySamlRegisteredServiceAttributeReleasePolicy;
+    const p: GroovySamlRegisteredServiceAttributeReleasePolicy = GroovySamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)
+      ? policy as GroovySamlRegisteredServiceAttributeReleasePolicy : undefined;
     this.groovyScript = (p && p.groovyScript) || null;
     this['@class'] = GroovySamlRegisteredServiceAttributeReleasePolicy.cName;
   }
@@ -179,7 +183,8 @@ export class WsFederationClaimsReleasePolicy extends AbstractRegisteredServiceAt
 
   constructor(policy?: AbstractRegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: WsFederationClaimsReleasePolicy = policy as WsFederationClaimsReleasePolicy;
+    const p: WsFederationClaimsReleasePolicy = WsFederationClaimsReleasePolicy.instanceOf(policy)
+      ? policy as WsFederationClaimsReleasePolicy : undefined;
     this.allowedAttributes = (p && p.allowedAttributes) || null;
     this['@class'] = WsFederationClaimsReleasePolicy.cName;
   }
@@ -224,7 +229,8 @@ export class MetadataEntityAttributesAttributeReleasePolicy extends ReturnAllowe
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: MetadataEntityAttributesAttributeReleasePolicy = policy as MetadataEntityAttributesAttributeReleasePolicy;
+    const p: MetadataEntityAttributesAttributeReleasePolicy = MetadataEntityAttributesAttributeReleasePolicy.instanceOf(policy)
+      ? policy as MetadataEntityAttributesAttributeReleasePolicy : undefined;
     this.entityAttribute = (p && p.entityAttribute) || null;
     this.entityAttributeFormat = (p && p.entityAttributeFormat) || null;
     this.entityAttributeValues = (p && p.entityAttributeValues) || null;

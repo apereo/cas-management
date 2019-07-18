@@ -11,7 +11,6 @@ export class BaseAccessForm<T extends RegisteredServiceAccessStrategy> extends F
 
   constructor(public strategy: RegisteredServiceAccessStrategy) {
     super({
-      sso: new MgmtFormControl(null),
       requireAll: new MgmtFormControl(null),
       unauthorizedUrl: new MgmtFormControl(null),
       requiredAttributes: new AttributeForm(strategy.requiredAttributes),
@@ -23,13 +22,13 @@ export class BaseAccessForm<T extends RegisteredServiceAccessStrategy> extends F
 
   formMap(): any {
     const frm =  {
-      sso: this.strategy.ssoEnabled,
       requireAll: this.strategy.requireAllAttributes,
       unauthorizedUrl: this.strategy.unauthorizedRedirectUrl,
       requiredAttributes: (<AttributeForm>this.get('requiredAttributes')).formMap(),
       caseInsensitive: this.strategy.caseInsensitive,
       rejectedAttributes: (<AttributeForm>this.get('rejectedAttributes')).formMap(),
-      allowedProviders: (this.strategy.delegatedAuthenticationPolicy && this.strategy.delegatedAuthenticationPolicy.allowedProviders) || null
+      allowedProviders: (this.strategy.delegatedAuthenticationPolicy
+        && this.strategy.delegatedAuthenticationPolicy.allowedProviders) || null
     };
     return frm;
   }
@@ -40,7 +39,6 @@ export class BaseAccessForm<T extends RegisteredServiceAccessStrategy> extends F
 
   baseForm(strategy: RegisteredServiceAccessStrategy) {
     const frm = this.value;
-    strategy.ssoEnabled = frm.sso;
     strategy.requireAllAttributes = frm.requireAll;
     strategy.unauthorizedRedirectUrl = frm.unauthorizedUrl;
     strategy.caseInsensitive = frm.caseInsensitive;

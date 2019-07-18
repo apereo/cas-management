@@ -15,10 +15,10 @@ declare var ace: any;
 
 export class EditorComponent implements OnInit {
   @Input()
-  mode: string = 'text';
+  mode = 'text';
 
   @Input()
-  theme: string = 'default';
+  theme = 'default';
 
   @Output()
   changed: EventEmitter<void> = new EventEmitter<void>();
@@ -55,7 +55,7 @@ export class EditorComponent implements OnInit {
   set file(file: string) {
     if (this.editor) {
       this.editor.setValue(file ? file : '');
-      this.editor.once("change", (event) => {
+      this.editor.once('change', (event) => {
         this.changed.emit();
       });
     }

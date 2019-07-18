@@ -9,7 +9,7 @@ import {FormDataService} from '../../form-data.service';
 export class LogouttypeevalComponent implements OnInit {
 
   @Input()
-  control: MgmtFormControl
+  control: MgmtFormControl;
 
   constructor(public formData: FormDataService) {
   }

@@ -13,7 +13,7 @@ export class DomainsResolver implements Resolve<DomainRpc[]> {
   constructor(private service: DomainService, private spinner: SpinnerService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<DomainRpc[]>  {
-    this.spinner.start("Loading domains");
+    this.spinner.start('Loading domains');
     return this.service.getDomains().pipe(finalize(() => this.spinner.stop()));
   }
 

@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ServiceViewService} from '../services/service.service';
 import {EditorComponent} from '@app/project-share';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SpinnerService} from 'mgmt-lib';
 import {finalize} from 'rxjs/operators';
@@ -49,8 +49,8 @@ export class JSONComponent implements AfterViewInit, OnInit {
 
   handleSuccess() {
     this.snackBar.open(
-      "Service successfully saved",
-      "Dismiss",
+      'Service successfully saved',
+      'Dismiss',
       { duration: 5000 }
     );
     this.location.back();
@@ -59,7 +59,7 @@ export class JSONComponent implements AfterViewInit, OnInit {
   handleError(error: HttpErrorResponse) {
     this.snackBar.open(
       error.error.message,
-      "Dismiss",
+      'Dismiss',
       { duration: 5000 }
     );
   }

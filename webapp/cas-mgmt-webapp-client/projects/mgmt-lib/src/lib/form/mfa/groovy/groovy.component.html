@@ -4,7 +4,7 @@
     <input matInput [formControl]="control" required>
   </mat-form-field>
   <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
-  <mat-icon appHelp i18n-matTooltip
+  <mat-icon libHelp i18n-matTooltip
             matTooltip="Location of groovy script file that will be used by this service to determine if MFA is triggered when accessing this service.">
   </mat-icon>
 </lib-input>

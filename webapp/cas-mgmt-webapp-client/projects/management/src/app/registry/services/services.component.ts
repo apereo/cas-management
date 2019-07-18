@@ -2,9 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceItem, AppConfigService, PaginatorComponent, SpinnerService} from 'mgmt-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
 import {RevertComponent} from '@app/project-share';
 import {BreakpointObserver} from '@angular/cdk/layout';
@@ -89,7 +87,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       }
     });
     this.deleteItem = this.selectedItem;
-  };
+  }
 
   openModalRevert() {
     const dialogRef = this.dialog.open(RevertComponent, {
@@ -103,7 +101,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       }
     });
     this.revertItem = this.selectedItem;
-  };
+  }
 
   delete() {
     this.spinner.start('Deleting service');
@@ -116,7 +114,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
            {duration: 5000}
          )
       );
-  };
+  }
 
   handleDelete(name: string) {
     this.snackBar
@@ -148,7 +146,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         {duration: 5000}
       );
   }
-
 
   refresh() {
     this.getServices();

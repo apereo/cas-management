@@ -9,7 +9,7 @@ export class FormData {
     serviceTypes: Option[];
     samlRoles: string[];
     samlDirections: string[];
-    samlAttributeNameFormats: string[];
+    samlAttributeNameFormats: Option[];
     samlCredentialTypes: string[];
     wsFederationClaims: string[];
     mfaProviders: Option[];
@@ -18,6 +18,7 @@ export class FormData {
     encodingAlgOptions: string[];
     encryptAlgOptions: string[];
     oidcSubjectTypes: Option[];
+    oidcApplicationTypes: Option[];
     canonicalizationModes: string[];
     delegatedAuthnProviders: string[];
     oauth20GrantTypes: Option[];

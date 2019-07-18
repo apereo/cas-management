@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { LocalChangesRoutingModule } from './local-changes-routing.module';
 import {LocalChangesComponent} from '@app/version-control/local-changes/local-changes.component';

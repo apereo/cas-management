@@ -19,7 +19,6 @@ import {
   ReturnMappedAttributeReleasePolicy,
   ReturnRestfulAttributeReleasePolicy,
   ScriptedRegisteredServiceAttributeReleasePolicy,
-  WsFederationClaimsReleasePolicy,
   FilterType,
   RegisteredServiceAttributeFilter,
   RegisteredServiceChainingAttributeFilter,
@@ -41,7 +40,6 @@ import {MetadataReleaseForm} from './policy/metadata-release-form';
 import {AllowedReleaseForm} from './policy/allowed-release-form';
 import {AllReleaseForm} from './policy/all-release-form';
 import {BaseReleaseForm} from './policy/base-release-form';
-import {WsFedReleaseForm} from './policy/wsfed-form';
 import {RegexFilterForm} from './filter/regex-filter-form';
 import {MappedFilterForm} from './filter/mapped-filter-form';
 import {ReverseMappedFilterForm} from './filter/reverse-mapped-filter-form';
@@ -56,7 +54,7 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
   policy: MgmtFormGroup<RegisteredServiceAttributeReleasePolicy>;
   filter: BaseFilterForm<RegisteredServiceAttributeFilter>;
 
-  constructor(public releasePolicy: RegisteredServiceAttributeReleasePolicy, public isWsFed?: boolean) {
+  constructor(public releasePolicy: RegisteredServiceAttributeReleasePolicy) {
     super({});
     const type = this.findType(releasePolicy);
     this.type = new MgmtFormControl(type);
@@ -66,14 +64,12 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
     this.addControl('policy', this.policy);
     this.addControl('filter', this.filter);
     this.type.valueChanges.subscribe(t => this.changeType(t));
-    if (type !== ReleasePolicyType.WS_FED) {
-      this.policy.get('principalRepo').get('type').valueChanges.subscribe(val => {
-        this.policy.get('principalRepo').markAsPristine();
-        if (val === PrincipalRepoType.CACHING) {
-          this.setPrincipal(this.policy.get('principalRepo') as FormGroup, new CachingPrincipalAttributesRepository());
-        }
-      });
-    }
+    this.policy.get('principalRepo').get('type').valueChanges.subscribe(val => {
+      this.policy.get('principalRepo').markAsPristine();
+      if (val === PrincipalRepoType.CACHING) {
+        this.setPrincipal(this.policy.get('principalRepo') as FormGroup, new CachingPrincipalAttributesRepository());
+      }
+    });
   }
 
   formMap(): any {
@@ -179,9 +175,6 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
     if (type === ReleasePolicyType.RETURN_ALL) {
       return new AllReleaseForm(this.releasePolicy as ReturnAllAttributeReleasePolicy);
     }
-    if (type === ReleasePolicyType.WS_FED) {
-      return new WsFedReleaseForm(this.releasePolicy as WsFederationClaimsReleasePolicy);
-    }
   }
 
   getFilter(filter: RegisteredServiceAttributeFilter): BaseFilterForm<RegisteredServiceAttributeFilter> {
@@ -240,9 +233,6 @@ export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegi
     }
     if (GroovySamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
       return ReleasePolicyType.GROOVY_SAML;
-    }
-    if (this.isWsFed || WsFederationClaimsReleasePolicy.instanceOf(policy)) {
-      return ReleasePolicyType.WS_FED;
     }
     return ReleasePolicyType.DENY_ALL;
   }

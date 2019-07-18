@@ -25,14 +25,18 @@ export class FormService extends Service {
       .pipe(
         take(1),
         map(resp => {
-          if (RegexRegisteredService.instanceOf(resp))
+          if (RegexRegisteredService.instanceOf(resp)) {
             return new RegexRegisteredService(resp);
-          if (OAuthRegisteredService.instanceOf(resp))
+          }
+          if (OAuthRegisteredService.instanceOf(resp)) {
             return new OAuthRegisteredService(resp);
-          if (SamlRegisteredService.instanceOf(resp))
+          }
+          if (SamlRegisteredService.instanceOf(resp)) {
             return new SamlRegisteredService(resp);
-          if (OidcRegisteredService.instanceOf(resp))
+          }
+          if (OidcRegisteredService.instanceOf(resp)) {
             return new OidcRegisteredService(resp);
+          }
           if (WSFederationRegisterdService.instanceOf(resp)) {
             return new WSFederationRegisterdService(resp);
           }

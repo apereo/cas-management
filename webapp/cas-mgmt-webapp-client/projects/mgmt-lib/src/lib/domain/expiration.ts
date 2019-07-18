@@ -4,8 +4,8 @@ export abstract class RegisteredServiceExpirationPolicy {
   notifyWhenDeleted: boolean;
 
   constructor(policy?: RegisteredServiceExpirationPolicy) {
-    this.notifyWhenDeleted = (policy && policy.notifyWhenDeleted) || false;
-    this.deleteWhenExpired = (policy && policy.deleteWhenExpired) || false;
+    this.notifyWhenDeleted = policy ? policy.notifyWhenDeleted : false;
+    this.deleteWhenExpired = policy ? policy.deleteWhenExpired : false;
     this.expirationDate = (policy && policy.expirationDate) || null;
   }
 }

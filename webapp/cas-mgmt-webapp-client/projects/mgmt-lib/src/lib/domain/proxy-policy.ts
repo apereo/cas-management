@@ -18,7 +18,8 @@ export class RegexMatchingRegisteredServiceProxyPolicy extends RegisteredService
 
   constructor(policy?: RegisteredServiceProxyPolicy) {
     super();
-    const p: RegexMatchingRegisteredServiceProxyPolicy = policy as RegexMatchingRegisteredServiceProxyPolicy;
+    const p: RegexMatchingRegisteredServiceProxyPolicy = RegexMatchingRegisteredServiceProxyPolicy.instanceOf(policy)
+      ? policy as RegexMatchingRegisteredServiceProxyPolicy : undefined;
     this.pattern = (p && p.pattern) || null;
     this['@class'] = RegexMatchingRegisteredServiceProxyPolicy.cName;
   }

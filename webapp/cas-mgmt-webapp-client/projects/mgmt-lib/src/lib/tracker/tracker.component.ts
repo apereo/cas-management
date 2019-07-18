@@ -27,8 +27,8 @@ export class TrackerComponent implements OnInit {
       } else {
         this.setTimer();
       }
-    })
-  };
+    });
+  }
 
   constructor(public dialog: MatDialog,
               private router: Router,
@@ -48,7 +48,7 @@ export class TrackerComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    this.timer = setTimeout(this.timerHandler, this.time)
+    this.timer = setTimeout(this.timerHandler, this.time);
   }
 
 }

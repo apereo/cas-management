@@ -14,6 +14,10 @@ export class DashboardComponent implements OnInit {
 
   timers: Function[];
 
+  readonly SECONDS_IN_A_DAY = 24.0 * 60.0 * 60.0;
+  readonly SECONDS_IN_A_HOUR = 60.0 * 60.0;
+  readonly SECONDS_IN_A_MINUTE = 60;
+
   constructor(private service: DashboardService) {}
 
   ngOnInit(): void {
@@ -87,10 +91,10 @@ export class DashboardComponent implements OnInit {
 
   uptime(system: System): string {
     const up = system.details.uptime;
-    const days = up / (24.0 * 60.0 * 60.0);
-    const hours = (up % (24.0 * 60.0 * 60.0)) / (60.0 * 60.0);
-    const minutes = (up % (60.0 * 60.0)) / 60;
-    const seconds = up % 60;
+    const days = up / (this.SECONDS_IN_A_DAY);
+    const hours = (up % (this.SECONDS_IN_A_DAY)) / (this.SECONDS_IN_A_HOUR);
+    const minutes = (up % (this.SECONDS_IN_A_HOUR)) / this.SECONDS_IN_A_MINUTE;
+    const seconds = up % this.SECONDS_IN_A_MINUTE;
     return days.toFixed(0) + ':'
       + hours.toFixed(0) + ':'
       + minutes.toFixed(0) + ':'

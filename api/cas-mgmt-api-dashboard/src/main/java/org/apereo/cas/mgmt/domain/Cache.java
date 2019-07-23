@@ -5,6 +5,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
+/**
+ * Claas used to serialize Cache data to client.
+ *
+ * @author Travis Schmidt
+ * @since 6.1.0
+ */
 @Data
 @NoArgsConstructor
 public class Cache {

@@ -4,6 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class used to serialize system info to client.
+ *
+ * @author Travis Schmidt
+ * @since 6.1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,8 +1,6 @@
 import {BaseAccessForm} from './base-access-form';
-import {
-  TimeBasedRegisteredServiceAccessStrategy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {TimeBasedRegisteredServiceAccessStrategy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
 
 export class TimeAccessForm extends BaseAccessForm<TimeBasedRegisteredServiceAccessStrategy> {

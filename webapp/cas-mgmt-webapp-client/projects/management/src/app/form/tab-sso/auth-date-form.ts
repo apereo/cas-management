@@ -2,7 +2,7 @@ import {DateTimePolicyForm} from '@app/form/tab-sso/date-time-policy-form';
 import {
   AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy,
   SsoPolicyType
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {FormControl} from '@angular/forms';
 
 export class AuthDateForm extends DateTimePolicyForm<AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy> {

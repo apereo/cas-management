@@ -1,10 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  MgmtFormControl,
-  AbstractRegisteredService,
-  RegisteredServicePublicKeyImpl
-} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {AbstractRegisteredService, RegisteredServicePublicKeyImpl} from 'domain-lib';
 import {ExpirationForm} from '@app/form/tab-expiration/expiration-form';
 
 export class AdvancedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

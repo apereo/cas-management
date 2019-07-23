@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {AppConfigService} from 'mgmt-lib';
+import {AppConfigService} from 'shared-lib';
 
 @Component({
   selector: 'app-init',

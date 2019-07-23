@@ -2,11 +2,11 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommitHistoryService} from './commit-history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
+import {DiffEntry} from 'domain-lib';
+import {PaginatorComponent} from 'shared-lib';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
-import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-commit-history',
@@ -32,8 +32,7 @@ export class CommitHistoryComponent implements OnInit {
               private changeService: ChangesService,
               public  snackBar: MatSnackBar,
               public breakObserver: BreakpointObserver,
-              public dialog: MatDialog,
-              public spinner: SpinnerService) {
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -58,9 +57,7 @@ export class CommitHistoryComponent implements OnInit {
   }
 
   checkout() {
-    this.spinner.start('Checking out change');
     this.service.checkout(this.selectedItem.commit, this.selectedItem.path)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(
         resp => this.snackBar
           .open('Service successfully restored from history.',
@@ -71,9 +68,7 @@ export class CommitHistoryComponent implements OnInit {
   }
 
   revert() {
-    this.spinner.start('Reverting change');
     this.service.revert(this.selectedItem.oldId)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(
         resp => this.snackBar
           .open('Service successfully restored from history.',
@@ -84,31 +79,23 @@ export class CommitHistoryComponent implements OnInit {
   }
 
   viewChangeMade() {
-    this.spinner.start('Loading change');
     this.service.change(this.selectedItem.commit, this.selectedItem.path)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'diff', 'github'));
   }
 
   viewDiff() {
-    this.spinner.start('Loading diff');
     this.service.toHead(this.selectedItem.commit, this.selectedItem.path)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'diff', 'github'),
         (error) => this.snackBar.open(error.error.message, 'Dismiss'));
   }
 
   viewJSON() {
-    this.spinner.start('Loading json');
     this.changeService.viewJson(this.selectedItem.oldId)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'hjson', 'eclipse'));
   }
 
   viewYaml() {
-    this.spinner.start('Loading yaml');
     this.changeService.viewYaml(this.selectedItem.oldId)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'yaml', 'eclipse'));
   }
 

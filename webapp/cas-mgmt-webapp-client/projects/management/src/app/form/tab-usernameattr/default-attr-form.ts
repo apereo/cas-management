@@ -1,5 +1,5 @@
 import {BaseAttrForm} from './base-attr-form';
-import {DefaultRegisteredServiceUsernameProvider} from 'mgmt-lib';
+import {DefaultRegisteredServiceUsernameProvider} from 'domain-lib';
 
 export class DefaultAttrForm extends BaseAttrForm<DefaultRegisteredServiceUsernameProvider> {
 

@@ -1,5 +1,5 @@
 import {BaseAccessForm} from './base-access-form';
-import {DefaultRegisteredServiceAccessStrategy} from 'mgmt-lib';
+import {DefaultRegisteredServiceAccessStrategy} from 'domain-lib';
 
 export class DefaultAccessForm extends BaseAccessForm<DefaultRegisteredServiceAccessStrategy> {
 

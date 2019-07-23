@@ -1,9 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  RegisteredServiceProxyTicketExpirationPolicy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {RegisteredServiceProxyTicketExpirationPolicy} from 'domain-lib';
 
 export class ProxyTicketForm extends FormGroup implements MgmtFormGroup<RegisteredServiceProxyTicketExpirationPolicy> {
 

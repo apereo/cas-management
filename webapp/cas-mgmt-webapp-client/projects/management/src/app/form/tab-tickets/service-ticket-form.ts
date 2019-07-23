@@ -1,9 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  RegisteredServiceServiceTicketExpirationPolicy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {RegisteredServiceServiceTicketExpirationPolicy} from 'domain-lib';
 
 export class ServiceTicketForm extends FormGroup implements MgmtFormGroup<RegisteredServiceServiceTicketExpirationPolicy> {
 

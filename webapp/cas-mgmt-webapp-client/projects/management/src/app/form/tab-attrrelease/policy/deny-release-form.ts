@@ -1,5 +1,5 @@
 import {BaseReleaseForm} from './base-release-form';
-import {DenyAllAttributeReleasePolicy} from 'mgmt-lib';
+import {DenyAllAttributeReleasePolicy} from 'domain-lib';
 
 export class DenyReleaseForm extends BaseReleaseForm<DenyAllAttributeReleasePolicy> {
 

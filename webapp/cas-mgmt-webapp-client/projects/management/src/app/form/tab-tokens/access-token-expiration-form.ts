@@ -1,5 +1,6 @@
-import {MgmtFormGroup, RegisteredServiceOAuthAccessTokenExpirationPolicy, MgmtFormControl} from 'mgmt-lib';
 import {FormGroup} from '@angular/forms';
+import {RegisteredServiceOAuthAccessTokenExpirationPolicy} from 'domain-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 
 export class AccessTokenExpirationForm extends FormGroup implements MgmtFormGroup<RegisteredServiceOAuthAccessTokenExpirationPolicy> {
 

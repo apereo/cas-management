@@ -1,5 +1,6 @@
 import {BaseReleaseForm} from './base-release-form';
-import {MetadataEntityAttributesAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {MetadataEntityAttributesAttributeReleasePolicy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
 
 export class MetadataReleaseForm extends BaseReleaseForm<MetadataEntityAttributesAttributeReleasePolicy> {

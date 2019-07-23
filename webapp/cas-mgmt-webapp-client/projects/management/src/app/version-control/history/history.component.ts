@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {History, PaginatorComponent, SpinnerService} from 'mgmt-lib';
+import {History} from 'domain-lib';
+import {PaginatorComponent} from 'shared-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HistoryService} from './history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
-import {finalize} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 
 @Component({
@@ -32,8 +32,7 @@ export class HistoryComponent implements OnInit {
               public  snackBar: MatSnackBar,
               public breakObserver: BreakpointObserver,
               public dialog: MatDialog,
-              public changeService: ChangesService,
-              public spinner: SpinnerService) {
+              public changeService: ChangesService) {
   }
 
   ngOnInit() {
@@ -58,39 +57,29 @@ export class HistoryComponent implements OnInit {
   }
 
   checkout() {
-    this.spinner.start('Checking out verison');
     this.service.checkout(this.selectedItem.commit, this.selectedItem.path)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(() => this.showSnackbar('Service successfully restored from history.'));
   }
 
   viewChangeMade() {
-    this.spinner.start('Loading change');
     this.service.change(this.selectedItem.commit, this.selectedItem.path)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.handleDiff(resp),
         (error) => this.snackBar.open(error.error, 'Dismiss'));
   }
 
   viewDiff() {
-    this.spinner.start('Loading diff');
     this.service.toHead(this.selectedItem.commit, this.selectedItem.path)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.handleDiff(resp),
         (error) => this.snackBar.open(error.error, 'Dismiss'));
   }
 
   viewJSON() {
-    this.spinner.start('Loading json');
     this.changeService.viewJson(this.selectedItem.id)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'hjson', 'eclipse'));
   }
 
   viewYaml() {
-    this.spinner.start('Loading yaml');
     this.changeService.viewYaml(this.selectedItem.id)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => this.openView(f, 'yaml', 'eclipse'));
   }
 

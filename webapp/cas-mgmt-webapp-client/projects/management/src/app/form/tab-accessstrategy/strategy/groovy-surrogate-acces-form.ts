@@ -1,8 +1,6 @@
 import {BaseAccessForm} from './base-access-form';
-import {
-  GroovySurrogateRegisteredServiceAccessStrategy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {GroovySurrogateRegisteredServiceAccessStrategy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
 
 export class GroovySurrogateAccesForm extends BaseAccessForm<GroovySurrogateRegisteredServiceAccessStrategy> {

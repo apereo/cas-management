@@ -1,16 +1,15 @@
 import {FormGroup} from '@angular/forms';
+import {MgmtFormControl, MgmtFormGroup} from 'mgmt-lib';
 import {
   AbstractRegisteredService,
   AnonymousRegisteredServiceUsernameProvider,
   DefaultRegisteredServiceUsernameProvider,
-  MgmtFormControl,
-  MgmtFormGroup,
   PrincipalAttributeRegisteredServiceUsernameProvider,
   RegisteredServiceUsernameAttributeProvider,
   UserAttributeType,
   GroovyRegisteredServiceUsernameProvider,
   ScriptedRegisteredServiceUsernameProvider
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {GroovyAttrForm} from './groovy-attr-form';
 import {BaseAttrForm} from './base-attr-form';
 import {ScriptAttrForm} from './script-attr-form';

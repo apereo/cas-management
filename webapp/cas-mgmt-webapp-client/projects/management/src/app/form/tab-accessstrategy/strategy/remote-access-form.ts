@@ -1,8 +1,6 @@
 import {BaseAccessForm} from './base-access-form';
-import {
-  RemoteEndpointServiceAccessStrategy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {RemoteEndpointServiceAccessStrategy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
 
 export class RemoteAccessForm extends BaseAccessForm<RemoteEndpointServiceAccessStrategy> {

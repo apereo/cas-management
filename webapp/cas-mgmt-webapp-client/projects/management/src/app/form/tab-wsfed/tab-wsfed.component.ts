@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {DataRecord, WSFederationRegisterdService} from 'mgmt-lib';
+import {DataRecord} from 'mgmt-lib';
 import {WsfedForm} from './wsfed-form';
+import {WSFederationRegisterdService} from 'domain-lib';
 
 @Component({
   selector: 'app-tab-wsfed',

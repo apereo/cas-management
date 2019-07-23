@@ -6,13 +6,12 @@ import {
   GroovyRegisteredServiceAccessStrategy,
   GroovySurrogateRegisteredServiceAccessStrategy,
   GrouperRegisteredServiceAccessStrategy,
-  MgmtFormControl,
-  MgmtFormGroup,
   RegisteredServiceAccessStrategy,
   RemoteEndpointServiceAccessStrategy,
   SurrogateRegisteredServiceAccessStrategy,
   TimeBasedRegisteredServiceAccessStrategy
-} from 'mgmt-lib';
+} from 'domain-lib';
+import {MgmtFormControl, MgmtFormGroup} from 'mgmt-lib';
 import {RemoteAccessForm} from './strategy/remote-access-form';
 import {BaseAccessForm} from './strategy/base-access-form';
 import {TimeAccessForm} from './strategy/time-access-form';

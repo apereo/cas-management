@@ -1,5 +1,6 @@
-import {MgmtFormGroup, RegisteredServiceOAuthCodeExpirationPolicy, MgmtFormControl} from 'mgmt-lib';
 import {FormGroup} from '@angular/forms';
+import {RegisteredServiceOAuthCodeExpirationPolicy} from 'domain-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 
 export class CodeExpirationForm extends FormGroup implements MgmtFormGroup<RegisteredServiceOAuthCodeExpirationPolicy> {
 

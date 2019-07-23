@@ -8,7 +8,7 @@ import {
   RegisteredServiceScriptedAttributeFilter,
   FilterType,
   RegisteredServiceAttributeFilter
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {FormArray, FormControl} from '@angular/forms';
 import {MappedFilterForm} from './mapped-filter-form';
 import {MutantMappedFilterForm} from './mutant-mapped-filter-form';

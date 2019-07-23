@@ -3,7 +3,7 @@ import {ReleaseForm} from './release-form';
 import {
   DataRecord,
 } from 'mgmt-lib';
-import {ReleasePolicyType} from 'mgmt-lib';
+import {ReleasePolicyType} from 'domain-lib';
 
 @Component({
   selector: 'app-tab-attrrelease',

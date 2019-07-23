@@ -1,0 +1,73 @@
+<div [formGroup]="control" style="display: flex; width: 100%;">
+<div formArrayName="contacts" style="width: 100%;">
+  <mat-tab-group [(selectedIndex)]="selectedTab">
+    <mat-tab *ngFor="let contact of contactsArray.controls; let i = index;" [label]="getTabHeader(i)">
+      <div formGroupName="{{i}}">
+        <lib-input>
+          <mat-form-field class="textInput">
+            <mat-placeholder i18n>Name</mat-placeholder>
+            <input matInput [matAutocomplete]="auto" required formControlName="name" (keyup)="doLookupContact($event.target.value)">
+            <mat-hint align="end">
+              <lib-hint></lib-hint>
+            </mat-hint>
+          </mat-form-field>
+          <mat-icon style="font-size: medium" i18n-matTooltip
+                   matTooltip="First and last name of the contact">help
+          </mat-icon>
+        </lib-input>
+        <lib-input>
+          <mat-form-field class="textInput">
+            <mat-placeholder i18n>Email</mat-placeholder>
+            <input matInput required formControlName="email">
+            <mat-error i18n *ngIf="contact.get('email').hasError('email') && !contact.get('email').hasError('required')">You have entered an invalid email address</mat-error>
+            <mat-hint align="end">
+              <lib-hint></lib-hint>
+            </mat-hint>
+          </mat-form-field>
+          <mat-icon style="font-size: medium" i18n-matTooltip
+                   matTooltip="EMail of the contact">help
+          </mat-icon>
+        </lib-input>
+        <lib-input>
+          <mat-form-field class="textInput">
+            <mat-placeholder i18n>Phone</mat-placeholder>
+            <input matInput pattern="^[+]?[\d\s]+$" formControlName="phone">
+            <mat-hint align="end">
+              <lib-hint></lib-hint>
+            </mat-hint>
+          </mat-form-field>
+          <mat-icon style="font-size: medium" i18n-matTooltip
+                   matTooltip="Phone number of the contact">help
+          </mat-icon>
+        </lib-input>
+        <lib-input>
+          <mat-form-field class="textInput">
+            <mat-placeholder i18n>Department</mat-placeholder>
+            <input matInput formControlName="department">
+            <mat-hint align="end">
+              <lib-hint></lib-hint>
+            </mat-hint>
+          </mat-form-field>
+          <mat-icon style="font-size: medium" i18n-matTooltip
+                   matTooltip="Department of the contact">help
+          </mat-icon>
+        </lib-input>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div style="height:25px;padding-top: 5px;">
+    <div style="float:right;padidng:5px">
+      <button mat-mini-fab (click)="addContact()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-mini-fab (click)="deleteContact()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)" >
+  <mat-option *ngFor="let opt of foundContacts;let i = index" [value]="i" >{{ opt.name }} - {{ opt.department}}</mat-option>
+</mat-autocomplete>

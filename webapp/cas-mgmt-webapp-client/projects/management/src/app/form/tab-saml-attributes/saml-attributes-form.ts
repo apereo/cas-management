@@ -1,9 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  AbstractRegisteredService,
-  SamlRegisteredService
-} from 'mgmt-lib';
+import {MgmtFormGroup} from 'mgmt-lib';
+import {AbstractRegisteredService, SamlRegisteredService} from 'domain-lib';
 import {AttributeForm} from '@app/form/attribute-form';
 
 export class SamlAttributesForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

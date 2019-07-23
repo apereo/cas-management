@@ -1,5 +1,5 @@
 import {MappedFilterForm} from './mapped-filter-form';
-import {RegisteredServiceMutantRegexAttributeFilter, FilterType} from 'mgmt-lib';
+import {RegisteredServiceMutantRegexAttributeFilter, FilterType} from 'domain-lib';
 import {FormControl} from '@angular/forms';
 
 export class MutantMappedFilterForm extends MappedFilterForm {

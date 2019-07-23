@@ -1,10 +1,6 @@
 import {Validators, FormGroup} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  OAuthRegisteredService,
-  MgmtFormControl,
-  AbstractRegisteredService
-} from 'mgmt-lib';
+import {OAuthRegisteredService, AbstractRegisteredService} from 'domain-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 
 export class OauthForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

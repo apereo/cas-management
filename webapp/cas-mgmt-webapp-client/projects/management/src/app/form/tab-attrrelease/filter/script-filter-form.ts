@@ -1,6 +1,7 @@
 import {BaseFilterForm} from './filter-form';
-import {RegisteredServiceScriptedAttributeFilter, MgmtFormControl, FilterType} from 'mgmt-lib';
+import {RegisteredServiceScriptedAttributeFilter, FilterType} from 'domain-lib';
 import {FormControl} from '@angular/forms';
+import {MgmtFormControl} from 'mgmt-lib';
 
 export class ScriptFilterForm extends BaseFilterForm<RegisteredServiceScriptedAttributeFilter> {
 

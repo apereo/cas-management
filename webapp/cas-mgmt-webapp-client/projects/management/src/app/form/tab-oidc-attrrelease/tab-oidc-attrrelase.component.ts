@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {OidcRegisteredService, DataRecord} from 'mgmt-lib';
-import {OidcAttrForm} from '@app/form/tab-oidc-attrrelease/oidc-attr-form';
+import {OidcRegisteredService} from 'domain-lib';
+import {OidcAttrForm} from './oidc-attr-form';
+import {DataRecord} from 'mgmt-lib';
 
 @Component({
   selector: 'app-tab-oidc-attrrelease',

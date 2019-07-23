@@ -1,0 +1,19 @@
+<lib-input>
+  <mat-checkbox [formControl]="signIdToken">
+    <ng-container i18n>Sign ID Token</ng-container>
+    <mat-icon libHelp i18n-matTooltip
+              matTooltip="Whether ID tokens should be signed.">
+    </mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="signIdToken.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>
+
+<lib-input>
+  <mat-checkbox [formControl]="encryptIdToken">
+    <ng-container i18n>Encrypt ID Token</ng-container>
+    <mat-icon libHelp i18n-matTooltip
+              matTooltip="Whether ID tokens should be encrypted.">
+    </mat-icon>
+    <mat-hint align="end"><lib-hint [difference]="encryptIdToken.difference()"></lib-hint></mat-hint>
+  </mat-checkbox>
+</lib-input>

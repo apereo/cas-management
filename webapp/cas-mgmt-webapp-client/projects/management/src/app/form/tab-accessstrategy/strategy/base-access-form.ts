@@ -1,7 +1,9 @@
 import {
   RegisteredServiceAccessStrategy,
+  DefaultRegisteredServiceDelegatedAuthenticationPolicy
+} from 'domain-lib';
+import {
   MgmtFormControl,
-  DefaultRegisteredServiceDelegatedAuthenticationPolicy,
   MgmtFormGroup
 } from 'mgmt-lib';
 import {FormGroup} from '@angular/forms';

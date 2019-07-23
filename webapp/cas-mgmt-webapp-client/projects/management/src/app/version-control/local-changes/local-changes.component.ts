@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Change, PaginatorComponent, SpinnerService} from 'mgmt-lib';
+import {Change} from 'domain-lib';
+import {PaginatorComponent} from 'shared-lib';
 import {ControlsService, RevertComponent, ViewComponent} from '@app/project-share';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ServiceViewService} from '@app/registry/services/service.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
-import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-local-changes',
@@ -29,8 +29,7 @@ export class LocalChangesComponent implements OnInit {
               private service: ServiceViewService,
               private changeService: ChangesService,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar,
-              public spinner: SpinnerService) { }
+              public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Change[]}) => {
@@ -40,9 +39,7 @@ export class LocalChangesComponent implements OnInit {
   }
 
   refresh() {
-    this.spinner.start('Refreshing');
     this.controlsService.untracked()
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.datasource.data = resp ? resp : []);
     this.controlsService.gitStatus();
   }
@@ -62,14 +59,11 @@ export class LocalChangesComponent implements OnInit {
   }
 
   revert() {
-    this.spinner.start('Reverting change');
     if (this.revertItem.changeType === 'ADD') {
       this.service.deleteService(+this.revertItem.id)
-        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(resp => this.handleRevert());
     } else {
       this.service.revert(this.revertItem.fileName)
-        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(resp => this.handleRevert());
     }
   }
@@ -84,25 +78,19 @@ export class LocalChangesComponent implements OnInit {
   }
 
   viewDiff() {
-    this.spinner.start('Loading diff');
     this.changeService.viewDiff(this.selectedItem.oldId, this.selectedItem.newId)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.openView(resp, 'diff', 'github'));
   }
 
   viewJSON() {
     const id = this.selectedItem.changeType === 'DELETE' ? this.selectedItem.oldId : this.selectedItem.newId;
-    this.spinner.start('Loading change');
     this.changeService.viewJson(id)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.openView(resp, 'hjson', 'eclipse'));
   }
 
   viewYaml() {
     const id = this.selectedItem.changeType === 'DELETE' ? this.selectedItem.oldId : this.selectedItem.newId;
-    this.spinner.start('Loading yaml');
     this.changeService.viewYaml(id)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.openView(resp, 'yaml', 'eclipse'));
   }
 

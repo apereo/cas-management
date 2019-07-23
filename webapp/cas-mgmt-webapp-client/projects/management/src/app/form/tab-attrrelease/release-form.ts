@@ -7,8 +7,6 @@ import {
   GroovyScriptAttributeReleasePolicy,
   InCommonRSAttributeReleasePolicy,
   MetadataEntityAttributesAttributeReleasePolicy,
-  MgmtFormControl,
-  MgmtFormGroup,
   PatternMatchingEntityIdAttributeReleasePolicy,
   PrincipalAttributesRepository,
   PrincipalRepoType,
@@ -29,7 +27,7 @@ import {
   RegisteredServiceScriptedAttributeFilter,
   attributeReleaseFactory,
   attributeFilterFactory
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {RestfulReleaseForm} from './policy/restful-release-form';
 import {ScriptReleaseForm} from './policy/script-release-form';
 import {GroovyReleaseForm} from './policy/groovy-release-form';
@@ -47,6 +45,7 @@ import {MutantMappedFilterForm} from './filter/mutant-mapped-filter-form';
 import {ScriptFilterForm} from './filter/script-filter-form';
 import {ChainingFilterForm} from './filter/chaining-filter-form';
 import {BaseFilterForm} from './filter/filter-form';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 
 export class ReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

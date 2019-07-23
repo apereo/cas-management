@@ -5,13 +5,13 @@ import {Injectable} from '@angular/core';
 import {catchError, map, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {AbstractRegisteredService,
-  Service,
   RegexRegisteredService,
   OAuthRegisteredService,
   OidcRegisteredService,
   SamlRegisteredService,
   WSFederationRegisterdService
-} from 'mgmt-lib';
+} from 'domain-lib';
+import {Service} from 'shared-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class FormService extends Service {
   controller = 'api/services/';
 
   getService(id: string): Observable<AbstractRegisteredService> {
-    return this.get<AbstractRegisteredService>(this.controller + id)
+    return this.get<AbstractRegisteredService>(this.controller + id, "Loading service")
       .pipe(
         take(1),
         map(resp => {
@@ -46,7 +46,7 @@ export class FormService extends Service {
   }
 
   saveService(service: AbstractRegisteredService): Observable<number> {
-    return this.post(this.controller, service)
+    return this.post(this.controller, service, "Saving service")
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
       );

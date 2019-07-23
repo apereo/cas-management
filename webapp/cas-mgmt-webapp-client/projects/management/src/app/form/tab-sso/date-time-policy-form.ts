@@ -1,10 +1,5 @@
-import {FormGroup} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  MgmtFormControl,
-  BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy,
-  SsoPolicyType
-} from 'mgmt-lib';
+import {MgmtFormControl} from 'mgmt-lib';
+import {BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy} from 'domain-lib';
 import {BaseSsoPolicyForm} from '@app/form/tab-sso/base-form';
 
 export class DateTimePolicyForm<T extends BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy> extends BaseSsoPolicyForm<T> {

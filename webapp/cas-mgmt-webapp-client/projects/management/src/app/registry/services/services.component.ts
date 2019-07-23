@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {ServiceItem, AppConfigService, PaginatorComponent, SpinnerService} from 'mgmt-lib';
+import {AppConfigService, PaginatorComponent} from 'shared-lib';
+import {ServiceItem} from 'domain-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
 import {RevertComponent} from '@app/project-share';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-services',
@@ -30,7 +30,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
               public appService: AppConfigService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              public spinner: SpinnerService,
               public breakObserver: BreakpointObserver) {
   }
 
@@ -104,9 +103,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   delete() {
-    this.spinner.start('Deleting service');
     this.service.deleteService(+this.deleteItem.assignedId)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.handleDelete(this.deleteItem.name),
        (e: any) => this.snackBar
          .open(e.message || e.text(),
@@ -132,9 +129,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   revert() {
     const fileName: string = (this.revertItem.name + '-' + this.revertItem.assignedId + '.json').replace(/ /g, '');
-    this.spinner.start('Reverting service');
     this.service.revert(fileName)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(this.handleRevert);
   }
 
@@ -152,9 +147,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   getServices() {
-    this.spinner.start('Loading services');
     this.service.getServices(this.domain)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.dataSource.data = resp,
        () => this.snackBar
          .open('Unable to retrieve service listing.',
@@ -170,9 +163,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       const b: ServiceItem = this.dataSource.data[index - 1];
       a.evalOrder = index - 1;
       b.evalOrder = index;
-      this.spinner.start('Updating order');
       this.service.updateOrder(a, b)
-        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(resp => this.refresh());
     }
   }
@@ -183,9 +174,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
       const b: ServiceItem = this.dataSource.data[index + 1];
       a.evalOrder = index + 1;
       b.evalOrder = index;
-      this.spinner.start('Updating order');
       this.service.updateOrder(a, b)
-        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(this.refresh);
     }
   }

@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
-import {
-  DefaultRegisteredServiceContact,
-  DataRecord,
-  UserService
-} from 'mgmt-lib';
+import {DefaultRegisteredServiceContact} from 'domain-lib';
+import {UserService} from 'shared-lib';
 import {ContactsForm} from './contacts-form';
+import {DataRecord} from 'mgmt-lib';
 
 @Component({
   selector: 'app-tab-contacts',

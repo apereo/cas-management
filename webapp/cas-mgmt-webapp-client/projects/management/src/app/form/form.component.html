@@ -13,16 +13,10 @@
       </div>
     <div style="flex: 1 1 auto"></div>
     <div>
-      <app-controls (save)="save()" [showEdit]="dirty()" (reset)="reset()"></app-controls>
+      <app-controls (save)="save()" [showEdit]="baseForm.dirty()" (reset)="baseForm.reset()"></app-controls>
     </div>
-</div>
-  <mat-tab-group #tabGroup (selectedTabChange)="goto($event)">
-    <mat-tab *ngFor="let t of tabs">
-      <ng-template mat-tab-label>
-          <ng-container i18n>{{ t[1] }}</ng-container>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
+  </div>
+  <app-base-form #baseForm [tabs]="tabs"></app-base-form>
 </div>
 <div style="padding-top:90px;padding-bottom:0px;display:flex;flex-direction: column; margin-right: auto; margin-left: auto;"
      [style.width]="!(isHandset$ | async) ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">

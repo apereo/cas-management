@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
+import {DataRecord} from 'mgmt-lib';
 import {
-  DataRecord,
   GroovyRegisteredServiceAccessStrategy,
-  UserProfile,
   OAuthRegisteredService,
   OidcRegisteredService,
   SamlRegisteredService,
   WSFederationRegisterdService,
   RegexRegisteredService
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {BasicsForm} from './basics-form';
 
 @Component({

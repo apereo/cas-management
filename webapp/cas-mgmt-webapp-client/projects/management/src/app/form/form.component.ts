@@ -2,25 +2,22 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormService} from './form.service';
-import {MatSnackBar, MatTabChangeEvent, MatTabGroup} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs/index';
-import {finalize, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {BreakpointObserver} from '@angular/cdk/layout';
-
+import {DataRecord, MgmtFormGroup} from 'mgmt-lib';
+import {UserService, SpinnerService} from 'shared-lib';
 import {
   AbstractRegisteredService,
-  DataRecord,
   OAuthRegisteredService,
   OidcRegisteredService,
   RegexRegisteredService,
   SamlRegisteredService,
-  UserService,
   WSFederationRegisterdService,
-  MgmtFormGroup,
-  SpinnerService
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {ImportService} from '../registry/import/import.service';
-import {FormArray, FormGroup} from '@angular/forms';
+import {BaseFormComponent} from 'mgmt-lib';
 
 @Component({
   selector: 'app-form',
@@ -34,9 +31,6 @@ export class FormComponent implements OnInit {
   view: boolean;
   created: false;
 
-  @ViewChild('tabGroup', { static: true })
-  tabGroup: MatTabGroup;
-
   tabs: Array<string[]> = [];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
@@ -44,10 +38,10 @@ export class FormComponent implements OnInit {
       map(result => result.matches)
     );
 
-  domainPattern = new RegExp('^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)');
-  validDomain = new RegExp('^[a-z0-9-.]*$');
-
   imported = false;
+
+  @ViewChild(BaseFormComponent, {static: true})
+  baseForm: BaseFormComponent;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -72,26 +66,14 @@ export class FormComponent implements OnInit {
         }
         if (data.resp && data.resp[0]) {
           this.loadService(data.resp[0]);
-          this.navTo('basics');
         }
       });
     this.data.typeChange.subscribe(() => this.setNav());
   }
 
-  goto(event: MatTabChangeEvent) {
-    this.navTo(this.tabs[event.index][0]);
-  }
-
-  navTo(tab: String) {
-    const route: any[] = [{outlets: {form: [tab]}}];
-    this.router.navigate(route, {skipLocationChange: true, relativeTo: this.route, replaceUrl: true});
-  }
-
   save() {
-    if (this.validate() && this.mapForm()) {
-      this.spinner.start('Saving service');
+    if (this.baseForm.validate() && this.baseForm.mapForm()) {
       this.service.saveService(this.data.service)
-        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(
           resp => this.handleSave(resp),
           () => this.handleNotSaved()
@@ -155,43 +137,6 @@ export class FormComponent implements OnInit {
       );
   }
 
-  validate(): boolean {
-    for (const key of Array.from(this.data.formMap.keys())) {
-      const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
-      if (frm.invalid) {
-        this.touch(frm);
-        this.tabGroup.selectedIndex = this.tabs.findIndex(entry => entry[0] === key);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  touch(group: FormGroup | FormArray) {
-    Object.keys(group.controls).forEach(k => {
-      const control = group.get(k);
-      if (control instanceof FormGroup || control instanceof FormArray) {
-        this.touch(control);
-      } else {
-        if (control.invalid) {
-          control.markAsTouched();
-        }
-      }
-    });
-  }
-
-  mapForm(): boolean {
-    let touched: boolean = this.imported || this.created;
-    for (const key of Array.from(this.data.formMap.keys())) {
-      const form = this.data.formMap.get(key);
-      if (form.valid && form.touched) {
-        form.mapForm(this.data.service);
-        touched = true;
-      }
-    }
-    return touched;
-  }
-
   setNav() {
     this.tabs = [];
     this.tabs.push(['basics', 'Basics']);
@@ -229,37 +174,6 @@ export class FormComponent implements OnInit {
     this.tabs.push(['proxy', 'Proxy']);
     this.tabs.push(['properties', 'Properties']);
     this.tabs.push(['advanced', 'Advanced']);
-  }
-
-  reset() {
-    for (const fg of Array.from(this.data.formMap.values())) {
-      fg.reset(fg.formMap());
-    }
-  }
-
-  touched(): boolean {
-    if (this.imported) {
-      return true;
-    }
-    for (const fg of Array.from(this.data.formMap.values())) {
-      if (fg.touched) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  dirty(): boolean {
-    if (this.imported || this.created) {
-      return true;
-    }
-    if (this.data.formMap) {
-      for (const fg of Array.from(this.data.formMap.values())) {
-        if (fg.dirty) {
-          return true;
-        }
-      }
-    }
-    return false;
+    this.baseForm.navTo('basics');
   }
 }

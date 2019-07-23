@@ -1,7 +1,5 @@
-import {
-  DefaultRegisteredServiceMultifactorPolicy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {DefaultRegisteredServiceMultifactorPolicy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {BaseMfaForm} from './base-mfa-form';
 
 export class DefaultMFAForm extends BaseMfaForm<DefaultRegisteredServiceMultifactorPolicy> {

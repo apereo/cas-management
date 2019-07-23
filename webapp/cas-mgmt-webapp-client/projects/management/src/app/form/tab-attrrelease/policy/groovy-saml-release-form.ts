@@ -1,5 +1,6 @@
 import {BaseReleaseForm} from './base-release-form';
-import {GroovySamlRegisteredServiceAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {GroovySamlRegisteredServiceAttributeReleasePolicy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
 
 export class GroovySamlReleaseForm extends BaseReleaseForm<GroovySamlRegisteredServiceAttributeReleasePolicy> {

@@ -1,5 +1,5 @@
 import {BaseReleaseForm} from './base-release-form';
-import {ReturnAllAttributeReleasePolicy} from 'mgmt-lib';
+import {ReturnAllAttributeReleasePolicy} from 'domain-lib';
 
 export class AllReleaseForm extends BaseReleaseForm<ReturnAllAttributeReleasePolicy> {
 

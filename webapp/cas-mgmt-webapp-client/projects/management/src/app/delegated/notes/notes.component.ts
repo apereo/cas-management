@@ -2,8 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { EditorComponent } from '@app/project-share';
 import {ActivatedRoute} from '@angular/router';
 import {NotesService} from './notes.service';
-import {SpinnerService} from 'mgmt-lib';
-import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-notes',
@@ -24,14 +22,11 @@ export class NotesComponent implements OnInit {
   file: string;
 
   constructor(public route: ActivatedRoute,
-              public service: NotesService,
-              public spinner: SpinnerService) { }
+              public service: NotesService) { }
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
-    this.spinner.start('Loading notes');
     this.service.getNotes(id)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.file = resp);
   }
 

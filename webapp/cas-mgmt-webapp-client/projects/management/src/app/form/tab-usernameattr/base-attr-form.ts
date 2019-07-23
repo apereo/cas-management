@@ -1,9 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {
-  RegisteredServiceUsernameAttributeProvider,
-  MgmtFormGroup,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {RegisteredServiceUsernameAttributeProvider} from 'domain-lib';
 
 export class BaseAttrForm<T extends RegisteredServiceUsernameAttributeProvider> extends FormGroup implements MgmtFormGroup<T> {
 

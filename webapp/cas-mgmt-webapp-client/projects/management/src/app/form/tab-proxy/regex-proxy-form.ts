@@ -1,8 +1,5 @@
-import {
-  RegexMatchingRegisteredServiceProxyPolicy,
-  MgmtFormGroup,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {RegexMatchingRegisteredServiceProxyPolicy} from 'domain-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 import {FormGroup, Validators} from '@angular/forms';
 
 export class RegexProxyForm extends FormGroup implements MgmtFormGroup<RegexMatchingRegisteredServiceProxyPolicy> {

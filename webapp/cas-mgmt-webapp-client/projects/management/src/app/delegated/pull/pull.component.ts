@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild } from '@angular/core';
-import {Branch, DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
+import {Branch, DiffEntry} from 'domain-lib';
+import {PaginatorComponent} from 'shared-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PullService} from './pull.service';
 import { Location } from '@angular/common';
@@ -7,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import {ControlsService} from '@app/project-share';
-import {finalize} from 'rxjs/operators';
 import {AcceptComponent} from '../accept/accept.component';
 import {RejectComponent} from '../reject/reject.component';
 
@@ -41,8 +41,7 @@ export class PullComponent implements OnInit {
               private location: Location,
               private controlsService: ControlsService,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar,
-              public spinner: SpinnerService) { }
+              public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Branch[]}) => {
@@ -52,9 +51,7 @@ export class PullComponent implements OnInit {
   }
 
   refresh() {
-    this.spinner.start('Refreshing');
-    this.service.getBranches([this.showPending, this.showAccepted, this.showRejected])
-      .pipe(finalize(() => this.spinner.stop()))
+    this.service.getBranches([this.showPending, this.showAccepted, this.showRejected], "Refreshing")
       .subscribe(resp => this.dataSource.data = resp);
     this.controlsService.gitStatus();
   }
@@ -81,9 +78,7 @@ export class PullComponent implements OnInit {
   }
 
   accept(note: string) {
-    this.spinner.start('Accepting request');
     this.service.accept(this.acceptBranch, note)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(() => this.showSnackAndRefresh('Branch has been merged'));
   }
 
@@ -102,9 +97,7 @@ export class PullComponent implements OnInit {
   }
 
   reject(note: string) {
-    this.spinner.start('Rejecting request');
     this.service.reject(this.rejectBranch, note)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(() => this.showSnackAndRefresh('Branch has been marked as rejected'));
   }
 

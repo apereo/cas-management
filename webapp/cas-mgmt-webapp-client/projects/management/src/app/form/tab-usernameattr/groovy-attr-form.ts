@@ -1,6 +1,7 @@
 import {BaseAttrForm} from './base-attr-form';
-import {GroovyRegisteredServiceUsernameProvider, MgmtFormControl} from 'mgmt-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
+import {GroovyRegisteredServiceUsernameProvider} from 'domain-lib';
 
 export class GroovyAttrForm extends BaseAttrForm<GroovyRegisteredServiceUsernameProvider> {
 

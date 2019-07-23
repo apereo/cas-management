@@ -3,7 +3,8 @@
  */
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
-import {AbstractRegisteredService, DiffEntry, Service} from 'mgmt-lib';
+import {AbstractRegisteredService, DiffEntry} from 'domain-lib';
+import {Service} from 'shared-lib';
 
 @Injectable({
   providedIn: 'root'

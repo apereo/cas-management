@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import {ControlsService} from '../controls/controls.service';
-import {Commit} from 'mgmt-lib';
+import {Commit} from 'domain-lib';
 
 @Component({
   selector: 'app-publish',

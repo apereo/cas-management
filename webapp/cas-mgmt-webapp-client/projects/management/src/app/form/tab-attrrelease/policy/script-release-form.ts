@@ -1,5 +1,6 @@
 import {BaseReleaseForm} from './base-release-form';
-import {ScriptedRegisteredServiceAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {ScriptedRegisteredServiceAttributeReleasePolicy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
 
 export class ScriptReleaseForm extends BaseReleaseForm<ScriptedRegisteredServiceAttributeReleasePolicy> {

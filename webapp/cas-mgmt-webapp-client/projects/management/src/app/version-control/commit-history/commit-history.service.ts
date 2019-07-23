@@ -2,7 +2,8 @@
  * Created by tschmidt on 2/13/17.
  */
 import {Injectable} from '@angular/core';
-import {Service, DiffEntry} from 'mgmt-lib';
+import {Service} from 'shared-lib';
+import {DiffEntry} from 'domain-lib';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable({

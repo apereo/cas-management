@@ -2,16 +2,16 @@
  * Created by tschmidt on 2/13/17.
  */
 import {Injectable} from '@angular/core';
-import {ServiceItem,
-  Service,
-} from 'mgmt-lib';
+import {ServiceItem, RegisteredService} from 'domain-lib';
 import {Observable} from 'rxjs/internal/Observable';
+import {Service} from 'shared-lib';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceViewService extends Service {
 
+  uploaded: RegisteredService;
 
   controller = 'api/services';
 

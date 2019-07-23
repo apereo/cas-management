@@ -1,8 +1,5 @@
-import {
-  MgmtFormGroup,
-  MgmtFormControl,
-  AbstractRegisteredService
-} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {AbstractRegisteredService} from 'domain-lib';
 import {FormGroup} from '@angular/forms';
 
 export class ExpirationForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

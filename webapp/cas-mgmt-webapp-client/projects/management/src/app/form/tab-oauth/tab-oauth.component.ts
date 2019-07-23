@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {DataRecord, OAuthRegisteredService} from 'mgmt-lib';
+import {OAuthRegisteredService} from 'domain-lib';
 import {OauthForm} from './oauth-form';
-import {AppService} from '@app/core/app.service';
+import {DataRecord} from 'mgmt-lib';
+import {AppConfigService} from 'shared-lib';
 
 @Component({
   selector: 'app-tab-oauth',
@@ -11,7 +12,7 @@ export class TabOauthComponent {
 
   oauth: OauthForm;
 
-  constructor(public data: DataRecord, public service: AppService) {
+  constructor(public data: DataRecord, public service: AppConfigService) {
     if (this.data.formMap.has('oauth')) {
       this.oauth = this.data.formMap.get('oauth') as OauthForm;
       return;
@@ -21,7 +22,7 @@ export class TabOauthComponent {
   }
 
   generateId() {
-    this.service.generateRandom().subscribe(id => {
+    this.service.getRandom().subscribe(id => {
       const control = this.oauth.get('clientId');
       control.setValue(id);
       control.markAsTouched();
@@ -30,7 +31,7 @@ export class TabOauthComponent {
   }
 
   generateSecret() {
-    this.service.generateRandom().subscribe(secret => {
+    this.service.getRandom().subscribe(secret => {
       const control = this.oauth.get('clientSecret');
       control.setValue(secret);
       control.markAsTouched();

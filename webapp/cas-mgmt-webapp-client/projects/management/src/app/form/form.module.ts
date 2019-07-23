@@ -19,7 +19,6 @@ import { TabContactsComponent } from './tab-contacts/tab-contacts.component';
 import { TabExpirationComponent } from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
-import { MgmtCardComponent } from './mgmt-card/mgmt-card.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
 import {MgmtLibModule} from 'mgmt-lib';
 import {TabOidcAttrreleaseComponent} from '@app/form/tab-oidc-attrrelease/tab-oidc-attrrelase.component';
@@ -59,9 +58,8 @@ import { TabSamlAssertionComponent } from './tab-saml-assertion/tab-saml-asserti
     TabOauthComponent,
     TabWsfedComponent,
     TabContactsComponent,
-    TabExpirationComponent,
-    MgmtCardComponent,
     TabTokensComponent,
+    TabExpirationComponent,
     TabTicketsComponent,
     TabSsoComponent,
     TabSamlAttributesComponent,

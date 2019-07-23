@@ -1,8 +1,6 @@
 import {BaseAccessForm} from './base-access-form';
-import {
-  SurrogateRegisteredServiceAccessStrategy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {SurrogateRegisteredServiceAccessStrategy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {AttributeForm} from '../../attribute-form';
 
 export class SurrogateAccessForm extends BaseAccessForm<SurrogateRegisteredServiceAccessStrategy> {

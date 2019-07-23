@@ -1,6 +1,7 @@
 import {BaseAttrForm} from './base-attr-form';
-import {AnonymousRegisteredServiceUsernameProvider, MgmtFormControl} from 'mgmt-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
+import {AnonymousRegisteredServiceUsernameProvider} from 'domain-lib';
 
 export class AnonAttrForm extends BaseAttrForm<AnonymousRegisteredServiceUsernameProvider> {
 

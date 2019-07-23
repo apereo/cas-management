@@ -1,6 +1,7 @@
 import {BaseAttrForm} from './base-attr-form';
-import {ScriptedRegisteredServiceUsernameProvider, MgmtFormControl} from 'mgmt-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
+import {ScriptedRegisteredServiceUsernameProvider} from 'domain-lib';
 
 export class ScriptAttrForm extends BaseAttrForm<ScriptedRegisteredServiceUsernameProvider> {
 

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Service, Commit} from 'mgmt-lib';
+import {Service} from 'shared-lib';
+import {Commit} from 'domain-lib';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable({

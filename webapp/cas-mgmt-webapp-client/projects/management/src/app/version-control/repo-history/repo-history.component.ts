@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Commit, PaginatorComponent, SpinnerService} from 'mgmt-lib';
+import {Commit} from 'domain-lib';
+import {PaginatorComponent} from 'shared-lib';
 import {RepoHistoryService} from './repo-history.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-repo-history',
@@ -24,8 +24,7 @@ export class RepoHistoryComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
-              public breakObserver: BreakpointObserver,
-              public spinner: SpinnerService) { }
+              public breakObserver: BreakpointObserver) { }
 
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Commit[]}) => {
@@ -43,9 +42,7 @@ export class RepoHistoryComponent implements OnInit {
   }
 
   refresh() {
-    this.spinner.start('Refreshing');
     this.service.commitLogs()
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(resp => this.dataSource.data = resp);
   }
 
@@ -57,9 +54,7 @@ export class RepoHistoryComponent implements OnInit {
   }
 
   checkout() {
-    this.spinner.start('Checking out commit');
     this.service.checkout(this.selectedItem.id)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(() =>
         this.snackBar
           .open('Commit has been checked out',

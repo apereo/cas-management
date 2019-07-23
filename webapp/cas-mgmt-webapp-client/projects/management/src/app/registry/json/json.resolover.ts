@@ -8,7 +8,7 @@ import {ChangesService} from '@app/version-control/changes/changes.service';
 import {ServiceViewService} from '../services/service.service';
 import {finalize} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
-import {SpinnerService} from 'mgmt-lib';
+import {SpinnerService} from 'shared-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +26,10 @@ export class JSONResolver implements Resolve<string> {
     if (!param) {
       return '';
     } else {
-      this.spinner.start('Loading json');
       if (history) {
-        return this.changeService.viewJson(param).pipe(finalize(() => this.spinner.stop()));
+        return this.changeService.viewJson(param);
       } else {
-        return this.service.getJson(+param).pipe(finalize(() => this.spinner.stop()));
+        return this.service.getJson(+param);
       }
     }
   }

@@ -1,10 +1,6 @@
 import {FormArray, FormGroup, Validators} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  AbstractRegisteredService,
-  MgmtFormControl,
-  DefaultRegisteredServiceContact
-} from 'mgmt-lib';
+import {AbstractRegisteredService, DefaultRegisteredServiceContact} from 'domain-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 
 export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
@@ -57,20 +53,15 @@ export class ContactsForm extends FormGroup implements MgmtFormGroup<AbstractReg
   createContact(): FormGroup {
     return new FormGroup({
       name: new MgmtFormControl(null, null, Validators.required),
-      email: new MgmtFormControl(null, null, Validators.required),
+      email: new MgmtFormControl(null, null, [Validators.required, Validators.email]),
       phone: new MgmtFormControl(null),
       department: new MgmtFormControl(null)
     });
   }
 
   add(contact: DefaultRegisteredServiceContact) {
-    (<FormArray>this.get('contacts')).push(
-      new FormGroup({
-        name: new MgmtFormControl(contact.name, null, Validators.required),
-        email: new MgmtFormControl(contact.email, null, Validators.required),
-        phone: new MgmtFormControl(contact.phone),
-        department: new MgmtFormControl(contact.department)
-      })
-    );
+    const c = this.createContact();
+    c.setValue(this.createContactMap(contact));
+    (<FormArray>this.get('contacts')).push(c);
   }
 }

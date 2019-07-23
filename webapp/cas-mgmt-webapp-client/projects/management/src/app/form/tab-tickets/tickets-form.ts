@@ -1,8 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  AbstractRegisteredService
-} from 'mgmt-lib';
+import {MgmtFormGroup} from 'mgmt-lib';
+import {AbstractRegisteredService} from 'domain-lib';
 import {ServiceTicketForm} from '@app/form/tab-tickets/service-ticket-form';
 import {ProxyTicketForm} from '@app/form/tab-tickets/proxy-ticket-form';
 

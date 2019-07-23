@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import('./pull/pull.module').then(m => m.PullModule)
   },
   {
-    path: 'submits',
+    path: 'submit',
     loadChildren: () => import('./submits/submits.module').then(m => m.SubmitsModule)
   },
   {

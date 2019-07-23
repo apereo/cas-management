@@ -1,6 +1,7 @@
 import {BaseAttrForm} from './base-attr-form';
-import {PrincipalAttributeRegisteredServiceUsernameProvider, MgmtFormControl} from 'mgmt-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
+import {PrincipalAttributeRegisteredServiceUsernameProvider} from 'domain-lib';
 
 export class PrincipalAttrForm extends BaseAttrForm<PrincipalAttributeRegisteredServiceUsernameProvider> {
 

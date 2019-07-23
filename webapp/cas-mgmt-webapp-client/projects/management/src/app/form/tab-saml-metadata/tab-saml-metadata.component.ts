@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {DataRecord, SamlRegisteredService} from 'mgmt-lib';
+import {DataRecord} from 'mgmt-lib';
+import {SamlRegisteredService} from 'domain-lib';
 import {SamlMetadataForm} from '@app/form/tab-saml-metadata/saml-metadata-form';
 
 @Component({

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {DataRecord, SamlRegisteredService} from 'mgmt-lib';
+import {DataRecord} from 'mgmt-lib';
+import {SamlRegisteredService} from 'domain-lib';
 import {SamlSigningForm} from '@app/form/tab-saml-signing/saml-signing-form';
 
 @Component({

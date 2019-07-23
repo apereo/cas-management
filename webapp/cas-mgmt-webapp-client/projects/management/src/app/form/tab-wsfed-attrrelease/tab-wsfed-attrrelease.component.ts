@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {WsFedReleaseForm} from '@app/form/tab-wsfed-attrrelease/wsfed-form';
-import {WsFederationClaimsReleasePolicy, DataRecord} from 'mgmt-lib';
+import {DataRecord} from 'mgmt-lib';
+import {WsFederationClaimsReleasePolicy} from 'domain-lib';
 
 @Component({
   selector: 'app-tab-wsfed-attrrelease',

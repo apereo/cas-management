@@ -1,11 +1,6 @@
 import {FormArray, FormGroup, Validators} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  DataRecord,
-  MgmtFormControl,
-  AbstractRegisteredService,
-  DefaultRegisteredServiceProperty
-} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {AbstractRegisteredService, DefaultRegisteredServiceProperty} from 'domain-lib';
 
 export class PropertiesForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

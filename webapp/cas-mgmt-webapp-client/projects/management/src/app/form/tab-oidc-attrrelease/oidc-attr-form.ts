@@ -1,5 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {MgmtFormGroup, OidcRegisteredService, MgmtFormControl} from 'mgmt-lib';
+import {OidcRegisteredService} from 'domain-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 
 export class OidcAttrForm extends FormGroup implements MgmtFormGroup<OidcRegisteredService> {
 

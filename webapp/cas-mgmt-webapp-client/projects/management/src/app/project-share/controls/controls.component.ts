@@ -1,11 +1,11 @@
 import {Component, OnInit, Output, EventEmitter, ViewChild, Input} from '@angular/core';
-import {UserService, Commit, AppConfigService, SpinnerService} from 'mgmt-lib';
+import {UserService, AppConfigService} from 'shared-lib';
+import {Commit} from 'domain-lib';
 import {Location} from '@angular/common';
 import {PublishComponent} from '../publish/publish.component';
 import {CommitComponent} from '../commit/commit.component';
 import {ControlsService} from './controls.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-controls',
@@ -61,8 +61,7 @@ export class ControlsComponent implements OnInit {
               public appService: AppConfigService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              public location: Location,
-              public spinner: SpinnerService) { }
+              public location: Location) { }
 
   ngOnInit() {
     if (this.appService.config.versionControl && this.showVersionControl) {
@@ -94,9 +93,7 @@ export class ControlsComponent implements OnInit {
       this.submit(msg);
     } else {
       if (msg !== null && msg !== '') {
-        this.spinner.start('Committing changes');
         this.service.commit(msg)
-          .pipe(finalize(() => this.spinner.stop()))
           .subscribe(
             () => this.handleCommit(),
             () => this.handleNotCommitted()
@@ -131,9 +128,7 @@ export class ControlsComponent implements OnInit {
 
   publish(commits: Commit[]) {
     if (commits.length > 0 ) {
-      this.spinner.start('Publishing');
       this.service.publish()
-        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(
           () => this.handlePublish(),
           () => this.handleNotPublished()
@@ -158,9 +153,7 @@ export class ControlsComponent implements OnInit {
   }
 
   submit(msg: string) {
-    this.spinner.start('Submitting request');
     this.service.submit(msg)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(
         () => this.handleSubmit(),
         () => this.handleNotSubmitted()

@@ -4,7 +4,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {FormComponent} from './form.component';
-import {FormResolve} from './form.resolover';
+import {FormResolve} from './form.resolve';
 import {TabBasicsComponent} from './tab-basics/tab-basics.component';
 import {TabLogoutComponent} from './tab-logout/tab-logout.component';
 import {TabAccessstrategyComponent} from './tab-accessstrategy/tab-accessstrategy.component';

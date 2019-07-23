@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'json',
-    loadChildren: () => import('./json/json.module').then(m => m.JsonModule)
+    loadChildren: () => import('./json/json.module').then(m => m.JsonModule),
   },
   {
     path: 'yaml',

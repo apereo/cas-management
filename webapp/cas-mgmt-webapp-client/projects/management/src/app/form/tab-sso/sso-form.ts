@@ -1,13 +1,12 @@
 import {FormArray, FormGroup} from '@angular/forms';
-import {AbstractRegisteredService, MgmtFormGroup} from 'mgmt-lib';
+import {MgmtFormControl, MgmtFormGroup} from 'mgmt-lib';
 import {
   AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy,
   LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy,
   ChainingRegisteredServiceSingleSignOnParticipationPolicy,
   RegisteredServiceSingleSignOnParticipationPolicy,
-  MgmtFormControl,
-  SsoPolicyType
-} from 'mgmt-lib';
+  SsoPolicyType, AbstractRegisteredService
+} from 'domain-lib';
 import {AuthDateForm} from '@app/form/tab-sso/auth-date-form';
 import {LastUsedForm} from '@app/form/tab-sso/last-used-form';
 

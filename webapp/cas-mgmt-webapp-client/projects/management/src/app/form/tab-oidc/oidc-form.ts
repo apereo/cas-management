@@ -1,24 +1,20 @@
-import {FormGroup, Validators} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  MgmtFormControl,
-  AbstractRegisteredService,
-  OidcRegisteredService
-} from 'mgmt-lib';
+import {FormGroup} from '@angular/forms';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {AbstractRegisteredService, OidcRegisteredService} from 'domain-lib';
 
 export class OidcForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   constructor(public service: OidcRegisteredService) {
     super({
-      jwks: new MgmtFormControl(null, null, Validators.required),
+      jwks: new MgmtFormControl(null, null),
       jwksCacheDuration: new MgmtFormControl(null),
       jwksCacheTimeUnit: new MgmtFormControl(null),
       tokenEndpointAuthenticationMethod: new MgmtFormControl(null),
       signIdToken: new MgmtFormControl(null),
       implicit: new MgmtFormControl(null),
       encryptIdToken: new MgmtFormControl(null),
-      idTokenEncryptionAlg: new MgmtFormControl(null, null, Validators.required),
-      idTokenEncryptionEncoding: new MgmtFormControl(null, null, Validators.required),
+      idTokenEncryptionAlg: new MgmtFormControl(null, null),
+      idTokenEncryptionEncoding: new MgmtFormControl(null, null),
       idTokenSigningAlg: new MgmtFormControl(null),
       userInfoSigningAlg: new MgmtFormControl(null),
       userInfoEncryptedResponseAlg: new MgmtFormControl(null),

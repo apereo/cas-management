@@ -1,5 +1,6 @@
 import {BaseMfaForm} from './base-mfa-form';
-import {GroovyRegisteredServiceMultifactorPolicy, MgmtFormControl} from 'mgmt-lib';
+import {GroovyRegisteredServiceMultifactorPolicy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {Validators} from '@angular/forms';
 
 export class GroovyMfaForm extends BaseMfaForm<GroovyRegisteredServiceMultifactorPolicy> {

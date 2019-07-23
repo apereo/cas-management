@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
-import {Service} from 'mgmt-lib';
+import {Service} from 'shared-lib';
 
 @Injectable({
   providedIn: 'root'

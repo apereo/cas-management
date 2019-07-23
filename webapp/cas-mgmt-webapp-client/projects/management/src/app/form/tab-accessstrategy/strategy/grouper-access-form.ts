@@ -1,7 +1,5 @@
-import {
-  GrouperRegisteredServiceAccessStrategy,
-  MgmtFormControl
-} from 'mgmt-lib';
+import {GrouperRegisteredServiceAccessStrategy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {BaseAccessForm} from './base-access-form';
 import {Validators} from '@angular/forms';
 

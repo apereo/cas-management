@@ -1,5 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {MgmtFormGroup, RegisteredServiceAttributeFilter, FilterType} from 'mgmt-lib';
+import {MgmtFormGroup} from 'mgmt-lib';
+import {RegisteredServiceAttributeFilter, FilterType} from 'domain-lib';
 
 export class BaseFilterForm<T extends RegisteredServiceAttributeFilter> extends FormGroup implements MgmtFormGroup<T> {
 

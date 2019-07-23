@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {DataRecord, OidcRegisteredService} from 'mgmt-lib';
+import {DataRecord} from 'mgmt-lib';
+import {OidcRegisteredService} from 'domain-lib';
 import {OidcForm} from './oidc-form';
-import {AppService} from '@app/core/app.service';
 
 @Component({
   selector: 'app-tab-oidc',
@@ -12,7 +12,7 @@ export class TabOIDCComponent {
   oidc: OidcForm;
 
 
-  constructor(public data: DataRecord, public service: AppService) {
+  constructor(public data: DataRecord) {
     if (this.data.formMap.has('oidc')) {
       this.oidc = this.data.formMap.get('oidc') as OidcForm;
       return;

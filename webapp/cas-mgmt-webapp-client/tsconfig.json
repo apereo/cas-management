@@ -25,7 +25,21 @@
       "mgmt-lib/*": [
         "dist/mgmt-lib/*"
       ],
-      "@app/*": ["projects/management/src/app/*"]
+      "@app/*": [
+        "projects/management/src/app/*"
+      ],
+      "domain-lib": [
+        "dist/domain-lib"
+      ],
+      "domain-lib/*": [
+        "dist/domain-lib/*"
+      ],
+      "shared-lib": [
+        "dist/shared-lib"
+      ],
+      "shared-lib/*": [
+        "dist/shared-lib/*"
+      ]
     }
   }
 }

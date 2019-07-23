@@ -5,7 +5,7 @@ import {
   ChainingRegisteredServiceSingleSignOnParticipationPolicy,
   LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy,
   SsoPolicyType
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {LastUsedForm} from '@app/form/tab-sso/last-used-form';
 import {AuthDateForm} from '@app/form/tab-sso/auth-date-form';
 import {BaseSsoPolicyForm} from '@app/form/tab-sso/base-form';

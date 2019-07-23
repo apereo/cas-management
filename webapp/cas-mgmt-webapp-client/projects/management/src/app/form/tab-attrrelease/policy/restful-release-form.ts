@@ -1,6 +1,7 @@
 import {BaseReleaseForm} from './base-release-form';
 import {Validators} from '@angular/forms';
-import {ReturnRestfulAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {ReturnRestfulAttributeReleasePolicy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 
 export class RestfulReleaseForm extends BaseReleaseForm<ReturnRestfulAttributeReleasePolicy> {
 

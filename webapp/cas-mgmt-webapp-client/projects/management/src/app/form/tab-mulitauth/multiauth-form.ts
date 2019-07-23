@@ -1,13 +1,12 @@
 import {FormGroup} from '@angular/forms';
+import {MgmtFormControl, MgmtFormGroup} from 'mgmt-lib';
 import {
   AbstractRegisteredService,
   DefaultRegisteredServiceMultifactorPolicy,
   GroovyRegisteredServiceMultifactorPolicy,
   MfaPolicyType,
-  MgmtFormControl,
-  MgmtFormGroup,
   RegisteredServiceMultifactorPolicy
-} from 'mgmt-lib';
+} from 'domain-lib';
 import {DefaultMFAForm} from './default-mfa-form';
 import {GroovyMfaForm} from './groovy-mfa-form';
 import {BaseMfaForm} from './base-mfa-form';

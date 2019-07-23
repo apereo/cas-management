@@ -4,8 +4,8 @@ import {Location} from '@angular/common';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ViewComponent} from '@app/project-share/view/view.component';
 import {ChangesService} from './changes.service';
-import {DiffEntry, PaginatorComponent, SpinnerService} from 'mgmt-lib';
-import {finalize} from 'rxjs/operators';
+import {DiffEntry} from 'domain-lib';
+import {PaginatorComponent} from 'shared-lib';
 
 @Component({
   selector: 'app-changes',
@@ -27,8 +27,7 @@ export class ChangesComponent implements OnInit {
                 public location: Location,
                 public service: ChangesService,
                 public snackBar: MatSnackBar,
-                public dialog: MatDialog,
-                public spinner: SpinnerService) { }
+                public dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.data
@@ -39,9 +38,7 @@ export class ChangesComponent implements OnInit {
   }
 
   viewDiff() {
-    this.spinner.start('Loading diff');
     this.service.viewDiff(this.selectedItem.oldId, this.selectedItem.newId)
-      .pipe(finalize(() => this.spinner.stop()))
       .subscribe(f => {
           this.dialog.open(ViewComponent, {
             data: [f, 'diff', 'github'],

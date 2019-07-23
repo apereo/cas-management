@@ -1,11 +1,10 @@
 import {FormGroup} from '@angular/forms';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 import {
-  MgmtFormGroup,
-  MgmtFormControl,
   RegisteredServiceAttributeReleasePolicy,
   PrincipalRepoType,
   CachingPrincipalAttributesRepository,
-} from 'mgmt-lib';
+} from 'domain-lib';
 
 export abstract class BaseReleaseForm<T extends RegisteredServiceAttributeReleasePolicy>
   extends FormGroup implements MgmtFormGroup<RegisteredServiceAttributeReleasePolicy> {

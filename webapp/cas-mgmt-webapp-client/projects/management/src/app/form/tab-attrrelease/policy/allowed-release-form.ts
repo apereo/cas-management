@@ -1,4 +1,5 @@
-import {ReturnAllowedAttributeReleasePolicy, MgmtFormControl} from 'mgmt-lib';
+import {ReturnAllowedAttributeReleasePolicy} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {BaseReleaseForm} from './base-release-form';
 
 export class AllowedReleaseForm extends BaseReleaseForm<ReturnAllowedAttributeReleasePolicy> {

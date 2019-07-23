@@ -1,0 +1,14 @@
+<lib-navigation #navcom>
+  <a mat-list-item (click)="navto('/')">
+    <mat-icon>view_quilt</mat-icon>
+    <span i18n>Dashboard</span>
+  </a>
+  <a mat-list-item (click)="navto('cache')">
+    <mat-icon>view_quilt</mat-icon>
+    <span i18n>Sessions</span>
+  </a>
+  <a mat-list-item (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    <ng-container i18n>Logout</ng-container>
+  </a>
+</lib-navigation>

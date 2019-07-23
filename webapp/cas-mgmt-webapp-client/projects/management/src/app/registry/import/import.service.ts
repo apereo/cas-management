@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
 import {
   AbstractRegisteredService,
-  Service,
   RegexRegisteredService,
   OAuthRegisteredService,
   OidcRegisteredService,
   SamlRegisteredService,
   WSFederationRegisterdService
-} from 'mgmt-lib';
+} from 'domain-lib';
+import {Service} from 'shared-lib';
 import {catchError, tap} from 'rxjs/operators';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class ImportService extends Service {
   service: AbstractRegisteredService;
 
   import(file: string): Observable<AbstractRegisteredService> {
-    return this.post<AbstractRegisteredService>(this.controller + 'import', file)
+    return this.post<AbstractRegisteredService>(this.controller + 'import', file, 'Loading file')
       .pipe(
         tap(resp => this.service = resp),
         catchError((e) => this.handleError(e, this.dialog))

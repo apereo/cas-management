@@ -1,5 +1,6 @@
 import {BaseFilterForm} from './filter-form';
-import {RegisteredServiceMappedRegexAttributeFilter, MgmtFormControl, FilterType} from 'mgmt-lib';
+import {RegisteredServiceMappedRegexAttributeFilter, FilterType} from 'domain-lib';
+import {MgmtFormControl} from 'mgmt-lib';
 import {AttributeForm} from '../../attribute-form';
 import {FormControl} from '@angular/forms';
 

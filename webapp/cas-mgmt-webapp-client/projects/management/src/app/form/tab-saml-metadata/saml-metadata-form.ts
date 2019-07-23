@@ -1,12 +1,6 @@
 import {FormGroup, Validators} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  DataRecord,
-  MgmtFormControl,
-  AbstractRegisteredService,
-  SamlRegisteredService
-} from 'mgmt-lib';
-import {AttributeForm} from '../attribute-form';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {AbstractRegisteredService, SamlRegisteredService} from 'domain-lib';
 
 export class SamlMetadataForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

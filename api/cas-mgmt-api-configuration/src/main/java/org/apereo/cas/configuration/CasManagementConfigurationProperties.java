@@ -113,6 +113,11 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private String luceneIndexDir = "/etc/cas/lucene";
 
+    /**
+     * List of cas servers that available in the Dashboard.
+     */
+    private List<CasServers> casServers = new ArrayList<>();
+
     @Getter
     @Setter
     @RequiresModule(name = "cas-management-config-ldap-authz")
@@ -165,6 +170,22 @@ public class CasManagementConfigurationProperties implements Serializable {
          */
         @NestedConfigurationProperty
         private NotificationsProperties notifications = new NotificationsProperties();
+    }
+
+    @Getter
+    @Setter
+    public static class CasServers implements Serializable {
+
+        /**
+         * User friendly name given to a server in the cluster.
+         */
+        private String name;
+
+        /**
+         * The full path to the /cas path of the server.
+         */
+        private String url;
+
     }
 }
 

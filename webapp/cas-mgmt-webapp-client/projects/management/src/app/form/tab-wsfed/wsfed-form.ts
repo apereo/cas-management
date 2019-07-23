@@ -1,10 +1,6 @@
 import {FormGroup, Validators} from '@angular/forms';
-import {
-  MgmtFormGroup,
-  MgmtFormControl,
-  WSFederationRegisterdService,
-  AbstractRegisteredService
-} from 'mgmt-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {WSFederationRegisterdService, AbstractRegisteredService} from 'domain-lib';
 
 export class WsfedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

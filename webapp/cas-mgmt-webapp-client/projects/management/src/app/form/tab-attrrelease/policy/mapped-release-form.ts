@@ -1,4 +1,4 @@
-import {ReturnMappedAttributeReleasePolicy} from 'mgmt-lib';
+import {ReturnMappedAttributeReleasePolicy} from 'domain-lib';
 import {BaseReleaseForm} from './base-release-form';
 import {AttributeForm} from '../../attribute-form';
 

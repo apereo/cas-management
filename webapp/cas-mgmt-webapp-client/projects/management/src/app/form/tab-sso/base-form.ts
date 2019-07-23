@@ -1,9 +1,10 @@
 import {FormGroup} from '@angular/forms';
-import {MgmtFormGroup, RegisteredServiceAttributeFilter, FilterType} from 'mgmt-lib';
+import {MgmtFormGroup} from 'mgmt-lib';
 import {
   RegisteredServiceSingleSignOnParticipationPolicy,
-  SsoPolicyType
-} from '../../../../../mgmt-lib/src/lib/domain/sso-expiration';
+  SsoPolicyType,
+  RegisteredServiceAttributeFilter
+} from 'domain-lib';
 
 export class BaseSsoPolicyForm<T extends RegisteredServiceSingleSignOnParticipationPolicy> extends FormGroup implements MgmtFormGroup<T> {
 

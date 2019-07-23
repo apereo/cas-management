@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {CodeExpirationForm} from '@app/form/tab-tokens/code-expiration-form';
-import {AccessTokenExpirationForm} from '@app/form/tab-tokens/access-token-expiration-form';
-import {RefreshTokenExpirationForm} from '@app/form/tab-tokens/refresh-token-expiration-form';
-import {DeviceTokenExpirationForm} from '@app/form/tab-tokens/device-token-expiration-form';
-import {DataRecord, OAuthRegisteredService } from 'mgmt-lib';
-import {TokenForm} from '@app/form/tab-tokens/tokens-form';
+import {OAuthRegisteredService} from 'domain-lib';
+import {TokenForm} from './tokens-form';
+import {CodeExpirationForm} from './code-expiration-form';
+import {AccessTokenExpirationForm} from './access-token-expiration-form';
+import {RefreshTokenExpirationForm} from './refresh-token-expiration-form';
+import {DeviceTokenExpirationForm} from './device-token-expiration-form';
+import {DataRecord} from 'mgmt-lib';
 
 @Component({
   selector: 'app-tab-tokens',

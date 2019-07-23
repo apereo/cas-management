@@ -2,7 +2,8 @@
  * Created by tschmidt on 2/13/17.
  */
 import {Injectable} from '@angular/core';
-import {History, Service} from 'mgmt-lib';
+import {History} from 'domain-lib';
+import {Service} from 'shared-lib';
 import {Observable} from 'rxjs/internal/Observable';
 import {HttpResponse} from '@angular/common/http';
 

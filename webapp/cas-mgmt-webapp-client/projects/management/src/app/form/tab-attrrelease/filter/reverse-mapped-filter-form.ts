@@ -1,5 +1,5 @@
 import {MappedFilterForm} from './mapped-filter-form';
-import {RegisteredServiceReverseMappedRegexAttributeFilter, FilterType} from 'mgmt-lib';
+import {RegisteredServiceReverseMappedRegexAttributeFilter, FilterType} from 'domain-lib';
 import {FormControl} from '@angular/forms';
 
 export class ReverseMappedFilterForm extends MappedFilterForm {

@@ -1,18 +1,18 @@
 <div [formGroup]="attributeRelease">
-  <app-card i18n-heading heading="Attribute Release Policy">
+  <lib-card i18n-heading heading="Attribute Release Policy">
     <lib-attribute-release-policies [typeControl]="attributeRelease.type" [control]="attributeRelease.policy"></lib-attribute-release-policies>
-  </app-card>
-  <app-card i18n-heading heading="Attribute Release Options" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+  </lib-card>
+  <lib-card i18n-heading heading="Attribute Release Options" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
     <lib-attribute-release-checks [control]="attributeRelease.policy.get('checks')"></lib-attribute-release-checks>
-  </app-card>
-  <app-card i18n-heading heading="Attribute Release Consent" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+  </lib-card>
+  <lib-card i18n-heading heading="Attribute Release Consent" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
     <lib-attribute-release-consent [control]="attributeRelease.policy.get('consent')"></lib-attribute-release-consent>
-  </app-card>
-  <app-card i18n-heading heading="Attribute Value Filters" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+  </lib-card>
+  <lib-card i18n-heading heading="Attribute Value Filters" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
     <lib-attribute-release-filters (addFilter)="attributeRelease.addFilter($event)" [control]="attributeRelease.filter"></lib-attribute-release-filters>
-  </app-card>
-  <app-card i18n-heading heading="Principal Attribute Repository" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
+  </lib-card>
+  <lib-card i18n-heading heading="Principal Attribute Repository" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
     <lib-attribute-release-principal-repo [control]="attributeRelease.policy.get('principalRepo')"></lib-attribute-release-principal-repo>
-  </app-card>
+  </lib-card>
 </div>
 

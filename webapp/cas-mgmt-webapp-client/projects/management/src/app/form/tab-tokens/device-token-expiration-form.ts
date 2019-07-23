@@ -1,5 +1,6 @@
-import {MgmtFormGroup, RegisteredServiceOAuthDeviceTokenExpirationPolicy, MgmtFormControl} from 'mgmt-lib';
 import {FormGroup} from '@angular/forms';
+import {RegisteredServiceOAuthDeviceTokenExpirationPolicy} from 'domain-lib';
+import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
 
 export class DeviceTokenExpirationForm extends FormGroup implements MgmtFormGroup<RegisteredServiceOAuthDeviceTokenExpirationPolicy> {
 

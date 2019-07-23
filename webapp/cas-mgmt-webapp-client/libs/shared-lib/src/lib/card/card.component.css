@@ -1,0 +1,16 @@
+.tabCard {
+  margin-right:auto;
+  margin-left:auto;
+  max-width:650px;
+  margin-top:5px
+}
+
+.cardContent {
+  margin-right:auto;
+  margin-left:auto;
+  max-width:550px;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

@@ -38,11 +38,11 @@ publishing {
 apply from: rootProject.file("gradle/springboot.gradle")
 
 if (!Boolean.getBoolean("skipClientBuild")) {
-    if (rootProject.publishReleases || rootProject.publishSnapshots || Boolean.getBoolean("buildProd")) {
-        processResources.dependsOn(':webapp:cas-mgmt-webapp-client:buildClient')
-    } else {
+    if (Boolean.getBoolean("buildDev")) {
         processResources.dependsOn(':webapp:cas-mgmt-webapp-client:buildClientDev')
-    }
+    } else {
+        processResources.dependsOn(':webapp:cas-mgmt-webapp-client:buildClient')
+    } 
 }
 
 dependencies {

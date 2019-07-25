@@ -1,0 +1,39 @@
+<div>
+  <h3 matDialogTitle i18n>Search Criteria</h3>
+</div>
+  <mat-dialog-content>
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Period</mat-placeholder>
+        <input matInput #period>
+      </mat-form-field>
+    </lib-input>
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Principal</mat-placeholder>
+        <input matInput #principal>
+      </mat-form-field>
+    </lib-input>
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Action Performed</mat-placeholder>
+        <input matInput #action>
+      </mat-form-field>
+    </lib-input>
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Client IP Address</mat-placeholder>
+        <input matInput #clientIP>
+      </mat-form-field>
+    </lib-input>
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Resource Operated On</mat-placeholder>
+        <input matInput #resource>
+      </mat-form-field>
+    </lib-input>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="search(period.value, principal.value, action.value, clientIP.value, resource.value)">Search</button>
+  </mat-dialog-actions>
+

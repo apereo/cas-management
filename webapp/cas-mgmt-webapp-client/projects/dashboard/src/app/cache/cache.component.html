@@ -1,23 +1,65 @@
-<mat-card class="card">
-  <mat-card-header>
-    <mat-card-title> <mat-slide-toggle [checked]="cacheTimer" (change)="update($event)"></mat-slide-toggle>Cache</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="cardContent">
-    <table style="width:100%">
-      <thead>
-        <th>Name</th>
-        <th>Size</th>
-        <th>Memory</th>
-        <th>Used</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let map of mapKeys(); let i = index">
-          <td>{{ map }}</td>
-          <td style="text-align: center">{{ mapSize(map)}}</td>
-          <td style="text-align: center;">{{ mapMemory(map)}}</td>
-          <td style="text-align: center">{{mapUsed(map)}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </mat-card-content>
-</mat-card>
+  <div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
+    <div style="padding-top: 3px;">
+      <mat-icon style="padding-top: 3px;">view_quilt</mat-icon>
+      <h4 style="display: inline;position: relative;top: -5px;" i18n> <mat-slide-toggle [checked]="cacheTimer" (change)="update($event)"></mat-slide-toggle>Cache</h4>
+    </div>
+    <div style="flex: 1 1 auto">
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
+    <mat-table #table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+          <ng-container>&nbsp;</ng-container>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+          <button mat-icon-button>
+            <mat-icon>menu</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
+          <ng-container i18n>Map</ng-container>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+          {{ row.name }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="size">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'sizeWidth'">
+          <ng-container i18n>Size</ng-container>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'sizeWidth'">
+          {{ row.size.toFixed(2) }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="memory">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'memoryWidth'">
+          <ng-container i18n>Memory</ng-container>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'memoryWidth'">
+          {{ row.memory.toFixed(2) }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="used">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'usedWidth'">
+          <ng-container i18n>Used</ng-container>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'usedWidth'">
+          {{ ((row.memory / row.capacity) * 100.0).toFixed(4) }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <lib-paginator></lib-paginator>
+  </div>

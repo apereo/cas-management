@@ -1,0 +1,26 @@
+  <div>
+    <h3 matDialogTitle>Release Credentials</h3>
+  </div>
+  <mat-dialog-content class="cardContent">
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Username</mat-placeholder>
+        <input matInput #uid>
+      </mat-form-field>
+    </lib-input>
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Password</mat-placeholder>
+        <input matInput type="password" #password>
+      </mat-form-field>
+    </lib-input>
+    <lib-input>
+      <mat-form-field class="textInput">
+        <mat-placeholder i18n>Service</mat-placeholder>
+        <input matInput #serviceId>
+      </mat-form-field>
+    </lib-input>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="resolve(uid.value, password.value, serviceId.value)">Resolve</button>
+  </mat-dialog-actions>

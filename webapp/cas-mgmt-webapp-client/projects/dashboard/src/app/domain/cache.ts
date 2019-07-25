@@ -8,6 +8,7 @@ export class Details {
 }
 
 export class MapDetails {
+  name: string;
   memory: number;
   size: number;
   capacity: number;

@@ -1,0 +1,38 @@
+.card {
+  margin-right:auto;
+  margin-left:auto;
+  max-width:800px;
+  margin-top:5px
+}
+
+.cardContent {
+  margin-right:auto;
+  margin-left:auto;
+  max-width:750px;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.timestampWidth {
+  flex: 0 0 215px;
+}
+
+.principalWidth {
+  flex: 0 0 100px;
+}
+
+.actionPerformedWidth {
+  flex: 0 0 365px;
+  white-space: nowrap;
+}
+
+.clientipWidth {
+  flex: 0 0 125px;
+}
+
+.resourceWidth {
+  flex: 1 1 400px;
+  white-space: nowrap;
+}

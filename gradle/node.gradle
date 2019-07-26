@@ -2,7 +2,7 @@ apply plugin: "com.moowork.node"
 
 node {
     version = "${nodeVersion}"
-    nodeModulesDir = rootProject.file("webapp/cas-mgmt-webapp-client")
+    nodeModulesDir = rootProject.file("webapp/cas-mgmt-webapp-workspace")
     download = true
 }
 

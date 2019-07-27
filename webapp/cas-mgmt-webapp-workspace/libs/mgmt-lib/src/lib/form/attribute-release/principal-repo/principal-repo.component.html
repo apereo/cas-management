@@ -14,8 +14,8 @@
 
 <ng-container *ngIf="typeControl.value == TYPE.CACHING">
   <lib-input>
-    <mat-form-field class="textInput">
-      <mat-placeholder i18n>Time Unit</mat-placeholder>
+    <mat-form-field class="textInput" appearance="standard">
+      <mat-label i18n>Time Unit</mat-label>
       <mat-select required [formControl]="timeUnit">
         <mat-option *ngFor="let opt of formData.options.timeUnits" [value]="opt">
           {{ opt }}
@@ -29,8 +29,8 @@
   </lib-input>
 
   <lib-input>
-    <mat-form-field class="textInput">
-      <mat-placeholder i18n>Expiration</mat-placeholder>
+    <mat-form-field class="textInput" appearance="standard">
+      <mat-label i18n>Expiration</mat-label>
       <input matInput [formControl]="expiration">
       <mat-hint align="end"><lib-hint [difference]="expiration.difference()"></lib-hint></mat-hint>
     </mat-form-field>
@@ -40,8 +40,8 @@
   </lib-input>
 
   <lib-input>
-    <mat-form-field class="textInput">
-      <mat-placeholder i18n>Merging Strategy</mat-placeholder>
+    <mat-form-field class="textInput" appearance="standard">
+      <mat-label i18n>Merging Strategy</mat-label>
       <mat-select required [formControl]="mergingStrategy">
         <mat-option *ngFor="let opt of formData.options.mergingStrategies" [value]="opt">
           {{ opt }}

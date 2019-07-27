@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Logout URL</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Logout URL</mat-label>
     <input matInput pattern="https?://[a-zA-Z0-9.]+:?[0-9]*/.*"
            [formControl]="control" spellcheck="false">
     <mat-error i18n *ngIf="control.hasError('pattern')">You have entered an invalid URL</mat-error>

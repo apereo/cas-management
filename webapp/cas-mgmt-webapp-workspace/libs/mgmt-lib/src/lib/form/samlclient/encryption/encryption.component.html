@@ -24,8 +24,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Encryptable Attributes</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Encryptable Attributes</mat-label>
     <mat-select multiple [formControl]="encryptableAttributes">
       <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">
         {{ opt }}
@@ -39,8 +39,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Encryption Data Algorithms</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Encryption Data Algorithms</mat-label>
     <mat-select multiple [formControl]="encryptionDataAlgorithms">
       <mat-option value="http://www.w3.org/2001/04/xmlenc#aes128-cbc">AES128-CBC</mat-option>
       <mat-option value="http://www.w3.org/2001/04/xmlenc#aes192-cbc">AES192-CBC</mat-option>
@@ -55,8 +55,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Encryption Key Algorithms</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Encryption Key Algorithms</mat-label>
     <mat-select multiple [formControl]="encryptionKeyAlgorithms">
       <mat-option value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">RSA-OAEP-MGF1P</mat-option>
       <mat-option value="http://www.w3.org/2001/04/xmlenc#kw-aes128">KW-AES128</mat-option>
@@ -72,8 +72,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Encryption Black Listed Algorithms</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Encryption Black Listed Algorithms</mat-label>
     <mat-select multiple [formControl]="encryptionBlackListedAlgorithms">
       <mat-option value="http://www.w3.org/2001/04/xmlenc#rsa-1_5">RSA-1_5</mat-option>
     </mat-select>
@@ -85,8 +85,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Encryption White Listed Algorithms</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Encryption White Listed Algorithms</mat-label>
     <mat-select multiple [formControl]="encryptionWhiteListedAlgorithms">
       <mat-option value="http://www.w3.org/2001/04/xmlenc#aes128-cbc">AES128-CBC</mat-option>
       <mat-option value="http://www.w3.org/2001/04/xmlenc#aes192-cbc">AES192-CBC</mat-option>

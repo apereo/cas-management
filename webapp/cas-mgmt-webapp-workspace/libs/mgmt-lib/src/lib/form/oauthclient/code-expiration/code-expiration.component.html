@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Number of Uses</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Number of Uses</mat-label>
     <input matInput type="number" [formControl]="numberOfUses">
   </mat-form-field>
   <mat-hint align="end"><lib-hint [difference]="numberOfUses.difference()"></lib-hint></mat-hint>
@@ -10,8 +10,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Time to Live</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Time to Live</mat-label>
     <input matInput [formControl]="timeToLive">
   </mat-form-field>
   <mat-hint align="end"><lib-hint [difference]="timeToLive.difference()"></lib-hint></mat-hint>

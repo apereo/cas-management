@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Script File Location</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Script File Location</mat-label>
     <input matInput [formControl]="script" required>
     <mat-hint align="end"><lib-hint [difference]="script.difference()"></lib-hint></mat-hint>
   </mat-form-field>

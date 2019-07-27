@@ -23,8 +23,8 @@
     </mat-expansion-panel-header>
     <ng-container *ngIf="isRegEx(filter)">
       <lib-input>
-        <mat-form-field class="textInput">
-          <mat-placeholder i18n>Attribute Filter Pattern</mat-placeholder>
+        <mat-form-field class="textInput" appearance="standard">
+          <mat-label i18n>Attribute Filter Pattern</mat-label>
           <input matInput formControlName="pattern">
           <mat-hint align="end">
             <lib-hint></lib-hint>
@@ -41,8 +41,8 @@
     </ng-container>
     <ng-container *ngIf="isScripted(filter)">
       <lib-input>
-        <mat-form-field class="textInput">
-          <mat-placeholder i18n>Script</mat-placeholder>
+        <mat-form-field class="textInput" appearance="standard">
+          <mat-label i18n>Script</mat-label>
           <input matInput formControlName="script">
           <mat-hint align="end">
             <lib-hint></lib-hint>

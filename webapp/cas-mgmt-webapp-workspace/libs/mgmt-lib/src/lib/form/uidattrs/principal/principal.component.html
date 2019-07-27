@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Username Attribute</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Username Attribute</mat-label>
     <input matInput [matAutocomplete]="auto" required
            [formControl]="usernameAttribute">
     <mat-hint align="end"><lib-hint [difference]="usernameAttribute.difference()"></lib-hint></mat-hint>

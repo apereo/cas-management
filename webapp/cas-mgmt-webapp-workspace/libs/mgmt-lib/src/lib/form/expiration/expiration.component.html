@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Expiration Date</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Expiration Date</mat-label>
     <input matInput [formControl]="expirationDate">
     <mat-hint align="end"><lib-hint [difference]="expirationDate.difference()"></lib-hint></mat-hint>
   </mat-form-field>

@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Duration</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Duration</mat-label>
     <input matInput type="number" [formControl]="timeValue">
     <mat-hint align="end"><lib-hint [difference]="timeValue.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -10,8 +10,9 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-select i18n-placeholder placeholder="Time Unit" [formControl]="timeUnit">
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Time Unit</mat-label>
+    <mat-select [formControl]="timeUnit">
       <mat-option value="SECONDS">Seconds</mat-option>
       <mat-option value="MINUTES">Minutes</mat-option>
       <mat-option value="HOURS">Hours</mat-option>

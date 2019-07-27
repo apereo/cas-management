@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Authentication Context Class</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Authentication Context Class</mat-label>
     <input matInput [formControl]="requiredAuthenticationContextClass">
     <mat-hint align="end"><lib-hint [difference]="requiredAuthenticationContextClass.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -11,8 +11,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Assertion Audiences</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Assertion Audiences</mat-label>
     <input matInput [formControl]="assertionAudiences">
     <mat-hint align="end"><lib-hint [difference]="assertionAudiences.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -22,8 +22,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Issuer Entity ID</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Issuer Entity ID</mat-label>
     <input matInput [formControl]="issuerEntityId">
     <mat-hint align="end"><lib-hint [difference]="issuerEntityId.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -34,8 +34,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Skew Allowance</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Skew Allowance</mat-label>
     <input matInput [formControl]="skewAllowance">
     <mat-hint align="end"><lib-hint [difference]="skewAllowance.difference()"></lib-hint></mat-hint>
   </mat-form-field>

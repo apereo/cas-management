@@ -1,6 +1,6 @@
 <lib-input *ngIf="!hideKeys">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>User Info Signing Algorithm</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>User Info Signing Algorithm</mat-label>
     <input matInput [matAutocomplete]="encryptAlgAuto"
            [formControl]="userInfoSigningAlg">
     <mat-hint align="end"><lib-hint [difference]="userInfoSigningAlg.difference()"></lib-hint></mat-hint>
@@ -14,8 +14,8 @@
 </lib-input>
 
 <lib-input *ngIf="!hideKeys">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>User Info Encrypted Response Algorithm</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>User Info Encrypted Response Algorithm</mat-label>
     <input matInput [matAutocomplete]="encryptAlgAuto"
            [formControl]="userInfoEncryptedResponseAlg">
     <mat-hint align="end"><lib-hint [difference]="userInfoEncryptedResponseAlg.difference()"></lib-hint></mat-hint>
@@ -29,8 +29,8 @@
 </lib-input>
 
 <lib-input *ngIf="!hideKeys">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>User Info Encrypted Response Encoding</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>User Info Encrypted Response Encoding</mat-label>
     <input matInput [matAutocomplete]="encodingAlgAuto"
            [formControl]="userInfoEncryptedResponseEncoding">
     <mat-hint align="end"><lib-hint [difference]="userInfoEncryptedResponseEncoding.difference()"></lib-hint></mat-hint>

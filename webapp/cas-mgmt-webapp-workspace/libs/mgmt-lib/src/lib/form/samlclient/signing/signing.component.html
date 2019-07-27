@@ -17,8 +17,8 @@
 
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Signing Credential Type</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Signing Credential Type</mat-label>
     <mat-select [formControl]="signingCredentialType">
       <mat-option *ngFor="let opt of formData.options.samlCredentialTypes" [value]="opt">
         {{ opt }}
@@ -34,8 +34,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Signing Credential Fingerprint </mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Signing Credential Fingerprint </mat-label>
     <input matInput [formControl]="signingCredentialFingerPrint">
     <mat-hint align="end"><lib-hint [difference]="signingCredentialFingerPrint.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -46,8 +46,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Signing Signature Reference Digest Methods</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Signing Signature Reference Digest Methods</mat-label>
     <mat-select multiple [formControl]="signingSignatureReferenceDigestMethods">
       <mat-option value="http://www.w3.org/2001/04/xmlenc#sha256">SHA-256</mat-option>
       <mat-option value="http://www.w3.org/2001/04/xmldsig-more#sha384">SHA-384</mat-option>
@@ -62,8 +62,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Signing Signature Algorithms</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Signing Signature Algorithms</mat-label>
     <mat-select multiple [formControl]="signingSignatureAlgorithms">
       <mat-option value="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256">RSA-SHA256</mat-option>
       <mat-option value="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384">RSA-SHA384</mat-option>
@@ -87,8 +87,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Signing Signature Black Listed Algorithms</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Signing Signature Black Listed Algorithms</mat-label>
     <mat-select multiple [formControl]="signingSignatureBlackListedAlgorithms">
       <mat-option value="http://www.w3.org/2001/04/xmldsig-more#md5">MD5</mat-option>
       <mat-option value="http://www.w3.org/2001/04/xmldsig-more#rsa-md5">RSA-MD5</mat-option>
@@ -102,8 +102,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Signing Signature White Listed Algorithms</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Signing Signature White Listed Algorithms</mat-label>
     <mat-select multiple [formControl]="signingSignatureWhiteListedAlgorithms">
       <mat-option value="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256">RSA-SHA256</mat-option>
       <mat-option value="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384">RSA-SHA384</mat-option>
@@ -127,8 +127,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Signing Signature Canonicalization Algorithm</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Signing Signature Canonicalization Algorithm</mat-label>
     <mat-select [formControl]="signingSignatureCanonicalizationAlgorithm">
       <mat-option value="http://www.w3.org/2001/10/xml-exc-c14n#">XML-C14N</mat-option>
     </mat-select>

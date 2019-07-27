@@ -14,8 +14,8 @@
 
 <ng-container *ngIf="typeControl.value == TYPE.REGEX">
   <lib-input>
-    <mat-form-field class="textInput">
-      <mat-placeholder i18n>Regex</mat-placeholder>
+    <mat-form-field class="textInput" appearance="standard">
+      <mat-label i18n>Regex</mat-label>
       <input matInput required [formControl]="regex()">
       <mat-hint align="end"><lib-hint [difference]="regex().difference()"></lib-hint></mat-hint>
     </mat-form-field>

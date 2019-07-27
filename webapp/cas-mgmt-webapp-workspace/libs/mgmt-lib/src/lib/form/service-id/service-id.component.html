@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder>{{ prompt }}</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label>{{ prompt }}</mat-label>
     <input matInput libValidateServiceId pattern="^\S+" required [formControl]="control">
     <mat-error i18n *ngIf="control.hasError('invalidUrl')">Invalid URL</mat-error>
     <mat-error i18n *ngIf="control.hasError('invalidDomain')">You do not have permissions to create a service for the domain entered in the service id</mat-error>

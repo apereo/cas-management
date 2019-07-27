@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Description</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Description</mat-label>
     <textarea matInput rows="5" [formControl]="control"></textarea>
     <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
   </mat-form-field>

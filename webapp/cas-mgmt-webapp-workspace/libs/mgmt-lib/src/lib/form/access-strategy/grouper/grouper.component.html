@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Group Field</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Group Field</mat-label>
     <mat-select [formControl]="groupField" required>
       <mat-option [value]="null">UNDEFINED</mat-option>
       <mat-option *ngFor="let opt of fields" [value]="opt">{{ opt }}</mat-option>

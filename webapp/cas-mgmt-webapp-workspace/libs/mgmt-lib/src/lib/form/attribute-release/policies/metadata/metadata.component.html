@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Metadata Entity Attribute</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Metadata Entity Attribute</mat-label>
     <input matInput [formControl]="entityAttribute" required>
     <mat-hint align="end"><lib-hint [difference]="entityAttribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -10,8 +10,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Metadata Entity Attribute Format</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Metadata Entity Attribute Format</mat-label>
     <input matInput [formControl]="entityAttributeFormat">
     <mat-hint align="end"><lib-hint [difference]="entityAttributeFormat.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -21,8 +21,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Metadata Entity Attribute Values</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Metadata Entity Attribute Values</mat-label>
     <input matInput [formControl]="entityAttributeValues">
     <mat-hint align="end"><lib-hint [difference]="entityAttributeValues.difference()"></lib-hint></mat-hint>
   </mat-form-field>

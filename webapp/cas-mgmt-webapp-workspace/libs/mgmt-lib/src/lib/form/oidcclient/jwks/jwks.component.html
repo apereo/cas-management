@@ -1,6 +1,6 @@
 <lib-input *ngIf="!hideKeys">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>JSON Web Keystore</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>JSON Web Keystore</mat-label>
     <input matInput [formControl]="jwks">
     <mat-hint align="end"><lib-hint [difference]="jwks.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -10,8 +10,8 @@
 </lib-input>
 
 <lib-input *ngIf="!hideKeys">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>JWKS Cache Duration</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>JWKS Cache Duration</mat-label>
     <input matInput type="number" [formControl]="jwksCacheDuration">
     <mat-hint align="end"><lib-hint [difference]="jwksCacheDuration.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -21,8 +21,8 @@
 </lib-input>
 
 <lib-input *ngIf="!hideKeys">
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>JWKS Cache Time Unit</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label>JWKS Cache Time Unit</mat-label>
     <input matInput [formControl]="jwksCacheTimeUnit">
     <mat-hint align="end"><lib-hint [difference]="jwksCacheTimeUnit.difference()"></lib-hint></mat-hint>
   </mat-form-field>

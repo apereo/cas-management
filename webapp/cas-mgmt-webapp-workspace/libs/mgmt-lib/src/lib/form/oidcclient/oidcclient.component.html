@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Token Endpoint Authentication Method</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard"
+    <mat-label i18n>Token Endpoint Authentication Method</mat-label>
     <input matInput [formControl]="tokenEndpointAuthenticationMethod">
     <mat-hint align="end"><lib-hint [difference]="tokenEndpointAuthenticationMethod.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -20,8 +20,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Application Type</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Application Type</mat-label>
     <mat-select [formControl]="applicationType">
       <mat-option *ngFor="let opt of formData.options.oidcApplicationTypes" [value]="opt.value">{{ opt.display }}</mat-option>
     </mat-select>
@@ -33,8 +33,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Subject Type</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Subject Type</mat-label>
     <mat-select [formControl]="subjectType">
       <mat-option *ngFor="let opt of formData.options.oidcSubjectTypes" [value]="opt.value">{{ opt.display }}</mat-option>
     </mat-select>
@@ -47,8 +47,8 @@
 
 <ng-container *ngIf="subjectType.value === 'pairwise'">
   <lib-input>
-    <mat-form-field class="textInput">
-      <mat-placeholder i18n>Sector Identifier URI</mat-placeholder>
+    <mat-form-field class="textInput" appearance="standard">
+      <mat-label i18n>Sector Identifier URI</mat-label>
       <input matInput [formControl]="sectorIdentifierUri">
       <mat-hint align="end"><lib-hint [difference]="sectorIdentifierUri.difference()"></lib-hint></mat-hint>
     </mat-form-field>
@@ -61,8 +61,8 @@
 
 <ng-container *ngIf="dynamicallyRegistered">
   <lib-input>
-    <mat-form-field class="textInput">
-      <mat-placeholder i18n>Dynamically Registered At</mat-placeholder>
+    <mat-form-field class="textInput" appearance="standard">
+      <mat-label i18n>Dynamically Registered At</mat-label>
       <input matInput [formControl]="dynamicRegistrationDateTime">
       <mat-hint align="end"><lib-hint [difference]="dynamicRegistrationDateTime.difference()"></lib-hint></mat-hint>
     </mat-form-field>

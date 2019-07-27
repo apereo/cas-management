@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>REST Endpoint</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>REST Endpoint</mat-label>
     <input matInput [formControl]="endpoint" required>
     <mat-hint align="end"><lib-hint [difference]="endpoint.difference()"></lib-hint></mat-hint>
   </mat-form-field>

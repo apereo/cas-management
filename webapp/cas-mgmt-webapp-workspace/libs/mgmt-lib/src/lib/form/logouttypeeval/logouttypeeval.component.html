@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Logout Type</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Logout Type</mat-label>
     <mat-select [formControl]="control">
       <mat-option *ngFor="let opt of formData.options.logoutTypes" [value]="opt">{{ opt }}</mat-option>
     </mat-select>

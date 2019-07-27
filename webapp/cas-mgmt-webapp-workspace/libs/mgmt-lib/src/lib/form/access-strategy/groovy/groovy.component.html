@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Groovy Script File</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Groovy Script File</mat-label>
     <input matInput [formControl]="script" required>
     <mat-hint align="end">
       <lib-hint [difference]="script.difference()"></lib-hint>

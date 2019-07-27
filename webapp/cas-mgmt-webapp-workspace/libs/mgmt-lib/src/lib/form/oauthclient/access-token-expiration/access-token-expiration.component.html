@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Max Time to Live</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Max Time to Live</mat-label>
     <input matInput [formControl]="maxTimeToLive">
   </mat-form-field>
   <mat-hint align="end"><lib-hint [difference]="maxTimeToLive.difference()"></lib-hint></mat-hint>
@@ -10,8 +10,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Time to Kill</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Time to Kill</mat-label>
     <input matInput [formControl]="timeToKill">
   </mat-form-field>
   <mat-hint align="end"><lib-hint [difference]="timeToKill.difference()"></lib-hint></mat-hint>

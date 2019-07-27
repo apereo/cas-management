@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18>Providers</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18>Providers</mat-label>
     <mat-select multiple [formControl]="multifactorAuthenticationProviders">
       <mat-option *ngFor="let opt of formData.options.mfaProviders" [value]="opt.value">
         {{ opt.display }}
@@ -14,8 +14,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Failure Mode</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label>Failure Mode</mat-label>
     <mat-select [formControl]="failureMode">
       <mat-option *ngFor="let opt of formData.options.mfaFailureModes" [value]="opt">
         {{ opt }}
@@ -29,8 +29,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Principal Attribute Name Trigger</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label>Principal Attribute Name Trigger</mat-label>
     <input matInput [matAutocomplete]="auto" [formControl]="principalAttributeNameTrigger">
     <mat-hint align="end"><lib-hint [difference]="principalAttributeNameTrigger.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -40,8 +40,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Principal Attribute Value To Match</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label>Principal Attribute Value To Match</mat-label>
     <input matInput [formControl]="principalAttributeValueToMatch">
     <mat-hint align="end"><lib-hint [difference]="principalAttributeValueToMatch.difference()"></lib-hint></mat-hint>
   </mat-form-field>

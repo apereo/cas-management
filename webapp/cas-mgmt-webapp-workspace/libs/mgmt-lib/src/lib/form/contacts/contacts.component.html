@@ -4,8 +4,8 @@
     <mat-tab *ngFor="let contact of contactsArray.controls; let i = index;" [label]="getTabHeader(i)">
       <div formGroupName="{{i}}">
         <lib-input>
-          <mat-form-field class="textInput">
-            <mat-placeholder i18n>Name</mat-placeholder>
+          <mat-form-field class="textInput" appearance="standard">
+            <mat-label i18n>Name</mat-label>
             <input matInput [matAutocomplete]="auto" required formControlName="name" (keyup)="doLookupContact($event.target.value)">
             <mat-hint align="end">
               <lib-hint></lib-hint>
@@ -16,8 +16,8 @@
           </mat-icon>
         </lib-input>
         <lib-input>
-          <mat-form-field class="textInput">
-            <mat-placeholder i18n>Email</mat-placeholder>
+          <mat-form-field class="textInput" appearance="standard">
+            <mat-label i18n>Email</mat-label>
             <input matInput required formControlName="email">
             <mat-error i18n *ngIf="contact.get('email').hasError('email') && !contact.get('email').hasError('required')">You have entered an invalid email address</mat-error>
             <mat-hint align="end">
@@ -29,8 +29,8 @@
           </mat-icon>
         </lib-input>
         <lib-input>
-          <mat-form-field class="textInput">
-            <mat-placeholder i18n>Phone</mat-placeholder>
+          <mat-form-field class="textInput" appearance="standard">
+            <mat-label i18n>Phone</mat-label>
             <input matInput pattern="^[+]?[\d\s]+$" formControlName="phone">
             <mat-hint align="end">
               <lib-hint></lib-hint>
@@ -41,8 +41,8 @@
           </mat-icon>
         </lib-input>
         <lib-input>
-          <mat-form-field class="textInput">
-            <mat-placeholder i18n>Department</mat-placeholder>
+          <mat-form-field class="textInput" appearance="standard">
+            <mat-label i18n>Department</mat-label>
             <input matInput formControlName="department">
             <mat-hint align="end">
               <lib-hint></lib-hint>

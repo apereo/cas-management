@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Return Allowed</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Return Allowed</mat-label>
     <mat-select multiple [formControl]="allowed">
       <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">
         {{ opt }}

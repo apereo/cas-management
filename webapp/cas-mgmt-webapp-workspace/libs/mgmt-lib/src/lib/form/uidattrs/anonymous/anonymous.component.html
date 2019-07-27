@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Salt Setting</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Salt Setting</mat-label>
     <input matInput [formControl]="salt" required>
     <mat-hint align="end"><lib-hint [difference]="salt.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -10,8 +10,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Username Attribute</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Username Attribute</mat-label>
     <input matInput [matAutocomplete]="auto" [formControl]="attribute" required>
     <mat-hint align="end"><lib-hint [difference]="attribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>

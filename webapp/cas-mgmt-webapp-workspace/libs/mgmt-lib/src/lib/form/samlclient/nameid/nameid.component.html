@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Required NameID Format</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Required NameID Format</mat-label>
     <input matInput [formControl]="requiredNameIdFormat">
     <mat-hint align="end"><lib-hint [difference]="requiredNameIdFormat.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -10,8 +10,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>NameID Qualifier</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>NameID Qualifier</mat-label>
     <input matInput [formControl]="nameIdQualifier">
     <mat-hint align="end"><lib-hint [difference]="nameIdQualifier.difference()"></lib-hint></mat-hint>
   </mat-form-field>
@@ -21,8 +21,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Service Provider NameID Qualifier</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Service Provider NameID Qualifier</mat-label>
     <input matInput [formControl]="serviceProviderNameIdQualifier">
     <mat-hint align="end"><lib-hint [difference]="serviceProviderNameIdQualifier.difference()"></lib-hint></mat-hint>
   </mat-form-field>

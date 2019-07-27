@@ -1,6 +1,6 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Starting Date/Time</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Starting Date/Time</mat-label>
     <input matInput [matDatepicker]="startPicker" [formControl]="startingDatetime" required>
     <mat-hint align="end">
       <lib-hint [difference]="startingDatetime.difference()"></lib-hint>
@@ -14,8 +14,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Ending Date/Time</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Ending Date/Time</mat-label>
     <input matInput [matDatepicker]="endPicker" [formControl]="endingDatetime" required>
     <mat-hint align="end"><lib-hint [difference]="endingDatetime.difference()"></lib-hint></mat-hint>
     <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>

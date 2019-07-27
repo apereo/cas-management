@@ -1,7 +1,7 @@
 <lib-input>
-  <mat-form-field class="textInput">
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Provider</mat-label>
     <mat-select
-      placeholder="Provider"
       [formControl]="typeControl">
       <mat-option *ngFor="let opt of types; let i = index" [value]="opt">
         {{ display[i] }}
@@ -25,8 +25,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Canonicalization Mode</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Canonicalization Mode</mat-label>
     <mat-select [formControl]="canonicalizationMode">
       <mat-option *ngFor="let opt of formData.options.canonicalizationModes" [value]="opt">
         {{ opt }}

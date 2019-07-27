@@ -1,7 +1,7 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <input i18n-placeHolder="Allowed Providers" matInput
-           placeholder="Add Provider"
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Allowed Providers</mat-label>
+    <input matInput
            [matChipInputFor]="chipList"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            matChipInputAddOnBlur="true"

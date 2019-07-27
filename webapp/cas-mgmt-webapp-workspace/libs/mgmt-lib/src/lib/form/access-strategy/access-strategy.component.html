@@ -1,8 +1,7 @@
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-select i18n-placeHolder
-                placeholder="Select Type"
-                [formControl]="typeControl">
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Access Strategy Type</mat-label>
+    <mat-select [formControl]="typeControl">
       <mat-option *ngFor="let opt of types" [value]="opt">{{ TYPE[opt] }}</mat-option>
     </mat-select>
     <mat-hint align="end">
@@ -25,8 +24,8 @@
 </lib-input>
 
 <lib-input>
-  <mat-form-field class="textInput">
-    <mat-placeholder i18n>Unauthorized Redirect Url</mat-placeholder>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Unauthorized Redirect Url</mat-label>
     <input matInput [formControl]="unauthorizedUrl">
     <mat-hint align="end"><lib-hint [difference]="unauthorizedUrl.difference()"></lib-hint></mat-hint>
   </mat-form-field>

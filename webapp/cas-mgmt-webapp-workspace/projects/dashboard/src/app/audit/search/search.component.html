@@ -4,8 +4,8 @@
   <mat-dialog-content>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
-        <mat-label i18n>Period</mat-label>
-        <input matInput #period>
+        <mat-label i18n>Interval</mat-label>
+        <input matInput #interval>
       </mat-form-field>
     </lib-input>
     <lib-input>
@@ -34,6 +34,6 @@
     </lib-input>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button (click)="search(period.value, principal.value, action.value, clientIP.value, resource.value)">Search</button>
+    <button mat-button (click)="search(interval.value, principal.value, action.value, clientIP.value, resource.value)">Search</button>
   </mat-dialog-actions>
 

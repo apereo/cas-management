@@ -13,8 +13,8 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
   }
 
-  search(period: string, principal: string, action: string, clientIP: string, resource: string) {
-    const data = {period: period, principal: principal, actionPerformed: action, clientIpAddress: clientIP, resourceOperatedUpon: resource};
+  search(interval: string, principal: string, action: string, clientIP: string, resource: string) {
+    const data = {interval: interval, principal: principal, actionPerformed: action, clientIpAddress: clientIP, resourceOperatedUpon: resource};
     this.dialogRef.close(data);
   }
 

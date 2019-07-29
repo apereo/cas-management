@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Maps json return from /releaseAttributes endpoint in CAS.
+ *
+ * @author Travis Schmidt
+ * @since 6.1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

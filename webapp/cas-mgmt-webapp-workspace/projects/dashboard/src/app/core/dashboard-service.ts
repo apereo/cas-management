@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {Server} from '../domain/dashboard';
 import {Cache} from '../domain/cache';
 import {AuditLog} from '../domain/audit';
+import {SsoSessionResponse} from '../domain/sessions';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,13 @@ export class DashboardService extends Service {
 
   getAudit(data: any): Observable<AuditLog[]> {
     return this.post<AuditLog[]>('api/dashboard/audit', data);
+  }
+
+  getSessions(): Observable<SsoSessionResponse> {
+    return this.get<SsoSessionResponse>('api/dashboard/sessions/');
+  }
+
+  revokeSession(tgt: string): Observable<void> {
+    return this.delete('api/dashboard/sessions/' + tgt);
   }
 }

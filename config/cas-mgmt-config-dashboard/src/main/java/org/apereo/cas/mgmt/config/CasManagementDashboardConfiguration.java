@@ -4,7 +4,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.DashboardController;
 import org.apereo.cas.mgmt.DashboardForwardingController;
-import org.apereo.cas.mgmt.SessionsController;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +30,7 @@ public class CasManagementDashboardConfiguration {
 
     @Bean
     public DashboardController dashboardController() {
-        return new DashboardController(managementProperties, casProperties);
-    }
-
-    @Bean
-    public SessionsController sessionsController() {
-        return new SessionsController(managementProperties, casUserProfileFactory.getIfAvailable(), casProperties);
+        return new DashboardController(casUserProfileFactory.getIfAvailable(), managementProperties, casProperties);
     }
 
     @Bean(name = "dashboardForwarding")

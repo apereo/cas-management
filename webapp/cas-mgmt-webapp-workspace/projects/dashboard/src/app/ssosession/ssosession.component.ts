@@ -2,9 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatTableDataSource} from '@angular/material';
 import {SsoSession, SsoSessionResponse} from '../domain/sessions';
 import {PaginatorComponent} from 'shared-lib';
-import {SsoSessionService} from './ssosessions-service';
 import {ActivatedRoute} from '@angular/router';
 import {DetailComponent} from './detail/detail.component';
+import {DashboardService} from '../core/dashboard-service';
 
 @Component({
   selector: 'app-ssosession',
@@ -18,7 +18,7 @@ export class SsosessionComponent implements OnInit {
 
   @ViewChild(PaginatorComponent, {static: true}) paginator: PaginatorComponent;
 
-  constructor(private service: SsoSessionService,
+  constructor(private service: DashboardService,
               private dialog: MatDialog,
               private route: ActivatedRoute) {
   }

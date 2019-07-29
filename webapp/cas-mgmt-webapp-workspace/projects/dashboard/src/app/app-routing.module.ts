@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./audit/audit.module').then(m => m.AuditModule)
   },
   {
+    path: 'sessions',
+    loadChildren: () => import('./ssosession/ssosession.module').then(m => m.SsosessionModule)
+  },
+  {
     path: '',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   }

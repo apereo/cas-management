@@ -1,0 +1,69 @@
+<div>
+    <h3 mat-dialog-title>SSO Session Details {{ detail.ticketGrantingTicket }}</h3>
+    <mat-dialog-content>
+      <lib-input>
+        <mat-form-field class="textInput" appearance="standard">
+          <mat-label i18n>Principal</mat-label>
+          <input matInput [ngModel]="detail.authenticatedPrincipal">
+        </mat-form-field>
+      </lib-input>
+      <lib-input>
+        <mat-form-field class="textInput" appearance="standard">
+          <mat-label i18n>Date</mat-label>
+          <input matInput [ngModel]="detail.authenticationDate">
+        </mat-form-field>
+      </lib-input>
+      <lib-input>
+        <mat-form-field class="textInput" appearance="standard">
+          <mat-label i18n>Proxied</mat-label>
+          <input matInput [ngModel]="detail.proxied">
+        </mat-form-field>
+      </lib-input>
+      <lib-input>
+        <mat-form-field class="textInput" appearance="standard">
+          <mat-label i18n>Number of Uses</mat-label>
+          <input matInput [ngModel]="detail.numberOfUses">
+        </mat-form-field>
+      </lib-input>
+      <mat-table #table [dataSource]="dataSource">
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'idWidth'">
+            ST
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" [ngClass]="'idWidth'">
+            {{ row.id }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="format">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'formatWidth'">
+            Format
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" [ngClass]="'formatWidth'">
+            {{ row.format }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="url">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'urlWidth'">
+            Original URL
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" [ngClass]="'urlWidth'">
+            {{ row.originalUrl }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="source">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'sourceWidth'">
+            Source
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" [ngClass]="'sourceWidth'">
+            {{ row.source }}
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-dialog-content>
+</div>

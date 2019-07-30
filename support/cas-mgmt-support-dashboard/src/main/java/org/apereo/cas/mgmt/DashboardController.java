@@ -266,7 +266,7 @@ public class DashboardController {
         val req = new HttpEntity<String>(send, headers);
         try {
             val resp = rest.exchange(prefix + endpoint, HttpMethod.POST, req, type);
-            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getStatusCode() : null;
+            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
         } catch (final RestClientException e) {
             LOGGER.error(e.getMessage(), e);
             return null;

@@ -6,11 +6,11 @@
             <mat-slide-toggle [checked]="timers && timers[i] !== null" (change)="update($event, i)"></mat-slide-toggle>
             {{server.name}}
             <div class="more-button">
-              <div style="width: 24px; height: 24px; margin: 10px;" [ngClass]="statusLight(server.system.status)"></div>
+              <div style="width: 24px; height: 24px; margin: 10px;" [ngClass]="statusLight(server)"></div>
             </div>
           </mat-card-title>
         </mat-card-header>
-        <mat-card-content style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
+        <mat-card-content *ngIf="server.system" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
           <div style="display: flex; flex-direction: row; justify-content: space-around">
             <div style="flex: 0 0 25%; margin: 5px">
               <div style="text-align: center;">{{ load(server.system) }}</div>
@@ -67,6 +67,9 @@
               <div style="text-align: center;">Process</div>
             </div>
           </div>
+        </mat-card-content>
+        <mat-card-content *ngIf="!server.system">
+          <div>Server is down or unreachable</div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

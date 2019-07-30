@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {LibNavigationComponent} from 'shared-lib';
+import {LibNavigationComponent, UserService} from 'shared-lib';
 
 @Component({
   selector: 'app-navigation',
@@ -12,7 +12,13 @@ export class NavigationComponent {
   @ViewChild('navcom', {static: true})
   navcom: LibNavigationComponent;
 
-  constructor(public router: Router) { }
+  isAdmin = false;
+
+  constructor(public router: Router, private user: UserService) {
+    this.user.getUser().subscribe(user => {
+      this.isAdmin = user.administrator;
+    });
+  }
 
   logout() {
     window.location.href = '../logout.html';
@@ -22,7 +28,5 @@ export class NavigationComponent {
     this.router.navigate([path]);
     this.navcom.close();
   }
-
-
 
 }

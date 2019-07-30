@@ -31,7 +31,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  statusLight(status: string): string {
+  statusLight(server: Server): string {
+    const status = server.system ? server.system.status : "DOWN";
     if (status === 'UP') {
       return 'led-green';
     }

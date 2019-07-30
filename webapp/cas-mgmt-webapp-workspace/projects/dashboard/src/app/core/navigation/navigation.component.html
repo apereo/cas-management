@@ -1,29 +1,29 @@
 <lib-navigation #navcom>
-  <a mat-list-item (click)="navto('/')">
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('/')">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Dashboard</span>
   </a>
-  <a mat-list-item (click)="navto('info')">
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('info')">
     <mat-icon>info</mat-icon>
     <span i18n>CAS Info</span>
   </a>
-  <a mat-list-item (click)="navto('cache')">
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('cache')">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Cache</span>
   </a>
-  <a mat-list-item (click)="navto('resolve')">
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('resolve')">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Resolve Attributes</span>
   </a>
-  <a mat-list-item (click)="navto('release')">
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('release')">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Release Attributes</span>
   </a>
-  <a mat-list-item (click)="navto('audit')">
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('audit')">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Audit Log</span>
   </a>
-  <a mat-list-item (click)="navto('sessions')">
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('sessions')">
     <mat-icon>local_activity</mat-icon>
     <span i18n>SSO Sessions</span>
   </a>

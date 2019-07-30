@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.apereo.inspektr.audit.AuditActionContext;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +46,7 @@ import java.util.stream.Collectors;
  * @author Travis Schmidt
  * @since 6.0
  */
+@Slf4j
 @RestController
 @RequestMapping(path = "api/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
@@ -107,7 +110,8 @@ public class DashboardController {
     @GetMapping("/cache")
     public Cache cache(final HttpServletRequest request, final HttpServletResponse response) throws IllegalAccessException {
         isAdmin(request, response);
-        return callCasServer("/actuator/health/hazelcast", new ParameterizedTypeReference<Cache>(){});
+        val url = "/actuator/health/" + mgmtProperties.getCacheHealthIndicator();
+        return callCasServer(url, new ParameterizedTypeReference<Cache>(){});
     }
 
     /**
@@ -239,7 +243,14 @@ public class DashboardController {
 
     private <T> T callCasServer(final String prefix, final String endpoint, final ParameterizedTypeReference<T> type) {
         val rest = new RestTemplate();
-        return (T) rest.exchange(prefix + endpoint, HttpMethod.GET, null, type).getBody();
+        try {
+            val resp = rest.exchange(prefix + endpoint, HttpMethod.GET, null, type);
+            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
+        } catch (final RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+
     }
 
     private <T> T callCasServer(final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
@@ -253,7 +264,13 @@ public class DashboardController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         val send = new ObjectMapper().writeValueAsString(data);
         val req = new HttpEntity<String>(send, headers);
-        return rest.exchange(prefix + endpoint, HttpMethod.POST, req, type).getBody();
+        try {
+            val resp = rest.exchange(prefix + endpoint, HttpMethod.POST, req, type);
+            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getStatusCode() : null;
+        } catch (final RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
     }
 
     private void isAdmin(final HttpServletRequest request, final HttpServletResponse response) throws IllegalAccessException {

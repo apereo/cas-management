@@ -118,6 +118,11 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private List<CasServers> casServers = new ArrayList<>();
 
+    /**
+     * Cache health enpdoint.
+     */
+    private String cacheHealthIndicator = "session";
+
     @Getter
     @Setter
     @RequiresModule(name = "cas-management-config-ldap-authz")

@@ -30,6 +30,24 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="tickets">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'sizeWidth'">
+          <ng-container i18n>Ticket Count</ng-container>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'sizeWidth'">
+          {{ row.memory }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="sessions">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'sizeWidth'">
+          <ng-container i18n>Session Count</ng-container>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'sizeWidth'">
+          {{ row.capacity }}
+        </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="size">
         <mat-header-cell *matHeaderCellDef [ngClass]="'sizeWidth'">
           <ng-container i18n>Size</ng-container>

@@ -28,11 +28,21 @@ export class CacheComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Cache}) => {
-      const d = Object.keys(data.resp.details.maps).map(k => {
-        const m = data.resp.details.maps[k];
-        m.name = k;
-        return m;
-      });
+      let d: MapDetails[] = [];
+      if (data.resp.details.name === "TicketRegistryHealthIndicator") {
+        this.displayedColumns = ['name', 'tickets', 'sessions'];
+        const m = new MapDetails();
+        m.name = data.resp.details.name;
+        m.capacity = data.resp.details.sessionCount;
+        m.memory = data.resp.details.ticketCount;
+        d.push(m);
+      } else {
+        d = Object.keys(data.resp.details.maps).map(k => {
+          const m = data.resp.details.maps[k];
+          m.name = k;
+          return m;
+        });
+      }
       this.dataSource = new MatTableDataSource<MapDetails>(d);
       this.dataSource.paginator = this.pagintor.paginator;
     })

@@ -1,9 +1,9 @@
 export class Server {
   name: string;
-  system: System
+  system: SystemHealth
 }
 
-export class System {
+export class SystemHealth {
   status: string;
   details: Details;
 }

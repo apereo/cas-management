@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
-import {Server, System} from '../domain/dashboard';
+import {Server, SystemHealth} from '../domain/dashboard';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
@@ -41,35 +41,35 @@ export class DashboardComponent implements OnInit {
     return 'led-red';
   }
 
-  memory(system: System): number {
+  memory(system: SystemHealth): number {
     return system.details.heapUsed / system.details.heapCommitted * 100.0;
   }
 
-  percent(system: System): string {
+  percent(system: SystemHealth): string {
     return this.memory(system).toFixed(0);
   }
 
-  memoryJvm(system: System): number {
+  memoryJvm(system: SystemHealth): number {
     return system.details.jvmUsed / system.details.jvmCommitted * 100.0;
   }
 
-  percentJvm(system: System): string {
+  percentJvm(system: SystemHealth): string {
     return this.memoryJvm(system).toFixed(0);
   }
 
-  percentCpu(system: System): string {
+  percentCpu(system: SystemHealth): string {
     return this.cpu(system).toFixed(0);
   }
 
-  cpu(system: System): number {
+  cpu(system: SystemHealth): number {
     return system.details.systemUsage * 100.0;
   }
 
-  percentCpuProcess(system: System): string {
+  percentCpuProcess(system: SystemHealth): string {
     return this.cpuProcess(system).toFixed(0);
   }
 
-  cpuProcess(system: System): number {
+  cpuProcess(system: SystemHealth): number {
     return system.details.processUsage * 100.0;
   }
 
@@ -77,19 +77,19 @@ export class DashboardComponent implements OnInit {
     return (mem * 0.00000095367432).toFixed(2);
   }
 
-  load(system: System): string {
+  load(system: SystemHealth): string {
     return system.details.systemLoad.toFixed(2);
   }
 
-  maxRequest(system: System): string {
+  maxRequest(system: SystemHealth): string {
     return system.details.maxRequest.toFixed(2);
   }
 
-  threads(system: System): string {
+  threads(system: SystemHealth): string {
     return system.details.requests.toFixed(2);
   }
 
-  uptime(system: System): string {
+  uptime(system: SystemHealth): string {
     const up = system.details.uptime;
     const days = up / (this.SECONDS_IN_A_DAY);
     const hours = (up % (this.SECONDS_IN_A_DAY)) / (this.SECONDS_IN_A_HOUR);

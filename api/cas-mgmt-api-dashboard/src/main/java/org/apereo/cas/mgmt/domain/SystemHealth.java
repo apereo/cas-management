@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class System {
+public class SystemHealth {
     private String status;
 
     private Details details;

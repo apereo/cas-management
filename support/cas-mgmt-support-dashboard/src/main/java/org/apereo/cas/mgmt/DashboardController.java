@@ -7,7 +7,7 @@ import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
 import org.apereo.cas.mgmt.domain.SsoSessionResponse;
-import org.apereo.cas.mgmt.domain.System;
+import org.apereo.cas.mgmt.domain.SystemHealth;
 import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -92,7 +92,7 @@ public class DashboardController {
         val server = new Server();
         server.setName(s.getName());
         server.setSystem(callCasServer(s.getUrl(), "/actuator/health/system",
-                new ParameterizedTypeReference<System>() {}));
+                new ParameterizedTypeReference<SystemHealth>() {}));
         return server;
     }
 

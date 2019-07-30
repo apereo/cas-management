@@ -15,5 +15,5 @@ public class Server {
 
     private String name;
 
-    private System system;
+    private SystemHealth system;
 }

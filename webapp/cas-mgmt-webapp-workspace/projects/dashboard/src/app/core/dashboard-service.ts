@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {Server} from '../domain/dashboard';
 import {Cache} from '../domain/cache';
 import {AuditLog} from '../domain/audit';
-import {SsoSessionResponse} from '../domain/sessions';
+import {OAuthToken, SsoSessionResponse} from '../domain/sessions';
 import {Logger} from '../domain/logger';
 
 @Injectable({
@@ -54,5 +54,13 @@ export class DashboardService extends Service {
 
   setLogger(data: any): Observable<void> {
     return this.post<void>('api/dashboard/loggers/', data);
+  }
+
+  getTokens(): Observable<OAuthToken[]> {
+    return this.get<OAuthToken[]>('api/dashboard/tokens');
+  }
+
+  revokeToken(id: string): Observable<void> {
+    return this.delete('api/dashboard/tokens/' + id);
   }
 }

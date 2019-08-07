@@ -35,6 +35,11 @@ const routes: Routes = [
     canActivate: [AdminGuard]
   },
   {
+    path: 'tokens',
+    loadChildren: () => import('./tokens/tokens.module').then(m => m.TokensModule),
+    canActivate: [AdminGuard]
+  },
+  {
     path: 'unauthorized',
     component: UnauthorizedComponent
   },

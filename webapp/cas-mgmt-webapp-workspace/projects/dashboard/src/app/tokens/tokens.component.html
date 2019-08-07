@@ -1,0 +1,79 @@
+<div style="display:flex;margin-bottom:10px;margin-left: 10px;margin-right:10px;">
+  <div style="padding-top: 10px;">
+    <mat-icon style="padding-top: 3px;">album</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>OAuth Tokens</h4>
+  </div>
+  <div style="flex: 1 1 auto;text-align: center">
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
+  <mat-form-field floatLabel="never" style="margin-left: 10px">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter" >
+  </mat-form-field>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'idWidth'" mat-sort-header="id">
+        <ng-container i18n>Token ID</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'idWidth'">
+        <a (click)="view(row.id)">
+          {{ row.id }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'userWidth'" mat-sort-header="principal">
+        <ng-container>User</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'userWidth'">
+        {{ row.principal }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="creation">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'creationWidth'" mat-sort-header="creationTime">
+        <ng-container>Created</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'creationWidth'">
+        {{ row.creationTime }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="uses">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'usesWidth'" mat-sort-header="countOfUses">
+        <ng-container>Uses</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'usesWidth'">
+        {{ row.countOfUses }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #serviceMenu>
+  <button mat-menu-item (click)="delete()">
+    <mat-icon>delete</mat-icon>
+    <ng-container i18n>Revoke</ng-container>
+  </button>
+</mat-menu>

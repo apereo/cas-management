@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
+import org.apereo.cas.mgmt.domain.OAuthToken;
 import org.apereo.cas.mgmt.domain.Server;
 import org.apereo.cas.mgmt.domain.SsoSessionResponse;
 import org.apereo.cas.mgmt.domain.SystemHealth;
@@ -281,6 +282,39 @@ public class DashboardController {
             resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
         }
         return resp;
+    }
+
+    /**
+     * Returns all active tokens in the CAS cluster for the logged in User.
+     *
+     * @param response - the response
+     * @param request - the request
+     * @return - List of Access Tokens
+     * @throws IllegalAccessException - insufficient permissions
+     */
+    @GetMapping("/tokens")
+    public List<OAuthToken> userTokens(final HttpServletResponse response,
+                                       final HttpServletRequest request) throws IllegalAccessException{
+        isAdmin(request, response);
+        return callCasServer("/actuator/oauthTokens", new ParameterizedTypeReference<List<OAuthToken>>() {});
+    }
+
+    /**
+     * Deletes the token from the CAS cluster based on the passed token id.
+     *
+     * @param id - the token id
+     * @param request - the request
+     * @param response - the response
+     * @throws IllegalAccessException - Illegal Access
+     */
+    @DeleteMapping("/tokens/{id}")
+    public void deleteToken(final @PathVariable String id,
+                            final HttpServletRequest request,
+                            final HttpServletResponse response) throws IllegalAccessException {
+        isAdmin(request, response);
+        val restTemplate = new RestTemplate();
+        val serverUrl = casProperties.getServer().getPrefix() + "/actuator/oauthTokens/" + id;
+        restTemplate.delete(serverUrl);
     }
 
     private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {

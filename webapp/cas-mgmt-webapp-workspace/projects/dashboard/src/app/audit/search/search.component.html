@@ -1,39 +1,41 @@
 <div>
   <h3 matDialogTitle i18n>Search Criteria</h3>
 </div>
+<div [formGroup]="form">
   <mat-dialog-content>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Interval</mat-label>
-        <input matInput #interval>
+        <input matInput formControlName="interval">
       </mat-form-field>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Principal</mat-label>
-        <input matInput #principal>
+        <input matInput formControlName="principal">
       </mat-form-field>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Action Performed</mat-label>
-        <input matInput #action>
+        <input matInput formControlName="action">
       </mat-form-field>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Client IP Address</mat-label>
-        <input matInput #clientIP>
+        <input matInput formControlName="clientIP">
       </mat-form-field>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Resource Operated On</mat-label>
-        <input matInput #resource>
+        <input matInput formControlName="resource">
       </mat-form-field>
     </lib-input>
   </mat-dialog-content>
+</div>
   <mat-dialog-actions>
-    <button mat-button (click)="search(interval.value, principal.value, action.value, clientIP.value, resource.value)">Search</button>
+    <button mat-button (click)="search()">Search</button>
   </mat-dialog-actions>
 

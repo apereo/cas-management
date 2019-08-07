@@ -148,3 +148,7 @@ a:focus {
 .mat-select-value{
     color: inherit !important;
 }
+
+lib-input.dates div:first-child {
+  justify-content: space-between;
+}

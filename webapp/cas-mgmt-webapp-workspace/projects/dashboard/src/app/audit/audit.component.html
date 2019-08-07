@@ -11,7 +11,10 @@
 </div>
 
 <div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
-  <mat-table #table [dataSource]="dataSource">
+  <mat-form-field floatLabel="never" style="margin-left: 10px">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter" >
+  </mat-form-field>
+  <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
@@ -25,7 +28,7 @@
     </ng-container>
 
     <ng-container matColumnDef="principal">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'principalWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'principalWidth'" mat-sort-header="principal">
         <ng-container i18n>Principal</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'principalWidth'">
@@ -34,7 +37,7 @@
     </ng-container>
 
     <ng-container matColumnDef="resource">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'resourceWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'resourceWidth'" mat-sort-header="resourceOperatedUpon">
         <ng-container i18n>Resource</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'resourceWidth'">
@@ -43,7 +46,7 @@
     </ng-container>
 
     <ng-container matColumnDef="actionPerformed">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'actionPerformedWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionPerformedWidth'" mat-sort-header="actionPerformed">
         <ng-container i18n>Action</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'actionPerformedWidth'">
@@ -52,20 +55,29 @@
     </ng-container>
 
     <ng-container matColumnDef="timestamp">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'timestampWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'timestampWidth'" mat-sort-header="whenActionWasPerformed">
         <ng-container i18n>Timestamp</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'timestampWidth'">
-        {{ row.whenActionWasPerformed }}
+        {{ row.whenActionWasPerformed | date:'yyyy-MM-dd HH:mm:ss:SSS' }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="clientip">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'clientipWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'clientipWidth'" mat-sort-header="clientIpAddress">
         <ng-container i18n>Client IP</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'clientipWidth'">
         {{ row.clientIpAddress }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="server">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serverWidth'" mat-sort-header="serverIpAddress">
+        <ng-container i18n>Server</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serverWidth'">
+        {{ row.serverIpAddress }}
       </mat-cell>
     </ng-container>
 

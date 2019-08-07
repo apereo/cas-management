@@ -1,0 +1,68 @@
+<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
+  <div style="padding-top: 3px;">
+    <mat-icon style="padding-top: 3px;">view_quilt</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>Loggers</h4>
+  </div>
+  <div style="flex: 1 1 auto">
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
+  <mat-form-field floatLabel="never" style="margin-left: 10px">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter" >
+  </mat-form-field>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container>&nbsp;</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="server">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serverWidth'" mat-sort-header="server">
+        <ng-container i18n>Server</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serverWidth'">
+        {{ row.server }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="key">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'keyWidth'" mat-sort-header="key">
+        <ng-container i18n>Logger</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'keyWidth'">
+        {{ row.key }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="level">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'levelWidth'" mat-sort-header="level">
+        <ng-container i18n>Level</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'levelWidth'">
+        <mat-form-field appearance="standard">
+          <mat-select [(value)]="row.level" (valueChange)="changeLogger(row.server, row.key, $event)">
+            <mat-option value="OFF">OFF</mat-option>
+            <mat-option value="TRACE">TRACE</mat-option>
+            <mat-option value="DEBUG">DEBUG</mat-option>
+            <mat-option value="INFO">INFO</mat-option>
+            <mat-option value="WARN">WARN</mat-option>
+            <mat-option value="ERROR">ERROR</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>

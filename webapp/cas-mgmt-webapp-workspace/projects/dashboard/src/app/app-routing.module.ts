@@ -39,6 +39,11 @@ const routes: Routes = [
     component: UnauthorizedComponent
   },
   {
+    path: 'loggers',
+    loadChildren: () => import('./loggers/loggers.module').then(m => m.LoggersModule),
+    canActivate: [AdminGuard]
+  },
+  {
     path: '',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [AdminGuard]

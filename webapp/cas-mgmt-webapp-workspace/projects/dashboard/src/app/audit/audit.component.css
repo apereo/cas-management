@@ -32,6 +32,10 @@
   flex: 0 0 125px;
 }
 
+.serverWidth {
+  flex: 0 0 125px;
+}
+
 .resourceWidth {
   flex: 1 1 400px;
   white-space: nowrap;

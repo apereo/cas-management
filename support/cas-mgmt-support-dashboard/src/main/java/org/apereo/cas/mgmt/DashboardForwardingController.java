@@ -26,10 +26,10 @@ public class DashboardForwardingController {
             "dashboard/release",
             "dashboard/audit",
             "dashboard/sessions",
+            "dashboard/loggers",
             "dashboard"
     })
     public String forward() {
-        LOGGER.error("IN FORWARD");
         return "dashboard/index.html";
     }
 }

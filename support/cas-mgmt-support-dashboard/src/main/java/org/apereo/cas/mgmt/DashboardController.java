@@ -4,6 +4,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Attributes;
+import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
 import org.apereo.cas.mgmt.domain.SsoSessionResponse;
@@ -17,11 +18,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.apereo.inspektr.audit.AuditActionContext;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -36,6 +38,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -166,6 +169,45 @@ public class DashboardController {
     }
 
     /**
+     * Method calls the CAS servers to query all set loggers and return a map to the client.
+     *
+     * @param request - the request
+     * @param response - the response
+     * @return - Map of Loggers for all configured servers
+     * @throws IllegalAccessException - insufficient permissions
+     */
+    @GetMapping("/loggers")
+    public Map<String, Map<String, Object>> loggers(final HttpServletRequest request,
+                                        final HttpServletResponse response) throws IllegalAccessException {
+        isAdmin(request, response);
+        val ret = new HashMap<String, Map<String, Object>>();
+        mgmtProperties.getCasServers().forEach(s -> {
+            val map = callCasServer("/actuator/loggers", new ParameterizedTypeReference<Map<String, Object>>() {});
+            ret.put(s.getName(), (Map<String, Object>) map.get("loggers"));
+        });
+        return ret;
+    }
+
+    /**
+     * Method will update a logger on a CAS server to the passed log level.
+     *
+     * @param request - the request
+     * @param response - the response
+     * @param map - server, logger, level
+     * @throws IllegalAccessException - insufficient persmissions
+     */
+    @PostMapping("/loggers")
+    @ResponseStatus(HttpStatus.OK)
+    public void setLogger(final HttpServletRequest request,
+                          final HttpServletResponse response,
+                          final @RequestBody Map<String, String> map) throws IllegalAccessException {
+        isAdmin(request, response);
+        val level = Map.of("configuredLevel", map.get("level"));
+        val server = mgmtProperties.getCasServers().stream().filter(s -> s.getName().equals(map.get("server"))).findFirst().get().getUrl();
+        callCasServer(server, "/actuator/loggers/" + map.get("key"), level, new ParameterizedTypeReference<Void>() {});
+    }
+
+    /**
      * Method calls the /auditLog endpoint in all registered CAS Servers with passef query parameters.
      * Responses from all servers are then sorted together by whenActionWasPerformed fields in the responses.
      *
@@ -176,14 +218,18 @@ public class DashboardController {
      * @throws IllegalAccessException - insufficient permissions
      */
     @PostMapping("/audit")
-    public List<AuditActionContext> audit(final HttpServletRequest request,
-                                          final HttpServletResponse response,
-                                          final @RequestBody Map<String, String> query) throws IllegalAccessException {
+    public List<AuditLog> audit(final HttpServletRequest request,
+                                final HttpServletResponse response,
+                                final @RequestBody Map<String, String> query) throws IllegalAccessException {
         isAdmin(request, response);
         return mgmtProperties.getCasServers().stream()
-                .flatMap(p -> this.<List<AuditActionContext>>callCasServer(p.getUrl(), "/actuator/auditLog",
-                        query, new ParameterizedTypeReference<List<AuditActionContext>>() {}).stream())
-                .sorted(Comparator.comparing(AuditActionContext::getWhenActionWasPerformed))
+                .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",
+                        query, new ParameterizedTypeReference<List<AuditLog>>() {}).stream()
+                        .map(a -> {
+                            a.setServerIpAddress(p.getName());
+                            return a;
+                        }))
+                .sorted(Comparator.comparing(AuditLog::getWhenActionWasPerformed).reversed())
                 .collect(Collectors.toList());
     }
 

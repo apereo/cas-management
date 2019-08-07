@@ -32,8 +32,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ProjectShareModule,
     AppRoutingModule
   ],
-  entryComponents: [
-  ],
   providers: [],
   bootstrap: [AppComponent]
 })

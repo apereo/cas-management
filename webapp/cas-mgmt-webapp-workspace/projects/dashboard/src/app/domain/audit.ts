@@ -4,4 +4,5 @@ export class AuditLog {
   actionPerformed: string;
   whenActionWasPerformed: Date;
   clientIpAddress: string;
+  serverIpAddress: string;
 }

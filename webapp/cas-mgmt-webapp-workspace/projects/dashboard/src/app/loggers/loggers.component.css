@@ -1,0 +1,12 @@
+.keyWidth {
+  flex: 1 1 400px;
+  white-space: nowrap;
+}
+
+.levelWidth {
+  flex: 0 0 200px;
+}
+
+.serverWidth {
+  flex: 0 0 150px;
+}

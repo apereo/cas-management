@@ -5,6 +5,7 @@ import {Server} from '../domain/dashboard';
 import {Cache} from '../domain/cache';
 import {AuditLog} from '../domain/audit';
 import {SsoSessionResponse} from '../domain/sessions';
+import {Logger} from '../domain/logger';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,13 @@ export class DashboardService extends Service {
 
   revokeSession(tgt: string): Observable<void> {
     return this.delete('api/dashboard/sessions/' + tgt);
+  }
+
+  getLoggers(): Observable<Map<string, Map<string, Logger>>> {
+    return this.get<Map<string,Map<string, Logger>>>('api/dashboard/loggers');
+  }
+
+  setLogger(data: any): Observable<void> {
+    return this.post<void>('api/dashboard/loggers/', data);
   }
 }

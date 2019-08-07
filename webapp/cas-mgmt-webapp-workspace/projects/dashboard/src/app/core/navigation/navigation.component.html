@@ -27,6 +27,10 @@
     <mat-icon>local_activity</mat-icon>
     <span i18n>SSO Sessions</span>
   </a>
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('loggers')">
+    <mat-icon>view_quilt</mat-icon>
+    <span i18n>Loggers</span>
+  </a>
   <a mat-list-item (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>
     <ng-container i18n>Logout</ng-container>

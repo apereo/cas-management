@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
-import {AuditLog} from '../domain/audit';
-import {MatDialog, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from 'shared-lib';
+import {AuditLog} from '../domain/audit';
 import {SearchComponent} from './search/search.component';
 
 @Component({
@@ -13,10 +13,12 @@ import {SearchComponent} from './search/search.component';
 export class AuditComponent implements OnInit {
 
   dataSource: MatTableDataSource<AuditLog>;
-  displayedColumns = ['timestamp', 'principal', 'clientip', 'actionPerformed', 'resource'];
+  displayedColumns = ['timestamp', 'server', 'principal', 'clientip', 'actionPerformed', 'resource'];
 
   @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private service: DashboardService,
               private dialog: MatDialog) { }
@@ -24,6 +26,7 @@ export class AuditComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
     this.dataSource.paginator = this.paginator.paginator;
+    this.dataSource.sort = this.sort;
     this.search();
   }
 
@@ -39,6 +42,11 @@ export class AuditComponent implements OnInit {
         });
       }
     });
+  }
+
+  doFilter(val: string) {
+    if (!this.dataSource) { return; }
+    this.dataSource.filter = val;
   }
 
 }

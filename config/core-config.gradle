@@ -7,4 +7,5 @@ dependencies {
     implementation project(":config:cas-mgmt-config-authz")
     implementation project(":config:cas-mgmt-config-core")
     implementation project(":config:cas-mgmt-config-search")
+    implementation project(":config:cas-mgmt-config-dashboard")
 }

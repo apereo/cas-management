@@ -1,0 +1,8 @@
+<lib-input>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Description</mat-label>
+    <textarea matInput rows="5" [formControl]="control"></textarea>
+    <mat-hint align="end"><lib-hint [difference]="control.difference()"></lib-hint></mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip matTooltip="The service description."></mat-icon>
+</lib-input>

@@ -1,0 +1,19 @@
+.actionWidth {
+  flex: 0 0 50px;
+}
+
+.idWidth {
+  flex: 1 1 200px;
+}
+
+.userWidth {
+  flex: 0 1 100px;
+}
+
+.creationWidth {
+  flex: 0 1 200px;
+}
+
+.usesWidth {
+  flex: 0 0 50px;
+}

@@ -1,0 +1,90 @@
+<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
+  <div style="padding-top: 3px;">
+    <mat-icon style="padding-top: 3px;">view_quilt</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>Audit Log</h4>
+  </div>
+  <div style="flex: 1 1 auto">
+  </div>
+  <div>
+    <button mat-button (click)="search()">Search</button>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
+  <mat-form-field floatLabel="never" style="margin-left: 10px">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter" >
+  </mat-form-field>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container>&nbsp;</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="principal">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'principalWidth'" mat-sort-header="principal">
+        <ng-container i18n>Principal</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'principalWidth'">
+        {{ row.principal }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="resource">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'resourceWidth'" mat-sort-header="resourceOperatedUpon">
+        <ng-container i18n>Resource</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'resourceWidth'">
+        {{ row.resourceOperatedUpon }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actionPerformed">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionPerformedWidth'" mat-sort-header="actionPerformed">
+        <ng-container i18n>Action</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionPerformedWidth'">
+        {{ row.actionPerformed }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="timestamp">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'timestampWidth'" mat-sort-header="whenActionWasPerformed">
+        <ng-container i18n>Timestamp</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'timestampWidth'">
+        {{ row.whenActionWasPerformed | date:'yyyy-MM-dd HH:mm:ss:SSS' }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="clientip">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'clientipWidth'" mat-sort-header="clientIpAddress">
+        <ng-container i18n>Client IP</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'clientipWidth'">
+        {{ row.clientIpAddress }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="server">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serverWidth'" mat-sort-header="serverIpAddress">
+        <ng-container i18n>Server</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serverWidth'">
+        {{ row.serverIpAddress }}
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>

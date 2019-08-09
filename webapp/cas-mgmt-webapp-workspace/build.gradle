@@ -1,0 +1,59 @@
+apply from: rootProject.file("gradle/node.gradle")
+
+task buildDomainLibrary(type: NpmTask, dependsOn: "npm_install",
+  description: "Compile client side library") {
+  args = ['run', 'build-domain-lib']
+
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildSharedLibrary(type: NpmTask, dependsOn: "buildDomainLibrary",
+  description: "Compile client side library") {
+  args = ['run', 'build-shared-lib']
+
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildMgmtLibrary(type: NpmTask, dependsOn: "buildSharedLibrary",
+  description: "Compile client side library") {
+  args = ['run', 'build-mgmt-lib']
+
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildManagementDev(type: NpmTask, dependsOn: "buildMgmtLibrary",
+  description: "Compile client side folder for development") {
+  args = ['run','build-management']
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildManagementProd(type: NpmTask, dependsOn: "buildMgmtLibrary",
+  description: "Compile client side folder for production") {
+  args = ['run', 'build-management-prod']
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildDashboardDev(type: NpmTask, dependsOn: "buildMgmtLibrary",
+  description: "Compile client side folder for development") {
+  args = ['run','build-dashboard']
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildDashboardProd(type: NpmTask, dependsOn: "buildMgmtLibrary",
+  description: "Compile client side folder for production") {
+  args = ['run', 'build-dashboard-prod']
+  enabled = !Boolean.getBoolean("skipClientBuild")
+}
+
+task buildClientDev {
+  dependsOn(buildDashboardDev,buildManagementDev)
+}
+
+task buildClient {
+  dependsOn(buildDashboardProd, buildManagementProd)
+}
+
+task ngLint(type: NpmTask, dependsOn: "npm_install",
+  description: "Runs Angular TypeScript and HtML Linting") {
+  args = ['run', 'lint']
+}

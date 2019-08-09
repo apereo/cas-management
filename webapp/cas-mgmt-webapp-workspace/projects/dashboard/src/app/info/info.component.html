@@ -1,0 +1,47 @@
+<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
+  <div style="padding-top: 3px;">
+    <mat-icon style="padding-top: 3px;">info</mat-icon>
+    <h4 style="display: inline;position: relative;top: -5px;" i18n>Cas Server Information</h4>
+  </div>
+  <div style="flex: 1 1 auto">
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container>&nbsp;</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="key">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'keyWidth'">
+        <ng-container i18n>Key</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'keyWidth'">
+        {{ row.key }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="values">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'valuesWidth'">
+        <ng-container i18n>Values</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'valuesWidth'">
+        {{ row.values }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>

@@ -36,12 +36,24 @@ public class ViewController {
      *
      * @return - ModelAndView
      */
-    @GetMapping({"index.html", "/"})
+    @GetMapping({"management/index.html", "management/", "management", "/"})
     public ModelAndView manage() {
         val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         model.put("defaultServiceUrl", this.defaultService.getId());
-        return new ModelAndView("index", model);
+        return new ModelAndView("management/index", model);
+    }
+
+    /**
+     * Mapped method to return the register.html.
+     *
+     * @return - ModelAndView
+     */
+    @GetMapping({"dashboard/index.html", "dashboard/", "dashboard"})
+    public ModelAndView dashboard() {
+        val model = new HashMap<String, Object>();
+        model.put(STATUS, HttpServletResponse.SC_OK);
+        return new ModelAndView("dashboard/index", model);
     }
 
     /**

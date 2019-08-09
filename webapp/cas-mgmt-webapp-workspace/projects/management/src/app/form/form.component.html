@@ -1,0 +1,25 @@
+
+<div style="position:fixed;margin-bottom:10px;margin-left:10px;margin-right:10px;z-index:1000;background-color: #f2f2f2;"
+     [style.width]="!(isHandset$ | async) ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">
+
+    <div style="display:flex;flex-direction: row;padding-top: 3px;">
+      <div *ngIf="!view">
+        <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
+        <h4 style="display: inline;position: relative;top: -5px;" i18n>Edit Service</h4>
+      </div>
+      <div *ngIf="view">
+        <mat-icon style="padding-top: 3px;">visibility</mat-icon>
+        <h4 style="display: inline;position: relative;top: -5px;" i18n>View Service</h4>
+      </div>
+    <div style="flex: 1 1 auto"></div>
+    <div>
+      <app-controls (save)="save()" [showEdit]="baseForm.dirty()" (reset)="baseForm.reset()"></app-controls>
+    </div>
+  </div>
+  <app-base-form #baseForm [tabs]="tabs"></app-base-form>
+</div>
+<div style="padding-top:90px;padding-bottom:0px;display:flex;flex-direction: column; margin-right: auto; margin-left: auto;"
+     [style.width]="!(isHandset$ | async) ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">
+    <router-outlet name="form"></router-outlet>
+</div>
+

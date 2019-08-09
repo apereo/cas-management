@@ -1,0 +1,35 @@
+<div [formGroup]="control">
+  <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
+  border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Friendly Name</div>
+    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>URN/Custom Mapping</div>
+    <div [ngClass]="'actionWidth'" i18n></div>
+  </div>
+  <div formArrayName="attributes">
+    <div *ngFor="let entry of entries.controls; let i = index;" [formGroupName]="i"
+         style="display: flex; flex-direction: row; border-bottom-width: 1px;
+         border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+      <div [ngClass]="'nameWidth'">
+        <mat-form-field>
+          <input matInput [matAutocomplete]="auto"
+                 [formControl]="entry.get('key')" (click)="selectedRow = i">
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'valueWidth'">
+        <mat-form-field>
+          <input matInput [formControl]="entry.get('value')">
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'actionWidth'">
+        <button mat-icon-button (click)="delete(i)"><mat-icon style="font-size: medium">delete</mat-icon></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="height:25px;padding-top: 5px;">
+  <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
+</div>
+
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith" (optionSelected)="selection($event)" panelWidth="400px">
+  <mat-option *ngFor="let opt of options" [value]="opt">{{ opt.value }}</mat-option>
+</mat-autocomplete>

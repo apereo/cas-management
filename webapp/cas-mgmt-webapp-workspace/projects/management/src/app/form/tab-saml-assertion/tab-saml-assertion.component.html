@@ -1,0 +1,14 @@
+<div [formGroup]="saml">
+  <lib-card i18n-heading heading="Assertion">
+    <lib-assertion [control]="saml.get('assertion')"></lib-assertion>
+  </lib-card>
+
+  <lib-card i18n-heading heading="Optional Fields">
+    <lib-optional [control]="saml.get('optionalSaml')"></lib-optional>
+  </lib-card>
+
+  <lib-card i18n-heading heading="Name ID">
+    <lib-nameid [control]="saml.get('nameId')"></lib-nameid>
+  </lib-card>
+
+</div>

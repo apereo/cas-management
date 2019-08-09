@@ -1,0 +1,12 @@
+<lib-input>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Groovy Script File</mat-label>
+    <input matInput [formControl]="script" required>
+    <mat-hint align="end">
+      <lib-hint [difference]="script.difference()"></lib-hint>
+    </mat-hint>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Location where the groovy script file to determine granting access to this service is loaded">
+  </mat-icon>
+</lib-input>

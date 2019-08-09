@@ -1,0 +1,27 @@
+<lib-input>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Starting Date/Time</mat-label>
+    <input matInput [matDatepicker]="startPicker" [formControl]="startingDatetime" required>
+    <mat-hint align="end">
+      <lib-hint [difference]="startingDatetime.difference()"></lib-hint>
+    </mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Determines the starting date/time from which service access is allowed.">
+  </mat-icon>
+  <mat-datepicker #startPicker></mat-datepicker>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Ending Date/Time</mat-label>
+    <input matInput [matDatepicker]="endPicker" [formControl]="endingDatetime" required>
+    <mat-hint align="end"><lib-hint [difference]="endingDatetime.difference()"></lib-hint></mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+  </mat-form-field>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Determines the ending date/time from which service access is allowed.">
+  </mat-icon>
+  <mat-datepicker #endPicker></mat-datepicker>
+</lib-input>

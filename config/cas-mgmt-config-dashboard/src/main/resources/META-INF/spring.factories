@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.apereo.cas.mgmt.config.CasManagementDashboardConfiguration
+org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
+org.apereo.cas.mgmt.config.OAuthConfigExclusionFilter

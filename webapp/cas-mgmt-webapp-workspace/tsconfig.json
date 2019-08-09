@@ -1,0 +1,46 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "domain-lib": [
+        "dist/domain-lib"
+      ],
+      "domain-lib/*": [
+        "dist/domain-lib/*"
+      ],
+      "shared-lib": [
+        "dist/shared-lib"
+      ],
+      "shared-lib/*": [
+        "dist/shared-lib/*"
+      ],
+      "mgmt-lib": [
+        "dist/mgmt-lib"
+      ],
+      "mgmt-lib/*": [
+        "dist/mgmt-lib/*"
+      ],
+      "@app/*": [
+        "projects/management/src/app/*"
+      ]
+    }
+  }
+}

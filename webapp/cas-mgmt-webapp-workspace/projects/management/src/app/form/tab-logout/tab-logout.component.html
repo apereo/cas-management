@@ -1,0 +1,6 @@
+<div [formGroup]="logout">
+  <lib-card i18n-heading heading="Logout Options" [collapse]="false">
+    <lib-logout [control]="logout.get('logout')"></lib-logout>
+    <lib-logouttypeeval [control]="logout.get('logoutType')"></lib-logouttypeeval>
+  </lib-card>
+</div>

@@ -1,0 +1,26 @@
+<lib-input>
+  <mat-radio-group [formControl]="typeControl">
+
+    <mat-radio-button [value]="TYPE.REFUSE">
+      <ng-container i18n>Refuse</ng-container>
+    </mat-radio-button>
+
+    <mat-radio-button  [value]="TYPE.REGEX">
+      <ng-container i18n>Regex</ng-container>
+    </mat-radio-button>
+
+  </mat-radio-group>
+</lib-input>
+
+<ng-container *ngIf="typeControl.value == TYPE.REGEX">
+  <lib-input>
+    <mat-form-field class="textInput" appearance="standard">
+      <mat-label i18n>Regex</mat-label>
+      <input matInput required [formControl]="regex()">
+      <mat-hint align="end"><lib-hint [difference]="regex().difference()"></lib-hint></mat-hint>
+    </mat-form-field>
+    <mat-icon libHelp i18n-matTooltip
+             matTooltip="Matches the proxy callback url against a regex pattern. A successful match will authorize proxy authentication.">
+    </mat-icon>
+  </lib-input>
+</ng-container>

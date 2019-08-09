@@ -48,7 +48,7 @@ ext {
 
     testCategoryType = System.getProperty("testCategoryType")
     skipBootifulArtifact = System.getProperty("skipBootifulArtifact")
-    skipErrorProneCompiler = System.getProperty("skipErrorProneCompiler")
+    skipErrorProneCompiler = Boolean.getBoolean("skipErrorProneCompiler")
 
     forceBom = Boolean.getBoolean("forceBom")
 
@@ -203,7 +203,7 @@ subprojects {
         doLast {}
     }
     apply plugin: "java-library"
-    if (!rootProject.skipErrorProneCompiler) {
+    if (!Boolean.getBoolean("skipErrorProneCompiler")) {
         apply plugin: "net.ltgt.errorprone-javacplugin"
     }
 

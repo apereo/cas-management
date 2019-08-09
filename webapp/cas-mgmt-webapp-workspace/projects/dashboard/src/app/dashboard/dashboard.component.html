@@ -1,0 +1,76 @@
+  <mat-grid-list cols="2" rowHeight="325px">
+    <mat-grid-tile *ngFor="let server of servers; let i = index" [colspan]="1" [rowspan]="1">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-slide-toggle [checked]="timers && timers[i] !== null" (change)="update($event, i)"></mat-slide-toggle>
+            {{server.name}}
+            <div class="more-button">
+              <div style="width: 24px; height: 24px; margin: 10px;" [ngClass]="statusLight(server)"></div>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content *ngIf="server.system" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
+          <div style="display: flex; flex-direction: row; justify-content: space-around">
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ load(server.system) }}</div>
+              <div style="text-align: center;">Load</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ uptime(server.system) }}</div>
+              <div style="text-align: center;">Uptime</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ maxRequest(server.system) }}</div>
+              <div style="text-align: center;">Max Request</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <div style="text-align: center;">{{ threads(server.system) }}</div>
+              <div style="text-align: center;">requests</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: row; justify-content: space-around">
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    mode="determinate"
+                                    diameter="50"
+                                    [value]="memoryJvm(server.system)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentJvm(server.system)}}%</div>
+              <div style="text-align: center;">Jvm</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    diameter="50"
+                                    mode="determinate"
+                                    [value]="memory(server.system)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percent(server.system)}}%</div>
+              <div style="text-align: center;">Heap</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    mode="determinate"
+                                    diameter="50"
+                                    [value]="cpu(server.system)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpu(server.system)}}%</div>
+              <div style="text-align: center;">CPU</div>
+            </div>
+            <div style="flex: 0 0 25%; margin: 5px">
+              <mat-progress-spinner style="margin: auto"
+                                    mode="determinate"
+                                    diameter="50"
+                                    [value]="cpuProcess(server.system)" >
+              </mat-progress-spinner>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpuProcess(server.system)}}%</div>
+              <div style="text-align: center;">Process</div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-content *ngIf="!server.system">
+          <div>Server is down or unreachable</div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>

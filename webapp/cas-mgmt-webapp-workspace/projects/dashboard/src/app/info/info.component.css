@@ -1,0 +1,16 @@
+.card {
+  margin-right:auto;
+  margin-left:auto;
+  max-width:800px;
+  margin-top:5px
+}
+
+.cardContent {
+  margin-right:auto;
+  margin-left:auto;
+  max-width:750px;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

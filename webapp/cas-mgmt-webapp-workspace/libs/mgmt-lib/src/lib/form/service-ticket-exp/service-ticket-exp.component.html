@@ -1,0 +1,21 @@
+<lib-input>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Number of Uses</mat-label>
+    <input matInput type="number" [formControl]="numberOfUses">
+  </mat-form-field>
+  <mat-hint align="end"><lib-hint [difference]="numberOfUses.difference()"></lib-hint></mat-hint>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Number of times a Service Ticket may be used before expiring.">
+  </mat-icon>
+</lib-input>
+
+<lib-input>
+  <mat-form-field class="textInput" appearance="standard">
+    <mat-label i18n>Time to Live</mat-label>
+    <input matInput [formControl]="timeToLive">
+  </mat-form-field>
+  <mat-hint align="end"><lib-hint [difference]="timeToLive.difference()"></lib-hint></mat-hint>
+  <mat-icon libHelp i18n-matTooltip
+            matTooltip="Amount of time before the service ticket is considered expired in duration syntax(i.e. PT2H).">
+  </mat-icon>
+</lib-input>

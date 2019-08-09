@@ -1,0 +1,17 @@
+<div [formGroup]="oidc">
+  <lib-card i18n-heading heading="OIDC Client Options">
+    <lib-oidcclient [control]="oidc"></lib-oidcclient>
+  </lib-card>
+
+  <lib-card i18n-heading heading="JWKS Options">
+    <lib-jwks [control]="oidc"></lib-jwks>
+  </lib-card>
+
+  <lib-card i18n-heading heading="ID Token Options">
+    <lib-idtoken [control]="oidc"></lib-idtoken>
+  </lib-card>
+
+  <lib-card i18n-heading heading="User Info Options">
+    <lib-userinfo [control]="oidc"></lib-userinfo>
+  </lib-card>
+</div>

@@ -1,0 +1,50 @@
+<lib-navigation #navcom>
+  <a mat-list-item *ngIf="appService.config.mgmtType === 'DOMAIN'" (click)="navto('registry/domains')">
+    <mat-icon>apps</mat-icon>
+    <ng-container i18n>Domains</ng-container>
+  </a>
+  <a mat-list-item *ngIf="appService.config.mgmtType === 'DEFAULT'" (click)="navto('registry/services/default')" >
+    <mat-icon>apps</mat-icon>
+    <ng-container i18n>Services</ng-container>
+  </a>
+  <a mat-list-item (click)="navto('registry/search')">
+    <mat-icon>search</mat-icon>
+    <ng-container i18n>Search</ng-container>
+  </a>
+  <a mat-list-item *ngIf="isDelegated() && isAdmin()" (click)="navto('delegated/pulls')">
+    <mat-icon>file_download</mat-icon>
+    <span [matBadge]="pullRequests()"
+          matBadgePosition="above after"
+          matBadgeOverlap="false"
+          matBadgeColor="accent"
+          [matBadgeHidden]="pullRequests() === 0" i18n>Pull Requests</span>
+  </a>
+  <a mat-list-item *ngIf="isDelegated() && !isAdmin()" (click)="navto('delegated/submits')">
+    <mat-icon>file_upload</mat-icon>
+    <ng-container i18n>Submit Requests</ng-container>
+  </a>
+  <a mat-list-item (click)="navto('form/edit/-1')">
+    <mat-icon>add_circle</mat-icon>
+    <span i18n>Add New Service</span>
+  </a>
+  <a mat-list-item (click)="navto('registry/import')" *ngIf="isAdmin()">
+    <mat-icon>add_circle</mat-icon>
+    <ng-container i18n>Import Service</ng-container>
+  </a>
+  <a mat-list-item *ngIf="appService.config.versionControl" (click)="navto('version-control/localChanges')">
+    <mat-icon>build</mat-icon>
+    <ng-container i18n>Working Changes</ng-container>
+  </a>
+  <a mat-list-item *ngIf="isAdmin() && isSyncScript()" (click)="sync()">
+    <mat-icon>sync</mat-icon>
+    <ng-container i18n>Synchronize</ng-container>
+  </a>
+  <a mat-list-item *ngIf="isAdmin() && isVersionControl()" (click)="navto('version-control/repo-history')">
+    <mat-icon>history</mat-icon>
+    <ng-container i18n>History</ng-container>
+  </a>
+  <a mat-list-item target="_self" id="logoutUrlLink" (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    <ng-container i18n>Log Out</ng-container>
+  </a>
+</lib-navigation>

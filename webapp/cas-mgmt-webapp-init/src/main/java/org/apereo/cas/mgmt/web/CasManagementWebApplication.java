@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.val;
 
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthIndicatorAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     CasPersonDirectoryConfiguration.class,
     CasDiscoveryProfileConfiguration.class,
     DataSourceAutoConfiguration.class,
-    DataSourceHealthIndicatorAutoConfiguration.class,
+    DataSourceHealthContributorAutoConfiguration.class,
     RedisAutoConfiguration.class,
     MongoAutoConfiguration.class,
     MongoDataAutoConfiguration.class,

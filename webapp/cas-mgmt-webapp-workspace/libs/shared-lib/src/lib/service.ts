@@ -29,35 +29,37 @@ export class Service {
   }
 
   post<T>(url: string , data: any, msg?: string): Observable<T> {
-    this.spinner.start(msg);
-    return this.http.post<T>(this.base + url, data).pipe(this.catchError, this.stopSpinner);
+    return this.http.post<T>(this.base + url, data).pipe(this.catchError, this.startSpinner(msg));
   }
 
   postText(url: string , data: any, msg?: string): Observable<string> {
-    this.spinner.start(msg);
     return this.http.post(this.base + url, data, {responseType: 'text'})
-      .pipe(this.catchError, this.stopSpinner);
+      .pipe(this.catchError, this.startSpinner(msg));
   }
 
   get<T>(url: string, msg?: string): Observable<T> {
-    this.spinner.start(msg);
-    return this.http.get(this.base + url).pipe(this.catchError, this.stopSpinner);
+    return this.http.get(this.base + url).pipe(this.catchError, this.startSpinner(msg));
   }
 
   delete(url: string, msg?: string): Observable<void> {
-    this.spinner.start(msg);
-    return this.http.delete(this.base + url).pipe(this.catchError, this.stopSpinner);
+    return this.http.delete(this.base + url).pipe(this.catchError, this.startSpinner(msg));
   }
 
   getText(url: string, msg?: string): Observable<string> {
-    this.spinner.start(msg);
     return this.http.get(this.base + url, {responseType: 'text'})
-      .pipe(this.catchError, this.stopSpinner);
+      .pipe(this.catchError, this.startSpinner(msg));
   }
 
   patch(url: string, data: any, msg?: string): Observable<void> {
-    this.spinner.start(msg);
-    return this.http.patch(this.base + url, data).pipe(this.catchError, this.stopSpinner);
+    return this.http.patch(this.base + url, data).pipe(this.catchError, this.startSpinner(msg));
+  }
+
+  startSpinner(msg?: string) {
+    if (msg) {
+      this.spinner.start(msg);
+      return this.stopSpinner;
+    }
+    return finalize(() => {});
   }
 
   handleError(e: HttpErrorResponse, dialog: MatDialog): Observable<any> {

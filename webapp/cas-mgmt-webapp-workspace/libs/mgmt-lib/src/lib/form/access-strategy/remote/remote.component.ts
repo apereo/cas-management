@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
 import {FormDataService} from '../../../form-data.service';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {RemoteForm} from './remote.form';
 
 @Component({
   selector: 'lib-remote',
@@ -10,17 +10,12 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class RemoteComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  endpointUrl: MgmtFormControl;
-  responseCodes: MgmtFormControl;
+  form: RemoteForm;
 
   constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.endpointUrl = this.control.get('endpointUrl') as MgmtFormControl;
-    this.responseCodes = this.control.get('responseCodes') as MgmtFormControl;
   }
 
 }

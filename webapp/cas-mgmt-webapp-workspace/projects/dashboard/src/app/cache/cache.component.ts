@@ -13,7 +13,7 @@ import {PaginatorComponent} from 'shared-lib';
 export class CacheComponent implements OnInit {
 
   cache: Cache;
-  cacheTimer: Function;
+  cacheTimer;
 
   dataSource: MatTableDataSource<MapDetails>;
   displayedColumns = [ 'name', 'size', 'memory', 'used' ];
@@ -28,24 +28,14 @@ export class CacheComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Cache}) => {
-      let d: MapDetails[] = [];
-      if (data.resp.details.name === "TicketRegistryHealthIndicator") {
-        this.displayedColumns = ['name', 'tickets', 'sessions'];
-        const m = new MapDetails();
-        m.name = data.resp.details.name;
-        m.capacity = data.resp.details.sessionCount;
-        m.memory = data.resp.details.ticketCount;
-        d.push(m);
-      } else {
-        d = Object.keys(data.resp.details.maps).map(k => {
-          const m = data.resp.details.maps[k];
-          m.name = k;
-          return m;
-        });
-      }
+      const d = Object.keys(data.resp.details.maps).map(k => {
+        const m = data.resp.details.maps[k];
+        m.name = k;
+        return m;
+      });
       this.dataSource = new MatTableDataSource<MapDetails>(d);
       this.dataSource.paginator = this.pagintor.paginator;
-    })
+    });
   }
 
   update(event: MatSlideToggleChange) {

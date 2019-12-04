@@ -22,10 +22,6 @@ public class Cache {
     @Data
     @NoArgsConstructor
     public static class Details {
-        private String name;
-        private Long sessionCount;
-        private Long ticketCount;
-        private String message;
         private Map<String, MapDetails> maps;
     }
 

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {ScriptUidForm} from './script.form';
 
 @Component({
   selector: 'lib-script',
@@ -9,15 +8,12 @@ import {FormGroup} from '@angular/forms';
 export class ScriptComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  script: MgmtFormControl;
+  form: ScriptUidForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.script = this.control.get('script') as MgmtFormControl;
   }
 
 }

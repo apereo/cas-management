@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * This is {@link CasManagementAuthorizationConfiguration}.
@@ -53,7 +54,7 @@ public class CasManagementAuthorizationConfiguration {
         return (context, profile) -> {
             profile.addRoles(casProperties.getAdminRoles());
             profile.addRoles(casProperties.getUserRoles());
-            return profile;
+            return Optional.of(profile);
         };
     }
 

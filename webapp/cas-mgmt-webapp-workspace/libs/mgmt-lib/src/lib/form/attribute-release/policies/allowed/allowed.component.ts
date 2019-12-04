@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../../mgmt-formcontrol';
 import {FormDataService} from '../../../../form-data.service';
-import {FormGroup} from '@angular/forms';
+import {AllowedReleasedForm} from './allowed.form';
 
 @Component({
   selector: 'lib-allowed',
@@ -10,15 +9,19 @@ import {FormGroup} from '@angular/forms';
 export class AllowedComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  allowed: MgmtFormControl;
+  form: AllowedReleasedForm;
 
   constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.allowed = this.control.get('allowed') as MgmtFormControl;
+  }
+
+  availableAttributes() {
+    const repos = this.form.principalRepo.attributeRepositoryIds.value as string[];
+    return this.formData.availableAttributes(repos);
   }
 
 }
+
+

@@ -1,18 +1,21 @@
-<div [formGroup]="attributeRelease">
+<div [formGroup]="form">
   <lib-card i18n-heading heading="Attribute Release Policy">
-    <lib-attribute-release-policies [typeControl]="attributeRelease.type" [control]="attributeRelease.policy"></lib-attribute-release-policies>
+    <lib-attribute-release-policies [typeControl]="form.type" [form]="form.policy"></lib-attribute-release-policies>
   </lib-card>
-  <lib-card i18n-heading heading="Attribute Release Options" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
-    <lib-attribute-release-checks [control]="attributeRelease.policy.get('checks')"></lib-attribute-release-checks>
+  <lib-card i18n-heading heading="Attribute Release Options" *ngIf="form.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-checks [form]="form.policy.checks"></lib-attribute-release-checks>
   </lib-card>
-  <lib-card i18n-heading heading="Attribute Release Consent" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
-    <lib-attribute-release-consent [control]="attributeRelease.policy.get('consent')"></lib-attribute-release-consent>
+  <lib-card i18n-heading heading="Attribute Release Consent" *ngIf="form.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-consent [form]="form.policy.consent"></lib-attribute-release-consent>
   </lib-card>
-  <lib-card i18n-heading heading="Attribute Value Filters" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
-    <lib-attribute-release-filters (addFilter)="attributeRelease.addFilter($event)" [control]="attributeRelease.filter"></lib-attribute-release-filters>
+  <lib-card i18n-heading heading="Attribute Value Filters" *ngIf="form.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-filters [form]="form.policy.attributeFilter"></lib-attribute-release-filters>
   </lib-card>
-  <lib-card i18n-heading heading="Principal Attribute Repository" *ngIf="attributeRelease.type.value !== TYPE.DENY_ALL">
-    <lib-attribute-release-principal-repo [control]="attributeRelease.policy.get('principalRepo')"></lib-attribute-release-principal-repo>
+  <lib-card i18n-heading heading="Principal Attribute Repository" *ngIf="form.type.value !== TYPE.DENY_ALL">
+    <lib-attribute-release-principal-repo
+      [form]="form.policy.principalRepo"
+      [typeControl]="form.policy.principalRepoType">
+    </lib-attribute-release-principal-repo>
   </lib-card>
 </div>
 

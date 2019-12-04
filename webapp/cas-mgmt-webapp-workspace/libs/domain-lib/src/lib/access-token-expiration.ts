@@ -31,7 +31,7 @@ export class DefaultRegisteredServiceOAuthAccessTokenExpirationPolicy extends Re
 
 export function accessTokenExpirationPolicy(policy?: any): RegisteredServiceOAuthAccessTokenExpirationPolicy {
   if (!policy || DefaultRegisteredServiceOAuthAccessTokenExpirationPolicy.instanceOf(policy)) {
-    return new DefaultRegisteredServiceOAuthAccessTokenExpirationPolicy(policy)
+    return new DefaultRegisteredServiceOAuthAccessTokenExpirationPolicy(policy);
   }
   return policy;
 }

@@ -1,0 +1,47 @@
+<div>
+  <h3 matDialogTitle>
+    <ng-container>Add SAML Service</ng-container>
+  </h3>
+</div>
+<mat-dialog-content>
+  <ng-container *ngIf="!pasteView">
+    <div style="width:500px;margin-top: 20px;">
+      <ng-container i18n>You can an integrate a SAML SP by either searching for and selecting the SPs entity id
+      if they are part of the InCommon federation, or the SPs metadata can be added directly using the
+      file upload option.</ng-container>
+      <mat-form-field style="width: 100%;" appearance="standard">
+        <mat-label>Enter Entity ID of an InCommon SP</mat-label>
+        <input matInput [(ngModel)]="entity" autocomplete="false" [matAutocomplete]="auto" (keyup)="doLookupEntity($event.target.value)">
+      </mat-form-field>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="pasteView">
+    <div style="height:400px;width:900px;margin-right:10px;margin-left:10px;">
+      <lib-editor #editor mode="xml" theme="eclipse" style="width:100%;height:100%;"></lib-editor>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions style="width: 100%;">
+  <button mat-button (click)="open.click();">
+    <mat-icon>file_upload</mat-icon>
+    <ng-container i18n>Upload Metadata</ng-container>
+  </button>
+  <button mat-button (click)="pasteView = !pasteView">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>Paste</ng-container>
+  </button>
+  <div style="float: right;">
+    <button mat-button matDialogClose>
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button mat-button (click)="resolve()">
+      <mat-icon>thumb_up</mat-icon>
+      <ng-container i18n>OK</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>
+<input #open type="file" (change)="upload($event);" style="display:none;">
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let opt of foundEntities" [value]="opt" >{{ opt }}</mat-option>
+</mat-autocomplete>

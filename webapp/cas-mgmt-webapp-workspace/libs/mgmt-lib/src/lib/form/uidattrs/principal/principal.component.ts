@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {FormDataService} from '../../../form-data.service';
-import {FormGroup} from '@angular/forms';
+import {PrincipalUidForm} from './principal.form';
 
 @Component({
   selector: 'lib-principal',
@@ -10,18 +8,15 @@ import {FormGroup} from '@angular/forms';
 export class PrincipalComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  usernameAttribute: MgmtFormControl;
-  encryptUserName: MgmtFormControl;
-  canonicalizationMode: MgmtFormControl;
+  form: PrincipalUidForm;
 
-  constructor(public formData: FormDataService) {
+  @Input()
+  attributes: string[];
+
+  constructor() {
   }
 
   ngOnInit() {
-    this.usernameAttribute = this.control.get('usernameAttribute') as MgmtFormControl;
-    this.encryptUserName = this.control.get('encryptUserName') as MgmtFormControl;
-    this.canonicalizationMode = this.control.get('canonicalizationMode') as MgmtFormControl;
   }
 
 }

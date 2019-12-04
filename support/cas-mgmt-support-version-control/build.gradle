@@ -8,7 +8,9 @@ dependencies {
     implementation libraries.pac4j
     implementation libraries.casServer.versionControl
     implementation libraries.casServer.services
-    
+    implementation libraries.casServer.oauth
+    implementation libraries.casServer.saml
+
     implementation project(":core:cas-mgmt-core-authentication")
 
     implementation project(":core:cas-mgmt-core")

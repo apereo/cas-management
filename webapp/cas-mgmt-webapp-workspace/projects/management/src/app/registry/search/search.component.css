@@ -48,3 +48,8 @@
 .statusWidth {
     flex: 0 0 50px;
 }
+
+.serviceTypeWidth {
+  flex: 0 1 200px;
+  color: inherit !important
+}

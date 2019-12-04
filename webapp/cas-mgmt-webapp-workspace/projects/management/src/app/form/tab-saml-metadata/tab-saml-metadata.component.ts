@@ -1,26 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
 import {SamlRegisteredService} from 'domain-lib';
-import {SamlMetadataForm} from '@app/form/tab-saml-metadata/saml-metadata-form';
+import {TabSamlMetadataForm} from './tab-saml-metadata.form';
 
 @Component({
   selector: 'app-tab-saml-metadata',
   templateUrl: './tab-saml-metadata.component.html',
   styleUrls: ['./tab-saml-metadata.component.css']
 })
-export class TabSamlMetadataComponent implements OnInit {
+export class TabSamlMetadataComponent {
 
-  saml: SamlMetadataForm;
+  form: TabSamlMetadataForm;
+  readonly key = 'saml-metadata';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('saml-metadata')) {
-      this.saml = this.data.formMap.get('saml-metadata') as SamlMetadataForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabSamlMetadataForm;
       return;
     }
-    this.saml = new SamlMetadataForm(this.data.service as SamlRegisteredService);
-    this.data.formMap.set('saml-metadata', this.saml);
-  }
-  ngOnInit() {
+    this.form = new TabSamlMetadataForm(this.data.service as SamlRegisteredService);
+    this.data.formMap.set(this.key, this.form);
   }
 
 }

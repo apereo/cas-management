@@ -9,7 +9,8 @@ import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.decision.AlwaysUseSessionProfileStorageDecision;
-import org.pac4j.core.exception.HttpAction;
+import org.pac4j.core.exception.http.HttpAction;
+import org.pac4j.core.exception.http.TemporaryRedirectAction;
 import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,7 +43,7 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
     @Override
     public void postHandle(final HttpServletRequest request, final HttpServletResponse response,
                            final Object handler, final ModelAndView modelAndView) {
-        if (!StringUtils.isEmpty(request.getQueryString()) && request.getQueryString().contains(CasProtocolConstants.PARAMETER_TICKET)) {
+        if (modelAndView != null && !StringUtils.isEmpty(request.getQueryString()) && request.getQueryString().contains(CasProtocolConstants.PARAMETER_TICKET)) {
             val view = new RedirectView(request.getRequestURL().toString());
             view.setExposeModelAttributes(false);
             view.setExposePathVariables(false);
@@ -51,11 +52,11 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
     }
 
     private static String getClientNames(final Config config) {
-        return config.getClients().getClients().stream().map(Client::getName).collect(Collectors.joining(Pac4jConstants.ELEMENT_SEPRATOR));
+        return config.getClients().getClients().stream().map(Client::getName).collect(Collectors.joining(Pac4jConstants.ELEMENT_SEPARATOR));
     }
 
     private static String getAuthorizerNames(final Config config) {
-        return config.getAuthorizers().keySet().stream().collect(Collectors.joining(Pac4jConstants.ELEMENT_SEPRATOR));
+        return config.getAuthorizers().keySet().stream().collect(Collectors.joining(Pac4jConstants.ELEMENT_SEPARATOR));
     }
 
     /**
@@ -68,7 +69,7 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
 
         @Override
         protected HttpAction forbidden(final WebContext context, final List currentClients, final List list, final String authorizers) {
-            return HttpAction.redirect(context, "authorizationFailure");
+            return new TemporaryRedirectAction("authorizationFailure");
         }
     }
 }

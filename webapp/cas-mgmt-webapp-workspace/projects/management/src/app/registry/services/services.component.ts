@@ -5,8 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
-import {RevertComponent} from '@app/project-share';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import {RevertComponent} from '../../project-share/revert/revert.component';
 
 @Component({
   selector: 'app-services',
@@ -19,7 +19,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   selectedItem: ServiceItem;
   revertItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
-  displayedColumns = ['actions', 'name', 'serviceId', 'description'];
+  displayedColumns = ['actions', 'name', 'serviceId', 'serviceType', 'description'];
 
   @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
@@ -40,13 +40,13 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         this.dataSource.paginator = this.paginator.paginator;
       }
     );
-    this.route.params.subscribe((params) => this.domain = params['domain']);
+    this.route.params.subscribe((params) => this.domain = params.domain);
     this.breakObserver.observe(['(max-width: 499px)'])
       .subscribe(r => {
         if (r.matches) {
-          this.displayedColumns = ['actions', 'serviceId'];
+          this.displayedColumns = ['actions', 'serviceId', 'serviceType'];
         } else {
-          this.displayedColumns = ['actions', 'name', 'serviceId', 'description'];
+          this.displayedColumns = ['actions', 'name', 'serviceId', 'serviceType', 'description'];
         }
       });
   }
@@ -68,6 +68,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   getJson() {
     this.router.navigate(['registry/json', this.selectedItem.assignedId]);
+  }
+
+  getMetadata() {
+    this.router.navigate(['registry/metadata', this.selectedItem.assignedId]);
   }
 
   serviceDuplicate() {
@@ -201,6 +205,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
            this.selectedItem.status !== 'ADD';
   }
 
+  showMetadata(): boolean {
+    return this.selectedItem && this.selectedItem.type === 'SAML';
+  }
+
   showRevert(): boolean {
     return this.appService.config.versionControl &&
            this.selectedItem &&
@@ -224,5 +232,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   status(row: ServiceItem): string {
     return this.appService.config.versionControl ? row.status : '';
+  }
+
+  createService() {
+    this.router.navigate(['form/edit/-1']);
   }
 }

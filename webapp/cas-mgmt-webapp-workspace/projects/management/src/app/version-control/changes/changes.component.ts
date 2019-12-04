@@ -2,10 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {ViewComponent} from '@app/project-share/view/view.component';
 import {ChangesService} from './changes.service';
 import {DiffEntry} from 'domain-lib';
-import {PaginatorComponent} from 'shared-lib';
+import {PaginatorComponent, ViewComponent} from 'shared-lib';
 
 @Component({
   selector: 'app-changes',

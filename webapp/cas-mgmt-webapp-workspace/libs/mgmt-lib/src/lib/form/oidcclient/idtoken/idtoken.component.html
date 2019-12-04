@@ -1,11 +1,11 @@
-<lib-options [control]="control"></lib-options>
+<lib-options [form]="form.idTokenOptions"></lib-options>
 
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>ID Token Encryption Algorithm</mat-label>
     <input matInput [matAutocomplete]="encryptAlgAuto"
-           [formControl]="idTokenEncryptionAlg">
-    <mat-hint align="end"><lib-hint [difference]="idTokenEncryptionAlg.difference()"></lib-hint></mat-hint>
+           [formControl]="form.idTokenEncryptionAlg">
+    <mat-hint align="end"><lib-hint [difference]="form.idTokenEncryptionAlg.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Encryption algorithm to use with ID tokens.">
@@ -19,8 +19,8 @@
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>ID Encryption Encoding Algorithm</mat-label>
     <input matInput [matAutocomplete]="encodingAlgAuto"
-           [formControl]="idTokenEncryptionEncoding">
-    <mat-hint align="end"><lib-hint [difference]="idTokenEncryptionEncoding.difference()"></lib-hint></mat-hint>
+           [formControl]="form.idTokenEncryptionEncoding">
+    <mat-hint align="end"><lib-hint [difference]="form.idTokenEncryptionEncoding.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Encryption content encoding algorithm to use with ID tokens.">
@@ -34,8 +34,8 @@
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>ID Token Signing Algorithm</mat-label>
     <input matInput [matAutocomplete]="encryptAlgAuto"
-           [formControl]="idTokenSigningAlg">
-    <mat-hint align="end"><lib-hint [difference]="idTokenSigningAlg.difference()"></lib-hint></mat-hint>
+           [formControl]="form.idTokenSigningAlg">
+    <mat-hint align="end"><lib-hint [difference]="form.idTokenSigningAlg.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Encryption algorithm to use with ID tokens.">

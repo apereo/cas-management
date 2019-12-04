@@ -38,6 +38,9 @@ export class ControlsComponent implements OnInit {
   @Input()
   showEditorOptions = false;
 
+  @Input()
+  showNew = false;
+
   @ViewChild('publishModal', { static: true })
   submitComp: PublishComponent;
 
@@ -50,8 +53,12 @@ export class ControlsComponent implements OnInit {
   @Output()
   refresh: EventEmitter<void> = new EventEmitter<void>();
 
+  // tslint:disable-next-line:no-output-native
   @Output()
   reset: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
+  newService: EventEmitter<void> = new EventEmitter<void>();
 
   @Output()
   editorOptions: EventEmitter<void> = new EventEmitter<void>();
@@ -182,7 +189,7 @@ export class ControlsComponent implements OnInit {
   }
 
 
-  unpublished (): boolean {
+  unpublished(): boolean {
     return this.appService.config.versionControl &&
            this.service.status &&
            this.service.status.unpublished;

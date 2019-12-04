@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
 import {ProxyType} from 'domain-lib';
+import {ProxyForm, RegExProxyForm} from './proxy.form';
 
 @Component({
   selector: 'lib-proxy',
@@ -16,7 +16,7 @@ export class ProxyComponent implements OnInit {
   typeControl: MgmtFormControl;
 
   @Input()
-  control: FormGroup;
+  form: ProxyForm;
 
   constructor() {
   }
@@ -24,7 +24,7 @@ export class ProxyComponent implements OnInit {
   ngOnInit() {
   }
 
-  regex(): MgmtFormControl {
-    return this.control.get('regex') as MgmtFormControl;
+  regex(): RegExProxyForm {
+    return this.form as RegExProxyForm;
   }
 }

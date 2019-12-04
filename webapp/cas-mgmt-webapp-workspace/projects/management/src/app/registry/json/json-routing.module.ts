@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {JSONComponent} from '@app/registry/json/json.component';
-import {JSONResolver} from '@app/registry/json/json.resolover';
+import {JSONComponent} from './json.component';
+import {JSONResolver} from './json.resolover';
 
 const routes: Routes = [
   {

@@ -8,5 +8,6 @@ dependencies {
     api libraries.casServer.oauth
     api libraries.casServer.authentication
     api libraries.git
-    
+    api libraries.opensaml
+
 }

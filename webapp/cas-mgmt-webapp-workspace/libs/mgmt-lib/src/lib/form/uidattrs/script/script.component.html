@@ -1,9 +1,9 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Script Location</mat-label>
-    <input matInput [formControl]="script" required>
+    <input matInput [formControl]="form.script" required>
   </mat-form-field>
-  <mat-hint align="end"><lib-hint [difference]="script.difference()"></lib-hint></mat-hint>
+  <mat-hint align="end"><lib-hint [difference]="form.script.difference()"></lib-hint></mat-hint>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Location of script file that will be used by this service to determine usernames.">
   </mat-icon>

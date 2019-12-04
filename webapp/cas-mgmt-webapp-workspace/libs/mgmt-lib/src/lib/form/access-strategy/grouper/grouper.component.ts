@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {FormDataService} from '../../../form-data.service';
-import {FormGroup} from '@angular/forms';
+import {GrouperForm} from './grouper.form';
 
 @Component({
   selector: 'lib-grouper',
@@ -10,8 +10,7 @@ import {FormGroup} from '@angular/forms';
 export class GrouperComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  groupField: MgmtFormControl;
+  form: GrouperForm;
   fields: string[];
 
   constructor(public formData: FormDataService) {
@@ -19,7 +18,6 @@ export class GrouperComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.groupField = this.control.get('groupField') as MgmtFormControl;
   }
 
 }

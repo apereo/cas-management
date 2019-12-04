@@ -41,3 +41,4 @@ export * from './lib/device-token-expiration';
 export * from './lib/service-ticket-expiration';
 export * from './lib/proxy-ticket-expiration';
 export * from './lib/sso-expiration';
+export * from './lib/metadata';

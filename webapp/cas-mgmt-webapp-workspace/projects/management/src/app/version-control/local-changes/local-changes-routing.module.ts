@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {LocalChangesComponent} from '@app/version-control/local-changes/local-changes.component';
-import {LocalChangesResolver} from '@app/version-control/local-changes/local-changes.resolver';
+import {LocalChangesResolver} from './local-changes.resolver';
+import {LocalChangesComponent} from './local-changes.component';
 
 const routes: Routes = [
   {

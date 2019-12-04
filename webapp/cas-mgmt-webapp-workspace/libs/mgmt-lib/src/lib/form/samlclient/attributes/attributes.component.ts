@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormGroup} from '@angular/forms';
 import {DataRecord} from '../../data';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {FormDataService} from '../../../form-data.service';
+import {AttributesForm} from '../../attributes/attributes.form';
 
 @Component({
   selector: 'lib-saml-attributes',
@@ -12,13 +11,11 @@ import {FormDataService} from '../../../form-data.service';
 export class AttributeNameFormatsComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
+  form: AttributesForm;
 
   selectedRow;
 
-  entries: FormArray;
-
-  display: Function;
+  display;
 
   constructor(public data: DataRecord, public formData: FormDataService) {
     this.display = (format?: string): string | undefined =>
@@ -28,18 +25,14 @@ export class AttributeNameFormatsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.entries = this.control.get('nameFormats') as FormArray;
   }
 
   addRow() {
-    this.entries.push(new FormGroup({
-      key: new MgmtFormControl(null),
-      value: new MgmtFormControl(null)
-    }));
+    this.form.addRow();
   }
 
   delete(row: number) {
-    this.entries.removeAt(row);
-    this.control.markAsTouched();
+    this.form.removeAt(row);
+    this.form.markAsTouched();
   }
 }

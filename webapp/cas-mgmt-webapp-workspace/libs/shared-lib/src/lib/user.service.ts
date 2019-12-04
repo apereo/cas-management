@@ -29,7 +29,7 @@ export class UserService extends Service {
     }
 
     loggedInContact(): Observable<DefaultRegisteredServiceContact> {
-      return this.get<DefaultRegisteredServiceContact>("api/contacts/loggedIn");
+      return this.get<DefaultRegisteredServiceContact>('api/contacts/loggedIn');
     }
 
 }

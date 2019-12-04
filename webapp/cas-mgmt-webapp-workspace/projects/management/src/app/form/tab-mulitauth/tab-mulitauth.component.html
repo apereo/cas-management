@@ -1,5 +1,5 @@
-<div [formGroup]="mfa">
-  <lib-card i18n-heading heading="Multifactor Policy" [collapse]="false">
-    <lib-mfa [typeControl]="mfa.type" [control]="mfa.policy"></lib-mfa>
+<div [formGroup]="form">
+  <lib-card heading="Multifactor Policy" [collapse]="false">
+    <lib-mfa [typeControl]="form.type" [form]="form.policy"></lib-mfa>
   </lib-card>
 </div>

@@ -14,4 +14,5 @@ export class ServiceItem {
   selected: boolean;
   cname: string;
   staged: boolean;
+  type: string;
 }

@@ -1,0 +1,25 @@
+<div>
+  <h3 matDialogTitle>
+    <ng-container>Choose OAuth Service Type</ng-container>
+  </h3>
+</div>
+<mat-dialog-content style="text-align: center; padding: 5px;">
+  <div style="display:inline;margin-right: 10px;">
+    <button mat-raised-button (click)="oauth()">
+      <ng-container i18n>Create OAuth</ng-container>
+    </button>
+  </div>
+  <div style="display: inline;margin-left:10px;">
+    <button mat-raised-button (click)="oidc()">
+      <ng-container i18n>Create OIDC</ng-container>
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions style="float: right;">
+  <div>
+    <button mat-button matDialogClose>
+      <mat-icon>cancel</mat-icon>
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>

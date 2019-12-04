@@ -2,9 +2,9 @@ import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ServiceViewService} from '../services/service.service';
-import {EditorComponent} from '@app/project-share';
 import {MatSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
+import {EditorComponent} from 'shared-lib';
 
 @Component({
   selector: 'app-json',
@@ -38,8 +38,8 @@ export class JSONComponent implements AfterViewInit, OnInit {
   }
 
   save() {
-    this.service.saveJson(this.route.snapshot.params['id'], this.editor.getFile())
-      .subscribe(resp => this.handleSuccess(), error => this.handleError(error));
+    this.service.saveJson(this.route.snapshot.params.id, this.editor.getFile())
+      .subscribe(() => this.handleSuccess(), error => this.handleError(error));
   }
 
   handleSuccess() {

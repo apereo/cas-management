@@ -29,7 +29,7 @@ export class DefaultRegisteredServiceOAuthDeviceTokenExpirationPolicy extends Re
 
 export function deviceTokenExpirationPolicy(policy?: any): RegisteredServiceOAuthDeviceTokenExpirationPolicy {
   if (!policy || DefaultRegisteredServiceOAuthDeviceTokenExpirationPolicy.instanceOf(policy)) {
-    return new DefaultRegisteredServiceOAuthDeviceTokenExpirationPolicy(policy)
+    return new DefaultRegisteredServiceOAuthDeviceTokenExpirationPolicy(policy);
   }
   return policy;
 }

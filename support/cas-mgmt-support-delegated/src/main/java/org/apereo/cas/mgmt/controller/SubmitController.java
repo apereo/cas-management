@@ -61,7 +61,7 @@ public class SubmitController {
                            final HttpServletRequest request,
                            final @RequestBody String msg) {
         val user = casUserProfileFactory.from(request, response);
-        try (GitUtil git = repositoryFactory.from(user)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 throw new IllegalArgumentException("No changes to submit");
             }
@@ -123,7 +123,7 @@ public class SubmitController {
                              final HttpServletResponse response,
                              final @PathVariable String branchName) {
         val user = casUserProfileFactory.from(request, response);
-        try (GitUtil git = repositoryFactory.from(user)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 throw new IllegalArgumentException("No changes to revert");
             }

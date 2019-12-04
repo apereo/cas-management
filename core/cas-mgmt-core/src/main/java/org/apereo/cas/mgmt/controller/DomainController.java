@@ -46,7 +46,7 @@ public class DomainController {
     public Collection<DomainRpc> getDomains(final HttpServletRequest request,
                                          final HttpServletResponse response) {
         val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = managerFactory.from(request, casUserProfile);
+        val manager = managerFactory.from(request, response);
         return manager.getDomains().stream()
                 .filter(casUserProfile::hasPermission)
                 .map(DomainRpc::new)

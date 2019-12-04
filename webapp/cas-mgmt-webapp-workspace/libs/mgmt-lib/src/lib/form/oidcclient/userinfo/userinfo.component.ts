@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {FormDataService} from '../../../form-data.service';
+import {UserinfoForm} from './userinfo.form';
 
 @Component({
   selector: 'lib-userinfo',
@@ -10,20 +9,11 @@ import {FormDataService} from '../../../form-data.service';
 })
 export class UserinfoComponent implements OnInit {
   @Input()
-  control: FormGroup;
-
-  @Input()
-  hideKeys = false;
-  userInfoSigningAlg: MgmtFormControl;
-  userInfoEncryptedResponseAlg: MgmtFormControl;
-  userInfoEncryptedResponseEncoding: MgmtFormControl;
+  form: UserinfoForm;
 
   constructor(public formData: FormDataService) { }
 
   ngOnInit() {
-    this.userInfoSigningAlg = this.control.get('userInfoSigningAlg') as MgmtFormControl;
-    this.userInfoEncryptedResponseAlg = this.control.get('userInfoEncryptedResponseAlg') as MgmtFormControl;
-    this.userInfoEncryptedResponseEncoding = this.control.get('userInfoEncryptedResponseEncoding') as MgmtFormControl;
   }
 
 }

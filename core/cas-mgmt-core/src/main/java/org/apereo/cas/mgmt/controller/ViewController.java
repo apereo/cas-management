@@ -1,12 +1,13 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +31,15 @@ public class ViewController {
     private static final String STATUS = "status";
 
     private final Service defaultService;
+    private final CasUserProfileFactory casUserProfileFactory;
+
 
     /**
      * Mapped method to return the manage.html.
      *
      * @return - ModelAndView
      */
-    @GetMapping({"management/index.html", "management/", "management", "/"})
+    @GetMapping({"/", "management/index.html", "management/", "management"})
     public ModelAndView manage() {
         val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
@@ -76,7 +79,7 @@ public class ViewController {
     @GetMapping(value = "/logout.html")
     public String logoutView(final HttpServletRequest request, final HttpServletResponse response) {
         LOGGER.debug("Invalidating application session...");
-        new ProfileManager(new J2EContext(request, response)).logout();
+        new ProfileManager(new JEEContext(request, response)).logout();
         request.getSession(false).invalidate();
         return "logout";
     }

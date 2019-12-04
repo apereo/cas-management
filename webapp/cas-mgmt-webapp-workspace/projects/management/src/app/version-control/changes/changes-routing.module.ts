@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ChangesComponent} from '@app/version-control/changes/changes.component';
-import {ChangesResolve} from '@app/version-control/changes/changes.resolover';
+import {ChangesComponent} from './changes.component';
+import {ChangesResolve} from './changes.resolover';
 
 const routes: Routes = [
   {

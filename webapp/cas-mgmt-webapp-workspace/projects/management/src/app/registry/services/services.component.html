@@ -6,7 +6,7 @@
   <div style="flex: 1 1 auto">
   </div>
   <div>
-    <app-controls (refresh)="refresh()"></app-controls>
+    <app-controls (refresh)="refresh()" (newService)="createService()"></app-controls>
   </div>
 </div>
 
@@ -55,6 +55,15 @@
       </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="serviceType">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceTypeWidth'">
+        <ng-container i18n>Type</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceTypeWidth'">
+        {{ row.type }}
+      </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef [ngClass]="'descriptionWidth'">
         <ng-container i18n>Description</ng-container>
@@ -84,6 +93,10 @@
   <button mat-menu-item (click)="getJson()">
     <mat-icon>code</mat-icon>
     <ng-container i18n>JSON</ng-container>
+  </button>
+  <button mat-menu-item (click)="getMetadata()" *ngIf="showMetadata()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>Metadata</ng-container>
   </button>
   <button mat-menu-item (click)="serviceDuplicate()">
     <mat-icon>content_copy</mat-icon>

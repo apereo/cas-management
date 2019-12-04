@@ -26,6 +26,11 @@
     color: inherit !important;
 }
 
+.serviceTypeWidth {
+  flex: 0 1 200px;
+  color: inherit !important
+}
+
 .changeTypeWidth {
     flex: 0 1 200px;
     color: inherit !important

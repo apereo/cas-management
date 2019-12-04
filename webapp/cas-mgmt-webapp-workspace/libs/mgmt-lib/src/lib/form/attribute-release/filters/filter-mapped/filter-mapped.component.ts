@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
 import {FormDataService} from '../../../../form-data.service';
+import {DataRecord} from '../../../data';
+import {FilterMappedRegExForm} from '../filters.form';
 
 @Component({
   selector: 'lib-filter-mapped',
@@ -8,13 +9,18 @@ import {FormDataService} from '../../../../form-data.service';
   styleUrls: ['./filter-mapped.component.css']
 })
 export class FilterMappedComponent implements OnInit {
-  @Input()
-  filter: FormGroup;
 
-  constructor(public formData: FormDataService) {
+  @Input()
+  form: FilterMappedRegExForm;
+
+  constructor(public formData: FormDataService, public data: DataRecord) {
   }
 
   ngOnInit() {
   }
 
+  availableAttributes() {
+    const repos = this.data.service.attributeReleasePolicy.principalAttributesRepository.attributeRepositoryIds;
+    return this.formData.availableAttributes(repos);
+  }
 }

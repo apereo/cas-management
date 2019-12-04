@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {RepoHistoryComponent} from '@app/version-control/repo-history/repo-history.component';
-import {RepoHistoryResolver} from '@app/version-control/repo-history/repo-history.resolver';
+import {RepoHistoryComponent} from './repo-history.component';
+import {RepoHistoryResolver} from './repo-history.resolver';
 
 const routes: Routes = [
   {

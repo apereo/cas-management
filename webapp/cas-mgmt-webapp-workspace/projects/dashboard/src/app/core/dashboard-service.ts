@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {Server} from '../domain/dashboard';
 import {Cache} from '../domain/cache';
 import {AuditLog} from '../domain/audit';
-import {OAuthToken, SsoSessionResponse} from '../domain/sessions';
 import {Logger} from '../domain/logger';
 
 @Injectable({
@@ -33,34 +32,22 @@ export class DashboardService extends Service {
   }
 
   getInfo(): Observable<Map<string, string>> {
-    return this.get<Map<string,string>>('api/dashboard/info');
+    return this.get<Map<string, string>>('api/dashboard/info');
   }
 
   getAudit(data: any): Observable<AuditLog[]> {
     return this.post<AuditLog[]>('api/dashboard/audit', data);
   }
 
-  getSessions(): Observable<SsoSessionResponse> {
-    return this.get<SsoSessionResponse>('api/dashboard/sessions/');
-  }
-
-  revokeSession(tgt: string): Observable<void> {
-    return this.delete('api/dashboard/sessions/' + tgt);
+  downloadAudit(data: any): Observable<void> {
+    return this.post<void>('api/dashboard/audit/download', data);
   }
 
   getLoggers(): Observable<Map<string, Map<string, Logger>>> {
-    return this.get<Map<string,Map<string, Logger>>>('api/dashboard/loggers');
+    return this.get<Map<string, Map<string, Logger>>>('api/dashboard/loggers');
   }
 
   setLogger(data: any): Observable<void> {
     return this.post<void>('api/dashboard/loggers/', data);
-  }
-
-  getTokens(): Observable<OAuthToken[]> {
-    return this.get<OAuthToken[]>('api/dashboard/tokens');
-  }
-
-  revokeToken(id: string): Observable<void> {
-    return this.delete('api/dashboard/tokens/' + id);
   }
 }

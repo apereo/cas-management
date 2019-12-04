@@ -39,9 +39,16 @@ export class AuditComponent implements OnInit {
       if (data) {
         this.service.getAudit(data).subscribe(e => {
           this.dataSource.data = e;
+          if (data.download) {
+            this.download();
+          }
         });
       }
     });
+  }
+
+  download() {
+    window.open('../api/dashboard/audit/download', '_blank');
   }
 
   doFilter(val: string) {

@@ -15,3 +15,9 @@ export * from './lib/spinner/spinner.component';
 export * from './lib/navigation/navigation.component';
 export * from './lib/hint/hint.component';
 export * from './lib/input/input.component';
+export * from './lib/addsp/addsp.component';
+export * from './lib/addsp/addsp.service.service';
+export * from './lib/view/view.component';
+export * from './lib/editor.component';
+export * from './lib/editor-options/editor-options.component';
+

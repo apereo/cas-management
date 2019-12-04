@@ -1,11 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceItem} from 'domain-lib';
-import {PaginatorComponent} from 'shared-lib';
+import {PaginatorComponent, ViewComponent} from 'shared-lib';
 import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {SearchService} from './search.service';
-import {ViewComponent} from '@app/project-share';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +13,7 @@ import {ViewComponent} from '@app/project-share';
 })
 export class SearchComponent implements OnInit {
   dataSource: MatTableDataSource<ServiceItem>;
-  displayedColumns = ['actions', 'name', 'serviceId', 'description'];
+  displayedColumns = ['actions', 'name', 'serviceId', 'serviceType', 'description'];
 
   selectedItem: ServiceItem;
 
@@ -64,6 +63,22 @@ export class SearchComponent implements OnInit {
   doSearch(query: string) {
     this.service.search(query)
       .subscribe(resp => this.dataSource.data = resp);
+  }
+
+  promote() {
+    this.service.promote(+this.selectedItem.assignedId).subscribe(() => {
+      this.selectedItem.staged = false;
+    });
+  }
+
+  demote() {
+    this.service.demote(+this.selectedItem.assignedId).subscribe(() => {
+      this.selectedItem.staged = true;
+    });
+  }
+
+  staged(): boolean {
+    return this.selectedItem && this.selectedItem.staged;
   }
 
 }

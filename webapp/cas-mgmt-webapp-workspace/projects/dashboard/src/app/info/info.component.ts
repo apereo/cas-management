@@ -12,7 +12,7 @@ import {PaginatorComponent} from 'shared-lib';
 })
 export class InfoComponent implements OnInit {
 
-  dataSource: MatTableDataSource<Attribute>
+  dataSource: MatTableDataSource<Attribute>;
   displayedColumns = ['key', 'values'];
   keys = ['CAS Version', 'CAS Branch', 'CAS Commit Id', 'CAS Build Date/Time', 'Spring Boot Version', 'Spring Version'];
 
@@ -26,7 +26,7 @@ export class InfoComponent implements OnInit {
       const d = this.keys.map(k => new Attribute(k, data.resp[k]));
       this.dataSource = new MatTableDataSource(d);
       this.dataSource.paginator = this.paginator.paginator;
-    })
+    });
   }
 
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
-import {AdvancedForm} from './advanced-form';
+import {TabAdvancedForm} from './tab-advanced.form';
 
 @Component({
   selector: 'app-tab-advanced',
@@ -8,18 +8,19 @@ import {AdvancedForm} from './advanced-form';
 })
 export class TabAdvancedComponent implements OnInit {
 
-  advanced: AdvancedForm;
+  form: TabAdvancedForm;
+  readonly key = 'advanced';
 
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
-    if (this.data.formMap.has('advanced')) {
-      this.advanced = this.data.formMap.get('advanced') as AdvancedForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabAdvancedForm;
       return;
     }
-    this.advanced = new AdvancedForm(this.data.service);
-    this.data.formMap.set('advanced', this.advanced);
+    this.form = new TabAdvancedForm(this.data.service);
+    this.data.formMap.set(this.key, this.form);
   }
 
 }

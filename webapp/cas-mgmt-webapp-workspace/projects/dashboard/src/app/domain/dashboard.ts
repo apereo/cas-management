@@ -1,6 +1,6 @@
 export class Server {
   name: string;
-  system: SystemHealth
+  system: SystemHealth;
 }
 
 export class SystemHealth {

@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {CodeExpirationForm} from './code-expiration.form';
 
 @Component({
   selector: 'lib-code-expiration',
@@ -9,15 +10,11 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class CodeExpirationComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  numberOfUses: MgmtFormControl;
-  timeToLive: MgmtFormControl;
+  form: CodeExpirationForm;
 
   constructor() { }
 
   ngOnInit() {
-    this.numberOfUses = this.control.get('numberOfUses') as MgmtFormControl;
-    this.timeToLive = this.control.get('timeToLive') as MgmtFormControl;
   }
 
 }

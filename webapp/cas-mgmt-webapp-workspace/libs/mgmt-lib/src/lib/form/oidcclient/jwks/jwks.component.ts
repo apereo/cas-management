@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {FormDataService} from '../../../form-data.service';
+import {JwksForm} from './jwks.form';
 
 @Component({
   selector: 'lib-jwks',
@@ -11,20 +10,11 @@ import {FormDataService} from '../../../form-data.service';
 export class JwksComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  @Input()
-  hideKeys = false;
-  jwks: MgmtFormControl;
-  jwksCacheDuration: MgmtFormControl;
-  jwksCacheTimeUnit: MgmtFormControl;
+  form: JwksForm;
 
   constructor(public formData: FormDataService) { }
 
   ngOnInit() {
-    this.jwks = this.control.get('jwks') as MgmtFormControl;
-    this.jwksCacheDuration = this.control.get('jwksCacheDuration') as MgmtFormControl;
-    this.jwksCacheTimeUnit = this.control.get('jwksCacheTimeUnit') as MgmtFormControl;
   }
 
 }

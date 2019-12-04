@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
+        <cve>CVE-2019-13139</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2019-10241</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2019-10247</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2015-5182</cve>
+    </suppress>
+    <suppress>
         <cve>CVE-2019-14379</cve>
     </suppress>
     <suppress>
-        <cve>CVE-2014-2296</cve>
+        <cve>CVE-2019-10102</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2019-10173</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2019-12814</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-10237</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-9840</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-11775</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2016-3088</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-11307</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2019-10103</cve>
     </suppress>
     <suppress>
         <cve>CVE-2010-0425</cve>
@@ -457,6 +493,50 @@
         <cve>CVE-2016-6325</cve>
     </suppress>
     <suppress>
+        <cve>CVE-2014-2296</cve>
+    </suppress>
+
+    <suppress>
+        <cve>CVE-2018-1000844</cve>
+    </suppress>
+
+    <suppress>
+        <cve>CVE-2019-3772</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2013-7285</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2016-10750</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-10054</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2019-3888</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-19362</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-19361</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-19360</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-14718</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-14719</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-14721</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2018-14720</cve>
+    </suppress>
+    <suppress>
         <cve>CVE-2017-7297</cve>
     </suppress>
     <suppress>
@@ -700,23 +780,21 @@
         <cve>CVE-2014-9494</cve>
     </suppress>
     <suppress>
-        <cve>CVE-2017-5929</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[ file name: jackson-databind and jetty embedded in ehcache ]]></notes>
-        <filePath regex="true" >.*/ehcache-2.10.5.jar/rest-management-private-classpath/.*</filePath>
+        <filePath regex="true">.*/ehcache-2.10.5.jar/rest-management-private-classpath/.*</filePath>
         <cve>CVE-2017-15095</cve>
         <cve>CVE-2017-7525</cve>
         <cve>CVE-2018-7489</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[ file name: old Tomcat CVEs false positives on latest Tomcat 9.0.14 ]]></notes>
+        <notes><![CDATA[ file name: old Tomcat CVEs false positives on latest Tomcat 9.0.x ]]></notes>
         <cve>CVE-2014-0230</cve>
         <cve>CVE-2011-3190</cve>
         <cve>CVE-2016-8735</cve>
         <cve>CVE-2016-1240</cve>
         <cve>CVE-2016-9774</cve>
         <cve>CVE-2016-9775</cve>
+        <cve>CVE-2017-12615</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[

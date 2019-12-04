@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
-import {ProxyForm} from './proxy-form';
+import {TabProxyForm} from './tab-proxy-form';
 
 @Component({
   selector: 'app-tab-proxy',
@@ -8,14 +8,14 @@ import {ProxyForm} from './proxy-form';
 })
 export class TabProxyComponent {
 
-  proxy: ProxyForm;
+  form: TabProxyForm;
 
   constructor(public data: DataRecord) {
     if (this.data.formMap.has('proxy')) {
-      this.proxy = this.data.formMap.get('proxy') as ProxyForm;
+      this.form = this.data.formMap.get('proxy') as TabProxyForm;
       return;
     }
-    this.proxy = new ProxyForm(this.data.service.proxyPolicy);
-    this.data.formMap.set('proxy', this.proxy);
+    this.form = new TabProxyForm(this.data.service.proxyPolicy);
+    this.data.formMap.set('proxy', this.form);
   }
 }

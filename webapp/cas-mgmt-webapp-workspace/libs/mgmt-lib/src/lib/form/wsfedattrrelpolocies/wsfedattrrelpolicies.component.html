@@ -1,35 +1,6 @@
-<div [formGroup]="control">
-  <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
-  border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
-    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Source Attribute</div>
-    <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>WS Federation Claim</div>
-    <div [ngClass]="'actionWidth'" i18n></div>
-  </div>
-  <div formArrayName="allowedAttributes">
-    <div *ngFor="let attr of attributeArray.controls; let i = index;" [formGroupName]="i"
-         style="display: flex; flex-direction: row; border-bottom-width: 1px;
-         border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
-      <div [ngClass]="'nameWidth'">
-        <mat-form-field>
-          <input matInput formControlName="key" (focus)="selectedRow = i">
-        </mat-form-field>
-      </div>
-      <div [ngClass]="'valueWidth'">
-        <mat-form-field>
-          <mat-select formControlName="value">
-            <mat-option *ngFor="let item of formData.options.wsFederationClaims" [value]="item">{{ item }}</mat-option>
-          </mat-select>
-          <mat-hint align="end">
-            <lib-hint></lib-hint>
-          </mat-hint>
-        </mat-form-field>
-      </div>
-      <div [ngClass]="'actionWidth'">
-        <button mat-icon-button (click)="delete(i)"><mat-icon style="font-size: medium">delete</mat-icon></button>
-      </div>
-    </div>
-  </div>
-</div>
-<div style="height:25px;padding-top: 5px;">
-  <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
-</div>
+<lib-attributes [form]="control"
+                [keys]="attributes()"
+                [values]="formData.options.wsFederationClaims"
+                sourceHeader="Source" valueHeader="Ws Federation Clains">
+</lib-attributes>
+

@@ -44,4 +44,8 @@ export class DomainsComponent implements OnInit {
   view(domain: string) {
     this.router.navigate(['registry/services', domain]);
   }
+
+  createService() {
+    this.router.navigate(['form/edit/-1']);
+  }
 }

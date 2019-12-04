@@ -1,12 +1,12 @@
-<div [formGroup]="control" style="display: flex; width: 100%;">
-<div formArrayName="contacts" style="width: 100%;">
+<div [formGroup]="form" style="display: flex; width: 100%;">
+<div style="width: 100%;">
   <mat-tab-group [(selectedIndex)]="selectedTab">
-    <mat-tab *ngFor="let contact of contactsArray.controls; let i = index;" [label]="getTabHeader(i)">
+    <mat-tab *ngFor="let row of this.form.rows(); let i = index;" [label]="getTabHeader(i)">
       <div formGroupName="{{i}}">
         <lib-input>
           <mat-form-field class="textInput" appearance="standard">
             <mat-label i18n>Name</mat-label>
-            <input matInput [matAutocomplete]="auto" required formControlName="name" (keyup)="doLookupContact($event.target.value)">
+            <input matInput [matAutocomplete]="auto" required [formControl]="row.name" (keyup)="doLookupContact($event.target.value)">
             <mat-hint align="end">
               <lib-hint></lib-hint>
             </mat-hint>
@@ -18,8 +18,8 @@
         <lib-input>
           <mat-form-field class="textInput" appearance="standard">
             <mat-label i18n>Email</mat-label>
-            <input matInput required formControlName="email">
-            <mat-error i18n *ngIf="contact.get('email').hasError('email') && !contact.get('email').hasError('required')">You have entered an invalid email address</mat-error>
+            <input matInput required [formControl]="row.email">
+            <mat-error i18n *ngIf="row.email.hasError('email') && !row.email.hasError('required')">You have entered an invalid email address</mat-error>
             <mat-hint align="end">
               <lib-hint></lib-hint>
             </mat-hint>
@@ -31,7 +31,7 @@
         <lib-input>
           <mat-form-field class="textInput" appearance="standard">
             <mat-label i18n>Phone</mat-label>
-            <input matInput pattern="^[+]?[\d\s]+$" formControlName="phone">
+            <input matInput pattern="^[+]?[\d\s]+$" [formControl]="row.phone">
             <mat-hint align="end">
               <lib-hint></lib-hint>
             </mat-hint>
@@ -43,7 +43,7 @@
         <lib-input>
           <mat-form-field class="textInput" appearance="standard">
             <mat-label i18n>Department</mat-label>
-            <input matInput formControlName="department">
+            <input matInput [formControl]="row.department">
             <mat-hint align="end">
               <lib-hint></lib-hint>
             </mat-hint>

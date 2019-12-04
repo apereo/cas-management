@@ -25,14 +25,14 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="filename">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'filenameWidth'">
+    <ng-container matColumnDef="serviceType">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceTypeWidth'">
         <ng-container i18n>
-          File
+          Service Type
         </ng-container>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row" [ngClass]="'filenameWidth'">
-        {{ row.fileName }}
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceTypeWidth'">
+        {{ row.serviceType }}
       </mat-cell>
     </ng-container>
 

@@ -19,4 +19,6 @@ public class AppConfig {
     private boolean delegatedMgmt;
     private boolean syncScript;
     private boolean contactLookup;
+    private boolean oauthEnabled;
+    private boolean samlEnabled;
 }

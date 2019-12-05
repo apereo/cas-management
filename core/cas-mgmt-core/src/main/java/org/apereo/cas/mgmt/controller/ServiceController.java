@@ -63,7 +63,7 @@ public class ServiceController {
         if (!casUserProfile.isAdministrator() && !casUserProfile.hasPermission(domain)) {
             throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
         }
-        val manager = managerFactory.from(request, casUserProfile);
+        val manager = managerFactory.from(request, response);
         return ((ManagementServicesManager) manager).getServiceItemsForDomain(domain);
     }
 
@@ -81,8 +81,7 @@ public class ServiceController {
     public void deleteRegisteredService(final HttpServletRequest request,
                                         final HttpServletResponse response,
                                         @PathVariable("id") final long id) {
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = managerFactory.from(request, casUserProfile);
+        val manager = managerFactory.from(request, response);
         val svc = manager.findServiceBy(id);
         if (svc == null) {
             throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));
@@ -103,8 +102,7 @@ public class ServiceController {
     public void saveService(final HttpServletRequest request,
                             final HttpServletResponse response,
                             @RequestBody final RegisteredService service) {
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+        val manager = (ManagementServicesManager) managerFactory.from(request, response);
         save(service, manager);
     }
 
@@ -171,8 +169,7 @@ public class ServiceController {
         if (!id.equals(service.getId())) {
             throw new IllegalArgumentException("Changes to assigned id are not allowed");
         }
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+        val manager = (ManagementServicesManager) managerFactory.from(request, response);
         save(service, manager);
     }
     /**
@@ -209,8 +206,7 @@ public class ServiceController {
         if (!id.equals(service.getId())) {
             throw new IllegalArgumentException("Changes to assigned id are not allowed.");
         }
-        val casUserProfile = casUserProfileFactory.from(request, response);
-        val manager = (ManagementServicesManager) managerFactory.from(request, casUserProfile);
+        val manager = (ManagementServicesManager) managerFactory.from(request, response);
         save(service, manager);
     }
 
@@ -258,7 +254,7 @@ public class ServiceController {
         if (!casUserProfile.hasPermission(svcs[0].getServiceId())) {
             throw new IllegalAccessException("You do not have permission");
         }
-        val manager = managerFactory.from(request, casUserProfile);
+        val manager = managerFactory.from(request, response);
         val id = svcs[0].getAssignedId();
         val svcA = manager.findServiceBy(Long.parseLong(id));
         if (svcA == null) {

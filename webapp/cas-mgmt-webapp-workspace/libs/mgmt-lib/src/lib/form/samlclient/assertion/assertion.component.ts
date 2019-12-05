@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {AssertionForm} from './assertion.form';
 
 @Component({
   selector: 'lib-assertion',
@@ -10,20 +9,12 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class AssertionComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  requiredAuthenticationContextClass: MgmtFormControl;
-  assertionAudiences: MgmtFormControl;
-  issuerEntityId: MgmtFormControl;
-  skewAllowance: MgmtFormControl;
+  form: AssertionForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.requiredAuthenticationContextClass = this.control.get('requiredAuthenticationContextClass') as MgmtFormControl;
-    this.assertionAudiences = this.control.get('assertionAudiences') as MgmtFormControl;
-    this.issuerEntityId = this.control.get('issuerEntityId') as MgmtFormControl;
-    this.skewAllowance = this.control.get('skewAllowance') as MgmtFormControl;
   }
 
 }

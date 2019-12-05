@@ -32,6 +32,11 @@
   color: inherit;
 }
 
+.serviceTypeWidth {
+  flex: 0 1 150px;
+  color: inherit;
+}
+
 .nameWidth {
   flex: 0 1 240px;
   color:inherit !important;

@@ -7,10 +7,10 @@ echo "Reviewing changes that might affect the Gradle build..."
 casVersion=$(./gradlew casVersion --no-daemon -q)
 echo "Current CAS version is $casVersion"
 
-prepCommand="echo 'Running command...'; "
+
 gradle="./gradlew $@"
 gradleBuild=""
-gradleBuildOptions="--stacktrace --build-cache --configure-on-demand --no-daemon -Dorg.gradle.internal.http.socketTimeout=160000 -Dorg.gradle.internal.http.connectionTimeout=160000 "
+gradleBuildOptions="--build-cache --configure-on-demand --no-daemon -Dorg.gradle.internal.http.socketTimeout=160000 -Dorg.gradle.internal.http.connectionTimeout=160000 "
 
 echo -e "***********************************************"
 echo -e "Gradle build started at `date`"
@@ -86,7 +86,6 @@ else
 
     tasks="$gradle $gradleBuildOptions $gradleBuild"
     echo -e "***************************************************************************************"
-    echo $prepCommand
     echo $tasks
     echo -e "***************************************************************************************"
 
@@ -94,7 +93,6 @@ else
     eval $waitloop
     waitRetVal=$?
 
-    eval $prepCommand
     eval $tasks
     retVal=$?
 

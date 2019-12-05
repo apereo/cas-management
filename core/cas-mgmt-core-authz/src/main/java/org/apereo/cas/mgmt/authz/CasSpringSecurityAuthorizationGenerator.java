@@ -9,10 +9,11 @@ import org.jooq.lambda.Unchecked;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.SpringSecurityPropertiesAuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
 
 import java.nio.file.Files;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -22,7 +23,7 @@ import java.util.Properties;
  * @since 5.2.0
  */
 @Slf4j
-public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGenerator<CommonProfile> {
+public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGenerator {
 
     private SpringSecurityPropertiesAuthorizationGenerator generator;
 
@@ -56,7 +57,7 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
     }
 
     @Override
-    public CommonProfile generate(final WebContext context, final CommonProfile profile) {
+    public Optional<UserProfile> generate(final WebContext context, final UserProfile profile) {
         return this.generator.generate(context, profile);
     }
 }

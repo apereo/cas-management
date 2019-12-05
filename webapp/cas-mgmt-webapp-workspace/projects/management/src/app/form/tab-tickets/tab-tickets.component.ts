@@ -1,33 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import {TicketsForm} from '@app/form/tab-tickets/tickets-form';
-import {ServiceTicketForm} from '@app/form/tab-tickets/service-ticket-form';
-import {ProxyTicketForm} from '@app/form/tab-tickets/proxy-ticket-form';
+import { Component } from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
+import {TabTicketsForm} from './tab-tickets.form';
 
 @Component({
   selector: 'app-tab-tickets',
   templateUrl: './tab-tickets.component.html',
   styleUrls: ['./tab-tickets.component.css']
 })
-export class TabTicketsComponent implements OnInit {
-  tickets: TicketsForm;
-  serviceTicketExpiration: ServiceTicketForm;
-  proxyTicketExpiration: ProxyTicketForm;
+export class TabTicketsComponent {
+
+  form: TabTicketsForm;
+  readonly key = 'tickets';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('tickets')) {
-      this.tickets = this.data.formMap.get('tickets') as TicketsForm;
-      this.serviceTicketExpiration = this.tickets.get('serviceTicketExpirationPolicy') as ServiceTicketForm;
-      this.proxyTicketExpiration = this.tickets.get('proxyTicketExpirationPolicy') as ProxyTicketForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabTicketsForm;
       return;
     }
-    this.tickets = new TicketsForm(this.data.service);
-    this.serviceTicketExpiration = this.tickets.get('serviceTicketExpirationPolicy') as ServiceTicketForm;
-    this.proxyTicketExpiration = this.tickets.get('proxyTicketExpirationPolicy') as ProxyTicketForm;
-    this.data.formMap.set('tickets', this.tickets);
-  }
-
-  ngOnInit() {
+    this.form = new TabTicketsForm(this.data.service);
+    this.data.formMap.set(this.key, this.form);
   }
 
 }

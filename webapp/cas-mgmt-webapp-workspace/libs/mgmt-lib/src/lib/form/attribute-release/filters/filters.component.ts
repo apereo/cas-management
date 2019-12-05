@@ -1,6 +1,12 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {FilterType} from 'domain-lib';
-import {FormArray, FormGroup} from '@angular/forms';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  FilterType,
+  RegisteredServiceMappedRegexAttributeFilter,
+  RegisteredServiceMutantRegexAttributeFilter,
+  RegisteredServiceRegexAttributeFilter, RegisteredServiceReverseMappedRegexAttributeFilter,
+  RegisteredServiceScriptedAttributeFilter
+} from 'domain-lib';
+import {ChainingFilterForm, FilterForm, FilterMappedRegExForm} from './filters.form';
 
 @Component({
   selector: 'lib-attribute-release-filters',
@@ -15,12 +21,7 @@ export class FiltersComponent implements OnInit {
   accordian: ElementRef;
 
   @Input()
-  control: FormGroup;
-
-  filters: FormArray;
-
-  @Output()
-  addFilter: EventEmitter<FilterType> = new EventEmitter<FilterType>();
+  form: ChainingFilterForm;
 
   TYPE = FilterType;
 
@@ -28,37 +29,36 @@ export class FiltersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filters = this.control.get('filters') as FormArray;
   }
 
   removeFilter() {
-    this.filters.removeAt(this.selectedFilter);
-    this.filters.markAsTouched();
+    this.form.removeAt(this.selectedFilter);
+    this.form.markAsTouched();
   }
 
-  isMappedRegEx(filter: FormGroup): boolean {
-    return filter.get('type').value === FilterType.MAPPED_REGEX;
+  isMappedRegEx(filter: FilterForm): boolean {
+    return filter.type === FilterType.MAPPED_REGEX;
   }
 
-  isReverseMapped(filter: FormGroup): boolean {
-    return filter.get('type').value === FilterType.REVERSE_MAPPED_REGEX;
+  isReverseMapped(filter: FilterForm): boolean {
+    return filter.type === FilterType.REVERSE_MAPPED_REGEX;
   }
 
-  isMutantMappedRegEx(filter: FormGroup): boolean {
-    return filter.get('type').value === FilterType.MUTANT_REGEX;
+  isMutantMappedRegEx(filter: FilterForm): boolean {
+    return filter.type === FilterType.MUTANT_REGEX;
   }
 
-  isScripted(filter: FormGroup): boolean {
-    return filter.get('type').value === FilterType.SCRIPTED;
+  isScripted(filter: FilterForm): boolean {
+    return filter.type === FilterType.SCRIPTED;
   }
 
-  isRegEx(filter: FormGroup): boolean {
-    return filter.get('type').value === FilterType.REGEX;
+  isRegEx(filter: FilterForm): boolean {
+    return filter.type === FilterType.REGEX;
   }
 
-  getAttributes(filter: FormGroup): string[] {
-    if (filter.get('patterns').value) {
-      const parry = filter.get('patterns') as FormArray;
+  getAttributes(filter: FilterMappedRegExForm): string[] {
+    if (filter.patterns.value) {
+      const parry = filter.patterns;
       const keys: string[] = [];
       for (const pg of parry.controls) {
         keys.push(pg.get('key').value);
@@ -70,16 +70,30 @@ export class FiltersComponent implements OnInit {
 
   moveUp() {
     const index = this.selectedFilter;
-    const up = this.filters.controls[index];
-    this.filters.controls[index] = this.filters.controls[index - 1];
-    this.filters.controls[index - 1] = up;
+    const up = this.form.controls[index];
+    this.form.controls[index] = this.form.controls[index - 1];
+    this.form.controls[index - 1] = up;
   }
 
   moveDown() {
     const index = this.selectedFilter;
-    const down = this.filters.controls[index];
-    this.filters.controls[index] = this.filters.controls[index + 1];
-    this.filters.controls[index + 1] = down;
+    const down = this.form.controls[index];
+    this.form.controls[index] = this.form.controls[index + 1];
+    this.form.controls[index + 1] = down;
+  }
+
+  addFilter(type: FilterType) {
+    if (type === FilterType.REGEX) {
+      this.form.add(new RegisteredServiceRegexAttributeFilter());
+    } else if (type === FilterType.SCRIPTED) {
+      this.form.add(new RegisteredServiceScriptedAttributeFilter());
+    } else if (type === FilterType.MAPPED_REGEX) {
+      this.form.add(new RegisteredServiceMappedRegexAttributeFilter());
+    } else if (type === FilterType.MUTANT_REGEX) {
+      this.form.add(new RegisteredServiceMutantRegexAttributeFilter());
+    } else if (type === FilterType.REVERSE_MAPPED_REGEX) {
+      this.form.add(new RegisteredServiceReverseMappedRegexAttributeFilter());
+    }
   }
 
 }

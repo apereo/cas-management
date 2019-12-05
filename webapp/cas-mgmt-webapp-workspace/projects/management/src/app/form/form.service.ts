@@ -21,7 +21,7 @@ export class FormService extends Service {
   controller = 'api/services/';
 
   getService(id: string): Observable<AbstractRegisteredService> {
-    return this.get<AbstractRegisteredService>(this.controller + id, "Loading service")
+    return this.get<AbstractRegisteredService>(this.controller + id, 'Loading service')
       .pipe(
         take(1),
         map(resp => {
@@ -46,7 +46,7 @@ export class FormService extends Service {
   }
 
   saveService(service: AbstractRegisteredService): Observable<number> {
-    return this.post(this.controller, service, "Saving service")
+    return this.post(this.controller, service, 'Saving service')
       .pipe(
         catchError(e => this.handleError(e, this.dialog))
       );

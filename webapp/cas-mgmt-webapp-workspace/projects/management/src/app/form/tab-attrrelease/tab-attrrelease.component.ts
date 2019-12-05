@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ReleaseForm} from './release-form';
+import {TabReleaseForm} from './tab-attrrelease.form';
 import {
   DataRecord,
 } from 'mgmt-lib';
@@ -10,16 +10,18 @@ import {ReleasePolicyType} from 'domain-lib';
   templateUrl: './tab-attrrelease.component.html'
 })
 export class TabAttrreleaseComponent {
-  attributeRelease: ReleaseForm;
+
+  form: TabReleaseForm;
+  readonly key = 'attributeRelease';
 
   TYPE = ReleasePolicyType;
 
   constructor(public data: DataRecord) {
-   if (this.data.formMap.has('attributeRelease')) {
-     this.attributeRelease = this.data.formMap.get('attributeRelease') as ReleaseForm;
+   if (this.data.formMap.has(this.key)) {
+     this.form = this.data.formMap.get(this.key) as TabReleaseForm;
      return;
    }
-   this.attributeRelease = new ReleaseForm(this.data.service.attributeReleasePolicy);
-   this.data.formMap.set('attributeRelease', this.attributeRelease);
+   this.form = new TabReleaseForm(this.data.service.attributeReleasePolicy);
+   this.data.formMap.set(this.key, this.form);
   }
 }

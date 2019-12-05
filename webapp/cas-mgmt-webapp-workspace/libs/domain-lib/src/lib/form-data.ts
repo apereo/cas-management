@@ -1,6 +1,8 @@
 export class FormData {
-    availableAttributes: string[] = [];
-    registeredServiceProperties: Option[];
+    availableAttributes: Map<string, string[]>;
+    attributeRepositories: string[] = [];
+    ldapAttributes: string[] = [];
+    registeredServiceProperties: Property[];
     grouperFields: string[];
     remoteCodes: string[];
     timeUnits: string[];
@@ -24,10 +26,15 @@ export class FormData {
     oauth20GrantTypes: Option[];
     oauth20ResponseTypes: Option[];
     samlIdpAttributes: string[];
-    samlIdpFriendlyNames: Map<string, string>;
+    samlNameIdFormats: Option[];
 }
 
 export interface Option {
   display: string;
   value: string;
+}
+
+export interface Property {
+  propertyName: string;
+  defaultValue: string;
 }

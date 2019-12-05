@@ -1,8 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AppConfigService, UserService, LibNavigationComponent} from 'shared-lib';
 import {ControlsService} from '../../project-share/controls/controls.service';
+import {OAuthAddComponent, SamlAddComponent} from 'mgmt-lib';
 
 @Component({
   selector: 'app-navigation',
@@ -14,12 +15,20 @@ export class NavigationComponent {
   @ViewChild('navcom', { static: true})
   navcom: LibNavigationComponent;
 
+  current: string;
+
   constructor(public router: Router,
               public appService: AppConfigService,
               public userService: UserService,
               public controlsService: ControlsService,
               public snackBar: MatSnackBar,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog) {
+    router.events.subscribe((e: RouterEvent) => {
+      if (e instanceof NavigationEnd) {
+        this.current = e.url;
+      }
+    });
+  }
 
   logout() {
     window.location.href = '../logout.html';
@@ -62,4 +71,47 @@ export class NavigationComponent {
     this.navcom.close();
   }
 
+  isSaml(): boolean {
+    return this.appService.config.samlEnabled;
+  }
+
+  isOauth(): boolean {
+    return this.appService.config.oauthEnabled;
+  }
+
+  isSelected(rte: string[]): string {
+    let style = '';
+    if (this.current) {
+      rte.forEach(r => {
+        if (this.current.includes(r)) {
+          style = 'selected';
+        }
+      });
+    }
+    return style;
+  }
+
+  createSamlService() {
+    const dialogRef = this.dialog.open(SamlAddComponent, {
+      position: {top: '100px'}
+    });
+    dialogRef.afterClosed().subscribe(resp => {
+        if (resp === 'upload') {
+          this.router.navigate(['form/saml']);
+        }
+      }
+    );
+  }
+
+  createOAuthService() {
+    const dialogRef = this.dialog.open(OAuthAddComponent, {
+      width: '500px',
+      position: {top: '100px'}
+    });
+    dialogRef.afterClosed().subscribe(type => {
+      if (type) {
+        this.router.navigate(['form/' + type]);
+      }
+    });
+  }
 }

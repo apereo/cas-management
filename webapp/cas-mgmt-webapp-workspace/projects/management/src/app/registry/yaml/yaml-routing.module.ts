@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {YamlComponent} from '@app/registry/yaml/yaml.component';
-import {YamlResolver} from '@app/registry/yaml/yaml.resolover';
+import {YamlComponent} from './yaml.component';
+import {YamlResolver} from './yaml.resolover';
 
 const routes: Routes = [
   {

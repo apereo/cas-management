@@ -3,7 +3,7 @@
  */
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {InitComponent} from '@app/core';
+import {InitComponent} from './core/init.component';
 
 const routes: Routes = [
   {
@@ -17,10 +17,6 @@ const routes: Routes = [
   {
     path: 'version-control',
     loadChildren: () => import('./version-control/version-control.module').then(m => m.VersionControlModule)
-  },
-  {
-    path: 'delegated',
-    loadChildren: () => import('./delegated/delegated.module').then(m => m.DelegatedModule)
   },
   {
     path: '',

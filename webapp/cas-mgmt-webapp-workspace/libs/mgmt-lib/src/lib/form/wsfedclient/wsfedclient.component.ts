@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormGroup} from '@angular/forms';
+import {WsfedclientForm} from './wsfedclient.form';
 
 @Component({
   selector: 'lib-wsfedclient',
@@ -9,16 +10,12 @@ import {FormGroup} from '@angular/forms';
 export class WsfedclientComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  realm: MgmtFormControl;
-  appliesTo: MgmtFormControl;
+  form: WsfedclientForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.realm = this.control.get('realm') as MgmtFormControl;
-    this.appliesTo = this.control.get('appliesTo') as MgmtFormControl;
   }
 
 }

@@ -16,8 +16,7 @@ import { MetadataComponent } from './policies/metadata/metadata.component';
 import { RestfulComponent } from './policies/restful/restful.component';
 import { GroovySamlComponent } from './policies/groovy-saml/groovy-saml.component';
 import {FilterMappedComponent} from './filters/filter-mapped/filter-mapped.component';
-import {SamlLdapComponent} from './policies/saml-ldap/saml-ldap.component';
-import {OauthComponent} from './policies/oauth/oauth.component';
+import {SamlIdpComponent} from './policies/saml-idp/saml-idp.component';
 import {SharedLibModule} from 'shared-lib';
 import {AttributesModule} from '../attributes/attributes.module';
 
@@ -45,8 +44,7 @@ import {AttributesModule} from '../attributes/attributes.module';
     MetadataComponent,
     RestfulComponent,
     GroovySamlComponent,
-    SamlLdapComponent,
-    OauthComponent
+    SamlIdpComponent
   ],
   exports: [
     ChecksComponent,
@@ -56,8 +54,7 @@ import {AttributesModule} from '../attributes/attributes.module';
     PoliciesComponent,
     PrincipalRepoComponent,
     MappedComponent,
-    OauthComponent,
-    SamlLdapComponent
+    SamlIdpComponent
   ]
 })
 

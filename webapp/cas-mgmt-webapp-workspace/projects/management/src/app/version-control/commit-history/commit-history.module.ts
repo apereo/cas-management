@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommitHistoryRoutingModule } from './commit-history-routing.module';
-import {CommitHistoryComponent} from '@app/version-control/commit-history/commit-history.component';
-import {ProjectShareModule} from '@app/project-share';
+import {CommitHistoryComponent} from './commit-history.component';
+import {ProjectShareModule} from '../../project-share/project-share.module';
 
 @NgModule({
   declarations: [

@@ -14,7 +14,7 @@ export class DialogComponent implements OnInit {
   }
 
   resolve(uid: string, password: string, serviceId: string) {
-    const data = {username: uid, password: password, service: serviceId};
+    const data = {username: uid, password, service: serviceId};
     this.dialogRef.close(data);
   }
 

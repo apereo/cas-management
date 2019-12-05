@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
 import {OidcRegisteredService} from 'domain-lib';
-import {OidcForm} from './oidc-form';
+import {TabOidcForm} from './tab-oidc.form';
+import {OAuthService} from '../../core/oauth.service';
 
 @Component({
   selector: 'app-tab-oidc',
@@ -9,16 +10,16 @@ import {OidcForm} from './oidc-form';
 })
 export class TabOIDCComponent {
 
-  oidc: OidcForm;
+  form: TabOidcForm;
+  readonly key = 'oidc';
 
-
-  constructor(public data: DataRecord) {
-    if (this.data.formMap.has('oidc')) {
-      this.oidc = this.data.formMap.get('oidc') as OidcForm;
+  constructor(public data: DataRecord, public service: OAuthService) {
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabOidcForm;
       return;
     }
-    this.oidc = new OidcForm(this.data.service as OidcRegisteredService);
-    this.data.formMap.set('oidc', this.oidc);
+    this.form = new TabOidcForm(this.data.service as OidcRegisteredService);
+    this.data.formMap.set(this.key, this.form);
   }
 
 }

@@ -13,6 +13,16 @@
   top: 0;
 }
 
+.selected {
+  background: #607d8b;
+  opacity: 50%;
+  color: white;
+}
+
+.selected:hover {
+  color: black !important;
+}
+
 .header {
   display: flex;
   height:50px;

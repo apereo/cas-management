@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ReleasePolicyType} from 'domain-lib';
 import {FormDataService} from '../../../form-data.service';
-import {FormGroup} from '@angular/forms';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {AttributeReleaseForm} from '../attribute-release.form';
 
 @Component({
   selector: 'lib-attribute-release-policies',
@@ -19,17 +19,16 @@ export class PoliciesComponent implements OnInit {
     ReleasePolicyType.RETURN_ALLOWED,
     ReleasePolicyType.RETURN_MAPPED,
     ReleasePolicyType.RESTFUL,
-    ReleasePolicyType.SAML_LDAP,
-    ReleasePolicyType.OAUTH
+    ReleasePolicyType.SAML_IDP
   ];
   display = ['Script Engine', 'Groovy Script', 'Return All',
-    'Deny All', 'Return Allowed', 'Return Mapped', 'Return Restful', 'SAML LDAP', 'OAUTH LDAP'];
+    'Deny All', 'Return Allowed', 'Return Mapped', 'Return Restful', 'SAML IdP'];
 
   @Input()
   isSaml: boolean;
 
   @Input()
-  control: FormGroup;
+  form: AttributeReleaseForm;
 
   @Input()
   typeControl: MgmtFormControl;

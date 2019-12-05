@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { YamlRoutingModule } from './yaml-routing.module';
-import {YamlComponent} from '@app/registry/yaml/yaml.component';
-import {ProjectShareModule} from '@app/project-share';
+import {YamlComponent} from './yaml.component';
+import {ProjectShareModule} from '../../project-share/project-share.module';
 
 @NgModule({
   declarations: [

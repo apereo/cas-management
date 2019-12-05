@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {DataRecord} from 'mgmt-lib';
-import {UsernameattrForm} from './usernameattr-form';
+import {DataRecord, FormDataService} from 'mgmt-lib';
+import {TabUsernameattrForm} from './tab-usernameattr.form';
 
 @Component({
   selector: 'app-tab-usernameattr',
@@ -8,14 +8,19 @@ import {UsernameattrForm} from './usernameattr-form';
 })
 export class TabUsernameattrComponent {
 
-  uidAttrs: UsernameattrForm;
+  form: TabUsernameattrForm;
+  readonly key = 'uidAttrs';
 
-  constructor(public data: DataRecord) {
-    if (this.data.formMap.has('uidAttrs')) {
-      this.uidAttrs = this.data.formMap.get('uidAttrs') as UsernameattrForm;
+  constructor(public data: DataRecord, public formData: FormDataService) {
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabUsernameattrForm;
       return;
     }
-    this.uidAttrs = new UsernameattrForm(this.data.service.usernameAttributeProvider);
-    this.data.formMap.set('uidAttrs', this.uidAttrs);
+    this.form = new TabUsernameattrForm(this.data.service.usernameAttributeProvider);
+    this.data.formMap.set(this.key, this.form);
+  }
+
+  attributes(): string[] {
+    return this.formData.availableAttributes(this.formData.options.attributeRepositories);
   }
 }

@@ -1,27 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
 import {SamlRegisteredService} from 'domain-lib';
-import {SamlAssertionForm} from '@app/form/tab-saml-assertion/saml-form';
+import {TabSamlAssertionForm} from './tab-saml.form';
 
 @Component({
   selector: 'app-tab-saml-assertion',
   templateUrl: './tab-saml-assertion.component.html',
   styleUrls: ['./tab-saml-assertion.component.css']
 })
-export class TabSamlAssertionComponent implements OnInit {
+export class TabSamlAssertionComponent {
 
-  saml: SamlAssertionForm;
+  form: TabSamlAssertionForm;
+  readonly key = 'saml-assertion';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('saml-assertion')) {
-      this.saml = this.data.formMap.get('saml-assertion') as SamlAssertionForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabSamlAssertionForm;
       return;
     }
-    this.saml = new SamlAssertionForm(this.data.service as SamlRegisteredService);
-    this.data.formMap.set('saml-assertion', this.saml);
-  }
-
-  ngOnInit() {
+    this.form = new TabSamlAssertionForm(this.data.service as SamlRegisteredService);
+    this.data.formMap.set(this.key, this.form);
   }
 
 }

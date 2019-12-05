@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
 import {SamlRegisteredService} from 'domain-lib';
-import {SamlAttributesForm} from '@app/form/tab-saml-attributes/saml-attributes-form';
+import {TabSamlAttributesForm} from './tab-saml-attributes.form';
 
 @Component({
   selector: 'app-tab-saml-attributes',
@@ -10,15 +10,16 @@ import {SamlAttributesForm} from '@app/form/tab-saml-attributes/saml-attributes-
 })
 export class TabSamlAttributesComponent {
 
-  saml: SamlAttributesForm;
+  form: TabSamlAttributesForm;
+  readonly key = 'saml-attributes';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('saml-attributes')) {
-      this.saml = this.data.formMap.get('saml-attributes') as SamlAttributesForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabSamlAttributesForm;
       return;
     }
-    this.saml = new SamlAttributesForm(this.data.service as SamlRegisteredService);
-    this.data.formMap.set('saml-attributes', this.saml);
+    this.form = new TabSamlAttributesForm(this.data.service as SamlRegisteredService);
+    this.data.formMap.set(this.key, this.form);
   }
 
 }

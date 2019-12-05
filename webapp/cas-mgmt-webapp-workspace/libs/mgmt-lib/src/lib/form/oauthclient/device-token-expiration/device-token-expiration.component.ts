@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {DeviceTokenExpirationForm} from './device-token-expiration.form';
 
 @Component({
   selector: 'lib-device-token-expiration',
@@ -9,13 +8,11 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class DeviceTokenExpirationComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  timeToKill: MgmtFormControl;
+  form: DeviceTokenExpirationForm;
 
   constructor() { }
 
   ngOnInit() {
-    this.timeToKill = this.control.get('timeToKill') as MgmtFormControl;
   }
 
 }

@@ -1,11 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {History} from 'domain-lib';
-import {PaginatorComponent} from 'shared-lib';
+import {PaginatorComponent, ViewComponent} from 'shared-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HistoryService} from './history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
 import {HttpResponse} from '@angular/common/http';
 
@@ -41,7 +40,7 @@ export class HistoryComponent implements OnInit {
         this.dataSource = new MatTableDataSource(data.resp);
         this.dataSource.paginator = this.paginator.paginator;
       });
-    this.route.params.subscribe((params) => this.fileName = params['fileName']);
+    this.route.params.subscribe((params) => this.fileName = params.fileName);
     this.breakObserver.observe(['(max-width: 499px)'])
       .subscribe(r => {
         if (r.matches) {

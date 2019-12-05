@@ -1,8 +1,8 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {DataRecord} from '../data';
-import {MgmtFormControl} from '../mgmt-formcontrol';
-import {FormArray, FormGroup} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {AttributesForm, Row} from './attributes.form';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'lib-attributes',
@@ -12,15 +12,15 @@ import {MatAutocompleteSelectedEvent} from '@angular/material';
 export class AttributesComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
+  form: AttributesForm;
 
   @Input()
   keys: string[];
 
-  selectedRow;
-
   @Input()
-  arrayName: string;
+  values: string[];
+
+  selectedRow;
 
   @Input()
   defaultToAttributeName: boolean;
@@ -31,31 +31,38 @@ export class AttributesComponent implements OnInit {
   @Input()
   valueHeader = 'Value';
 
-  entries: FormArray;
+  @Output()
+  keyChange: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
 
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
-    this.entries = this.control.get(this.arrayName) as FormArray;
+    this.form.rows().forEach(v => this.setChangeSubscription(v));
   }
 
   addRow() {
-    this.entries.push(new FormGroup({
-      key: new MgmtFormControl(null),
-      value: new MgmtFormControl(null)
+    const row = this.form.addRow();
+    this.setChangeSubscription(row);
+  }
+
+  setChangeSubscription(row: Row) {
+    row.key.valueChanges.subscribe((value => {
+      if (this.defaultToAttributeName) {
+        row.key.parent.get('value').setValue(value);
+      }
+      this.keyChange.emit(row.key.parent as FormGroup);
     }));
   }
 
   delete(row: number) {
-    this.entries.removeAt(row);
-    this.control.markAsTouched();
+    this.form.removeAt(row);
+    this.form.markAsTouched();
   }
 
   selection(sel: MatAutocompleteSelectedEvent) {
     if (this.defaultToAttributeName) {
-      this.entries.at(this.selectedRow).get('value').setValue(sel.option.value);
+      this.form.rowAt(this.selectedRow).values.setValue(sel.option.value);
     }
   }
-
 }

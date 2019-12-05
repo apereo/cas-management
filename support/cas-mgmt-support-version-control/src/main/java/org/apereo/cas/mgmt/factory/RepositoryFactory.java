@@ -28,9 +28,11 @@ import java.nio.file.Paths;
 public class RepositoryFactory {
 
     private static final String REPO_DIR = "/.git";
+    private static final String REPO_VAR = "userRepo";
 
     private final CasManagementConfigurationProperties casProperties;
     private final CasUserProfileFactory casUserProfileFactory;
+    private GitUtil masterRepository;
 
     /**
      * Method looks up user from servlet request to return correct repository.
@@ -40,26 +42,26 @@ public class RepositoryFactory {
      * @return - GitUtil wrapping the user's repository
      */
     public GitUtil from(final HttpServletRequest request, final HttpServletResponse response) {
-        return from(casUserProfileFactory.from(request, response));
+        return from(casUserProfileFactory.from(request, response), request);
     }
 
-    /**
-     * Method loads the git repository based on the user and their permissions.
-     *
-     * @param user - CasUserProfile of logged in user
-     * @return - GitUtil wrapping the user's repository
-     */
     @SneakyThrows
-    public GitUtil from(final CasUserProfile user) {
+    private GitUtil from(final CasUserProfile user, final HttpServletRequest request) {
         if (user.isAdministrator()) {
-            LOGGER.debug("User [{}] is an administrator. Loading objects from master repository", user);
             return masterRepository();
+        }
+        if (request.getSession().getAttribute(REPO_VAR) != null) {
+            val userRepo = (GitUtil) request.getSession().getAttribute(REPO_VAR);
+            userRepo.rebase();
+            return userRepo;
         }
         val path = Paths.get(casProperties.getDelegated().getUserReposDir() + '/' + user.getId());
         if (!Files.exists(path)) {
             clone(path.toString());
         }
-        return userRepository(user.getId());
+        val userRepo = userRepository(user.getId());
+        request.setAttribute(REPO_VAR, userRepo);
+        return userRepo;
     }
 
     /**
@@ -69,7 +71,10 @@ public class RepositoryFactory {
      */
     @SneakyThrows
     public GitUtil masterRepository() {
-        return buildGitUtil(casProperties.getVersionControl().getServicesRepo());
+        if (masterRepository == null) {
+            this.masterRepository = buildGitUtil(casProperties.getVersionControl().getServicesRepo());
+        }
+        return masterRepository;
     }
 
     @SneakyThrows

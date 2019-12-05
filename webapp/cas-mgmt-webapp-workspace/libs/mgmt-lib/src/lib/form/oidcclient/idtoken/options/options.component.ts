@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../../mgmt-formcontrol';
 import {FormDataService} from '../../../../form-data.service';
+import {OptionsForm} from './options.form';
 
 @Component({
   selector: 'lib-options',
@@ -11,16 +10,11 @@ import {FormDataService} from '../../../../form-data.service';
 export class OptionsComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  signIdToken: MgmtFormControl;
-  encryptIdToken: MgmtFormControl;
+  form: OptionsForm;
 
   constructor(public formData: FormDataService) { }
 
   ngOnInit() {
-    this.signIdToken = this.control.get('signIdToken') as MgmtFormControl;
-    this.encryptIdToken = this.control.get('encryptIdToken') as MgmtFormControl;
   }
 
 }

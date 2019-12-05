@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
 import { JsonRoutingModule } from './json-routing.module';
-import {ProjectShareModule} from '@app/project-share';
-import {JSONComponent} from '@app/registry/json/json.component';
+import {JSONComponent} from './json.component';
+import {ProjectShareModule} from '../../project-share/project-share.module';
 
 @NgModule({
   declarations: [

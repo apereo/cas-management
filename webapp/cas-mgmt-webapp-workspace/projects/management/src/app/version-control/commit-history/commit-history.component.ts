@@ -3,9 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CommitHistoryService} from './commit-history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry} from 'domain-lib';
-import {PaginatorComponent} from 'shared-lib';
+import {PaginatorComponent, ViewComponent} from 'shared-lib';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {ViewComponent} from '@app/project-share';
 import {ChangesService} from '../changes/changes.service';
 
 @Component({
@@ -41,7 +40,7 @@ export class CommitHistoryComponent implements OnInit {
         this.dataSource = new MatTableDataSource(data.resp);
         this.dataSource.paginator = this.paginator.paginator;
       });
-    this.route.params.subscribe((params) => this.commit = params['id']);
+    this.route.params.subscribe((params) => this.commit = params.id);
     this.breakObserver.observe(['(max-width: 499px)'])
       .subscribe(r => {
         if (r.matches) {

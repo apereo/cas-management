@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
 import {AccessStrategyType} from 'domain-lib';
+import {AccessStrategyForm} from './access-strategy.form';
 
 @Component({
   selector: 'lib-access-strategy',
@@ -10,10 +10,10 @@ import {AccessStrategyType} from 'domain-lib';
 export class AccessStrategyComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
+  form: AccessStrategyForm;
 
   @Input()
-  typeControl: MgmtFormControl;
+  type: MgmtFormControl;
 
   TYPE = AccessStrategyType;
   types = [AccessStrategyType.DEFAULT,
@@ -25,15 +25,9 @@ export class AccessStrategyComponent implements OnInit {
     AccessStrategyType.GROOVY
   ];
 
-  requireAll: MgmtFormControl;
-  unauthorizedUrl: MgmtFormControl;
-
   constructor() {
   }
 
   ngOnInit() {
-    this.requireAll = this.control.get('requireAll') as MgmtFormControl;
-    this.unauthorizedUrl = this.control.get('unauthorizedUrl') as MgmtFormControl;
   }
-
 }

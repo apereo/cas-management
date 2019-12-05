@@ -17,18 +17,21 @@ import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
 import {TabOauthComponent} from './tab-oauth/tab-oauth.component';
 import {TabWsfedComponent} from './tab-wsfed/tab-wsfed.component';
 import {TabContactsComponent} from './tab-contacts/tab-contacts.component';
-import {TabExpirationComponent} from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
-import {TabOidcAttrreleaseComponent} from '@app/form/tab-oidc-attrrelease/tab-oidc-attrrelase.component';
-import {TabWsfedAttrreleaseComponent} from '@app/form/tab-wsfed-attrrelease/tab-wsfed-attrrelease.component';
-import {TabTokensComponent} from '@app/form/tab-tokens/tab-tokens.component';
-import {TabTicketsComponent} from '@app/form/tab-tickets/tab-tickets.component';
-import {TabSsoComponent} from '@app/form/tab-sso/tab-sso.component';
+import {TabSamlMetadataComponent} from '@app/form/tab-saml-metadata/tab-saml-metadata.component';
+import {TabSamlAssertionComponent} from '@app/form/tab-saml-assertion/tab-saml-assertion.component';
 import {TabSamlAttributesComponent} from '@app/form/tab-saml-attributes/tab-saml-attributes.component';
 import {TabSamlEncryptionComponent} from '@app/form/tab-saml-encryption/tab-saml-encryption.component';
 import {TabSamlSigningComponent} from '@app/form/tab-saml-signing/tab-saml-signing.component';
-import {TabSamlAssertionComponent} from '@app/form/tab-saml-assertion/tab-saml-assertion.component';
-import {TabSamlMetadataComponent} from '@app/form/tab-saml-metadata/tab-saml-metadata.component';
+import {TabTokensComponent} from '@app/form/tab-tokens/tab-tokens.component';
+import {TabDelegatedComponent} from '@app/form/tab-delegated/tab-delegated.component';
+import {TabTicketsComponent} from '@app/form/tab-tickets/tab-tickets.component';
+import {TabSsoComponent} from '@app/form/tab-sso/tab-sso.component';
+import {TabOidcAttrreleaseComponent} from '@app/form/tab-oidc-attrrelease/tab-oidc-attrrelease.component';
+import {TabWsfedAttrreleaseComponent} from '@app/form/tab-wsfed-attrrelease/tab-wsfed-attrrelease.component';
+import {SamlResolve} from '@app/form/saml-resolve';
+import {OAuthResolve} from '@app/form/oauth-resolve';
+import {OidcResolve} from '@app/form/oidc-resolve';
 
 const childRoutes: Routes = [
   {
@@ -97,13 +100,13 @@ const childRoutes: Routes = [
     outlet: 'form'
   },
   {
-    path: 'tickets',
-    component: TabTicketsComponent,
+    path: 'delegated',
+    component: TabDelegatedComponent,
     outlet: 'form'
   },
   {
-    path: 'expiration',
-    component: TabExpirationComponent,
+    path: 'tickets',
+    component: TabTicketsComponent,
     outlet: 'form'
   },
   {
@@ -185,6 +188,39 @@ const childRoutes: Routes = [
           resp: FormResolve
         },
         children: childRoutes
+      },
+      {
+        path: 'saml',
+        component: FormComponent,
+        resolve : {
+          resp: SamlResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
+      },
+      {
+        path: 'oauth',
+        component: FormComponent,
+        resolve: {
+          resp: OAuthResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
+      },
+      {
+        path: 'oidc',
+        component: FormComponent,
+        resolve: {
+          resp: OidcResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
       },
       {
         path: 'importService',

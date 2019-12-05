@@ -20,7 +20,7 @@ ext.libraries = [
                     force = true
                     transitive = false
                 },
-                dependencies.create("org.glassfish.jaxb:jaxb-runtime:$jaxbGlassfishVersion") {
+                dependencies.create("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion") {
                     force = true
                     transitive = false
                 },
@@ -66,6 +66,50 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
+                    force = true
+                }
+        ],
+        guava                   : [
+                dependencies.create("com.google.guava:guava:$guavaVersion") {
+                    exclude(group: "com.google.errorprone", module: "error_prone_annotations")
+                    force = true
+                },
+                dependencies.create("org.reflections:reflections:$reflectionsVersion") {
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.javassist", module: "javassist")
+                    force = true
+                },
+                dependencies.create("org.javassist:javassist:$javassistVersion") {
+                    force = true
+                },
+                dependencies.create("org.springmodules:spring-modules-cache:0.8") {
+                    exclude(group: "commons-logging", module: "commons-logging")
+                    exclude(group: "ant", module: "ant")
+                    exclude(group: "xstream", module: "xstream")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "xpp3", module: "xpp3_min")
+                    exclude(group: "jcs", module: "jcs")
+                    exclude(group: "jboss", module: "jboss-system")
+                    exclude(group: "jboss", module: "javassist")
+                    exclude(group: "jboss", module: "jboss-cache")
+                    exclude(group: "jboss", module: "jboss-jmx")
+                    exclude(group: "jboss", module: "jboss-minimal")
+                    exclude(group: "jboss", module: "jboss-common")
+                    exclude(group: "jgroups", module: "jgroups-all")
+                    exclude(group: "log4j", module: "log4j")
+                    exclude(group: "xjavadoc", module: "xjavadoc")
+                    exclude(group: "jini", module: "xjavadoc")
+                    exclude(group: "jini", module: "jsk-platform")
+                    exclude(group: "jini", module: "boot")
+                    exclude(group: "jini", module: "jsk-lib")
+                    exclude(group: "jini", module: "mahalo")
+                    exclude(group: "jini", module: "reggie")
+                    exclude(group: "jini", module: "start")
+                    exclude(group: "jini", module: "webster")
+                    exclude(group: "ehcache", module: "ehcache")
+                    exclude(group: "gigaspaces", module: "gigaspaces-ce")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "org.springframework", module: "spring")
                     force = true
                 }
         ],
@@ -183,7 +227,7 @@ ext.libraries = [
         cassecurityfilter       : dependencies.create("org.apereo.cas:cas-server-security-filter:$casSecurityFilterVersion") {
             force = true
         },
-        findbugscontrib         : dependencies.create("com.mebigfatguy.fb-contrib:fb-contrib:$findbugsContribVersion") {
+        findbugscontrib         : dependencies.create("com.mebigfatguy.fb-contrib:fb-contrib:$spotbugsContribVersion") {
             force = true
         },
         findbugs                : dependencies.create("com.github.spotbugs:spotbugs:$spotbugsVersion") {
@@ -660,6 +704,308 @@ ext.libraries = [
                     force = true
                 }
         ],
+        opensaml                : [
+                dependencies.create("xerces:xercesImpl:$xercesVersion") {
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-core:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "org.opensaml", module: "opensaml-profile-api")
+                    exclude(group: "org.opensaml", module: "opensaml-profile-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-messaging-api")
+                    exclude(group: "org.opensaml", module: "opensaml-soap-api")
+                    exclude(group: "org.opensaml", module: "opensaml-session-api")
+                    exclude(group: "org.opensaml", module: "opensaml-security-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-xmlsec-impl:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-saml-api:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "org.apache.velocity", module: "velocity")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    exclude(group: "org.opensaml", module: "opensaml-profile-api")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-profile-api:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.springframework", module: "spring-context")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "org.apache.velocity", module: "velocity")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-saml-impl:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.springframework", module: "spring-context")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "org.apache.velocity", module: "velocity")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-security-api:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.springframework", module: "spring-context")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-xacml-saml-impl:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-xacml-saml-api:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-security-impl:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    exclude(group: "org.opensaml", module: "opensaml-security-api")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-soap-api:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-messaging-impl:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-profile-impl:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "org.apache.velocity", module: "velocity")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-profile-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    exclude(group: "org.opensaml", module: "opensaml-messaging-api")
+                    exclude(group: "org.opensaml", module: "opensaml-security-api")
+                    force = true
+                },
+                dependencies.create("org.opensaml:opensaml-storage-impl:$opensamlVersion") {
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.springframework", module: "spring-orm")
+                    exclude(group: "org.hibernate", module: "hibernate-validator")
+                    exclude(group: "org.hibernate", module: "hibernate-core")
+                    exclude(group: "org.hibernate", module: "hibernate-entitymanager")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "org.ldaptive", module: "ldaptive")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "net.shibboleth.utilities", module: "java-support")
+                    exclude(group: "org.apache.velocity", module: "velocity")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-api")
+                    exclude(group: "org.opensaml", module: "opensaml-saml-impl")
+                    exclude(group: "org.opensaml", module: "opensaml-core")
+                    force = true
+                }
+        ],
+        shibidpjavasupport      : [
+                dependencies.create("net.shibboleth.utilities:java-support:$shibbolethUtilJavaSupportVersion") {
+                    exclude(group: "com.google.guava", module: "guava")
+                    exclude(group: "joda-time", module: "joda-time")
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "com.google.code.findbugs", module: "jsr305")
+                    exclude(group: "org.springframework", module: "spring-beans")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.springframework", module: "spring-web")
+                    exclude(group: "org.springframework", module: "spring-context")
+                    exclude(group: "org.springframework", module: "spring-context-support")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient")
+                    exclude(group: "org.apache.httpcomponents", module: "httpclient-cache")
+                    exclude(group: "commons-codec", module: "commons-codec")
+                    exclude(group: "commons-lang", module: "commons-lang")
+                    exclude(group: "org.springframework.webflow", module: "spring-webflow")
+                    exclude(group: "org.springframework", module: "spring-expression")
+                    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+                    exclude(group: "org.ldaptive", module: "ldaptive")
+                    exclude(group: "ch.qos.logback", module: "logback-core")
+                    exclude(group: "ch.qos.logback", module: "logback-classic")
+                    exclude(group: "org.cryptacular", module: "cryptacular")
+                    exclude(group: "commons-collections", module: "commons-collections")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-core")
+                    exclude(group: "io.dropwizard.metrics", module: "metrics-json")
+                    exclude(group: "net.shibboleth.idp", module: "idp-authn-api")
+                    force = true
+                }
+        ],
         casServer              : [
                 util                 : 
                     dependencies.create("org.apereo.cas:cas-server-core-util:$casVersion") {
@@ -679,6 +1025,11 @@ ext.libraries = [
                     dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
                         force = true
                     }    
+                ],
+                testCore             : [
+                    dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
+                        force = true;
+                    }
                 ],
                 core                 : [
                    
@@ -722,11 +1073,20 @@ ext.libraries = [
                         transitive = false
                         force = true
                     },
-                saml                 :
+                saml                 : [
+                    dependencies.create("org.apereo.cas:cas-server-support-saml-core-api:$casVersion") {
+                        transitive = false
+                        force = true
+                    },
                     dependencies.create("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {
                         transitive = false
                         force = true
                     },
+                    dependencies.create("org.apereo.cas:cas-server-support-saml-idp-metadata:$casVersion") {
+                        transitive = false
+                        force = true
+                    }
+                ],
                 services             : [
                     dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
                         force = true
@@ -744,16 +1104,8 @@ ext.libraries = [
                     },
                     dependencies.create("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
                         force = true
-                    },
-                    dependencies.create("org.apereo.cas:cas-server-core-validation-api:$casVersion") {
-                        force = true
-                    },
-                    dependencies.create("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
-                        force = true
-                    },
-                    dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
-                        force = true
                     }    
+
                 ],
                 oauth                 : [
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-api:$casVersion") {
@@ -765,6 +1117,9 @@ ext.libraries = [
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-core-api:$casVersion") {
                             force = true
                             exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
+                        },
+                        dependencies.create("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
+                            force = true
                         }
                 ],
                 oidc                 :
@@ -795,33 +1150,5 @@ ext.libraries = [
                 dependencies.create("org.apache.lucene:lucene-queryparser:7.5.0"),
                 dependencies.create("org.apache.lucene:lucene-analyzers-common:7.5.0")
         ],
-        inspektr                : [
-                dependencies.create("org.apereo.inspektr:inspektr-audit:$inspektrVersion") {
-                    exclude(group: "org.slf4j", module: "slf4j-api")
-                    exclude(group: "javax.validation", module: "validation-api")
-                    exclude(group: "org.aspectj", module: "aspectjrt")
-                    exclude(group: "org.hjson", module: "hjson")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                },
-                dependencies.create("org.apereo.inspektr:inspektr-support-spring:$inspektrVersion") {
-                    exclude(group: "org.slf4j", module: "slf4j-api")
-                    exclude(group: "org.hjson", module: "hjson")
-                    exclude(group: "javax.validation", module: "validation-api")
-                    exclude(group: "org.springframework", module: "spring-web")
-                    exclude(group: "org.springframework", module: "spring-webmvc")
-                    exclude(group: "org.springframework", module: "spring-tx")
-                    exclude(group: "org.springframework", module: "spring-beans")
-                    exclude(group: "org.springframework", module: "spring-jdbc")
-                    exclude(group: "org.springframework", module: "spring-context")
-                    exclude(group: "org.springframework", module: "spring-core")
-                    exclude(group: "org.springframework", module: "spring-aop")
-                    exclude(group: "org.aspectj", module: "aspectjrt")
-                    exclude(group: "javax.validation", module: "validation-api")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                }
-        ],
+        shibboleth             : dependencies.create("net.shibboleth.utilities:java-support:7.3.0")
 ]

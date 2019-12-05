@@ -46,7 +46,8 @@ export class BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy extend
   }
 }
 
-export class AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy extends BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy {
+export class AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy
+  extends BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy {
   static cName = 'org.apereo.cas.services.AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy';
 
   static instanceOf(obj: any): boolean {
@@ -59,7 +60,8 @@ export class AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy 
   }
 }
 
-export class LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy extends BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy {
+export class LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy
+  extends BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy {
   static cName = 'org.apereo.cas.services.LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy';
 
   static instanceOf(obj: any): boolean {

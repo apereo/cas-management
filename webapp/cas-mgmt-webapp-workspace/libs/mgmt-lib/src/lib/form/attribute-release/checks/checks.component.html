@@ -1,51 +1,51 @@
 <lib-input>
-  <mat-checkbox [formControl]="excludeDefaultAttributes">
+  <mat-checkbox [formControl]="form.excludeDefaultAttributes">
     <ng-container i18n>Exclude default bundle of attributes for release</ng-container>
     <mat-icon libHelp i18n-matTooltip
              matTooltip="Indicates whether global and default attributes set to release to all applications
     should be excluded for release for this specific application.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="excludeDefaultAttributes.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.excludeDefaultAttributes.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="authorizedToReleaseCredentialPassword">
+  <mat-checkbox [formControl]="form.authorizedToReleaseCredentialPassword">
     <ng-container i18n>Authorized to release to credential password</ng-container>
     <mat-icon style="font-size: medium" i18n-matTooltip
              matTooltip="Release credential password to the application?">help
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="authorizedToReleaseCredentialPassword.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.authorizedToReleaseCredentialPassword.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="authorizedToReleaseProxyGrantingTicket">
+  <mat-checkbox [formControl]="form.authorizedToReleaseProxyGrantingTicket">
     <ng-container i18n>Authorized to release proxy granting ticket ID</ng-container>
     <mat-icon libHelp i18n-matTooltip
              matTooltip="Release proxy-granting ticket id to the application?">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="authorizedToReleaseProxyGrantingTicket.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.authorizedToReleaseProxyGrantingTicket.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="authorizedToReleaseAuthenticationAttributes">
+  <mat-checkbox [formControl]="form.authorizedToReleaseAuthenticationAttributes">
     <ng-container i18n>Authorized to release authentication attributes</ng-container>
     <mat-icon libHelp  i18n-matTooltip
              matTooltip="Determines whether this policy should exclude the authentication/protocol attributes for release.
              Authentication attributes are considered those that are not tied to a specific principal and define extra
              supplamentary metadata about the authentication event itself, such as the commencement date.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="authorizedToReleaseAuthenticationAttributes.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.authorizedToReleaseAuthenticationAttributes.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Principal Id Attribute</mat-label>
-    <input matInput [formControl]="principalIdAttribute">
-    <mat-hint align="end"><lib-hint [difference]="principalIdAttribute.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.principalIdAttribute">
+    <mat-hint align="end"><lib-hint [difference]="form.principalIdAttribute.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp  i18n-matTooltip
             matTooltip="Attribute to release as the Principal Id.  If not specified it will default to the attribute set for the authentication in cas.properties.">

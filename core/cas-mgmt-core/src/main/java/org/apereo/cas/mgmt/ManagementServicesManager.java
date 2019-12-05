@@ -70,8 +70,7 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        service.getId();
-        LOGGER.debug("Created service item [{}] based on registered service [{}]", serviceItem, service.getServiceId());
+        serviceItem.setType(CasManagementUtils.getType(service));
         return serviceItem;
     }
 

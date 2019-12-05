@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
 import { ServicesRoutingModule } from './services-routing.module';
-import {ProjectShareModule} from '@app/project-share';
-import {ServicesComponent} from '@app/registry/services/services.component';
+import {ServicesComponent} from './services.component';
+import {ProjectShareModule} from '../../project-share/project-share.module';
 
 @NgModule({
   declarations: [

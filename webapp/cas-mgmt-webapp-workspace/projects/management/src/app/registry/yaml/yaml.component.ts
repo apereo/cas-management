@@ -2,9 +2,9 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { Location } from '@angular/common';
 import {ServiceViewService} from '../services/service.service';
-import {EditorComponent} from '@app/project-share';
 import {HttpErrorResponse} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
+import {EditorComponent} from 'shared-lib';
 
 @Component({
   selector: 'app-yaml',
@@ -37,8 +37,8 @@ export class YamlComponent implements OnInit, AfterViewInit {
   }
 
   save() {
-    this.service.saveYaml(this.route.snapshot.params['id'], this.editor.getFile())
-      .subscribe(resp => this.handleSuccess(),
+    this.service.saveYaml(this.route.snapshot.params.id, this.editor.getFile())
+      .subscribe(() => this.handleSuccess(),
         error => this.handleError(error)
       );
   }

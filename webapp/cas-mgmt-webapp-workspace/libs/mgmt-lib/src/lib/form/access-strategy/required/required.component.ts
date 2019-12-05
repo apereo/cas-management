@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {FormDataService} from '../../../form-data.service';
-import {FormGroup} from '@angular/forms';
+import {DataRecord} from '../../data';
+import {AccessStrategyForm} from '../access-strategy.form';
 
 @Component({
   selector: 'lib-required',
@@ -10,15 +10,17 @@ import {FormGroup} from '@angular/forms';
 export class RequiredComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  caseInsensitive: MgmtFormControl;
+  form: AccessStrategyForm;
 
-  constructor(public formData: FormDataService) {
+  constructor(public formData: FormDataService, public data: DataRecord) {
   }
 
   ngOnInit() {
-    this.caseInsensitive = this.control.get('caseInsensitive') as MgmtFormControl;
+  }
 
+  availableAttributes() {
+    const repos = this.data.service.attributeReleasePolicy.principalAttributesRepository.attributeRepositoryIds;
+    return this.formData.availableAttributes(repos);
   }
 
 }

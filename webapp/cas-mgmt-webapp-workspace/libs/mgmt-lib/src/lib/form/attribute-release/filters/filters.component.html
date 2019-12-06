@@ -1,7 +1,7 @@
-<div [formGroup]="control">
-  <div formArrayName="filters">
+<div [formGroup]="form">
+  <div>
 <mat-accordion #accordian style="width:600px;" multi="true">
-  <mat-expansion-panel *ngFor="let filter of filters.controls;let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
+  <mat-expansion-panel *ngFor="let filter of form.controls;let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
        [expanded]="last" [formGroupName]="i">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -37,7 +37,7 @@
       </lib-input>
     </ng-container>
     <ng-container *ngIf="isMappedRegEx(filter) || isReverseMapped(filter) || isMutantMappedRegEx(filter)">
-      <lib-filter-mapped [filter]="filter"></lib-filter-mapped>
+      <lib-filter-mapped [form]="filter"></lib-filter-mapped>
     </ng-container>
     <ng-container *ngIf="isScripted(filter)">
       <lib-input>
@@ -67,9 +67,9 @@
 </mat-menu>
 
 <mat-menu #addMenu>
-  <button mat-menu-item (click)="addFilter.emit(TYPE.REGEX)" i18n>Regex</button>
-  <button mat-menu-item (click)="addFilter.emit(TYPE.MAPPED_REGEX)" i18n>Mapped Regex</button>
-  <button mat-menu-item (click)="addFilter.emit(TYPE.REVERSE_MAPPED_REGEX)" i18n>Reverse Mapped Regex</button>
-  <button mat-menu-item (click)="addFilter.emit(TYPE.MUTANT_REGEX)" i18n>Mutant Regex</button>
-  <button mat-menu-item (click)="addFilter.emit(TYPE.SCRIPTED)" i18n>Script</button>
+  <button mat-menu-item (click)="addFilter(TYPE.REGEX)" i18n>Regex</button>
+  <button mat-menu-item (click)="addFilter(TYPE.MAPPED_REGEX)" i18n>Mapped Regex</button>
+  <button mat-menu-item (click)="addFilter(TYPE.REVERSE_MAPPED_REGEX)" i18n>Reverse Mapped Regex</button>
+  <button mat-menu-item (click)="addFilter(TYPE.MUTANT_REGEX)" i18n>Mutant Regex</button>
+  <button mat-menu-item (click)="addFilter(TYPE.SCRIPTED)" i18n>Script</button>
 </mat-menu>

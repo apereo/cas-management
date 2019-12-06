@@ -73,8 +73,11 @@ public class VersionControlUtil {
                 DiffEntry.ChangeType.DELETE.toString(),
                 svc.getName(),
                 ObjectId.toString(entry.getOldId().toObjectId()),
-                null);
+                null,
+                CasManagementUtils.getType(svc));
     }
+
+
 
     /**
      * Creates a change for a modified file.
@@ -94,7 +97,8 @@ public class VersionControlUtil {
                 entry.getChangeType().toString(),
                 svc.getName(),
                 ObjectId.toString(entry.getOldId().toObjectId()),
-                ObjectId.toString(entry.getNewId().toObjectId()));
+                ObjectId.toString(entry.getNewId().toObjectId()),
+                CasManagementUtils.getType(svc));
     }
 
     /**

@@ -9,6 +9,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,12 +25,14 @@ import java.util.stream.Collectors;
 public class VersionControlServicesManager extends ManagementServicesManager {
 
     private final GitUtil git;
+    private long lastModified;
 
     public VersionControlServicesManager(final ServicesManager servicesManager,
                                          final RegisteredServiceResourceNamingStrategy namingStrategy,
                                          final GitUtil git) {
         super(servicesManager, namingStrategy);
         this.git = git;
+        changed();
     }
 
     @Override
@@ -40,7 +45,10 @@ public class VersionControlServicesManager extends ManagementServicesManager {
     private RegisteredServiceItem attachStatus(final RegisteredServiceItem serviceItem) {
         try {
             val status = git.status();
-            if (status.getAdded().stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
+            val added = new HashSet<String>();
+            added.addAll(status.getAdded());
+            added.addAll(status.getUntracked());
+            if (added.stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
                 serviceItem.setStatus("ADD");
             } else if (status.getModified().stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
                 serviceItem.setStatus("MODIFY");
@@ -51,6 +59,22 @@ public class VersionControlServicesManager extends ManagementServicesManager {
             LOGGER.error(ex.getMessage(), ex);
         }
         return serviceItem;
+    }
+
+    private boolean changed() {
+        val max = Arrays.stream(git.getRepository().getWorkTree().getAbsoluteFile().listFiles())
+                .map(f -> f.lastModified())
+                .max(Long::compare).get();
+        if (this.lastModified == max) {
+            return false;
+        }
+        this.lastModified = max;
+        return true;
+    }
+
+    @Override
+    public Collection<RegisteredService> load() {
+        return changed() ? super.load() : null;
     }
 
     /**
@@ -80,5 +104,37 @@ public class VersionControlServicesManager extends ManagementServicesManager {
         }
     }
 
+    @Override
+    public void deleteAll() {
+        super.deleteAll();
+        changed();
+    }
 
+    @Override
+    public RegisteredService save(final RegisteredService registeredService) {
+        val service = super.save(registeredService);
+        changed();
+        return service;
+    }
+
+    @Override
+    public RegisteredService save(final RegisteredService registeredService, final boolean b) {
+        val service = super.save(registeredService, b);
+        changed();
+        return service;
+    }
+
+    @Override
+    public RegisteredService delete(final long l) {
+        val service = super.delete(l);
+        changed();
+        return service;
+    }
+
+    @Override
+    public RegisteredService delete(final RegisteredService registeredService) {
+        val service = super.delete(registeredService);
+        changed();
+        return service;
+    }
 }

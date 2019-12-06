@@ -48,4 +48,9 @@ public class ServicesManagerFactory implements MgmtManagerFactory {
         return new ManagementServicesManager(servicesManager, namingStrategy);
     }
 
+    @Override
+    public ServicesManager master() throws Exception {
+        return new ManagementServicesManager(servicesManager, namingStrategy);
+    }
+
 }

@@ -5,9 +5,7 @@
 import {Injectable} from '@angular/core';
 import {Service} from 'shared-lib';
 import {Change, Commit, GitStatus} from 'domain-lib';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'

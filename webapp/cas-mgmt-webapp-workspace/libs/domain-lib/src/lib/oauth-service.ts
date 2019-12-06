@@ -67,7 +67,6 @@ export class OidcRegisteredService extends OAuthRegisteredService {
   userInfoEncryptedResponseAlg: string;
   userInfoEncryptedResponseEncoding: string;
   dynamicallyRegistered: boolean;
-  implicit: boolean;
   dynamicRegistrationDateTime: string;
   scopes: string[];
   subjectType: string;
@@ -96,7 +95,6 @@ export class OidcRegisteredService extends OAuthRegisteredService {
     this.userInfoEncryptedResponseAlg = (s && s.userInfoEncryptedResponseAlg) || null;
     this.userInfoEncryptedResponseEncoding = (s && s.userInfoEncryptedResponseEncoding) || null;
     this.dynamicallyRegistered = s ? s.dynamicallyRegistered : false;
-    this.implicit = s ? s.implicit : false;
     this.dynamicRegistrationDateTime = (s && s.dynamicRegistrationDateTime) || null;
     this.scopes = (s && s.scopes) || null;
     this.subjectType = (s && s.subjectType) || 'PUBLIC';

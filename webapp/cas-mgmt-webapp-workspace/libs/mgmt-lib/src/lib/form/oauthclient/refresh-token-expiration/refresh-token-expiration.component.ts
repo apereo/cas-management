@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {RefreshTokenExpirationForm} from './refresh-token-expiration.form';
 
 @Component({
   selector: 'lib-refresh-token-expiration',
@@ -9,13 +10,11 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class RefreshTokenExpirationComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  timeToKill: MgmtFormControl;
+  form: RefreshTokenExpirationForm;
 
   constructor() { }
 
   ngOnInit() {
-    this.timeToKill = this.control.get('timeToKill') as MgmtFormControl;
   }
 
 }

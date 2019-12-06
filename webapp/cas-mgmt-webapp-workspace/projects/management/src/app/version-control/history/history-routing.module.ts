@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {HistoryComponent} from '@app/version-control/history/history.component';
-import {HistoryResolve} from '@app/version-control/history/history.resolover';
+import {HistoryComponent} from './history.component';
+import {HistoryResolve} from './history.resolover';
 
 const routes: Routes = [
   {

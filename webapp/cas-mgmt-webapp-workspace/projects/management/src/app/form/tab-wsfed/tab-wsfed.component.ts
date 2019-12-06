@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
-import {WsfedForm} from './wsfed-form';
+import {TabWsfedForm} from './tab-wsfed.form';
 import {WSFederationRegisterdService} from 'domain-lib';
 
 @Component({
@@ -9,14 +9,15 @@ import {WSFederationRegisterdService} from 'domain-lib';
 })
 export class TabWsfedComponent {
 
-  wsfed: WsfedForm;
+  form: TabWsfedForm;
+  readonly key = 'wsfed';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('wsfed')) {
-      this.wsfed = this.data.formMap.get('wsfed') as WsfedForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabWsfedForm;
       return;
     }
-    this.wsfed = new WsfedForm(this.data.service as WSFederationRegisterdService);
-    this.data.formMap.set('wsfed', this.wsfed);
+    this.form = new TabWsfedForm(this.data.service as WSFederationRegisterdService);
+    this.data.formMap.set(this.key, this.form);
   }
 }

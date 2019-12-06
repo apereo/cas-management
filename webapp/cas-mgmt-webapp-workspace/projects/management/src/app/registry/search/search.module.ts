@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
 import { SearchRoutingModule } from './search-routing.module';
-import {SearchComponent} from '@app/registry/search/search.component';
-import {ProjectShareModule} from '@app/project-share';
+import {SearchComponent} from './search.component';
+import {ProjectShareModule} from '../../project-share/project-share.module';
 
 @NgModule({
   declarations: [

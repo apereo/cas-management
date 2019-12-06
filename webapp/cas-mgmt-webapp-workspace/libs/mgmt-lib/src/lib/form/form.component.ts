@@ -2,13 +2,11 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {MatSnackBar, MatTabChangeEvent, MatTabGroup} from '@angular/material';
-import {AbstractRegisteredService} from 'domain-lib';
 import {FormArray, FormGroup} from '@angular/forms';
 import {DataRecord} from './data';
-import {MgmtFormGroup} from './mgmt-form-group';
 
 @Component({
-  selector: 'app-base-form',
+  selector: 'lib-base-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
@@ -35,7 +33,7 @@ export class BaseFormComponent {
     this.navTo(this.tabs[event.index][0]);
   }
 
-  navTo(tab: String) {
+  navTo(tab: string) {
     const route: any[] = [{outlets: {form: [tab]}}];
     this.router.navigate(route, {skipLocationChange: true, relativeTo: this.route, replaceUrl: true});
   }
@@ -65,6 +63,26 @@ export class BaseFormComponent {
     });
   }
 
+  markDirty() {
+    for (const key of Array.from(this.data.formMap.keys())) {
+      const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
+      console.log('marking ' + key + ' as dirty');
+      this.makeDirty(frm);
+    }
+  }
+
+  makeDirty(group: FormGroup | FormArray) {
+    Object.keys(group.controls).forEach(k => {
+      const control = group.get(k);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.makeDirty(control);
+      } else {
+        control.markAsDirty();
+        control.markAsTouched();
+      }
+    });
+  }
+
   mapForm(): boolean {
     let touched: boolean = this.created;
     for (const key of Array.from(this.data.formMap.keys())) {
@@ -79,7 +97,7 @@ export class BaseFormComponent {
 
   reset() {
     for (const fg of Array.from(this.data.formMap.values())) {
-      fg.reset(fg.formMap());
+      fg.reset(fg.reset());
     }
   }
 

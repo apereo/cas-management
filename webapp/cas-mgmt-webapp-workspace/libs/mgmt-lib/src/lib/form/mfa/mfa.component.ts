@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
 import {FormDataService} from '../../form-data.service';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {MfaPolicyType} from 'domain-lib';
+import {MfaForm} from './mfa.form';
 
 @Component({
   selector: 'lib-mfa',
@@ -16,10 +16,10 @@ export class MfaComponent implements OnInit {
   display = ['Default', 'Groovy Script'];
 
   @Input()
-  control: FormGroup;
+  form: MfaForm;
+
   @Input()
   typeControl: MgmtFormControl;
-
 
   constructor(public formData: FormDataService) {
   }

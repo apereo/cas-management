@@ -1,23 +1,23 @@
-<div [formGroup]="control">
+<div [formGroup]="form">
   <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
   border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
     <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Attribute</div>
     <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>Name Format</div>
     <div [ngClass]="'actionWidth'" i18n></div>
   </div>
-  <div formArrayName="nameFormats">
-    <div *ngFor="let entry of entries.controls; let i = index;" [formGroupName]="i"
+  <div>
+    <div *ngFor="let row of form.rows(); let i = index;" [formGroupName]="i"
          style="display: flex; flex-direction: row; border-bottom-width: 1px;
          border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
       <div [ngClass]="'nameWidth'">
         <mat-form-field>
           <input matInput [matAutocomplete]="auto"
-                 formControlName="key" (click)="selectedRow = i">
+                 [formControl]="row.key" (click)="selectedRow = i">
         </mat-form-field>
       </div>
       <div [ngClass]="'valueWidth'">
         <mat-form-field>
-          <input matInput [matAutocomplete]="formats" formControlName="value">
+          <input matInput [matAutocomplete]="formats" [formControl]="row.values">
         </mat-form-field>
       </div>
       <div [ngClass]="'actionWidth'">
@@ -31,7 +31,7 @@
 </div>
 
 <mat-autocomplete #auto="matAutocomplete">
-  <mat-option *ngFor="let opt of formData.options.availableAttributes" [value]="opt">{{ opt }}</mat-option>
+  <mat-option *ngFor="let opt of formData.options.samlIdpAttributes" [value]="opt">{{ opt }}</mat-option>
 </mat-autocomplete>
 
 <mat-autocomplete #formats="matAutocomplete" [displayWith]="display">

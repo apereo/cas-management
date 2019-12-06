@@ -6,7 +6,14 @@
   <div style="flex: 1 1 auto">
   </div>
   <div>
-    <button mat-button (click)="search()">Search</button>
+    <button mat-button (click)="search()">
+      <mat-icon>search</mat-icon>
+      <ng-container>Search</ng-container>
+    </button>
+    <button mat-button *ngIf="dataSource.data" (click)="download()">
+      <mat-icon>file_download</mat-icon>
+      <ng-container>Download</ng-container>
+    </button>
   </div>
 </div>
 

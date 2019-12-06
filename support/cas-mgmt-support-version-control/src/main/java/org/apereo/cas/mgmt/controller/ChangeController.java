@@ -225,8 +225,7 @@ public class ChangeController extends AbstractVersionControlController {
                                           final @PathVariable String id) throws VersionControlException {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val change = CasManagementUtils.fromJson(git.readObject(id));
-            val casUserProfile = casUserProfileFactory.from(request, response);
-            val orig = managerFactory.from(request, casUserProfile).findServiceBy(change.getId());
+            val orig = managerFactory.from(request, response).findServiceBy(change.getId());
             return new RegisteredService[]{change, orig};
         } catch (final IOException ex) {
             LOGGER.error(ex.getMessage(), ex);

@@ -4,6 +4,16 @@ import {MatDialog, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from 'shared-lib';
 import {DialogComponent} from './dialog/dialog.component';
 
+export class Attribute {
+  key: string;
+  values: string[];
+
+  constructor(key: string, values: string[]) {
+    this.key = key;
+    this.values = values;
+  }
+}
+
 @Component({
   selector: 'app-release',
   templateUrl: './release.component.html',
@@ -40,15 +50,3 @@ export class ReleaseComponent implements OnInit {
     });
   }
 }
-
-export class Attribute {
-  key: string;
-  values: string[];
-
-  constructor(key: string, values: string[]) {
-    this.key = key;
-    this.values = values;
-  }
-}
-
-

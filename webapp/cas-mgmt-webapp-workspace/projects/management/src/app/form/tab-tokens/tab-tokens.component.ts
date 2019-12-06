@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {OAuthRegisteredService} from 'domain-lib';
-import {TokenForm} from './tokens-form';
-import {CodeExpirationForm} from './code-expiration-form';
-import {AccessTokenExpirationForm} from './access-token-expiration-form';
-import {RefreshTokenExpirationForm} from './refresh-token-expiration-form';
-import {DeviceTokenExpirationForm} from './device-token-expiration-form';
+import {TabTokenForm} from './tab-tokens.form';
 import {DataRecord} from 'mgmt-lib';
 
 @Component({
@@ -14,27 +10,16 @@ import {DataRecord} from 'mgmt-lib';
 })
 export class TabTokensComponent implements OnInit {
 
-  tokens: TokenForm;
-  codeExpiration: CodeExpirationForm;
-  accessTokenExpiration: AccessTokenExpirationForm;
-  refreshTokenExpiration: RefreshTokenExpirationForm;
-  deviceTokenExpiration: DeviceTokenExpirationForm;
+  form: TabTokenForm;
+  readonly key = 'tokens';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('tokens')) {
-      this.tokens = this.data.formMap.get('tokens') as TokenForm;
-      this.codeExpiration = this.tokens.get('codeExpirationPolicy') as CodeExpirationForm;
-      this.accessTokenExpiration = this.tokens.get('accessTokenExpirationPolicy') as AccessTokenExpirationForm;
-      this.refreshTokenExpiration = this.tokens.get('refreshTokenExpirationPolicy') as RefreshTokenExpirationForm;
-      this.deviceTokenExpiration = this.tokens.get('deviceTokenExpirationPolicy') as DeviceTokenExpirationForm;
-      return;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabTokenForm;
+    } else {
+      this.form = new TabTokenForm(this.data.service as OAuthRegisteredService);
+      this.data.formMap.set(this.key, this.form);
     }
-    this.tokens = new TokenForm(this.data.service as OAuthRegisteredService);
-    this.codeExpiration = this.tokens.get('codeExpirationPolicy') as CodeExpirationForm;
-    this.accessTokenExpiration = this.tokens.get('accessTokenExpirationPolicy') as AccessTokenExpirationForm;
-    this.refreshTokenExpiration = this.tokens.get('refreshTokenExpirationPolicy') as RefreshTokenExpirationForm;
-    this.deviceTokenExpiration = this.tokens.get('deviceTokenExpirationPolicy') as DeviceTokenExpirationForm;
-    this.data.formMap.set('tokens', this.tokens);
   }
 
   ngOnInit() {

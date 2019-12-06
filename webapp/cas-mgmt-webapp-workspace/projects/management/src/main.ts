@@ -6,6 +6,7 @@ import 'ace-builds/src-min-noconflict/mode-text';
 import 'ace-builds/src-min-noconflict/mode-json';
 import 'ace-builds/src-min-noconflict/mode-yaml';
 import 'ace-builds/src-min-noconflict/mode-hjson';
+import 'ace-builds/src-min-noconflict/mode-xml';
 import 'ace-builds/src-min-noconflict/theme-github';
 import 'ace-builds/src-min-noconflict/theme-eclipse';
 import 'ace-builds/src-min-noconflict/theme-dreamweaver';

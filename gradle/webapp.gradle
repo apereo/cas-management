@@ -20,21 +20,6 @@ sourceSets {
         }
     }
 }
-
-publishing {
-    publications {
-        mavenWeb(MavenPublication) {
-            from components.web
-            pom {
-                createPom(it, project)
-            }
-            pom.withXml {
-                createPomRepositories(asNode())
-            }
-        }
-    }
-}
-
 apply from: rootProject.file("gradle/springboot.gradle")
 
 if (!Boolean.getBoolean("skipClientBuild")) {
@@ -42,16 +27,20 @@ if (!Boolean.getBoolean("skipClientBuild")) {
         processResources.dependsOn(':webapp:cas-mgmt-webapp-workspace:buildClientDev')
     } else {
         processResources.dependsOn(':webapp:cas-mgmt-webapp-workspace:buildClient')
-    } 
+    }
 }
 
 dependencies {
   
     apply from: rootProject.file("config/delegated-config.gradle")
     
+    implementation project(":config:cas-mgmt-config-version-control")
     implementation project(":webapp:cas-mgmt-webapp-config")
     implementation project(":webapp:cas-mgmt-webapp-init")
-    
+    implementation project(":config:cas-mgmt-config-dashboard")
+    implementation project(":config:cas-mgmt-config-saml")
+    implementation project(":config:cas-mgmt-config-oauth")
+
     implementation libraries.nimbus
     implementation libraries.cassecurityfilter
     

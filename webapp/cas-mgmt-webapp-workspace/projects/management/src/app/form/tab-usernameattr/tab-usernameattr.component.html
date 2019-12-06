@@ -1,5 +1,5 @@
-<div [formGroup]="uidAttrs">
+<div [formGroup]="form">
   <lib-card i18n-heading heading="Username Options" [collapse]="false">
-    <lib-uidattrs [typeControl]="uidAttrs.type" [control]="uidAttrs.provider"></lib-uidattrs>
+    <lib-uidattrs [typeControl]="form.type" [form]="form.provider" [attributes]="attributes()"></lib-uidattrs>
   </lib-card>
 </div>

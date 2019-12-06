@@ -3,7 +3,7 @@ import {UserAttributeType} from 'domain-lib';
 import {FormDataService} from '../../form-data.service';
 import {DataRecord} from '../data';
 import {MgmtFormControl} from '../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {UidattrsForm} from './uidattrs.form';
 
 @Component({
   selector: 'lib-uidattrs',
@@ -23,21 +23,19 @@ export class UidattrsComponent implements OnInit {
   display = ['Default', 'Anonymous', 'Principal Attribute', 'Groovy', 'Scripted'];
 
   @Input()
-  control: FormGroup;
+  form: UidattrsForm;
 
   @Input()
   typeControl: MgmtFormControl;
 
-  encryptUsername: MgmtFormControl;
-  canonicalizationMode: MgmtFormControl;
+  @Input()
+  attributes: string[];
 
   constructor(public data: DataRecord,
-    public formData: FormDataService) {
+              public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.encryptUsername = this.control.get('encryptUsername') as MgmtFormControl;
-    this.canonicalizationMode = this.control.get('canonicalizationMode') as MgmtFormControl;
   }
 
 }

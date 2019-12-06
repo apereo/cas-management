@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../mgmt-formcontrol';
+import {ServiceTicketExpForm} from './service-ticket-exp.form';
 
 @Component({
   selector: 'lib-service-ticket-exp',
@@ -10,15 +9,11 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 export class ServiceTicketExpComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  numberOfUses: MgmtFormControl;
-  timeToLive: MgmtFormControl;
+  form: ServiceTicketExpForm;
 
   constructor() { }
 
   ngOnInit() {
-    this.numberOfUses = this.control.get('numberOfUses') as MgmtFormControl;
-    this.timeToLive = this.control.get('timeToLive') as MgmtFormControl;
   }
 
 }

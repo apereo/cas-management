@@ -1,5 +1,5 @@
 
-export class SsoSessionResponse {
+export class SsoSessionsResponse {
 
   activeSsoSessions: SsoSession[];
 
@@ -17,7 +17,7 @@ export class SsoSessionResponse {
 export class SsoSession {
   authenticatedPrincipal: string;
 
-  authenticatedServices: Map<String, AuthenticatedService>;
+  authenticatedServices: Map<string, AuthenticatedService>;
 
   authenticationAttributes: AuthenticationAttributes;
 
@@ -27,7 +27,7 @@ export class SsoSession {
 
   numberOfUses: number;
 
-  principalAttributes: Map<String, String[]>;
+  principalAttributes: Map<string, string[]>;
 
   ticketGrantingTicket: string;
 }

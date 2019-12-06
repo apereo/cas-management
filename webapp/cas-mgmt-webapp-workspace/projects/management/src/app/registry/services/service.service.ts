@@ -2,7 +2,7 @@
  * Created by tschmidt on 2/13/17.
  */
 import {Injectable} from '@angular/core';
-import {ServiceItem, RegisteredService} from 'domain-lib';
+import {ServiceItem} from 'domain-lib';
 import {Observable} from 'rxjs/internal/Observable';
 import {Service} from 'shared-lib';
 
@@ -10,8 +10,6 @@ import {Service} from 'shared-lib';
   providedIn: 'root'
 })
 export class ServiceViewService extends Service {
-
-  uploaded: RegisteredService;
 
   controller = 'api/services';
 
@@ -39,6 +37,14 @@ export class ServiceViewService extends Service {
     return this.post(this.controller + '/yaml/' + id,  yaml);
   }
 
+  promote(id: number): Observable<void> {
+    return this.get(this.controller + '/promote/' + id);
+  }
+
+  demote(id: number): Observable<void> {
+    return this.get(this.controller + '/demote/' + id);
+  }
+
   revert(fileName: string): Observable<string> {
     return this.getText('api/history/revert/' + fileName);
   }
@@ -46,4 +52,6 @@ export class ServiceViewService extends Service {
   updateOrder(a: ServiceItem, b: ServiceItem): Observable<string> {
     return this.postText(this.controller + '/updateOrder', [a, b]);
   }
+
+
 }

@@ -21,7 +21,7 @@ import {MfaModule} from './form/mfa/mfa.module';
 import {OauthclientComponent} from './form/oauthclient/oauthclient.component';
 import {OidcclientComponent} from './form/oidcclient/oidcclient.component';
 import {OptionsComponent} from './form/oidcclient/idtoken/options/options.component';
-import {PropertiespaneComponent} from './form/propertiespane/propertiespane.component';
+import {PropertiesComponent} from './form/properties/properties.component';
 import {ProxyComponent} from './form/proxy/proxy.component';
 import {PubkeyComponent} from './form/pubkey/pubkey.component';
 import {RequiredHandlersComponent} from './form/reqhandlers/reqhandlers.component';
@@ -34,7 +34,6 @@ import {UidattrsModule} from './form/uidattrs/uidattrs.module';
 import {WsfedclientComponent} from './form/wsfedclient/wsfedclient.component';
 import { PrivacyUrlComponent } from './form/privacy-url/privacy-url.component';
 import {EnvironmentsComponent} from './form/environments/environments.component';
-import {OauthComponent} from './form/attribute-release/policies/oauth/oauth.component';
 import {MappedComponent} from './form/attribute-release/policies/mapped/mapped.component';
 import {RedirectUriComponent} from './form/redirect-uri/redirect-uri.component';
 import { CodeExpirationComponent } from './form/oauthclient/code-expiration/code-expiration.component';
@@ -46,8 +45,7 @@ import { IdtokenComponent } from './form/oidcclient/idtoken/idtoken.component';
 import { UserinfoComponent } from './form/oidcclient/userinfo/userinfo.component';
 import { ServiceTicketExpComponent } from './form/service-ticket-exp/service-ticket-exp.component';
 import { ProxyTicketExpComponent } from './form/proxy-ticket-exp/proxy-ticket-exp.component';
-import { SsoPolicyComponent } from './form/sso-policy/sso-policy.component';
-import {SsoChainComponent} from './form/sso-policy/sso-chain/sso-chain.component';
+import { SsoPolicyComponent } from './form/sso/policy/sso-policy.component';
 import { SigningComponent } from './form/samlclient/signing/signing.component';
 import { AttributeNameFormatsComponent } from './form/samlclient/attributes/attributes.component';
 import { AssertionComponent } from './form/samlclient/assertion/assertion.component';
@@ -57,6 +55,10 @@ import {EncryptionComponent} from './form/samlclient/encryption/encryption.compo
 import {SharedLibModule} from 'shared-lib';
 import {AttributesModule} from './form/attributes/attributes.module';
 import {BaseFormComponent} from './form/form.component';
+import {SamlAddComponent} from './saml-add/saml-add.component';
+import {OAuthAddComponent} from './oauth-add/oauth-add.component';
+import {DelegatedComponent} from './form/delegated/delegated.component';
+import {SsoComponent} from './form/sso/sso-chain.component';
 
 @NgModule({
   imports: [
@@ -88,7 +90,7 @@ import {BaseFormComponent} from './form/form.component';
     LogouttypeevalComponent,
     OauthclientComponent,
     OidcclientComponent,
-    PropertiespaneComponent,
+    PropertiesComponent,
     ProxyComponent,
     PubkeyComponent,
     RequiredHandlersComponent,
@@ -110,7 +112,7 @@ import {BaseFormComponent} from './form/form.component';
     ServiceTicketExpComponent,
     ProxyTicketExpComponent,
     SsoPolicyComponent,
-    SsoChainComponent,
+    SsoComponent,
     SigningComponent,
     AttributeNameFormatsComponent,
     AssertionComponent,
@@ -118,7 +120,14 @@ import {BaseFormComponent} from './form/form.component';
     ValueTypesComponent,
     EncryptionComponent,
     OptionsComponent,
-    BaseFormComponent
+    BaseFormComponent,
+    SamlAddComponent,
+    OAuthAddComponent,
+    DelegatedComponent,
+  ],
+  entryComponents: [
+    SamlAddComponent,
+    OAuthAddComponent
   ],
   exports: [
     ServiceIdComponent,
@@ -141,7 +150,7 @@ import {BaseFormComponent} from './form/form.component';
     AttributesModule,
     OauthclientComponent,
     OidcclientComponent,
-    PropertiespaneComponent,
+    PropertiesComponent,
     ProxyComponent,
     PubkeyComponent,
     RequiredHandlersComponent,
@@ -165,7 +174,7 @@ import {BaseFormComponent} from './form/form.component';
     ServiceTicketExpComponent,
     ProxyTicketExpComponent,
     SsoPolicyComponent,
-    SsoChainComponent,
+    SsoComponent,
     SigningComponent,
     AttributeNameFormatsComponent,
     AssertionComponent,
@@ -173,7 +182,10 @@ import {BaseFormComponent} from './form/form.component';
     ValueTypesComponent,
     EncryptionComponent,
     OptionsComponent,
-    BaseFormComponent
+    BaseFormComponent,
+    SamlAddComponent,
+    OAuthAddComponent,
+    DelegatedComponent,
   ]
 })
 export class MgmtLibModule { }

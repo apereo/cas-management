@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'import',
     loadChildren: () => import('./import/import.module').then(m => m.ImportModule)
+  },
+  {
+    path: 'metadata',
+    loadChildren: () => import('./metadata/metadata.module').then(m => m.MetadataModule)
   }
 ];
 

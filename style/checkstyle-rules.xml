@@ -5,9 +5,18 @@
     <property name="severity" value="warning"/>
     <property name="charset" value="UTF-8"/>
 
+    <module name="LineLength">
+        <property name="max" value="190"/>
+        <property name="tabWidth" value="4"/>
+        <property name="severity" value="error"/>
+    </module>
+
     <!-- TreeWalker module checks -->
     <module name="TreeWalker">
         <property name="tabWidth" value="4"/>
+        <module name="UnnecessarySemicolonAfterTypeMemberDeclaration">
+            <property name="severity" value="error"/>
+        </module>
         <module name="NonEmptyAtclauseDescription">
             <property name="severity" value="error"/>
         </module>
@@ -15,6 +24,7 @@
         <module name="HiddenField">
             <property name="tokens" value="VARIABLE_DEF" />
             <property name="ignoreSetter" value="true"/>
+            <property name="severity" value="error"/>
             <property name="ignoreConstructorParameter" value="true"/>
         </module>
         <module name="JavadocMethod">
@@ -22,7 +32,6 @@
             <property name="severity" value="error"/>
             <property name="tokens" value="METHOD_DEF, ANNOTATION_FIELD_DEF"/>
             <property name="allowUndeclaredRTE" value="true"/>
-            <property name="allowMissingPropertyJavadoc" value="true"/>
             <property name="allowThrowsTagsForSubclasses" value="true"/>
         </module>
         <module name="JavadocType">
@@ -198,11 +207,6 @@
             <property name="max" value="15"/>
             <property name="severity" value="error"/>
             <property name="tokens" value="CTOR_DEF"/>
-        </module>
-        <module name="LineLength">
-            <property name="max" value="190"/>
-            <property name="tabWidth" value="4"/>
-            <property name="severity" value="error"/>
         </module>
         <module name="EmptyForIteratorPad"/>
         <module name="MethodParamPad">
@@ -663,6 +667,14 @@
         <property name="message" value="Avoid using the indicated annotations such as @Component, @Value, etc."/>
     </module>
     <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="Use @TestConfiguration"/>
+        <property name="severity" value="error"/>
+        <property name="id" value="useTestConfiguration"/>
+        <property name="format" value="@Configuration"/>
+        <property name="message" value="Configuration classes for tests must be marked with @TestConfiguration"/>
+    </module>
+
+    <module name="RegexpSingleline">
         <metadata name="net.sf.eclipsecs.core.comment" value="Use Java streams"/>
         <property name="severity" value="error"/>
         <property name="format" value="new .+(Set|List).+\(Arrays\.asList"/>
@@ -704,7 +716,12 @@
         <property name="format" value="new.*Set&lt;&gt;\((Arrays\.asList\([^,]+\)|Collections\.singletonList\(.*\))\)"/>
         <property name="message" value="Consider using Collections.singleton instead"/>
     </module>
-
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="Use org.apereo.cas.RandomUtils for random-number generation"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="RandomStringUtils\.(randomAlphanumeric|randomNumeric|randomAlphabetic|randomAscii|nextLong|nextInt|nextDouble|nextFloat)"/>
+        <property name="message" value="Use org.apereo.cas.RandomUtils for random-number generation instead."/>
+    </module>
     <module name="RegexpSingleline">
         <metadata name="net.sf.eclipsecs.core.comment" value="Use specific request annotation"/>
         <property name="severity" value="error"/>

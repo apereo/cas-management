@@ -28,7 +28,7 @@ export function contactsFactory(input: any[]) {
   const contacts: DefaultRegisteredServiceContact[] = [];
   if (input) {
     input.forEach((val) => {
-      contacts.push(new DefaultRegisteredServiceContact(val))
+      contacts.push(new DefaultRegisteredServiceContact(val));
     });
   }
   return contacts;

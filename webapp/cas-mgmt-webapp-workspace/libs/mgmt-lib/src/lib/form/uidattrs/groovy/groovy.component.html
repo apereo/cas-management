@@ -1,9 +1,9 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Groovy Script Location</mat-label>
-    <input matInput [formControl]="groovy" required>
+    <input matInput [formControl]="form.groovy" required>
   </mat-form-field>
-  <mat-hint align="end"><lib-hint [difference]="groovy.difference()"></lib-hint></mat-hint>
+  <mat-hint align="end"><lib-hint [difference]="form.groovy.difference()"></lib-hint></mat-hint>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Location of groovy script file that will be used by this service to determine usernames.">
   </mat-icon>

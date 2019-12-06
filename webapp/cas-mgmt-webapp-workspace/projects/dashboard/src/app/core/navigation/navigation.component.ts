@@ -15,8 +15,8 @@ export class NavigationComponent {
   isAdmin = false;
 
   constructor(public router: Router, private user: UserService) {
-    this.user.getUser().subscribe(user => {
-      this.isAdmin = user.administrator;
+    this.user.getUser().subscribe(usr => {
+      this.isAdmin = usr.administrator;
     });
   }
 

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {GroovyUidForm} from './groovy.form';
 
 @Component({
   selector: 'lib-groovy',
@@ -9,15 +8,12 @@ import {FormGroup} from '@angular/forms';
 export class GroovyComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  groovy: MgmtFormControl;
+  form: GroovyUidForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.groovy = this.control.get('groovyScript') as MgmtFormControl;
   }
 
 }

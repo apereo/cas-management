@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../mgmt-formcontrol';
+import {ProxyTicketExpForm} from './proxy-ticket-exp.form';
 
 @Component({
   selector: 'lib-proxy-ticket-exp',
@@ -10,15 +9,11 @@ import {MgmtFormControl} from '../mgmt-formcontrol';
 export class ProxyTicketExpComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  numberOfUses: MgmtFormControl;
-  timeToLive: MgmtFormControl;
+  form: ProxyTicketExpForm;
 
   constructor() { }
 
   ngOnInit() {
-    this.numberOfUses = this.control.get('numberOfUses') as MgmtFormControl;
-    this.timeToLive = this.control.get('timeToLive') as MgmtFormControl;
   }
 
 }

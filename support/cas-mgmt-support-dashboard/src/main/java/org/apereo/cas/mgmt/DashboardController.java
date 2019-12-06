@@ -2,15 +2,13 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.model.CasServers;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
-import org.apereo.cas.mgmt.domain.OAuthToken;
 import org.apereo.cas.mgmt.domain.Server;
-import org.apereo.cas.mgmt.domain.SsoSessionResponse;
 import org.apereo.cas.mgmt.domain.SystemHealth;
-import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,7 +23,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +36,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +93,7 @@ public class DashboardController {
         return getServer(mgmtProperties.getCasServers().get(index));
     }
 
-    private Server getServer(final CasManagementConfigurationProperties.CasServers s) {
+    private Server getServer(final CasServers s) {
         val server = new Server();
         server.setName(s.getName());
         server.setSystem(callCasServer(s.getUrl(), "/actuator/health/system",
@@ -223,7 +221,7 @@ public class DashboardController {
                                 final HttpServletResponse response,
                                 final @RequestBody Map<String, String> query) throws IllegalAccessException {
         isAdmin(request, response);
-        return mgmtProperties.getCasServers().stream()
+        val audit = mgmtProperties.getCasServers().stream()
                 .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",
                         query, new ParameterizedTypeReference<List<AuditLog>>() {}).stream()
                         .map(a -> {
@@ -232,89 +230,49 @@ public class DashboardController {
                         }))
                 .sorted(Comparator.comparing(AuditLog::getWhenActionWasPerformed).reversed())
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Looks up SSO sessions in the CAS cluster based on the passed user id.
-     *
-     * @param request - the request
-     * @param response - the response
-     * @return - SsoSessionResponse
-     * @throws IllegalAccessException - Illegal Access
-     */
-    @GetMapping("sessions")
-    public SsoSessionResponse getSession(final HttpServletRequest request,
-                                         final HttpServletResponse response) throws IllegalAccessException {
-        isAdmin(request, response);
-        return getSsoSessions("/actuator/ssoSessions?type=ALL", true);
-    }
-
-    /**
-     * Deletes a users sso session based on the passed tgt string.
-     *
-     * @param tgt - th tgt id
-     * @param response - the response
-     * @param request - the request
-     * @throws IllegalAccessException - Illegal Access
-     **/
-    @DeleteMapping("sessions/{tgt}")
-    public void revokeSession(final @PathVariable String tgt,
-                              final HttpServletResponse response,
-                              final HttpServletRequest request) throws IllegalAccessException {
-        isAdmin(request, response);
-        val sess = getSsoSessions("/actuator/ssoSessions?type=ALL", false);
-        val owns = sess.getActiveSsoSessions().stream()
-                 .filter(s -> TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket()).equals(tgt)).findFirst();
-        if (!owns.isPresent()) {
-            throw new IllegalAccessException("Permission Denied");
+        request.getSession().setAttribute("audit", audit);
+        if ("true".equals(query.get("download"))) {
+            return null;
         }
-        val tgtMapped = owns.get().getTicketGrantingTicket();
-        if (tgtMapped != null && tgtMapped.length() > 0) {
-            val restTemplate = new RestTemplate();
-            val serverUrl = casProperties.getServer().getPrefix() + "/actuator/ssoSessions";
-            restTemplate.delete(serverUrl + "/" + tgtMapped);
+        return audit;
+    }
+
+    /**
+     * Downloads audit log query result into plain file that is | delimited.
+     *
+     * @param request - the request.
+     * @param response - the response.
+     */
+    @GetMapping("/audit/download")
+    @SneakyThrows
+    public void downloadAudit(final HttpServletRequest request,
+                              final HttpServletResponse response) {
+        val log = (List<AuditLog>) request.getSession().getAttribute("audit");
+        if (log != null) {
+            val out = response.getWriter();
+            response.setHeader("Content-Type", MediaType.TEXT_PLAIN_VALUE);
+            response.setHeader("Content-Disposition", "attachment; filename=audit-log-" + new Date().getTime() + ".txt");
+            log.stream().map(this::toCSV).forEach(out::println);
+            out.close();
         }
     }
 
-    private SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
-        val resp = callCasServer(serverUrl, new ParameterizedTypeReference<SsoSessionResponse>() {});
-        if (mask) {
-            resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
-        }
-        return resp;
-    }
-
-    /**
-     * Returns all active tokens in the CAS cluster for the logged in User.
-     *
-     * @param response - the response
-     * @param request - the request
-     * @return - List of Access Tokens
-     * @throws IllegalAccessException - insufficient permissions
-     */
-    @GetMapping("/tokens")
-    public List<OAuthToken> userTokens(final HttpServletResponse response,
-                                       final HttpServletRequest request) throws IllegalAccessException{
-        isAdmin(request, response);
-        return callCasServer("/actuator/oauthTokens", new ParameterizedTypeReference<List<OAuthToken>>() {});
-    }
-
-    /**
-     * Deletes the token from the CAS cluster based on the passed token id.
-     *
-     * @param id - the token id
-     * @param request - the request
-     * @param response - the response
-     * @throws IllegalAccessException - Illegal Access
-     */
-    @DeleteMapping("/tokens/{id}")
-    public void deleteToken(final @PathVariable String id,
-                            final HttpServletRequest request,
-                            final HttpServletResponse response) throws IllegalAccessException {
-        isAdmin(request, response);
-        val restTemplate = new RestTemplate();
-        val serverUrl = casProperties.getServer().getPrefix() + "/actuator/oauthTokens/" + id;
-        restTemplate.delete(serverUrl);
+    private String toCSV(final AuditLog log) {
+        return new StringBuilder()
+               .append(log.getWhenActionWasPerformed())
+               .append("|")
+               .append(log.getClientIpAddress())
+               .append("|")
+               .append(log.getServerIpAddress())
+               .append("|")
+               .append(log.getPrincipal())
+               .append("|")
+               .append(log.getActionPerformed())
+               .append("|")
+               .append(log.getResourceOperatedUpon())
+               .append("|")
+               .append(log.getApplicationCode())
+               .toString();
     }
 
     private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {

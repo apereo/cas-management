@@ -46,4 +46,9 @@ public class Change implements Serializable {
      *  The new Objec ID.
      */
     private String newId;
+
+    /**
+     * The type of service affected.
+     */
+    private String serviceType;
 }

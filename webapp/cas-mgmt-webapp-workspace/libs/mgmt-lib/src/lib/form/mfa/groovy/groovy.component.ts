@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {GroovyMfaForm} from './groovy.form';
 
 @Component({
   selector: 'lib-groovy',
@@ -8,7 +8,7 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class GroovyComponent implements OnInit {
 
   @Input()
-  control: MgmtFormControl;
+  form: GroovyMfaForm;
 
   constructor() {
   }

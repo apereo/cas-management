@@ -178,4 +178,21 @@ public final class CasManagementUtils {
                 ZoneId.systemDefault())
                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
+
+    /**
+     * Determines Type of service and returns a string.
+     *
+     * @param service - the service
+     * @return - service type
+     */
+    public static String getType(final RegisteredService service) {
+        val name = service.getClass().getName();
+        if (name.contains("OAuth") || name.contains("Oidc")) {
+            return "OAuth";
+        }
+        if (name.contains("Saml")) {
+            return "SAML";
+        }
+        return "CAS";
+    }
 }

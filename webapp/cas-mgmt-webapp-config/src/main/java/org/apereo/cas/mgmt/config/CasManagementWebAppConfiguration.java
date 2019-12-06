@@ -5,6 +5,7 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
@@ -85,6 +86,9 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Qualifier("managementWebappAuthorizer")
     private ObjectProvider<Authorizer> managementWebappAuthorizer;
 
+    @Autowired
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
     @Autowired
     private CasConfigurationProperties casProperties;
@@ -152,7 +156,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(casManagementLocaleChangeInterceptor());
         registry.addInterceptor(casManagementSecurityInterceptor())
-            .addPathPatterns("/**").excludePathPatterns("/callback*", "/logout*", "/authorizationFailure", "/css/**");
+            .addPathPatterns("/", "/management/**", "/dashboard/**", "/api/**");
     }
 
     @Bean
@@ -191,7 +195,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         resolver.setTemplateMode("HTML");
         resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         resolver.setCacheable(false);
-        resolver.setOrder(0);
+        resolver.setOrder(1);
         resolver.setCheckExistence(true);
         resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("management/**"));
         return resolver;
@@ -221,7 +225,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Bean
     public ViewController viewController() {
         val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
+        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl),
+                                  casUserProfileFactory.getIfAvailable());
     }
 
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")

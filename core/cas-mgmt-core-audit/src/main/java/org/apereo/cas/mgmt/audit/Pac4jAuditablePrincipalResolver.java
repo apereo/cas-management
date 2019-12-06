@@ -5,10 +5,10 @@ import org.apereo.cas.util.HttpRequestUtils;
 import lombok.val;
 import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.aspectj.lang.JoinPoint;
-import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.context.session.J2ESessionStore;
-import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.profile.ProfileManager;
+import org.pac4j.core.profile.UserProfile;
 
 import java.util.Optional;
 
@@ -39,9 +39,9 @@ public class Pac4jAuditablePrincipalResolver implements PrincipalResolver {
         val request = HttpRequestUtils.getHttpServletRequestFromRequestAttributes();
         val response = HttpRequestUtils.getHttpServletResponseFromRequestAttributes();
         if (request != null && response != null) {
-            val context = new J2EContext(request, response, new J2ESessionStore());
+            val context = new JEEContext(request, response, new JEESessionStore());
             val manager = new ProfileManager<>(context, context.getSessionStore());
-            val profile = (Optional<CommonProfile>) manager.get(true);
+            val profile = (Optional<UserProfile>) manager.get(true);
             if (profile != null && profile.isPresent()) {
                 val id = profile.get().getId();
                 if (id != null) {

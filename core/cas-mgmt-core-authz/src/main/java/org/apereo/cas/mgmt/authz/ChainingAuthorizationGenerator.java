@@ -3,10 +3,11 @@ package org.apereo.cas.mgmt.authz;
 import lombok.val;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This is {@link ChainingAuthorizationGenerator}.
@@ -14,19 +15,19 @@ import java.util.List;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-public class ChainingAuthorizationGenerator implements AuthorizationGenerator<CommonProfile> {
-    private final List<AuthorizationGenerator<CommonProfile>> genenerators = new ArrayList<>();
+public class ChainingAuthorizationGenerator implements AuthorizationGenerator {
+    private final List<AuthorizationGenerator> genenerators = new ArrayList<>();
 
     @Override
-    public CommonProfile generate(final WebContext webContext, final CommonProfile commonProfile) {
+    public Optional<UserProfile> generate(final WebContext webContext, final UserProfile commonProfile) {
         var profile = commonProfile;
         val it = this.genenerators.iterator();
 
         while (it.hasNext()) {
             val authz = it.next();
-            profile = authz.generate(webContext, profile);
+            return authz.generate(webContext, profile);
         }
-        return profile;
+        return Optional.empty();
     }
 
     /**
@@ -34,7 +35,7 @@ public class ChainingAuthorizationGenerator implements AuthorizationGenerator<Co
      *
      * @param g the generator.
      */
-    public void addAuthorizationGenerator(final AuthorizationGenerator<CommonProfile> g) {
+    public void addAuthorizationGenerator(final AuthorizationGenerator g) {
         this.genenerators.add(g);
     }
 }

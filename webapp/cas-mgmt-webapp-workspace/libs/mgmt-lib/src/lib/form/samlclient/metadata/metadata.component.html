@@ -1,8 +1,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Metadata Location</mat-label>
-    <input matInput [formControl]="location">
-    <mat-hint align="end"><lib-hint [difference]="location.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.location">
+    <mat-hint align="end"><lib-hint [difference]="form.location.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Metadata location for this particular service provider.">
@@ -12,8 +12,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Metadata Maximum Validity</mat-label>
-    <input matInput [formControl]="maxValidity">
-    <mat-hint align="end"><lib-hint [difference]="maxValidity.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.maxValidity">
+    <mat-hint align="end"><lib-hint [difference]="form.maxValidity.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Indicates how long should metadata be considered valid.">
@@ -23,8 +23,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Metadata Public Key Location</mat-label>
-    <input matInput [formControl]="signatureLocation">
-    <mat-hint align="end"><lib-hint [difference]="signatureLocation.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.signatureLocation">
+    <mat-hint align="end"><lib-hint [difference]="form.signatureLocation.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Location of the metadata signing public key so its authenticity can be verified.">
@@ -34,8 +34,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Metadata Expiration Duration</mat-label>
-    <input matInput [formControl]="expirationDuration">
-    <mat-hint align="end"><lib-hint [difference]="expirationDuration.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.expirationDuration">
+    <mat-hint align="end"><lib-hint [difference]="form.expirationDuration.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="If defined, will expire metadata in the cache after the indicated duration which will force CAS to retrieve and resolve the metadata again.">
@@ -45,8 +45,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Metadata Filter Regex</mat-label>
-    <input matInput [formControl]="criteriaPattern">
-    <mat-hint align="end"><lib-hint [difference]="criteriaPattern.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.criteriaPattern">
+    <mat-hint align="end"><lib-hint [difference]="form.criteriaPattern.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Regex applied to entity ids in a metadata aggregate.">
@@ -56,12 +56,12 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Metadata Filter Criteria</mat-label>
-    <mat-select [formControl]="criteriaDirection">
+    <mat-select [formControl]="form.criteriaDirection">
       <mat-option *ngFor="let opt of formData.options.samlDirections" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
-    <mat-hint align="end"><lib-hint [difference]="criteriaDirection.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.criteriaDirection.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Whether to include/exclude entity ids that match the filter pattern.">
@@ -71,12 +71,12 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Whitelisted Metadata Roles</mat-label>
-    <mat-select [formControl]="criteriaRoles">
+    <mat-select [formControl]="form.criteriaRoles">
       <mat-option *ngFor="let opt of formData.options.samlRoles" [value]="opt">
         {{ opt }}
       </mat-option>
     </mat-select>
-    <mat-hint align="end"><lib-hint [difference]="criteriaRoles.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.criteriaRoles.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Whitelisted roles to keep in the metadata.">
@@ -86,11 +86,11 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>White/Black List Precedence</mat-label>
-    <mat-select [formControl]="whiteListBlackListPrecedence">
+    <mat-select [formControl]="form.whiteListBlackListPrecedence">
       <mat-option value="WHITELIST">Whitelist</mat-option>
       <mat-option value="BLACKLIST">Blacklist</mat-option>
     </mat-select>
-    <mat-hint align="end"><lib-hint [difference]="whiteListBlackListPrecedence.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.whiteListBlackListPrecedence.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Preference value indicating which should take precedence when both whitelist and blacklist are non-empty.">
@@ -98,30 +98,30 @@
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="requireSignedRoot">
+  <mat-checkbox [formControl]="form.requireSignedRoot">
     <ng-container i18n>Require Signed Root</ng-container>
     <mat-icon libHelp i18n-matTooltip matTooltip="Requre the root to be signed."></mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="requireSignedRoot.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.requireSignedRoot.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="criteriaRemoveEmptyEntitiesDescriptors">
+  <mat-checkbox [formControl]="form.criteriaRemoveEmptyEntitiesDescriptors">
     <ng-container i18n>Remove Empty Entities Descriptors</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Controls whether to keep entities descriptors that contain no entity descriptors">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="criteriaRemoveEmptyEntitiesDescriptors.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.criteriaRemoveEmptyEntitiesDescriptors.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="criteriaRemoveRolelessEntityDescriptors">
+  <mat-checkbox [formControl]="form.criteriaRemoveRolelessEntityDescriptors">
     <ng-container i18n>Remove Empty Roles</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Controls whether to keep entity descriptors that contain no roles.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="criteriaRemoveRolelessEntityDescriptors.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.criteriaRemoveRolelessEntityDescriptors.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 

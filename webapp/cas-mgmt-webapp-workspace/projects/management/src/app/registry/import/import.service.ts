@@ -33,14 +33,18 @@ export class ImportService extends Service {
       .pipe(
         tap(resp => {
           this.submissionFile = file;
-          if (RegexRegisteredService.instanceOf(resp))
+          if (RegexRegisteredService.instanceOf(resp)) {
             this.service = new RegexRegisteredService(resp);
-          if (OAuthRegisteredService.instanceOf(resp))
+          }
+          if (OAuthRegisteredService.instanceOf(resp)) {
             this.service = new OAuthRegisteredService(resp);
-          if (SamlRegisteredService.instanceOf(resp))
+          }
+          if (SamlRegisteredService.instanceOf(resp)) {
             this.service = new SamlRegisteredService(resp);
-          if (OidcRegisteredService.instanceOf(resp))
+          }
+          if (OidcRegisteredService.instanceOf(resp)) {
             this.service = new OidcRegisteredService(resp);
+          }
           if (WSFederationRegisterdService.instanceOf(resp)) {
             this.service = new WSFederationRegisterdService(resp);
           }

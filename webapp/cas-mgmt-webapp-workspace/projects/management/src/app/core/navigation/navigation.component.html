@@ -7,11 +7,11 @@
     <mat-icon>apps</mat-icon>
     <ng-container i18n>Services</ng-container>
   </a>
-  <a mat-list-item (click)="navto('registry/search')">
+  <a mat-list-item (click)="navto('registry/search')" [ngClass]="isSelected(['search'])">
     <mat-icon>search</mat-icon>
     <ng-container i18n>Search</ng-container>
   </a>
-  <a mat-list-item *ngIf="isDelegated() && isAdmin()" (click)="navto('delegated/pulls')">
+  <a mat-list-item *ngIf="isDelegated() && isAdmin()" (click)="navto('delegated/pulls')" [ngClass]="isSelected(['pulls'])">
     <mat-icon>file_download</mat-icon>
     <span [matBadge]="pullRequests()"
           matBadgePosition="above after"
@@ -25,7 +25,15 @@
   </a>
   <a mat-list-item (click)="navto('form/edit/-1')">
     <mat-icon>add_circle</mat-icon>
-    <span i18n>Add New Service</span>
+    <span i18n>Add CAS Service</span>
+  </a>
+  <a mat-list-item (click)="createOAuthService()">
+    <mat-icon>add_circle</mat-icon>
+    <span i18n>Add OAuth Service</span>
+  </a>
+  <a mat-list-item (click)="createSamlService()">
+    <mat-icon>add_circle</mat-icon>
+    <span i18n>Add SAML Service</span>
   </a>
   <a mat-list-item (click)="navto('registry/import')" *ngIf="isAdmin()">
     <mat-icon>add_circle</mat-icon>
@@ -39,7 +47,7 @@
     <mat-icon>sync</mat-icon>
     <ng-container i18n>Synchronize</ng-container>
   </a>
-  <a mat-list-item *ngIf="isAdmin() && isVersionControl()" (click)="navto('version-control/repo-history')">
+  <a mat-list-item *ngIf="isAdmin() && isVersionControl()" (click)="navto('version-control/repo-history')" [ngClass]="isSelected(['history'])">
     <mat-icon>history</mat-icon>
     <ng-container i18n>History</ng-container>
   </a>

@@ -1,11 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Change} from 'domain-lib';
-import {PaginatorComponent} from 'shared-lib';
-import {ControlsService, RevertComponent, ViewComponent} from '@app/project-share';
+import {PaginatorComponent, ViewComponent} from 'shared-lib';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {ServiceViewService} from '@app/registry/services/service.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
+import {ControlsService} from '../../project-share/controls/controls.service';
+import {ServiceViewService} from '../../registry/services/service.service';
+import {RevertComponent} from '../../project-share/revert/revert.component';
 
 @Component({
   selector: 'app-local-changes',
@@ -16,7 +17,7 @@ export class LocalChangesComponent implements OnInit {
 
   selectedItem: Change;
   revertItem: Change;
-  displayedColumns = ['actions', 'serviceName', 'changeType'];
+  displayedColumns = ['actions', 'serviceName', 'serviceType', 'changeType'];
   datasource: MatTableDataSource<Change>;
   loading: boolean;
 

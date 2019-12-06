@@ -25,4 +25,19 @@ export class FormDataService extends Service {
         catchError(e => this.handleError(e, this.dialog))
       );
   }
+
+  availableAttributes(repos: string[]): string[] {
+    const attrs = [];
+    for (const key of Object.keys(this.options.availableAttributes)) {
+      if (key === 'authentication' || (repos && repos.indexOf(key) > -1)) {
+        const attr = this.options.availableAttributes[key];
+        for (const at of attr) {
+          if (attrs.indexOf(at) < 0) {
+            attrs.push(at);
+          }
+        }
+      }
+    }
+    return attrs;
+  }
 }

@@ -172,31 +172,19 @@ export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAll
   }
 }
 
-export class LdapSamlRegisteredServiceAttributeReleasePolicy extends ReturnMappedAttributeReleasePolicy {
-  static cName =  'org.apereo.cas.support.saml.services.LdapSamlRegisteredServiceAttributeReleasePolicy';
+export class SamlIdpRegisteredServiceAttributeReleasePolicy extends ReturnMappedAttributeReleasePolicy {
+  static cName =  'org.apereo.cas.support.saml.services.SamlIdpRegisteredServiceAttributeReleasePolicy';
 
   static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === LdapSamlRegisteredServiceAttributeReleasePolicy.cName;
+    return obj && obj['@class'] === SamlIdpRegisteredServiceAttributeReleasePolicy.cName;
   }
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    const p: LdapSamlRegisteredServiceAttributeReleasePolicy = policy as LdapSamlRegisteredServiceAttributeReleasePolicy;
-    this['@class'] = LdapSamlRegisteredServiceAttributeReleasePolicy.cName;
-  }
-}
-
-export class OAuthAttributeReleasePolicy extends ReturnMappedAttributeReleasePolicy {
-  static cName =  'org.apereo.cas.support.oauth.services.OAuthAttributeReleasePolicy';
-
-  static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === OAuthAttributeReleasePolicy.cName;
-  }
-
-  constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
-    super(policy);
-    const p: OAuthAttributeReleasePolicy = policy as OAuthAttributeReleasePolicy;
-    this['@class'] = OAuthAttributeReleasePolicy.cName;
+    const p: SamlIdpRegisteredServiceAttributeReleasePolicy = SamlIdpRegisteredServiceAttributeReleasePolicy.instanceOf(policy)
+      ? policy as SamlIdpRegisteredServiceAttributeReleasePolicy : undefined;
+    this.allowedAttributes = (p && p.allowedAttributes) || null;
+    this['@class'] = SamlIdpRegisteredServiceAttributeReleasePolicy.cName;
   }
 }
 
@@ -279,8 +267,7 @@ export enum ReleasePolicyType {
   RESTFUL,
   GROOVY_SAML,
   WS_FED,
-  SAML_LDAP,
-  OAUTH
+  SAML_IDP,
 }
 
 export enum PrincipalRepoType {
@@ -289,41 +276,44 @@ export enum PrincipalRepoType {
 }
 
 export function attributeReleaseFactory(policy?: any, type?: ReleasePolicyType): RegisteredServiceAttributeReleasePolicy {
-  if (type === ReleasePolicyType.RETURN_ALL || ReturnAllAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.RETURN_ALL || (!type && ReturnAllAttributeReleasePolicy.instanceOf(policy))) {
     return new ReturnAllAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.DENY_ALL || DenyAllAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.DENY_ALL || (!type && DenyAllAttributeReleasePolicy.instanceOf(policy))) {
     return new DenyAllAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.RETURN_MAPPED || ReturnMappedAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.RETURN_MAPPED || (!type && ReturnMappedAttributeReleasePolicy.instanceOf(policy))) {
     return new ReturnMappedAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.RETURN_ALLOWED || ReturnAllowedAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.RETURN_ALLOWED || (!type && ReturnAllowedAttributeReleasePolicy.instanceOf(policy))) {
     return new ReturnAllowedAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.SCRIPT || ScriptedRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.SCRIPT || (!type && ScriptedRegisteredServiceAttributeReleasePolicy.instanceOf(policy))) {
     return new ScriptedRegisteredServiceAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.GROOVY || GroovyScriptAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.GROOVY || (!type && GroovyScriptAttributeReleasePolicy.instanceOf(policy))) {
     return new GroovyScriptAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.INCOMMON || InCommonRSAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.INCOMMON || (!type && InCommonRSAttributeReleasePolicy.instanceOf(policy))) {
     return new InCommonRSAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.MATCHING || PatternMatchingEntityIdAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.MATCHING || (!type && PatternMatchingEntityIdAttributeReleasePolicy.instanceOf(policy))) {
     return new PatternMatchingEntityIdAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.METADATA || MetadataEntityAttributesAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.METADATA || (!type && MetadataEntityAttributesAttributeReleasePolicy.instanceOf(policy))) {
     return new MetadataEntityAttributesAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.RESTFUL || ReturnRestfulAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.RESTFUL || (!type && ReturnRestfulAttributeReleasePolicy.instanceOf(policy))) {
     return new ReturnRestfulAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.GROOVY_SAML || GroovySamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.GROOVY_SAML || (!type && GroovySamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy))) {
     return new GroovySamlRegisteredServiceAttributeReleasePolicy(policy);
   }
-  if (type === ReleasePolicyType.WS_FED || WsFederationClaimsReleasePolicy.instanceOf(policy)) {
+  if (type === ReleasePolicyType.WS_FED || (!type && WsFederationClaimsReleasePolicy.instanceOf(policy))) {
     return new WsFederationClaimsReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.SAML_IDP || (!type && SamlIdpRegisteredServiceAttributeReleasePolicy.instanceOf(policy))) {
+    return new SamlIdpRegisteredServiceAttributeReleasePolicy(policy);
   }
   if (!type && !policy) {
     return new DenyAllAttributeReleasePolicy();

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * Class used to serialize Audit log entries to the client.
+ * Serialize Audit Log data from CAS Dashboard.
  *
  * @author Travis Schmidt
  * @since 6.1.0

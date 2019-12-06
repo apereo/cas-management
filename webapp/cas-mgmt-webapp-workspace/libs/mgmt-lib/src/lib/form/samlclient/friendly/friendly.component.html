@@ -1,22 +1,22 @@
-<div [formGroup]="control">
+<div [formGroup]="form">
   <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
   border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
     <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>Attribute ID</div>
     <div style="padding:10px;" [ngClass]="'valueWidth'" i18n>Friendly Name</div>
     <div [ngClass]="'actionWidth'" i18n></div>
   </div>
-  <div formArrayName="friendlyNames">
-    <div *ngFor="let entry of entries.controls; let i = index;" [formGroupName]="i"
+  <div>
+    <div *ngFor="let row of form.rows(); let i = index;" [formGroupName]="i"
          style="display: flex; flex-direction: row; border-bottom-width: 1px;
          border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
       <div [ngClass]="'nameWidth'">
         <mat-form-field>
-          <input matInput formControlName="key">
+          <input matInput [formControl]="row.key">
         </mat-form-field>
       </div>
       <div [ngClass]="'valueWidth'">
         <mat-form-field>
-          <input matInput formControlName="value">
+          <input matInput [formControl]="row.values">
         </mat-form-field>
       </div>
       <div [ngClass]="'actionWidth'">

@@ -6,36 +6,87 @@
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Interval</mat-label>
-        <input matInput formControlName="interval">
+        <input matInput [formControl]="form.interval">
       </mat-form-field>
+    </lib-input>
+    <lib-input class="dates">
+      <mat-form-field appearance="standard">
+        <mat-label i18n>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" [formControl]="form.startDate">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+      <div style="display:flex;flex-direction: row">
+        <mat-form-field appearance="standard" style="width: 40px; text-align: right">
+          <input matInput type="number" [formControl]="form.startHour" min="0" max="23">
+          <span matSuffix>:</span>
+        </mat-form-field>
+        <mat-form-field appearance="standard" style="width: 40px; text-align: right">
+          <input matInput type="number" [formControl]="form.startMinute" min="0" max="59">
+          <span matSuffix>:</span>
+        </mat-form-field>
+        <mat-form-field appearance="standard" style="width: 40px; text-align: right">
+          <input matInput type="number" [formControl]="form.startSecond" min="0" max="59">
+          <span matSuffix>:</span>
+        </mat-form-field>
+        <mat-form-field appearance="standard" style="width: 50px; text-align: right;">
+          <input matInput type="number" [formControl]="form.startMilli" min="0" max="999">
+        </mat-form-field>
+      </div>
+    </lib-input>
+    <lib-input class="dates">
+      <mat-form-field appearance="standard">
+        <mat-label i18n>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" [formControl]="form.endDate">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+      <div style="display:flex;flex-direction: row">
+        <mat-form-field appearance="standard" style="width: 40px; text-align: right">
+          <input matInput type="number" [formControl]="form.endHour" min="0" max="23">
+          <span matSuffix>:</span>
+        </mat-form-field>
+        <mat-form-field appearance="standard" style="width: 40px; text-align: right">
+          <input matInput type="number" [formControl]="form.endMinute" min="0" max="59">
+          <span matSuffix>:</span>
+        </mat-form-field>
+        <mat-form-field appearance="standard" style="width: 40px; text-align: right">
+          <input matInput type="number" [formControl]="form.endSecond" min="0" max="59">
+          <span matSuffix>:</span>
+        </mat-form-field>
+        <mat-form-field appearance="standard" style="width: 50px; text-align: right;">
+          <input matInput type="number" [formControl]="form.endMilli" min="0" max="999">
+        </mat-form-field>
+      </div>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Principal</mat-label>
-        <input matInput formControlName="principal">
+        <input matInput [formControl]="form.principal">
       </mat-form-field>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Action Performed</mat-label>
-        <input matInput formControlName="action">
+        <input matInput [formControl]="form.action">
       </mat-form-field>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Client IP Address</mat-label>
-        <input matInput formControlName="clientIP">
+        <input matInput [formControl]="form.clientIP">
       </mat-form-field>
     </lib-input>
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Resource Operated On</mat-label>
-        <input matInput formControlName="resource">
+        <input matInput [formControl]="form.resource">
       </mat-form-field>
     </lib-input>
   </mat-dialog-content>
 </div>
   <mat-dialog-actions>
     <button mat-button (click)="search()">Search</button>
+    <button mat-button (click)="search(true)">Download</button>
   </mat-dialog-actions>
 

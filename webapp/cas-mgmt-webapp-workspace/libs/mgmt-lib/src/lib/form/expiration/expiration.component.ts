@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {ExpirationForm} from './expiration-form';
 
 @Component({
   selector: 'lib-expiration',
@@ -9,18 +8,12 @@ import {FormGroup} from '@angular/forms';
 export class ExpirationComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  expirationDate: MgmtFormControl;
-  deleteWhenExpired: MgmtFormControl;
-  notifyWhenDeleted: MgmtFormControl;
+  form: ExpirationForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.expirationDate = this.control.get('expirationDate') as MgmtFormControl;
-    this.deleteWhenExpired = this.control.get('deleteWhenExpired') as MgmtFormControl;
-    this.notifyWhenDeleted = this.control.get('notifyWhenDeleted') as MgmtFormControl;
   }
 
 }

@@ -2,7 +2,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import {SharedModule} from '../../shared/shared.module';
 import {AttributesComponent} from './attributes.component';
 
 describe('AttributesComponent', () => {
@@ -11,7 +10,7 @@ describe('AttributesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ FormsModule, SharedModule ],
+      imports: [ FormsModule ],
       declarations: [ AttributesComponent ]
     })
     .compileComponents();

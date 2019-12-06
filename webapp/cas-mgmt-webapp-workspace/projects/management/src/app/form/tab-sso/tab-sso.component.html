@@ -1,3 +1,3 @@
-<lib-card i18n-heading heading="SSO Policies" [collapse]="false">
-  <lib-sso-chain (addPolicy)="ssoForm.addPolicy($event)" [control]="ssoForm"></lib-sso-chain>
+<lib-card heading="SSO Policies" [collapse]="false">
+  <lib-sso-chain [form]="form.sso"></lib-sso-chain>
 </lib-card>

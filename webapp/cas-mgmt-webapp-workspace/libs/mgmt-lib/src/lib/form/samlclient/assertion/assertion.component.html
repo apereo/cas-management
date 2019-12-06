@@ -1,8 +1,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Authentication Context Class</mat-label>
-    <input matInput [formControl]="requiredAuthenticationContextClass">
-    <mat-hint align="end"><lib-hint [difference]="requiredAuthenticationContextClass.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.requiredAuthenticationContextClass">
+    <mat-hint align="end"><lib-hint [difference]="form.requiredAuthenticationContextClass.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="The authentication context class that may be passed to the service provider. If
@@ -13,8 +13,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Assertion Audiences</mat-label>
-    <input matInput [formControl]="assertionAudiences">
-    <mat-hint align="end"><lib-hint [difference]="assertionAudiences.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.assertionAudiences">
+    <mat-hint align="end"><lib-hint [difference]="form.assertionAudiences.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Comma-separated list of audience urls to include in the assertion, in addition to the entity id.">
@@ -24,8 +24,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Issuer Entity ID</mat-label>
-    <input matInput [formControl]="issuerEntityId">
-    <mat-hint align="end"><lib-hint [difference]="issuerEntityId.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.issuerEntityId">
+    <mat-hint align="end"><lib-hint [difference]="form.issuerEntityId.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="If defined, will override the issue value with the given identity provider entity id.
@@ -36,8 +36,8 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Skew Allowance</mat-label>
-    <input matInput [formControl]="skewAllowance">
-    <mat-hint align="end"><lib-hint [difference]="skewAllowance.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.skewAllowance">
+    <mat-hint align="end"><lib-hint [difference]="form.skewAllowance.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="If defined, indicates number of seconds used to skew authentication dates such as valid-from

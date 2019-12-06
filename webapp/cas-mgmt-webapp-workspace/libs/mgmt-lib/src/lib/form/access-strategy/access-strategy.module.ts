@@ -2,7 +2,6 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AccessStrategyComponent} from './access-strategy.component';
-import {DelegatedComponent} from './delegated/delegated.component';
 import {GroovyComponent} from './groovy/groovy.component';
 import {GrouperComponent} from './grouper/grouper.component';
 import {RemoteComponent} from './remote/remote.component';
@@ -23,7 +22,6 @@ import {AttributesModule} from '../attributes/attributes.module';
   ],
   declarations: [
     AccessStrategyComponent,
-    DelegatedComponent,
     GroovyComponent,
     GrouperComponent,
     RemoteComponent,
@@ -34,7 +32,6 @@ import {AttributesModule} from '../attributes/attributes.module';
   ],
   exports: [
     AccessStrategyComponent,
-    DelegatedComponent,
     GroovyComponent,
     GrouperComponent,
     RemoteComponent,

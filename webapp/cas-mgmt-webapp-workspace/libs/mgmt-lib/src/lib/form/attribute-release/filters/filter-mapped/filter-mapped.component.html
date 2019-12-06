@@ -1,6 +1,6 @@
-<lib-attributes [control]="filter" arrayName="patterns" [keys]="formData.options.availableAttributes"></lib-attributes>
+<lib-attributes [form]="form.patterns" [keys]="availableAttributes()"></lib-attributes>
 <div style="padding-top: 10px">
-  <mat-checkbox [formControl]="filter.get('excludeUnmappedAttributes')">
+  <mat-checkbox [formControl]="form.excludeUnmappedAttributes">
     <ng-container i18n>Exclude Unmapped Attributes</ng-container>
     <mat-icon style="font-size: medium" i18n-matTooltip
               matTooltip="Indicates whether unmapped attributes should be removed from the final bundle.">help
@@ -8,10 +8,18 @@
   </mat-checkbox>
 </div>
 <div style="padding-bottom: 20px;">
-  <mat-checkbox [formControl]="filter.get('completeMatch')">
+  <mat-checkbox [formControl]="form.completeMatch">
     <ng-container i18n>Complete Match</ng-container>
     <mat-icon style="font-size: medium" i18n-matTooltip
               matTooltip="Indicates whether pattern-matching should execute over the entire value region.">help
+    </mat-icon>
+  </mat-checkbox>
+</div>
+<div style="padding-bottom: 20px;">
+  <mat-checkbox [formControl]="form.caseInsensitive">
+    <ng-container i18n>Case Insensitive</ng-container>
+    <mat-icon style="font-size: medium" i18n-matTooltip
+              matTooltip="Indicates whether pattern-matching should ignore case.">help
     </mat-icon>
   </mat-checkbox>
 </div>

@@ -1,6 +1,8 @@
-export class Cache {
-  status: string;
-  details: Details = new Details()
+export class MapDetails {
+  name: string;
+  memory: number;
+  size: number;
+  capacity: number;
 }
 
 export class Details {
@@ -8,13 +10,10 @@ export class Details {
   sessionCount: number;
   ticketCount: number;
   message: string;
-  maps: Map<String, MapDetails> = new Map();
+  maps: Map<string, MapDetails> = new Map();
 }
 
-export class MapDetails {
-  name: string;
-  memory: number;
-  size: number;
-  capacity: number;
-
+export class Cache {
+  status: string;
+  details: Details = new Details();
 }

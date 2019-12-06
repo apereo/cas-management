@@ -1,20 +1,21 @@
-<div [formGroup]="accessStrategy">
+<div [formGroup]="form">
   <lib-card i18n-heading heading="Service Access Strategy" *ngIf="!groovyAccessStrategy">
-    <lib-access-strategy [typeControl]="accessStrategy.type" [control]="accessStrategy.strategy"></lib-access-strategy>
+    <lib-access-strategy [form]="form.strategy" [type]="form.type"></lib-access-strategy>
   </lib-card>
 
   <lib-card i18n-heading heading="Required Attributes" *ngIf="!groovyAccessStrategy">
-    <lib-required [control]="accessStrategy.strategy"></lib-required>
+    <lib-required [form]="form.strategy"></lib-required>
   </lib-card>
 
+  <!--
   <lib-card i18n-heading heading="Delegated Authentication" *ngIf="!groovyAccessStrategy">
-    <lib-delegated [control]="accessStrategy.strategy.get('allowedProviders')"></lib-delegated>
+    <lib-delegated [form]="accessStrategy..get('allowedProviders')"></lib-delegated>
   </lib-card>
+  -->
 
   <lib-card i18n-heading heading="Rejected Attributes" *ngIf="!groovyAccessStrategy">
-    <lib-attributes [control]="accessStrategy.strategy"
-                    arrayName="rejectedAttributes"
-                    [keys]="formData.options.availableAttributes">
+    <lib-attributes [form]="form.strategy.rejectedAttributes"
+                    [keys]="availableAttributes()">
     </lib-attributes>
   </lib-card>
 </div>

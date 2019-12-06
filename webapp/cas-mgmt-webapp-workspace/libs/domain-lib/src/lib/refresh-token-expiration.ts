@@ -29,7 +29,7 @@ export class DefaultRegisteredServiceOAuthRefreshTokenExpirationPolicy extends R
 
 export function refreshTokenExpirationPolicy(policy?: any): RegisteredServiceOAuthRefreshTokenExpirationPolicy {
   if (!policy || DefaultRegisteredServiceOAuthRefreshTokenExpirationPolicy.instanceOf(policy)) {
-    return new DefaultRegisteredServiceOAuthRefreshTokenExpirationPolicy(policy)
+    return new DefaultRegisteredServiceOAuthRefreshTokenExpirationPolicy(policy);
   }
   return policy;
 }

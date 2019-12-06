@@ -1,7 +1,0 @@
-description "Apereo CAS Management Delegated Config"
-
-dependencies {
-    apply from: rootProject.file("config/version-control-config.gradle")
-
-    implementation project(":config:cas-mgmt-config-delegated")
-}

@@ -41,12 +41,12 @@ The index `[0]` is meant to be incremented by the adopter to allow for distinct 
 # mgmt.authzAttributes[0]=
 # mgmt.userPropertiesFile=classpath:user-details.properties
 
-# mgmt.servicesRepo=/etc/cas/services-repo
-# mgmt.userReposDir=/etc/cas/user-repos
-# mgmt.syncScript=
+# mgmt.versionControl.servicesRepo=/etc/cas/services-repo
+# mgmt.delegated.userReposDir=/etc/cas/user-repos
+# mgmt.versionControl.syncScript=
 
-# mgmt.enableVersionControl=false
-# mgmt.enableDelegatedMgmt=false
+# mgmt.versionControl.enabled=false
+# mgmt.delegated.enabled=false
 
 # mgmt.enableDiscoveryEndpointCall=true
 ```

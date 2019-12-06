@@ -124,8 +124,8 @@ name: Apereo AND multifactorPolicy.bypassEnabled: true
 The management webapp is able to provide version control for the service registry.  To enable version control make sure these properties are set:
 
 ```properties
-mgmt.enableVersionControl=true
-mgmt.servicesRepo=/etc/cas/services-repo
+mgmt.versionControl.enabled=true
+mgmt.versionControl.servicesRepo=/etc/cas/services-repo
 ```
 The "servicesRepo" directory must be a place where your webapp has read/write permissions.  Version control is handled by 
 storing your registry as json files in a Git repository.  When the webapp is started, it will create the repository from 
@@ -175,7 +175,7 @@ cas.serviceRegistry.json.location=file:/etc/cas/services
 Then a "sync script" that is executable in the runtime of the webpp server can be set in the configuration.
 
 ```properties
-mgmt.syncScript=/etc/cas/sync.sh
+mgmt.versionControl.syncScript=/etc/cas/sync.sh
 ```
 
 This script can then use "rsync" or any other means to sync the service registry to CAS nodes.
@@ -363,8 +363,8 @@ Delegated management is only available as a feature in the management webapp whe
 mangement is enabled by setting the following porperties
 
 ```properties
-mgmt.enableDelegatedMgmt=true
-mgmt.userReposDir=/etc/cas/user-repos
+mgmt.delegated.enabled=true
+mgmt.delegated.userReposDir=/etc/cas/user-repos
 ```
 The "userReposDir" must be a location where the webapp has read/write permissions.
 

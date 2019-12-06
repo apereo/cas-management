@@ -16,22 +16,17 @@ export class SpinnerService {
   }
 
   start(msg?: string) {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
     this.timer = setTimeout(() => {
       this.snack = this.snackBar.openFromComponent(SpinnerComponent, {
-        data: msg || 'Working...',
+        data: msg || 'Loading',
         verticalPosition: 'top',
         duration: 30000
       });
-    }, 200);
+    }, 100);
   }
 
   stop() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
+    clearTimeout(this.timer);
     if (this.snack) {
       this.snack.dismiss();
     }

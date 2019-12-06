@@ -174,8 +174,7 @@ public class HistoryController extends AbstractVersionControlController {
     public void revertDelete(final HttpServletRequest request,
                              final HttpServletResponse response,
                              final @RequestParam String path) {
-        val user = casUserProfileFactory.from(request, response);
-        try (GitUtil git = repositoryFactory.from(user)) {
+        try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 response.setStatus(NO_CHANGES_FOUND);
                 return;

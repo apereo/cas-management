@@ -1,59 +1,59 @@
 <lib-input>
-  <mat-checkbox [formControl]="skipGeneratingAssertionNameId">
+  <mat-checkbox [formControl]="form.skipGeneratingAssertionNameId">
     <ng-container i18n>Skip generating assertion name id</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of a name identifier should be skipped for assertions">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="skipGeneratingAssertionNameId.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.skipGeneratingAssertionNameId.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationInResponseTo">
+  <mat-checkbox [formControl]="form.skipGeneratingSubjectConfirmationInResponseTo">
     <ng-container i18n>Skip generating subject confirmation InRespsonseTo</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the InResponseTo element should be skipped for subject confirmations.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationInResponseTo.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.skipGeneratingSubjectConfirmationInResponseTo.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationNotOnOrAfter">
+  <mat-checkbox [formControl]="form.skipGeneratingSubjectConfirmationNotOnOrAfter">
     <ng-container i18n>Skip generating subject confirmation NotOnOrAfter</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the NotOnOrAfter element should be skipped for subject confirmations.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationNotOnOrAfter.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.skipGeneratingSubjectConfirmationNotOnOrAfter.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationRecipient">
+  <mat-checkbox [formControl]="form.skipGeneratingSubjectConfirmationRecipient">
     <ng-container i18n>Skip generating subject confirmation Recipient</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the Recipient element should be skipped for subject confirmations.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationRecipient.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.skipGeneratingSubjectConfirmationRecipient.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="skipGeneratingSubjectConfirmationNotBefore">
+  <mat-checkbox [formControl]="form.skipGeneratingSubjectConfirmationNotBefore">
     <ng-container i18n>Skip generating subject confirmation NotBefore</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether generation of the NotBefore element should be skipped for subject confirmations.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="skipGeneratingSubjectConfirmationNotBefore.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.skipGeneratingSubjectConfirmationNotBefore.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="skipGeneratingTransientNameId">
+  <mat-checkbox [formControl]="form.skipGeneratingTransientNameId">
     <ng-container i18n>Skip generating transient name id</ng-container>
     <mat-icon libHelp i18n-matTooltip
               matTooltip="Whether transient name identifier generation should be skipped.">
     </mat-icon>
-    <mat-hint align="end"><lib-hint [difference]="skipGeneratingTransientNameId.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="form.skipGeneratingTransientNameId.difference()"></lib-hint></mat-hint>
   </mat-checkbox>
 </lib-input>

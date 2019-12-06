@@ -5,7 +5,8 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
 
@@ -33,11 +34,11 @@ public class CasUserProfileFactory {
      * @return the cas user profile
      */
     public CasUserProfile from(final HttpServletRequest request, final HttpServletResponse response) {
-        val manager = new ProfileManager(new J2EContext(request, response));
+        val manager = new ProfileManager(new JEEContext(request, response));
         val profile = (Optional<UserProfile>) manager.get(true);
         if (profile.isPresent()) {
             val up = profile.get();
-            val cas = new CasUserProfile(up, this.casProperties.getAdminRoles());
+            val cas = new CasUserProfile((CommonProfile) up, this.casProperties.getAdminRoles());
             LOGGER.debug("Located CAS user profile [{}]", cas);
             return cas;
         }

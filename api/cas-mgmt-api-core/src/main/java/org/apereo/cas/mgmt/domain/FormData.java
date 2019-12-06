@@ -18,6 +18,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apereo.services.persondir.util.CaseCanonicalizationMode;
+import org.opensaml.saml.saml2.core.NameID;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Form data passed onto the screen.
@@ -54,6 +56,14 @@ public class FormData implements Serializable {
         new Option("Uri", "urn:oasis:names:tc:SAML:2.0:attrname-format:uri")
     );
 
+    private List<Option> samlNameIdFormats = CollectionUtils.wrapList(
+        new Option("EMAIL", NameID.EMAIL),
+        new Option("PERSISTENT", NameID.PERSISTENT),
+        new Option("TRANSIENT", NameID.TRANSIENT),
+        new Option("UNSPECIFIED", NameID.UNSPECIFIED),
+        new Option("EPPN", "urn:oid:1.3.6.1.4.1.5923.1.1.1.6")
+    );
+
     private List<String> samlCredentialTypes = Arrays.stream(SamlIdPResponseProperties.SignatureCredentialTypes.values())
         .map(s -> s.name().toUpperCase())
         .collect(Collectors.toList());
@@ -67,6 +77,8 @@ public class FormData implements Serializable {
     private List<Option> mfaProviders = new ArrayList<>();
 
     private Set<String> delegatedAuthnProviders = new HashSet<>();
+
+    private Set<String> samlIdpAttributes = new HashSet<>();
 
     private List<Option> oidcApplicationTypes = CollectionUtils.wrapList(
             new Option("Web", "web"),
@@ -123,8 +135,8 @@ public class FormData implements Serializable {
         return scopes;
     }
 
-    public OidcSubjectTypes[] getOidcSubjectTypes() {
-        return OidcSubjectTypes.values();
+    public List<Option> getOidcSubjectTypes() {
+        return Stream.of(OidcSubjectTypes.values()).map(s -> new Option(s.name(), s.getType())).collect(Collectors.toList());
     }
 
     public CaseCanonicalizationMode[] getCanonicalizationModes() {

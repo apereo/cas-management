@@ -1,0 +1,15 @@
+description "Apereo CAS Management Config Saml"
+
+dependencies {
+    api project(":api:cas-mgmt-api-core")
+    api project(":api:cas-mgmt-api-version-control")
+
+    implementation libraries.git
+    implementation libraries.shibidpjavasupport
+    implementation libraries.casServer.saml
+
+    implementation project(":core:cas-mgmt-core")
+    implementation project(":core:cas-mgmt-core-authentication")
+    implementation project(":support:cas-mgmt-support-version-control")
+    implementation project(":support:cas-mgmt-support-saml")
+}

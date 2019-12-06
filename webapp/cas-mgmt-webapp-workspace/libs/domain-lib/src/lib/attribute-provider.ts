@@ -123,20 +123,21 @@ export enum UserAttributeType {
   GROOVY,
 }
 
-export function usernameProviderFactory(provider?: any): RegisteredServiceUsernameAttributeProvider {
-  if (!provider || DefaultRegisteredServiceUsernameProvider.instanceOf(provider)) {
+export function usernameProviderFactory(provider?: any, type?: UserAttributeType): RegisteredServiceUsernameAttributeProvider {
+  if (type === UserAttributeType.DEFAULT || (!type && DefaultRegisteredServiceUsernameProvider.instanceOf(provider))) {
     return new DefaultRegisteredServiceUsernameProvider(provider);
   }
-  if (PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)) {
+  if (type === UserAttributeType.PRINCIPAL_ATTRIBUTE
+    || (!type && PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider))) {
     return new PrincipalAttributeRegisteredServiceUsernameProvider(provider);
   }
-  if (GroovyRegisteredServiceUsernameProvider.instanceOf(provider)) {
+  if (type === UserAttributeType.GROOVY || (!type && GroovyRegisteredServiceUsernameProvider.instanceOf(provider))) {
     return new GroovyRegisteredServiceUsernameProvider(provider);
   }
-  if (ScriptedRegisteredServiceUsernameProvider.instanceOf(provider)) {
-    return new ScriptedRegisteredServiceUsernameProvider(provider)
+  if (type === UserAttributeType.SCRIPTED || (!type && ScriptedRegisteredServiceUsernameProvider.instanceOf(provider))) {
+    return new ScriptedRegisteredServiceUsernameProvider(provider);
   }
-  if (AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)) {
+  if (type === UserAttributeType.ANONYMOUS || (!type && AnonymousRegisteredServiceUsernameProvider.instanceOf(provider))) {
     return new AnonymousRegisteredServiceUsernameProvider(provider);
   }
   return provider;

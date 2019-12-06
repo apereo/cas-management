@@ -15,13 +15,13 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
 import org.apereo.cas.services.domain.DomainServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
+import org.apereo.cas.util.io.WatcherService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.eclipse.jgit.api.Git;
-import org.pac4j.core.profile.UserProfile;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -83,18 +83,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @return - GitServicesManager for the logged in user
      */
     public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
-        return from(request, casUserProfileFactory.from(request, response));
-    }
-
-    /**
-     * Method will create the GitServicesManager for the user passed in the CasUserProfile.
-     *
-     * @param request - HttpServletRequest
-     * @param user    - CasUserProfile of logged in user
-     * @return - GitServicesManager for the logged in user
-     */
-    public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) {
-        return getManagementServicesManager(request, user);
+        return getManagementServicesManager(request, response);
     }
 
     /**
@@ -108,10 +97,10 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     }
 
 
-    private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final UserProfile userProfile) {
-        val user = (CasUserProfile) userProfile;
+    private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final HttpServletResponse response) {
+        val user = casUserProfileFactory.from(request, response);
         val session = request.getSession();
-        val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session, user) : createNewManager(user);
+        val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session, user) : createNewManager(request, response);
         session.setAttribute(SERVICES_MANAGER_KEY, manager);
         return manager;
     }
@@ -125,8 +114,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         return manager;
     }
 
-    private ManagementServicesManager createNewManager(final CasUserProfile user) {
-        val git = !user.isAdministrator() ? repositoryFactory.from(user).rebase() : repositoryFactory.masterRepository();
+    private ManagementServicesManager createNewManager(final HttpServletRequest request, final HttpServletResponse response) {
+        val git = repositoryFactory.from(request, response);
         return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
     }
 
@@ -144,7 +133,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         val path = Paths.get(git.repoPath());
 
         val serviceRegistryDAO = new JsonServiceRegistry(path,
-            false, null, null, namingStrategy, null);
+            WatcherService.noOp(), null, null, namingStrategy, null);
         val manager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
                 ? new DomainServicesManager(serviceRegistryDAO, null, new DefaultRegisteredServiceDomainExtractor(), new HashSet<>())
                 : new DefaultServicesManager(serviceRegistryDAO, null, new HashSet<>()));

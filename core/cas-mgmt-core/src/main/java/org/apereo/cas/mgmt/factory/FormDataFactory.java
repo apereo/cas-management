@@ -28,7 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Class used to create a FormData record to be delivered to the client.
@@ -57,6 +58,7 @@ public class FormDataFactory {
         loadMfaProviders(formData);
         loadDelegatedClientTypes(formData);
         loadAvailableAttributes(formData);
+        loadSamlIdpAttributes(formData);
         return formData;
     }
 
@@ -97,7 +99,7 @@ public class FormDataFactory {
 
             val types = p.getRegisteredServiceTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
-                .collect(Collectors.toList());
+                .collect(toList());
             formData.setServiceTypes(types);
         } else {
             val serviceTypes = new ArrayList<FormData.Option>();
@@ -115,7 +117,7 @@ public class FormDataFactory {
             val p = profile.get();
             val mfas = p.getMultifactorAuthenticationProviderTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getValue(), e.getKey()))
-                .collect(Collectors.toList());
+                .collect(toList());
             formData.setMfaProviders(mfas);
         } else {
             val mfaProviders = new ArrayList<FormData.Option>();
@@ -160,5 +162,15 @@ public class FormDataFactory {
         } else {
             formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames(IPersonAttributeDaoFilter.alwaysChoose()));
         }
+    }
+
+    private void loadSamlIdpAttributes(final FormData formData) {
+        /*
+        if (profile.isPresent() && !profile.get().getSamlIdpAttributeUriIds().isEmpty()) {
+            val p = profile.get();
+            formData.setSamlIdpAttributes(p.getSamlIdpAttributeUriIds().keySet());
+        }
+
+         */
     }
 }

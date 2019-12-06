@@ -3,8 +3,8 @@
     <input matInput
            i18n-placeholder
            placeholder="Location"
-           [formControl]="location">
-    <mat-hint align="end"><lib-hint [difference]="location.difference()"></lib-hint></mat-hint>
+           [formControl]="control.location">
+    <mat-hint align="end"><lib-hint [difference]="control.location.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon style="font-size: medium" i18n-matTooltip
            matTooltip="The location to the public key file used to authenticate and sign the CAS response.
@@ -17,11 +17,11 @@
   <mat-form-field class="textInput">
     <mat-select i18n-placeholder
                 placeholder="Algorithm"
-                [formControl]="algorithm">
+                [formControl]="control.algorithm">
       <mat-option></mat-option>
       <mat-option value="RSA">RSA</mat-option>
     </mat-select>
-    <mat-hint align="end"><lib-hint [difference]="algorithm.difference()"></lib-hint></mat-hint>
+    <mat-hint align="end"><lib-hint [difference]="control.algorithm.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon style="font-size: medium" i18n-matTooltip
            matTooltip="Represents a public key for a CAS registered service, used to encrypt credentials, proxy granting ticket ids for release.">help

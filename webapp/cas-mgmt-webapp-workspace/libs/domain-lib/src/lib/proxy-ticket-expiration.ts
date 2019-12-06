@@ -2,7 +2,7 @@ export class RegisteredServiceProxyTicketExpirationPolicy {
   static cName = 'org.apereo.cas.services.RegisteredServiceProxyTicketExpirationPolicy';
 
   numberOfUses: number;
-  timeToLive: String;
+  timeToLive: string;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === RegisteredServiceProxyTicketExpirationPolicy.cName;
@@ -30,7 +30,7 @@ export class DefaultRegisteredServiceProxyTicketExpirationPolicy extends Registe
 
 export function proxyTicketExpirationPolicy(policy?: any): RegisteredServiceProxyTicketExpirationPolicy {
   if (!policy || DefaultRegisteredServiceProxyTicketExpirationPolicy.instanceOf(policy)) {
-    return new DefaultRegisteredServiceProxyTicketExpirationPolicy(policy)
+    return new DefaultRegisteredServiceProxyTicketExpirationPolicy(policy);
   }
   return policy;
 }

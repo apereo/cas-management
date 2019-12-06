@@ -48,6 +48,10 @@ import {ServiceInterceptor} from './interceptor';
 import {HintComponent} from './hint/hint.component';
 import {InputComponent} from './input/input.component';
 import {HelpDirective} from './help.directive';
+import {AddSPComponent} from './addsp/addsp.component';
+import {ViewComponent} from './view/view.component';
+import {EditorComponent} from './editor.component';
+import {EditorOptionsComponent} from './editor-options/editor-options.component';
 
 @NgModule({
   imports: [
@@ -101,11 +105,18 @@ import {HelpDirective} from './help.directive';
     LibNavigationComponent,
     HintComponent,
     InputComponent,
-    HelpDirective
+    HelpDirective,
+    AddSPComponent,
+    ViewComponent,
+    EditorComponent,
+    EditorOptionsComponent
   ],
   entryComponents: [
     SpinnerComponent,
-    TimeoutComponent
+    TimeoutComponent,
+    AddSPComponent,
+    ViewComponent,
+    EditorOptionsComponent
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ServiceInterceptor, multi: true}
@@ -154,7 +165,11 @@ import {HelpDirective} from './help.directive';
     TrackerComponent,
     HintComponent,
     InputComponent,
-    HelpDirective
+    HelpDirective,
+    AddSPComponent,
+    ViewComponent,
+    EditorComponent,
+    EditorOptionsComponent
   ]
 })
 export class SharedLibModule {}

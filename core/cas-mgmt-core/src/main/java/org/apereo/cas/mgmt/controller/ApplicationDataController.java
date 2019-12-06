@@ -94,6 +94,7 @@ public class ApplicationDataController {
     @GetMapping("/appConfig")
     public AppConfig appConfig() {
         val config = new AppConfig();
+        val formData = formDataFactory.create();
         config.setMgmtType(casProperties.getServiceRegistry().getManagementType().toString());
         config.setVersionControl(managementProperties.getVersionControl().isEnabled());
         config.setDelegatedMgmt(managementProperties.getDelegated().isEnabled());

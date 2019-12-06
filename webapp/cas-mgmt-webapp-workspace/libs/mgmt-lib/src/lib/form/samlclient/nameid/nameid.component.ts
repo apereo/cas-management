@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {FormDataService} from '../../../form-data.service';
+import {MetadataForm} from '../metadata/metadata.form';
+import {NameidForm} from './nameid.form';
 
 @Component({
   selector: 'lib-nameid',
@@ -9,18 +10,12 @@ import {FormGroup} from '@angular/forms';
 export class SamlNameidComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  requiredNameIdFormat: MgmtFormControl;
-  serviceProviderNameIdQualifier: MgmtFormControl;
-  nameIdQualifier: MgmtFormControl;
+  form: NameidForm;
 
-  constructor() {
+  constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.requiredNameIdFormat = this.control.get('requiredNameIdFormat') as MgmtFormControl;
-    this.serviceProviderNameIdQualifier = this.control.get('serviceProviderNameIdQualifier') as MgmtFormControl;
-    this.nameIdQualifier = this.control.get('nameIdQualifier') as MgmtFormControl;
   }
 
 }

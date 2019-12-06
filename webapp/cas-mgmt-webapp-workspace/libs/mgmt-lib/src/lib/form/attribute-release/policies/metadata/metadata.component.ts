@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {MetadataReleaseForm} from './metadata.form';
 
 @Component({
   selector: 'lib-metadata',
@@ -9,18 +8,12 @@ import {FormGroup} from '@angular/forms';
 export class MetadataComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  entityAttribute: MgmtFormControl;
-  entityAttributeFormat: MgmtFormControl;
-  entityAttributeValues: MgmtFormControl;
+  form: MetadataReleaseForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.entityAttribute = this.control.get('entityAttribute') as MgmtFormControl;
-    this.entityAttributeFormat = this.control.get('entityAttributeFormat') as MgmtFormControl;
-    this.entityAttributeValues = this.control.get('entityAttributeValues') as MgmtFormControl;
   }
 
 }

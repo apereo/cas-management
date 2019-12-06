@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {PublicKeyForm} from './pubkey.form';
 
 @Component({
   selector: 'lib-pubkey',
@@ -9,16 +8,12 @@ import {FormGroup} from '@angular/forms';
 export class PubkeyComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  algorithm: MgmtFormControl;
-  location: MgmtFormControl;
+  control: PublicKeyForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.location = this.control.get('location') as MgmtFormControl;
-    this.algorithm = this.control.get('algorithm') as MgmtFormControl;
   }
 
 }

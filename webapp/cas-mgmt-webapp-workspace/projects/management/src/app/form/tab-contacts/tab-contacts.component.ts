@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {DefaultRegisteredServiceContact} from 'domain-lib';
 import {UserService} from 'shared-lib';
-import {ContactsForm} from './contacts-form';
+import {TabContactsForm} from './tab-contacts.form';
 import {DataRecord} from 'mgmt-lib';
 
 @Component({
@@ -10,15 +10,16 @@ import {DataRecord} from 'mgmt-lib';
 })
 export class TabContactsComponent {
 
-  contacts: ContactsForm;
+  form: TabContactsForm;
+  readonly key = 'contacts';
 
   constructor(public data: DataRecord,
               private user: UserService) {
-    if (this.data.formMap.has('contacts')) {
-      this.contacts = this.data.formMap.get('contacts') as ContactsForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabContactsForm;
       return;
     }
-    this.contacts = new ContactsForm(this.data.service);
+    this.form = new TabContactsForm(this.data.service);
     if (!this.user.user.administrator
         && (!this.data.service.contacts || this.data.service.contacts.length === 0)) {
       const contact: DefaultRegisteredServiceContact = new DefaultRegisteredServiceContact();
@@ -26,8 +27,8 @@ export class TabContactsComponent {
       contact.email = this.user.user.email;
       contact.phone = this.user.user.phone;
       contact.department = this.user.user.department;
-      this.contacts.add(contact);
+      this.form.contacts.addRow(contact);
     }
-    this.data.formMap.set('contacts', this.contacts);
+    this.data.formMap.set(this.key, this.form);
   }
 }

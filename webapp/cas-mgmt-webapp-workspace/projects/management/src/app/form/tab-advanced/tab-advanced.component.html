@@ -1,14 +1,14 @@
-<div [formGroup]="advanced">
+<div [formGroup]="form">
   <lib-card i18n-heading heading="Advanced">
-    <lib-evalorder [control]="advanced.get('evalOrder')"></lib-evalorder>
-    <lib-reqhandlers [control]="advanced.get('required')"></lib-reqhandlers>
-    <lib-responsetype [control]="advanced.get('responseType')"></lib-responsetype>
-    <lib-environments [control]="advanced.get('environments')"></lib-environments>
+    <lib-evalorder [control]="form.evalOrder"></lib-evalorder>
+    <lib-reqhandlers [control]="form.required"></lib-reqhandlers>
+    <lib-responsetype [control]="form.responseType"></lib-responsetype>
+    <lib-environments [control]="form.environments"></lib-environments>
   </lib-card>
   <lib-card i18n-heading heading="Expiration" [collapse]="false">
-    <lib-expiration [control]="this.advanced.get('expirationPolicy')"></lib-expiration>
+    <lib-expiration [form]="form.expirationPolicy"></lib-expiration>
   </lib-card>
   <lib-card i18n-heading heading="Public Key Options">
-    <lib-pubkey [control]="advanced.get('publicKey')"></lib-pubkey>
+    <lib-pubkey [control]="form.publicKey"></lib-pubkey>
   </lib-card>
 </div>

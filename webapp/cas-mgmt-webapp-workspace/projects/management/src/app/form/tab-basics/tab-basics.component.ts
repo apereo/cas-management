@@ -8,7 +8,7 @@ import {
   WSFederationRegisterdService,
   RegexRegisteredService
 } from 'domain-lib';
-import {BasicsForm} from './basics-form';
+import {TabBasicsForm} from './tab-basics.form';
 
 @Component({
   selector: 'app-tab-basics',
@@ -17,20 +17,20 @@ import {BasicsForm} from './basics-form';
 export class TabBasicsComponent implements OnInit {
 
   groovyAccessStrategy: boolean;
-
-  basics: BasicsForm;
+  form: TabBasicsForm;
+  readonly key = 'basics';
 
   constructor(public data: DataRecord) {
   }
 
   ngOnInit() {
     this.groovyAccessStrategy = GroovyRegisteredServiceAccessStrategy.instanceOf(this.data.service.accessStrategy);
-    if (this.data.formMap.has('basics')) {
-      this.basics = this.data.formMap.get('basics') as BasicsForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabBasicsForm;
       return;
     }
-    this.basics = new BasicsForm(this.data.service);
-    this.basics.get('serviceType').valueChanges.subscribe(val => {
+    this.form = new TabBasicsForm(this.data.service);
+    this.form.serviceType.valueChanges.subscribe(val => {
       if (val === OAuthRegisteredService.cName) {
         this.data.service = new OAuthRegisteredService(this.data.service);
       } else if (val === OidcRegisteredService.cName) {
@@ -44,7 +44,11 @@ export class TabBasicsComponent implements OnInit {
       }
       this.data.typeChange.emit();
     });
-    this.data.formMap.set('basics', this.basics);
+    this.data.formMap.set(this.key, this.form);
   }
 
+  isOauth(): boolean {
+    return OAuthRegisteredService.instanceOf(this.data.service)
+      || OidcRegisteredService.instanceOf(this.data.service);
+  }
 }

@@ -1,9 +1,9 @@
-<div [formGroup]="tickets">
-  <lib-card i18n-heading heading="Service Ticket Expiration Policy" [collapse]="true">
-    <lib-service-ticket-exp [control]="serviceTicketExpiration"></lib-service-ticket-exp>
+<div [formGroup]="form">
+  <lib-card heading="Service Ticket Expiration Policy" [collapse]="true">
+    <lib-service-ticket-exp [form]="form.serviceTicket"></lib-service-ticket-exp>
   </lib-card>
 
-  <lib-card i18n-heading heading="Proxy Ticket Expiration Policy" [collapse]="true">
-    <lib-proxy-ticket-exp [control]="proxyTicketExpiration"></lib-proxy-ticket-exp>
+  <lib-card heading="Proxy Ticket Expiration Policy" [collapse]="true">
+    <lib-proxy-ticket-exp [form]="form.proxyTicket"></lib-proxy-ticket-exp>
   </lib-card>
 </div>

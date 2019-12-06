@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
 import {FormDataService} from '../../../form-data.service';
+import {IdTokenForm} from './idtoken.form';
 
 @Component({
   selector: 'lib-idtoken',
@@ -11,18 +10,11 @@ import {FormDataService} from '../../../form-data.service';
 export class IdtokenComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  idTokenEncryptionAlg: MgmtFormControl;
-  idTokenEncryptionEncoding: MgmtFormControl;
-  idTokenSigningAlg: MgmtFormControl;
+  form: IdTokenForm;
 
   constructor(public formData: FormDataService) { }
 
   ngOnInit() {
-    this.idTokenEncryptionAlg = this.control.get('idTokenEncryptionAlg') as MgmtFormControl;
-    this.idTokenEncryptionEncoding = this.control.get('idTokenEncryptionEncoding') as MgmtFormControl;
-    this.idTokenSigningAlg = this.control.get('idTokenSigningAlg') as MgmtFormControl;
   }
 
 }

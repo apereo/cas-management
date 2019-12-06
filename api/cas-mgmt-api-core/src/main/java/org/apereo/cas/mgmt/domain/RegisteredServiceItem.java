@@ -50,4 +50,9 @@ public class RegisteredServiceItem implements Serializable {
      */
     private String status;
 
+    /**
+     * Type of service.
+     */
+    private String type;
+
 }

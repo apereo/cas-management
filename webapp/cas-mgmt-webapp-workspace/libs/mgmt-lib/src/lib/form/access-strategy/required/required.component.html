@@ -1,16 +1,15 @@
-<lib-attributes [control]="control"
-                arrayName="requiredAttributes"
-                [keys]="formData.options.availableAttributes">
+<lib-attributes [form]="form.requiredAttributes"
+                [keys]="availableAttributes()">
 </lib-attributes>
 
 <lib-input>
-  <mat-checkbox [formControl]="caseInsensitive">
+  <mat-checkbox [formControl]="form.caseInsensitive">
     <ng-container i18n>Case Insensitive</ng-container>
   </mat-checkbox>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Indicates whether matching on required attribute values should be done in a case-insensitive manner.">
   </mat-icon>
   <mat-hint align="end">
-    <lib-hint [difference]="caseInsensitive.difference()"></lib-hint>
+    <lib-hint [difference]="form.caseInsensitive.difference()"></lib-hint>
   </mat-hint>
 </lib-input>

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {RestfulReleseForm} from './restful.form';
 
 @Component({
   selector: 'lib-restful',
@@ -9,15 +8,12 @@ import {FormGroup} from '@angular/forms';
 export class RestfulComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  endpoint: MgmtFormControl;
+  form: RestfulReleseForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.endpoint = this.control.get('restful') as MgmtFormControl;
   }
 
 }

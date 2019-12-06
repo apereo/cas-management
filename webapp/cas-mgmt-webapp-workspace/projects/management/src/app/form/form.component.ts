@@ -4,7 +4,7 @@ import {Location} from '@angular/common';
 import {FormService} from './form.service';
 import {MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs/index';
-import {map} from 'rxjs/operators';
+import {finalize, map} from 'rxjs/operators';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {DataRecord, MgmtFormGroup} from 'mgmt-lib';
 import {UserService, SpinnerService} from 'shared-lib';
@@ -85,6 +85,10 @@ export class FormComponent implements OnInit {
     this.data.service = service;
     this.data.formMap = new Map<string, MgmtFormGroup<AbstractRegisteredService>>();
     this.setNav();
+    setTimeout(() => {
+      if (this.data.service.id < 0) {
+        this.baseForm.markDirty();
+      }}, 10);
   }
 
   isOidc(): boolean {
@@ -105,6 +109,10 @@ export class FormComponent implements OnInit {
 
   isCas() {
     return RegexRegisteredService.instanceOf(this.data.service);
+  }
+
+  showEdit() {
+    return this.baseForm.dirty() || this.data.service.id < 0;
   }
 
   handleSave(id: number) {
@@ -160,13 +168,14 @@ export class FormComponent implements OnInit {
     this.tabs.push(['contacts', 'Contacts']);
     this.tabs.push(['logout', 'Logout']);
     if (this.isOidc()) {
-      this.tabs.push(['scopes', 'Scopes'])
+      this.tabs.push(['scopes', 'Scopes']);
     } else if (this.isWsFed()) {
-      this.tabs.push(['claims', 'Claims'])
+      this.tabs.push(['claims', 'Claims']);
     } else {
       this.tabs.push(['attrRelease', 'Attribute Release']);
     }
     this.tabs.push(['accessstrategy', 'Access Srategy']);
+    this.tabs.push(['delegated', 'Delegated Authentication']);
     this.tabs.push(['sso', 'SSO Policy']);
     this.tabs.push(['tickets', 'Tickets']);
     this.tabs.push(['userattr', 'Username Attribute']);

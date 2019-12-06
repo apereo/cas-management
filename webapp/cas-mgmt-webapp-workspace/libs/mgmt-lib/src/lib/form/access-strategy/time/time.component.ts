@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
+import {TimeForm} from './time.form';
 
 @Component({
   selector: 'lib-time',
@@ -9,17 +8,12 @@ import {MgmtFormControl} from '../../mgmt-formcontrol';
 export class TimeComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  startingDatetime: MgmtFormControl;
-  endingDatetime: MgmtFormControl;
+  form: TimeForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.startingDatetime = this.control.get('startingDatetime') as MgmtFormControl;
-    this.endingDatetime = this.control.get('endingDatetime') as MgmtFormControl;
   }
 
 }

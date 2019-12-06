@@ -7,6 +7,7 @@ export class Change {
   fileName: string;
   changeType: string;
   serviceName: string;
+  serviceType: string;
   oldId: string;
   newId: string;
 }

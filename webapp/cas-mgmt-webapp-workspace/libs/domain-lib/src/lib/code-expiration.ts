@@ -31,7 +31,7 @@ export class DefaultRegisteredServiceOAuthCodeExpirationPolicy extends Registere
 
 export function codeExpirationPolicy(policy?: any): RegisteredServiceOAuthCodeExpirationPolicy {
   if (!policy || DefaultRegisteredServiceOAuthCodeExpirationPolicy.instanceOf(policy)) {
-    return new DefaultRegisteredServiceOAuthCodeExpirationPolicy(policy)
+    return new DefaultRegisteredServiceOAuthCodeExpirationPolicy(policy);
   }
   return policy;
 }

@@ -23,13 +23,18 @@ currentChangeSetContains() {
     return 1
 }
 
+currentChangeSetAffectsBuild() {
+    currentChangeSetContains "\.(gradle|java|groovy)"
+    return `(expr "$?" + 0)`
+}
+
 currentChangeSetAffectsTests() {
-    currentChangeSetContains "\.(java|groovy|xml|properties|yml|json|ts)"
+    currentChangeSetContains "\.(java|groovy|xml|properties|yml|json)"
     return `(expr "$?" + 0)`
 }
 
 currentChangeSetAffectsStyle() {
-    currentChangeSetContains "\.(java|groovy|xml|ts|html)"
+    currentChangeSetContains "\.(java|groovy|xml)"
     return `(expr "$?" + 0)`
 }
 
@@ -44,7 +49,7 @@ currentChangeSetAffectsDocumentation() {
 }
 
 currentChangeSetAffectsDependencies() {
-    currentChangeSetContains "\.(gradle|properties|java)"
+    currentChangeSetContains "\.(gradle|properties|java|yml)"
     return `(expr "$?" + 0)`
 }
 

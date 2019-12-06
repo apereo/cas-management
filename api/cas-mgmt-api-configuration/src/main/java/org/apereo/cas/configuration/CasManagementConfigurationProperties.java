@@ -1,5 +1,6 @@
 package org.apereo.cas.configuration;
 
+import org.apereo.cas.configuration.model.CasServers;
 import org.apereo.cas.configuration.model.NotificationsProperties;
 import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
@@ -8,6 +9,7 @@ import org.apereo.cas.util.CollectionUtils;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
@@ -114,6 +116,21 @@ public class CasManagementConfigurationProperties implements Serializable {
     private String luceneIndexDir = "/etc/cas/lucene";
 
     /**
+     * Directory for storing SAML Metadata locally.
+     */
+    private String metadataRepoDir = "/etc/cas-mgmt/metadata";
+
+    /**
+     * Directory where metadata is stored on CAS server instances.
+     */
+    private String metadataDir = "/etc/cas/metadata";
+
+    /**
+     * File from InCommon Aggregate.
+     */
+    private String incommonFile = "/etc/cas/InCommon-metadata.xml";
+
+    /**
      * List of cas servers that available in the Dashboard.
      */
     private List<CasServers> casServers = new ArrayList<>();
@@ -125,7 +142,7 @@ public class CasManagementConfigurationProperties implements Serializable {
 
     @Getter
     @Setter
-    @RequiresModule(name = "cas-management-config-ldap-authz")
+    @RequiresModule(name = "cas-mgmt-config-ldap-authz")
     public static class Ldap extends AbstractLdapProperties {
         private static final long serialVersionUID = -8129280052479631538L;
         /**
@@ -176,23 +193,4 @@ public class CasManagementConfigurationProperties implements Serializable {
         @NestedConfigurationProperty
         private NotificationsProperties notifications = new NotificationsProperties();
     }
-
-    @Getter
-    @Setter
-    public static class CasServers implements Serializable {
-
-        /**
-         * User friendly name given to a server in the cluster.
-         */
-        private String name;
-
-        /**
-         * The full path to the /cas path of the server.
-         */
-        private String url;
-
-    }
 }
-
-
-

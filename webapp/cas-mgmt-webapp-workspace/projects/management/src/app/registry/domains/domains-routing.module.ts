@@ -1,7 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
-import {DomainsComponent} from '@app/registry/domains/domains.component';
-import {DomainsResolver} from '@app/registry/domains/domains.resolver';
 import {NgModule} from '@angular/core';
+import {DomainsComponent} from './domains.component';
+import {DomainsResolver} from './domains.resolver';
 
 const routes: Routes = [
   {

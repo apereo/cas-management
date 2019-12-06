@@ -14,39 +14,34 @@
 </lib-input>
 
 <ng-container *ngIf="typeControl.value == TYPE.SCRIPT">
-  <lib-script [control]="control"></lib-script>
+  <lib-script [form]="form"></lib-script>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.GROOVY">
-  <lib-groovy [control]="control"></lib-groovy>
+  <lib-groovy [form]="form"></lib-groovy>
 </ng-container>
 
-<ng-container *ngIf="(typeControl.value == TYPE.RETURN_ALLOWED
-  || typeControl.value == TYPE.METADATA) && !isEmpty( formData.options.availableAttributes )">
-  <lib-allowed [control]="control"></lib-allowed>
+<ng-container *ngIf="typeControl.value == TYPE.RETURN_ALLOWED">
+  <lib-allowed [form]="form"></lib-allowed>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.RETURN_MAPPED">
-  <lib-mapped [control]="control"></lib-mapped>
+  <lib-mapped [form]="form"></lib-mapped>
 </ng-container>
 
-<ng-container *ngIf="typeControl.value == TYPE.SAML_LDAP">
-  <lib-saml-ldap [control]="control"></lib-saml-ldap>
-</ng-container>
-
-<ng-container *ngIf="typeControl.value == TYPE.OAUTH">
-  <lib-oauth [control]="control"></lib-oauth>
+<ng-container *ngIf="typeControl.value == TYPE.SAML_IDP">
+  <lib-saml-idp [form]="form"></lib-saml-idp>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.METADATA" style="padding-top:25px;">
-  <lib-metadata [control]="control"></lib-metadata>
+  <lib-metadata [form]="form"></lib-metadata>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.RESTFUL">
-  <lib-restful [control]="control"></lib-restful>
+  <lib-restful [form]="form"></lib-restful>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.GROOVY_SAML">
-  <lib-groovy-saml [control]="control"></lib-groovy-saml>
+  <lib-groovy-saml [form]="form"></lib-groovy-saml>
 </ng-container>
 

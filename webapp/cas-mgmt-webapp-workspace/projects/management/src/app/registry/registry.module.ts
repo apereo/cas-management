@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { RegistryRoutingModule } from './registry-routing.module';
 import {DeleteComponent} from './delete/delete.component';
-import {ProjectShareModule} from '@app/project-share';
+import {ProjectShareModule} from '../project-share/project-share.module';
 
 @NgModule({
   declarations: [

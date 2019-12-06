@@ -14,7 +14,7 @@ import org.hjson.JsonValue;
 import org.jooq.lambda.Unchecked;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
 
 import java.io.InputStreamReader;
@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This is {@link JsonResourceAuthorizationGenerator}.
@@ -30,27 +31,21 @@ import java.util.Map;
  * @since 5.2.0
  */
 @Slf4j
-public class JsonResourceAuthorizationGenerator implements AuthorizationGenerator<CommonProfile> {
+public class JsonResourceAuthorizationGenerator implements AuthorizationGenerator {
 
     private final ObjectMapper objectMapper;
+    private final FileWatcherService watcher;
 
     private Map<String, UserAuthorizationDefinition> rules = new LinkedHashMap<>();
 
+    @SneakyThrows
     public JsonResourceAuthorizationGenerator(final Resource resource) {
         this.objectMapper = new ObjectMapper(getJsonFactory()).findAndRegisterModules();
 
         loadResource(resource);
-        watchResource(resource);
-    }
-
-    private void watchResource(final Resource usersFile) {
-        try (
-            val watcher = new FileWatcherService(usersFile.getFile(),
-                Unchecked.consumer(file -> loadResource(usersFile)))) {
-            watcher.start(getClass().getSimpleName());
-        } catch (final Exception e) {
-            LOGGER.debug(e.getMessage(), e);
-        }
+        watcher = new FileWatcherService(resource.getFile(),
+                Unchecked.consumer(file -> loadResource(resource)));
+        watcher.start(getClass().getSimpleName());
     }
 
     @SneakyThrows
@@ -63,14 +58,14 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
     }
 
     @Override
-    public CommonProfile generate(final WebContext context, final CommonProfile profile) {
+    public Optional<UserProfile> generate(final WebContext context, final UserProfile profile) {
         val id = profile.getId();
         if (rules.containsKey(id)) {
             val defn = rules.get(id);
             profile.addRoles(defn.getRoles());
             profile.addPermissions(defn.getPermissions());
         }
-        return profile;
+        return Optional.of(profile);
     }
 
     protected JsonFactory getJsonFactory() {

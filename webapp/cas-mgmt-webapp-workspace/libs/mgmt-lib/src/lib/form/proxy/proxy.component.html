@@ -16,8 +16,8 @@
   <lib-input>
     <mat-form-field class="textInput" appearance="standard">
       <mat-label i18n>Regex</mat-label>
-      <input matInput required [formControl]="regex()">
-      <mat-hint align="end"><lib-hint [difference]="regex().difference()"></lib-hint></mat-hint>
+      <input matInput required [formControl]="regex().pattern">
+      <mat-hint align="end"><lib-hint [difference]="regex().pattern.difference()"></lib-hint></mat-hint>
     </mat-form-field>
     <mat-icon libHelp i18n-matTooltip
              matTooltip="Matches the proxy callback url against a regex pattern. A successful match will authorize proxy authentication.">

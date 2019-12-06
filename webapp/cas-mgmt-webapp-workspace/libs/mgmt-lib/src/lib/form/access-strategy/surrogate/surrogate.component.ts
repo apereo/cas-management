@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {FormDataService} from '../../../form-data.service';
+import {SurrogateForm} from './surrogate.form';
+import {DataRecord} from '../../data';
 
 @Component({
   selector: 'lib-surrogate',
@@ -10,17 +10,17 @@ import {FormDataService} from '../../../form-data.service';
 export class SurrogateComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
+  form: SurrogateForm;
 
-  surrogateEnabled: MgmtFormControl;
-  surrogateRequiredAttributes: MgmtFormControl;
-
-  constructor(public formData: FormDataService) {
+  constructor(public formData: FormDataService, public data: DataRecord) {
   }
 
   ngOnInit() {
-    this.surrogateEnabled = this.control.get('surrogateEnabled') as MgmtFormControl;
-    this.surrogateRequiredAttributes = this.control.get('attributes') as MgmtFormControl;
+  }
+
+  availableAttributes() {
+    const repos = this.data.service.attributeReleasePolicy.principalAttributesRepository.attributeRepositoryIds;
+    return this.formData.availableAttributes(repos);
   }
 }
 

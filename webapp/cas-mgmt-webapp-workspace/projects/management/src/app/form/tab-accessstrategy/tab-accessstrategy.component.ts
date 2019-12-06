@@ -3,7 +3,8 @@ import {
   DataRecord,
   FormDataService,
 } from 'mgmt-lib';
-import {StrategyAccessForm} from './access-strategy-form';
+import {TabAccessStrategyForm} from './tab-access-strategy-form';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-tab-accessstrategy',
@@ -13,19 +14,25 @@ export class TabAccessstrategyComponent implements OnInit {
 
   groovyAccessStrategy: boolean;
 
-  accessStrategy: StrategyAccessForm;
+  form: TabAccessStrategyForm;
+  readonly key = 'accessStrategy';
 
   constructor(public data: DataRecord,
-              public formData: FormDataService) {
+              public formData: FormDataService,
+              public route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    if (this.data.formMap.has('accessstrategy')) {
-      this.accessStrategy = this.data.formMap.get('accessstrategy') as StrategyAccessForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabAccessStrategyForm;
       return;
     }
-    this.accessStrategy = new StrategyAccessForm(this.data.service.accessStrategy);
-    this.data.formMap.set('accessstrategy', this.accessStrategy);
+    this.form = new TabAccessStrategyForm(this.data.service.accessStrategy);
+    this.data.formMap.set(this.key, this.form);
   }
 
+  availableAttributes() {
+    const repos = this.data.service.attributeReleasePolicy.principalAttributesRepository.attributeRepositoryIds;
+    return this.formData.availableAttributes(repos);
+  }
 }

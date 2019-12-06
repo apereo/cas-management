@@ -10,6 +10,8 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
   principalAttributeNameTrigger: string;
   principalAttributeValueToMatch: string;
   bypassEnabled: boolean;
+  forceExecution: boolean;
+  bypassTrustedDeviceEnabled: boolean;
 
   static instanceOf(obj: any): boolean {
     return obj && obj['@class'] === DefaultRegisteredServiceMultifactorPolicy.cName;
@@ -23,7 +25,9 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
     this.failureMode = (p && p.failureMode) ||  null;
     this.principalAttributeNameTrigger = (p && p.principalAttributeNameTrigger) || null;
     this.principalAttributeValueToMatch = (p && p.principalAttributeValueToMatch) || null;
-    this.bypassEnabled = p ? p.bypassEnabled : null;
+    this.bypassEnabled = p ? p.bypassEnabled : false;
+    this.forceExecution = p ? p.forceExecution : false;
+    this.bypassTrustedDeviceEnabled = p ? p.bypassTrustedDeviceEnabled : false;
     this['@class'] = DefaultRegisteredServiceMultifactorPolicy.cName;
   }
 }
@@ -52,11 +56,11 @@ export enum MfaPolicyType {
   GROOVY
 }
 
-export function mfaPolicyFactory(policy?: any): RegisteredServiceMultifactorPolicy {
-  if (DefaultRegisteredServiceMultifactorPolicy.instanceOf(policy)) {
+export function mfaPolicyFactory(policy?: any, type?: MfaPolicyType): RegisteredServiceMultifactorPolicy {
+  if (type === MfaPolicyType.DEFAULT || (!type && DefaultRegisteredServiceMultifactorPolicy.instanceOf(policy))) {
     return new DefaultRegisteredServiceMultifactorPolicy(policy);
   }
-  if (GroovyRegisteredServiceMultifactorPolicy.instanceOf(policy)) {
+  if (type === MfaPolicyType.GROOVY  || (!type && GroovyRegisteredServiceMultifactorPolicy.instanceOf(policy))) {
     return new GroovyRegisteredServiceMultifactorPolicy(policy);
   }
   return policy;

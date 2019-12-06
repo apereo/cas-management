@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
-import {LogoutForm} from './logout-form';
+import {TabLogoutForm} from './tab-logout.form';
 
 @Component({
   selector: 'app-tab-logout',
@@ -8,14 +8,15 @@ import {LogoutForm} from './logout-form';
 })
 export class TabLogoutComponent {
 
-  logout: LogoutForm;
+  form: TabLogoutForm;
+  readonly key = 'logout';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('logout')) {
-      this.logout = this.data.formMap.get('logout') as LogoutForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabLogoutForm;
       return;
     }
-    this.logout = new LogoutForm(this.data.service);
-    this.data.formMap.set('logout', this.logout);
+    this.form = new TabLogoutForm(this.data.service);
+    this.data.formMap.set(this.key, this.form);
   }
 }

@@ -1,5 +1,6 @@
 .nameWidth {
   flex: 0 0 240px;
+  padding-right: 5px;
 }
 
 .valueWidth {

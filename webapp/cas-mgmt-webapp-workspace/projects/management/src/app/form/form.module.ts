@@ -16,13 +16,10 @@ import {TabPropertiesComponent} from './tab-properties/tab-properties.component'
 import { TabOauthComponent } from './tab-oauth/tab-oauth.component';
 import { TabWsfedComponent } from './tab-wsfed/tab-wsfed.component';
 import { TabContactsComponent } from './tab-contacts/tab-contacts.component';
-import { TabExpirationComponent } from './tab-expiration/tab-expiration.component';
 import {TabOIDCComponent} from './tab-oidc/tab-oidc.component';
 import {TabAdvancedComponent} from './tab-advanced/tab-advanced.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
 import {MgmtLibModule} from 'mgmt-lib';
-import {TabOidcAttrreleaseComponent} from '@app/form/tab-oidc-attrrelease/tab-oidc-attrrelase.component';
-import {TabWsfedAttrreleaseComponent} from '@app/form/tab-wsfed-attrrelease/tab-wsfed-attrrelease.component';
 import { TabTokensComponent } from './tab-tokens/tab-tokens.component';
 import { TabTicketsComponent } from './tab-tickets/tab-tickets.component';
 import { TabSsoComponent } from './tab-sso/tab-sso.component';
@@ -31,6 +28,9 @@ import { TabSamlEncryptionComponent } from './tab-saml-encryption/tab-saml-encry
 import { TabSamlSigningComponent } from './tab-saml-signing/tab-saml-signing.component';
 import { TabSamlMetadataComponent } from './tab-saml-metadata/tab-saml-metadata.component';
 import { TabSamlAssertionComponent } from './tab-saml-assertion/tab-saml-assertion.component';
+import {TabWsfedAttrreleaseComponent} from './tab-wsfed-attrrelease/tab-wsfed-attrrelease.component';
+import {TabDelegatedComponent} from './tab-delegated/tab-delegated.component';
+import {TabOidcAttrreleaseComponent} from '@app/form/tab-oidc-attrrelease/tab-oidc-attrrelease.component';
 
 @NgModule({
   imports: [
@@ -44,6 +44,7 @@ import { TabSamlAssertionComponent } from './tab-saml-assertion/tab-saml-asserti
     TabBasicsComponent,
     TabLogoutComponent,
     TabAccessstrategyComponent,
+    TabDelegatedComponent,
     TabMulitauthComponent,
     TabProxyComponent,
     TabUsernameattrComponent,
@@ -59,7 +60,6 @@ import { TabSamlAssertionComponent } from './tab-saml-assertion/tab-saml-asserti
     TabWsfedComponent,
     TabContactsComponent,
     TabTokensComponent,
-    TabExpirationComponent,
     TabTicketsComponent,
     TabSsoComponent,
     TabSamlAttributesComponent,

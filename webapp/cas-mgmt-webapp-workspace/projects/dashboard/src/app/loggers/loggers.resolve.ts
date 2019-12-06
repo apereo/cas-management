@@ -7,13 +7,14 @@ import {Injectable} from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class LoggersResolve implements Resolve<Map<string,Map<string, Logger>>> {
+export class LoggersResolve implements Resolve<Map<string, Map<string, Logger>>> {
 
   constructor(private service: DashboardService) {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string,Map<string, Logger>>> | Map<string,Map<string, Logger>> {
+  // tslint:disable-next-line:max-line-length
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, Map<string, Logger>>> | Map<string, Map<string, Logger>> {
     return this.service.getLoggers();
   }
 

@@ -18,7 +18,7 @@ export class HistoryResolve implements Resolve<History[]> {
   constructor(private service: HistoryService, private spinner: SpinnerService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<History[]> | History[] {
-    const param: string = route.params['fileName'];
+    const param: string = route.params.fileName;
     if (param) {
       return this.service.history(param);
     }

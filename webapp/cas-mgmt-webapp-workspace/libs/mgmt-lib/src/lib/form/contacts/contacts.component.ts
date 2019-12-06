@@ -1,11 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DefaultRegisteredServiceContact, RegisteredServiceContact} from 'domain-lib';
-import {FormArray, FormGroup, Validators} from '@angular/forms';
+import {DefaultRegisteredServiceContact} from 'domain-lib';
 import {UserService, SpinnerService, AppConfigService} from 'shared-lib';
-import {MgmtFormControl} from '../mgmt-formcontrol';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {ContactsForm} from './contacts.form';
 
 @Component({
   selector: 'lib-contacts',
@@ -25,11 +24,9 @@ export class ContactsComponent implements OnInit {
   }
 
   @Input()
-  control: FormGroup;
-  contactsArray: FormArray;
+  form: ContactsForm;
 
   ngOnInit() {
-    this.contactsArray = this.control.get('contacts') as FormArray;
     this.selectedTab = 0;
 
     this.lookupContact.pipe(
@@ -56,11 +53,11 @@ export class ContactsComponent implements OnInit {
 
   selection(sel: MatAutocompleteSelectedEvent ) {
     const selection = this.foundContacts[+sel.option.value];
-    const contact = this.contactsArray.at(this.selectedTab);
-    contact.get('email').setValue(selection.email);
-    contact.get('phone').setValue(selection.phone);
-    contact.get('department').setValue(selection.department);
-    contact.get('name').setValue(selection.name);
+    const contact = this.form.rowAt(this.selectedTab);
+    contact.email.setValue(selection.email);
+    contact.phone.setValue(selection.phone);
+    contact.department.setValue(selection.department);
+    contact.name.setValue(selection.name);
     this.foundContacts = null;
   }
 
@@ -69,27 +66,18 @@ export class ContactsComponent implements OnInit {
   }
 
   addContact(contact?: DefaultRegisteredServiceContact) {
-    this.contactsArray.push(this.createContactGroup(contact || new DefaultRegisteredServiceContact()));
-    this.selectedTab = this.contactsArray.length - 1;
+    this.form.addRow(contact || new DefaultRegisteredServiceContact());
+    this.selectedTab = this.form.length - 1;
   }
 
   deleteContact() {
     if (this.selectedTab > -1) {
-      this.contactsArray.removeAt(this.selectedTab);
+      this.form.removeAt(this.selectedTab);
     }
   }
 
   getTabHeader(index: number) {
     return index + 1;
-  }
-
-  createContactGroup(contact: RegisteredServiceContact): FormGroup {
-    return new FormGroup({
-      name: new MgmtFormControl(contact.name, '', Validators.required),
-      email: new MgmtFormControl(contact.email, '', [Validators.required, Validators.email]),
-      phone: new MgmtFormControl(contact.phone),
-      department: new MgmtFormControl(contact.department)
-    });
   }
 
 }

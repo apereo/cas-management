@@ -1,8 +1,12 @@
 export abstract class RegisteredServiceDelegatedAuthenticationPolicy {
   allowedProviders: string[];
+  permitUndefined: boolean;
+  exclusive: boolean;
 
   constructor(policy?: RegisteredServiceDelegatedAuthenticationPolicy) {
     this.allowedProviders = (policy && policy.allowedProviders) || null;
+    this.permitUndefined = policy ? policy.permitUndefined : true;
+    this.exclusive = policy ? policy.exclusive : false;
   }
 }
 

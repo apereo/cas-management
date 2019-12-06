@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.val;
 
 import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 
 import java.util.Collection;
@@ -28,10 +27,10 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
         this.administrator = false;
     }
 
-    public CasUserProfile(final UserProfile up, final Collection<String> adminRoles) {
+    public CasUserProfile(final CommonProfile up, final Collection<String> adminRoles) {
         build(up.getId(), up.getAttributes());
         setClientName(up.getClientName());
-        setLinkedId(up.getLinkedId());
+        setLinkedId(up.getId());
         setRemembered(up.isRemembered());
         addRoles(up.getRoles());
         addPermissions(up.getPermissions());

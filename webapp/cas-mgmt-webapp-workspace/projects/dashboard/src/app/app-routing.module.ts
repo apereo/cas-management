@@ -31,12 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'sessions',
-    loadChildren: () => import('./ssosession/ssosession.module').then(m => m.SsosessionModule),
-    canActivate: [AdminGuard]
-  },
-  {
-    path: 'tokens',
-    loadChildren: () => import('./tokens/tokens.module').then(m => m.TokensModule),
+    loadChildren: () => import('./ssosessions/ssosessions.module').then(m => m.SsosessionsModule),
     canActivate: [AdminGuard]
   },
   {

@@ -1,5 +1,5 @@
-<div [formGroup]="saml">
-  <lib-card i18n-heading heading="SAML Encryption">
-    <lib-encryption [control]="saml"></lib-encryption>
+<div [formGroup]="form">
+  <lib-card heading="SAML Encryption">
+    <lib-encryption [form]="form.encryption"></lib-encryption>
   </lib-card>
 </div>

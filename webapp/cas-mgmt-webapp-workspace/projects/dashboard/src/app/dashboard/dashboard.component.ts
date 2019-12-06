@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
 import {Server, SystemHealth} from '../domain/dashboard';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -8,11 +8,11 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   servers: Server[];
 
-  timers: Function[];
+  timers;
 
   readonly SECONDS_IN_A_DAY = 24.0 * 60.0 * 60.0;
   readonly SECONDS_IN_A_HOUR = 60.0 * 60.0;
@@ -31,8 +31,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.timers = null;
+  }
+
   statusLight(server: Server): string {
-    const status = server.system ? server.system.status : "DOWN";
+    const status = server.system ? server.system.status : 'DOWN';
     if (status === 'UP') {
       return 'led-green';
     }

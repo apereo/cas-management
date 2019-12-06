@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RepoHistoryRoutingModule } from './repo-history-routing.module';
-import {RepoHistoryComponent} from '@app/version-control/repo-history/repo-history.component';
-import {ProjectShareModule} from '@app/project-share';
+import {RepoHistoryComponent} from './repo-history.component';
+import {ProjectShareModule} from '../../project-share/project-share.module';
 
 @NgModule({
   declarations: [

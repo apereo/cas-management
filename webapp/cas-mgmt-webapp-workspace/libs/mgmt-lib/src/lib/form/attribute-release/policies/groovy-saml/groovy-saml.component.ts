@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
+import {GroovySamlReleaseForm} from './groovy-saml.form';
 
 @Component({
   selector: 'lib-groovy-saml',
@@ -9,15 +8,12 @@ import {FormGroup} from '@angular/forms';
 export class GroovySamlComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
-  script: MgmtFormControl;
+  form: GroovySamlReleaseForm;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.script = this.control.get('groovySaml') as MgmtFormControl;
   }
 
 }

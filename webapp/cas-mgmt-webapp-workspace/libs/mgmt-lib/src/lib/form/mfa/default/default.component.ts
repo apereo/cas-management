@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
-import {FormGroup} from '@angular/forms';
 import {FormDataService} from '../../../form-data.service';
+import {DefaultMfaForm} from './default.form';
 
 @Component({
   selector: 'lib-default',
@@ -10,22 +9,16 @@ import {FormDataService} from '../../../form-data.service';
 export class DefaultComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-  multifactorAuthenticationProviders: MgmtFormControl;
-  failureMode: MgmtFormControl;
-  principalAttributeNameTrigger: MgmtFormControl;
-  principalAttributeValueToMatch: MgmtFormControl;
-  bypassEnabled: MgmtFormControl;
+  form: DefaultMfaForm;
 
   constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
-    this.multifactorAuthenticationProviders = this.control.get('multifactorAuthenticationProviders') as MgmtFormControl;
-    this.failureMode = this.control.get('failureMode') as MgmtFormControl;
-    this.principalAttributeNameTrigger = this.control.get('principalAttributeNameTrigger') as MgmtFormControl;
-    this.principalAttributeValueToMatch = this.control.get('principalAttributeValueToMatch') as MgmtFormControl;
-    this.bypassEnabled = this.control.get('bypassEnabled') as MgmtFormControl;
+  }
+
+  attributes(): string[] {
+    return this.formData.availableAttributes(this.formData.options.attributeRepositories);
   }
 
 }

@@ -1,0 +1,12 @@
+description "Apereo CAS Management Config OAuth"
+
+dependencies {
+    api project(":api:cas-mgmt-api-core")
+    api project(":api:cas-mgmt-api-version-control")
+
+    implementation libraries.git
+   
+    implementation project(":core:cas-mgmt-core-authentication")
+    implementation project(":support:cas-mgmt-support-version-control")
+    implementation project(":support:cas-mgmt-support-oauth")
+}

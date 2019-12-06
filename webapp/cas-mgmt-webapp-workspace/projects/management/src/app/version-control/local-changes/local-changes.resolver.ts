@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs/internal/Observable';
 import {Change} from 'domain-lib';
-import {ControlsService} from '@app/project-share';
+import {ControlsService} from '../../project-share/controls/controls.service';
 
 @Injectable({
   providedIn: 'root'

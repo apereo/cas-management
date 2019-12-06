@@ -1,7 +1,7 @@
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Access Strategy Type</mat-label>
-    <mat-select [formControl]="typeControl">
+    <mat-select [formControl]="type">
       <mat-option *ngFor="let opt of types" [value]="opt">{{ TYPE[opt] }}</mat-option>
     </mat-select>
     <mat-hint align="end">
@@ -14,49 +14,50 @@
 </lib-input>
 
 <lib-input>
-  <mat-checkbox [formControl]="requireAll">
+  <mat-checkbox [formControl]="form.requireAll">
     <ng-container i18n>Require All Attributes</ng-container>
   </mat-checkbox>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="Decides whether all attributes AND corresponding values should be evaluated before access can be granted. If left unchecked, the first successful match on attribute name and value will allow access.">
   </mat-icon>
-  <mat-hint align="end"><lib-hint [difference]="requireAll.difference()"></lib-hint></mat-hint>
+  <mat-hint align="end"><lib-hint [difference]="form.requireAll.difference()"></lib-hint></mat-hint>
 </lib-input>
 
 <lib-input>
   <mat-form-field class="textInput" appearance="standard">
     <mat-label i18n>Unauthorized Redirect Url</mat-label>
-    <input matInput [formControl]="unauthorizedUrl">
-    <mat-hint align="end"><lib-hint [difference]="unauthorizedUrl.difference()"></lib-hint></mat-hint>
+    <input matInput [formControl]="form.unauthorizedUrl">
+    <mat-hint align="end"><lib-hint [difference]="form.unauthorizedUrl.difference()"></lib-hint></mat-hint>
   </mat-form-field>
   <mat-icon libHelp i18n-matTooltip
             matTooltip="URL to which CAS should direct in the event that service access is defined.">
   </mat-icon>
 </lib-input>
 
-<ng-container *ngIf="typeControl.value == TYPE.REMOTE">
-  <lib-remote [control]="control"></lib-remote>
+<ng-container *ngIf="type.value === TYPE.REMOTE">
+  <lib-remote [form]="form"></lib-remote>
 </ng-container>
 
-<ng-container *ngIf="typeControl.value === TYPE.TIME">
-  <lib-time [control]="control"></lib-time>
+<ng-container *ngIf="type.value === TYPE.TIME">
+  <lib-time [form]="form"></lib-time>
 </ng-container>
 
-<ng-container *ngIf="typeControl.value == TYPE.GROUPER">
-  <lib-grouper [control]="control"></lib-grouper>
-  <lib-time [control]="control"></lib-time>
+<ng-container *ngIf="type.value === TYPE.GROUPER">
+  <lib-grouper [form]="form"></lib-grouper>
+  <lib-time [form]="form"></lib-time>
 </ng-container>
 
-<ng-container *ngIf="typeControl.value == TYPE.SURROGATE">
-  <lib-surrogate [control]="control"></lib-surrogate>
+<ng-container *ngIf="type.value === TYPE.SURROGATE">
+  <lib-surrogate [form]="form"></lib-surrogate>
 </ng-container>
 
+<!--
 <ng-container *ngIf="typeControl.value == TYPE.GROOVY_SURROGATE">
-  <lib-groovy-surrogate [control]="control"></lib-groovy-surrogate>
+  <lib-groovy-surrogate [form]="form"></lib-groovy-surrogate>
 </ng-container>
 
 <ng-container *ngIf="typeControl.value == TYPE.GROOVY">
-  <lib-groovy [control]="control"></lib-groovy>
+  <lib-groovy [form]="form"></lib-groovy>
 </ng-container>
-
+-->
 

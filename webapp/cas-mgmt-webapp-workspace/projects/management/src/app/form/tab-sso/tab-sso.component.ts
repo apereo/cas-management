@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
-import {SsoForm} from '@app/form/tab-sso/sso-form';
+import {TabSsoForm} from './tab-sso.form';
 
 @Component({
   selector: 'app-tab-sso',
@@ -9,15 +9,16 @@ import {SsoForm} from '@app/form/tab-sso/sso-form';
 })
 export class TabSsoComponent {
 
-  ssoForm: SsoForm;
+  form: TabSsoForm;
+  readonly key = 'ssoPolicy';
 
   constructor(public data: DataRecord) {
-    if (this.data.formMap.has('ssoPolicy')) {
-      this.ssoForm = this.data.formMap.get('ssoPolicy') as SsoForm;
+    if (this.data.formMap.has(this.key)) {
+      this.form = this.data.formMap.get(this.key) as TabSsoForm;
       return;
     }
-    this.ssoForm = new SsoForm(this.data.service);
-    this.data.formMap.set('ssoPolicy', this.ssoForm);
+    this.form = new TabSsoForm(this.data.service);
+    this.data.formMap.set(this.key, this.form);
   }
 
 }

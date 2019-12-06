@@ -19,23 +19,23 @@ export class RedirectUriComponent implements OnInit {
 
   ngOnInit() {
     const uris = this.control.value as string;
-    if (!uris || uris.length == 0) {
+    if (!uris || uris.length === 0) {
       this.urls = [this.createUrl(null)];
     } else {
-      this.urls = uris.split("\|").map(u => this.createUrl(u));
+      this.urls = uris.split('\|').map(u => this.createUrl(u));
     }
   }
 
   createUrl(val: string) {
     const url = new MgmtFormControl(val, {updateOn: 'blur'});
-    url.valueChanges.subscribe(c => {
+    url.valueChanges.subscribe(() => {
       this.setControl();
     });
     return url;
   }
 
   addUrl() {
-    this.urls.push(this.createUrl("https://"));
+    this.urls.push(this.createUrl('https://'));
   }
 
   delete(index: number) {
@@ -44,7 +44,7 @@ export class RedirectUriComponent implements OnInit {
   }
 
   setControl() {
-    this.control.setValue(this.urls.map(u => u.value as string).join("|"), {emitEvent: true});
+    this.control.setValue(this.urls.map(u => u.value as string).join('|'), {emitEvent: true});
     this.control.markAsDirty();
     this.control.markAsTouched();
   }

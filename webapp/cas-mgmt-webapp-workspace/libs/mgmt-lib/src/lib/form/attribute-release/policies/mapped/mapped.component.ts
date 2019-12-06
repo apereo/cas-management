@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormDataService} from '../../../../form-data.service';
-import {FormGroup} from '@angular/forms';
+import {MappedReleaseForm} from './mapped.form';
 
 @Component({
   selector: 'lib-mapped',
@@ -9,13 +9,17 @@ import {FormGroup} from '@angular/forms';
 export class MappedComponent implements OnInit {
 
   @Input()
-  control: FormGroup;
-
+  form: MappedReleaseForm;
 
   constructor(public formData: FormDataService) {
   }
 
   ngOnInit() {
+  }
+
+  availableAttributes() {
+    const repos = this.form.principalRepo.attributeRepositoryIds.value;
+    return this.formData.availableAttributes(repos);
   }
 
 }

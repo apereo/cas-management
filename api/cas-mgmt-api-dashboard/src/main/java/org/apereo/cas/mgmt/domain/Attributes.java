@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Maps json return from /releaseAttributes endpoint in CAS.
+ * Serialize resolved attributes from CAS Dashboard.
  *
  * @author Travis Schmidt
  * @since 6.1.0

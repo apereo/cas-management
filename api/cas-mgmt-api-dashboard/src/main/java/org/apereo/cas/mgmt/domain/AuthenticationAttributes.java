@@ -15,11 +15,23 @@ import java.util.List;
 @NoArgsConstructor
 public class AuthenticationAttributes {
 
+    /**
+     * Auth method used.
+     */
     private List<String> authenticationMethod;
 
+    /**
+     * Credential type used.
+     */
     private List<String> credentialType;
 
+    /**
+     * Authn method from SAML statement.
+     */
     private List<String> samlAuthenticationStatementAuthnMethod;
 
+    /**
+     * Chain of successful auth handlers.
+     */
     private List<String> successfulAuthenticationHandlers;
 }

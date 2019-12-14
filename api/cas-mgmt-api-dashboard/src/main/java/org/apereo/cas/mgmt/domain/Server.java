@@ -13,7 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Server {
 
+    /**
+     * Name of the CAS server.
+     */
     private String name;
 
+    /**
+     * System Health details of the CAS server.
+     */
     private SystemHealth system;
 }

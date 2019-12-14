@@ -21,6 +21,6 @@ export class TabUsernameattrComponent {
   }
 
   attributes(): string[] {
-    return this.formData.availableAttributes(this.formData.options.attributeRepositories);
+    return this.formData.options.availableAttributes;
   }
 }

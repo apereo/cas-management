@@ -49,7 +49,7 @@ export class AttributesComponent implements OnInit {
   setChangeSubscription(row: Row) {
     row.key.valueChanges.subscribe((value => {
       if (this.defaultToAttributeName) {
-        row.key.parent.get('value').setValue(value);
+        row.key.parent.get('values').setValue(value);
       }
       this.keyChange.emit(row.key.parent as FormGroup);
     }));

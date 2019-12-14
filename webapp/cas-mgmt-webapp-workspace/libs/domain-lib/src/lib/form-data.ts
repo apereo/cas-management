@@ -1,5 +1,5 @@
 export class FormData {
-    availableAttributes: Map<string, string[]>;
+    availableAttributes: string[];
     attributeRepositories: string[] = [];
     ldapAttributes: string[] = [];
     registeredServiceProperties: Property[];

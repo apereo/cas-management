@@ -97,7 +97,7 @@ public class FormDataFactory {
         if (profile.isPresent() && !profile.get().getRegisteredServiceTypesSupported().isEmpty()) {
             val p = profile.get();
 
-            val types = p.getRegisteredServiceTypesSupported().entrySet().stream()
+            val types = p.getRegisteredServiceTypes().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
                 .collect(toList());
             formData.setServiceTypes(types);

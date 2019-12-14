@@ -17,9 +17,8 @@ export class MappedComponent implements OnInit {
   ngOnInit() {
   }
 
-  availableAttributes() {
-    const repos = this.form.principalRepo.attributeRepositoryIds.value;
-    return this.formData.availableAttributes(repos);
+  availableAttributes(): string[] {
+    return this.formData.options.availableAttributes;
   }
 
 }

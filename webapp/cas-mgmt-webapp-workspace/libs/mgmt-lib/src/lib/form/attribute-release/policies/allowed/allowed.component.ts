@@ -17,9 +17,8 @@ export class AllowedComponent implements OnInit {
   ngOnInit() {
   }
 
-  availableAttributes() {
-    const repos = this.form.principalRepo.attributeRepositoryIds.value as string[];
-    return this.formData.availableAttributes(repos);
+  availableAttributes(): string[] {
+    return this.formData.options.availableAttributes;
   }
 
 }

@@ -63,6 +63,7 @@ public class SamlController {
     private final OpenSamlConfigBean configBean;
     private final CasManagementConfigurationProperties managementProperties;
     private final MgmtManagerFactory managerFactory;
+    private final UrlMetadataResolver urlResourceMetadataResolver;
 
 
     /**
@@ -114,6 +115,16 @@ public class SamlController {
         val entityD = sps.find(id);
         val service = createService(entityD);
         service.setMetadataLocation(sps.location());
+        return service;
+    }
+
+    @GetMapping("download")
+    @SneakyThrows
+    public SamlRegisteredService download(final @RequestParam String url) {
+        val entity = this.urlResourceMetadataResolver.xml(url);
+        LOGGER.error(entity);
+        val service = createService(MetadataUtil.fromXML(entity, configBean));
+        service.setMetadataLocation(url);
         return service;
     }
 
@@ -177,9 +188,6 @@ public class SamlController {
             }
         }
 
-        val env = new HashSet<String>();
-        env.add("staged");
-        service.setEnvironments(env);
         return service;
     }
 

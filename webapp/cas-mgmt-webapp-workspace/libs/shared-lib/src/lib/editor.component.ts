@@ -1,4 +1,4 @@
-import {Input, Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Input, Component, OnInit, Output, EventEmitter, AfterContentInit, AfterViewInit} from '@angular/core';
 import {Ace} from 'ace-builds';
 import Editor = Ace.Editor;
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ declare var ace: any;
     `
 })
 
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, AfterViewInit {
   @Input()
   mode = 'text';
 
@@ -34,6 +34,9 @@ export class EditorComponent implements OnInit {
 
   constructor(public dialog: MatDialog) {
 
+  }
+
+  ngAfterViewInit(): void {
   }
 
   ngOnInit() {

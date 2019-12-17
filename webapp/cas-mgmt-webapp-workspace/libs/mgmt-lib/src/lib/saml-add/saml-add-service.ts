@@ -22,4 +22,8 @@ export class SamlAddService extends Service {
     return this.get<SamlRegisteredService>('api/saml/add?id=' + id, 'Adding SP');
   }
 
+  downloadEntity(url: string): Observable<SamlRegisteredService> {
+    return this.get<SamlRegisteredService>('api/saml/download?url=' + url, 'Downloading SP');
+  }
+
 }

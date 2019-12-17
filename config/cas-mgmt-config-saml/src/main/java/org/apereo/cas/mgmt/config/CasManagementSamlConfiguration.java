@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.InCommonMetadataAggregateResolver;
 import org.apereo.cas.mgmt.MetadataAggregateResolver;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SamlController;
+import org.apereo.cas.mgmt.UrlMetadataResolver;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
 
@@ -15,6 +16,7 @@ import lombok.val;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import org.apache.commons.lang3.ClassUtils;
 
+import org.apereo.cas.support.saml.services.idp.metadata.cache.resolver.UrlResourceMetadataResolver;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,12 +59,18 @@ public class CasManagementSamlConfiguration {
                 formDataFactory.getIfAvailable().create(),
                 openSamlConfigBean(),
                 managementProperties,
-                managerFactory.getIfAvailable());
+                managerFactory.getIfAvailable(),
+                urlMetadataResolver());
     }
 
     @Bean
     public MetadataAggregateResolver metadataAggregateResolver() {
         return new InCommonMetadataAggregateResolver(casProperties, openSamlConfigBean());
+    }
+
+    @Bean
+    public UrlMetadataResolver urlMetadataResolver() {
+        return new UrlMetadataResolver(casProperties, openSamlConfigBean());
     }
 
     @Bean(name = "shibboleth.OpenSAMLConfig")

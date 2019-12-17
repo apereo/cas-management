@@ -48,7 +48,6 @@ import {ServiceInterceptor} from './interceptor';
 import {HintComponent} from './hint/hint.component';
 import {InputComponent} from './input/input.component';
 import {HelpDirective} from './help.directive';
-import {AddSPComponent} from './addsp/addsp.component';
 import {ViewComponent} from './view/view.component';
 import {EditorComponent} from './editor.component';
 import {EditorOptionsComponent} from './editor-options/editor-options.component';
@@ -106,7 +105,6 @@ import {EditorOptionsComponent} from './editor-options/editor-options.component'
     HintComponent,
     InputComponent,
     HelpDirective,
-    AddSPComponent,
     ViewComponent,
     EditorComponent,
     EditorOptionsComponent
@@ -114,7 +112,6 @@ import {EditorOptionsComponent} from './editor-options/editor-options.component'
   entryComponents: [
     SpinnerComponent,
     TimeoutComponent,
-    AddSPComponent,
     ViewComponent,
     EditorOptionsComponent
   ],
@@ -166,7 +163,6 @@ import {EditorOptionsComponent} from './editor-options/editor-options.component'
     HintComponent,
     InputComponent,
     HelpDirective,
-    AddSPComponent,
     ViewComponent,
     EditorComponent,
     EditorOptionsComponent

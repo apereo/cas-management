@@ -5,6 +5,8 @@ import {Observable, Subject} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {EditorComponent} from 'shared-lib';
 import {SamlAddService} from './saml-add-service';
+import {SamlRegisteredService} from 'domain-lib';
+import {MatTabGroup} from '@angular/material/tabs';
 
 @Component({
   selector: 'lib-saml-add',
@@ -16,12 +18,15 @@ export class SamlAddComponent implements OnInit {
   private lookupEntity = new Subject<string>();
 
   foundEntities: string[];
-  pasteView = false;
 
   @ViewChild('editor', { static: false })
   editor: EditorComponent;
 
+  @ViewChild('tabs', {static: true})
+  tabs: MatTabGroup;
+
   entity = '';
+  url = '';
 
   constructor(public dialogRef: MatDialogRef<SamlAddComponent>,
               public service: SamlAddService,
@@ -42,10 +47,12 @@ export class SamlAddComponent implements OnInit {
   }
 
   resolve() {
-    if (this.pasteView) {
+    if (this.tabs.selectedIndex === 1) {
       this.paste();
-    } else {
+    } else if (this.tabs.selectedIndex === 0) {
       this.getEntity();
+    } else if (this.tabs.selectedIndex === 2) {
+      this.downloadEntity();
     }
   }
 
@@ -90,5 +97,20 @@ export class SamlAddComponent implements OnInit {
       this.dialogRef.close();
       this.snackbar.open('The SP you attempted to add is already registered.', 'Dismiss', {duration: 5000});
     });
+  }
+
+  downloadEntity() {
+    this.service.downloadEntity(this.url).subscribe(service => {
+      this.service.uploaded = service;
+      this.dialogRef.close('upload');
+    }, error => {
+      this.dialogRef.close();
+      this.snackbar.open('The SP you attempted to add is already registered.', 'Dismiss', {duration: 5000});
+    });
+  }
+
+  createNew() {
+    this.service.uploaded = new SamlRegisteredService();
+    this.dialogRef.close('upload');
   }
 }

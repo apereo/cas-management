@@ -97,7 +97,7 @@ public class FormDataFactory {
         if (profile.isPresent() && !profile.get().getRegisteredServiceTypesSupported().isEmpty()) {
             val p = profile.get();
 
-            val types = p.getRegisteredServiceTypes().entrySet().stream()
+            val types = p.getRegisteredServiceTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
                 .collect(toList());
             formData.setServiceTypes(types);
@@ -113,9 +113,9 @@ public class FormDataFactory {
     }
 
     private void loadMfaProviders(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypesSupported().isEmpty()) {
+        if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypes().isEmpty()) {
             val p = profile.get();
-            val mfas = p.getMultifactorAuthenticationProviderTypesSupported().entrySet().stream()
+            val mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
                 .map(e -> new FormData.Option(e.getValue(), e.getKey()))
                 .collect(toList());
             formData.setMfaProviders(mfas);
@@ -135,9 +135,9 @@ public class FormDataFactory {
     }
 
     private void loadDelegatedClientTypes(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getDelegatedClientTypesSupported().isEmpty()) {
+        if (profile.isPresent() && !profile.get().getDelegatedClientTypes().isEmpty()) {
             val p = profile.get();
-            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypesSupported());
+            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypes());
         } else {
             val delegatedAuthnProviders = new HashSet<String>();
             delegatedAuthnProviders.add("Twitter");

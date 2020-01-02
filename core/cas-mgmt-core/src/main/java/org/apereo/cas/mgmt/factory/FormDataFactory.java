@@ -94,10 +94,10 @@ public class FormDataFactory {
     }
 
     private void loadServiceTypes(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getRegisteredServiceTypes().isEmpty()) {
+        if (profile.isPresent() && !profile.get().getRegisteredServiceTypesSupported().isEmpty()) {
             val p = profile.get();
 
-            val types = p.getRegisteredServiceTypes().entrySet().stream()
+            val types = p.getRegisteredServiceTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
                 .collect(toList());
             formData.setServiceTypes(types);
@@ -113,9 +113,9 @@ public class FormDataFactory {
     }
 
     private void loadMfaProviders(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypes().isEmpty()) {
+        if (profile.isPresent() && !profile.get().getMultifactorAuthenticationProviderTypesSupported().isEmpty()) {
             val p = profile.get();
-            val mfas = p.getMultifactorAuthenticationProviderTypes().entrySet().stream()
+            val mfas = p.getMultifactorAuthenticationProviderTypesSupported().entrySet().stream()
                 .map(e -> new FormData.Option(e.getValue(), e.getKey()))
                 .collect(toList());
             formData.setMfaProviders(mfas);
@@ -135,9 +135,9 @@ public class FormDataFactory {
     }
 
     private void loadDelegatedClientTypes(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getDelegatedClientTypes().isEmpty()) {
+        if (profile.isPresent() && !profile.get().getDelegatedClientTypesSupported().isEmpty()) {
             val p = profile.get();
-            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypes());
+            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypesSupported());
         } else {
             val delegatedAuthnProviders = new HashSet<String>();
             delegatedAuthnProviders.add("Twitter");

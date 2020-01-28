@@ -66,7 +66,6 @@ export class BaseFormComponent {
   markDirty() {
     for (const key of Array.from(this.data.formMap.keys())) {
       const frm: FormGroup = this.data.formMap.get(key) as FormGroup;
-      console.log('marking ' + key + ' as dirty');
       this.makeDirty(frm);
     }
   }

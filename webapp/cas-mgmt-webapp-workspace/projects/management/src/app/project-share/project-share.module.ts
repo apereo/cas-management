@@ -9,6 +9,9 @@ import {CommitComponent} from './commit/commit.component';
 import {PublishComponent} from './publish/publish.component';
 import {RevertComponent} from './revert/revert.component';
 import {SharedLibModule} from 'shared-lib';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {AcceptComponent} from '@app/project-share/accept/accept.component';
+import {RejectComponent} from '@app/project-share/reject/reject.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +19,8 @@ import {SharedLibModule} from 'shared-lib';
     CommitComponent,
     PublishComponent,
     RevertComponent,
+    AcceptComponent,
+    RejectComponent
   ],
   entryComponents: [
     CommitComponent,
@@ -29,7 +34,8 @@ import {SharedLibModule} from 'shared-lib';
     MgmtLibModule,
     SharedLibModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    FlexLayoutModule
   ],
   exports: [
     CommonModule,
@@ -39,7 +45,10 @@ import {SharedLibModule} from 'shared-lib';
     HttpClientModule,
     RouterModule,
     ControlsComponent,
-    SharedLibModule
+    AcceptComponent,
+    RejectComponent,
+    SharedLibModule,
+    FlexLayoutModule
   ]
 })
 export class ProjectShareModule { }

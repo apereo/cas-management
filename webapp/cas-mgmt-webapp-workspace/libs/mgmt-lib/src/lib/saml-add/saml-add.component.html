@@ -38,7 +38,7 @@
     <mat-icon>file_upload</mat-icon>
     <ng-container i18n>Upload Metadata</ng-container>
   </button>
-  <button mat-button (click)="createNew()">
+  <button mat-button (click)="createNew()" *ngIf="data.showNew">
     <mat-icon>add_circle</mat-icon>
     <ng-container>New Service</ng-container>
   </button>

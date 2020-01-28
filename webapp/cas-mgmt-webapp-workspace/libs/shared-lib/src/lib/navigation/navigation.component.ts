@@ -1,9 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
-import { BreakpointObserver} from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {MatSidenav} from '@angular/material';
 import {UserService} from '../user.service';
+import {MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'lib-navigation',
@@ -15,12 +15,12 @@ export class LibNavigationComponent {
   @ViewChild(MatSidenav, { static: true })
    drawer: MatSidenav;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
+  isHandset$: Observable<boolean> = this.mediaObserver.asObservable()
     .pipe(
-      map(result => result.matches)
+      map(result => this.mediaObserver.isActive('lt-md'))
     );
 
-  constructor(private breakpointObserver: BreakpointObserver,
+  constructor(private mediaObserver: MediaObserver,
               private userService: UserService) {
   }
 

@@ -1,75 +1,67 @@
-<div>
-  <div style="display:inline-block;position: relative;top: 5px;" *ngIf="showSpinner">
-      <mat-spinner mode="indeterminate" diameter="20"></mat-spinner>
-  </div>
-  <div style="display: inline" *ngIf="showNew">
-    <button mat-button (click)="newService.emit()">
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+  <ng-container *ngIf="showNew">
+    <div fxLayout="row" class='controlButton' (click)="newService.emit()">
       <mat-icon>add_circle</mat-icon>
-      <ng-container i18n>New</ng-container>
-    </button>
-  </div>
-  <div style="display: inline" *ngIf="showOpen">
-    <button mat-button (click)="open.click();">
+      <span i18n fxHide.lt-md>New</span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showOpen">
+    <div fxLayout="row" class='controlButton' (click)="open.click();">
       <mat-icon>file_upload</mat-icon>
-      <ng-container i18n>Open</ng-container>
-    </button>
-    <button mat-button (click)="save.emit()">
+      <span i18n fxHide.lt-md>Open</span>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="save.emit()">
       <mat-icon>add_circle</mat-icon>
-      <ng-container i18n>Import</ng-container>
-    </button>
-    <button mat-button (click)="goBack();">
+      <span i18n fxHide.lt-md>Import</span>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="goBack();">
       <mat-icon>cancel</mat-icon>
-      <ng-container i18n>Cancel</ng-container>
-    </button>
-  </div>
-  <div style="display:inline;" *ngIf="showEdit">
-    <button mat-button (click)="save.emit();" [disabled]="saveEnabled">
+      <span i18n fxHide.lt-md>Cancel</span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showEdit">
+    <div fxLayout="row" class='controlButton' (click)="save.emit();">
       <mat-icon>save</mat-icon>
-        <ng-container i18n>Save</ng-container>
-    </button>
-    <button mat-button (click)="reset.emit();">
+      <span i18n fxHide.lt-md>Save</span>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="reset.emit();">
       <mat-icon>restore</mat-icon>
-        <ng-container i18n>Reset</ng-container>
-    </button>
-    <button mat-button (click)="goBack();">
+      <span i18n fxHide.lt-md>Reset</span>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="goBack();">
       <mat-icon>cancel</mat-icon>
-        <ng-container i18n>Cancel</ng-container>
-    </button>
-  </div>
-  <div style="display:inline;" *ngIf="showVersionControl">
-    <button mat-button id="commit" *ngIf="isAdmin() && hasChanges()"
-            (click)="openModalCommit()">
+      <span i18n fxHide.lt-md>Cancel</span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showVersionControl">
+    <div fxLayout="row" class='controlButton' id="commit" *ngIf="isAdmin() && hasChanges()" (click)="openModalCommit()">
       <mat-icon>input</mat-icon>
-      <ng-container i18n>Commit</ng-container>
-    </button>
-    <button mat-button *ngIf="isAdmin() && unpublished()" id="publish"
-            (click)="openModalPublish()">
+      <span i18n fxHide.lt-md>Commit</span>
+    </div>
+    <div fxLayout="row" class='controlButton' *ngIf="isAdmin() && unpublished()" id="publish" (click)="openModalPublish()">
       <mat-icon>launch</mat-icon>
-      <ng-container i18n>Publish</ng-container>
-    </button>
-    <button mat-button *ngIf="!isAdmin() && hasChanges()"
-            (click)="callSubmit()">
+      <span i18n fxHide.lt-md>Publish</span>
+    </div>
+    <div fxLayout="row" class='controlButton' *ngIf="!isAdmin() && hasChanges()" (click)="callSubmit()">
       <mat-icon>file_upload</mat-icon>
-      <ng-container i18n>Submit</ng-container>
-    </button>
-  </div>
-  <div style="display:inline;" *ngIf="showRefresh">
-    <button mat-icon-button (click)="refresh.emit()">
+      <span i18n fxHide.lt-md>Submit</span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showRefresh">
+    <div class='controlButton' (click)="refresh.emit()">
       <mat-icon>refresh</mat-icon>
-    </button>
-  </div>
-
-  <div style="display:inline;" *ngIf="!showEdit && showBack">
-    <button mat-icon-button (click)="goBack()">
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!showEdit && showBack">
+    <div class='controlButton' (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
-    </button>
-  </div>
-
-  <div style="display: inline" *ngIf="showEditorOptions">
-    <button mat-icon-button (click)="editorOptions.emit()">
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showEditorOptions">
+    <div class='controlButton' (click)="editorOptions.emit()">
       <mat-icon>more_vert</mat-icon>
-    </button>
-  </div>
+    </div>
+  </ng-container>
 </div>
 <input #open type="file" (change)="openFile.emit($event);" style="display:none;">
 

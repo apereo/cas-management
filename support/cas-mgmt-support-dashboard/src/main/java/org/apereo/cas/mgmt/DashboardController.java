@@ -8,7 +8,9 @@ import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
+import org.apereo.cas.mgmt.domain.SsoSessionResponse;
 import org.apereo.cas.mgmt.domain.SystemHealth;
+import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -247,6 +249,7 @@ public class DashboardController {
     @SneakyThrows
     public void downloadAudit(final HttpServletRequest request,
                               final HttpServletResponse response) {
+        isAdmin(request, response);
         val log = (List<AuditLog>) request.getSession().getAttribute("audit");
         if (log != null) {
             val out = response.getWriter();
@@ -258,7 +261,7 @@ public class DashboardController {
     }
 
     private String toCSV(final AuditLog log) {
-        return new StringBuilder()
+        return new StringBuffer()
                .append(log.getWhenActionWasPerformed())
                .append("|")
                .append(log.getClientIpAddress())
@@ -273,6 +276,14 @@ public class DashboardController {
                .append("|")
                .append(log.getApplicationCode())
                .toString();
+    }
+
+    private SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
+        val resp = callCasServer(serverUrl, new ParameterizedTypeReference<SsoSessionResponse>() {});
+        if (mask) {
+            resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
+        }
+        return resp;
     }
 
     private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
@@ -7,6 +7,7 @@ import {EditorComponent} from 'shared-lib';
 import {SamlAddService} from './saml-add-service';
 import {SamlRegisteredService} from 'domain-lib';
 import {MatTabGroup} from '@angular/material/tabs';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'lib-saml-add',
@@ -29,6 +30,7 @@ export class SamlAddComponent implements OnInit {
   url = '';
 
   constructor(public dialogRef: MatDialogRef<SamlAddComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
               public service: SamlAddService,
               public snackbar: MatSnackBar) { }
 

@@ -41,11 +41,15 @@ public class DomainController {
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
      * @return the domains
+     * @throws IllegalAccessException - insufficient permissions
      */
     @GetMapping
     public Collection<DomainRpc> getDomains(final HttpServletRequest request,
-                                         final HttpServletResponse response) {
+                                            final HttpServletResponse response) throws IllegalAccessException {
         val casUserProfile = casUserProfileFactory.from(request, response);
+        if (!casUserProfile.isUser()) {
+            throw new IllegalAccessException("Insufficient permissions");
+        }
         val manager = managerFactory.from(request, response);
         return manager.getDomains().stream()
                 .filter(casUserProfile::hasPermission)

@@ -1,47 +1,45 @@
-<div style="display:flex;margin-bottom:10px;margin-left: 10px;margin-right:10px;">
-  <div style="padding-top: 10px;">
-    <mat-icon style="padding-top: 3px;">build</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>Domains</h4>
+<div fxLayout="column" style="margin-right: 10px; margin-left: 10px">
+  <div fxLayout="row" style="margin-top: 10px">
+    <div fxLayout="row" fxFlex="25%">
+      <mat-icon>build</mat-icon>
+      <span style="font-weight: bold; font-size: 14px;">Domains</span>
+    </div>
+    <app-controls fxFlex="75%" fxGrow [showNew]="true" (newService)="createService()"></app-controls>
   </div>
-  <div style="flex: 1 1 auto;text-align: center">
-  </div>
-  <div>
-    <app-controls (newService)="createService()"></app-controls>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
-<mat-table #table [dataSource]="dataSource">
+  <mat-form-field floatLabel="never" style="width:100%;min-width:250px;">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter Domains" >
+  </mat-form-field>
 
-  <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
-      <ng-container i18n>
-        &nbsp;
-      </ng-container>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
-      <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </mat-cell>
-  </ng-container>
+  <mat-table #table [dataSource]="dataSource" matSort>
 
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-form-field floatLabel="never" style="width:100%;min-width:250px;max-width:750px;">
-        <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter Domains" >
-      </mat-form-field>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
-      <a (click)="view(row.name)">
-        {{ row.name }}
-      </a>
-    </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+       <ng-container i18n>Name</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <a (click)="view(row.name)">
+          {{ row.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 
   <lib-paginator></lib-paginator>
 </div>

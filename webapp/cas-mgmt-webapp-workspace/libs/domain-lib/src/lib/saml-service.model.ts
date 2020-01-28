@@ -1,4 +1,4 @@
-import {RegexRegisteredService, RegisteredService} from './registered-service';
+import {RegexRegisteredService, RegisteredService} from './registered-service.model';
 
 export class SamlRegisteredService extends RegexRegisteredService {
   static cName = 'org.apereo.cas.support.saml.services.SamlRegisteredService';

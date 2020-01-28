@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt;
 
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 
 import java.util.List;
 
@@ -25,8 +26,9 @@ public interface MetadataAggregateResolver {
      *
      * @param entityId - Id of the SP
      * @return - EntityDescriptor
+     * @throws SignatureException - metadata signature is invalid
      */
-    EntityDescriptor find(String entityId);
+    EntityDescriptor find(String entityId) throws SignatureException;
 
     /**
      * Returns location of the metadata for the aggregate.

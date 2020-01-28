@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Service} from 'shared-lib';
 import {Observable} from 'rxjs';
-import {SsoSessionsResponse} from '../domain/sessions';
+import {SsoSessionsResponse} from '../domain/sessions.model';
 
 @Injectable({
   providedIn: 'root'

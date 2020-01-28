@@ -3,6 +3,7 @@ import {MatSnackBar, MatTableDataSource } from '@angular/material';
 import {PaginatorComponent} from 'shared-lib';
 import {DomainRpc} from 'domain-lib';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-domains',
@@ -14,8 +15,9 @@ export class DomainsComponent implements OnInit {
   dataSource: MatTableDataSource<DomainRpc>;
   selectedItem: DomainRpc;
 
-
   @ViewChild(PaginatorComponent, { static: true }) paginator: PaginatorComponent;
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -26,6 +28,7 @@ export class DomainsComponent implements OnInit {
     this.route.data
       .subscribe((data: {resp: DomainRpc[]}) => {
           this.dataSource = new MatTableDataSource(data.resp);
+          this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator.paginator;
         },
         error => this.snackBar.open(

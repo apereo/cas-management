@@ -63,6 +63,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
                 return;
             }
             try (GitUtil git = repositoryFactory.masterRepository()) {
+                servicesManager.load();
                 val manager = new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();

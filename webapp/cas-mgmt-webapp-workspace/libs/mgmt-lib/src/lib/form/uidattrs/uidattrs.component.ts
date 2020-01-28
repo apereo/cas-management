@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UserAttributeType} from 'domain-lib';
 import {FormDataService} from '../../form-data.service';
-import {DataRecord} from '../data';
+import {DataRecord} from '../data.model';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 import {UidattrsForm} from './uidattrs.form';
 

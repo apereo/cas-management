@@ -51,6 +51,7 @@ import {HelpDirective} from './help.directive';
 import {ViewComponent} from './view/view.component';
 import {EditorComponent} from './editor.component';
 import {EditorOptionsComponent} from './editor-options/editor-options.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -91,7 +92,8 @@ import {EditorOptionsComponent} from './editor-options/editor-options.component'
     MatBadgeModule,
     MatSortModule,
     MatSlideToggleModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    FlexLayoutModule
   ],
   declarations: [
     PaginatorComponent,

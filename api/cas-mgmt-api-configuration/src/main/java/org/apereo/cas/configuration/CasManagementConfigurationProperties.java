@@ -14,7 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.ClassUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -126,9 +125,19 @@ public class CasManagementConfigurationProperties implements Serializable {
     private String metadataDir = "/etc/cas/metadata";
 
     /**
-     * File from InCommon Aggregate.
+     * Incommon Signature Cert.
      */
-    private String incommonFile = "/etc/cas/InCommon-metadata.xml";
+    private Resource inCommonCert = new ClassPathResource("incommon.pem");
+
+    /**
+     * Incommon Cert location for CAS Servers.
+     */
+    private String inCommonCertLocation = "/etc/cas/idp/inc-md-cert-mdq.pem";
+
+    /**
+     * InCommon MDQ URL.
+     */
+    private String inCommonMDQUrl= "https://mdq.incommon.org/entities";
 
     /**
      * List of cas servers that available in the Dashboard.
@@ -169,8 +178,7 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Version Control flag.
          */
-        private boolean enabled = ClassUtils.isPresent("org.apereo.cas.mgmt.config.CasManagementVersionControlConfiguration",
-                this.getClass().getClassLoader());
+        private boolean enabled;
     }
 
     @Getter
@@ -185,7 +193,7 @@ public class CasManagementConfigurationProperties implements Serializable {
         /**
          * Delegated auth flag.
          */
-        private boolean enabled = ClassUtils.isPresent("org.apereo.cas.mgmt.config.CasManagementDelegatedConfiguration", this.getClass().getClassLoader());
+        private boolean enabled;
 
         /**
          * Notifications.

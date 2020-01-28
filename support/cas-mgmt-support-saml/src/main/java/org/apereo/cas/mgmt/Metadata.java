@@ -15,6 +15,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Metadata {
 
+    /**
+     * Flag if form mdq.
+     */
     private boolean inCommon;
+
+    /**
+     * The metadata as string.
+     */
     private String metadata;
 }

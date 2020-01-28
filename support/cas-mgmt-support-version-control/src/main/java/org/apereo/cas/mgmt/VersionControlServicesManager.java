@@ -112,6 +112,7 @@ public class VersionControlServicesManager extends ManagementServicesManager {
 
     @Override
     public RegisteredService save(final RegisteredService registeredService) {
+        LOGGER.debug("Saving [{}]", registeredService.getServiceId());
         val service = super.save(registeredService);
         changed();
         return service;

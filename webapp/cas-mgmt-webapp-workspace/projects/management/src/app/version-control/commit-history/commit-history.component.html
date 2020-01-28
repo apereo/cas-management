@@ -1,15 +1,12 @@
-<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
-  <div style="padding-top: 10px;">
-    <mat-icon style="padding-top: 3px;">history</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>History</h4>
+<div fxLayout="column" style="margin-left:10px;margin-right:10px;">
+  <div fxLayout="row" style="margin-top: 10px;">
+    <div fxLayout="row" fxFlex="25%">
+      <mat-icon>history</mat-icon>
+      <span style="font-weight: bold; font-size: 14px;" i18n>History</span>
+    </div>
+    <app-controls fxFlex="75%" fxGrow></app-controls>
   </div>
-  <div style="flex: 1 1 auto"></div>
-  <div>
-    <app-controls></app-controls>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="name">
@@ -98,7 +95,7 @@
     <mat-icon>code</mat-icon>
     <ng-container>Yaml</ng-container>
   </button>
-  <button mat-menu-item *ngIf="selectedItem && selectedItem.changeType != 'ADD'" (click)="revert()">
+  <button mat-menu-item *ngIf="selectedItem?.changeType != 'ADD'" (click)="revert()">
     <mat-icon>file_download</mat-icon>
     <ng-container i18n>Checkout Version</ng-container>
   </button>

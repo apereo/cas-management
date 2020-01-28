@@ -55,4 +55,16 @@ public class AbstractVersionControlController {
         }
         return true;
     }
+
+    protected boolean isUser(final HttpServletRequest request,
+                             final HttpServletResponse response) {
+        return isUser(casUserProfileFactory.from(request, response));
+    }
+
+    protected boolean isUser(final CasUserProfile casUserProfile) {
+        if (!casUserProfile.isUser()) {
+            throw new InsufficientAuthenticationException("You do not have permission");
+        }
+        return true;
+    }
 }

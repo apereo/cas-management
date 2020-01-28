@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.ContactLookup;
-import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.NoOpContactLookup;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.AppConfig;
@@ -40,7 +39,6 @@ public class ApplicationDataController {
 
     private final FormDataFactory formDataFactory;
     private final CasUserProfileFactory casUserProfileFactory;
-    private final MgmtManagerFactory managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
     private final ContactLookup contactLookup;

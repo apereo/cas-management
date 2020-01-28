@@ -2,8 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
 import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from 'shared-lib';
-import {AuditLog} from '../domain/audit';
+import {AuditLog} from '../domain/audit.model';
 import {SearchComponent} from './search/search.component';
+import {MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'app-audit',
@@ -21,13 +22,24 @@ export class AuditComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private service: DashboardService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private mediaObserver: MediaObserver) { }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
     this.dataSource.paginator = this.paginator.paginator;
     this.dataSource.sort = this.sort;
     this.search();
+    this.setColumns();
+    this.mediaObserver.asObservable().subscribe(c => this.setColumns());
+  }
+
+  setColumns() {
+    if (this.mediaObserver.isActive('lt-md')) {
+      this.displayedColumns = ['timestamp', 'server', 'principal', 'clientip', 'actionPerformed'];
+    } else {
+      this.displayedColumns = ['timestamp', 'server', 'principal', 'clientip', 'actionPerformed', 'resource'];
+    }
   }
 
   search() {

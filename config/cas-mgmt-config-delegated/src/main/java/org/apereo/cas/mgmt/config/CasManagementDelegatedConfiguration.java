@@ -17,6 +17,7 @@ import lombok.val;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,23 +48,27 @@ public class CasManagementDelegatedConfiguration {
     private ObjectProvider<CommunicationsManager> communicationsManager;
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public SubmitController submitController() {
         return new SubmitController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
                 managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PullController pullController() {
         return new PullController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
                 managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public NoteController noteController() {
         return new NoteController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable());
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PendingRequests pendingRequests() {
         return (request, response) -> {
             val user = casUserProfileFactory.getIfAvailable().from(request, response);

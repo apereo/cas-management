@@ -25,12 +25,4 @@ export class SearchService extends Service {
   getJson(id: number): Observable<string> {
     return this.getText('api/services/json/' + id);
   }
-
-  promote(id: number): Observable<void> {
-    return this.get('api/services/promote/' + id);
-  }
-
-  demote(id: number): Observable<void> {
-    return this.get('api/services/demote/' + id);
-  }
 }

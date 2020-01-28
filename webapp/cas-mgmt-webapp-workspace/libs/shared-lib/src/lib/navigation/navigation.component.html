@@ -12,7 +12,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary" style="position: fixed; z-index: 1000; width: 100vw">
+    <mat-toolbar color="primary" style="z-index: 1000;">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -34,9 +34,9 @@
         </div>
       </div>
     </mat-toolbar>
-    <div style="padding-top:65px;padding-bottom:70px;background-color:#f2f2f2;">
+    <div style="background-color:#f2f2f2;padding-bottom: 70px; overflow: auto">
       <router-outlet></router-outlet>
     </div>
-    <lib-footer></lib-footer>
+    <lib-footer fxHide.lt-md></lib-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,5 +1,5 @@
-import {RegexRegisteredService, RegisteredService} from './registered-service';
-import {WsFederationClaimsReleasePolicy} from './attribute-release';
+import {RegexRegisteredService, RegisteredService} from './registered-service.model';
+import {WsFederationClaimsReleasePolicy} from './attribute-release.model';
 
 export class WSFederationRegisterdService extends RegexRegisteredService {
   static readonly cName = 'org.apereo.cas.ws.idp.services.WSFederationRegisteredService';

@@ -1,4 +1,4 @@
-import {Input, Component, OnInit, Output, EventEmitter, AfterContentInit, AfterViewInit} from '@angular/core';
+import {Input, Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Ace} from 'ace-builds';
 import Editor = Ace.Editor;
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ declare var ace: any;
     `
 })
 
-export class EditorComponent implements OnInit, AfterViewInit {
+export class EditorComponent implements OnInit {
   @Input()
   mode = 'text';
 
@@ -36,10 +36,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
-  }
-
   ngOnInit() {
+    ace.config.set('basePath', 'assets');
     this.editor = ace.edit('editor');
     this.editor.getSession().setUseWrapMode(true);
     this.editor.setPrintMarginColumn(180);

@@ -3,7 +3,7 @@ import {MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {PaginatorComponent} from 'shared-lib';
 import {DashboardService} from '../core/dashboard-service';
 import {ActivatedRoute} from '@angular/router';
-import {Logger} from '../domain/logger';
+import {Logger} from '../domain/logger.model';
 
 export class Log {
   server: string;

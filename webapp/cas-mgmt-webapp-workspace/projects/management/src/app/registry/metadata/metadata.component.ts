@@ -4,8 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
 import {EditorComponent} from 'shared-lib';
-import {Metadata} from 'domain-lib/lib/metadata';
-import {MetadataService} from './metadata.service';
+import {Metadata} from 'domain-lib';
+import {MetadataService} from '@app/registry/metadata/metadata.service';
 
 @Component({
   selector: 'app-metadata',

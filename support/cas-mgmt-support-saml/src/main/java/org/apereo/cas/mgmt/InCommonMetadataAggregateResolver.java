@@ -1,8 +1,10 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.services.UnauthorizedServiceException;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
+import org.apereo.cas.support.saml.SamlUtils;
 import org.apereo.cas.util.EncodingUtils;
 import org.apereo.cas.util.HttpUtils;
 
@@ -13,7 +15,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 
 import org.jasig.cas.client.util.XmlUtils;
+import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.impl.SignatureValidationFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.w3c.dom.Element;
 
 import java.nio.charset.StandardCharsets;
@@ -32,14 +37,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class InCommonMetadataAggregateResolver implements MetadataAggregateResolver {
     private final CasConfigurationProperties casProperties;
+    private final CasManagementConfigurationProperties mgmtProperties;
     private final OpenSamlConfigBean configBean;
     private List<String> sps;
+    private final SignatureValidationFilter signatureValidationFilter;
 
+    @SneakyThrows
     public InCommonMetadataAggregateResolver(final CasConfigurationProperties casProperties,
+                                             final CasManagementConfigurationProperties mgmtProperties,
                                              final OpenSamlConfigBean configBean) {
         this.casProperties = casProperties;
+        this.mgmtProperties = mgmtProperties;
         this.configBean = configBean;
         this.sps = fromInCommon();
+        this.signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(mgmtProperties.getInCommonCert());
+        this.signatureValidationFilter.setRequireSignedRoot(false);
     }
 
     @Override
@@ -51,22 +63,32 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
 
     @Override
     public String location() {
-        return "https://mdq.incommon.org/entities/{0}";
+        return mgmtProperties.getInCommonMDQUrl() + "/{0}";
     }
 
     @Override
-    @SneakyThrows
-    public EntityDescriptor find(final String entityId) {
-        return MetadataUtil.fromXML(xml(entityId), configBean);
+    public EntityDescriptor find(final String entityId) throws SignatureException {
+        val entity = MetadataUtil.fromXML(xml(entityId), configBean);
+        try {
+            this.signatureValidationFilter.filter(entity);
+        } catch (final FilterException exception) {
+            LOGGER.error(exception.getMessage(), exception);
+            throw new SignatureException("Invalid metadata signature for [" + entityId + "]");
+        }
+        return entity;
     }
 
     @Override
     @SneakyThrows
     public String xml(final String entityId) {
         if (sps.contains(entityId)) {
-            val resp = fetchMetadata("https://mdq.incommon.org/entities/" + EncodingUtils.urlEncode(entityId));
-            val entity = resp.getEntity();
-            return IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
+            val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl() + "/" + EncodingUtils.urlEncode(entityId));
+
+            try (val entity = resp.getEntity().getContent()) {
+                return IOUtils.toString(entity, StandardCharsets.UTF_8);
+            } catch (final Exception e) {
+                LOGGER.error(e.getMessage(), e);
+            }
         }
         throw new IllegalArgumentException("Entity not found");
     }
@@ -89,7 +111,7 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
 
     @SneakyThrows
     private List<String> fromInCommon() {
-        val resp = fetchMetadata("https://mdq.incommon.org/entities");
+        val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl());
         val entity = resp.getEntity();
         val result = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
         val doc = XmlUtils.newDocument(result);

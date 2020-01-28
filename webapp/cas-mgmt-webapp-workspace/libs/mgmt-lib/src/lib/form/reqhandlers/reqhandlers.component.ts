@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DataRecord} from '../data';
+import {DataRecord} from '../data.model';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({

@@ -1,16 +1,9 @@
-<div style="display:flex;margin-bottom:10px;margin-left: 10px;margin-right:10px;">
-  <div style="padding-top: 10px;">
-    <mat-icon style="padding-top: 3px;">local_activity</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>SSO Sessions</h4>
+<div fxLayout="column" style="margin-left: 10px;margin-right:10px;">
+  <div fxLayout="row" style="padding-top: 10px;">
+    <mat-icon>local_activity</mat-icon>
+    <span style="font-weight: bold; font-size: 14px; white-space: nowrap" i18n>SSO Sessions</span>
   </div>
-  <div style="flex: 1 1 auto;text-align: center">
-    <div style="padding-top: 8px;">
-      <button mat-button (click)="refresh()">Refresh</button>
-    </div>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="actions">

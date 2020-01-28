@@ -35,7 +35,10 @@ public class ForwardingController {
             "management/form/edit/{id}",
             "management/form/duplicate/{id}",
             "management/form/view/{id}",
-            "management/form/importService"
+            "management/form/importService",
+            "management/delegated/pulls",
+            "management/delegated/submits",
+            "management/delegated/notes/{id}"
     })
     public String forward() {
         return "management/index.html";

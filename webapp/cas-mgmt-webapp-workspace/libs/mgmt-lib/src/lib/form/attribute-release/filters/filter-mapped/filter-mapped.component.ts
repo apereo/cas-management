@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormDataService} from '../../../../form-data.service';
-import {DataRecord} from '../../../data';
+import {DataRecord} from '../../../data.model';
 import {FilterMappedRegExForm} from '../filters.form';
 
 @Component({

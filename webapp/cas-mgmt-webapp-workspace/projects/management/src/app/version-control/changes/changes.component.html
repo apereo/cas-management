@@ -1,15 +1,12 @@
-<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
-  <div style="padding-top: 10px;">
-    <mat-icon style="padding-top: 3px;">visibility</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>View Changes</h4>
+<div fxLayout="column" style="margin-left:10px;margin-right:10px;">
+  <div fxLayout="row" style="margin-top: 10px;">
+    <div fxLayout="row" fxFlex="25%">
+      <mat-icon>visibility</mat-icon>
+      <span style="font-weight: bold; font-size: 14px; white-space: nowrap" i18n>View Changes</span>
+    </div>
+    <app-controls fxFlex="75%" fxGrow [showEdit]="false"></app-controls>
   </div>
-  <div style="flex: 1 1 auto"></div>
-  <div>
-    <app-controls [showEdit]="false"></app-controls>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column; margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="file">
@@ -60,7 +57,7 @@
     <mat-icon>visibility</mat-icon>
     <ng-container i18n>View</ng-container>
   </button>
-  <button mat-menu-item (click)="viewDiff()" *ngIf="selectedItem && selectedItem.changeType !== 'ADD'">
+  <button mat-menu-item (click)="viewDiff()" *ngIf="selectedItem?.changeType !== 'ADD'">
     <mat-icon>compare_arrows</mat-icon>
     <ng-container i18n>Diff</ng-container>
   </button>

@@ -34,7 +34,6 @@ import java.util.Optional;
 public class JsonResourceAuthorizationGenerator implements AuthorizationGenerator {
 
     private final ObjectMapper objectMapper;
-    private final FileWatcherService watcher;
 
     private Map<String, UserAuthorizationDefinition> rules = new LinkedHashMap<>();
 
@@ -43,7 +42,7 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
         this.objectMapper = new ObjectMapper(getJsonFactory()).findAndRegisterModules();
 
         loadResource(resource);
-        watcher = new FileWatcherService(resource.getFile(),
+        val watcher = new FileWatcherService(resource.getFile(),
                 Unchecked.consumer(file -> loadResource(resource)));
         watcher.start(getClass().getSimpleName());
     }

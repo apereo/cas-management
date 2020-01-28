@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {MatSnackBar, MatTabChangeEvent, MatTabGroup} from '@angular/material';
 import {FormArray, FormGroup} from '@angular/forms';
-import {DataRecord} from './data';
+import {DataRecord} from './data.model';
 
 @Component({
   selector: 'lib-base-form',

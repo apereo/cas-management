@@ -7,7 +7,9 @@ import org.apereo.cas.mgmt.MetadataAggregateResolver;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SamlController;
 import org.apereo.cas.mgmt.UrlMetadataResolver;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
+import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
 
 import lombok.SneakyThrows;
@@ -49,22 +51,35 @@ public class CasManagementSamlConfiguration {
     private CasConfigurationProperties casProperties;
 
     @Autowired
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
+
+    @Autowired
+    @Qualifier("servicesManager")
+    private ObjectProvider<ServicesManager> servicesManager;
+
+    @Autowired
+    @Qualifier("shibboleth.OpenSAMLConfig")
+    private ObjectProvider<OpenSamlConfigBean> openSamlConfigBean;
+
+    @Autowired
     @Qualifier("formDataFactory")
     private ObjectProvider<FormDataFactory> formDataFactory;
 
     @Bean
     public SamlController samlController() {
-        return new SamlController(metadataAggregateResolver(),
+        return new SamlController(casUserProfileFactory.getIfAvailable(),
+                managerFactory.getIfAvailable(),
+                managementProperties,
                 formDataFactory.getIfAvailable().create(),
                 openSamlConfigBean(),
-                managementProperties,
-                managerFactory.getIfAvailable(),
+                metadataAggregateResolver(),
                 urlMetadataResolver());
     }
 
     @Bean
     public MetadataAggregateResolver metadataAggregateResolver() {
-        return new InCommonMetadataAggregateResolver(casProperties, openSamlConfigBean());
+        return new InCommonMetadataAggregateResolver(casProperties, managementProperties, openSamlConfigBean());
     }
 
     @Bean

@@ -79,7 +79,7 @@ public class CasManagementCoreServicesConfiguration {
 
     @Bean
     public ApplicationDataController applicationDataController() {
-        return new ApplicationDataController(formDataFactory(), casUserProfileFactory.getIfAvailable(), managerFactory(),
+        return new ApplicationDataController(formDataFactory(), casUserProfileFactory.getIfAvailable(),
                 managementProperties, casProperties, contactLookup());
     }
 

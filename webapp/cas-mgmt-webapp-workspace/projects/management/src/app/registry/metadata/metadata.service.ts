@@ -4,14 +4,18 @@
 import {Injectable} from '@angular/core';
 import {Service} from 'shared-lib';
 import {Observable} from 'rxjs/internal/Observable';
-import {Metadata} from 'domain-lib';
+import {Metadata, ServiceItem} from 'domain-lib';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetadataService extends Service {
 
-  controller = 'api/saml/metadata';
+  controller = 'api/services';
+
+  getServices(): Observable<ServiceItem[]> {
+    return this.get<ServiceItem[]>(this.controller + '/saml', 'Loading Services');
+  }
 
   getMetadata(id: string): Observable<Metadata> {
     return this.get('api/saml/metadata/' + id, 'Loading Metadata');

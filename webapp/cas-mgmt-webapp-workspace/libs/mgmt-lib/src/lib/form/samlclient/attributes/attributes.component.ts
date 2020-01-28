@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DataRecord} from '../../data';
+import {DataRecord} from '../../data.model';
 import {FormDataService} from '../../../form-data.service';
 import {AttributesForm} from '../../attributes/attributes.form';
 

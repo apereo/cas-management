@@ -1,16 +1,16 @@
-<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
-  <div style="padding-top: 3px;">
-    <mat-icon style="padding-top: 3px;">view_quilt</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>Release Attributes</h4>
+<div fxLayout="column" style="margin-left:10px;margin-right:10px;">
+  <div fxLayout="row" style="margin-top: 10px;">
+    <div fxLayout="row" fxFle="25%">
+      <mat-icon style="padding-top: 3px;">view_quilt</mat-icon>
+      <span style="font-size: 14px; font-weight: bold; white-space: nowrap" i18n>Release Attributes</span>
+    </div>
+    <div fxFlex="75%" fxGrow>
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button mat-button (click)="resolve()">Resolve</button>
+      </div>
+    </div>
   </div>
-  <div style="flex: 1 1 auto">
-  </div>
-  <div>
-    <button mat-button (click)="resolve()">Resolve</button>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="actions">

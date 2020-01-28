@@ -61,9 +61,7 @@ public class SessionsController {
     @GetMapping
     public SsoSessionResponse getSession(final HttpServletRequest request,
                                          final HttpServletResponse response) throws IllegalAccessException {
-        if (!casUserProfileFactory.from(request, response).isAdministrator()) {
-            throw new IllegalAccessException("Permission Denied");
-        }
+        isAdmin(request, response);
         val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
                 + "/actuator/ssoSessions?type=ALL";
         return getSsoSessions(serverUrl, true);
@@ -174,6 +172,12 @@ public class SessionsController {
             val req = new HttpEntity<String>("{\"tickets\": \""
                     + tickets.stream().collect(Collectors.joining(",")) + "\"}", headers);
             restTemplate.exchange(serverUrl, HttpMethod.POST, req, Void.class);
+        }
+    }
+
+    private void isAdmin(final HttpServletRequest request, final HttpServletResponse response) throws IllegalAccessException {
+        if (!casUserProfileFactory.from(request, response).isAdministrator()) {
+            throw new IllegalAccessException("Permission Denied");
         }
     }
 }

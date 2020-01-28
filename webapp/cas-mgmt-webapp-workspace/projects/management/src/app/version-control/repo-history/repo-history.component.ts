@@ -4,7 +4,7 @@ import {PaginatorComponent} from 'shared-lib';
 import {RepoHistoryService} from './repo-history.service';
 import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BreakpointObserver} from '@angular/cdk/layout';
+import {MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'app-repo-history',
@@ -24,21 +24,23 @@ export class RepoHistoryComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
-              public breakObserver: BreakpointObserver) { }
+              public mediaObserver: MediaObserver) { }
 
   ngOnInit() {
-    this.route.data.subscribe((data: {resp: Commit[]}) => {
+    this.route.data.subscribe((data: { resp: Commit[] }) => {
       this.dataSource = new MatTableDataSource<Commit>(data.resp);
       this.dataSource.paginator = this.paginator.paginator;
     });
-    this.breakObserver.observe(['(max-width: 499px)'])
-      .subscribe(r => {
-        if (r.matches) {
-          this.displayedColumns = ['actions', 'message'];
-        } else {
-          this.displayedColumns = ['actions', 'id', 'message', 'time'];
-        }
-      });
+    this.setColumns();
+    this.mediaObserver.asObservable().subscribe(c => this.setColumns());
+  }
+
+  setColumns() {
+    if (this.mediaObserver.isActive('lt-md')) {
+      this.displayedColumns = ['actions', 'message'];
+    } else {
+      this.displayedColumns = ['actions', 'id', 'message', 'time'];
+    }
   }
 
   refresh() {

@@ -5,24 +5,27 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DeleteComponent} from '../delete/delete.component';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import {RevertComponent} from '../../project-share/revert/revert.component';
+import {MediaObserver} from '@angular/flex-layout';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css']
 })
-export class ServicesComponent implements OnInit, AfterViewInit {
+export class ServicesComponent implements OnInit {
   deleteItem: ServiceItem;
   domain: string;
   selectedItem: ServiceItem;
   revertItem: ServiceItem;
   dataSource: MatTableDataSource<ServiceItem>;
-  displayedColumns = ['actions', 'name', 'serviceId', 'serviceType', 'description'];
+  displayedColumns = [];
 
   @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -30,29 +33,33 @@ export class ServicesComponent implements OnInit, AfterViewInit {
               public appService: AppConfigService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              public breakObserver: BreakpointObserver) {
+              public mediaObserver: MediaObserver) {
   }
 
   ngOnInit() {
     this.route.data
       .subscribe((data: { resp: ServiceItem[]}) => {
         this.dataSource = new MatTableDataSource(data.resp);
+        this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator.paginator;
       }
     );
     this.route.params.subscribe((params) => this.domain = params.domain);
-    this.breakObserver.observe(['(max-width: 499px)'])
-      .subscribe(r => {
-        if (r.matches) {
-          this.displayedColumns = ['actions', 'serviceId', 'serviceType'];
-        } else {
-          this.displayedColumns = ['actions', 'name', 'serviceId', 'serviceType', 'description'];
-        }
-      });
+    this.setColumns();
+    this.mediaObserver.asObservable().subscribe(c => this.setColumns());
   }
 
-  ngAfterViewInit() {
+  doFilter(val: string) {
+    if (!this.dataSource) { return; }
+    this.dataSource.filter = val;
+  }
 
+  setColumns() {
+    if (this.mediaObserver.isActive('lt-md')) {
+      this.displayedColumns = ['actions', 'serviceId'];
+    } else {
+      this.displayedColumns = ['actions', 'name', 'serviceId', 'description'];
+    }
   }
 
   serviceEdit(item?: ServiceItem) {
@@ -68,10 +75,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   getJson() {
     this.router.navigate(['registry/json', this.selectedItem.assignedId]);
-  }
-
-  getMetadata() {
-    this.router.navigate(['registry/metadata', this.selectedItem.assignedId]);
   }
 
   serviceDuplicate() {
@@ -184,7 +187,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   showMoveDown(): boolean {
-    if (!this.selectedItem) {
+    if (!this.selectedItem || this.isSorted() || this.dataSource.filter) {
       return false;
     }
     const index = this.dataSource.data.indexOf(this.selectedItem);
@@ -192,11 +195,15 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   showMoveUp(): boolean {
-    if (!this.selectedItem) {
+    if (!this.selectedItem || this.isSorted() || this.dataSource.filter) {
       return false;
     }
     const index = this.dataSource.data.indexOf(this.selectedItem);
     return index > 0;
+  }
+
+  isSorted(): boolean {
+    return this.sort.direction !== '';
   }
 
   showHistory(): boolean {

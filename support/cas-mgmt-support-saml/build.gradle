@@ -5,6 +5,8 @@ dependencies {
     implementation libraries.opensaml
     implementation libraries.casServer.saml
     implementation libraries.shibboleth
+    implementation libraries.shibidp
+    implementation libraries.shibidpjavasupport
     implementation libraries.casServer.configuration
     
     api project(":api:cas-mgmt-api-core")

@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { ProxyComponent } from './proxy.component';
-import {SharedModule} from '../../shared/shared.module';
 
 describe('ProxyComponent', () => {
   let component: ProxyComponent;
@@ -13,7 +12,7 @@ describe('ProxyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ FormsModule, SharedModule ],
+      imports: [ FormsModule ],
       declarations: [ ProxyComponent ]
     })
     .compileComponents();

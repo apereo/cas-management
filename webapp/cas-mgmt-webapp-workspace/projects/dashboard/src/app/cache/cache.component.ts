@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSlideToggleChange, MatTableDataSource} from '@angular/material';
-import {Cache, MapDetails} from '../domain/cache';
+import {Cache, MapDetails} from '../domain/cache.model';
 import {DashboardService} from '../core/dashboard-service';
 import {ActivatedRoute} from '@angular/router';
 import {PaginatorComponent} from 'shared-lib';

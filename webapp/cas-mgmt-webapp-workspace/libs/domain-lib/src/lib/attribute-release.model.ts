@@ -1,12 +1,12 @@
 import {
   attributeRepoFactory,
   PrincipalAttributesRepository
-} from './attribute-repo';
-import {attributeFilterFactory, RegisteredServiceAttributeFilter} from './attribute-filter';
+} from './attribute-repo.model';
+import {attributeFilterFactory, RegisteredServiceAttributeFilter} from './attribute-filter.model';
 import {
   consentPolicyFactory,
   RegisteredServiceConsentPolicy
-} from './consent-policy';
+} from './consent-policy.model';
 
 export abstract class RegisteredServiceAttributeReleasePolicy {
   attributeFilter: RegisteredServiceAttributeFilter;

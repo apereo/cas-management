@@ -6,14 +6,14 @@ import {Injectable} from '@angular/core';
 import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {Observable} from 'rxjs/internal/Observable';
 import {Metadata} from 'domain-lib';
-import {MetadataService} from './metadata.service';
+import {MetadataService} from '@app/registry/metadata/metadata.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetadataResolver implements Resolve<Metadata> {
 
-  constructor(private service: MetadataService) {}
+  constructor(private metaDataService: MetadataService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Metadata> | Metadata {
     const param: string = route.params.id;
@@ -21,7 +21,7 @@ export class MetadataResolver implements Resolve<Metadata> {
     if (!param) {
       return null;
     } else {
-        return this.service.getMetadata(param);
+        return this.metaDataService.getMetadata(param);
     }
   }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {DataRecord} from '../data';
+import {DataRecord} from '../data.model';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
 import {AttributesForm, Row} from './attributes.form';
 import {FormGroup} from '@angular/forms';
@@ -49,7 +49,7 @@ export class AttributesComponent implements OnInit {
   setChangeSubscription(row: Row) {
     row.key.valueChanges.subscribe((value => {
       if (this.defaultToAttributeName) {
-        row.key.parent.get('values').setValue(value);
+        row.key.parent.get('value').setValue(value);
       }
       this.keyChange.emit(row.key.parent as FormGroup);
     }));

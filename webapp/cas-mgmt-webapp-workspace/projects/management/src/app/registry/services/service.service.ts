@@ -14,7 +14,7 @@ export class ServiceViewService extends Service {
   controller = 'api/services';
 
   getServices(domain: string): Observable<ServiceItem[]> {
-    return this.get<ServiceItem[]>(this.controller + '?domain=' + domain);
+    return this.get<ServiceItem[]>(this.controller + '?domain=' + domain, 'Loading Services');
   }
 
   getYaml(id: number): Observable<string> {
@@ -35,14 +35,6 @@ export class ServiceViewService extends Service {
 
   saveYaml(id: number, yaml: string): Observable<void> {
     return this.post(this.controller + '/yaml/' + id,  yaml);
-  }
-
-  promote(id: number): Observable<void> {
-    return this.get(this.controller + '/promote/' + id);
-  }
-
-  demote(id: number): Observable<void> {
-    return this.get(this.controller + '/demote/' + id);
   }
 
   revert(fileName: string): Observable<string> {

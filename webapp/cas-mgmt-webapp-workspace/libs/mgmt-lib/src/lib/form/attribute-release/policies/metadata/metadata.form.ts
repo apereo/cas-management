@@ -1,5 +1,5 @@
 import {AttributeReleaseForm} from '../../attribute-release.form';
-import {MetadataEntityAttributesAttributeReleasePolicy} from 'domain-lib/lib/attribute-release';
+import {MetadataEntityAttributesAttributeReleasePolicy} from 'domain-lib';
 import {MgmtFormControl} from '../../../mgmt-formcontrol';
 
 export class MetadataReleaseForm extends AttributeReleaseForm {

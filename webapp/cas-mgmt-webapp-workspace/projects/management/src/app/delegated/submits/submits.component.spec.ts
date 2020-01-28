@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DelegatedComponent } from './delegated.component';
+import { SubmitsComponent } from './submits.component';
 
-describe('DelegatedComponent', () => {
-  let component: DelegatedComponent;
-  let fixture: ComponentFixture<DelegatedComponent>;
+describe('SubmitsComponent', () => {
+  let component: SubmitsComponent;
+  let fixture: ComponentFixture<SubmitsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DelegatedComponent ]
+      declarations: [ SubmitsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DelegatedComponent);
+    fixture = TestBed.createComponent(SubmitsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

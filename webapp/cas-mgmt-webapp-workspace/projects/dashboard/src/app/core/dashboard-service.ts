@@ -1,10 +1,10 @@
 import {Service} from 'shared-lib';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Server} from '../domain/dashboard';
-import {Cache} from '../domain/cache';
-import {AuditLog} from '../domain/audit';
-import {Logger} from '../domain/logger';
+import {Server} from '../domain/dashboard.model';
+import {Cache} from '../domain/cache.model';
+import {AuditLog} from '../domain/audit.model';
+import {Logger} from '../domain/logger.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +24,11 @@ export class DashboardService extends Service {
   }
 
   getResolve(uid: string): Observable<Map<string, string[]>> {
-    return this.get<Map<string, string[]>>('api/dashboard/resolve/' + uid);
+    return this.get<Map<string, string[]>>('api/dashboard/resolve/' + uid, 'Resolving');
   }
 
   getRelease(data: any): Observable<Map<string, string[]>> {
-    return this.post<Map<string, string[]>>('api/dashboard/release', data);
+    return this.post<Map<string, string[]>>('api/dashboard/release', data, 'Authenticating');
   }
 
   getInfo(): Observable<Map<string, string>> {
@@ -36,11 +36,11 @@ export class DashboardService extends Service {
   }
 
   getAudit(data: any): Observable<AuditLog[]> {
-    return this.post<AuditLog[]>('api/dashboard/audit', data);
+    return this.post<AuditLog[]>('api/dashboard/audit', data, 'Searching');
   }
 
   downloadAudit(data: any): Observable<void> {
-    return this.post<void>('api/dashboard/audit/download', data);
+    return this.post<void>('api/dashboard/audit/download', data, 'Downloading');
   }
 
   getLoggers(): Observable<Map<string, Map<string, Logger>>> {
@@ -50,4 +50,5 @@ export class DashboardService extends Service {
   setLogger(data: any): Observable<void> {
     return this.post<void>('api/dashboard/loggers/', data);
   }
+
 }

@@ -1,22 +1,24 @@
-<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
-  <div style="padding-top: 3px;">
-    <mat-icon style="padding-top: 10px;">view_quilt</mat-icon>
-    <h3 style="display: inline;position: relative;top: -5px;" i18n>Resolve Attributes</h3>
+<div fxLayout="column" style="margin-left:10px;margin-right:10px;">
+  <div fxLayout="row" style="margin-top: 10px;">
+    <div fxLayout="row" fxFlex="25%">
+      <mat-icon>view_quilt</mat-icon>
+      <span style="font-weight: bold; font-size: 14px; white-space: nowrap;" i18n>Resolve Attributes</span>
+    </div>
+    <div fxFlex="50%" fxGrow fxLayoutAlign="center">
+      <lib-input>
+        <mat-form-field style="width: 400px;" class="textInput">
+          <mat-label>Username</mat-label>
+          <input matInput placeholder="Enter a username to resolve" #uid>
+        </mat-form-field>
+      </lib-input>
+    </div>
+    <div fxFlex="25%">
+      <div fxLayoutAlign="end">
+        <button mat-button (click)="resolve(uid.value)">Resolve</button>
+      </div>
+    </div>
   </div>
-  <div style="flex: 1 1 auto; display:flex; justify-content: center;">
-    <lib-input>
-      <mat-form-field style="width: 400px;" class="textInput">
-        <mat-label>Username</mat-label>
-        <input matInput placeholder="Enter a username to resolve" #uid>
-      </mat-form-field>
-    </lib-input>
-  </div>
-  <div style="padding-top: 8px;">
-    <button mat-button (click)="resolve(uid.value)">Resolve</button>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="actions">

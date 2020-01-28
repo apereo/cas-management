@@ -3,7 +3,7 @@
  */
 
 export * from './lib/mgmt-lib.module';
-export * from './lib/form/data';
+export * from './lib/form/data.model';
 export * from './lib/form/contacts/contacts.component';
 export * from './lib/form/mgmt-formcontrol';
 export * from './lib/form-data.service';

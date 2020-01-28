@@ -1,16 +1,17 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider;
 import org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy;
+import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.ResourceUtils;
 
 import com.mchange.io.FileUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -20,6 +21,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +42,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.opensaml.saml.saml2.core.NameID.EMAIL;
 
 /**
@@ -53,18 +55,71 @@ import static org.opensaml.saml.saml2.core.NameID.EMAIL;
 @RestController("casManagementSamlController")
 @RequestMapping(path = "api/saml", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@RequiredArgsConstructor
 public class SamlController {
 
     private static final String EPPN_NAME_ID = "urn:oid:1.3.6.1.4.1.5923.1.1.1.6";
 
+    /**
+     * User Profile Factory.
+     */
+    protected final CasUserProfileFactory casUserProfileFactory;
+
+    /**
+     * Manager Factory.
+     */
+    protected final MgmtManagerFactory<ServicesManager> managerFactory;
+
+    /**
+     * Management Configuration properties.
+     */
+    protected final CasManagementConfigurationProperties managementProperties;
+
     private final MetadataAggregateResolver sps;
     private final FormData formData;
     private final OpenSamlConfigBean configBean;
-    private final CasManagementConfigurationProperties managementProperties;
-    private final MgmtManagerFactory managerFactory;
-    private final UrlMetadataResolver urlResourceMetadataResolver;
+    private final UrlMetadataResolver urlMetadataResolver;
 
+    private List<String> entities;
+
+
+    public SamlController(final CasUserProfileFactory casUserProfileFactory,
+                          final MgmtManagerFactory managerFactory,
+                          final CasManagementConfigurationProperties managementProperties,
+                          final FormData formData,
+                          final OpenSamlConfigBean configBean,
+                          final MetadataAggregateResolver sps,
+                          final UrlMetadataResolver urlMetadataResolver){
+        this.casUserProfileFactory = casUserProfileFactory;
+        this.managerFactory = managerFactory;
+        this.managementProperties = managementProperties;
+        this.formData = formData;
+        this.configBean = configBean;
+        this.sps = sps;
+        this.urlMetadataResolver = urlMetadataResolver;
+        try {
+            val manager = (ManagementServicesManager) managerFactory.master();
+            this.entities = manager.getAllServices().stream()
+                    .filter(s -> s instanceof SamlRegisteredService)
+                    .map(s -> s.getServiceId())
+                    .collect(Collectors.toList());
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Searches SPs from InCommon that match the passed string.
+     *
+     * @param query - the string to match
+     * @return - List of Entity Ids
+     */
+    @GetMapping("find")
+    @SneakyThrows
+    public List<String> find(final @RequestParam String query) {
+        return this.entities.stream()
+                .filter(e -> e.contains(query))
+                .collect(Collectors.toList());
+    }
 
     /**
      * Searches SPs from InCommon that match the passed string.
@@ -95,7 +150,7 @@ public class SamlController {
             throw new IllegalArgumentException("Service already registered");
         }
         val fileName = DigestUtils.sha(entityId) + ".xml";
-        Files.write(Path.of(managementProperties.getMetadataRepoDir() + "/" + fileName), xml.getBytes(UTF_8));
+        Files.write(Path.of(managementProperties.getMetadataRepoDir() + "/" + fileName), xml.getBytes());
         service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + "/" + fileName);
         return service;
     }
@@ -105,23 +160,24 @@ public class SamlController {
      *
      * @param id - the entity id of the SP
      * @return - SamlRegisteredService
+     * @throws SignatureException - invalid metadata
      */
     @GetMapping("add")
-    @SneakyThrows
-    public SamlRegisteredService add(final @RequestParam String id) {
+    public SamlRegisteredService add(final @RequestParam String id) throws SignatureException {
         if (exists(id)) {
             throw new IllegalArgumentException("Service already registered");
         }
         val entityD = sps.find(id);
         val service = createService(entityD);
         service.setMetadataLocation(sps.location());
+        service.setMetadataSignatureLocation(managementProperties.getInCommonCertLocation());
         return service;
     }
 
     @GetMapping("download")
     @SneakyThrows
     public SamlRegisteredService download(final @RequestParam String url) {
-        val entity = this.urlResourceMetadataResolver.xml(url);
+        val entity = this.urlMetadataResolver.xml(url);
         LOGGER.error(entity);
         val service = createService(MetadataUtil.fromXML(entity, configBean));
         service.setMetadataLocation(url);
@@ -144,16 +200,18 @@ public class SamlController {
             service.setUsernameAttributeProvider(createUsernameProvider(service.getRequiredNameIdFormat()));
         }
         val extensions = spDescriptor.getExtensions();
-        val uiInfo = Objects.requireNonNull(extensions.getOrderedChildren()).stream()
-                .filter(c -> c instanceof UIInfo)
-                .findFirst();
-        if (uiInfo.isPresent()) {
-            val info = (UIInfo) uiInfo.get();
-            if (!info.getDisplayNames().isEmpty()) {
-                service.setName(info.getDisplayNames().get(0).getValue());
-            }
-            if (!info.getDescriptions().isEmpty()) {
-                service.setDescription(info.getDescriptions().get(0).getValue());
+        if (extensions != null) {
+            val uiInfo = Objects.requireNonNull(extensions.getOrderedChildren()).stream()
+                    .filter(c -> c instanceof UIInfo)
+                    .findFirst();
+            if (uiInfo.isPresent()) {
+                val info = (UIInfo) uiInfo.get();
+                if (!info.getDisplayNames().isEmpty()) {
+                    service.setName(info.getDisplayNames().get(0).getValue());
+                }
+                if (!info.getDescriptions().isEmpty()) {
+                    service.setDescription(info.getDescriptions().get(0).getValue());
+                }
             }
         }
         val attributeService = spDescriptor.getDefaultAttributeConsumingService();
@@ -192,7 +250,7 @@ public class SamlController {
     }
 
     private ReturnAllowedAttributeReleasePolicy createAttributePolicy(final SamlRegisteredService service,
-                                                                                             final AttributeConsumingService attributeService) {
+                                                                      final AttributeConsumingService attributeService) {
         val policy = new ReturnAllowedAttributeReleasePolicy();
         policy.setAuthorizedToReleaseAuthenticationAttributes(false);
         val allowed = new HashSet<String>();
@@ -208,6 +266,7 @@ public class SamlController {
         if (!allowed.isEmpty()) {
             policy.setAllowedAttributes(new ArrayList<>(allowed));
         }
+        policy.setExcludeDefaultAttributes(true);
         return policy;
     }
 

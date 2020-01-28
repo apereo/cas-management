@@ -4,9 +4,9 @@ import {PaginatorComponent, ViewComponent} from 'shared-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HistoryService} from './history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import {ChangesService} from '../changes/changes.service';
 import {HttpResponse} from '@angular/common/http';
+import {MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'app-history',
@@ -29,7 +29,7 @@ export class HistoryComponent implements OnInit {
               private router: Router,
               private service: HistoryService,
               public  snackBar: MatSnackBar,
-              public breakObserver: BreakpointObserver,
+              public mediaObserver: MediaObserver,
               public dialog: MatDialog,
               public changeService: ChangesService) {
   }
@@ -41,14 +41,16 @@ export class HistoryComponent implements OnInit {
         this.dataSource.paginator = this.paginator.paginator;
       });
     this.route.params.subscribe((params) => this.fileName = params.fileName);
-    this.breakObserver.observe(['(max-width: 499px)'])
-      .subscribe(r => {
-        if (r.matches) {
-          this.displayedColumns = ['actions', 'message'];
-        } else {
-          this.displayedColumns = ['actions', 'message', 'committer', 'time'];
-        }
-      });
+    this.setColumns();
+    this.mediaObserver.asObservable().subscribe(c => this.setColumns());
+  }
+
+  setColumns() {
+    if (this.mediaObserver.isActive('lt-md')) {
+      this.displayedColumns = ['actions', 'message'];
+    } else {
+      this.displayedColumns = ['actions', 'message', 'committer', 'time'];
+    }
   }
 
   viewChange() {

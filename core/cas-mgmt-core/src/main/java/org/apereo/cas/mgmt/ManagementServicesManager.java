@@ -40,6 +40,7 @@ public class ManagementServicesManager implements ServicesManager {
      * @param manager - ServicesManger to load from
      */
     public void loadFrom(final ServicesManager manager) {
+        LOGGER.debug("Services = [{}]", manager.getAllServices().size());
         manager.getAllServices().forEach(this::save);
     }
 

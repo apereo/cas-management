@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,28 +57,33 @@ public class CasManagementVersionControlConfiguration {
 
 
     @Bean(name = "managerFactory")
+    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public MgmtManagerFactory managerFactory() {
         return new VersionControlManagerFactory(servicesManager.getIfAvailable(), managementProperties,
                 repositoryFactory(), casUserProfileFactory.getIfAvailable(), casProperties, namingStrategy.getIfAvailable());
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public RepositoryFactory repositoryFactory() {
         return new RepositoryFactory(managementProperties, casUserProfileFactory.getIfAvailable());
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public CommitController commitController() {
         return new CommitController(repositoryFactory(), casUserProfileFactory.getIfAvailable(),
                 managementProperties, servicesManager.getIfAvailable(), pendingRequests);
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public ChangeController changeController() {
         return new ChangeController(repositoryFactory(), managerFactory(), casUserProfileFactory.getIfAvailable());
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public HistoryController historyController() {
         return new HistoryController(repositoryFactory(), managerFactory(), casUserProfileFactory.getIfAvailable());
     }

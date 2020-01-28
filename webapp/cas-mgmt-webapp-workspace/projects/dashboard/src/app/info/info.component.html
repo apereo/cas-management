@@ -1,13 +1,9 @@
-<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
-  <div style="padding-top: 3px;">
-    <mat-icon style="padding-top: 3px;">info</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>Cas Server Information</h4>
+<div fxLayout="column" style="margin-left:10px;margin-right:10px;">
+  <div fxLayout="row" style="margin-top: 10px;">
+    <mat-icon>info</mat-icon>
+    <span style="font-size: 14px; font-weight: bold; white-space: nowrap" i18n>Cas Server Information</span>
   </div>
-  <div style="flex: 1 1 auto">
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="actions">

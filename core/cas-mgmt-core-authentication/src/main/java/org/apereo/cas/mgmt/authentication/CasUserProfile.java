@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authentication;
 
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
+import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.val;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -22,9 +24,11 @@ import java.util.Collection;
 public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     private static final long serialVersionUID = -6308325782274816263L;
     private final boolean administrator;
+    private final boolean delegate;
 
     public CasUserProfile() {
         this.administrator = false;
+        this.delegate = false;
     }
 
     public CasUserProfile(final CommonProfile up, final Collection<String> adminRoles) {
@@ -36,6 +40,7 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
         addPermissions(up.getPermissions());
 
         this.administrator = adminRoles.stream().anyMatch(r -> getRoles().contains(r));
+        this.delegate = getRoles().contains("ROLE_USER");
     }
 
     public String getDepartment() {
@@ -83,7 +88,8 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
      */
     public boolean hasPermission(final String domain) {
         val permissions = getPermissions();
-        return isAdministrator() || permissions.contains("*") || permissions.stream().anyMatch(domain::endsWith);
+        return isAdministrator() || permissions.contains("*")
+                || permissions.stream().anyMatch(domain::endsWith);
     }
 
     /**
@@ -93,6 +99,16 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
      * @return true if user has permission
      */
     public boolean hasPermission(final RegisteredService service) {
-        return isAdministrator() || hasPermission(service.getServiceId());
+        val permissions = getPermissions();
+        if (isAdministrator() || permissions.contains("*")) {
+            return true;
+        }
+        return Arrays.stream(service.getServiceId().split("|"))
+                .map(CasManagementUtils::extractDomain)
+                .anyMatch(d -> permissions.stream().anyMatch(d::endsWith));
+    }
+
+    public boolean isUser() {
+        return isAdministrator() || isDelegate();
     }
 }

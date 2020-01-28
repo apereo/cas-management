@@ -99,6 +99,7 @@ public class HistoryController extends AbstractVersionControlController {
     public List<History> history(final HttpServletRequest request,
                                  final HttpServletResponse response,
                                  final @RequestBody String path) throws VersionControlException {
+        isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return git.history(path);
         } catch (final GitAPIException ex) {
@@ -174,6 +175,7 @@ public class HistoryController extends AbstractVersionControlController {
     public void revertDelete(final HttpServletRequest request,
                              final HttpServletResponse response,
                              final @RequestParam String path) {
+        isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 response.setStatus(NO_CHANGES_FOUND);
@@ -196,6 +198,7 @@ public class HistoryController extends AbstractVersionControlController {
     public void checkout(final HttpServletRequest request,
                          final HttpServletResponse response,
                          final @RequestBody String[] data) throws VersionControlException {
+        isUser(request, response);
         val path = data[0];
         val id = data[1];
         try (GitUtil git = repositoryFactory.from(request, response)) {

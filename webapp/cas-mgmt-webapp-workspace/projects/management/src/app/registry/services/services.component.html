@@ -1,17 +1,17 @@
-<div style="display:flex;margin-bottom:10px;margin-left:10px;margin-right:10px;">
-  <div style="padding-top: 3px;">
-    <mat-icon style="padding-top: 3px;">build</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>Manage Services - {{ domain }}</h4>
+<div fxLayout="column" style="margin-left:10px;margin-right:10px;">
+  <div fxLayout="row" style="margin-top: 10px;">
+    <div fxFlex="25%">
+      <mat-icon>build</mat-icon>
+      <span style="font-weight: bold; font-size: 14px;">Services</span>
+    </div>
+    <app-controls fxFlex="75%" fxGrow [showNew]="true" (newService)="createService()"></app-controls>
   </div>
-  <div style="flex: 1 1 auto">
-  </div>
-  <div>
-    <app-controls (refresh)="refresh()" (newService)="createService()"></app-controls>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
-  <mat-table #table [dataSource]="dataSource">
+  <mat-form-field floatLabel="never" style="width:100%;min-width:250px;">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter Domains" >
+  </mat-form-field>
+
+  <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
@@ -36,10 +36,13 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'" mat-sort-header>
         <ng-container i18n>Name</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <mat-chip-list *ngIf="row.staged">
+          <mat-chip color="cas-primary">Staged</mat-chip>
+        </mat-chip-list>
         <a (click)="serviceEdit(row)">
           {{ row.name }}
         </a>
@@ -47,7 +50,7 @@
     </ng-container>
 
     <ng-container matColumnDef="serviceId">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceIdWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceIdWidth'" mat-sort-header>
         <ng-container i18n>Service Url</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'serviceIdWidth'">
@@ -55,17 +58,8 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="serviceType">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceTypeWidth'">
-        <ng-container i18n>Type</ng-container>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row" [ngClass]="'serviceTypeWidth'">
-        {{ row.type }}
-      </mat-cell>
-    </ng-container>
-
     <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'descriptionWidth'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'descriptionWidth'" mat-sort-header>
         <ng-container i18n>Description</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'descriptionWidth'">
@@ -93,10 +87,6 @@
   <button mat-menu-item (click)="getJson()">
     <mat-icon>code</mat-icon>
     <ng-container i18n>JSON</ng-container>
-  </button>
-  <button mat-menu-item (click)="getMetadata()" *ngIf="showMetadata()">
-    <mat-icon>code</mat-icon>
-    <ng-container i18n>Metadata</ng-container>
   </button>
   <button mat-menu-item (click)="serviceDuplicate()">
     <mat-icon>content_copy</mat-icon>

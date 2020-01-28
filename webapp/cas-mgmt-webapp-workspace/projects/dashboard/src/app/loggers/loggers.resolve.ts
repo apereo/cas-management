@@ -1,5 +1,5 @@
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {Logger} from '../domain/logger';
+import {Logger} from '../domain/logger.model';
 import {DashboardService} from '../core/dashboard-service';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';

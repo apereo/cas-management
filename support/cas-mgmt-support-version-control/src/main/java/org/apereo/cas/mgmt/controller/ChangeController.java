@@ -68,6 +68,7 @@ public class ChangeController extends AbstractVersionControlController {
     @GetMapping("untracked")
     public List<Change> untracked(final HttpServletResponse response,
                                   final HttpServletRequest request) {
+        isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 return new ArrayList<>();
@@ -142,6 +143,7 @@ public class ChangeController extends AbstractVersionControlController {
     public RegisteredService viewChange(final HttpServletResponse response,
                                         final HttpServletRequest request,
                                         final @PathVariable String id) throws VersionControlException {
+        isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return CasManagementUtils.fromJson(git.readObject(id));
         } catch (final IOException ex) {

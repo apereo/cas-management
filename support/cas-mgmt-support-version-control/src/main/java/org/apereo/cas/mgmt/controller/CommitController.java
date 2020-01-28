@@ -82,6 +82,7 @@ public class CommitController extends AbstractVersionControlController {
                        final HttpServletRequest request,
                        final @RequestBody String msg) {
         val user = casUserProfileFactory.from(request, response);
+        isUser(user);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 response.setStatus(NO_CHANGES_FOUND);
@@ -212,6 +213,7 @@ public class CommitController extends AbstractVersionControlController {
     @GetMapping("status")
     public GitStatus gitStatus(final HttpServletRequest request,
                                final HttpServletResponse response) {
+        isUser(request, response);
         val gitStatus = new GitStatus();
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val status = git.status();

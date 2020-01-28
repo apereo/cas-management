@@ -4,8 +4,8 @@ import {CommitHistoryService} from './commit-history.service';
 import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {DiffEntry} from 'domain-lib';
 import {PaginatorComponent, ViewComponent} from 'shared-lib';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import {ChangesService} from '../changes/changes.service';
+import {MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'app-commit-history',
@@ -29,8 +29,8 @@ export class CommitHistoryComponent implements OnInit {
               private router: Router,
               private service: CommitHistoryService,
               private changeService: ChangesService,
-              public  snackBar: MatSnackBar,
-              public breakObserver: BreakpointObserver,
+              public snackBar: MatSnackBar,
+              public mediaObserver: MediaObserver,
               public dialog: MatDialog) {
   }
 
@@ -41,14 +41,16 @@ export class CommitHistoryComponent implements OnInit {
         this.dataSource.paginator = this.paginator.paginator;
       });
     this.route.params.subscribe((params) => this.commit = params.id);
-    this.breakObserver.observe(['(max-width: 499px)'])
-      .subscribe(r => {
-        if (r.matches) {
-          this.displayedColumns = ['actions', 'name', 'message'];
-        } else {
-          this.displayedColumns = ['actions', 'name', 'message', 'committer', 'time'];
-        }
-      });
+    this.setColumns();
+    this.mediaObserver.asObservable().subscribe(c => this.setColumns());
+  }
+
+  setColumns() {
+    if (this.mediaObserver.isActive('lt-md')) {
+      this.displayedColumns = ['actions', 'name', 'message'];
+    } else {
+      this.displayedColumns = ['actions', 'name', 'message', 'committer', 'time'];
+    }
   }
 
   viewChange() {

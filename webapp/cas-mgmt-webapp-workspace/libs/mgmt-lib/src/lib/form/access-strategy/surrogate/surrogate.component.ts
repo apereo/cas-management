@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormDataService} from '../../../form-data.service';
 import {SurrogateForm} from './surrogate.form';
-import {DataRecord} from '../../data';
+import {DataRecord} from '../../data.model';
 
 @Component({
   selector: 'lib-surrogate',

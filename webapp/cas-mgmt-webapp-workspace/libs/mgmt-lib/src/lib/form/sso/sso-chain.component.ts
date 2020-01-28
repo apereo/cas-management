@@ -1,7 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {FormGroup} from '@angular/forms';
 import {
-  ChainingRegisteredServiceSingleSignOnParticipationPolicy,
   ssoParticipationPolicy,
   SsoPolicyType
 } from 'domain-lib';

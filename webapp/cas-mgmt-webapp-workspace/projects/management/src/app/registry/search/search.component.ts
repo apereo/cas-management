@@ -5,6 +5,7 @@ import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/mate
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {SearchService} from './search.service';
+import {MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'app-search',
@@ -27,12 +28,23 @@ export class SearchComponent implements OnInit {
               public location: Location,
               public service: SearchService,
               public snackBar: MatSnackBar,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              public mediaObserver: MediaObserver) { }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource(this.service.results || []);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator.paginator;
+    this.setColumns();
+    this.mediaObserver.asObservable().subscribe(c => this.setColumns());
+  }
+
+  setColumns() {
+    if (this.mediaObserver.isActive('lt-md')) {
+      this.displayedColumns = ['actions', 'name', 'serviceId'];
+    } else {
+      this.displayedColumns = ['actions', 'name', 'serviceId', 'serviceType', 'description'];
+    }
   }
 
   serviceEdit(item?: ServiceItem) {
@@ -63,22 +75,6 @@ export class SearchComponent implements OnInit {
   doSearch(query: string) {
     this.service.search(query)
       .subscribe(resp => this.dataSource.data = resp);
-  }
-
-  promote() {
-    this.service.promote(+this.selectedItem.assignedId).subscribe(() => {
-      this.selectedItem.staged = false;
-    });
-  }
-
-  demote() {
-    this.service.demote(+this.selectedItem.assignedId).subscribe(() => {
-      this.selectedItem.staged = true;
-    });
-  }
-
-  staged(): boolean {
-    return this.selectedItem && this.selectedItem.staged;
   }
 
 }

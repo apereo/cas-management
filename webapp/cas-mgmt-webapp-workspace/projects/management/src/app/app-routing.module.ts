@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: () => import('./version-control/version-control.module').then(m => m.VersionControlModule)
   },
   {
+    path: 'delegated',
+    loadChildren: () => import('./delegated/delegated.module').then(m => m.DelegatedModule)
+  },
+  {
     path: '',
     component: InitComponent
   }

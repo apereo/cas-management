@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {AuthenticatedService, SsoSession} from '../../domain/sessions';
+import {AuthenticatedService, SsoSession} from '../../domain/sessions.model';
 import {MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource} from '@angular/material';
 
 @Component({

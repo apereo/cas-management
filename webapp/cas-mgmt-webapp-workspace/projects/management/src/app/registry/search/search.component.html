@@ -1,24 +1,19 @@
-<div style="display:flex;margin-bottom:10px;margin-left:25px;margin-right:25px;">
-  <div style="padding-top: 10px;">
-    <mat-icon style="padding-top: 3px;">search</mat-icon>
-    <h4 style="display: inline;position: relative;top: -5px;" i18n>Search Results</h4>
+<div fxLayout="column" style="margin-left:10px;margin-right:10px;">
+  <div fxLayout="row" style="marg-top: 10px;">
+    <div fxLayout="row" fxFlex="25%">
+      <mat-icon>search</mat-icon>
+      <span style="font-weight: bold; font-size: 14px; white-space: nowrap" i18n>Search Results</span>
+    </div>
+    <app-controls fxFlex="75%" fxGrow></app-controls>
   </div>
-  <div style="flex: 1 1 auto"></div>
-  <div>
-    <app-controls></app-controls>
-  </div>
-</div>
 
-<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
-  <div style="display: flex; flex-direction: row">
-    <mat-form-field floatLabel="never" style="flex: 0 1 500px; margin-left: 10px">
+  <div fxLayout="row">
+    <mat-form-field floatLabel="never" fxFlex="90%" fxGrow>
       <input #searchText matInput [value]="service.query || ''" placeholder="Enter text to find services">
     </mat-form-field>
-    <button mat-button (click)="doSearch(searchText.value)">Search</button>
+    <button mat-button fxFlex="10%" (click)="doSearch(searchText.value)">Search</button>
   </div>
-</div>
 
-<div style="display: flex; flex-direction: column;margin-right:10px;margin-left:10px;">
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="actions">
@@ -103,13 +98,5 @@
   <button mat-menu-item (click)="viewJson()">
     <mat-icon>code</mat-icon>
     <ng-container i18n>JSON</ng-container>
-  </button>
-  <button mat-menu-item (click)="promote(selectedItem)" *ngIf="staged()">
-    <mat-icon>call_made</mat-icon>
-    <ng-container i18n>Promote</ng-container>
-  </button>
-  <button mat-menu-item (click)="demote(selectedItem)" *ngIf="!staged()">
-    <mat-icon>call_received</mat-icon>
-    <ng-container i18n>Demote</ng-container>
   </button>
 </mat-menu>

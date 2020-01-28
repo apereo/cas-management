@@ -1,4 +1,4 @@
-import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn';
+import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn.model';
 
 export abstract class RegisteredServiceAccessStrategy {
   enabled: boolean;

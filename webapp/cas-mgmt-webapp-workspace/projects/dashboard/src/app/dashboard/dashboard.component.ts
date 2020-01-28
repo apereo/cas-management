@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
-import {Server, SystemHealth} from '../domain/dashboard';
+import {Server, SystemHealth} from '../domain/dashboard.model';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
@@ -8,7 +8,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
 
   servers: Server[];
 
@@ -29,10 +29,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.timers.push(null);
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.timers = null;
   }
 
   statusLight(server: Server): string {

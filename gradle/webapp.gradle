@@ -31,9 +31,13 @@ if (!Boolean.getBoolean("skipClientBuild")) {
 }
 
 dependencies {
-  
-    apply from: rootProject.file("config/core-config.gradle")
-    
+
+    implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
+    implementation project(":config:cas-mgmt-config-audit")
+    implementation project(":config:cas-mgmt-config-authentication")
+    implementation project(":config:cas-mgmt-config-authz")
+    implementation project(":config:cas-mgmt-config-core")
+    implementation project(":config:cas-mgmt-config-search")
     implementation project(":config:cas-mgmt-config-version-control")
     implementation project(":webapp:cas-mgmt-webapp-config")
     implementation project(":webapp:cas-mgmt-webapp-init")

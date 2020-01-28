@@ -8,12 +8,13 @@ import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.eclipse.jgit.api.Status;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Version control implementation of ServicesManager.
@@ -36,29 +37,26 @@ public class VersionControlServicesManager extends ManagementServicesManager {
     }
 
     @Override
-    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
-        return super.getServiceItemsForDomain(domain).stream()
-                .map(this::attachStatus)
+    @SneakyThrows
+    public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
+        val status = git.status();
+        return services.map(this::createServiceItem)
+                .peek(item -> item.setStatus(determineStatus(item.getAssignedId(), status)))
                 .collect(Collectors.toList());
     }
 
-    private RegisteredServiceItem attachStatus(final RegisteredServiceItem serviceItem) {
-        try {
-            val status = git.status();
-            val added = new HashSet<String>();
-            added.addAll(status.getAdded());
-            added.addAll(status.getUntracked());
-            if (added.stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
-                serviceItem.setStatus("ADD");
-            } else if (status.getModified().stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
-                serviceItem.setStatus("MODIFY");
-            } else if (status.getRemoved().stream().anyMatch(s -> s.contains(serviceItem.getAssignedId()))) {
-                serviceItem.setStatus("DELETE");
-            }
-        } catch (final Exception ex) {
-            LOGGER.error(ex.getMessage(), ex);
+    public String determineStatus(final String id, final Status status) {
+        if (status.getModified().stream().anyMatch(f -> f.contains(id))) {
+            return "MODIFY";
         }
-        return serviceItem;
+        if (status.getRemoved().stream().anyMatch(f -> f.contains(id))) {
+            return "DELETE";
+        }
+        if (status.getAdded().stream().anyMatch(f -> f.contains(id))
+                || status.getUntracked().stream().anyMatch(f -> f.contains(id))) {
+            return "ADD";
+        }
+        return null;
     }
 
     private boolean changed() {
@@ -112,7 +110,6 @@ public class VersionControlServicesManager extends ManagementServicesManager {
 
     @Override
     public RegisteredService save(final RegisteredService registeredService) {
-        LOGGER.debug("Saving [{}]", registeredService.getServiceId());
         val service = super.save(registeredService);
         changed();
         return service;

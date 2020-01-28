@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class used to manage services in Git repository.
@@ -40,7 +41,6 @@ public class ManagementServicesManager implements ServicesManager {
      * @param manager - ServicesManger to load from
      */
     public void loadFrom(final ServicesManager manager) {
-        LOGGER.debug("Services = [{}]", manager.getAllServices().size());
         manager.getAllServices().forEach(this::save);
     }
 
@@ -56,6 +56,11 @@ public class ManagementServicesManager implements ServicesManager {
         return services.stream()
             .map(this::createServiceItem)
             .collect(Collectors.toList());
+    }
+
+    public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
+        return services.map(this::createServiceItem)
+                .collect(Collectors.toList());
     }
 
     /**

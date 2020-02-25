@@ -21,13 +21,13 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
     super();
     const p: DefaultRegisteredServiceMultifactorPolicy = DefaultRegisteredServiceMultifactorPolicy.instanceOf(policy)
       ? policy as DefaultRegisteredServiceMultifactorPolicy : undefined;
-    this.multifactorAuthenticationProviders = (p && p.multifactorAuthenticationProviders) || null;
-    this.failureMode = (p && p.failureMode) ||  null;
-    this.principalAttributeNameTrigger = (p && p.principalAttributeNameTrigger) || null;
-    this.principalAttributeValueToMatch = (p && p.principalAttributeValueToMatch) || null;
-    this.bypassEnabled = p ? p.bypassEnabled : false;
-    this.forceExecution = p ? p.forceExecution : false;
-    this.bypassTrustedDeviceEnabled = p ? p.bypassTrustedDeviceEnabled : false;
+    this.multifactorAuthenticationProviders = p?.multifactorAuthenticationProviders;
+    this.failureMode = p?.failureMode;
+    this.principalAttributeNameTrigger = p?.principalAttributeNameTrigger;
+    this.principalAttributeValueToMatch = p?.principalAttributeValueToMatch;
+    this.bypassEnabled = p?.bypassEnabled ?? false;
+    this.forceExecution = p?.forceExecution ?? false;
+    this.bypassTrustedDeviceEnabled = p?.bypassTrustedDeviceEnabled ?? false;
     this['@class'] = DefaultRegisteredServiceMultifactorPolicy.cName;
   }
 }
@@ -45,7 +45,7 @@ export class GroovyRegisteredServiceMultifactorPolicy extends RegisteredServiceM
     super();
     const p: GroovyRegisteredServiceMultifactorPolicy = GroovyRegisteredServiceMultifactorPolicy.instanceOf(policy)
       ? policy as GroovyRegisteredServiceMultifactorPolicy : undefined;
-    this.groovyScript = (p && p.groovyScript) || null;
+    this.groovyScript = p?.groovyScript;
     this['@class'] = GroovyRegisteredServiceMultifactorPolicy.cName;
   }
 

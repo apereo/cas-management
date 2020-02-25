@@ -9,8 +9,8 @@ export class PublicKeyForm extends FormGroup {
 
   constructor(pk: RegisteredServicePublicKey) {
     super({
-      location: new MgmtFormControl(pk && pk.location),
-      algorithm: new MgmtFormControl(pk && pk.algorithm)
+      location: new MgmtFormControl(pk?.location),
+      algorithm: new MgmtFormControl(pk?.algorithm)
     });
   }
 

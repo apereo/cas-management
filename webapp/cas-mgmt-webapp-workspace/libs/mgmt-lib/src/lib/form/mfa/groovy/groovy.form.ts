@@ -8,7 +8,7 @@ export class GroovyMfaForm extends MfaForm {
 
   constructor(policy: GroovyRegisteredServiceMultifactorPolicy) {
     super({
-      script: new MgmtFormControl(policy && policy.groovyScript)
+      script: new MgmtFormControl(policy?.groovyScript)
     });
   }
 

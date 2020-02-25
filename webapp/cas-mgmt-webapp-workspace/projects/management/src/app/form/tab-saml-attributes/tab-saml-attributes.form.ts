@@ -10,9 +10,9 @@ export class TabSamlAttributesForm extends FormGroup implements MgmtFormGroup<Ab
 
   constructor(service: SamlRegisteredService) {
     super({
-      nameFormats: new AttributesForm(service && service.attributeNameFormats),
-      friendlyNames: new AttributesForm(service && service.attributeFriendlyNames),
-      valueTypes: new AttributesForm(service && service.attributeValueTypes)
+      nameFormats: new AttributesForm(service?.attributeNameFormats),
+      friendlyNames: new AttributesForm(service?.attributeFriendlyNames),
+      valueTypes: new AttributesForm(service?.attributeValueTypes)
     });
   }
 

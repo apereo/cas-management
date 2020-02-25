@@ -7,7 +7,7 @@ export class TabPropertiesForm extends FormGroup implements MgmtFormGroup<Abstra
   get properties() { return this.get('properties') as AttributesForm; }
   constructor(service: AbstractRegisteredService) {
     super({});
-    this.addControl('properties', new AttributesForm(service && service.properties && this.unpack(service.properties)));
+    this.addControl('properties', new AttributesForm(this.unpack(service?.properties ?? new Map<string, DefaultRegisteredServiceProperty>())));
   }
 
   mapForm(service: AbstractRegisteredService) {

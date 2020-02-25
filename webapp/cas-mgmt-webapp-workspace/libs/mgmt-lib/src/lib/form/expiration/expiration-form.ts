@@ -15,9 +15,9 @@ export class ExpirationForm extends FormGroup implements MgmtFormGroup<AbstractR
 
   constructor(policy: RegisteredServiceExpirationPolicy) {
     super({
-      expirationDate: new MgmtFormControl(policy && policy.expirationDate),
-      deleteWhenExpired: new MgmtFormControl(policy && policy.deleteWhenExpired),
-      notifyWhenDeleted: new MgmtFormControl(policy && policy.notifyWhenDeleted)
+      expirationDate: new MgmtFormControl(policy?.expirationDate),
+      deleteWhenExpired: new MgmtFormControl(policy?.deleteWhenExpired),
+      notifyWhenDeleted: new MgmtFormControl(policy?.notifyWhenDeleted)
     });
   }
 

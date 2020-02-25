@@ -28,8 +28,8 @@ export class BaseDateTimeSsoForm extends SsoPolicyForm {
 
   constructor(policy: BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy, type: SsoPolicyType) {
     super({
-      timeUnit: new MgmtFormControl(policy && policy.timeUnit),
-      timeValue: new MgmtFormControl(policy && policy.timeValue)
+      timeUnit: new MgmtFormControl(policy?.timeUnit),
+      timeValue: new MgmtFormControl(policy?.timeValue)
     }, type);
   }
 }

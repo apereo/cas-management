@@ -8,7 +8,7 @@ export class MappedReleaseForm extends AttributeReleaseForm {
 
   constructor(policy: ReturnMappedAttributeReleasePolicy) {
     super(policy);
-    this.addControl('mapped', new AttributesForm(policy && policy.allowedAttributes));
+    this.addControl('mapped', new AttributesForm(policy?.allowedAttributes));
   }
 
   mapForm(policy: ReturnMappedAttributeReleasePolicy) {

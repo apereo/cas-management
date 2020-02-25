@@ -18,4 +18,7 @@ export * from './lib/input/input.component';
 export * from './lib/view/view.component';
 export * from './lib/editor.component';
 export * from './lib/editor-options/editor-options.component';
+export * from './lib/card/card.component';
+export * from './lib/timeout/timeout.component';
+export * from './lib/help.directive';
 

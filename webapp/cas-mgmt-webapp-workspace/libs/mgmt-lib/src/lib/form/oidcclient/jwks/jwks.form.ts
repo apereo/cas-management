@@ -10,9 +10,9 @@ export class JwksForm extends FormGroup {
 
   constructor(service: OidcRegisteredService) {
     super({
-      jwks: new MgmtFormControl(service && service.jwks),
-      jwksCacheDuration: new MgmtFormControl(service && service.jwksCacheDuration),
-      jwksCacheTimeUnit: new MgmtFormControl(service && service.jwksCacheTimeUnit),
+      jwks: new MgmtFormControl(service?.jwks),
+      jwksCacheDuration: new MgmtFormControl(service?.jwksCacheDuration),
+      jwksCacheTimeUnit: new MgmtFormControl(service?.jwksCacheTimeUnit),
     });
   }
 

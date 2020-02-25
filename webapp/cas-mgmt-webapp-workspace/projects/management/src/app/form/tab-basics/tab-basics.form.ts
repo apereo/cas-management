@@ -16,15 +16,15 @@ export class TabBasicsForm extends FormGroup implements MgmtFormGroup<AbstractRe
 
   constructor(service: AbstractRegisteredService) {
     super({
-      enabled: new MgmtFormControl(service && service.accessStrategy.enabled),
-      serviceId: new MgmtFormControl(service && service.serviceId, null, Validators.required),
-      serviceName: new MgmtFormControl(service && service.name, null, Validators.required),
-      description: new MgmtFormControl(service && service.description),
-      theme: new MgmtFormControl(service && service.theme),
-      logo: new MgmtFormControl(service && service.logo),
-      informationUrl: new MgmtFormControl(service && service.informationUrl),
-      privacyUrl: new MgmtFormControl(service && service.privacyUrl),
-      serviceType: new MgmtFormControl(service && service['@class'])
+      enabled: new MgmtFormControl(service?.accessStrategy?.enabled),
+      serviceId: new MgmtFormControl(service?.serviceId, null, Validators.required),
+      serviceName: new MgmtFormControl(service?.name, null, Validators.required),
+      description: new MgmtFormControl(service?.description),
+      theme: new MgmtFormControl(service?.theme),
+      logo: new MgmtFormControl(service?.logo),
+      informationUrl: new MgmtFormControl(service?.informationUrl),
+      privacyUrl: new MgmtFormControl(service?.privacyUrl),
+      serviceType: new MgmtFormControl(service?.['@class'])
     });
   }
 

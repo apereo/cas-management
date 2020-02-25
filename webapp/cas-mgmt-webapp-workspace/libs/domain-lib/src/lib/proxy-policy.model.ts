@@ -20,7 +20,7 @@ export class RegexMatchingRegisteredServiceProxyPolicy extends RegisteredService
     super();
     const p: RegexMatchingRegisteredServiceProxyPolicy = RegexMatchingRegisteredServiceProxyPolicy.instanceOf(policy)
       ? policy as RegexMatchingRegisteredServiceProxyPolicy : undefined;
-    this.pattern = (p && p.pattern) || null;
+    this.pattern = p?.pattern;
     this['@class'] = RegexMatchingRegisteredServiceProxyPolicy.cName;
   }
 }

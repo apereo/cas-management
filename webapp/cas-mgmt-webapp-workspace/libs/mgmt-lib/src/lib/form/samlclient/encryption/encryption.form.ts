@@ -15,14 +15,14 @@ export class EncryptionForm extends FormGroup {
 
   constructor(service: SamlRegisteredService) {
     super({
-      encryptAssertions: new MgmtFormControl(service && service.encryptAssertions),
-      encryptAttributes: new MgmtFormControl(service && service.encryptAttributes),
-      encryptionOptional: new MgmtFormControl(service && service.encryptionOptional),
-      encryptableAttributes: new MgmtFormControl(service && service.encryptableAttributes),
-      encryptionDataAlgorithms: new MgmtFormControl(service && service.encryptionDataAlgorithms),
-      encryptionKeyAlgorithms: new MgmtFormControl(service && service.encryptionKeyAlgorithms),
-      encryptionBlackListedAlgorithms: new MgmtFormControl(service && service.encryptionBlackListedAlgorithms),
-      encryptionWhiteListedAlgorithms: new MgmtFormControl(service && service.encryptionWhiteListedAlgorithms)
+      encryptAssertions: new MgmtFormControl(service?.encryptAssertions),
+      encryptAttributes: new MgmtFormControl(service?.encryptAttributes),
+      encryptionOptional: new MgmtFormControl(service?.encryptionOptional),
+      encryptableAttributes: new MgmtFormControl(service?.encryptableAttributes),
+      encryptionDataAlgorithms: new MgmtFormControl(service?.encryptionDataAlgorithms),
+      encryptionKeyAlgorithms: new MgmtFormControl(service?.encryptionKeyAlgorithms),
+      encryptionBlackListedAlgorithms: new MgmtFormControl(service?.encryptionBlackListedAlgorithms),
+      encryptionWhiteListedAlgorithms: new MgmtFormControl(service?.encryptionWhiteListedAlgorithms)
     });
   }
 

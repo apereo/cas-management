@@ -9,8 +9,8 @@ export class TabLogoutForm extends FormGroup implements MgmtFormGroup<AbstractRe
 
   constructor(service: AbstractRegisteredService) {
     super({
-      logout: new MgmtFormControl(service && service.logoutUrl),
-      logoutType: new MgmtFormControl(service && service.logoutType)
+      logout: new MgmtFormControl(service?.logoutUrl),
+      logoutType: new MgmtFormControl(service?.logoutType)
     });
   }
 

@@ -7,7 +7,7 @@ import {SsosessionsService} from './ssosessions-service';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {DetailComponent} from './detail/detail.component';
-import {MatSort} from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-ssosessions',

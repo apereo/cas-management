@@ -9,8 +9,8 @@ export class TimeForm extends AccessStrategyForm {
 
   constructor(strategy: TimeBasedRegisteredServiceAccessStrategy) {
     super(strategy);
-    this.addControl('startingDateTime', new MgmtFormControl(strategy && strategy.startingDateTime));
-    this.addControl('endingDateTime', new MgmtFormControl(strategy && strategy.endingDateTime));
+    this.addControl('startingDateTime', new MgmtFormControl(strategy?.startingDateTime));
+    this.addControl('endingDateTime', new MgmtFormControl(strategy?.endingDateTime));
   }
 
   mapForm(strategy: TimeBasedRegisteredServiceAccessStrategy) {

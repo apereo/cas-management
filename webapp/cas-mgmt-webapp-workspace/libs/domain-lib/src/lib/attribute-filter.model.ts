@@ -16,7 +16,7 @@ export class RegisteredServiceChainingAttributeFilter extends RegisteredServiceA
     super();
     const f: RegisteredServiceChainingAttributeFilter = RegisteredServiceChainingAttributeFilter.instanceof(filter)
       ? filter as RegisteredServiceChainingAttributeFilter : undefined;
-    this.filters = (f && f.filters) || null;
+    this.filters = f?.filters;
     this['@class'] = RegisteredServiceChainingAttributeFilter.cName;
   }
 }
@@ -35,8 +35,8 @@ export class RegisteredServiceRegexAttributeFilter extends RegisteredServiceAttr
     super();
     const f: RegisteredServiceRegexAttributeFilter = RegisteredServiceRegexAttributeFilter.instanceOf(filter)
       ? filter as RegisteredServiceRegexAttributeFilter : undefined;
-    this.order = (f && f.order) || null;
-    this.pattern = (f && f.pattern) || null;
+    this.order = f?.order;
+    this.pattern = f?.pattern;
     this['@class'] = RegisteredServiceRegexAttributeFilter.cName;
   }
 }
@@ -58,11 +58,11 @@ export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServi
     super();
     const f: RegisteredServiceMappedRegexAttributeFilter = RegisteredServiceMappedRegexAttributeFilter.instanceof(filter)
       ? filter as RegisteredServiceMappedRegexAttributeFilter : undefined;
-    this.patterns = (f && f.patterns) || null;
-    this.excludeUnmappedAttributes = f ? f.excludeUnmappedAttributes : false;
-    this.caseInsensitive = f ? f.caseInsensitive : false;
-    this.completeMatch = f ? f.completeMatch : false;
-    this.order = (f && f.order) || null;
+    this.patterns = f?.patterns;
+    this.excludeUnmappedAttributes = f?.excludeUnmappedAttributes ?? false;
+    this.caseInsensitive = f?.caseInsensitive ?? false;
+    this.completeMatch = f?.completeMatch ?? false;
+    this.order = f?.order;
     this['@class'] = RegisteredServiceMappedRegexAttributeFilter.cName;
   }
 }
@@ -107,8 +107,8 @@ export class RegisteredServiceScriptedAttributeFilter extends RegisteredServiceA
     super();
     const f: RegisteredServiceScriptedAttributeFilter = RegisteredServiceScriptedAttributeFilter.instanceof(filter)
       ? filter as RegisteredServiceScriptedAttributeFilter : undefined;
-    this.script = (f && f.script) || null;
-    this.order = (f && f.order) || null;
+    this.script = f?.script;
+    this.order = f?.order;
     this['@class'] = RegisteredServiceScriptedAttributeFilter.cName;
   }
 }

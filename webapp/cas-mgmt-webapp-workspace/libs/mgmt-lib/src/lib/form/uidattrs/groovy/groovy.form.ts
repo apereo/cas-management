@@ -8,7 +8,7 @@ export class GroovyUidForm extends UidattrsForm {
 
   constructor(provider: GroovyRegisteredServiceUsernameProvider) {
     super(provider);
-    this.addControl('groovyScript', new MgmtFormControl(provider && provider.groovyScript));
+    this.addControl('groovyScript', new MgmtFormControl(provider?.groovyScript));
   }
 
   mapForm(provider: GroovyRegisteredServiceUsernameProvider) {

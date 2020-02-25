@@ -9,8 +9,8 @@ export class ProxyTicketExpForm extends FormGroup {
 
   constructor(policy: RegisteredServiceProxyTicketExpirationPolicy) {
     super({
-      numberOfUses: new MgmtFormControl(policy && policy.numberOfUses),
-      timeToLive: new MgmtFormControl(policy && policy.timeToLive)
+      numberOfUses: new MgmtFormControl(policy?.numberOfUses),
+      timeToLive: new MgmtFormControl(policy?.timeToLive)
     });
   }
 

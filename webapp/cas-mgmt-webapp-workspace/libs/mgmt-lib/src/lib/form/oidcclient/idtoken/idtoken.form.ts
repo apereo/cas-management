@@ -12,9 +12,9 @@ export class IdTokenForm extends FormGroup {
 
   constructor(service: OidcRegisteredService) {
     super({
-      idTokenEncryptionAlg: new MgmtFormControl(service && service.idTokenEncryptionAlg),
-      idTokenEncryptionEncoding: new MgmtFormControl(service && service.idTokenEncryptionEncoding),
-      idTokenSigningAlg: new MgmtFormControl(service && service.idTokenSigningAlg),
+      idTokenEncryptionAlg: new MgmtFormControl(service?.idTokenEncryptionAlg),
+      idTokenEncryptionEncoding: new MgmtFormControl(service?.idTokenEncryptionEncoding),
+      idTokenSigningAlg: new MgmtFormControl(service?.idTokenSigningAlg),
       idTokenOptions: new OptionsForm(service)
     });
   }

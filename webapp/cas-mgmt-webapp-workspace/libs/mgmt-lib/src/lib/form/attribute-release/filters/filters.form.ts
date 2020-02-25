@@ -23,7 +23,7 @@ export class RegexFilterForm extends FilterForm {
 
   constructor(filter: RegisteredServiceRegexAttributeFilter) {
     super({
-      pattern: new MgmtFormControl(filter && filter.pattern)
+      pattern: new MgmtFormControl(filter?.pattern)
     }, FilterType.REGEX);
   }
 }
@@ -34,7 +34,7 @@ export class ScriptFilterForm extends FilterForm {
 
   constructor(filter: RegisteredServiceScriptedAttributeFilter) {
     super({
-      script: new MgmtFormControl(filter && filter.script)
+      script: new MgmtFormControl(filter?.script)
     }, FilterType.SCRIPTED);
   }
 }
@@ -48,10 +48,10 @@ export class FilterMappedRegExForm extends FilterForm {
 
   constructor(filter: RegisteredServiceMappedRegexAttributeFilter, type?: FilterType) {
     super({
-      patterns: new AttributesForm(filter && filter.patterns),
-      caseInsensitive: new MgmtFormControl(filter && filter.caseInsensitive),
-      completeMatch: new MgmtFormControl(filter && filter.completeMatch),
-      excludeUnmappedAttributes: new MgmtFormControl(filter && filter.excludeUnmappedAttributes)
+      patterns: new AttributesForm(filter?.patterns),
+      caseInsensitive: new MgmtFormControl(filter?.caseInsensitive),
+      completeMatch: new MgmtFormControl(filter?.completeMatch),
+      excludeUnmappedAttributes: new MgmtFormControl(filter?.excludeUnmappedAttributes)
     }, type ? type : FilterType.MAPPED_REGEX);
   }
 

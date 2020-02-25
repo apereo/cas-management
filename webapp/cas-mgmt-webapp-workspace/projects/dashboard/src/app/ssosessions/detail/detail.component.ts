@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AuthenticatedService, SsoSession} from '../../domain/sessions.model';
-import {MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-detail',

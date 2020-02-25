@@ -10,9 +10,9 @@ export class MetadataReleaseForm extends AttributeReleaseForm {
 
   constructor(policy: MetadataEntityAttributesAttributeReleasePolicy) {
     super(policy);
-    this.addControl('entityAttribute', new MgmtFormControl(policy && policy.entityAttribute));
-    this.addControl('entityAttributeFormat', new MgmtFormControl(policy && policy.entityAttributeFormat));
-    this.addControl('entityAttributeValues', new MgmtFormControl(policy && policy.entityAttributeValues));
+    this.addControl('entityAttribute', new MgmtFormControl(policy?.entityAttribute));
+    this.addControl('entityAttributeFormat', new MgmtFormControl(policy?.entityAttributeFormat));
+    this.addControl('entityAttributeValues', new MgmtFormControl(policy?.entityAttributeValues));
   }
 
   mapForm(policy: MetadataEntityAttributesAttributeReleasePolicy) {

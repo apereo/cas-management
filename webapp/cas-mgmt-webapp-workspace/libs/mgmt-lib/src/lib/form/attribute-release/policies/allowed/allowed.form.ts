@@ -8,7 +8,7 @@ export class AllowedReleasedForm extends AttributeReleaseForm {
 
   constructor(policy: ReturnAllowedAttributeReleasePolicy) {
     super(policy);
-    this.addControl('allowed', new MgmtFormControl(policy && policy.allowedAttributes));
+    this.addControl('allowed', new MgmtFormControl(policy?.allowedAttributes));
   }
 
   mapForm(policy: ReturnAllowedAttributeReleasePolicy) {

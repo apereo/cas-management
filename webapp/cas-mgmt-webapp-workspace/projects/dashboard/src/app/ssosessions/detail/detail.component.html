@@ -10,7 +10,7 @@
     <lib-input>
       <mat-form-field class="textInput" appearance="standard">
         <mat-label i18n>Date</mat-label>
-        <input matInput [ngModel]="detail.authenticationDate">
+        <input matInput [ngModel]="detail.authenticationDate | date: 'yyyy-MM-dd HH:mm:ss'">
       </mat-form-field>
     </lib-input>
     <lib-input>

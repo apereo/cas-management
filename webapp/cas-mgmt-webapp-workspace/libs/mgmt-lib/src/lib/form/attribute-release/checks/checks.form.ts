@@ -11,11 +11,11 @@ export class ChecksForm extends FormGroup {
 
   constructor(policy: RegisteredServiceAttributeReleasePolicy) {
     super({
-      excludeDefaultAttributes: new MgmtFormControl(policy && policy.excludeDefaultAttributes),
-      authorizedToReleaseCredentialPassword: new MgmtFormControl(policy && policy.authorizedToReleaseCredentialPassword),
-      authorizedToReleaseProxyGrantingTicket: new MgmtFormControl(policy && policy.authorizedToReleaseProxyGrantingTicket),
-      authorizedToReleaseAuthenticationAttributes: new MgmtFormControl(policy && policy.authorizedToReleaseAuthenticationAttributes),
-      principalIdAttribute: new MgmtFormControl(policy && policy.principalIdAttribute)
+      excludeDefaultAttributes: new MgmtFormControl(policy?.excludeDefaultAttributes),
+      authorizedToReleaseCredentialPassword: new MgmtFormControl(policy?.authorizedToReleaseCredentialPassword),
+      authorizedToReleaseProxyGrantingTicket: new MgmtFormControl(policy?.authorizedToReleaseProxyGrantingTicket),
+      authorizedToReleaseAuthenticationAttributes: new MgmtFormControl(policy?.authorizedToReleaseAuthenticationAttributes),
+      principalIdAttribute: new MgmtFormControl(policy?.principalIdAttribute)
     });
   }
 

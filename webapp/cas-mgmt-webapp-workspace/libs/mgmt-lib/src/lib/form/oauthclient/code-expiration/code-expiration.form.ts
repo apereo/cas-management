@@ -9,8 +9,8 @@ export class CodeExpirationForm extends FormGroup {
 
   constructor(policy: RegisteredServiceOAuthCodeExpirationPolicy) {
     super({
-      numberOfUses: new MgmtFormControl(policy && policy.numberOfUses),
-      timeToLive: new MgmtFormControl(policy && policy.timeToLive)
+      numberOfUses: new MgmtFormControl(policy?.numberOfUses),
+      timeToLive: new MgmtFormControl(policy?.timeToLive)
     });
   }
 

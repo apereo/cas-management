@@ -15,10 +15,10 @@ export class SsoForm extends FormGroup {
 
   constructor(service: AbstractRegisteredService) {
     super({
-      ssoEnabled: new MgmtFormControl(service && service.accessStrategy && service.accessStrategy.ssoEnabled),
+      ssoEnabled: new MgmtFormControl(service?.accessStrategy?.ssoEnabled),
       policy: new FormControl(null)
     });
-    const p = createSsoForm(service && service.singleSignOnParticipationPolicy);
+    const p = createSsoForm(service?.singleSignOnParticipationPolicy);
     if (p.type === SsoPolicyType.CHAINING) {
       this.policyForm.setValue(p);
     } else {

@@ -8,7 +8,7 @@ export class RegisteredServiceSingleSignOnParticipationPolicy {
   }
 
   constructor(policy?: RegisteredServiceSingleSignOnParticipationPolicy) {
-    this.order = (policy && policy.order) || null;
+    this.order = policy?.order;
     this['@class'] = RegisteredServiceSingleSignOnParticipationPolicy.cName;
   }
 }
@@ -40,8 +40,8 @@ export class BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy extend
     super(policy);
     const p = policy && BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy.instanceOf(policy)
       ? policy as BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy : undefined;
-    this.timeValue = (p && p.timeValue) || null;
-    this.timeUnit = (p && p.timeUnit) || null;
+    this.timeValue = p?.timeValue;
+    this.timeUnit = p?.timeUnit;
     this['@class'] = BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy.cName;
   }
 }

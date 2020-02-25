@@ -1,11 +1,11 @@
 import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
-import {MatSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
 import {EditorComponent} from 'shared-lib';
 import {Metadata} from 'domain-lib';
 import {MetadataService} from '@app/registry/metadata/metadata.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-metadata',

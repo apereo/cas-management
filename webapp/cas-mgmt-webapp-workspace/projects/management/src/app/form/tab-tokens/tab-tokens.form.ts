@@ -17,10 +17,10 @@ export class TabTokenForm extends FormGroup implements MgmtFormGroup<AbstractReg
 
   constructor(public service: OAuthRegisteredService) {
     super({
-      codeExpirationPolicy: new CodeExpirationForm(service.codeExpirationPolicy),
-      accessTokenExpirationPolicy: new AccessTokenExpirationForm(service.accessTokenExpirationPolicy),
-      refreshTokenExpirationPolicy: new RefreshTokenExpirationForm(service.refreshTokenExpirationPolicy),
-      deviceTokenExpirationPolicy: new DeviceTokenExpirationForm(service.deviceTokenExpirationPolicy)
+      codeExpirationPolicy: new CodeExpirationForm(service?.codeExpirationPolicy),
+      accessTokenExpirationPolicy: new AccessTokenExpirationForm(service?.accessTokenExpirationPolicy),
+      refreshTokenExpirationPolicy: new RefreshTokenExpirationForm(service?.refreshTokenExpirationPolicy),
+      deviceTokenExpirationPolicy: new DeviceTokenExpirationForm(service?.deviceTokenExpirationPolicy)
     });
   }
 

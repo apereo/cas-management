@@ -3,7 +3,7 @@ export abstract class RegisteredServiceProperty {
   values: string[];
 
   constructor(prop?: RegisteredServiceProperty) {
-    this.values = (prop && prop.values) || null;
+    this.values = prop?.values;
   }
 }
 

@@ -5,7 +5,8 @@ import {Location} from '@angular/common';
 import {PublishComponent} from '../publish/publish.component';
 import {CommitComponent} from '../commit/commit.component';
 import {ControlsService} from './controls.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-controls',

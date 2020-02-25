@@ -2,9 +2,9 @@ import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ServiceViewService} from '../services/service.service';
-import {MatSnackBar} from '@angular/material';
 import {HttpErrorResponse} from '@angular/common/http';
 import {EditorComponent} from 'shared-lib';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-json',

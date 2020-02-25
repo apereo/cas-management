@@ -8,7 +8,7 @@ export class PrincipalUidForm extends UidattrsForm {
 
   constructor(provider: PrincipalAttributeRegisteredServiceUsernameProvider) {
     super(provider);
-    this.addControl('usernameAttribute', new MgmtFormControl(provider && provider.usernameAttribute));
+    this.addControl('usernameAttribute', new MgmtFormControl(provider?.usernameAttribute));
   }
 
   mapForm(provider: PrincipalAttributeRegisteredServiceUsernameProvider) {

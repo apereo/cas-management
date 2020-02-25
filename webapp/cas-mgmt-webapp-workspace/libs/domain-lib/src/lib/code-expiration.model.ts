@@ -9,8 +9,8 @@ export class RegisteredServiceOAuthCodeExpirationPolicy {
   }
 
   constructor(policy?: RegisteredServiceOAuthCodeExpirationPolicy) {
-    this.numberOfUses = (policy && policy.numberOfUses) || null;
-    this.timeToLive = (policy && policy.timeToLive) || null;
+    this.numberOfUses = policy?.numberOfUses;
+    this.timeToLive = policy?.timeToLive;
     this['@class'] = RegisteredServiceOAuthCodeExpirationPolicy.cName;
   }
 }

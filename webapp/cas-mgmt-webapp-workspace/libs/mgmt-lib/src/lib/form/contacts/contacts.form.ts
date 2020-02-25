@@ -2,7 +2,7 @@ import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {DefaultRegisteredServiceContact, AbstractRegisteredService} from 'domain-lib';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 
-export class Row extends FormGroup {
+export class ContactRow extends FormGroup {
   get name() { return this.get('name') as MgmtFormControl; }
   get email() { return this.get('email') as MgmtFormControl; }
   get phone() { return this.get('phone') as MgmtFormControl; }
@@ -10,10 +10,10 @@ export class Row extends FormGroup {
 
   constructor(contact: DefaultRegisteredServiceContact) {
     super({
-      name: new MgmtFormControl(contact && contact.name, '', Validators.required),
-      email: new MgmtFormControl(contact && contact.email, '', [Validators.required, Validators.email]),
-      phone: new MgmtFormControl(contact && contact.phone),
-      department: new MgmtFormControl(contact && contact.department)
+      name: new MgmtFormControl(contact?.name, '', Validators.required),
+      email: new MgmtFormControl(contact?.email, '', [Validators.required, Validators.email]),
+      phone: new MgmtFormControl(contact?.phone),
+      department: new MgmtFormControl(contact?.department)
     });
   }
 
@@ -33,21 +33,21 @@ export class ContactsForm extends FormArray {
     super([]);
     if (service && service.contacts) {
       service.contacts.forEach(c => {
-        this.push(new Row(c));
+        this.push(new ContactRow(c));
       });
     }
   }
 
-  rows(): Row[] {
-    return this.controls as Row[];
+  rows(): ContactRow[] {
+    return this.controls as ContactRow[];
   }
 
-  rowAt(index: number): Row {
-    return this.at(index) as Row;
+  rowAt(index: number): ContactRow {
+    return this.at(index) as ContactRow;
   }
 
   addRow(c?: DefaultRegisteredServiceContact) {
-    this.push(new Row(c));
+    this.push(new ContactRow(c));
   }
 
   mapForm(): DefaultRegisteredServiceContact[] {

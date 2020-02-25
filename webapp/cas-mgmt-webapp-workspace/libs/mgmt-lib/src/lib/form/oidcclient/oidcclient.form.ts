@@ -12,11 +12,11 @@ export class OidcClientForm extends FormGroup {
 
   constructor(service: OidcRegisteredService) {
     super({
-      tokenEndpointAuthenticationMethod: new MgmtFormControl(service && service.tokenEndpointAuthenticationMethod),
-      applicationType: new MgmtFormControl(service && service.applicationType),
-      subjectType: new MgmtFormControl(service && service.subjectType),
-      sectorIdentifierUri: new MgmtFormControl(service && service.sectorIdentifierUri),
-      dynamicRegistrationDateTime: new MgmtFormControl(service && service.dynamicRegistrationDateTime)
+      tokenEndpointAuthenticationMethod: new MgmtFormControl(service?.tokenEndpointAuthenticationMethod),
+      applicationType: new MgmtFormControl(service?.applicationType),
+      subjectType: new MgmtFormControl(service?.subjectType),
+      sectorIdentifierUri: new MgmtFormControl(service?.sectorIdentifierUri),
+      dynamicRegistrationDateTime: new MgmtFormControl(service?.dynamicRegistrationDateTime)
     });
   }
 

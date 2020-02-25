@@ -10,9 +10,9 @@ export class ConsentForm extends FormGroup {
 
   constructor(policy: RegisteredServiceConsentPolicy) {
     super({
-      enabled: new MgmtFormControl(policy && policy.enabled),
-      excludedAttributes: new MgmtFormControl(policy && policy.excludedAttributes),
-      includeOnlyAttributes: new MgmtFormControl(policy && policy.includeOnlyAttributes)
+      enabled: new MgmtFormControl(policy?.enabled),
+      excludedAttributes: new MgmtFormControl(policy?.excludedAttributes),
+      includeOnlyAttributes: new MgmtFormControl(policy?.includeOnlyAttributes)
     });
   }
 

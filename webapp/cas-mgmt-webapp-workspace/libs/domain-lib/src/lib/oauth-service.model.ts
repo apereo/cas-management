@@ -37,17 +37,17 @@ export class OAuthRegisteredService extends RegexRegisteredService {
     this['@class'] = OAuthRegisteredService.cName;
     const s: OAuthRegisteredService = OAuthRegisteredService.instanceOf(service) || OidcRegisteredService.instanceOf(service)
       ? service as OAuthRegisteredService : undefined;
-    this.clientSecret = (s && s.clientSecret) || null;
-    this.clientId = (s && s.clientId) || null;
-    this.bypassApprovalPrompt = s ? s.bypassApprovalPrompt : false;
-    this.generateRefreshToken = s ? s.generateRefreshToken : false;
-    this.supportedGrantTypes = (s && s.supportedGrantTypes) || null;
-    this.supportedResponseTypes = (s && s.supportedResponseTypes) || null;
-    this.jwtAccessToken = s ? s.jwtAccessToken : false;
-    this.codeExpirationPolicy = codeExpirationPolicy(s && s.codeExpirationPolicy);
-    this.accessTokenExpirationPolicy = accessTokenExpirationPolicy(s && s.accessTokenExpirationPolicy);
-    this.refreshTokenExpirationPolicy = refreshTokenExpirationPolicy(s && s.refreshTokenExpirationPolicy);
-    this.deviceTokenExpirationPolicy = deviceTokenExpirationPolicy(s && s.deviceTokenExpirationPolicy);
+    this.clientSecret = s?.clientSecret;
+    this.clientId = s?.clientId;
+    this.bypassApprovalPrompt = s?.bypassApprovalPrompt ?? false;
+    this.generateRefreshToken = s?.generateRefreshToken ?? false;
+    this.supportedGrantTypes = s?.supportedGrantTypes;
+    this.supportedResponseTypes = s?.supportedResponseTypes;
+    this.jwtAccessToken = s?.jwtAccessToken ?? false;
+    this.codeExpirationPolicy = codeExpirationPolicy(s?.codeExpirationPolicy);
+    this.accessTokenExpirationPolicy = accessTokenExpirationPolicy(s?.accessTokenExpirationPolicy);
+    this.refreshTokenExpirationPolicy = refreshTokenExpirationPolicy(s?.refreshTokenExpirationPolicy);
+    this.deviceTokenExpirationPolicy = deviceTokenExpirationPolicy(s?.deviceTokenExpirationPolicy);
   }
 }
 
@@ -82,24 +82,24 @@ export class OidcRegisteredService extends OAuthRegisteredService {
     super(service);
     const s: OidcRegisteredService = OidcRegisteredService.instanceOf(service)
       ? service as OidcRegisteredService : undefined;
-    this.jwks = (s && s.jwks) || null;
-    this.jwksCacheDuration = (s && s.jwksCacheDuration) || null;
-    this.jwksCacheTimeUnit = (s && s.jwksCacheTimeUnit) || null;
-    this.tokenEndpointAuthenticationMethod = (s && s.tokenEndpointAuthenticationMethod) || 'client_secret_basic';
-    this.signIdToken = s ? s.signIdToken : true;
-    this.encryptIdToken = s ? s.encryptIdToken : false;
-    this.idTokenEncryptionAlg = (s && s.idTokenEncryptionEncoding) || null;
-    this.idTokenEncryptionEncoding = (s && s.idTokenEncryptionEncoding) || null;
-    this.idTokenSigningAlg = (s && s.idTokenSigningAlg) || null;
-    this.userInfoSigningAlg = (s && s.userInfoSigningAlg) || null;
-    this.userInfoEncryptedResponseAlg = (s && s.userInfoEncryptedResponseAlg) || null;
-    this.userInfoEncryptedResponseEncoding = (s && s.userInfoEncryptedResponseEncoding) || null;
-    this.dynamicallyRegistered = s ? s.dynamicallyRegistered : false;
-    this.dynamicRegistrationDateTime = (s && s.dynamicRegistrationDateTime) || null;
-    this.scopes = (s && s.scopes) || null;
-    this.subjectType = (s && s.subjectType) || 'PUBLIC';
-    this.sectorIdentifierUri = (s && s.sectorIdentifierUri) || null;
-    this.applicationType = (s && s.applicationType) || 'web';
+    this.jwks = s?.jwks;
+    this.jwksCacheDuration = s?.jwksCacheDuration;
+    this.jwksCacheTimeUnit = s?.jwksCacheTimeUnit;
+    this.tokenEndpointAuthenticationMethod = s?.tokenEndpointAuthenticationMethod ?? 'client_secret_basic';
+    this.signIdToken = s?.signIdToken ?? true;
+    this.encryptIdToken = s?.encryptIdToken ?? false;
+    this.idTokenEncryptionAlg = s?.idTokenEncryptionEncoding;
+    this.idTokenEncryptionEncoding = s?.idTokenEncryptionEncoding;
+    this.idTokenSigningAlg = s?.idTokenSigningAlg;
+    this.userInfoSigningAlg = s?.userInfoSigningAlg;
+    this.userInfoEncryptedResponseAlg = s?.userInfoEncryptedResponseAlg;
+    this.userInfoEncryptedResponseEncoding = s?.userInfoEncryptedResponseEncoding;
+    this.dynamicallyRegistered = s?.dynamicallyRegistered ?? false;
+    this.dynamicRegistrationDateTime = s?.dynamicRegistrationDateTime;
+    this.scopes = s?.scopes;
+    this.subjectType = s?.subjectType ?? 'PUBLIC';
+    this.sectorIdentifierUri = s?.sectorIdentifierUri;
+    this.applicationType = s?.applicationType ?? 'web';
     this['@class'] = OidcRegisteredService.cName;
   }
 

@@ -23,11 +23,11 @@ export class AttributeReleaseForm extends FormGroup {
 
   constructor(private policy: RegisteredServiceAttributeReleasePolicy) {
     super({
-      attributeFilter: new ChainingFilterForm(policy && policy.attributeFilter),
-      consent: new ConsentForm(policy && policy.consentPolicy),
+      attributeFilter: new ChainingFilterForm(policy?.attributeFilter),
+      consent: new ConsentForm(policy?.consentPolicy),
       checks: new ChecksForm(policy)
     });
-    this.principalRepoType = new MgmtFormControl(this.findRepoType(policy.principalAttributesRepository));
+    this.principalRepoType = new MgmtFormControl(this.findRepoType(policy?.principalAttributesRepository));
     this.principalRepo = this.getRepo();
     this.principalRepoType.valueChanges.subscribe(() => this.changeRepoType());
   }

@@ -4,7 +4,7 @@
       <mat-icon>build</mat-icon>
       <span style="font-weight: bold; font-size: 14px;">Services</span>
     </div>
-    <app-controls fxFlex="75%" fxGrow [showNew]="true" (newService)="createService()"></app-controls>
+    <app-controls fxFlex="75%" fxGrow [showNew]="true" (refresh)="refresh()" (newService)="createService()"></app-controls>
   </div>
 
   <mat-form-field floatLabel="never" style="width:100%;min-width:250px;">

@@ -14,13 +14,13 @@ export class DefaultMfaForm extends MfaForm {
 
   constructor(policy: DefaultRegisteredServiceMultifactorPolicy) {
     super({
-      multifactorAuthenticationProviders: new MgmtFormControl(policy && policy.multifactorAuthenticationProviders),
-      failureMode: new MgmtFormControl(policy && policy.failureMode),
-      principalAttributeNameTrigger: new MgmtFormControl(policy && policy.principalAttributeNameTrigger),
-      principalAttributeValueToMatch: new MgmtFormControl(policy && policy.principalAttributeValueToMatch),
-      bypassEnabled: new MgmtFormControl(policy && policy.bypassEnabled),
-      forceExecution: new MgmtFormControl(policy && policy.forceExecution),
-      bypassTrustedDeviceEnabled: new MgmtFormControl(policy && policy.bypassTrustedDeviceEnabled)
+      multifactorAuthenticationProviders: new MgmtFormControl(policy?.multifactorAuthenticationProviders),
+      failureMode: new MgmtFormControl(policy?.failureMode),
+      principalAttributeNameTrigger: new MgmtFormControl(policy?.principalAttributeNameTrigger),
+      principalAttributeValueToMatch: new MgmtFormControl(policy?.principalAttributeValueToMatch),
+      bypassEnabled: new MgmtFormControl(policy?.bypassEnabled),
+      forceExecution: new MgmtFormControl(policy?.forceExecution),
+      bypassTrustedDeviceEnabled: new MgmtFormControl(policy?.bypassTrustedDeviceEnabled)
     });
   }
 

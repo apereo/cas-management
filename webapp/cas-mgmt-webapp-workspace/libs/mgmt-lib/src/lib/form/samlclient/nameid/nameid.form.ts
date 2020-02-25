@@ -10,9 +10,9 @@ export class NameidForm extends FormGroup {
 
   constructor(service: SamlRegisteredService) {
     super({
-      requiredNameIdFormat: new MgmtFormControl(service && service.requiredNameIdFormat),
-      serviceProviderNameIdQualifier: new MgmtFormControl(service && service.serviceProviderNameIdQualifier),
-      nameIdQualifier: new MgmtFormControl(service && service.nameIdQualifier)
+      requiredNameIdFormat: new MgmtFormControl(service?.requiredNameIdFormat),
+      serviceProviderNameIdQualifier: new MgmtFormControl(service?.serviceProviderNameIdQualifier),
+      nameIdQualifier: new MgmtFormControl(service?.nameIdQualifier)
     });
   }
 

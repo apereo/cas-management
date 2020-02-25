@@ -1,7 +1,8 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {MatSnackBar, MatTabChangeEvent, MatTabGroup} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import {FormArray, FormGroup} from '@angular/forms';
 import {DataRecord} from './data.model';
 

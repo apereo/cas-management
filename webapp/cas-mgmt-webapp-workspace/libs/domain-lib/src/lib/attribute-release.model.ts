@@ -20,15 +20,15 @@ export abstract class RegisteredServiceAttributeReleasePolicy {
   order: number;
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
-    this.attributeFilter = attributeFilterFactory(policy && policy.attributeFilter);
-    this.principalAttributesRepository = attributeRepoFactory(policy && policy.principalAttributesRepository);
-    this.authorizedToReleaseCredentialPassword = policy ? policy.authorizedToReleaseCredentialPassword : false;
-    this.authorizedToReleaseProxyGrantingTicket = policy ? policy.authorizedToReleaseProxyGrantingTicket : false;
-    this.excludeDefaultAttributes = policy  ? policy.excludeDefaultAttributes :  null;
-    this.principalIdAttribute = (policy && policy.principalIdAttribute) || null;
-    this.authorizedToReleaseAuthenticationAttributes = policy ? policy.authorizedToReleaseAuthenticationAttributes : true;
-    this.consentPolicy = consentPolicyFactory(policy && policy.consentPolicy);
-    this.order = (policy && policy.order) || 0;
+    this.attributeFilter = attributeFilterFactory(policy?.attributeFilter);
+    this.principalAttributesRepository = attributeRepoFactory(policy?.principalAttributesRepository);
+    this.authorizedToReleaseCredentialPassword = policy?.authorizedToReleaseCredentialPassword ?? false;
+    this.authorizedToReleaseProxyGrantingTicket = policy?.authorizedToReleaseProxyGrantingTicket ?? false;
+    this.excludeDefaultAttributes = policy?.excludeDefaultAttributes;
+    this.principalIdAttribute = policy?.principalIdAttribute;
+    this.authorizedToReleaseAuthenticationAttributes = policy?.authorizedToReleaseAuthenticationAttributes ?? true;
+    this.consentPolicy = consentPolicyFactory(policy?.consentPolicy);
+    this.order = policy?.order ?? 0;
   }
 }
 
@@ -77,7 +77,7 @@ export class ReturnMappedAttributeReleasePolicy extends AbstractRegisteredServic
     super(policy);
     const p: ReturnMappedAttributeReleasePolicy = ReturnMappedAttributeReleasePolicy.instanceOf(policy)
       ? policy as ReturnMappedAttributeReleasePolicy : undefined;
-    this.allowedAttributes = (p && p.allowedAttributes) || null;
+    this.allowedAttributes = p?.allowedAttributes;
     this['@class'] = ReturnMappedAttributeReleasePolicy.cName;
   }
 }
@@ -95,7 +95,7 @@ export class ReturnAllowedAttributeReleasePolicy extends AbstractRegisteredServi
     super(policy);
     const p: ReturnAllowedAttributeReleasePolicy = ReturnAllowedAttributeReleasePolicy.instanceOf(policy)
       ? policy as ReturnAllowedAttributeReleasePolicy : undefined;
-    this.allowedAttributes = (p && p.allowedAttributes) || null;
+    this.allowedAttributes = p?.allowedAttributes;
     this['@class'] = ReturnAllowedAttributeReleasePolicy.cName;
   }
 }
@@ -113,7 +113,7 @@ export class ScriptedRegisteredServiceAttributeReleasePolicy extends AbstractReg
     super(policy);
     const p: ScriptedRegisteredServiceAttributeReleasePolicy = ScriptedRegisteredServiceAttributeReleasePolicy.instanceOf(policy)
       ? policy as ScriptedRegisteredServiceAttributeReleasePolicy : undefined;
-    this.scriptFile = (p && p.scriptFile) || null;
+    this.scriptFile = p?.scriptFile;
     this['@class'] = ScriptedRegisteredServiceAttributeReleasePolicy.cName;
   }
 }
@@ -131,7 +131,7 @@ export class ReturnRestfulAttributeReleasePolicy extends AbstractRegisteredServi
     super(policy);
     const p: ReturnRestfulAttributeReleasePolicy = ReturnRestfulAttributeReleasePolicy.instanceOf(policy)
       ? policy as ReturnRestfulAttributeReleasePolicy : undefined;
-    this.endpoint = (p && p.endpoint) || null;
+    this.endpoint = p?.endpoint;
     this['@class'] = ReturnRestfulAttributeReleasePolicy.cName;
   }
 }
@@ -149,7 +149,7 @@ export class GroovyScriptAttributeReleasePolicy extends AbstractRegisteredServic
     super(policy);
     const p: GroovyScriptAttributeReleasePolicy = GroovyScriptAttributeReleasePolicy.instanceOf(policy)
       ? policy as GroovyScriptAttributeReleasePolicy : undefined;
-    this.groovyScript = (p && p.groovyScript) || null;
+    this.groovyScript = p?.groovyScript;
     this['@class'] = GroovyScriptAttributeReleasePolicy.cName;
   }
 }
@@ -167,7 +167,7 @@ export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAll
     super(policy);
     const p: GroovySamlRegisteredServiceAttributeReleasePolicy = GroovySamlRegisteredServiceAttributeReleasePolicy.instanceOf(policy)
       ? policy as GroovySamlRegisteredServiceAttributeReleasePolicy : undefined;
-    this.groovyScript = (p && p.groovyScript) || null;
+    this.groovyScript = p?.groovyScript;
     this['@class'] = GroovySamlRegisteredServiceAttributeReleasePolicy.cName;
   }
 }
@@ -183,7 +183,7 @@ export class SamlIdpRegisteredServiceAttributeReleasePolicy extends ReturnMapped
     super(policy);
     const p: SamlIdpRegisteredServiceAttributeReleasePolicy = SamlIdpRegisteredServiceAttributeReleasePolicy.instanceOf(policy)
       ? policy as SamlIdpRegisteredServiceAttributeReleasePolicy : undefined;
-    this.allowedAttributes = (p && p.allowedAttributes) || null;
+    this.allowedAttributes = p?.allowedAttributes;
     this['@class'] = SamlIdpRegisteredServiceAttributeReleasePolicy.cName;
   }
 }
@@ -201,7 +201,7 @@ export class WsFederationClaimsReleasePolicy extends AbstractRegisteredServiceAt
     super(policy);
     const p: WsFederationClaimsReleasePolicy = WsFederationClaimsReleasePolicy.instanceOf(policy)
       ? policy as WsFederationClaimsReleasePolicy : undefined;
-    this.allowedAttributes = (p && p.allowedAttributes) || null;
+    this.allowedAttributes = p?.allowedAttributes;
     this['@class'] = WsFederationClaimsReleasePolicy.cName;
   }
 }
@@ -247,9 +247,9 @@ export class MetadataEntityAttributesAttributeReleasePolicy extends ReturnAllowe
     super(policy);
     const p: MetadataEntityAttributesAttributeReleasePolicy = MetadataEntityAttributesAttributeReleasePolicy.instanceOf(policy)
       ? policy as MetadataEntityAttributesAttributeReleasePolicy : undefined;
-    this.entityAttribute = (p && p.entityAttribute) || null;
-    this.entityAttributeFormat = (p && p.entityAttributeFormat) || null;
-    this.entityAttributeValues = (p && p.entityAttributeValues) || null;
+    this.entityAttribute = p?.entityAttribute;
+    this.entityAttributeFormat = p?.entityAttributeFormat;
+    this.entityAttributeValues = p?.entityAttributeValues;
     this['@class'] = MetadataEntityAttributesAttributeReleasePolicy.cName;
   }
 }

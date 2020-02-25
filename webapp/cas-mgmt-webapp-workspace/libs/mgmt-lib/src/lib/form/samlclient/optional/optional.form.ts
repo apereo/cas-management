@@ -13,12 +13,12 @@ export class OptionalForm extends FormGroup {
 
   constructor(service: SamlRegisteredService) {
     super({
-      skipGeneratingAssertionNameId: new MgmtFormControl(service && service.skipGeneratingAssertionNameId),
-      skipGeneratingSubjectConfirmationInResponseTo: new MgmtFormControl(service && service.skipGeneratingSubjectConfirmationInResponseTo),
-      skipGeneratingSubjectConfirmationNotOnOrAfter: new MgmtFormControl(service && service.skipGeneratingSubjectConfirmationNotOnOrAfter),
-      skipGeneratingSubjectConfirmationRecipient: new MgmtFormControl(service && service.skipGeneratingSubjectConfirmationRecipient),
-      skipGeneratingSubjectConfirmationNotBefore: new MgmtFormControl(service && service.skipGeneratingSubjectConfirmationNotBefore),
-      skipGeneratingTransientNameId: new MgmtFormControl(service && service.skipGeneratingTransientNameId)
+      skipGeneratingAssertionNameId: new MgmtFormControl(service?.skipGeneratingAssertionNameId),
+      skipGeneratingSubjectConfirmationInResponseTo: new MgmtFormControl(service?.skipGeneratingSubjectConfirmationInResponseTo),
+      skipGeneratingSubjectConfirmationNotOnOrAfter: new MgmtFormControl(service?.skipGeneratingSubjectConfirmationNotOnOrAfter),
+      skipGeneratingSubjectConfirmationRecipient: new MgmtFormControl(service?.skipGeneratingSubjectConfirmationRecipient),
+      skipGeneratingSubjectConfirmationNotBefore: new MgmtFormControl(service?.skipGeneratingSubjectConfirmationNotBefore),
+      skipGeneratingTransientNameId: new MgmtFormControl(service?.skipGeneratingTransientNameId)
     });
   }
 

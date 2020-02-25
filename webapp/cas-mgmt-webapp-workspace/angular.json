@@ -14,6 +14,11 @@
           "options": {
             "tsConfig": "libs/domain-lib/tsconfig.lib.json",
             "project": "libs/domain-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/domain-lib/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -49,6 +54,11 @@
           "options": {
             "tsConfig": "libs/shared-lib/tsconfig.lib.json",
             "project": "libs/shared-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared-lib/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -76,7 +86,7 @@
     "mgmt-lib": {
       "projectType": "library",
       "root": "libs/mgmt-lib",
-      "sourceRoot": "projects/mgmt-lib/src",
+      "sourceRoot": "libs/mgmt-lib/src",
       "prefix": "lib",
       "architect": {
         "build": {
@@ -84,6 +94,11 @@
           "options": {
             "tsConfig": "libs/mgmt-lib/tsconfig.lib.json",
             "project": "libs/mgmt-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/mgmt-lib/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -123,7 +138,7 @@
             "main": "projects/management/src/main.ts",
             "polyfills": "projects/management/src/polyfills.ts",
             "tsConfig": "projects/management/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/management/src/favicon.ico",
               "projects/management/src/assets"
@@ -132,7 +147,8 @@
               "projects/management/src/cas-theme.scss",
               "projects/management/src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "crossOrigin": "use-credentials"
           },
           "configurations": {
             "production": {
@@ -147,7 +163,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -156,6 +171,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -237,7 +256,7 @@
             "main": "projects/dashboard/src/main.ts",
             "polyfills": "projects/dashboard/src/polyfills.ts",
             "tsConfig": "projects/dashboard/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/dashboard/src/favicon.ico",
               "projects/dashboard/src/assets"
@@ -246,7 +265,8 @@
               "projects/dashboard/src/cas-theme.scss",
               "projects/dashboard/src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "crossOrigin": "use-credentials"
           },
           "configurations": {
             "production": {
@@ -261,7 +281,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -270,6 +289,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -335,6 +358,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "management"
+    }
+  },
+  "defaultProject": "management",
+  "cli": {
+    "analytics": false
+  }
 }

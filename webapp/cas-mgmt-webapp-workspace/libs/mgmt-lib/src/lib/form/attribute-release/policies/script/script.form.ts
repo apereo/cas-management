@@ -8,7 +8,7 @@ export class ScriptReleaseForm extends AttributeReleaseForm {
 
   constructor(policy: ScriptedRegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    this.addControl('script', new MgmtFormControl(policy && policy.scriptFile));
+    this.addControl('script', new MgmtFormControl(policy?.scriptFile));
   }
 
   mapForm(policy: ScriptedRegisteredServiceAttributeReleasePolicy) {

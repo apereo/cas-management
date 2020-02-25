@@ -10,8 +10,8 @@ export class AnonymousUidForm extends UidattrsForm {
   constructor(provider: AnonymousRegisteredServiceUsernameProvider) {
     super(provider);
     const generator = provider && provider.persistentIdGenerator;
-    this.addControl('salt', new MgmtFormControl(generator && generator.salt));
-    this.addControl('attribute', new MgmtFormControl(generator && generator.attribute));
+    this.addControl('salt', new MgmtFormControl(generator?.salt));
+    this.addControl('attribute', new MgmtFormControl(generator?.attribute));
   }
 
   mapForm(provider: AnonymousRegisteredServiceUsernameProvider) {

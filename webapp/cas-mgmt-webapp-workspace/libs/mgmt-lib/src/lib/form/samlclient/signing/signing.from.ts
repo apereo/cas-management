@@ -16,15 +16,15 @@ export class SigningFrom extends FormGroup {
 
   constructor(service: SamlRegisteredService) {
     super({
-      signAssertions: new MgmtFormControl(service && service.signAssertions),
-      signResponses: new MgmtFormControl(service && service.signResponses),
-      signingCredentialType: new MgmtFormControl(service && service.signingCredentialType),
-      signingCredentialFingerPrint: new MgmtFormControl(service && service.signingCredentialFingerprint),
-      signingSignatureReferenceDigestMethods: new MgmtFormControl(service && service.signingSignatureReferenceDigestMethods),
-      signingSignatureAlgorithms: new MgmtFormControl(service && service.signingSignatureAlgorithms),
-      signingSignatureBlackListedAlgorithms: new MgmtFormControl(service && service.signingSignatureBlackListedAlgorithms),
-      signingSignatureWhiteListedAlgorithms: new MgmtFormControl(service && service.signingSignatureWhiteListedAlgorithms),
-      signingSignatureCanonicalizationAlgorithm: new MgmtFormControl(service && service.signingSignatureCanonicalizationAlgorithm)
+      signAssertions: new MgmtFormControl(service?.signAssertions),
+      signResponses: new MgmtFormControl(service?.signResponses),
+      signingCredentialType: new MgmtFormControl(service?.signingCredentialType),
+      signingCredentialFingerPrint: new MgmtFormControl(service?.signingCredentialFingerprint),
+      signingSignatureReferenceDigestMethods: new MgmtFormControl(service?.signingSignatureReferenceDigestMethods),
+      signingSignatureAlgorithms: new MgmtFormControl(service?.signingSignatureAlgorithms),
+      signingSignatureBlackListedAlgorithms: new MgmtFormControl(service?.signingSignatureBlackListedAlgorithms),
+      signingSignatureWhiteListedAlgorithms: new MgmtFormControl(service?.signingSignatureWhiteListedAlgorithms),
+      signingSignatureCanonicalizationAlgorithm: new MgmtFormControl(service?.signingSignatureCanonicalizationAlgorithm)
     });
   }
 

@@ -8,7 +8,7 @@ export class GrouperForm extends TimeForm {
 
   constructor(strategy: GrouperRegisteredServiceAccessStrategy) {
     super(strategy);
-    this.addControl('groupField', new MgmtFormControl(strategy && strategy.groupField));
+    this.addControl('groupField', new MgmtFormControl(strategy?.groupField));
   }
 
   mapForm(strategy: GrouperRegisteredServiceAccessStrategy) {

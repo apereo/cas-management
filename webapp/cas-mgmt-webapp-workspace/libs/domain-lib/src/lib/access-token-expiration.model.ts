@@ -9,8 +9,8 @@ export class RegisteredServiceOAuthAccessTokenExpirationPolicy {
   }
 
   constructor(policy?: RegisteredServiceOAuthAccessTokenExpirationPolicy) {
-    this.maxTimeToLive = (policy && policy.maxTimeToLive) || null;
-    this.timeToKill = (policy && policy.timeToKill) || null;
+    this.maxTimeToLive = policy?.maxTimeToLive;
+    this.timeToKill = policy?.timeToKill;
     this['@class'] = RegisteredServiceOAuthAccessTokenExpirationPolicy.cName;
   }
 }

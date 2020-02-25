@@ -8,7 +8,7 @@ export class RegisteredServiceOAuthDeviceTokenExpirationPolicy {
   }
 
   constructor(policy?: RegisteredServiceOAuthDeviceTokenExpirationPolicy) {
-    this.timeToKill = (policy && policy.timeToKill) || null;
+    this.timeToKill = policy?.timeToKill;
     this['@class'] = RegisteredServiceOAuthDeviceTokenExpirationPolicy.cName;
   }
 }

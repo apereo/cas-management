@@ -4,9 +4,9 @@ export abstract class PrincipalAttributesRepository {
   ignoreResolvedAttributes: boolean;
 
   constructor(repo?: PrincipalAttributesRepository) {
-    this.mergingStrategy = (repo && repo.mergingStrategy) || 'MULTIVALUED';
-    this.attributeRepositoryIds = (repo && repo.attributeRepositoryIds) || [];
-    this.ignoreResolvedAttributes = (repo && repo.ignoreResolvedAttributes) || false;
+    this.mergingStrategy = repo?.mergingStrategy ?? 'MULTIVALUED';
+    this.attributeRepositoryIds = repo?.attributeRepositoryIds ?? [];
+    this.ignoreResolvedAttributes = repo?.ignoreResolvedAttributes ?? false;
   }
 }
 
@@ -51,8 +51,8 @@ export class CachingPrincipalAttributesRepository extends AbstractPrincipalAttri
     super(repo);
     const r: CachingPrincipalAttributesRepository = CachingPrincipalAttributesRepository.instanceOf(repo)
       ? repo as CachingPrincipalAttributesRepository : undefined;
-    this.expiration = (r && r.expiration) || null;
-    this.timeUnit = (r && r.timeUnit) || null;
+    this.expiration = r?.expiration;
+    this.timeUnit = r?.timeUnit;
     this['@class'] = CachingPrincipalAttributesRepository.cName;
   }
 }

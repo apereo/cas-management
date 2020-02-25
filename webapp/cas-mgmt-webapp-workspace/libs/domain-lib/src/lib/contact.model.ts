@@ -16,10 +16,10 @@ export class DefaultRegisteredServiceContact extends RegisteredServiceContact {
 
   constructor(contact?: RegisteredServiceContact) {
     super();
-    this.name = contact && contact.name || null;
-    this.email = contact && contact.email || null;
-    this.phone = contact && contact.phone || null;
-    this.department = contact && contact.department || null;
+    this.name = contact?.name;
+    this.email = contact?.email;
+    this.phone = contact?.phone;
+    this.department = contact?.department;
     this['@class'] = DefaultRegisteredServiceContact.cName;
   }
 }

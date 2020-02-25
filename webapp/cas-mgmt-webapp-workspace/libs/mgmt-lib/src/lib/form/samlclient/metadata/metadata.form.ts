@@ -18,17 +18,17 @@ export class MetadataForm extends FormGroup {
 
   constructor(service: SamlRegisteredService) {
     super({
-      location: new MgmtFormControl(service && service.metadataLocation, null, Validators.required),
-      maxValidity: new MgmtFormControl(service && service.metadataMaxValidity),
-      signatureLocation: new MgmtFormControl(service && service.metadataSignatureLocation),
-      expirationDuration: new MgmtFormControl(service && service.metadataExpirationDuration),
-      criteriaPattern: new MgmtFormControl(service && service.metadataCriteriaPattern),
-      criteriaRoles: new MgmtFormControl(service && service.metadataCriteriaRoles),
-      criteriaDirection: new MgmtFormControl(service && service.metadataCriteriaDirection),
-      whiteListBlackListPrecedence: new MgmtFormControl(service && service.whiteListBlackListPrecedence),
-      requireSignedRoot: new MgmtFormControl(service && service.requireSignedRoot),
-      criteriaRemoveEmptyEntitiesDescriptors: new MgmtFormControl(service && service.metadataCriteriaRemoveEmptyEntitiesDescriptors),
-      criteriaRemoveRolelessEntityDescriptors: new MgmtFormControl(service && service.metadataCriteriaRemoveEmptyEntitiesDescriptors)
+      location: new MgmtFormControl(service?.metadataLocation, null, Validators.required),
+      maxValidity: new MgmtFormControl(service?.metadataMaxValidity),
+      signatureLocation: new MgmtFormControl(service?.metadataSignatureLocation),
+      expirationDuration: new MgmtFormControl(service?.metadataExpirationDuration),
+      criteriaPattern: new MgmtFormControl(service?.metadataCriteriaPattern),
+      criteriaRoles: new MgmtFormControl(service?.metadataCriteriaRoles),
+      criteriaDirection: new MgmtFormControl(service?.metadataCriteriaDirection),
+      whiteListBlackListPrecedence: new MgmtFormControl(service?.whiteListBlackListPrecedence),
+      requireSignedRoot: new MgmtFormControl(service?.requireSignedRoot),
+      criteriaRemoveEmptyEntitiesDescriptors: new MgmtFormControl(service?.metadataCriteriaRemoveEmptyEntitiesDescriptors),
+      criteriaRemoveRolelessEntityDescriptors: new MgmtFormControl(service?.metadataCriteriaRemoveEmptyEntitiesDescriptors)
     });
   }
 

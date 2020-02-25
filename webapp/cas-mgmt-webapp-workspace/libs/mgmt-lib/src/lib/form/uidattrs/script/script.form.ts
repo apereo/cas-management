@@ -8,7 +8,7 @@ export class ScriptUidForm extends UidattrsForm {
 
   constructor(provider: ScriptedRegisteredServiceUsernameProvider) {
     super(provider);
-    this.addControl('script', new MgmtFormControl(provider && provider.script));
+    this.addControl('script', new MgmtFormControl(provider?.script));
   }
 
   mapForm(provider: ScriptedRegisteredServiceUsernameProvider) {

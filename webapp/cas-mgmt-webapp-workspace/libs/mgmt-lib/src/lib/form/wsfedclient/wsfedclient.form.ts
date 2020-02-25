@@ -9,8 +9,8 @@ export class WsfedclientForm extends FormGroup {
 
   constructor(service: WSFederationRegisterdService) {
     super({
-      realm: new MgmtFormControl(service && service.realm),
-      appliesTo: new MgmtFormControl(service && service.appliesTo)
+      realm: new MgmtFormControl(service?.realm),
+      appliesTo: new MgmtFormControl(service?.appliesTo)
     });
   }
 

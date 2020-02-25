@@ -13,12 +13,12 @@ export class TabAdvancedForm extends FormGroup implements MgmtFormGroup<Abstract
 
   constructor(public service: AbstractRegisteredService) {
     super({
-      evalOrder: new MgmtFormControl(service && service.evaluationOrder),
-      required: new MgmtFormControl(service && service.requiredHandlers),
-      environments: new MgmtFormControl(service && service.environments),
-      responseType: new MgmtFormControl(service && service.responseType),
-      publicKey: new PublicKeyForm(service && service.publicKey),
-      expirationPolicy: new ExpirationForm(service && service.expirationPolicy)
+      evalOrder: new MgmtFormControl(service?.evaluationOrder),
+      required: new MgmtFormControl(service?.requiredHandlers),
+      environments: new MgmtFormControl(service?.environments),
+      responseType: new MgmtFormControl(service?.responseType),
+      publicKey: new PublicKeyForm(service?.publicKey),
+      expirationPolicy: new ExpirationForm(service?.expirationPolicy)
     });
   }
 

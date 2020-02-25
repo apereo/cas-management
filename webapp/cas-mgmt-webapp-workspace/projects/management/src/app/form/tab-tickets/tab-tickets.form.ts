@@ -9,8 +9,8 @@ export class TabTicketsForm extends FormGroup implements MgmtFormGroup<AbstractR
 
   constructor(service: AbstractRegisteredService) {
     super({
-      serviceTicket: new ServiceTicketExpForm(service && service.serviceTicketExpirationPolicy),
-      proxyTicket: new ProxyTicketExpForm(service && service.proxyTicketExpirationPolicy),
+      serviceTicket: new ServiceTicketExpForm(service?.serviceTicketExpirationPolicy),
+      proxyTicket: new ProxyTicketExpForm(service?.proxyTicketExpirationPolicy),
     });
   }
 

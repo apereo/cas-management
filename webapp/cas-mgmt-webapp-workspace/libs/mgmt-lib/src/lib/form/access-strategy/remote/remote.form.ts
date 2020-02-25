@@ -9,8 +9,8 @@ export class RemoteForm extends AccessStrategyForm {
 
   constructor(policy: RemoteEndpointServiceAccessStrategy) {
     super(policy);
-    this.addControl('endpointUrl', new MgmtFormControl(policy && policy.endpointUrl));
-    this.addControl('responseCodes', new MgmtFormControl(policy && policy.acceptableResponseCodes));
+    this.addControl('endpointUrl', new MgmtFormControl(policy?.endpointUrl));
+    this.addControl('responseCodes', new MgmtFormControl(policy?.acceptableResponseCodes));
   }
 
   mapForm(policy: RemoteEndpointServiceAccessStrategy) {

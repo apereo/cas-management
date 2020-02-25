@@ -8,7 +8,7 @@ export class DeviceTokenExpirationForm extends FormGroup {
 
   constructor(policy: RegisteredServiceOAuthDeviceTokenExpirationPolicy) {
     super({
-      timeToKill: new MgmtFormControl(policy && policy.timeToKill)
+      timeToKill: new MgmtFormControl(policy?.timeToKill)
     });
   }
 

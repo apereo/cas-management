@@ -13,9 +13,9 @@ export class PrincipalRepoForm extends FormGroup {
 
   constructor(repo: AbstractPrincipalAttributesRepository) {
     super({
-      mergingStrategy: new MgmtFormControl(repo && repo.mergingStrategy),
-      attributeRepositoryIds: new MgmtFormControl(repo && repo.attributeRepositoryIds),
-      ignoreResolvedAttributes: new MgmtFormControl(repo && repo.ignoreResolvedAttributes)
+      mergingStrategy: new MgmtFormControl(repo?.mergingStrategy),
+      attributeRepositoryIds: new MgmtFormControl(repo?.attributeRepositoryIds),
+      ignoreResolvedAttributes: new MgmtFormControl(repo?.ignoreResolvedAttributes)
     });
   }
 
@@ -33,8 +33,8 @@ export class CachingPrincipalRepoForm extends PrincipalRepoForm {
 
   constructor(repo: CachingPrincipalAttributesRepository) {
     super(repo);
-    this.addControl('timeUnit', new MgmtFormControl(repo && repo.timeUnit));
-    this.addControl('expiration', new MgmtFormControl(repo && repo.expiration));
+    this.addControl('timeUnit', new MgmtFormControl(repo?.timeUnit));
+    this.addControl('expiration', new MgmtFormControl(repo?.expiration));
   }
 
   mapForm(repo: CachingPrincipalAttributesRepository) {

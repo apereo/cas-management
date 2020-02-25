@@ -15,13 +15,13 @@ export class OauthClientForm extends FormGroup implements MgmtFormGroup<OAuthReg
 
   constructor(service: OAuthRegisteredService) {
     super({
-      clientId: new MgmtFormControl(service && service.clientId, null, Validators.required),
-      clientSecret: new MgmtFormControl(service && service.clientSecret, null, Validators.required),
-      bypassApprovalPrompt: new MgmtFormControl(service && service.bypassApprovalPrompt),
-      generateRefreshToken: new MgmtFormControl(service && service.generateRefreshToken),
-      responseTypes: new MgmtFormControl(service && service.responseType),
-      grantTypes: new MgmtFormControl(service && service.supportedGrantTypes),
-      jwtAccessToken: new MgmtFormControl(service && service.jwtAccessToken)
+      clientId: new MgmtFormControl(service?.clientId, null, Validators.required),
+      clientSecret: new MgmtFormControl(service?.clientSecret, null, Validators.required),
+      bypassApprovalPrompt: new MgmtFormControl(service?.bypassApprovalPrompt),
+      generateRefreshToken: new MgmtFormControl(service?.generateRefreshToken),
+      responseTypes: new MgmtFormControl(service?.responseType),
+      grantTypes: new MgmtFormControl(service?.supportedGrantTypes),
+      jwtAccessToken: new MgmtFormControl(service?.jwtAccessToken)
     });
   }
 

@@ -8,7 +8,7 @@ export class GroovyReleaseForm extends AttributeReleaseForm {
 
   constructor(policy: GroovyScriptAttributeReleasePolicy) {
     super(policy);
-    this.addControl('script', new MgmtFormControl(policy && policy.groovyScript));
+    this.addControl('script', new MgmtFormControl(policy?.groovyScript));
   }
 
   mapForm(policy: GroovyScriptAttributeReleasePolicy) {

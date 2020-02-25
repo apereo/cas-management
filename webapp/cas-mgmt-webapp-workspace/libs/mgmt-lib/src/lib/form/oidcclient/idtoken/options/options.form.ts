@@ -9,8 +9,8 @@ export class OptionsForm extends FormGroup {
 
   constructor(private service: OidcRegisteredService) {
     super({
-      signIdToken: new MgmtFormControl(service && service.signIdToken),
-      encryptIdToken: new MgmtFormControl(service && service.encryptIdToken),
+      signIdToken: new MgmtFormControl(service?.signIdToken),
+      encryptIdToken: new MgmtFormControl(service?.encryptIdToken),
     });
   }
 

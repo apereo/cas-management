@@ -64,32 +64,32 @@ export abstract class RegisteredService {
   environments: string[];
 
   constructor(service?: RegisteredService) {
-    this.serviceId = (service && service.serviceId) || null;
-    this.name = (service && service.name) || null;
-    this.theme = (service && service.theme) || null;
-    this.informationUrl = (service && service.informationUrl) || null;
-    this.privacyUrl = (service && service.privacyUrl) || null;
-    this.responseType = (service && service.responseType) || null;
-    this.id = (service && service.id) || -1;
-    this.description = (service && service.description) || null;
-    this.proxyPolicy = proxyFactory(service && service.proxyPolicy);
-    this.proxyTicketExpirationPolicy = proxyTicketExpirationPolicy(service && service.proxyTicketExpirationPolicy);
-    this.serviceTicketExpirationPolicy = serviceTicketExpirationPolicy(service && service.serviceTicketExpirationPolicy);
-    this.singleSignOnParticipationPolicy = ssoParticipationPolicy(service && service.singleSignOnParticipationPolicy);
-    this.evaluationOrder = (service && service.evaluationOrder) || -1;
-    this.usernameAttributeProvider = usernameProviderFactory(service && service.usernameAttributeProvider);
-    this.requiredHandlers = (service && service.requiredHandlers) || null;
-    this.attributeReleasePolicy = attributeReleaseFactory(service && service.attributeReleasePolicy);
-    this.multifactorPolicy = mfaPolicyFactory(service && service.multifactorPolicy);
-    this.logo = (service && service.logo) || null;
-    this.logoutUrl = (service && service.logoutUrl) || null;
-    this.logoutType = (service && service.logoutType) || 'BACK_CHANNEL';
-    this.accessStrategy = accessStrategyFactory(service && service.accessStrategy);
-    this.publicKey = (service && service.publicKey) || null;
-    this.properties = (service && service.properties) || null;
-    this.contacts = contactsFactory(service && service.contacts);
-    this.expirationPolicy = expirationPolicyFactory(service && service.expirationPolicy);
-    this.environments = (service && service.environments) || null;
+    this.serviceId = service?.serviceId;
+    this.name = service?.name;
+    this.theme = service?.theme;
+    this.informationUrl = service?.informationUrl;
+    this.privacyUrl = service?.privacyUrl;
+    this.responseType = service?.responseType;
+    this.id = service?.id ?? -1;
+    this.description = service?.description;
+    this.proxyPolicy = proxyFactory(service?.proxyPolicy);
+    this.proxyTicketExpirationPolicy = proxyTicketExpirationPolicy(service?.proxyTicketExpirationPolicy);
+    this.serviceTicketExpirationPolicy = serviceTicketExpirationPolicy(service?.serviceTicketExpirationPolicy);
+    this.singleSignOnParticipationPolicy = ssoParticipationPolicy(service?.singleSignOnParticipationPolicy);
+    this.evaluationOrder = service?.evaluationOrder ?? -1;
+    this.usernameAttributeProvider = usernameProviderFactory(service?.usernameAttributeProvider);
+    this.requiredHandlers = service?.requiredHandlers;
+    this.attributeReleasePolicy = attributeReleaseFactory(service?.attributeReleasePolicy);
+    this.multifactorPolicy = mfaPolicyFactory(service?.multifactorPolicy);
+    this.logo = service?.logo;
+    this.logoutUrl = service?.logoutUrl;
+    this.logoutType = service?.logoutType ?? 'BACK_CHANNEL';
+    this.accessStrategy = accessStrategyFactory(service?.accessStrategy);
+    this.publicKey = service?.publicKey;
+    this.properties = service?.properties;
+    this.contacts = contactsFactory(service?.contacts);
+    this.expirationPolicy = expirationPolicyFactory(service?.expirationPolicy);
+    this.environments = service?.environments;
   }
 }
 

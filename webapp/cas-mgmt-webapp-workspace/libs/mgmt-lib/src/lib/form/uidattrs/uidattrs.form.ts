@@ -9,8 +9,8 @@ export class UidattrsForm extends FormGroup {
 
   constructor(provider: DefaultRegisteredServiceUsernameProvider) {
     super({
-      encryptUsername: new MgmtFormControl(provider && provider.encryptUsername),
-      canonicalizationMode: new MgmtFormControl(provider && provider.canonicalizationMode)
+      encryptUsername: new MgmtFormControl(provider?.encryptUsername),
+      canonicalizationMode: new MgmtFormControl(provider?.canonicalizationMode)
     });
   }
 

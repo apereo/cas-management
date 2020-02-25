@@ -11,14 +11,14 @@ export abstract class RegisteredServiceAccessStrategy {
   caseInsensitive: boolean;
 
   constructor(strat?: RegisteredServiceAccessStrategy) {
-    this.enabled = strat ? strat.enabled :  true;
-    this.ssoEnabled = strat ? strat.ssoEnabled : true;
-    this.unauthorizedRedirectUrl = (strat && strat.unauthorizedRedirectUrl) || null;
-    this.delegatedAuthenticationPolicy = strat && strat.delegatedAuthenticationPolicy;
-    this.requiredAttributes = (strat && strat.requiredAttributes) || null;
-    this.requireAllAttributes = strat ? strat.requireAllAttributes : true;
-    this.rejectedAttributes = (strat && strat.rejectedAttributes) || null;
-    this.caseInsensitive = strat ? strat.caseInsensitive : false;
+    this.enabled = strat?.enabled ?? true;
+    this.ssoEnabled = strat?.ssoEnabled ?? true;
+    this.unauthorizedRedirectUrl = strat?.unauthorizedRedirectUrl;
+    this.delegatedAuthenticationPolicy = strat?.delegatedAuthenticationPolicy;
+    this.requiredAttributes = strat?.requiredAttributes;
+    this.requireAllAttributes = strat?.requireAllAttributes ?? true;
+    this.rejectedAttributes = strat?.rejectedAttributes;
+    this.caseInsensitive = strat?.caseInsensitive ?? false;
   }
 }
 
@@ -49,8 +49,8 @@ export class RemoteEndpointServiceAccessStrategy extends DefaultRegisteredServic
     super(strat);
     const s: RemoteEndpointServiceAccessStrategy = RemoteEndpointServiceAccessStrategy.instanceOf(strat)
       ? strat as RemoteEndpointServiceAccessStrategy : undefined;
-    this.endpointUrl = (s && s.endpointUrl) || null;
-    this.acceptableResponseCodes = (s && s.acceptableResponseCodes) || null;
+    this.endpointUrl = s?.endpointUrl;
+    this.acceptableResponseCodes = s?.acceptableResponseCodes;
     this['@class'] = RemoteEndpointServiceAccessStrategy.cName;
   }
 }
@@ -69,8 +69,8 @@ export class TimeBasedRegisteredServiceAccessStrategy extends DefaultRegisteredS
     super(strat);
     const s: TimeBasedRegisteredServiceAccessStrategy = TimeBasedRegisteredServiceAccessStrategy.instanceOf(strat)
       ? strat as TimeBasedRegisteredServiceAccessStrategy : undefined;
-    this.startingDateTime = (s && s.startingDateTime) || null;
-    this.endingDateTime = (s && s.endingDateTime) || null;
+    this.startingDateTime = s?.startingDateTime;
+    this.endingDateTime = s?.endingDateTime;
     this['@class'] = TimeBasedRegisteredServiceAccessStrategy.cName;
   }
 }
@@ -88,7 +88,7 @@ export class GrouperRegisteredServiceAccessStrategy extends TimeBasedRegisteredS
     super(strat);
     const s: GrouperRegisteredServiceAccessStrategy = GrouperRegisteredServiceAccessStrategy.instanceOf(strat)
       ? strat as GrouperRegisteredServiceAccessStrategy : undefined;
-    this.groupField = (s && s.groupField) || null;
+    this.groupField = s?.groupField;
     this['@class'] = GrouperRegisteredServiceAccessStrategy.cName;
   }
 }
@@ -120,8 +120,8 @@ export class SurrogateRegisteredServiceAccessStrategy extends BaseSurrogateRegis
     super(strat);
     const s: SurrogateRegisteredServiceAccessStrategy = SurrogateRegisteredServiceAccessStrategy.instanceOf(strat)
       ? strat as SurrogateRegisteredServiceAccessStrategy : undefined;
-    this.surrogateEnabled = (s && s.surrogateEnabled) || null;
-    this.surrogateRequiredAttributes = (s && s.surrogateRequiredAttributes) || null;
+    this.surrogateEnabled = s?.surrogateEnabled;
+    this.surrogateRequiredAttributes = s?.surrogateRequiredAttributes;
     this['@class'] = SurrogateRegisteredServiceAccessStrategy.cName;
   }
 }
@@ -139,7 +139,7 @@ export class GroovySurrogateRegisteredServiceAccessStrategy extends RegisteredSe
     super(strat);
     const s: GroovySurrogateRegisteredServiceAccessStrategy = GroovySurrogateRegisteredServiceAccessStrategy.instanceOf(strat)
       ? strat as GroovySurrogateRegisteredServiceAccessStrategy : undefined;
-    this.groovyScript = (s && s.groovyScript) || null;
+    this.groovyScript = s?.groovyScript;
     this['@class'] = GroovySurrogateRegisteredServiceAccessStrategy.cName;
   }
 }
@@ -158,8 +158,8 @@ export class GroovyRegisteredServiceAccessStrategy extends RegisteredServiceAcce
     super(strat);
     const s: GroovyRegisteredServiceAccessStrategy = GroovyRegisteredServiceAccessStrategy.instanceOf(strat)
       ? strat as GroovyRegisteredServiceAccessStrategy : undefined;
-    this.order = (s && s.order) || null;
-    this.groovyScript = (s && s.groovyScript) || null;
+    this.order = s?.order;
+    this.groovyScript = s?.groovyScript;
     this['@class'] = GroovyRegisteredServiceAccessStrategy.cName;
   }
 }

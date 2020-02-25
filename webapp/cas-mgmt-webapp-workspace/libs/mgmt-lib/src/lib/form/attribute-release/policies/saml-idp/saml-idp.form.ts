@@ -8,7 +8,7 @@ export class SamlIdpReleaseForm extends AttributeReleaseForm {
 
   constructor(policy: SamlIdpRegisteredServiceAttributeReleasePolicy) {
     super(policy);
-    this.addControl('allowed', new MgmtFormControl(policy && policy.allowedAttributes));
+    this.addControl('allowed', new MgmtFormControl(policy?.allowedAttributes));
   }
 
   mapForm(policy: SamlIdpRegisteredServiceAttributeReleasePolicy) {

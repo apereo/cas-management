@@ -7,8 +7,8 @@ export abstract class BaseRegisteredServiceUsernameAtttributeProvider extends Re
 
   constructor(provider?: RegisteredServiceUsernameAttributeProvider) {
     super();
-    this.canonicalizationMode = (provider && provider.canonicalizationMode) || 'NONE';
-    this.encryptUsername = provider ? provider.encryptUsername : false;
+    this.canonicalizationMode = provider?.canonicalizationMode ?? 'NONE';
+    this.encryptUsername = provider?.encryptUsername ?? false;
   }
 
 }
@@ -39,7 +39,7 @@ export class PrincipalAttributeRegisteredServiceUsernameProvider extends BaseReg
     super(provider);
     const p: PrincipalAttributeRegisteredServiceUsernameProvider = PrincipalAttributeRegisteredServiceUsernameProvider.instanceOf(provider)
       ? provider as PrincipalAttributeRegisteredServiceUsernameProvider : undefined;
-    this.usernameAttribute = (p && p.usernameAttribute) || null;
+    this.usernameAttribute = p?.usernameAttribute;
     this['@class'] = PrincipalAttributeRegisteredServiceUsernameProvider.cName;
   }
 }
@@ -57,7 +57,7 @@ export class GroovyRegisteredServiceUsernameProvider extends BaseRegisteredServi
     super(provider);
     const p: GroovyRegisteredServiceUsernameProvider = GroovyRegisteredServiceUsernameProvider.instanceOf(provider)
       ? provider as GroovyRegisteredServiceUsernameProvider : undefined;
-    this.groovyScript = (p && p.groovyScript) || null;
+    this.groovyScript = p?.groovyScript;
     this['@class'] = GroovyRegisteredServiceUsernameProvider.cName;
   }
 }
@@ -75,7 +75,7 @@ export class ScriptedRegisteredServiceUsernameProvider extends BaseRegisteredSer
     super(provider);
     const p: ScriptedRegisteredServiceUsernameProvider = ScriptedRegisteredServiceUsernameProvider.instanceOf(provider)
       ? provider as ScriptedRegisteredServiceUsernameProvider : undefined;
-    this.script = (p && p.script) || null;
+    this.script = p?.script;
     this['@class'] = ScriptedRegisteredServiceUsernameProvider.cName;
   }
 }
@@ -91,8 +91,8 @@ export class ShibbolethCompatiblePersistentIdGenerator {
   }
 
   constructor(generator?: ShibbolethCompatiblePersistentIdGenerator) {
-    this.salt = (generator && generator.salt) || null;
-    this.attribute = (generator && generator.attribute) || null;
+    this.salt = generator?.salt;
+    this.attribute = generator?.attribute;
     this['@class'] = ShibbolethCompatiblePersistentIdGenerator.cName;
   }
 }
@@ -110,7 +110,7 @@ export class AnonymousRegisteredServiceUsernameProvider extends BaseRegisteredSe
     super(provider);
     const p: AnonymousRegisteredServiceUsernameProvider = AnonymousRegisteredServiceUsernameProvider.instanceOf(provider)
       ? provider as AnonymousRegisteredServiceUsernameProvider : undefined;
-    this.persistentIdGenerator = (p && this.persistentIdGenerator) || new ShibbolethCompatiblePersistentIdGenerator();
+    this.persistentIdGenerator = p?.persistentIdGenerator ?? new ShibbolethCompatiblePersistentIdGenerator();
     this['@class'] = AnonymousRegisteredServiceUsernameProvider.cName;
   }
 }

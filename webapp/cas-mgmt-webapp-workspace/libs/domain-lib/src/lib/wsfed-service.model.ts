@@ -23,17 +23,17 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
     super(service);
     const s: WSFederationRegisterdService = WSFederationRegisterdService.instanceOf(service)
       ? service as WSFederationRegisterdService : undefined;
-    this.realm = (s && s.realm) || null;
-    this.protocol = (s && s.protocol) || null;
-    this.tokenType = (s && s.tokenType) || null;
-    this.wsdlLocation = (s && s.wsdlLocation) || null;
-    this.namespace = (s && s.namespace) || null;
-    this.addressingNamespace = (s && s.addressingNamespace) || null;
-    this.policyNamespace = (s && s.policyNamespace) || null;
-    this.wsdlService = (s && s.wsdlService) || null;
-    this.wsdlEndpoint = (s && s.wsdlEndpoint) || null;
-    this.appliesTo = (s && s.appliesTo) || null;
-    this.attributeReleasePolicy = s && s.attributeReleasePolicy && WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy)
+    this.realm = s?.realm;
+    this.protocol = s?.protocol;
+    this.tokenType = s?.tokenType;
+    this.wsdlLocation = s?.wsdlLocation;
+    this.namespace = s?.namespace;
+    this.addressingNamespace = s?.addressingNamespace;
+    this.policyNamespace = s?.policyNamespace;
+    this.wsdlService = s?.wsdlService;
+    this.wsdlEndpoint = s?.wsdlEndpoint;
+    this.appliesTo = s?.appliesTo;
+    this.attributeReleasePolicy = s?.attributeReleasePolicy && WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy)
       ? s.attributeReleasePolicy
       : new WsFederationClaimsReleasePolicy();
     this['@class'] = WSFederationRegisterdService.cName;

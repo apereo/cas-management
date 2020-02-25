@@ -17,7 +17,7 @@ export class RegExProxyForm extends ProxyForm {
 
   constructor(policy: RegexMatchingRegisteredServiceProxyPolicy) {
     super({
-      pattern: new MgmtFormControl(policy && policy.pattern, null, Validators.required)
+      pattern: new MgmtFormControl(policy?.pattern, null, Validators.required)
     });
   }
 

@@ -10,9 +10,9 @@ export class DelegatedForm extends FormGroup {
 
   constructor(policy: RegisteredServiceDelegatedAuthenticationPolicy) {
     super({
-      allowedProviders: new MgmtFormControl(policy && policy.allowedProviders),
-      permitUndefined: new MgmtFormControl(policy && policy.permitUndefined),
-      exclusive: new MgmtFormControl(policy && policy.exclusive)
+      allowedProviders: new MgmtFormControl(policy?.allowedProviders),
+      permitUndefined: new MgmtFormControl(policy?.permitUndefined),
+      exclusive: new MgmtFormControl(policy?.exclusive)
     });
   }
 

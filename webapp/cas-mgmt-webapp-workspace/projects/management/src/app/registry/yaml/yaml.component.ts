@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import { Location } from '@angular/common';
 import {ServiceViewService} from '../services/service.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {EditorComponent} from 'shared-lib';
 
 @Component({

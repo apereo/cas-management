@@ -10,9 +10,9 @@ export class UserinfoForm extends FormGroup {
 
   constructor(service: OidcRegisteredService) {
     super({
-      userInfoSigningAlg: new MgmtFormControl(service && service.userInfoSigningAlg),
-      userInfoEncryptedResponseAlg: new MgmtFormControl(service && service.userInfoEncryptedResponseAlg),
-      userInfoEncryptedResponseEncoding: new MgmtFormControl(service && service.userInfoEncryptedResponseEncoding)
+      userInfoSigningAlg: new MgmtFormControl(service?.userInfoSigningAlg),
+      userInfoEncryptedResponseAlg: new MgmtFormControl(service?.userInfoEncryptedResponseAlg),
+      userInfoEncryptedResponseEncoding: new MgmtFormControl(service?.userInfoEncryptedResponseEncoding)
     });
   }
 

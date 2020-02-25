@@ -8,7 +8,7 @@ export class RestfulReleseForm extends AttributeReleaseForm {
 
   constructor(policy: ReturnRestfulAttributeReleasePolicy) {
     super(policy);
-    this.addControl('endpoint', new MgmtFormControl(policy && policy.endpoint));
+    this.addControl('endpoint', new MgmtFormControl(policy?.endpoint));
   }
 
   mapForm(policy: ReturnRestfulAttributeReleasePolicy) {

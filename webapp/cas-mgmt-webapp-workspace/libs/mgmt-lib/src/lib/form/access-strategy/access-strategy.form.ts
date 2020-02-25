@@ -13,11 +13,11 @@ export class AccessStrategyForm extends FormGroup {
 
   constructor(strategy: RegisteredServiceAccessStrategy) {
     super({
-      requireAll: new MgmtFormControl(strategy && strategy.requireAllAttributes),
-      unauthorizedUrl: new MgmtFormControl(strategy && strategy.unauthorizedRedirectUrl),
-      requiredAttributes: new AttributesForm(strategy && strategy.requiredAttributes),
-      caseInsensitive: new MgmtFormControl(strategy && strategy.caseInsensitive),
-      rejectedAttributes: new AttributesForm(strategy && strategy.rejectedAttributes)
+      requireAll: new MgmtFormControl(strategy?.requireAllAttributes),
+      unauthorizedUrl: new MgmtFormControl(strategy?.unauthorizedRedirectUrl),
+      requiredAttributes: new AttributesForm(strategy?.requiredAttributes),
+      caseInsensitive: new MgmtFormControl(strategy?.caseInsensitive),
+      rejectedAttributes: new AttributesForm(strategy?.rejectedAttributes)
     });
   }
 

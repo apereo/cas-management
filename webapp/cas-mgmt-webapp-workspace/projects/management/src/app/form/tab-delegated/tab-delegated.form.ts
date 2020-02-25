@@ -8,7 +8,7 @@ export class TabDelegatedForm extends FormGroup implements MgmtFormGroup<Abstrac
 
   constructor(public service: AbstractRegisteredService) {
     super({
-      auth: new DelegatedForm(service && service.accessStrategy && service.accessStrategy.delegatedAuthenticationPolicy)
+      auth: new DelegatedForm(service?.accessStrategy?.delegatedAuthenticationPolicy)
     });
   }
 

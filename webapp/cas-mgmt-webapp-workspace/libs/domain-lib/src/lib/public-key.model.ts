@@ -4,9 +4,9 @@ export abstract class RegisteredServicePublicKey {
   publicKeyFactoryBeanClass: any;
 
   constructor(key?: RegisteredServicePublicKey) {
-    this.location = (key && key.location) || null;
-    this.algorithm = (key && key.algorithm) || 'RSA';
-    this.publicKeyFactoryBeanClass = (key && key.publicKeyFactoryBeanClass) || null;
+    this.location = key?.location;
+    this.algorithm = key?.algorithm ?? 'RSA';
+    this.publicKeyFactoryBeanClass = key?.publicKeyFactoryBeanClass;
   }
 }
 

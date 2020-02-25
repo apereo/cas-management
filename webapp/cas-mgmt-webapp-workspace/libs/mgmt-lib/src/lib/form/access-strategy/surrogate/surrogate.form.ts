@@ -10,8 +10,8 @@ export class SurrogateForm extends AccessStrategyForm {
 
   constructor(strategy: SurrogateRegisteredServiceAccessStrategy) {
     super(strategy);
-    this.addControl('surrogateEnabled', new MgmtFormControl(strategy && strategy.surrogateEnabled));
-    this.addControl('attributes', new AttributesForm(strategy && strategy.surrogateRequiredAttributes));
+    this.addControl('surrogateEnabled', new MgmtFormControl(strategy?.surrogateEnabled));
+    this.addControl('attributes', new AttributesForm(strategy?.surrogateRequiredAttributes));
   }
 
   mapForm(strategy: SurrogateRegisteredServiceAccessStrategy) {

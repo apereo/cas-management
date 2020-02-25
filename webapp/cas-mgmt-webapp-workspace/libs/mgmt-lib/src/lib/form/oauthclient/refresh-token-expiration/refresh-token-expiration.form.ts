@@ -8,7 +8,7 @@ export class RefreshTokenExpirationForm extends FormGroup {
 
   constructor(policy: RegisteredServiceOAuthRefreshTokenExpirationPolicy) {
     super({
-      timeToKill: new MgmtFormControl(policy && policy.timeToKill)
+      timeToKill: new MgmtFormControl(policy?.timeToKill)
     });
   }
 

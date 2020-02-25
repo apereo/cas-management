@@ -2,10 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormService} from './form.service';
-import {MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs/index';
 import {finalize, map} from 'rxjs/operators';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import {DataRecord, MgmtFormGroup} from 'mgmt-lib';
 import {UserService, SpinnerService} from 'shared-lib';
 import {
@@ -18,6 +16,8 @@ import {
 } from 'domain-lib';
 import {ImportService} from '../registry/import/import.service';
 import {BaseFormComponent} from 'mgmt-lib';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-form',

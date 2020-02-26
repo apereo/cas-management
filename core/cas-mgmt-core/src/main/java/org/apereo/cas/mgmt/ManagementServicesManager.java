@@ -15,7 +15,6 @@ import lombok.val;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
@@ -42,20 +41,6 @@ public class ManagementServicesManager implements ServicesManager {
      */
     public void loadFrom(final ServicesManager manager) {
         manager.getAllServices().forEach(this::save);
-    }
-
-    /**
-     * Returns a list of RegisteredServiceItems for the passed domain.
-     *
-     * @param domain - Name of the domain to lookup.
-     * @return - List of RegisteredServiceItems
-     */
-    public List<RegisteredServiceItem> getServiceItemsForDomain(final String domain) {
-        LOGGER.debug("Loading services for domain [{}]", domain);
-        val services = new ArrayList<RegisteredService>(getServicesForDomain(domain));
-        return services.stream()
-            .map(this::createServiceItem)
-            .collect(Collectors.toList());
     }
 
     public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
@@ -169,16 +154,6 @@ public class ManagementServicesManager implements ServicesManager {
      */
     public String extractDomain(final String service) {
         return CasManagementUtils.extractDomain(service);
-    }
-
-    /**
-     * Validate domain string.
-     *
-     * @param providedDomain the provided domain
-     * @return the string
-     */
-    public String validateDomain(final String providedDomain) {
-        return CasManagementUtils.validateDomain(providedDomain);
     }
 
     /**

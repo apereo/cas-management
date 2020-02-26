@@ -7,7 +7,6 @@ import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pac4j.core.profile.UserProfile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RequiredArgsConstructor
 @Slf4j
-public class ServicesManagerFactory implements MgmtManagerFactory {
+public class ServicesManagerFactory implements MgmtManagerFactory<ServicesManager> {
 
     private final ServicesManager servicesManager;
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
@@ -37,19 +36,8 @@ public class ServicesManagerFactory implements MgmtManagerFactory {
         return new ManagementServicesManager(servicesManager, namingStrategy);
     }
 
-    /**
-     * Method will create the GitServicesManager for the user passed in the CasUserProfile.
-     *
-     * @param request - HttpServletRequest
-     * @param user    - CasUserProfile of logged in user
-     * @return - GitServicesManager for the logged in user
-     */
-    public ManagementServicesManager from(final HttpServletRequest request, final UserProfile user) {
-        return new ManagementServicesManager(servicesManager, namingStrategy);
-    }
-
     @Override
-    public ServicesManager master() throws Exception {
+    public ServicesManager master() {
         return new ManagementServicesManager(servicesManager, namingStrategy);
     }
 

@@ -49,6 +49,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     private final CasUserProfileFactory casUserProfileFactory;
     private final CasConfigurationProperties casProperties;
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
+    private VersionControlServicesManager master;
 
     /**
      * Init repository.
@@ -73,6 +74,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
                 LOGGER.error(e.getMessage(), e);
             }
         }
+        val git = repositoryFactory.masterRepository();
+        this.master = new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
     }
 
     /**
@@ -100,6 +103,9 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
 
     private ManagementServicesManager getManagementServicesManager(final HttpServletRequest request, final HttpServletResponse response) {
         val user = casUserProfileFactory.from(request, response);
+        if (!user.isUser() || user.isAdministrator()) {
+            return master();
+        }
         val session = request.getSession();
         val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session, user) : createNewManager(request, response);
         session.setAttribute(SERVICES_MANAGER_KEY, manager);
@@ -108,9 +114,6 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
 
     private ManagementServicesManager getSessionManager(final HttpSession session, final CasUserProfile user) {
         val manager = (VersionControlServicesManager) session.getAttribute(SERVICES_MANAGER_KEY);
-        if (!user.isAdministrator()) {
-            manager.rebase();
-        }
         manager.load();
         return manager;
     }
@@ -126,8 +129,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @return - maste repo manager
      */
     public ManagementServicesManager master() {
-        val git = repositoryFactory.masterRepository();
-        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+        master.load();
+        return master;
     }
 
     private ServicesManager createJSONServiceManager(final GitUtil git) {

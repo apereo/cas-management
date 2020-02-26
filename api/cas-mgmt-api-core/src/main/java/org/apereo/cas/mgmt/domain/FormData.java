@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
+
 import org.apereo.services.persondir.util.CaseCanonicalizationMode;
 import org.opensaml.saml.saml2.core.NameID;
 import org.springframework.http.HttpStatus;
@@ -80,6 +82,8 @@ public class FormData implements Serializable {
 
     private Set<String> samlIdpAttributes = new HashSet<>();
 
+    private Set<String> userDefinedScopes = new HashSet<>();
+
     private List<Option> oidcApplicationTypes = CollectionUtils.wrapList(
             new Option("Web", "web"),
             new Option("Native", "native")
@@ -131,7 +135,9 @@ public class FormData implements Serializable {
         final List<Option> scopes = Arrays.stream(OidcConstants.StandardScopes.values())
             .map(scope -> new Option(scope.getFriendlyName(), scope.getScope()))
             .collect(Collectors.toList());
-        scopes.add(new Option("User Defined", "user_defined"));
+        for (val userDefinedScope : this.userDefinedScopes) {
+            scopes.add(new Option(userDefinedScope, userDefinedScope));
+        }
         return scopes;
     }
 

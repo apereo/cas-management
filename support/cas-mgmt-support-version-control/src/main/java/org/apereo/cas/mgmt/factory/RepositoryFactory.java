@@ -47,10 +47,7 @@ public class RepositoryFactory {
 
     @SneakyThrows
     private GitUtil from(final CasUserProfile user, final HttpServletRequest request) {
-        if (!user.isUser()) {
-            return null;
-        }
-        if (user.isAdministrator()) {
+        if (!user.isUser() || user.isAdministrator()) {
             return masterRepository();
         }
         if (request.getSession().getAttribute(REPO_VAR) != null) {

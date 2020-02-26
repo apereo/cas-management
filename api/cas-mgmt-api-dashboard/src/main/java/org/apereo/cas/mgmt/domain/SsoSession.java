@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +39,8 @@ public class SsoSession {
     /**
      * Timestamp authentication occurred.
      */
-    @JsonAlias("AUTHENTICATION_DATE_FORMATTED")
-    private LocalDateTime authenticationDate;
+    @JsonAlias("AUTHENTICATION_DATE")
+    private ZonedDateTime authenticationDate;
 
     /**
      * Flag is the session is PGT.

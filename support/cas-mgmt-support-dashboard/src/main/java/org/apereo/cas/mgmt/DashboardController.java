@@ -145,7 +145,7 @@ public class DashboardController {
      * @return - the attributes
      * @throws IllegalAccessException - insufficient permissions
      */
-    @PostMapping("/release")
+    @PostMapping(value = "/release", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<String>> release(final HttpServletRequest request,
                                              final HttpServletResponse response,
                                              final @RequestBody Map<String, String> data) throws IllegalAccessException {

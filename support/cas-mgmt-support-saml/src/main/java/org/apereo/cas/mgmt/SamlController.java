@@ -297,8 +297,7 @@ public class SamlController {
     public Metadata getMetadata(final HttpServletRequest request,
                                 final HttpServletResponse response,
                                 final @PathVariable Long id) {
-        val manager = (ManagementServicesManager) managerFactory.from(request, response);
-        val service = (SamlRegisteredService) manager.findServiceBy(id);
+        val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         if (!sps.query(service.getServiceId()).isEmpty()) {
             return new Metadata(true, sps.xml(service.getServiceId()));
         }
@@ -321,8 +320,8 @@ public class SamlController {
                              final HttpServletResponse response,
                              final @PathVariable Long id,
                              final @RequestBody String metadata) {
-        val manager = (ManagementServicesManager) managerFactory.from(request, response);
-        val service = (SamlRegisteredService) manager.findServiceBy(id);
+        val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         Files.writeString(Paths.get(service.getMetadataLocation()), metadata);
     }
+
 }

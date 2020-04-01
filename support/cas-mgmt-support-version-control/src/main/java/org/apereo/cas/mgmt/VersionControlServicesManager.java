@@ -92,8 +92,8 @@ public class VersionControlServicesManager extends ManagementServicesManager {
     public void checkForRename(final RegisteredService service) {
         val existing = findServiceBy(service.getId());
         if (existing != null) {
-            val oldName = getNamingStrategy().build(existing, ".json");
-            val newName = getNamingStrategy().build(service, ".json");
+            val oldName = getNamingStrategy().build(existing, "json");
+            val newName = getNamingStrategy().build(service, "json");
             if (!oldName.equals(newName)) {
                 try (git) {
                     git.move(oldName, newName);

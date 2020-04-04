@@ -159,7 +159,7 @@ export class GroovySamlRegisteredServiceAttributeReleasePolicy extends ReturnAll
 }
 
 export class WsFederationClaimsReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
-  static cName = 'org.apereo.cas.ws.idp.services.WsFederationClaimsReleasePolicy';
+  static cName = 'org.apereo.cas.ws.idp.services.WSFederationClaimsReleasePolicy';
 
   allowedAttributes: Map<string, string>;
 

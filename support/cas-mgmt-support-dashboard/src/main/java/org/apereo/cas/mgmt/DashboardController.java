@@ -261,7 +261,7 @@ public class DashboardController {
     }
 
     private String toCSV(final AuditLog log) {
-        return new StringBuffer()
+        return new StringBuilder()
                .append(log.getWhenActionWasPerformed())
                .append("|")
                .append(log.getClientIpAddress())

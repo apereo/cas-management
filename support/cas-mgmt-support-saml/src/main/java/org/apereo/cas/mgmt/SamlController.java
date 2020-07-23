@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.opensaml.saml.saml2.core.NameID.EMAIL;
 
 /**
@@ -150,7 +151,7 @@ public class SamlController {
             throw new IllegalArgumentException("Service already registered");
         }
         val fileName = DigestUtils.sha(entityId) + ".xml";
-        Files.write(Path.of(managementProperties.getMetadataRepoDir() + "/" + fileName), xml.getBytes());
+        Files.write(Path.of(managementProperties.getMetadataRepoDir() + "/" + fileName), xml.getBytes(UTF_8));
         service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + "/" + fileName);
         return service;
     }

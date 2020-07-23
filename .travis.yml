@@ -13,7 +13,7 @@ services:
   - docker
 branches:
   only:
-    - 6.1.x
+    - master
 before_cache:
   - rm -rf $HOME/.gradle/caches/5.*/
   - rm -rf $HOME/.gradle/caches/4.*/

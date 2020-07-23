@@ -47,7 +47,7 @@ dependencies {
     implementation project(":config:cas-mgmt-config-delegated")
 
     implementation libraries.nimbus
-    implementation libraries.cassecurityfilter
+    //implementation libraries.cassecurityfilter
     
 }
 

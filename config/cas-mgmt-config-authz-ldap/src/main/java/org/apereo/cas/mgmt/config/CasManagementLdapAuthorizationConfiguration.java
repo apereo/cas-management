@@ -9,7 +9,7 @@ import org.apereo.cas.util.LdapUtils;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 
-import org.ldaptive.SearchExecutor;
+import org.ldaptive.SearchOperation;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -35,32 +35,31 @@ public class CasManagementLdapAuthorizationConfiguration {
     @Bean
     public AuthorizationGenerator authorizationGenerator() {
         val ldapAuthz = casProperties.getLdap().getLdapAuthz();
-        val connectionFactory = LdapUtils.newLdaptivePooledConnectionFactory(casProperties.getLdap());
 
         if (StringUtils.isNotBlank(ldapAuthz.getGroupFilter()) && StringUtils.isNotBlank(ldapAuthz.getGroupAttribute())) {
-            return new LdapUserGroupsToRolesAuthorizationGenerator(connectionFactory,
+            return new LdapUserGroupsToRolesAuthorizationGenerator(
                     ldapAuthorizationGeneratorUserSearchExecutor(),
                     ldapAuthz.isAllowMultipleResults(),
                     ldapAuthz.getGroupAttribute(),
                     ldapAuthz.getGroupPrefix(),
                     ldapAuthorizationGeneratorGroupSearchExecutor());
         }
-        return new LdapUserAttributesToRolesAuthorizationGenerator(connectionFactory,
+        return new LdapUserAttributesToRolesAuthorizationGenerator(
                 ldapAuthorizationGeneratorUserSearchExecutor(),
                 ldapAuthz.isAllowMultipleResults(),
                 ldapAuthz.getRoleAttribute(),
                 ldapAuthz.getRolePrefix());
     }
 
-    private SearchExecutor ldapAuthorizationGeneratorUserSearchExecutor() {
+    private SearchOperation ldapAuthorizationGeneratorUserSearchExecutor() {
         val ldapAuthz = casProperties.getLdap().getLdapAuthz();
-        return LdapUtils.newLdaptiveSearchExecutor(ldapAuthz.getBaseDn(), ldapAuthz.getSearchFilter(),
+        return LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getBaseDn(), ldapAuthz.getSearchFilter(),
                 new ArrayList<>(0), CollectionUtils.wrap(ldapAuthz.getRoleAttribute()));
     }
 
-    private SearchExecutor ldapAuthorizationGeneratorGroupSearchExecutor() {
+    private SearchOperation ldapAuthorizationGeneratorGroupSearchExecutor() {
         val ldapAuthz = casProperties.getLdap().getLdapAuthz();
-        return LdapUtils.newLdaptiveSearchExecutor(ldapAuthz.getGroupBaseDn(), ldapAuthz.getGroupFilter(),
+        return LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getGroupBaseDn(), ldapAuthz.getGroupFilter(),
                 new ArrayList<>(0), CollectionUtils.wrap(ldapAuthz.getGroupAttribute()));
     }
 }

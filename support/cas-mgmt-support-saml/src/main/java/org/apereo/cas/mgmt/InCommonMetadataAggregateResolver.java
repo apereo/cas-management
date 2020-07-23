@@ -16,6 +16,7 @@ import org.apache.http.HttpResponse;
 
 import org.jasig.cas.client.util.XmlUtils;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.impl.SignatureValidationFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.xmlsec.signature.support.SignatureException;
@@ -70,7 +71,7 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
     public EntityDescriptor find(final String entityId) throws SignatureException {
         val entity = MetadataUtil.fromXML(xml(entityId), configBean);
         try {
-            this.signatureValidationFilter.filter(entity);
+            this.signatureValidationFilter.filter(entity, new MetadataFilterContext());
         } catch (final FilterException exception) {
             LOGGER.error(exception.getMessage(), exception);
             throw new SignatureException("Invalid metadata signature for [" + entityId + "]");

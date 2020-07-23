@@ -2,11 +2,11 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.support.saml.SamlUtils;
-import org.apereo.cas.support.saml.StaticXmlObjectMetadataResolver;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSource;
+import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -30,7 +30,7 @@ public class MetadataUtil {
     public static EntityDescriptor fromXML(final String xml, final OpenSamlConfigBean configBean) {
         val xmlObject = SamlUtils.transformSamlObject(configBean, xml.getBytes(UTF_8), XMLObject.class);
         xmlObject.getObjectMetadata().put(new XMLObjectSource(xml.getBytes(UTF_8)));
-        val resolver = new StaticXmlObjectMetadataResolver(xmlObject);
+        val resolver = new DOMMetadataResolver(xmlObject.getDOM());
         resolver.setId("something");
         resolver.initialize();
         val entity = resolver.iterator().next();

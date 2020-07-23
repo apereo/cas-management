@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,7 +52,7 @@ public class DomainController {
             throw new IllegalAccessException("Insufficient permissions");
         }
         val manager = managerFactory.from(request, response);
-        return manager.getDomains().stream()
+        return ((DefaultDomainAwareServicesManager) manager).getDomains()
                 .filter(casUserProfile::hasPermission)
                 .map(DomainRpc::new)
                 .collect(Collectors.toList());

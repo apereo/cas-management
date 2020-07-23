@@ -197,7 +197,7 @@ public class SamlController {
         service.setSignAssertions(spDescriptor.getWantAssertionsSigned());
         val nameFormats = spDescriptor.getNameIDFormats().stream().findFirst();
         if (nameFormats.isPresent()) {
-            service.setRequiredNameIdFormat(nameFormats.get().getFormat());
+            service.setRequiredNameIdFormat(nameFormats.get().toString());
             service.setUsernameAttributeProvider(createUsernameProvider(service.getRequiredNameIdFormat()));
         }
         val extensions = spDescriptor.getExtensions();
@@ -260,7 +260,7 @@ public class SamlController {
             allowed.add(((PrincipalAttributeRegisteredServiceUsernameProvider) service.getUsernameAttributeProvider()).getUsernameAttribute());
         }
         if (attributeService != null) {
-            attributeService.getRequestAttributes().forEach(ra -> {
+            attributeService.getRequestedAttributes().forEach(ra -> {
                 allowed.add(ra.getFriendlyName());
             });
         }

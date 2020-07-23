@@ -5,6 +5,7 @@ import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.DigestUtils;
 
@@ -136,14 +137,15 @@ public class ManagementServicesManager implements ServicesManager {
         return this.manager.count();
     }
 
-    @Override
+    //@Override
     public Collection<RegisteredService> getServicesForDomain(final String domain) {
-        return this.manager.getServicesForDomain(domain);
+        //return this.manager.getServicesForDomain(domain);
+        return ((DefaultDomainAwareServicesManager) this.manager).getServicesForDomain(domain);
     }
 
-    @Override
-    public Collection<String> getDomains() {
-        return this.manager.getDomains();
+    //@Override
+    public Stream<String> getDomains() {
+        return ((DefaultDomainAwareServicesManager) this.manager).getDomains();
     }
 
     /**

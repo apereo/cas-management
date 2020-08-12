@@ -8,17 +8,12 @@ import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
-import org.apereo.cas.mgmt.domain.SsoSessionResponse;
 import org.apereo.cas.mgmt.domain.SystemHealth;
-import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +29,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;

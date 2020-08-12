@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FooterService} from './footer.service';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';

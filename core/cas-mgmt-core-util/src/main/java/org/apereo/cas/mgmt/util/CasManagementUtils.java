@@ -1,14 +1,13 @@
 package org.apereo.cas.mgmt.util;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.RegexUtils;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.hjson.JsonValue;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OAuthRegisteredService} from 'domain-lib';
 import {TabTokenForm} from './tab-tokens.form';
 import {DataRecord} from 'mgmt-lib';

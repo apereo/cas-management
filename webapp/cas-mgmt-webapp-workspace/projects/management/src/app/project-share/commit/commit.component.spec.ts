@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CommitComponent } from './commit.component';
+import {CommitComponent} from './commit.component';
 
 describe('CommitComponent', () => {
   let component: CommitComponent;

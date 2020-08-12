@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabSamlMetadataComponent } from './tab-saml-metadata.component';
+import {TabSamlMetadataComponent} from './tab-saml-metadata.component';
 
 describe('TabSamlMetadataComponent', () => {
   let component: TabSamlMetadataComponent;

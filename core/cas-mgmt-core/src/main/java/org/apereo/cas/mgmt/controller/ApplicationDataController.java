@@ -11,15 +11,12 @@ import org.apereo.cas.mgmt.domain.MgmtUserProfile;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
-
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,9 +33,13 @@ import javax.servlet.http.HttpServletResponse;
 public class ApplicationDataController {
 
     private final FormDataFactory formDataFactory;
+
     private final CasUserProfileFactory casUserProfileFactory;
+
     private final CasManagementConfigurationProperties managementProperties;
+
     private final CasConfigurationProperties casProperties;
+
     private final ContactLookup contactLookup;
 
     @GetMapping(value = "/managerType")
@@ -76,9 +77,9 @@ public class ApplicationDataController {
      */
     @GetMapping("/footer")
     public String[] footer() {
-        return new String[] {
-                CasVersion.getVersion(),
-                this.getClass().getPackage().getImplementationVersion()
+        return new String[]{
+            CasVersion.getVersion(),
+            this.getClass().getPackage().getImplementationVersion()
         };
     }
 

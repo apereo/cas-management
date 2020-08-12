@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 import {PaginatorComponent} from 'shared-lib';
 import {AuditLog} from '../domain/audit.model';
 import {SearchComponent} from './search/search.component';

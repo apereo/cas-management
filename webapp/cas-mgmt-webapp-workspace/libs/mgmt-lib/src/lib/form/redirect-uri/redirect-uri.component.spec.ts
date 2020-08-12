@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RedirectUriComponent } from './redirect-uri.component';
+import {RedirectUriComponent} from './redirect-uri.component';
 
 describe('RedirectUriComponent', () => {
   let component: RedirectUriComponent;

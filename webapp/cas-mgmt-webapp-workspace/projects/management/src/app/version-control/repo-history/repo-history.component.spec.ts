@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RepoHistoryComponent } from './repo-history.component';
+import {RepoHistoryComponent} from './repo-history.component';
 
 describe('RepoHistoryComponent', () => {
   let component: RepoHistoryComponent;

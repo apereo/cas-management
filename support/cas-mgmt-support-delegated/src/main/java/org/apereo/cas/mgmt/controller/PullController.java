@@ -8,12 +8,10 @@ import org.apereo.cas.mgmt.domain.BranchData;
 import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.util.io.CommunicationsManager;
-
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,14 +20,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 
 /**

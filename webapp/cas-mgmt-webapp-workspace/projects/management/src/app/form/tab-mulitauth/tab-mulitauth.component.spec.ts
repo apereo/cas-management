@@ -1,10 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { TabMulitauthComponent } from './tab-mulitauth.component';
+import {TabMulitauthComponent} from './tab-mulitauth.component';
 import {DataRecord, SharedModule} from 'mgmt-lib';
 import {MfaComponent} from 'mgmt-lib/lib/form/mfa/mfa.component';
 

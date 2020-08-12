@@ -2,7 +2,6 @@ package org.apereo.cas.mgmt.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.Set;
 

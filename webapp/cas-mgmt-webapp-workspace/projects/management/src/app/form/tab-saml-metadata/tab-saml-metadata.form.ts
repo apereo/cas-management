@@ -1,5 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {MgmtFormGroup, MetadataForm} from 'mgmt-lib';
+import {MetadataForm, MgmtFormGroup} from 'mgmt-lib';
 import {AbstractRegisteredService, SamlRegisteredService} from 'domain-lib';
 
 export class TabSamlMetadataForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

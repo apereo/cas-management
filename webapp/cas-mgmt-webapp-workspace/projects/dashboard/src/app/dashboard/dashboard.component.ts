@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
 import {Server, SystemHealth} from '../domain/dashboard.model';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-dashboard',

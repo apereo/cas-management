@@ -1,22 +1,15 @@
 import {FormGroup} from '@angular/forms';
+import {AnonymousUidForm, GroovyUidForm, MgmtFormControl, MgmtFormGroup, PrincipalUidForm, ScriptUidForm, UidattrsForm} from 'mgmt-lib';
 import {
-  AnonymousUidForm,
-  GroovyUidForm,
-  MgmtFormControl,
-  MgmtFormGroup,
-  PrincipalUidForm,
-  ScriptUidForm,
-  UidattrsForm
-} from 'mgmt-lib';
-import {
-  AbstractRegisteredService,
-  AnonymousRegisteredServiceUsernameProvider,
-  DefaultRegisteredServiceUsernameProvider,
-  PrincipalAttributeRegisteredServiceUsernameProvider,
-  RegisteredServiceUsernameAttributeProvider,
-  UserAttributeType,
-  GroovyRegisteredServiceUsernameProvider,
-  ScriptedRegisteredServiceUsernameProvider, usernameProviderFactory
+    AbstractRegisteredService,
+    AnonymousRegisteredServiceUsernameProvider,
+    DefaultRegisteredServiceUsernameProvider,
+    GroovyRegisteredServiceUsernameProvider,
+    PrincipalAttributeRegisteredServiceUsernameProvider,
+    RegisteredServiceUsernameAttributeProvider,
+    ScriptedRegisteredServiceUsernameProvider,
+    UserAttributeType,
+    usernameProviderFactory
 } from 'domain-lib';
 
 export class TabUsernameattrForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

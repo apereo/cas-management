@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { ServicesRoutingModule } from './services-routing.module';
+import {ServicesRoutingModule} from './services-routing.module';
 import {ServicesComponent} from './services.component';
 import {ProjectShareModule} from '../../project-share/project-share.module';
 

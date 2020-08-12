@@ -7,13 +7,11 @@ import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.support.saml.SamlUtils;
 import org.apereo.cas.util.EncodingUtils;
 import org.apereo.cas.util.HttpUtils;
-
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
-
 import org.jasig.cas.client.util.XmlUtils;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
@@ -21,7 +19,6 @@ import org.opensaml.saml.metadata.resolver.filter.impl.SignatureValidationFilter
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.w3c.dom.Element;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +93,7 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
 
     private HttpResponse fetchMetadata(final String metadataLocation) {
         val metadata = casProperties.getAuthn().getSamlIdp().getMetadata();
-        val headers = new LinkedHashMap<String, Object>();
+        val headers = new LinkedHashMap<String, Object>(2);
         headers.put("Content-Type", metadata.getSupportedContentTypes());
         headers.put("Accept", "*/*");
 
@@ -116,8 +113,8 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
         val entity = resp.getEntity();
         val result = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
         val doc = XmlUtils.newDocument(result);
-        val list = new ArrayList<String>();
         val nodes = doc.getDocumentElement().getElementsByTagName("EntityDescriptor");
+        val list = new ArrayList<String>(nodes.getLength());
         for (int i = 0; i < nodes.getLength(); i++) {
             if (((Element) nodes.item(i)).getElementsByTagName("SPSSODescriptor").getLength() > 0) {
                 list.add(((Element) nodes.item(i)).getAttribute("entityID"));

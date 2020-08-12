@@ -3,13 +3,10 @@ package org.apereo.cas.mgmt.authentication;
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
-
 import lombok.Getter;
 import lombok.val;
-
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
-
 import java.util.Arrays;
 import java.util.Collection;
 

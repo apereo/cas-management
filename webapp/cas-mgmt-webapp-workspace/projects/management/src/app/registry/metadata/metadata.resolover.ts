@@ -3,7 +3,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from 'rxjs/internal/Observable';
 import {Metadata} from 'domain-lib';
 import {MetadataService} from '@app/registry/metadata/metadata.service';

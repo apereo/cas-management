@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SamlNameidComponent } from './nameid.component';
+import {SamlNameidComponent} from './nameid.component';
 
 describe('NameidComponent', () => {
   let component: SamlNameidComponent;

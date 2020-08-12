@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EditorOptionsComponent } from './editor-options.component';
+import {EditorOptionsComponent} from './editor-options.component';
 
 describe('EditorOptionsComponent', () => {
   let component: EditorOptionsComponent;

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ControlsComponent} from './controls/controls.component';
 import {MgmtLibModule} from 'mgmt-lib';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';

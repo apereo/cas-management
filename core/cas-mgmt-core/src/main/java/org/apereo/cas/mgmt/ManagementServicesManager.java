@@ -6,22 +6,19 @@ import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.DomainAwareServicesManager;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.DigestUtils;
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.apache.commons.lang3.StringUtils;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 
 /**
  * Class used to manage services in Git repository.
@@ -34,6 +31,7 @@ import java.util.stream.Stream;
 public class ManagementServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
+
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
 
     /**
@@ -47,7 +45,7 @@ public class ManagementServicesManager implements ServicesManager {
 
     public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
         return services.map(this::createServiceItem)
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     /**

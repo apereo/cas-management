@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Service} from './service';
-import {UserProfile, DefaultRegisteredServiceContact} from 'domain-lib';
+import {DefaultRegisteredServiceContact, UserProfile} from 'domain-lib';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {SpinnerService} from './spinner/spinner.service';
 
 @Injectable({

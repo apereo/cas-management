@@ -1,4 +1,4 @@
-import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {MgmtFormControl, MgmtFormGroup} from 'mgmt-lib';
 import {AbstractRegisteredService} from 'domain-lib';
 import {FormGroup} from '@angular/forms';
 

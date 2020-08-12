@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RemoteComponent } from './remote.component';
+import {RemoteComponent} from './remote.component';
 
 describe('RemoteComponent', () => {
   let component: RemoteComponent;

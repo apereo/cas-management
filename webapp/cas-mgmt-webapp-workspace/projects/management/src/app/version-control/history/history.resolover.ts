@@ -3,11 +3,10 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {History} from 'domain-lib';
 import {SpinnerService} from 'shared-lib';
 import {HistoryService} from './history.service';
-import {finalize} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/Observable';
 
 @Injectable({

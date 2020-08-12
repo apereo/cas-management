@@ -1,12 +1,12 @@
 import {FormArray, FormGroup} from '@angular/forms';
 import {
-  AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy,
-  BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy,
-  ChainingRegisteredServiceSingleSignOnParticipationPolicy,
-  LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy,
-  NeverRegisteredServiceSingleSignOnParticipationPolicy,
-  RegisteredServiceSingleSignOnParticipationPolicy,
-  SsoPolicyType,
+    AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy,
+    BaseDateTimeRegisteredServiceSingleSignOnParticipationPolicy,
+    ChainingRegisteredServiceSingleSignOnParticipationPolicy,
+    LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy,
+    NeverRegisteredServiceSingleSignOnParticipationPolicy,
+    RegisteredServiceSingleSignOnParticipationPolicy,
+    SsoPolicyType,
 } from 'domain-lib';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
 

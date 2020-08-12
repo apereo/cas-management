@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
 import {SamlRegisteredService} from 'domain-lib';
 import {TabSamlEncryptionForm} from './tab-saml-encryption.form';

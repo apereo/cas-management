@@ -1,12 +1,6 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {MgmtFormControl, MgmtFormGroup, MfaForm, DefaultMfaForm, GroovyMfaForm} from 'mgmt-lib';
-import {
-  AbstractRegisteredService,
-  DefaultRegisteredServiceMultifactorPolicy,
-  GroovyRegisteredServiceMultifactorPolicy, mfaPolicyFactory,
-  MfaPolicyType,
-  RegisteredServiceMultifactorPolicy
-} from 'domain-lib';
+import {DefaultMfaForm, GroovyMfaForm, MfaForm, MgmtFormControl, MgmtFormGroup} from 'mgmt-lib';
+import {AbstractRegisteredService, DefaultRegisteredServiceMultifactorPolicy, GroovyRegisteredServiceMultifactorPolicy, mfaPolicyFactory, MfaPolicyType, RegisteredServiceMultifactorPolicy} from 'domain-lib';
 
 export class TabMultiauthForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

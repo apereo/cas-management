@@ -3,19 +3,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormService} from './form.service';
 import {Observable} from 'rxjs/index';
-import {finalize, map} from 'rxjs/operators';
-import {DataRecord, MgmtFormGroup} from 'mgmt-lib';
-import {UserService, SpinnerService} from 'shared-lib';
-import {
-  AbstractRegisteredService,
-  OAuthRegisteredService,
-  OidcRegisteredService,
-  RegexRegisteredService,
-  SamlRegisteredService,
-  WSFederationRegisterdService,
-} from 'domain-lib';
+import {map} from 'rxjs/operators';
+import {BaseFormComponent, DataRecord, MgmtFormGroup} from 'mgmt-lib';
+import {SpinnerService, UserService} from 'shared-lib';
+import {AbstractRegisteredService, OAuthRegisteredService, OidcRegisteredService, RegexRegisteredService, SamlRegisteredService, WSFederationRegisterdService,} from 'domain-lib';
 import {ImportService} from '../registry/import/import.service';
-import {BaseFormComponent} from 'mgmt-lib';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {BreakpointObserver} from '@angular/cdk/layout';
 

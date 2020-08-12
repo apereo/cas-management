@@ -1,11 +1,10 @@
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {Service} from 'shared-lib';
+import {Service, SpinnerService} from 'shared-lib';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {FormData} from 'domain-lib';
-import {SpinnerService} from 'shared-lib';
 
 @Injectable({
   providedIn: 'root'

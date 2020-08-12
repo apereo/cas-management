@@ -10,11 +10,9 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -47,7 +44,9 @@ import java.util.List;
 public class ServiceController {
 
     private static final String NOT_FOUND_PATTERN = "Service '{}' not found";
+
     private final CasUserProfileFactory casUserProfileFactory;
+
     private final MgmtManagerFactory<ServicesManager> managerFactory;
 
     /**
@@ -74,7 +73,7 @@ public class ServiceController {
     /**
      * Returns a list of OAuth services.
      *
-     * @param request - the request
+     * @param request  - the request
      * @param response - the response
      * @return - list of OAuth registered Service items
      * @throws IllegalAccessException - insufficient permissions
@@ -88,30 +87,30 @@ public class ServiceController {
         }
         val manager = (ManagementServicesManager) managerFactory.from(request, response);
         val services = manager.getAllServices().stream()
-                .filter(s -> s instanceof OAuthRegisteredService)
-                .filter(casUserProfile::hasPermission);
+            .filter(s -> s instanceof OAuthRegisteredService)
+            .filter(casUserProfile::hasPermission);
         return manager.getServiceItems(services);
     }
 
     /**
      * Returns a list of SAML services.
      *
-     * @param request - the request
+     * @param request  - the request
      * @param response - the response
      * @return - list of SAML registered Service items
      * @throws IllegalAccessException - insufficient permissions
      */
     @GetMapping("saml")
     public List<RegisteredServiceItem> getSamlServices(final HttpServletRequest request,
-                                                        final HttpServletResponse response) throws IllegalAccessException {
+                                                       final HttpServletResponse response) throws IllegalAccessException {
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isUser()) {
             throw new IllegalAccessException("You do not have permission");
         }
         val manager = (ManagementServicesManager) managerFactory.from(request, response);
         val services = manager.getAllServices().stream()
-                .filter(s -> s instanceof SamlRegisteredService)
-                .filter(casUserProfile::hasPermission);
+            .filter(s -> s instanceof SamlRegisteredService)
+            .filter(casUserProfile::hasPermission);
         return manager.getServiceItems(services);
     }
 
@@ -122,7 +121,7 @@ public class ServiceController {
      *
      * @param request  - HttpServletRequest
      * @param response - HttpServletResponse
-     * @param id -  the id
+     * @param id       -  the id
      */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -209,10 +208,10 @@ public class ServiceController {
     /**
      * Methods that saves changes made to a service through a YAML string.
      *
-     * @param request - the request
+     * @param request  - the request
      * @param response - the response
-     * @param id - the id of the service
-     * @param yaml - the service as a yaml string
+     * @param id       - the id of the service
+     * @param yaml     - the service as a yaml string
      * @throws IOException - failed
      */
     @PostMapping("yaml/{id}")
@@ -230,6 +229,7 @@ public class ServiceController {
             save(service, manager);
         }
     }
+
     /**
      * Method that will return the service as an HJson string.
      *
@@ -250,10 +250,10 @@ public class ServiceController {
     /**
      * Saves a service that was edited as Json string.
      *
-     * @param request - the request
+     * @param request  - the request
      * @param response - the response
-     * @param id - the service id
-     * @param json - the sevice as a json string
+     * @param id       - the service id
+     * @param json     - the sevice as a json string
      * @throws IOException - failed
      */
     @PostMapping("/json/{id}")
@@ -293,7 +293,7 @@ public class ServiceController {
      * Parses the passes json or yaml string into a Registered Service object and returns to the client.
      * The id of the service will be set to -1 to force adding a new assigned id if saved.
      *
-     * @param service  - the json/yaml string of the service.
+     * @param service - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)

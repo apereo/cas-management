@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SamlMetadataComponent } from './metadata.component';
+import {SamlMetadataComponent} from './metadata.component';
 
 describe('MetadataComponent', () => {
   let component: SamlMetadataComponent;

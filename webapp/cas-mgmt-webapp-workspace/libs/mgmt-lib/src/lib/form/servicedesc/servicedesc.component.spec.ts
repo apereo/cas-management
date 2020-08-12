@@ -1,8 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { ServicedescComponent } from './servicedesc.component';
+import {ServicedescComponent} from './servicedesc.component';
 import {SharedModule} from '../../shared/shared.module';
 
 describe('ServicedescComponent', () => {

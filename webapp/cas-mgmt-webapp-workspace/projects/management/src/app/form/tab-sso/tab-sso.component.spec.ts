@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabSsoComponent } from './tab-sso.component';
+import {TabSsoComponent} from './tab-sso.component';
 
 describe('TabSsoComponent', () => {
   let component: TabSsoComponent;

@@ -2,7 +2,6 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.domain.BranchData;
-
 import lombok.experimental.UtilityClass;
 import lombok.val;
 

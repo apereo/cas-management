@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroovyComponent } from './groovy.component';
+import {GroovyComponent} from './groovy.component';
 
 describe('GroovyComponent', () => {
   let component: GroovyComponent;

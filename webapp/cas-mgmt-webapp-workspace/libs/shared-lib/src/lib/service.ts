@@ -6,7 +6,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 import {catchError, finalize} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Injectable} from '@angular/core';
 import {UnknownComponent} from '../lib/unknown/unknown.component';
 import {SpinnerService} from './spinner/spinner.service';

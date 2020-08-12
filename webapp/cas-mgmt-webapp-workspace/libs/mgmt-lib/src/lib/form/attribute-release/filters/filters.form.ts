@@ -1,11 +1,13 @@
 import {FormArray, FormGroup} from '@angular/forms';
 import {
-  FilterType,
-  RegisteredServiceAttributeFilter,
-  RegisteredServiceChainingAttributeFilter,
-  RegisteredServiceMappedRegexAttributeFilter, RegisteredServiceMutantRegexAttributeFilter,
-  RegisteredServiceRegexAttributeFilter, RegisteredServiceReverseMappedRegexAttributeFilter,
-  RegisteredServiceScriptedAttributeFilter
+    FilterType,
+    RegisteredServiceAttributeFilter,
+    RegisteredServiceChainingAttributeFilter,
+    RegisteredServiceMappedRegexAttributeFilter,
+    RegisteredServiceMutantRegexAttributeFilter,
+    RegisteredServiceRegexAttributeFilter,
+    RegisteredServiceReverseMappedRegexAttributeFilter,
+    RegisteredServiceScriptedAttributeFilter
 } from 'domain-lib';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {AttributesForm} from '../../attributes/attributes.form';

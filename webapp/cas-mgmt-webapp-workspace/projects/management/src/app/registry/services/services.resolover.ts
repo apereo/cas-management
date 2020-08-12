@@ -3,7 +3,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {ServiceItem} from 'domain-lib';
 import {ServiceViewService} from './service.service';
 import {Observable} from 'rxjs/internal/Observable';

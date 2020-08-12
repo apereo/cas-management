@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccessStrategyComponent } from './access-strategy.component';
+import {AccessStrategyComponent} from './access-strategy.component';
 
 describe('AccessStrategyComponent', () => {
   let component: AccessStrategyComponent;

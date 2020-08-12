@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavigationEnd, Router, RouterEvent} from '@angular/router';
-import {AppConfigService, UserService, LibNavigationComponent} from 'shared-lib';
+import {AppConfigService, LibNavigationComponent, UserService} from 'shared-lib';
 import {ControlsService} from '../../project-share/controls/controls.service';
 import {OAuthAddComponent, SamlAddComponent} from 'mgmt-lib';
 import {MatSnackBar} from '@angular/material/snack-bar';

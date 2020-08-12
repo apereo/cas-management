@@ -6,7 +6,6 @@ import org.apereo.cas.mgmt.authz.CasRoleBasedAuthorizer;
 import org.apereo.cas.mgmt.authz.CasSpringSecurityAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.json.JsonResourceAuthorizationGenerator;
 import org.apereo.cas.mgmt.authz.yaml.YamlResourceAuthorizationGenerator;
-
 import lombok.val;
 import org.apache.commons.lang3.ArrayUtils;
 import org.pac4j.core.authorization.authorizer.Authorizer;
@@ -17,7 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.ArrayList;
 import java.util.Optional;
 

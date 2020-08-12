@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ResponsetypeComponent } from './responsetype.component';
+import {ResponsetypeComponent} from './responsetype.component';
 
 describe('ResponsetypeComponent', () => {
   let component: ResponsetypeComponent;

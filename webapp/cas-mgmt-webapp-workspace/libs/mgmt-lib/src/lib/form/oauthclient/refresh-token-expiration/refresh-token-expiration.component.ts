@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {RefreshTokenExpirationForm} from './refresh-token-expiration.form';
 
 @Component({

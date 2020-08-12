@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { DelegatedRoutingModule } from './delegated-routing.module';
+import {DelegatedRoutingModule} from './delegated-routing.module';
 import {ProjectShareModule} from '../project-share/project-share.module';
 
 @NgModule({

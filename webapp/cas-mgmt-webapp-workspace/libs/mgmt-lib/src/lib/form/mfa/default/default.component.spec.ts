@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DefaultComponent } from './default.component';
+import {DefaultComponent} from './default.component';
 
 describe('DefaultComponent', () => {
   let component: DefaultComponent;

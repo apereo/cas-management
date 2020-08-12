@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OauthAddComponent } from './add.component';
+import {OauthAddComponent} from './add.component';
 
 describe('AddComponent', () => {
   let component: OauthAddComponent;

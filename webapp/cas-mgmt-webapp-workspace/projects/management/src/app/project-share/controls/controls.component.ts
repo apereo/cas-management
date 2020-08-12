@@ -1,5 +1,5 @@
-import {Component, OnInit, Output, EventEmitter, ViewChild, Input} from '@angular/core';
-import {UserService, AppConfigService} from 'shared-lib';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AppConfigService, UserService} from 'shared-lib';
 import {Commit} from 'domain-lib';
 import {Location} from '@angular/common';
 import {PublishComponent} from '../publish/publish.component';

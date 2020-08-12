@@ -5,7 +5,6 @@ import lombok.val;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.CommonProfile;
-
 import java.util.List;
 
 /**

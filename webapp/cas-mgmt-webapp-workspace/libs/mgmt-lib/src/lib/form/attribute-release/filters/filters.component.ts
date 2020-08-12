@@ -1,11 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {
-  FilterType,
-  RegisteredServiceMappedRegexAttributeFilter,
-  RegisteredServiceMutantRegexAttributeFilter,
-  RegisteredServiceRegexAttributeFilter, RegisteredServiceReverseMappedRegexAttributeFilter,
-  RegisteredServiceScriptedAttributeFilter
-} from 'domain-lib';
+import {FilterType, RegisteredServiceMappedRegexAttributeFilter, RegisteredServiceMutantRegexAttributeFilter, RegisteredServiceRegexAttributeFilter, RegisteredServiceReverseMappedRegexAttributeFilter, RegisteredServiceScriptedAttributeFilter} from 'domain-lib';
 import {ChainingFilterForm, FilterForm, FilterMappedRegExForm} from './filters.form';
 
 @Component({

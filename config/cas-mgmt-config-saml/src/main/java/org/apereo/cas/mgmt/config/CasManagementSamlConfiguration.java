@@ -1,9 +1,5 @@
 package org.apereo.cas.mgmt.config;
 
-import lombok.SneakyThrows;
-import lombok.val;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
-import org.apache.commons.lang3.ClassUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.InCommonMetadataAggregateResolver;
@@ -13,13 +9,16 @@ import org.apereo.cas.mgmt.SamlController;
 import org.apereo.cas.mgmt.UrlMetadataResolver;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
+import lombok.SneakyThrows;
+import lombok.val;
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import org.apache.commons.lang3.ClassUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.HashMap;
 
 /**

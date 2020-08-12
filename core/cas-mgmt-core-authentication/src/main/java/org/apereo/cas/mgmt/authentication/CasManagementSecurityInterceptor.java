@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt.authentication;
 
 import org.apereo.cas.CasProtocolConstants;
-
 import lombok.val;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
@@ -15,7 +14,6 @@ import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

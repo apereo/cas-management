@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Branch, DiffEntry} from 'domain-lib';
 import {PaginatorComponent} from 'shared-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PullService} from './pull.service';
-import { Location } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {Location} from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatTableDataSource} from '@angular/material/table';
 import {ControlsService} from '../../project-share/controls/controls.service';
 import {MediaObserver} from '@angular/flex-layout';
 import {AcceptComponent} from '@app/project-share/accept/accept.component';

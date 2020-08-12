@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { YamlComponent } from './yaml.component';
+import {YamlComponent} from './yaml.component';
 
 describe('YamlComponent', () => {
   let component: YamlComponent;

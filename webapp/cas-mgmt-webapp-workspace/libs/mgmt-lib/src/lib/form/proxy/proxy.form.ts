@@ -1,9 +1,5 @@
 import {FormGroup, Validators} from '@angular/forms';
-import {
-  RefuseRegisteredServiceProxyPolicy,
-  RegexMatchingRegisteredServiceProxyPolicy,
-  RegisteredServiceProxyPolicy
-} from 'domain-lib';
+import {RefuseRegisteredServiceProxyPolicy, RegexMatchingRegisteredServiceProxyPolicy, RegisteredServiceProxyPolicy} from 'domain-lib';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 
 export abstract class ProxyForm extends FormGroup {

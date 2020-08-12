@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormDataService} from '../../../form-data.service';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {RemoteForm} from './remote.form';
 
 @Component({

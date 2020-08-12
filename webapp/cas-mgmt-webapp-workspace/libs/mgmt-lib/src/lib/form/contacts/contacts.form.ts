@@ -1,5 +1,5 @@
 import {FormArray, FormGroup, Validators} from '@angular/forms';
-import {DefaultRegisteredServiceContact, AbstractRegisteredService} from 'domain-lib';
+import {AbstractRegisteredService, DefaultRegisteredServiceContact} from 'domain-lib';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 
 export class ContactRow extends FormGroup {

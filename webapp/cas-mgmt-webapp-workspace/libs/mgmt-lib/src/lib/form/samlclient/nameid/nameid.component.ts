@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormDataService} from '../../../form-data.service';
-import {MetadataForm} from '../metadata/metadata.form';
 import {NameidForm} from './nameid.form';
 
 @Component({

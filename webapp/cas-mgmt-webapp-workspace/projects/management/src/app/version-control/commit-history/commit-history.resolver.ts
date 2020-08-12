@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {CommitHistoryService} from './commit-history.service';
 import {DiffEntry} from 'domain-lib';
 import {Observable} from 'rxjs/internal/Observable';

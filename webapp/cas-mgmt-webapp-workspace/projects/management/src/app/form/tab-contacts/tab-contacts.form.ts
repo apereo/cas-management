@@ -1,6 +1,6 @@
 import {FormGroup} from '@angular/forms';
 import {AbstractRegisteredService} from 'domain-lib';
-import {MgmtFormGroup, ContactsForm} from 'mgmt-lib';
+import {ContactsForm, MgmtFormGroup} from 'mgmt-lib';
 
 export class TabContactsForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

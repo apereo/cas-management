@@ -6,15 +6,12 @@ import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
 import org.apereo.cas.util.CollectionUtils;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,7 @@ import java.util.List;
 @ConfigurationProperties(value = "mgmt", ignoreUnknownFields = false)
 public class CasManagementConfigurationProperties implements Serializable {
     private static final long serialVersionUID = -7686426966125636166L;
+
     /**
      * List of roles that allow admin access to the web application.
      */
@@ -137,7 +135,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     /**
      * InCommon MDQ URL.
      */
-    private String inCommonMDQUrl= "https://mdq.incommon.org/entities";
+    private String inCommonMDQUrl = "https://mdq.incommon.org/entities";
 
     /**
      * List of cas servers that available in the Dashboard.
@@ -154,6 +152,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     @RequiresModule(name = "cas-mgmt-config-ldap-authz")
     public static class Ldap extends AbstractLdapProperties {
         private static final long serialVersionUID = -8129280052479631538L;
+
         /**
          * Defines authorization settings that allow access to the app via LDAP.
          */

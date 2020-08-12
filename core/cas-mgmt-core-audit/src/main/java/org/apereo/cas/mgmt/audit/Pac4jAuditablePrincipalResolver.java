@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt.audit;
 
 import org.apereo.cas.util.HttpRequestUtils;
-
 import lombok.val;
 import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.aspectj.lang.JoinPoint;
@@ -9,7 +8,6 @@ import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
-
 import java.util.Optional;
 
 /**

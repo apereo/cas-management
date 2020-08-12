@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { MatSidenav } from '@angular/material/sidenav';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {MatSidenav} from '@angular/material/sidenav';
 import {UserService} from '../user.service';
 import {MediaObserver} from '@angular/flex-layout';
 

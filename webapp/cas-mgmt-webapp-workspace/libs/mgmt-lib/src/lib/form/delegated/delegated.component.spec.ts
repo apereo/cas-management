@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DelegatedComponent } from './delegated.component';
+import {DelegatedComponent} from './delegated.component';
 
 describe('DelegatedComponent', () => {
   let component: DelegatedComponent;

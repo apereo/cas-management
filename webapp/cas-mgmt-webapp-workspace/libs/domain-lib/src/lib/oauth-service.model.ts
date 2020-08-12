@@ -1,17 +1,8 @@
 import {RegexRegisteredService, RegisteredService} from './registered-service.model';
 import {codeExpirationPolicy, RegisteredServiceOAuthCodeExpirationPolicy} from './code-expiration.model';
-import {
-  accessTokenExpirationPolicy,
-  RegisteredServiceOAuthAccessTokenExpirationPolicy
-} from './access-token-expiration.model';
-import {
-  refreshTokenExpirationPolicy,
-  RegisteredServiceOAuthRefreshTokenExpirationPolicy
-} from './refresh-token-expiration.model';
-import {
-  deviceTokenExpirationPolicy,
-  RegisteredServiceOAuthDeviceTokenExpirationPolicy
-} from './device-token-expiration.model';
+import {accessTokenExpirationPolicy, RegisteredServiceOAuthAccessTokenExpirationPolicy} from './access-token-expiration.model';
+import {refreshTokenExpirationPolicy, RegisteredServiceOAuthRefreshTokenExpirationPolicy} from './refresh-token-expiration.model';
+import {deviceTokenExpirationPolicy, RegisteredServiceOAuthDeviceTokenExpirationPolicy} from './device-token-expiration.model';
 
 export class OAuthRegisteredService extends RegexRegisteredService {
   static cName = 'org.apereo.cas.support.oauth.services.OAuthRegisteredService';

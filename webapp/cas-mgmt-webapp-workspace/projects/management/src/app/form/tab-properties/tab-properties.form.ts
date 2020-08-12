@@ -1,5 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {MgmtFormGroup, AttributesForm} from 'mgmt-lib';
+import {AttributesForm, MgmtFormGroup} from 'mgmt-lib';
 import {AbstractRegisteredService, DefaultRegisteredServiceProperty} from 'domain-lib';
 
 export class TabPropertiesForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

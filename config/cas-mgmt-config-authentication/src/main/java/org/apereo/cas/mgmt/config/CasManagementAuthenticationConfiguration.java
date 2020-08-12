@@ -3,10 +3,8 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.pac4j.cas.client.direct.DirectCasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
@@ -22,7 +20,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 

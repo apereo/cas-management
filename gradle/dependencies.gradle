@@ -207,16 +207,6 @@ ext.libraries = [
                 dependencies.create("org.apache.commons:commons-collections4:$commonsCollectionsVersion") {
                 }
         ],
-        findbugscontrib         : dependencies.create("com.mebigfatguy.fb-contrib:fb-contrib:$spotbugsContribVersion") {
-            force = true
-        },
-        spotbugs                : dependencies.create("com.github.spotbugs:spotbugs:$spotbugsVersion") {
-        },
-        spotbugsannotations     : dependencies.create("com.github.spotbugs:spotbugs-annotations:$spotbugsVersion") {
-        },
-        findbugssec             : dependencies.create("com.h3xstream.findsecbugs:findsecbugs-plugin:$findbugsSecVersion") {
-            force = true
-        },
         groovy                  : [
                 dependencies.create("org.codehaus.groovy:groovy-jsr223:$groovyVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")

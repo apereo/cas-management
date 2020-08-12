@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {FormDataService} from '../../../form-data.service';
 import {GrouperForm} from './grouper.form';
 

@@ -1,5 +1,5 @@
 import {FormGroup, Validators} from '@angular/forms';
-import {MgmtFormGroup, MgmtFormControl} from 'mgmt-lib';
+import {MgmtFormControl, MgmtFormGroup} from 'mgmt-lib';
 import {AbstractRegisteredService} from 'domain-lib';
 
 export class TabBasicsForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

@@ -1,20 +1,9 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { TabBasicsComponent } from './tab-basics.component';
-import {DataRecord,
-  SharedModule,
-  ServicenameComponent,
-  ServiceIdComponent,
-  ServicedescComponent,
-  LogoComponent,
-  LinkrefsComponent,
-  EnabledComponent,
-  ThemeidComponent
-} from 'mgmt-lib';
+import {TabBasicsComponent} from './tab-basics.component';
+import {DataRecord, EnabledComponent, LinkrefsComponent, LogoComponent, ServicedescComponent, ServiceIdComponent, ServicenameComponent, SharedModule, ThemeidComponent} from 'mgmt-lib';
 
 describe('TabBasicsComponent', () => {
   let component: TabBasicsComponent;

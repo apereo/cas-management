@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { InfoRoutingModule } from './info-routing.module';
-import { InfoComponent } from './info.component';
+import {InfoRoutingModule} from './info-routing.module';
+import {InfoComponent} from './info.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
 
 @NgModule({

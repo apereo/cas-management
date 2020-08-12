@@ -1,9 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {
-  AbstractRegisteredService,
-  ChainingRegisteredServiceSingleSignOnParticipationPolicy,
-  SsoPolicyType
-} from 'domain-lib';
+import {AbstractRegisteredService, ChainingRegisteredServiceSingleSignOnParticipationPolicy, SsoPolicyType} from 'domain-lib';
 import {ChainingSsoForm, createSsoForm, SsoPolicyForm} from './policy/sso-policy.form';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 

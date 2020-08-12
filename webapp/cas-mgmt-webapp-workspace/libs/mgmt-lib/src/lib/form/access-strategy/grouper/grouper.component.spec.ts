@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GrouperComponent } from './grouper.component';
+import {GrouperComponent} from './grouper.component';
 
 describe('GrouperComponent', () => {
   let component: GrouperComponent;

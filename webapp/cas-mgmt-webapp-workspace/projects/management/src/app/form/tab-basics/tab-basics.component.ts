@@ -1,13 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataRecord} from 'mgmt-lib';
-import {
-  GroovyRegisteredServiceAccessStrategy,
-  OAuthRegisteredService,
-  OidcRegisteredService,
-  SamlRegisteredService,
-  WSFederationRegisterdService,
-  RegexRegisteredService
-} from 'domain-lib';
+import {GroovyRegisteredServiceAccessStrategy, OAuthRegisteredService, OidcRegisteredService, RegexRegisteredService, SamlRegisteredService, WSFederationRegisterdService} from 'domain-lib';
 import {TabBasicsForm} from './tab-basics.form';
 
 @Component({

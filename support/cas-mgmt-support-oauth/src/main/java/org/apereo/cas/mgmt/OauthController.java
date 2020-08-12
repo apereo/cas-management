@@ -3,9 +3,7 @@ package org.apereo.cas.mgmt;
 import org.apereo.cas.services.ReturnMappedAttributeReleasePolicy;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
-
 import lombok.val;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

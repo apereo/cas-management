@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataRecord} from '../data.model';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {AttributesForm, Row} from './attributes.form';
 import {FormGroup} from '@angular/forms';
 

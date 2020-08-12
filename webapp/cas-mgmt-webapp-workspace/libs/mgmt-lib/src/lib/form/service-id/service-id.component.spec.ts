@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ServiceIdComponent } from './service-id.component';
+import {ServiceIdComponent} from './service-id.component';
 
 describe('RedirectUriComponent', () => {
   let component: ServiceIdComponent;

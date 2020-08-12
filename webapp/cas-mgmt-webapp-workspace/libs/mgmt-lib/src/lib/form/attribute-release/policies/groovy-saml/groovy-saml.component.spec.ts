@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroovySamlComponent } from './groovy-saml.component';
+import {GroovySamlComponent} from './groovy-saml.component';
 
 describe('GroovySamlComponent', () => {
   let component: GroovySamlComponent;

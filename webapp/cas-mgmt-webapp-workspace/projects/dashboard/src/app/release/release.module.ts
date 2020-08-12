@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { ReleaseRoutingModule } from './release-routing.module';
-import { ReleaseComponent } from './release.component';
+import {ReleaseRoutingModule} from './release-routing.module';
+import {ReleaseComponent} from './release.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
-import { DialogComponent } from './dialog/dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import {DialogComponent} from './dialog/dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [

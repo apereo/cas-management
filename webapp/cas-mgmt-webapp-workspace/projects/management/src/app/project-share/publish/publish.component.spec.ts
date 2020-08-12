@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PublishComponent } from './publish.component';
+import {PublishComponent} from './publish.component';
 
 describe('PublishComponent', () => {
   let component: PublishComponent;

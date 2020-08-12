@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { JwksComponent } from './jwks.component';
+import {JwksComponent} from './jwks.component';
 
 describe('JwksComponent', () => {
   let component: JwksComponent;

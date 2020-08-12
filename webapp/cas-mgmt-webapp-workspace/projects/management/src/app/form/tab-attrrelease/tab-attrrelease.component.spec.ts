@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabAttrreleaseComponent } from './tab-attrrelease.component';
+import {TabAttrreleaseComponent} from './tab-attrrelease.component';
 
 describe('TabAttrreleaseComponent', () => {
   let component: TabAttrreleaseComponent;

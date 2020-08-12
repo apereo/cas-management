@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RefreshTokenExpirationComponent } from './refresh-token-expiration.component';
+import {RefreshTokenExpirationComponent} from './refresh-token-expiration.component';
 
 describe('RefreshTokenExpirationComponent', () => {
   let component: RefreshTokenExpirationComponent;

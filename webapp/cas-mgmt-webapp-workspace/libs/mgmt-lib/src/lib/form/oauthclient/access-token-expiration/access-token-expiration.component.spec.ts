@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccessTokenExpirationComponent } from './access-token-expiration.component';
+import {AccessTokenExpirationComponent} from './access-token-expiration.component';
 
 describe('AccessTokenExpirationComponent', () => {
   let component: AccessTokenExpirationComponent;

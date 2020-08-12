@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WsfedclientComponent } from './wsfedclient.component';
+import {WsfedclientComponent} from './wsfedclient.component';
 import {SharedModule} from '../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
 

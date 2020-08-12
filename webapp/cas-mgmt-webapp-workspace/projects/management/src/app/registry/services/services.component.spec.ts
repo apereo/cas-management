@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ServicesComponent } from './services.component';
+import {ServicesComponent} from './services.component';
 
 describe('OauthComponent', () => {
   let component: ServicesComponent;

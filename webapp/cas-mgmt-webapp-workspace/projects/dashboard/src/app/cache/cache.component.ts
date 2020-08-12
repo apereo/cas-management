@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import {MatTableDataSource} from '@angular/material/table';
 import {Cache, MapDetails} from '../domain/cache.model';
 import {DashboardService} from '../core/dashboard-service';
 import {ActivatedRoute} from '@angular/router';

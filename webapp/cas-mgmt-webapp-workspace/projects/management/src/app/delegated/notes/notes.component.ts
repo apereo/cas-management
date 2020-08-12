@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NotesService} from './notes.service';
 import {EditorComponent} from 'shared-lib';

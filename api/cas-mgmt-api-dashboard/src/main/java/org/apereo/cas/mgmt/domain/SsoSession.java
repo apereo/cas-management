@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.domain;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;

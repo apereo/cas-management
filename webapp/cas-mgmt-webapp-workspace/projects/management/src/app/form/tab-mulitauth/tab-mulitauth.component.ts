@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {TabMultiauthForm} from './tab-multiauth.form';
-import {
-  DataRecord,
-} from 'mgmt-lib';
+import {DataRecord,} from 'mgmt-lib';
 
 @Component({
   selector: 'app-tab-mulitauth',

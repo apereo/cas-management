@@ -41,7 +41,6 @@ buildscript {
         classpath "net.ltgt.gradle:gradle-errorprone-javacplugin-plugin:$gradleErrorProneVersion"
         classpath "com.github.node-gradle:gradle-node-plugin:$gradleNodeVersion"
         classpath "org.owasp:dependency-check-gradle:$gradleDependencyCheckVersion"
-        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:$gradleSpotbugsVersion"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$gradleSonarqubeVersion"
     }
 }
@@ -101,7 +100,7 @@ dependencyCheck {
     failBuildOnCVSS = 8
     skipTestGroups = true
     skipConfigurations = ['jacocoAgent', 'jacocoAnt', 'optional', 'provided', 'providedCompile', 'providedRuntime',
-                          'signatures', 'spotbugs', 'spotbugsPlugins', 'checkstyle', 'errorprone', 'errorproneJavac',
+                          'signatures', 'checkstyle', 'errorprone', 'errorproneJavac',
                           'annotationProcessor', 'archives', 'compileOnly',
                           'tests', 'testRuntimeOnly', 'testRuntimeClasspath', 'testRuntime', 'testImplementation',
                           'testCompileOnly', 'testCompileClasspath', 'testCompile', 'testAnnotationProcessor',
@@ -497,29 +496,6 @@ subprojects {
         }
     }
 
-    if (!Boolean.getBoolean("skipSpotbugs") && projectShouldBePublished(project)) {
-        apply plugin: "com.github.spotbugs"
-        apply from: rootProject.file("gradle/spotbugs.gradle")
-        spotbugs {
-            toolVersion = "${spotbugsVersion}"
-            showProgress = true
-            ignoreFailures = false
-            reportsDir = file("$project.buildDir/spotbugs")
-            effort = "max"
-            reportLevel = "low"
-            includeFilter = file("$rootProject.projectDir/style/spotbugs-includes.xml")
-            excludeFilter = file("$rootProject.projectDir/style/spotbugs-excludes.xml")
-            maxHeapSize = "2g"
-        }
-
-        [spotbugsMain, spotbugsTest].each {
-            it.reports {
-                xml.enabled = true
-            }
-            it.finalizedBy outputSpotbugsReports
-        }
-    }
-
     dependencies {
         implementation libraries.aspectj
         implementation libraries.validationapi
@@ -531,19 +507,13 @@ subprojects {
         api libraries.springboot
 
         api libraries.javax
-
-        if (!Boolean.getBoolean("skipSpotbugs") && projectShouldBePublished(project)) {
-            spotbugsPlugins libraries.findbugscontrib
-            spotbugsPlugins libraries.findbugssec
-        }
-
+        
         if (!Boolean.getBoolean("skipErrorProneCompiler")) {
             errorprone "com.google.errorprone:error_prone_core:$errorProneVersion"
             errorproneJavac "com.google.errorprone:javac:$errorproneJavacVersion"
         }
         testImplementation libraries.tests
         testImplementation libraries.log4j
-        compileOnly libraries.spotbugsannotations
     }
 }
 

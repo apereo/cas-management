@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ConsentComponent } from './consent.component';
+import {ConsentComponent} from './consent.component';
 
 describe('ConsentComponent', () => {
   let component: ConsentComponent;

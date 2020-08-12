@@ -1,25 +1,17 @@
 import {FormGroup} from '@angular/forms';
 import {
-  AbstractRegisteredService,
-  AccessStrategyType,
-  DefaultRegisteredServiceAccessStrategy,
-  GroovyRegisteredServiceAccessStrategy,
-  GroovySurrogateRegisteredServiceAccessStrategy,
-  GrouperRegisteredServiceAccessStrategy,
-  RegisteredServiceAccessStrategy,
-  RemoteEndpointServiceAccessStrategy,
-  SurrogateRegisteredServiceAccessStrategy,
-  TimeBasedRegisteredServiceAccessStrategy
+    AbstractRegisteredService,
+    AccessStrategyType,
+    DefaultRegisteredServiceAccessStrategy,
+    GroovyRegisteredServiceAccessStrategy,
+    GroovySurrogateRegisteredServiceAccessStrategy,
+    GrouperRegisteredServiceAccessStrategy,
+    RegisteredServiceAccessStrategy,
+    RemoteEndpointServiceAccessStrategy,
+    SurrogateRegisteredServiceAccessStrategy,
+    TimeBasedRegisteredServiceAccessStrategy
 } from 'domain-lib';
-import {
-  MgmtFormControl,
-  MgmtFormGroup,
-  AccessStrategyForm,
-  RemoteForm,
-  TimeForm,
-  GrouperForm,
-  SurrogateForm
-} from 'mgmt-lib';
+import {AccessStrategyForm, GrouperForm, MgmtFormControl, MgmtFormGroup, RemoteForm, SurrogateForm, TimeForm} from 'mgmt-lib';
 
 export class TabAccessStrategyForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

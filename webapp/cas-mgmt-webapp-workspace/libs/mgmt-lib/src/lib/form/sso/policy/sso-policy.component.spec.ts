@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SsoPolicyComponent } from './sso-policy.component';
+import {SsoPolicyComponent} from './sso-policy.component';
 
 describe('SsoPolicyComponent', () => {
   let component: SsoPolicyComponent;

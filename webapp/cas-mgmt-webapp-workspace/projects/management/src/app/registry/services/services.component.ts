@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AppConfigService, PaginatorComponent} from 'shared-lib';
 import {ServiceItem} from 'domain-lib';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceViewService} from './service.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatTableDataSource} from '@angular/material/table';
 import {DeleteComponent} from '../delete/delete.component';
 import {RevertComponent} from '../../project-share/revert/revert.component';
 import {MediaObserver} from '@angular/flex-layout';

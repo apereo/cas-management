@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabOauthComponent } from './tab-oauth.component';
+import {TabOauthComponent} from './tab-oauth.component';
 
 describe('TabOauthComponent', () => {
   let component: TabOauthComponent;

@@ -4,7 +4,6 @@ import lombok.val;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.UserProfile;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

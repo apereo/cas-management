@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProxyTicketExpComponent } from './proxy-ticket-exp.component';
+import {ProxyTicketExpComponent} from './proxy-ticket-exp.component';
 
 describe('ProxyTicketExpComponent', () => {
   let component: ProxyTicketExpComponent;

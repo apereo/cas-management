@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SurrogateComponent } from './surrogate.component';
+import {SurrogateComponent} from './surrogate.component';
 
 describe('SurrogateComponent', () => {
   let component: SurrogateComponent;

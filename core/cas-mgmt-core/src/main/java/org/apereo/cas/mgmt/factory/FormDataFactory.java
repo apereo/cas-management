@@ -10,25 +10,20 @@ import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.HttpUtils;
 import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.apereo.services.persondir.IPersonAttributeDaoFilter;
 import org.springframework.http.HttpStatus;
-
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
-
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -42,7 +37,9 @@ import static java.util.stream.Collectors.toList;
 public class FormDataFactory {
 
     private final CasConfigurationProperties casProperties;
+
     private final CasManagementConfigurationProperties mgmtProperties;
+
     private final IPersonAttributeDao attributeRepository;
 
     private Optional<CasServerProfile> profile = Optional.empty();
@@ -58,7 +55,6 @@ public class FormDataFactory {
         loadMfaProviders(formData);
         loadDelegatedClientTypes(formData);
         loadAvailableAttributes(formData);
-//        loadSamlIdpAttributes(formData);
         return formData;
     }
 

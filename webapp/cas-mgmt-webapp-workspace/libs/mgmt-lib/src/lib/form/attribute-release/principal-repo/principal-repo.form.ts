@@ -1,8 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {
-  AbstractPrincipalAttributesRepository,
-  CachingPrincipalAttributesRepository,
-} from 'domain-lib';
+import {AbstractPrincipalAttributesRepository, CachingPrincipalAttributesRepository,} from 'domain-lib';
 import {MgmtFormControl} from '../../mgmt-formcontrol';
 
 export class PrincipalRepoForm extends FormGroup {

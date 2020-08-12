@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RestfulComponent } from './restful.component';
+import {RestfulComponent} from './restful.component';
 
 describe('RestfulComponent', () => {
   let component: RestfulComponent;

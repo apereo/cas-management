@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {CommitHistoryComponent} from './commit-history.component';
 import {CommitHistoryResolve} from './commit-history.resolver';
 

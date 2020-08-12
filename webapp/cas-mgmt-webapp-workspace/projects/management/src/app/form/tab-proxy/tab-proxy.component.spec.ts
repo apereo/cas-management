@@ -1,10 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { TabProxyComponent } from './tab-proxy.component';
+import {TabProxyComponent} from './tab-proxy.component';
 import {DataRecord, SharedModule} from 'mgmt-lib';
 import {ProxyComponent} from 'mgmt-lib/lib/form/proxy/proxy.component';
 

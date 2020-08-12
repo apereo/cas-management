@@ -4,7 +4,6 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.History;
 import org.apereo.cas.mgmt.exception.NoDifferenceException;
-
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.Getter;
@@ -18,7 +17,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand;
@@ -45,7 +43,6 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;

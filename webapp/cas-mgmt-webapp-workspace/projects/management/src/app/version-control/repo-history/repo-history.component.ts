@@ -2,8 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Commit} from 'domain-lib';
 import {PaginatorComponent} from 'shared-lib';
 import {RepoHistoryService} from './repo-history.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MediaObserver} from '@angular/flex-layout';
 

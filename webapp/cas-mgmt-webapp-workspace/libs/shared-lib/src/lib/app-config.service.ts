@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 import {tap} from 'rxjs/operators';
 import {AppConfig} from 'domain-lib';
 import {Service} from './service';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {SpinnerService} from './spinner/spinner.service';
 
 @Injectable({

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MgmtFormControl} from '../mgmt-formcontrol';
 import {FormDataService} from '../../form-data.service';
 import {OauthClientForm} from './oauthclient.form';
 

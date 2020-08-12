@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DefaultRegisteredServiceContact} from 'domain-lib';
-import {UserService, SpinnerService, AppConfigService} from 'shared-lib';
+import {AppConfigService, SpinnerService, UserService} from 'shared-lib';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, switchMap} from 'rxjs/operators';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {ContactsForm} from './contacts.form';
 
 @Component({

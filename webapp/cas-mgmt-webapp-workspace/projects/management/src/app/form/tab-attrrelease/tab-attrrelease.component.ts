@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {TabReleaseForm} from './tab-attrrelease.form';
-import {
-  DataRecord,
-} from 'mgmt-lib';
+import {DataRecord,} from 'mgmt-lib';
 import {ReleasePolicyType} from 'domain-lib';
 
 @Component({

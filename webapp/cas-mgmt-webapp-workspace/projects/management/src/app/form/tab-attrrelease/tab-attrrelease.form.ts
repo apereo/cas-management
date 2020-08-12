@@ -1,37 +1,23 @@
 import {FormGroup} from '@angular/forms';
 import {
-  AbstractRegisteredService,
-  DenyAllAttributeReleasePolicy,
-  GroovySamlRegisteredServiceAttributeReleasePolicy,
-  GroovyScriptAttributeReleasePolicy,
-  InCommonRSAttributeReleasePolicy,
-  MetadataEntityAttributesAttributeReleasePolicy,
-  PatternMatchingEntityIdAttributeReleasePolicy,
-  RegisteredServiceAttributeReleasePolicy,
-  ReleasePolicyType,
-  ReturnAllAttributeReleasePolicy,
-  ReturnAllowedAttributeReleasePolicy,
-  ReturnMappedAttributeReleasePolicy,
-  ReturnRestfulAttributeReleasePolicy,
-  ScriptedRegisteredServiceAttributeReleasePolicy,
-  SamlIdpRegisteredServiceAttributeReleasePolicy,
-  attributeReleaseFactory
+    AbstractRegisteredService,
+    attributeReleaseFactory,
+    DenyAllAttributeReleasePolicy,
+    GroovySamlRegisteredServiceAttributeReleasePolicy,
+    GroovyScriptAttributeReleasePolicy,
+    InCommonRSAttributeReleasePolicy,
+    MetadataEntityAttributesAttributeReleasePolicy,
+    PatternMatchingEntityIdAttributeReleasePolicy,
+    RegisteredServiceAttributeReleasePolicy,
+    ReleasePolicyType,
+    ReturnAllAttributeReleasePolicy,
+    ReturnAllowedAttributeReleasePolicy,
+    ReturnMappedAttributeReleasePolicy,
+    ReturnRestfulAttributeReleasePolicy,
+    SamlIdpRegisteredServiceAttributeReleasePolicy,
+    ScriptedRegisteredServiceAttributeReleasePolicy
 } from 'domain-lib';
-import {
-  MgmtFormGroup,
-  MgmtFormControl,
-  RestfulReleseForm,
-  AttributeReleaseForm,
-  AllReleaseForm,
-  DenyReleaseForm,
-  AllowedReleasedForm,
-  MappedReleaseForm,
-  GroovyReleaseForm,
-  GroovySamlReleaseForm,
-  MetadataReleaseForm,
-  SamlIdpReleaseForm,
-  ScriptReleaseForm
-} from 'mgmt-lib';
+import {AllowedReleasedForm, AllReleaseForm, AttributeReleaseForm, DenyReleaseForm, GroovyReleaseForm, GroovySamlReleaseForm, MappedReleaseForm, MetadataReleaseForm, MgmtFormControl, MgmtFormGroup, RestfulReleseForm, SamlIdpReleaseForm, ScriptReleaseForm} from 'mgmt-lib';
 
 export class TabReleaseForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

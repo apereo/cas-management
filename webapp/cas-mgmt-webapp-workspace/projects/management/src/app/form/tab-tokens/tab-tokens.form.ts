@@ -1,12 +1,6 @@
 import {FormGroup} from '@angular/forms';
-import {OAuthRegisteredService, AbstractRegisteredService} from 'domain-lib';
-import {
-  MgmtFormGroup,
-  CodeExpirationForm,
-  AccessTokenExpirationForm,
-  RefreshTokenExpirationForm,
-  DeviceTokenExpirationForm
-} from 'mgmt-lib';
+import {AbstractRegisteredService, OAuthRegisteredService} from 'domain-lib';
+import {AccessTokenExpirationForm, CodeExpirationForm, DeviceTokenExpirationForm, MgmtFormGroup, RefreshTokenExpirationForm} from 'mgmt-lib';
 
 export class TabTokenForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

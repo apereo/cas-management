@@ -3,7 +3,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {FormService} from './form.service';
 import {AbstractRegisteredService, RegexRegisteredService} from 'domain-lib';
 import {ChangesService} from '../version-control/changes/changes.service';

@@ -1,12 +1,6 @@
 import {FormGroup} from '@angular/forms';
 import {MgmtFormControl, MgmtFormGroup, ProxyForm, RefuseProxyForm, RegExProxyForm} from 'mgmt-lib';
-import {
-  AbstractRegisteredService,
-  ProxyType,
-  RefuseRegisteredServiceProxyPolicy,
-  RegexMatchingRegisteredServiceProxyPolicy,
-  RegisteredServiceProxyPolicy
-} from 'domain-lib';
+import {AbstractRegisteredService, ProxyType, RefuseRegisteredServiceProxyPolicy, RegexMatchingRegisteredServiceProxyPolicy, RegisteredServiceProxyPolicy} from 'domain-lib';
 
 export class TabProxyForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 

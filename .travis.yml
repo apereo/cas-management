@@ -61,7 +61,6 @@ stages:
   - postbuild
   - test
   - dependencies
-  - spotbugs
 jobs:
   include:
   - stage: initialize

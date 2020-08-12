@@ -1,5 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {MgmtFormGroup, OidcClientForm, JwksForm, IdTokenForm, UserinfoForm} from 'mgmt-lib';
+import {IdTokenForm, JwksForm, MgmtFormGroup, OidcClientForm, UserinfoForm} from 'mgmt-lib';
 import {AbstractRegisteredService, OidcRegisteredService} from 'domain-lib';
 
 export class TabOidcForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

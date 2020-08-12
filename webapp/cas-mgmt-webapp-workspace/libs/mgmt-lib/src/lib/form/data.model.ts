@@ -5,7 +5,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {AbstractRegisteredService} from 'domain-lib';
 import {MgmtFormGroup} from './mgmt-form-group';
-import {FormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'

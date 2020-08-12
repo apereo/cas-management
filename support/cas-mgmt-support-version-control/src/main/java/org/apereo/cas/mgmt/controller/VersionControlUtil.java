@@ -5,15 +5,12 @@ import org.apereo.cas.mgmt.domain.Change;
 import org.apereo.cas.mgmt.domain.Diff;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
-
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 

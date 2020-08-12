@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WsfedattrrelpoliciesComponent } from './wsfedattrrelpolicies.component';
+import {WsfedattrrelpoliciesComponent} from './wsfedattrrelpolicies.component';
 import {SharedModule} from '../../shared/shared.module';
 import {FormsModule} from '@angular/forms';
 import {FormData} from '../../domain/form-data';

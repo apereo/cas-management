@@ -2,12 +2,9 @@ package org.apereo.cas.configuration.model;
 
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-
 import java.io.Serializable;
 
 /**

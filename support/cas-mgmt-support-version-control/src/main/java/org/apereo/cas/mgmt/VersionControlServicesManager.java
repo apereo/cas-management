@@ -4,11 +4,10 @@ import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
-
 import lombok.SneakyThrows;
 import lombok.val;
 import org.eclipse.jgit.api.Status;
-
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -59,7 +58,7 @@ public class VersionControlServicesManager extends ManagementServicesManager {
 
     private boolean changed() {
         val max = Arrays.stream(git.getRepository().getWorkTree().getAbsoluteFile().listFiles())
-                .map(f -> f.lastModified())
+                .map(File::lastModified)
                 .max(Long::compare).get();
         if (this.lastModified == max) {
             return false;

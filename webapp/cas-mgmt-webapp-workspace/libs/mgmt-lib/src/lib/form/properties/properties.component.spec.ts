@@ -1,10 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { PropertiesComponent } from './propertiespane.component';
+import {PropertiesComponent} from './propertiespane.component';
 import {SharedModule} from '../../shared/shared.module';
 
 describe('PropertiespaneComponent', () => {

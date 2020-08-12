@@ -2,7 +2,6 @@ package org.apereo.cas.mgmt.authz;
 
 import org.apereo.cas.util.ResourceUtils;
 import org.apereo.cas.util.io.FileWatcherService;
-
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.jooq.lambda.Unchecked;
@@ -11,7 +10,6 @@ import org.pac4j.core.authorization.generator.SpringSecurityPropertiesAuthorizat
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
-
 import java.nio.file.Files;
 import java.util.Optional;
 import java.util.Properties;

@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  DataRecord,
-  FormDataService,
-} from 'mgmt-lib';
+import {DataRecord, FormDataService,} from 'mgmt-lib';
 import {TabAccessStrategyForm} from './tab-access-strategy-form';
 import {ActivatedRoute} from '@angular/router';
 

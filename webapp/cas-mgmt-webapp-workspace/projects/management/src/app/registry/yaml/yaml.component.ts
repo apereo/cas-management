@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import { Location } from '@angular/common';
+import {Location} from '@angular/common';
 import {ServiceViewService} from '../services/service.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {EditorComponent} from 'shared-lib';
 
 @Component({

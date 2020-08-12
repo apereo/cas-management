@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabDelegatedComponent } from './tab-delegated.component';
+import {TabDelegatedComponent} from './tab-delegated.component';
 
 describe('TabDelegatedComponent', () => {
   let component: TabDelegatedComponent;

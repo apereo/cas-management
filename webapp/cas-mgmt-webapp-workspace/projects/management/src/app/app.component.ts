@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {AppConfigService} from 'shared-lib';
 import {FormDataService} from 'mgmt-lib';
 import {ControlsService} from './project-share/controls/controls.service';

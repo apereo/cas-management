@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ServiceTicketExpComponent } from './service-ticket-exp.component';
+import {ServiceTicketExpComponent} from './service-ticket-exp.component';
 
 describe('ServiceTicketExpComponent', () => {
   let component: ServiceTicketExpComponent;

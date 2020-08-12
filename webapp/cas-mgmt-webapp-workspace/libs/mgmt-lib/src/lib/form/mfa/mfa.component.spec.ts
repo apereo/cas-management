@@ -1,8 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { MfaComponent } from './mfa.component';
+import {MfaComponent} from './mfa.component';
 import {SharedModule} from '../../shared/shared.module';
 
 describe('MfaComponent', () => {

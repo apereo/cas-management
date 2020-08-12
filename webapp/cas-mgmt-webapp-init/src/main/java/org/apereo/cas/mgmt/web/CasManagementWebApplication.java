@@ -6,10 +6,8 @@ import org.apereo.cas.config.CasPersonDirectoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.CasManagementEmbeddedContainerUtils;
-
 import lombok.NoArgsConstructor;
 import lombok.val;
-
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
@@ -72,11 +70,11 @@ public class CasManagementWebApplication {
         val properties = CasManagementEmbeddedContainerUtils.getRuntimeProperties(Boolean.TRUE);
         val banner = CasManagementEmbeddedContainerUtils.getCasManagementBannerInstance();
         new SpringApplicationBuilder(CasManagementWebApplication.class)
-                .banner(banner)
-                .web(WebApplicationType.SERVLET)
-                .properties(properties)
-                .logStartupInfo(true)
-                .contextClass(CasManagementWebApplicationContext.class)
-                .run(args);
+            .banner(banner)
+            .web(WebApplicationType.SERVLET)
+            .properties(properties)
+            .logStartupInfo(true)
+            .contextClass(CasManagementWebApplicationContext.class)
+            .run(args);
     }
 }

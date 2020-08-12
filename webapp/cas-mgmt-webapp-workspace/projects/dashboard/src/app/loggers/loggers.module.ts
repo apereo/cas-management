@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 import {ProjectShareModule} from '../project-share/project-share.module';
-import { MatDialogModule } from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
 import {LoggersComponent} from './loggers.component';
 import {LoggersRoutingModule} from './loggers-routing.module';
 

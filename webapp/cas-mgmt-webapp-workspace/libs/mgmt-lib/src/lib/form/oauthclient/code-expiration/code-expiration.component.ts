@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MgmtFormControl} from '../../mgmt-formcontrol';
 import {CodeExpirationForm} from './code-expiration.form';
 
 @Component({

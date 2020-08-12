@@ -1,5 +1,5 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import { Location } from '@angular/common';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ServiceViewService} from '../services/service.service';
 import {HttpErrorResponse} from '@angular/common/http';

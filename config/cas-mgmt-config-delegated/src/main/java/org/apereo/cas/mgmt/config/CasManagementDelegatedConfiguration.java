@@ -10,10 +10,8 @@ import org.apereo.cas.mgmt.controller.PullController;
 import org.apereo.cas.mgmt.controller.SubmitController;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.util.io.CommunicationsManager;
-
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

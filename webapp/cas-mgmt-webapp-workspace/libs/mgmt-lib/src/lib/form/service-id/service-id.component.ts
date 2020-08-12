@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SamlRegisteredService, WSFederationRegisterdService, OAuthRegisteredService, OidcRegisteredService} from 'domain-lib';
+import {OAuthRegisteredService, OidcRegisteredService, SamlRegisteredService, WSFederationRegisterdService} from 'domain-lib';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 
 @Component({

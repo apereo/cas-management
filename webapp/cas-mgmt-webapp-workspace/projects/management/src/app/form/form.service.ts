@@ -4,13 +4,7 @@
 import {Injectable} from '@angular/core';
 import {catchError, map, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {AbstractRegisteredService,
-  RegexRegisteredService,
-  OAuthRegisteredService,
-  OidcRegisteredService,
-  SamlRegisteredService,
-  WSFederationRegisterdService
-} from 'domain-lib';
+import {AbstractRegisteredService, OAuthRegisteredService, OidcRegisteredService, RegexRegisteredService, SamlRegisteredService, WSFederationRegisterdService} from 'domain-lib';
 import {Service} from 'shared-lib';
 
 @Injectable({

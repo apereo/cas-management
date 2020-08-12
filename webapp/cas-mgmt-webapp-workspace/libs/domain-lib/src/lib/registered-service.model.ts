@@ -1,37 +1,13 @@
-
-import {
-  accessStrategyFactory,
-  DefaultRegisteredServiceAccessStrategy,
-  RegisteredServiceAccessStrategy
-} from './access-strategy.model';
-import {
-  DefaultRegisteredServiceMultifactorPolicy,
-  mfaPolicyFactory,
-  RegisteredServiceMultifactorPolicy
-} from './multifactor.model';
-import {proxyFactory, RefuseRegisteredServiceProxyPolicy, RegisteredServiceProxyPolicy} from './proxy-policy.model';
-import {
-  DefaultRegisteredServiceUsernameProvider,
-  RegisteredServiceUsernameAttributeProvider, usernameProviderFactory
-} from './attribute-provider.model';
-import {
-  attributeReleaseFactory,
-  DenyAllAttributeReleasePolicy,
-  RegisteredServiceAttributeReleasePolicy,
-  ReturnAllowedAttributeReleasePolicy
-} from './attribute-release.model';
+import {accessStrategyFactory, RegisteredServiceAccessStrategy} from './access-strategy.model';
+import {mfaPolicyFactory, RegisteredServiceMultifactorPolicy} from './multifactor.model';
+import {proxyFactory, RegisteredServiceProxyPolicy} from './proxy-policy.model';
+import {RegisteredServiceUsernameAttributeProvider, usernameProviderFactory} from './attribute-provider.model';
+import {attributeReleaseFactory, RegisteredServiceAttributeReleasePolicy} from './attribute-release.model';
 import {RegisteredServicePublicKey} from './public-key.model';
 import {DefaultRegisteredServiceProperty} from './property.model';
 import {contactsFactory, RegisteredServiceContact} from './contact.model';
-import {
-  DefaultRegisteredServiceExpirationPolicy,
-  expirationPolicyFactory,
-  RegisteredServiceExpirationPolicy
-} from './expiration.model';
-import {
-  RegisteredServiceServiceTicketExpirationPolicy,
-  serviceTicketExpirationPolicy
-} from './service-ticket-expiration.model';
+import {expirationPolicyFactory, RegisteredServiceExpirationPolicy} from './expiration.model';
+import {RegisteredServiceServiceTicketExpirationPolicy, serviceTicketExpirationPolicy} from './service-ticket-expiration.model';
 import {proxyTicketExpirationPolicy, RegisteredServiceProxyTicketExpirationPolicy} from './proxy-ticket-expiration.model';
 import {RegisteredServiceSingleSignOnParticipationPolicy, ssoParticipationPolicy} from './sso-expiration.model';
 

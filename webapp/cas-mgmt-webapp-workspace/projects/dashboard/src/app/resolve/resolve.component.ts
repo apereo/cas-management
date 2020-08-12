@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatTableDataSource} from '@angular/material/table';
 import {Attribute} from '../release/release.component';
 import {PaginatorComponent} from 'shared-lib';
 

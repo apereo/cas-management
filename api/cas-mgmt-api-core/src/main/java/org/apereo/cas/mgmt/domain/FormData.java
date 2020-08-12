@@ -12,17 +12,14 @@ import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.ws.idp.WSFederationClaims;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
-
 import org.apereo.services.persondir.util.CaseCanonicalizationMode;
 import org.opensaml.saml.saml2.core.NameID;
 import org.springframework.http.HttpStatus;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,9 +82,22 @@ public class FormData implements Serializable {
     private Set<String> userDefinedScopes = new HashSet<>();
 
     private List<Option> oidcApplicationTypes = CollectionUtils.wrapList(
-            new Option("Web", "web"),
-            new Option("Native", "native")
+        new Option("Web", "web"),
+        new Option("Native", "native")
     );
+
+    private static List<String> locateKeyAlgorithmsSupported() {
+        return CollectionUtils.wrapList(
+            "RSA1_5", "RSA-OAEP",
+            "RSA-OAEP-256", "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW",
+            "ECDH-ES+A256KW", "A128KW", "A192KW", "A256KW", "A128GCMKW",
+            "A192GCMKW", "A256GCMKW", "PBES2-HS256+A128KW",
+            "PBES2-HS384+A192KW", "PBES2-HS512+A256KW", "dir");
+    }
+
+    private static List<String> locateContentEncryptionAlgorithmsSupported() {
+        return CollectionUtils.wrapList("A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512", "A128GCM", "A192GCM", "A256GCM");
+    }
 
     public RegisteredServiceProperty.RegisteredServiceProperties[] getRegisteredServiceProperties() {
         return RegisteredServiceProperty.RegisteredServiceProperties.values();
@@ -161,19 +171,6 @@ public class FormData implements Serializable {
             .collect(Collectors.toList());
     }
 
-    private static List<String> locateKeyAlgorithmsSupported() {
-        return CollectionUtils.wrapList(
-            "RSA1_5", "RSA-OAEP",
-            "RSA-OAEP-256", "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW",
-            "ECDH-ES+A256KW", "A128KW", "A192KW", "A256KW", "A128GCMKW",
-            "A192GCMKW", "A256GCMKW", "PBES2-HS256+A128KW",
-            "PBES2-HS384+A192KW", "PBES2-HS512+A256KW", "dir");
-    }
-
-    private static List<String> locateContentEncryptionAlgorithmsSupported() {
-        return CollectionUtils.wrapList("A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512", "A128GCM", "A192GCM", "A256GCM");
-    }
-
     /**
      * Class used to format display options for client.
      */
@@ -181,6 +178,7 @@ public class FormData implements Serializable {
     @AllArgsConstructor
     public static class Option implements Serializable {
         private String display;
+
         private String value;
     }
 }

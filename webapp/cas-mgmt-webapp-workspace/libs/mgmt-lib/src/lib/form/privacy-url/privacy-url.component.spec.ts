@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PrivacyUrlComponent } from './privacy-url.component';
+import {PrivacyUrlComponent} from './privacy-url.component';
 
 describe('PrivacyUrlComponent', () => {
   let component: PrivacyUrlComponent;

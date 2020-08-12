@@ -1,10 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { TabLogoutComponent } from './tab-logout.component';
+import {TabLogoutComponent} from './tab-logout.component';
 import {DataRecord, SharedModule} from 'mgmt-lib';
 import {LogoutComponent} from 'mgmt-lib/lib/form/logout/logout.component';
 import {LogouttypeevalComponent} from 'mgmt-lib/lib/form/logouttypeeval/logouttypeeval.component';

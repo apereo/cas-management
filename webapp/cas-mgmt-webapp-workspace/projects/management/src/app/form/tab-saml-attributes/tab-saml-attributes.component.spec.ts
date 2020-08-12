@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TabSamlAttributesComponent } from './tab-saml-attributes.component';
+import {TabSamlAttributesComponent} from './tab-saml-attributes.component';
 
 describe('TabSamlAttributesComponent', () => {
   let component: TabSamlAttributesComponent;

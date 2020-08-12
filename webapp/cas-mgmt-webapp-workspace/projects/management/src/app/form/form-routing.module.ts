@@ -1,8 +1,8 @@
 /**
  * Created by tschmidt on 2/23/17.
  */
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {FormComponent} from './form.component';
 import {FormResolve} from './form.resolve';
 import {TabBasicsComponent} from './tab-basics/tab-basics.component';

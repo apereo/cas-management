@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroovySurrogateComponent } from './groovy-surrogate.component';
+import {GroovySurrogateComponent} from './groovy-surrogate.component';
 
 describe('GroovySurrogateComponent', () => {
   let component: GroovySurrogateComponent;

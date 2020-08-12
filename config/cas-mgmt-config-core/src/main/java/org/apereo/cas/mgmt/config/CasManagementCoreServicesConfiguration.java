@@ -16,7 +16,6 @@ import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
-
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,7 @@ public class CasManagementCoreServicesConfiguration {
     @Bean
     public ApplicationDataController applicationDataController() {
         return new ApplicationDataController(formDataFactory(), casUserProfileFactory.getIfAvailable(),
-                managementProperties, casProperties, contactLookup());
+            managementProperties, casProperties, contactLookup());
     }
 
     @Bean
@@ -90,7 +89,7 @@ public class CasManagementCoreServicesConfiguration {
         return new DomainController(casUserProfileFactory.getIfAvailable(), managerFactory());
     }
 
-    @ConditionalOnMissingBean(name ="contactLookup")
+    @ConditionalOnMissingBean(name = "contactLookup")
     @Bean
     public ContactLookup contactLookup() {
         return new NoOpContactLookup();

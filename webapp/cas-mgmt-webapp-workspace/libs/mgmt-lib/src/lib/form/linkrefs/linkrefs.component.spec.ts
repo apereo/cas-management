@@ -1,10 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
 
-import { LinkrefsComponent } from './linkrefs.component';
+import {LinkrefsComponent} from './linkrefs.component';
 import {SharedModule} from '../../shared/shared.module';
 
 describe('LinkrefsComponent', () => {

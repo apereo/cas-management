@@ -2,22 +2,20 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
-import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider;
+import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.ResourceUtils;
-
 import com.mchange.io.FileUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml.common.xml.SAMLConstants;
-
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -32,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
@@ -43,7 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.opensaml.saml.saml2.core.NameID.EMAIL;
 
@@ -76,7 +72,9 @@ public class SamlController {
     protected final CasManagementConfigurationProperties managementProperties;
 
     private final MetadataAggregateResolver sps;
+
     private final OpenSamlConfigBean configBean;
+
     private final UrlMetadataResolver urlMetadataResolver;
 
     private List<String> entities;
@@ -87,7 +85,7 @@ public class SamlController {
                           final CasManagementConfigurationProperties managementProperties,
                           final OpenSamlConfigBean configBean,
                           final MetadataAggregateResolver sps,
-                          final UrlMetadataResolver urlMetadataResolver){
+                          final UrlMetadataResolver urlMetadataResolver) {
         this.casUserProfileFactory = casUserProfileFactory;
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
@@ -97,9 +95,9 @@ public class SamlController {
         try {
             val manager = (ManagementServicesManager) managerFactory.master();
             this.entities = manager.getAllServices().stream()
-                    .filter(s -> s instanceof SamlRegisteredService)
-                    .map(s -> s.getServiceId())
-                    .collect(Collectors.toList());
+                .filter(s -> s instanceof SamlRegisteredService)
+                .map(RegisteredService::getServiceId)
+                .collect(Collectors.toList());
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -115,8 +113,8 @@ public class SamlController {
     @SneakyThrows
     public List<String> find(final @RequestParam String query) {
         return this.entities.stream()
-                .filter(e -> e.contains(query))
-                .collect(Collectors.toList());
+            .filter(e -> e.contains(query))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -200,8 +198,8 @@ public class SamlController {
         val extensions = spDescriptor.getExtensions();
         if (extensions != null) {
             val uiInfo = Objects.requireNonNull(extensions.getOrderedChildren()).stream()
-                    .filter(c -> c instanceof UIInfo)
-                    .findFirst();
+                .filter(c -> c instanceof UIInfo)
+                .findFirst();
             if (uiInfo.isPresent()) {
                 val info = (UIInfo) uiInfo.get();
                 if (!info.getDisplayNames().isEmpty()) {
@@ -285,9 +283,9 @@ public class SamlController {
     /**
      * Method to return the metadata for the saml service wih the passed id.
      *
-     * @param request - the request
+     * @param request  - the request
      * @param response - the response
-     * @param id - the id of the service
+     * @param id       - the id of the service
      * @return - Metadata
      */
     @GetMapping("/metadata/{id}")
@@ -307,9 +305,9 @@ public class SamlController {
     /**
      * Saves changes made to local metadata by the management app.
      *
-     * @param request - the request
+     * @param request  - the request
      * @param response - the response
-     * @param id - the id of the service
+     * @param id       - the id of the service
      * @param metadata - the metadata to save
      */
     @PostMapping("/metadata/{id}")

@@ -1,13 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
 import {PaginatorComponent} from 'shared-lib';
-import {SsoSession, SsoSessionsResponse} from '../domain/sessions.model';
+import {SsoSession} from '../domain/sessions.model';
 import {SsosessionsService} from './ssosessions-service';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
 import {DetailComponent} from './detail/detail.component';
-import { MatSort } from '@angular/material/sort';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-ssosessions',

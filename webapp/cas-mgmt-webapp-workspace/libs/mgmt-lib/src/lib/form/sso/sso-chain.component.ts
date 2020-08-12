@@ -1,8 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {
-  ssoParticipationPolicy,
-  SsoPolicyType
-} from 'domain-lib';
+import {ssoParticipationPolicy, SsoPolicyType} from 'domain-lib';
 import {SsoForm} from './sso.form';
 import {ChainingSsoForm, createSsoForm, SsoPolicyForm} from './policy/sso-policy.form';
 

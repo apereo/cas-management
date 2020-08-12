@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {OAuthRegisteredService, AbstractRegisteredService} from 'domain-lib';
+import {AbstractRegisteredService, OAuthRegisteredService} from 'domain-lib';
 import {map} from 'rxjs/operators';
 import {OauthAddService} from 'mgmt-lib';
 

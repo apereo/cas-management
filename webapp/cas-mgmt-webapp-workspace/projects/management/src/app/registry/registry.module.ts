@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { RegistryRoutingModule } from './registry-routing.module';
+import {RegistryRoutingModule} from './registry-routing.module';
 import {DeleteComponent} from './delete/delete.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
 

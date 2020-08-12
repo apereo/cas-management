@@ -1,8 +1,4 @@
-import {
-  AbstractRegisteredService,
-  DefaultRegisteredServiceExpirationPolicy,
-  RegisteredServiceExpirationPolicy
-} from 'domain-lib';
+import {AbstractRegisteredService, DefaultRegisteredServiceExpirationPolicy, RegisteredServiceExpirationPolicy} from 'domain-lib';
 import {FormGroup} from '@angular/forms';
 import {MgmtFormGroup} from '../mgmt-form-group';
 import {MgmtFormControl} from '../mgmt-formcontrol';

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FilterMappedComponent } from './filter-mapped.component';
+import {FilterMappedComponent} from './filter-mapped.component';
 
 describe('MappedComponent', () => {
   let component: FilterMappedComponent;

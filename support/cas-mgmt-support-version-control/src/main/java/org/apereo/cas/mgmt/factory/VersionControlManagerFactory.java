@@ -16,15 +16,12 @@ import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.io.WatcherService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.eclipse.jgit.api.Git;
 import org.springframework.core.io.FileSystemResource;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

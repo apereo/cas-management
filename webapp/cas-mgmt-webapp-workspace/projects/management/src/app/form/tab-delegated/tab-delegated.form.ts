@@ -1,5 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {MgmtFormGroup, DelegatedForm} from 'mgmt-lib';
+import {DelegatedForm, MgmtFormGroup} from 'mgmt-lib';
 import {AbstractRegisteredService} from 'domain-lib';
 
 export class TabDelegatedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {

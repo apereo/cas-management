@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormDataService} from '../../form-data.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {AttributesForm} from '../attributes/attributes.form';
 
 @Component({

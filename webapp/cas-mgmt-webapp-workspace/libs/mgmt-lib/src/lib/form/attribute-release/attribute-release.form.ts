@@ -1,11 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {
-  AbstractPrincipalAttributesRepository,
-  CachingPrincipalAttributesRepository,
-  DefaultPrincipalAttributesRepository,
-  PrincipalRepoType,
-  RegisteredServiceAttributeReleasePolicy
-} from 'domain-lib';
+import {AbstractPrincipalAttributesRepository, CachingPrincipalAttributesRepository, DefaultPrincipalAttributesRepository, PrincipalRepoType, RegisteredServiceAttributeReleasePolicy} from 'domain-lib';
 import {ChainingFilterForm} from './filters/filters.form';
 import {CachingPrincipalRepoForm, PrincipalRepoForm} from './principal-repo/principal-repo.form';
 import {ConsentForm} from './consent/consent.form';

@@ -17,8 +17,6 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration("casManagementCoreServicesConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
-@Slf4j
 public class CasManagementCoreServicesConfiguration {
 
     @Autowired

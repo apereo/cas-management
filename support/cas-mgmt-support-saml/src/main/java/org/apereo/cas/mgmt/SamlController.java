@@ -76,7 +76,6 @@ public class SamlController {
     protected final CasManagementConfigurationProperties managementProperties;
 
     private final MetadataAggregateResolver sps;
-    private final FormData formData;
     private final OpenSamlConfigBean configBean;
     private final UrlMetadataResolver urlMetadataResolver;
 
@@ -86,14 +85,12 @@ public class SamlController {
     public SamlController(final CasUserProfileFactory casUserProfileFactory,
                           final MgmtManagerFactory managerFactory,
                           final CasManagementConfigurationProperties managementProperties,
-                          final FormData formData,
                           final OpenSamlConfigBean configBean,
                           final MetadataAggregateResolver sps,
                           final UrlMetadataResolver urlMetadataResolver){
         this.casUserProfileFactory = casUserProfileFactory;
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
-        this.formData = formData;
         this.configBean = configBean;
         this.sps = sps;
         this.urlMetadataResolver = urlMetadataResolver;

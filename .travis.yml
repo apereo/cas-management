@@ -7,13 +7,13 @@
 # Encrypted settings include
 
 language: java
-sudo: required
+#sudo: required
 dist: trusty
 services:
   - docker
 branches:
   only:
-    - master
+    - 6.2.x
 before_cache:
   - rm -rf $HOME/.gradle/caches/5.*/
   - rm -rf $HOME/.gradle/caches/4.*/
@@ -32,8 +32,8 @@ git:
 notifications:
   slack:
     secure: "gNFUOGd0isowSwPfQ9VqGQWhWRDAjzX9tfH0xGe2gyg1kiOhq3Odb8fdcUg9f3DhAbiMxGDu08IgmDbeEyncB42Zdqk/DFvD3F958WaVy0O9TF2iAzO+ftBG0+slFHPDZ8qAy97+mV/be7KBkLYP+BydYTVfO84NvpLNiylmOVU="
-matrix:
-  fast_finish: true
+#matrix:
+#  fast_finish: true
 env:
   global:
   - JAVA_OPTS="-Xms512m -Xmx4048m -Xss128m -XX:ReservedCodeCacheSize=512m -XX:+UseG1GC -Xverify:none -server"

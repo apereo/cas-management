@@ -1,12 +1,10 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.springframework.stereotype.Controller;
@@ -31,9 +29,7 @@ public class ViewController {
     private static final String STATUS = "status";
 
     private final Service defaultService;
-    private final CasUserProfileFactory casUserProfileFactory;
-
-
+    
     /**
      * Mapped method to return the manage.html.
      *

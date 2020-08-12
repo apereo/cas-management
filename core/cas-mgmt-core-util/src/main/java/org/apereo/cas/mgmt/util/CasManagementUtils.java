@@ -1,14 +1,12 @@
 package org.apereo.cas.mgmt.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.RegexUtils;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.hjson.JsonValue;
 
 import java.io.ByteArrayOutputStream;
@@ -27,7 +25,6 @@ import java.util.regex.Pattern;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@Slf4j
 public final class CasManagementUtils {
 
     private static final RegisteredServiceJsonSerializer JSON_SERIALIZER = new RegisteredServiceJsonSerializer();

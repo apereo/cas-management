@@ -4,7 +4,6 @@ import org.apereo.cas.services.ReturnMappedAttributeReleasePolicy;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.http.MediaType;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController("casManagementOauthController")
 @RequestMapping(path = "api/oauth", produces = MediaType.APPLICATION_JSON_VALUE)
-@Slf4j
 public class OauthController {
 
     /**

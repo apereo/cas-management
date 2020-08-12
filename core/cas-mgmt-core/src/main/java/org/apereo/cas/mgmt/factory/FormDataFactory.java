@@ -58,12 +58,12 @@ public class FormDataFactory {
         loadMfaProviders(formData);
         loadDelegatedClientTypes(formData);
         loadAvailableAttributes(formData);
-        loadSamlIdpAttributes(formData);
+//        loadSamlIdpAttributes(formData);
         return formData;
     }
 
     @PostConstruct
-    private void callForProfile() {
+    public void callForProfile() {
         if (!mgmtProperties.isEnableDiscoveryEndpointCall()) {
             LOGGER.warn("Call to cas/actuator/discoveryProfile disabled by management configuration.  Using default FormData values.");
             return;
@@ -162,16 +162,6 @@ public class FormDataFactory {
         } else {
             formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames(IPersonAttributeDaoFilter.alwaysChoose()));
         }
-    }
-
-    private void loadSamlIdpAttributes(final FormData formData) {
-        /*
-        if (profile.isPresent() && !profile.get().getSamlIdpAttributeUriIds().isEmpty()) {
-            val p = profile.get();
-            formData.setSamlIdpAttributes(p.getSamlIdpAttributeUriIds().keySet());
-        }
-
-         */
     }
 
 }

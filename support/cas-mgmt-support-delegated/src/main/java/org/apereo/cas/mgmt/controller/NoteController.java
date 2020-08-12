@@ -7,7 +7,6 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,6 @@ import java.util.Date;
 @RestController("noteController")
 @RequestMapping(path = "api/note", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-@Slf4j
 public class NoteController {
 
     private final RepositoryFactory repositoryFactory;

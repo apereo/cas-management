@@ -152,7 +152,6 @@ public class SessionsController {
                            final HttpServletResponse response,
                            final @RequestBody List<String> tgts) {
         LOGGER.info("Attempting to revoke [{}]", tgts);
-        val casUser = casUserProfileFactory.from(request, response);
         val tickets = new ArrayList<String>();
         val sess = getSsoSessions(casProperties.getServer().getPrefix()
                 + "/actuator/ssoSessions?type=ALL", false);

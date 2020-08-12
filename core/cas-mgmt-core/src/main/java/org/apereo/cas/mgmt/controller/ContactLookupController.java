@@ -5,7 +5,6 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.RegisteredServiceContact;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.http.MediaType;
@@ -26,7 +25,6 @@ import java.util.Collection;
  */
 @RestController("contactLookup")
 @RequestMapping(path = "/api/contacts", produces = MediaType.APPLICATION_JSON_VALUE)
-@Slf4j
 @RequiredArgsConstructor
 public class ContactLookupController {
 

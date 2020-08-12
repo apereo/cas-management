@@ -49,14 +49,11 @@ public class HistoryController extends AbstractVersionControlController {
     private static final int NO_CHANGES_FOUND = 244;
 
     private final RepositoryFactory repositoryFactory;
-    private final MgmtManagerFactory managerFactory;
 
     public HistoryController(final RepositoryFactory repositoryFactory,
-                             final MgmtManagerFactory managerFactory,
                              final CasUserProfileFactory casUserProfileFactory) {
         super(casUserProfileFactory);
         this.repositoryFactory = repositoryFactory;
-        this.managerFactory = managerFactory;
     }
 
     /**

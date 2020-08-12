@@ -14,7 +14,6 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.client.Client;
@@ -67,7 +66,6 @@ import java.util.stream.Collectors;
  */
 @Configuration("casManagementWebAppConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
-@Slf4j
 public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
@@ -87,11 +85,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Autowired
     @Qualifier("managementWebappAuthorizer")
     private ObjectProvider<Authorizer> managementWebappAuthorizer;
-
-    @Autowired
-    @Qualifier("casUserProfileFactory")
-    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
-
+    
     @Autowired
     private CasConfigurationProperties casProperties;
 
@@ -238,8 +232,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Bean
     public ViewController viewController() {
         val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl),
-                                  casUserProfileFactory.getIfAvailable());
+        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
     }
 
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")

@@ -278,14 +278,6 @@ public class DashboardController {
                .toString();
     }
 
-    private SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
-        val resp = callCasServer(serverUrl, new ParameterizedTypeReference<SsoSessionResponse>() {});
-        if (mask) {
-            resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
-        }
-        return resp;
-    }
-
     private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {
         return callCasServer(casProperties.getServer().getPrefix(), url, type);
     }

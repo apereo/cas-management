@@ -13,7 +13,6 @@ import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.http.MediaType;
@@ -33,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController("applicationDataController")
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
-@Slf4j
 @RequiredArgsConstructor
 public class ApplicationDataController {
 
@@ -92,7 +90,6 @@ public class ApplicationDataController {
     @GetMapping("/appConfig")
     public AppConfig appConfig() {
         val config = new AppConfig();
-        val formData = formDataFactory.create();
         config.setMgmtType(casProperties.getServiceRegistry().getManagementType().toString());
         config.setVersionControl(managementProperties.getVersionControl().isEnabled());
         config.setDelegatedMgmt(managementProperties.getDelegated().isEnabled());

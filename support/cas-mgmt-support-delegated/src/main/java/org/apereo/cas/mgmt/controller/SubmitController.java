@@ -10,7 +10,6 @@ import org.apereo.cas.util.io.CommunicationsManager;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,6 @@ import static java.util.stream.Collectors.toList;
 @RestController("submitController")
 @RequestMapping(path = "api/submit", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-@Slf4j
 public class SubmitController {
 
     private final RepositoryFactory repositoryFactory;

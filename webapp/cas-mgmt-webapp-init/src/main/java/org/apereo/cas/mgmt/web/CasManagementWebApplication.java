@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.web;
 
+import org.apereo.cas.config.CasCoreServicesAuthenticationConfiguration;
 import org.apereo.cas.config.CasDiscoveryProfileConfiguration;
 import org.apereo.cas.config.CasPersonDirectoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -51,7 +52,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     CassandraAutoConfiguration.class,
     DataSourceTransactionManagerAutoConfiguration.class,
     RedisRepositoriesAutoConfiguration.class,
-    MetricsAutoConfiguration.class})
+    MetricsAutoConfiguration.class,
+
+    CasCoreServicesAuthenticationConfiguration.class
+})
 @EnableConfigurationProperties({CasManagementConfigurationProperties.class, CasConfigurationProperties.class})
 @EnableAsync
 @EnableTransactionManagement(proxyTargetClass = true)

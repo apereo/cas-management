@@ -1022,7 +1022,7 @@ ext.libraries = [
                     },
                     dependencies.create("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
                         force = true
-                    }, 
+                    },
                     dependencies.create("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
                         force = true
                         exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'

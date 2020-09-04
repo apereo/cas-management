@@ -2,6 +2,7 @@ argfile*
 .classpath
 !/.project
 .project
+.java-version
 .settings
 target
 test-output/

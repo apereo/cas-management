@@ -4,7 +4,7 @@ source ./ci/functions.sh
 branchVersion="6.2.x"
 
 echo -e "Copying project documentation over to $HOME/docs-latest...\n"
-cp -R docs/cas-server-documentation $HOME/docs-latest
+cp -R docs/cas-mgmt-documentation $HOME/docs-latest
 
 cd $HOME
 git config --global user.email "travis@travis-ci.org"

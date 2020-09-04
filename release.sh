@@ -36,7 +36,7 @@ echo -e "\nBuilding CAS Management. Please be patient as this might take a while
 -DsonatypeUsername="${username}" -DsonatypePassword="${password}"
 
 echo -e "\nPublishing CAS. Please be patient as this might take a while..."
-./gradlew publish -DpublishReleases=true -DsonatypeUsername="${username}" -DsonatypePassword="${password}" \
+./gradlew publish -DpublishReleases=true --no-parallel -DsonatypeUsername="${username}" -DsonatypePassword="${password}" \
 -Dorg.gradle.internal.http.socketTimeout="${timeout}" -Dorg.gradle.internal.http.connectionTimeout="${timeout}"
 
 echo -e "\nDone! You may now finalize the release process via Sonatype:"

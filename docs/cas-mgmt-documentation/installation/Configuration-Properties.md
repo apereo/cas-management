@@ -31,24 +31,24 @@ The index `[0]` is meant to be incremented by the adopter to allow for distinct 
 ## Properties
 
 ```properties
-# mgmt.adminRoles[0]=ROLE_ADMIN
-# mgmt.userRoles[0]=ROLE_USER
+# mgmt.admin-roles[0]=ROLE_ADMIN
+# mgmt.user-roles[0]=ROLE_USER
 
-# mgmt.serverName=https://localhost:8443
-# mgmt.defaultLocale=en
+# mgmt.server-name=https://localhost:8443
+# mgmt.default-locale=en
 
-# mgmt.authzIpRegex=
-# mgmt.authzAttributes[0]=
-# mgmt.userPropertiesFile=classpath:user-details.properties
+# mgmt.authz-ip-regex=
+# mgmt.authz-attributes[0]=
+# mgmt.user-properties-file=classpath:user-details.properties
 
-# mgmt.servicesRepo=/etc/cas/services-repo
-# mgmt.userReposDir=/etc/cas/user-repos
-# mgmt.syncScript=
+# mgmt.services-repo=/etc/cas/services-repo
+# mgmt.user-repos-dir=/etc/cas/user-repos
+# mgmt.sync-script=
 
-# mgmt.enableVersionControl=false
-# mgmt.enableDelegatedMgmt=false
+# mgmt.enable-version-control=false
+# mgmt.enable-delegated-mgmt=false
 
-# mgmt.enableDiscoveryEndpointCall=true
+# mgmt.enable-discovery-endpoint-call=true
 ```
 
 ### Notifications
@@ -73,52 +73,52 @@ The following properties are applicable to notification settings given the above
 ### LDAP
 
 ```properties
-# mgmt.ldap.ldapUrl = ldap://localhost:389
-# mgmt.ldap.bindDn =
-# mgmt.ldap.bindCredential =
-# mgmt.ldap.useSsl = true
+# mgmt.ldap.ldap-url = ldap://localhost:389
+# mgmt.ldap.bind-dn =
+# mgmt.ldap.bind-credential =
+# mgmt.ldap.use-ssl = true
 
-# mgmt.ldap.trustCertificates =
+# mgmt.ldap.trust-certificates =
 # mgmt.ldap.keystore = 
-# mgmt.ldap.keystorePassword
-# mgmt.ldap.keystoreType = 
+# mgmt.ldap.keystore-password =
+# mgmt.ldap.keystore-type = 
 
-# mgmt.ldap.minPoolSize = 3
-# mgmt.ldap.maxPoolSize = 10
-# mgmt.ldap.poolPassivator = BIND
-# mgmt.ldap.validateOnCheckout = true
-# mgmt.ldap.validatePeriodically = true 
-# mgmt.ldap.validateTimeout = PT5S
-# mgmt.ldap.validatePeriod = PT5M 
+# mgmt.ldap.min-pool-size = 3
+# mgmt.ldap.max-pool-size = 10
+# mgmt.ldap.pool-passivator = BIND
+# mgmt.ldap.validate-on-checkout = true
+# mgmt.ldap.validate-periodically = true 
+# mgmt.ldap.validate-timeout = PT5S
+# mgmt.ldap.validate-period = PT5M 
 
-# mgmt.ldap.failFast = true
-# mgmt.ldap.idleTime = PT10M
-# mgmt.ldap.prunePeriod = PT2H
-# mgmt.ldap.blockWaitTime = PT3S
-# mgmt.ldap.connectionStrategy =
-# mgmt.ldap.useStartTls = 
-# mgmt.ldap.connectTimeout = PT5S
-# mgmt.ldap.responseTimeout = PT5S
-# mgmt.ldap.providerClass = 
-# mgmt.ldap.allowMultipleDns = false
-# mgmt.ldap.saslRealm = 
-# mgmt.ldap.saslMechanism = 
-# mgmt.ldap.saslAuthorizationId = 
-# mgmt.ldap.saslSecurityStrength = 
-# mgmt.ldap.saslMutualAuth = 
-# mgmt.ldap.saslQualityOfProtection = 
+# mgmt.ldap.fail-fast = true
+# mgmt.ldap.idle-time = PT10M
+# mgmt.ldap.prune-period = PT2H
+# mgmt.ldap.block-wait-time = PT3S
+# mgmt.ldap.connection-strategy =
+# mgmt.ldap.use-start-tls = 
+# mgmt.ldap.connect-timeout = PT5S
+# mgmt.ldap.response-timeout = PT5S
+# mgmt.ldap.provider-class = 
+# mgmt.ldap.allow-multiple-dns = false
+# mgmt.ldap.sasl-realm = 
+# mgmt.ldap.sasl-mechanism = 
+# mgmt.ldap.sasl-authorization-id = 
+# mgmt.ldap.sasl-security-strength = 
+# mgmt.ldap.sasl-mutual-auth = 
+# mgmt.ldap.sasl-quality-of-protection = 
 
 ```
 #### LDAP Authorization
 
 ```properties
-# mgmt.ldap.ldapAuthz.roleAttribute = uugid
-# mgmt.ldap.ldapAuthz.rolePrefix = ROLE_
-# mgmt.ldap.ldapAuthz.allowMultipleResults
-# mgmt.ldap.ldapAuthz.groupAttribute
-# mgmt.ldap.ldapAuthz.groupPrefix =
-# mgmt.ldap.ldapAuthz.groupFilter
-# mgmt.ldap.ldapAuthz.groupBaseDn
-# mgmt.ldap.ldapAuthz.baseDn
-# mgmt.ldap.ldapAuthz.searchFilter
+# mgmt.ldap.ldap-authz.role-attribute = uugid
+# mgmt.ldap.ldap-authz.role-prefix = ROLE_
+# mgmt.ldap.ldap-authz.allow-multiple-results =
+# mgmt.ldap.ldap-authz.group-attribute =
+# mgmt.ldap.ldap-authz.group-prefix =
+# mgmt.ldap.ldap-authz.group-filter =
+# mgmt.ldap.ldap-authz.group-base-dn =
+# mgmt.ldap.ldap-authz.base-dn =
+# mgmt.ldap.ldap-authz.search-filter =
 ```

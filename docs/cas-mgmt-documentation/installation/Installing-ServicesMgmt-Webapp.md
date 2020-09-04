@@ -25,10 +25,6 @@ The absence of the management web application means that you will need to find a
 
 ## Installation
 
-### Maven
-
-A template overlay for the management webapp is [provided here](https://github.com/apereo/cas-services-management-overlay).
-
 ### Gradle
 
 A template overlay for the management webapp is [provided here](https://github.com/apereo/cas-services-management--gradle-overlay).
@@ -435,8 +431,8 @@ spring.mail.password=
 spring.mail.testConnection=false
 spring.mail.properties.mail.smtp.auth=false
 spring.mail.properties.mail.smtp.starttls.enable=false
+```                                                   
 
-```
 Emails will be sent for "Submitting a pull", "Accepting a pull" and "Rejecting a pull", only if text for each is defined in 
 management.properties.
 
@@ -462,7 +458,7 @@ The "subject" line of each message should contain "{0}" parameter.  This will be
 The "text" line of the "accept" message should contain "{0}" parameter to display the id of the submit.
 
 The "text" line of the "reject" message should contain "{0}" parameter to display the id of the submit and a "{1}"
-paramter to display the reason for rejection supplied by the administrator.
+parameter to display the reason for rejection supplied by the administrator.
 
 In order for an email to be sent to the submitting user, you will need to ensure that "email" is released as an attribute 
 by CAS when logging into the webapp.  

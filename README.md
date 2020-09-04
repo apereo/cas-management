@@ -4,7 +4,6 @@
 
 # CAS Management Web Application
 
-[![ghit.me](https://ghit.me/badge.svg?repo=apereo/cas-management)](https://ghit.me/repo/apereo/cas-management)
 [![License](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/apereo/cas-management/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/badge/Apereo%20CAS-Twitter-blue.svg)](https://twitter.com/apereo)
 [![Support](https://img.shields.io/badge/Support-Mailing%20Lists-green.svg?colorB=ff69b4)][cassupport]

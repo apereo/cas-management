@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -154,9 +155,9 @@ public class FormDataFactory {
     private void loadAvailableAttributes(final FormData formData) {
         if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
             val p = profile.get();
-            formData.setAvailableAttributes(p.getAvailableAttributes());
+            formData.setAvailableAttributes(p.getAvailableAttributes().stream().sorted().collect(Collectors.toList()));
         } else {
-            formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames(IPersonAttributeDaoFilter.alwaysChoose()));
+            formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames(IPersonAttributeDaoFilter.alwaysChoose()).stream().sorted().collect(Collectors.toList()));
         }
     }
 

@@ -89,7 +89,7 @@ public class LuceneSearch {
             val query = new QueryParser("body", analyzer).parse(queryString);
             val fields = getFields(query, new ArrayList<String>());
             val manager = (ManagementServicesManager) mgmtManagerFactory.from(request, response);
-            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()))) {
+            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + '/' + casUserProfile.getUsername()))) {
                 val docs = manager.getAllServices().stream()
                         .filter(casUserProfile::hasPermission)
                         .map(CasManagementUtils::toJson)

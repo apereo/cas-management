@@ -100,7 +100,7 @@ public class SessionsController {
             val restTemplate = new RestTemplate();
             val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
                     + "/actuator/ssoSessions";
-            restTemplate.delete(serverUrl + "/" + tgtMapped);
+            restTemplate.delete(serverUrl + '/' + tgtMapped);
         }
     }
 
@@ -130,7 +130,7 @@ public class SessionsController {
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         val req = new HttpEntity(null, headers);
-        restTemplate.postForObject(serverUrl + "/" + casUser.getId(), req, Void.class);
+        restTemplate.postForObject(serverUrl + '/' + casUser.getId(), req, Void.class);
     }
 
     /**

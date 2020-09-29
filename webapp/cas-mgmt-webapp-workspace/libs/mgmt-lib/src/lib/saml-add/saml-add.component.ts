@@ -69,7 +69,8 @@ export class SamlAddComponent implements OnInit {
           fe.dialogRef.close('upload');
         }, error => {
           fe.dialogRef.close();
-          fe.snackbar.open('The SP you attempted to add is already registered.', 'Dismiss', {duration: 5000});
+          let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+          fe.snackbar.open(errMsg, 'Dismiss', {duration: 5000});
         });
       };
     })(this);
@@ -82,7 +83,8 @@ export class SamlAddComponent implements OnInit {
       this.dialogRef.close('upload');
     }, error => {
       this.dialogRef.close();
-      this.snackbar.open('The SP you attempted to add is already registered.', 'Dismiss', {duration: 5000});
+      let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+      this.snackbar.open(errMsg, 'Dismiss', {duration: 5000});
     });
   }
 
@@ -96,7 +98,8 @@ export class SamlAddComponent implements OnInit {
       this.dialogRef.close('upload');
     }, error => {
       this.dialogRef.close();
-      this.snackbar.open('The SP you attempted to add is already registered.', 'Dismiss', {duration: 5000});
+      let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+      this.snackbar.open(errMsg, 'Dismiss', {duration: 5000});
     });
   }
 
@@ -105,8 +108,10 @@ export class SamlAddComponent implements OnInit {
       this.service.uploaded = service;
       this.dialogRef.close('upload');
     }, error => {
+      error.
       this.dialogRef.close();
-      this.snackbar.open('The SP you attempted to add is already registered.', 'Dismiss', {duration: 5000});
+      let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+      this.snackbar.open(errMsg, 'Dismiss', {duration: 5000});
     });
   }
 

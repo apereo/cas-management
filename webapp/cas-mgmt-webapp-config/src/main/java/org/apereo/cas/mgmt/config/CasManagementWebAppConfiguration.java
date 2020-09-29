@@ -94,7 +94,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
             @Override
             protected ModelAndView handleRequestInternal(final HttpServletRequest request,
                                                          final HttpServletResponse response) {
-                val url = request.getContextPath() + "/";
+                val url = request.getContextPath() + '/';
                 return new ModelAndView(new RedirectView(url));
             }
 

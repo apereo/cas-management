@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -146,8 +147,12 @@ public class SamlController {
             throw new IllegalArgumentException("Service already registered");
         }
         val fileName = DigestUtils.sha(entityId) + ".xml";
-        Files.write(Path.of(managementProperties.getMetadataRepoDir() + "/" + fileName), xml.getBytes(UTF_8));
-        service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + "/" + fileName);
+        val metadataRepoDir = new File(managementProperties.getMetadataRepoDir());
+        if (!metadataRepoDir.exists() && !metadataRepoDir.mkdirs()) {
+            LOGGER.warn("Unable to create metadata directory {}", metadataRepoDir);
+        }
+        Files.write(Path.of(metadataRepoDir.getCanonicalPath() + '/' + fileName), xml.getBytes(UTF_8));
+        service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + '/' + fileName);
         return service;
     }
 
@@ -159,14 +164,18 @@ public class SamlController {
      * @throws SignatureException - invalid metadata
      */
     @GetMapping("add")
-    public SamlRegisteredService add(final @RequestParam String id) throws SignatureException {
+    @SneakyThrows
+    public SamlRegisteredService add(final @RequestParam String id) {
         if (exists(id)) {
             throw new IllegalArgumentException("Service already registered");
         }
         val entityD = sps.find(id);
         val service = createService(entityD);
         service.setMetadataLocation(sps.location());
-        service.setMetadataSignatureLocation(managementProperties.getInCommonCertLocation());
+        val signatureCert = managementProperties.getInCommonCertLocation();
+        if (ResourceUtils.isFile(signatureCert) && ResourceUtils.doesResourceExist(signatureCert)) {
+            service.setMetadataSignatureLocation(signatureCert.getFile().getCanonicalPath());
+        }
         return service;
     }
 
@@ -189,6 +198,10 @@ public class SamlController {
         val service = new SamlRegisteredService();
         service.setServiceId(entity.getEntityID());
         val spDescriptor = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS);
+        if (spDescriptor == null) {
+            LOGGER.warn("Unable to locate SP Descriptor in metadata for entity {}", entity.getEntityID());
+            throw new IllegalArgumentException("Unable to locate SP Descriptor");
+        }
         service.setSignAssertions(spDescriptor.getWantAssertionsSigned());
         val nameFormats = spDescriptor.getNameIDFormats().stream().findFirst();
         if (nameFormats.isPresent()) {
@@ -298,7 +311,7 @@ public class SamlController {
             return new Metadata(true, sps.xml(service.getServiceId()));
         }
         val fileName = DigestUtils.sha(service.getServiceId()) + ".xml";
-        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + "/" + fileName).getFile();
+        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + '/' + fileName).getFile();
         return new Metadata(false, FileUtils.getContentsAsString(res));
     }
 

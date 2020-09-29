@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     /**
      * Incommon Cert location for CAS Servers.
      */
-    private String inCommonCertLocation = "/etc/cas/idp/inc-md-cert-mdq.pem";
+    private Resource inCommonCertLocation = new FileSystemResource("/etc/cas/idp/inc-md-cert-mdq.pem");
 
     /**
      * InCommon MDQ URL.

@@ -9,10 +9,13 @@ import org.apereo.cas.mgmt.SamlController;
 import org.apereo.cas.mgmt.UrlMetadataResolver;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
+import org.apereo.cas.support.saml.SamlUtils;
+import org.apereo.cas.util.ResourceUtils;
 import lombok.SneakyThrows;
 import lombok.val;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import org.apache.commons.lang3.ClassUtils;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -58,8 +61,19 @@ public class CasManagementSamlConfiguration {
     }
 
     @Bean
+    @SneakyThrows
     public MetadataAggregateResolver metadataAggregateResolver() {
-        return new InCommonMetadataAggregateResolver(casProperties, managementProperties, openSamlConfigBean());
+        return new InCommonMetadataAggregateResolver(casProperties, managementProperties,
+            openSamlConfigBean(), getMetadataAggregateFilter());
+    }
+
+    private MetadataFilter getMetadataAggregateFilter() throws Exception {
+        if (ResourceUtils.doesResourceExist(managementProperties.getInCommonCert())) {
+            val signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(managementProperties.getInCommonCert());
+            signatureValidationFilter.setRequireSignedRoot(false);
+            return signatureValidationFilter;
+        }
+        return (xmlObject, metadataFilterContext) -> xmlObject;
     }
 
     @Bean

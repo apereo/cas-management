@@ -58,7 +58,7 @@ export class SamlRegisteredService extends RegexRegisteredService {
     super(service);
     const s: SamlRegisteredService = SamlRegisteredService.instanceOf(service) ? service as SamlRegisteredService : undefined;
     this.metadataLocation = s?.metadataLocation;
-    this.metadataMaxValidity = s.metadataMaxValidity;
+    this.metadataMaxValidity = s?.metadataMaxValidity;
     this.requiredAuthenticationContextClass = s?.requiredAuthenticationContextClass;
     this.metadataCriteriaDirection = s?.metadataCriteriaDirection;
     this.metadataCriteriaPattern = s?.metadataCriteriaPattern;

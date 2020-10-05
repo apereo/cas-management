@@ -5,6 +5,7 @@ import {ControlsService} from '../../project-share/controls/controls.service';
 import {OAuthAddComponent, SamlAddComponent} from 'mgmt-lib';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
+import { FormDataService } from 'mgmt-lib';
 
 @Component({
   selector: 'app-navigation',
@@ -23,12 +24,15 @@ export class NavigationComponent {
               public userService: UserService,
               public controlsService: ControlsService,
               public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              public formData: FormDataService) {
     router.events.subscribe((e: RouterEvent) => {
       if (e instanceof NavigationEnd) {
         this.current = e.url;
       }
     });
+
+    // console.log(formData.options.serviceTypes);
   }
 
   logout() {
@@ -105,14 +109,39 @@ export class NavigationComponent {
   }
 
   createOAuthService() {
-    const dialogRef = this.dialog.open(OAuthAddComponent, {
-      width: '500px',
-      position: {top: '100px'}
-    });
-    dialogRef.afterClosed().subscribe(type => {
-      if (type) {
-        this.router.navigate(['form/' + type]);
-      }
-    });
+    if (this.canCreateOauthServices && this.canCreateOidcServices) {
+      const dialogRef = this.dialog.open(OAuthAddComponent, {
+        width: '500px',
+        position: { top: '100px' }
+      });
+      dialogRef.afterClosed().subscribe(type => {
+        if (type) {
+          this.router.navigate(['form/' + type]);
+        }
+      });
+    } else {
+      const type = this.canCreateOauthServices ? 'oauth' : 'oidc';
+      this.router.navigate(['form/' + type]);
+    }
+  }
+
+  optionsHasServiceType(type: string): boolean {
+    return this.formData.options?.serviceTypes?.some(t => t.value.match(type));
+  }
+
+  get canCreateCasServices(): boolean {
+    return this.optionsHasServiceType('RegexRegisteredService');
+  }
+
+  get canCreateSamlServices(): boolean {
+    return this.optionsHasServiceType('SamlRegisteredService');
+  }
+
+  get canCreateOauthServices(): boolean {
+    return this.optionsHasServiceType('OAuthRegisteredService');
+  }
+
+  get canCreateOidcServices(): boolean {
+    return this.optionsHasServiceType('OidcRegisteredService');
   }
 }

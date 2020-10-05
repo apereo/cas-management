@@ -23,15 +23,15 @@
     <mat-icon>file_upload</mat-icon>
     <ng-container i18n>Submit Requests</ng-container>
   </a>
-  <a mat-list-item (click)="navto('form/edit/-1')">
+  <a *ngIf="canCreateCasServices" mat-list-item (click)="navto('form/edit/-1')">
     <mat-icon>add_circle</mat-icon>
     <span i18n>Add CAS Service</span>
   </a>
-  <a mat-list-item (click)="createOAuthService()">
+  <a *ngIf="canCreateOauthServices || canCreateOidcServices" mat-list-item (click)="createOAuthService()">
     <mat-icon>add_circle</mat-icon>
     <span i18n>Add OAuth Service</span>
   </a>
-  <a mat-list-item (click)="createSamlService()">
+  <a *ngIf="canCreateSamlServices" mat-list-item (click)="createSamlService()">
     <mat-icon>add_circle</mat-icon>
     <span i18n>Add SAML Service</span>
   </a>

@@ -16,11 +16,14 @@
       </div>
       <div [ngClass]="'nameWidth'">
         <mat-form-field style="width:100%" appearance="standard">
-          <input matInput [matAutocomplete]="autoValues" [formControl]="row.values">
+          <input matInput [matAutocomplete]="autoValues" [formControl]="row.values" (click)="selectedRow = i">
+          <button type="button" class="groovy-editor" mat-icon-button matSuffix (click)="openGroovyEditor(row)">
+            <mat-icon style="font-size: medium">edit</mat-icon>
+          </button>
         </mat-form-field>
       </div>
       <div [ngClass]="'actionWidth'">
-        <button mat-icon-button (click)="delete(i)"><mat-icon style="font-size: medium">delete</mat-icon></button>
+        <button type="button" mat-icon-button (click)="delete(i)"><mat-icon style="font-size: medium">delete</mat-icon></button>
       </div>
     </div>
   </div>

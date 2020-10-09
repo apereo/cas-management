@@ -11,3 +11,6 @@
   flex: 0 0 40px;
 }
 
+.mat-icon-button.groovy-editor {
+  height: 1.5rem !important;
+}

@@ -135,6 +135,7 @@ export * from './lib/form/oauthclient/code-expiration/code-expiration.form';
 export * from './lib/form/oauthclient/device-token-expiration/device-token-expiration.form';
 export * from './lib/form/oauthclient/refresh-token-expiration/refresh-token-expiration.form';
 export * from './lib/form/oauthclient/access-token-expiration/access-token-expiration.form';
+export * from './lib/form/groovy-editor/groovy-editor.component';
 
 
 

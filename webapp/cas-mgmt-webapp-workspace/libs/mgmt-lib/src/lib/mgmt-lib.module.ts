@@ -59,6 +59,7 @@ import {SamlAddComponent} from './saml-add/saml-add.component';
 import {OAuthAddComponent} from './oauth-add/oauth-add.component';
 import {DelegatedComponent} from './form/delegated/delegated.component';
 import {SsoComponent} from './form/sso/sso-chain.component';
+import {GroovyEditorComponent} from './form/groovy-editor/groovy-editor.component';
 
 @NgModule({
   imports: [
@@ -124,6 +125,7 @@ import {SsoComponent} from './form/sso/sso-chain.component';
     SamlAddComponent,
     OAuthAddComponent,
     DelegatedComponent,
+    GroovyEditorComponent
   ],
   entryComponents: [
     SamlAddComponent,
@@ -186,6 +188,7 @@ import {SsoComponent} from './form/sso/sso-chain.component';
     SamlAddComponent,
     OAuthAddComponent,
     DelegatedComponent,
+    GroovyEditorComponent
   ]
 })
 export class MgmtLibModule { }

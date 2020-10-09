@@ -1,0 +1,16 @@
+.codearea {
+    white-space: pre-wrap;
+    resize: vertical;
+    font-family: monospace;
+    min-height: 320px;
+    margin-bottom: 0px;
+    word-break: break-word;
+    background: black;
+    color: white;
+    padding: 6px;
+    
+    &[contenteditable] {
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+}

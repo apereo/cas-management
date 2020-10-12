@@ -9,8 +9,14 @@
 
 .actionWidth {
   flex: 0 0 40px;
+  align-self: center;
 }
 
 .mat-icon-button.groovy-editor {
+  width: 1.5rem !important;
   height: 1.5rem !important;
+}
+
+.d-none {
+  display: none !important;
 }

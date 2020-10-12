@@ -6,8 +6,6 @@ import { GroovyEditorComponent } from '../groovy-editor/groovy-editor.component'
 import {FormGroup} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-const GROOVY_SCRIPT_REGEX = /groovy\s*\{(?:[^}{]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}/g;
-
 @Component({
   selector: 'lib-attributes',
   templateUrl: './attributes.component.html',
@@ -37,8 +35,6 @@ export class AttributesComponent implements OnInit {
 
   @Output()
   keyChange: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
-
-  GROOVY_SCRIPT_REGEX = GROOVY_SCRIPT_REGEX;
 
   constructor(public data: DataRecord, public dialog: MatDialog) {
   }
@@ -80,6 +76,7 @@ export class AttributesComponent implements OnInit {
   }
 
   selection(sel: MatAutocompleteSelectedEvent) {
+    console.log(sel, this.defaultToAttributeName);
     if (this.defaultToAttributeName) {
       this.form.rowAt(this.selectedRow).values.setValue(sel.option.value);
     }

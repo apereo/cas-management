@@ -2,7 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataRecord} from '../data.model';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {AttributesForm, Row} from './attributes.form';
+import { GroovyEditorComponent } from '../groovy-editor/groovy-editor.component';
 import {FormGroup} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'lib-attributes',
@@ -34,7 +36,7 @@ export class AttributesComponent implements OnInit {
   @Output()
   keyChange: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
 
-  constructor(public data: DataRecord) {
+  constructor(public data: DataRecord, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -55,12 +57,26 @@ export class AttributesComponent implements OnInit {
     }));
   }
 
+  openGroovyEditor(row: Row) {
+    const dialogRef = this.dialog.open(GroovyEditorComponent, {
+      data: row.values.value,
+      width: '600px',
+      position: { top: '100px' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result !== 'false') {
+        row.values.setValue(result);
+      }
+    });
+  }
+
   delete(row: number) {
     this.form.removeAt(row);
     this.form.markAsTouched();
   }
 
   selection(sel: MatAutocompleteSelectedEvent) {
+    console.log(sel, this.defaultToAttributeName);
     if (this.defaultToAttributeName) {
       this.form.rowAt(this.selectedRow).values.setValue(sel.option.value);
     }

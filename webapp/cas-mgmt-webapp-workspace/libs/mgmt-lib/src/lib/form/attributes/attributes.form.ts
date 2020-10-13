@@ -1,6 +1,8 @@
 import {FormArray, FormGroup, Validators} from '@angular/forms';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 
+const GROOVY_REGEX = /groovy\s*\{.*\}/s;
+
 export class Row extends FormGroup {
 
   get key() { return this.get('key') as MgmtFormControl; }
@@ -15,6 +17,14 @@ export class Row extends FormGroup {
 
   map(): string[] {
     return this.values.value.split(',');
+  }
+
+  isGroovy(): boolean {
+    const field = this.get('values');
+    const val = field.value?.toString();
+    const match = val ? GROOVY_REGEX.test(val) : false;
+    console.log();
+    return match;
   }
 
 }

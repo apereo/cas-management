@@ -39,6 +39,7 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
     }
 
     @Override
+    @SuppressWarnings("JdkObsolete")
     public void postHandle(final HttpServletRequest request, final HttpServletResponse response,
                            final Object handler, final ModelAndView modelAndView) {
         if (modelAndView != null && !StringUtils.isEmpty(request.getQueryString()) && request.getQueryString().contains(CasProtocolConstants.PARAMETER_TICKET)) {

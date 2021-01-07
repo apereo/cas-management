@@ -72,19 +72,19 @@ public class CasManagementConfigurationProperties implements Serializable {
      * The syntax of each entry should be in the form of:
      * {@code username=notused,grantedAuthority[,grantedAuthority][,enabled|disabled]}
      *
-     * <p>
+     * &lt;p&gt;
      * The file may also be specified in form of JSON or YAML. In either case, the contents should be a map
      * of user records with key being the username whose authorization rules are defined as the value linked to that key.
-     * <p>
+     * &lt;p&gt;
      * Example:
-     * <pre>
+     * &lt;pre&gt;
      * {
      * "casuser" : {
      * "roles" : [ "ROLE_ADMIN" ],
      * "permissions" : [ "PERMISSION_EXAMPLE" ]
      * }
      * }
-     * </pre>
+     * &lt;/pre&gt;
      */
     private transient Resource userPropertiesFile = new ClassPathResource("users.json");
 

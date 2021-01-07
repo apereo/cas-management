@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt.config;
 
-import org.apereo.cas.audit.spi.resource.ShortenedReturnValueAsStringResourceResolver;
+import org.apereo.cas.audit.spi.resource.ShortenedReturnValueAsStringAuditResourceResolver;
 import org.apereo.cas.mgmt.audit.Pac4jAuditablePrincipalResolver;
 import org.apereo.cas.mgmt.audit.ServiceManagementResourceResolver;
 import org.apereo.cas.util.CollectionUtils;
@@ -35,7 +35,7 @@ public class CasManagementAuditConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "saveServiceResourceResolver")
     public AuditResourceResolver saveServiceResourceResolver() {
-        return new ShortenedReturnValueAsStringResourceResolver();
+        return new ShortenedReturnValueAsStringAuditResourceResolver();
     }
 
     @Bean

@@ -4,18 +4,20 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.RegexUtils;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.hjson.JsonValue;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -27,16 +29,19 @@ import java.util.regex.Pattern;
 public final class CasManagementUtils {
 
     private static final RegisteredServiceJsonSerializer JSON_SERIALIZER = new RegisteredServiceJsonSerializer();
+
     private static final RegisteredServiceYamlSerializer YAML_SERIALIZER = new RegisteredServiceYamlSerializer();
+
     private static final Pattern DOMAIN_EXTRACTOR = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
+
     private static final Pattern DOMAIN_PATTERN = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
     private CasManagementUtils() {
     }
 
     /**
+     * The full CAS mgmt version string.
      * @return Return the full CAS mgmt version string.
-     * @see java.lang.Package#getImplementationVersion
      */
     public static String getVersion() {
         return CasManagementUtils.class.getPackage().getImplementationVersion();
@@ -87,6 +92,7 @@ public final class CasManagementUtils {
 
     /**
      * Parses the passed json into a RegisteredService.
+     *
      * @param json - the json
      * @return - RegisteredService
      */
@@ -96,6 +102,7 @@ public final class CasManagementUtils {
 
     /**
      * Parses the passed json File into a RegisteredService.
+     *
      * @param json - the json file
      * @return - RegisteredService
      */
@@ -118,6 +125,7 @@ public final class CasManagementUtils {
 
     /**
      * Parses the passed json into a RegisteredService.
+     *
      * @param json - the json
      * @return - RegisteredService
      * @throws IOException - IO failure
@@ -170,9 +178,9 @@ public final class CasManagementUtils {
      * @return - formatted Date.
      */
     public static String formatDateTime(final long time) {
-        return LocalDateTime.ofInstant(new Date(time * 1000L).toInstant(),
-                ZoneId.systemDefault())
-                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(time * 1000L),
+            ZoneId.systemDefault())
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     /**

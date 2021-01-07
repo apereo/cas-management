@@ -90,7 +90,7 @@ public class HistoryController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public List<History> history(final HttpServletRequest request,
                                  final HttpServletResponse response,
-                                 final @RequestBody String path) throws VersionControlException {
+                                 @RequestBody final String path) throws VersionControlException {
         isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return git.history(path);
@@ -112,7 +112,7 @@ public class HistoryController extends AbstractVersionControlController {
     @GetMapping("commit/{id}")
     public List<Diff> commitHistoryList(final HttpServletResponse response,
                                         final HttpServletRequest request,
-                                        final @PathVariable String id) throws VersionControlException {
+                                        @PathVariable final String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val r = git.getCommit(id);
@@ -143,7 +143,7 @@ public class HistoryController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public void revertRepo(final HttpServletRequest request,
                            final HttpServletResponse response,
-                           final @PathVariable String id) throws VersionControlException {
+                           @PathVariable final String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.reset(id);
@@ -166,7 +166,7 @@ public class HistoryController extends AbstractVersionControlController {
     @SneakyThrows
     public void revertDelete(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @RequestParam String path) {
+                             @RequestParam final String path) {
         isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
@@ -189,7 +189,7 @@ public class HistoryController extends AbstractVersionControlController {
     @PostMapping("checkout")
     public void checkout(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         final @RequestBody String[] data) throws VersionControlException {
+                         @RequestBody final String[] data) throws VersionControlException {
         isUser(request, response);
         val path = data[0];
         val id = data[1];
@@ -214,7 +214,7 @@ public class HistoryController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public void checkoutCommit(final HttpServletResponse response,
                                final HttpServletRequest request,
-                               final @PathVariable String id) throws VersionControlException {
+                               @PathVariable final String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             for (val d : git.getDiffsToRevert(id)) {

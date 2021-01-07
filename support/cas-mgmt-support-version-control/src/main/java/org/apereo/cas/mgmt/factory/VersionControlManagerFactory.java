@@ -11,17 +11,24 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.ChainingServicesManager;
 import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
+import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.ServicesManagerConfigurationContext;
+import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
 import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.io.WatcherService;
+
+import com.github.benmanes.caffeine.cache.Cache;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.eclipse.jgit.api.Git;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.FileSystemResource;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +36,7 @@ import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Factory class to create ServiceManagers for the logged in user.
@@ -43,11 +51,23 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     private static final String SERVICES_MANAGER_KEY = "servicesManager";
 
     private final ServicesManager servicesManager;
+
     private final CasManagementConfigurationProperties managementProperties;
+
     private final RepositoryFactory repositoryFactory;
+
     private final CasUserProfileFactory casUserProfileFactory;
+
     private final CasConfigurationProperties casProperties;
+
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
+
+    private final List<ServicesManagerRegisteredServiceLocator> servicesManagerRegisteredServiceLocators;
+
+    private final ConfigurableApplicationContext applicationContext;
+
+    private final Cache<Long, RegisteredService> servicesManagerCache;
+    
     private VersionControlServicesManager master;
 
     /**
@@ -137,10 +157,20 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         val path = Paths.get(git.repoPath());
 
         val serviceRegistryDAO = new JsonServiceRegistry(new FileSystemResource(path),
-            WatcherService.noOp(), null, null, namingStrategy, null);
+            WatcherService.noOp(), applicationContext, null, namingStrategy, null);
+
+        val context = ServicesManagerConfigurationContext.builder()
+            .environments(new HashSet<>())
+            .serviceRegistry(serviceRegistryDAO)
+            .applicationContext(applicationContext)
+            .registeredServiceLocators(servicesManagerRegisteredServiceLocators)
+            .servicesCache(servicesManagerCache)
+            .build();
+
         val casManager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
-                ? new DefaultDomainAwareServicesManager(serviceRegistryDAO, null, new DefaultRegisteredServiceDomainExtractor(), new HashSet<>())
-                : new DefaultServicesManager(serviceRegistryDAO, null, new HashSet<>()));
+            ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
+            : new DefaultServicesManager(context));
+        
         val manager = new ChainingServicesManager();
         manager.registerServiceManager(casManager);
         manager.load();

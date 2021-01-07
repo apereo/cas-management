@@ -10,15 +10,22 @@ import org.apereo.cas.mgmt.controller.CommitController;
 import org.apereo.cas.mgmt.controller.HistoryController;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
+import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
+
+import com.github.benmanes.caffeine.cache.Cache;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * Configuration class for version control.
@@ -51,12 +58,25 @@ public class CasManagementVersionControlConfiguration {
     @Qualifier("namingStrategy")
     private ObjectProvider<RegisteredServiceResourceNamingStrategy> namingStrategy;
 
+    @Autowired
+    private ConfigurableApplicationContext applicationContext;
+
+    @Autowired
+    @Qualifier("servicesManagerCache")
+    private ObjectProvider<Cache<Long, RegisteredService>> servicesManagerCache;
+
+    @Autowired
+    @Qualifier("servicesManagerRegisteredServiceLocators")
+    private ObjectProvider<List<ServicesManagerRegisteredServiceLocator>> servicesManagerRegisteredServiceLocators;
 
     @Bean(name = "managerFactory")
     @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public MgmtManagerFactory managerFactory() {
-        return new VersionControlManagerFactory(servicesManager.getIfAvailable(), managementProperties,
-                repositoryFactory(), casUserProfileFactory.getIfAvailable(), casProperties, namingStrategy.getIfAvailable());
+        return new VersionControlManagerFactory(servicesManager.getObject(), managementProperties,
+            repositoryFactory(), casUserProfileFactory.getObject(),
+            casProperties, namingStrategy.getObject(),
+            servicesManagerRegisteredServiceLocators.getObject(),
+            applicationContext, servicesManagerCache.getObject());
     }
 
     @Bean
@@ -69,7 +89,7 @@ public class CasManagementVersionControlConfiguration {
     @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public CommitController commitController() {
         return new CommitController(repositoryFactory(), casUserProfileFactory.getIfAvailable(),
-                managementProperties, servicesManager.getIfAvailable(), pendingRequests);
+            managementProperties, servicesManager.getIfAvailable(), pendingRequests);
     }
 
     @Bean

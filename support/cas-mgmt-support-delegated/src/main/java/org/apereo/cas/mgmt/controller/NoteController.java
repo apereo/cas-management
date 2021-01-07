@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
+import java.time.Clock;
+import java.time.LocalDateTime;
 
 /**
  * Controller for handling note requests.
@@ -42,7 +43,7 @@ public class NoteController {
      */
     @GetMapping("/{id}")
     @SneakyThrows
-    public void getNotes(final HttpServletResponse response, final @PathVariable String id) {
+    public void getNotes(final HttpServletResponse response, @PathVariable final String id) {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val note = git.note(id);
             if (note != null) {
@@ -63,11 +64,11 @@ public class NoteController {
     @SneakyThrows
     public void addNote(final HttpServletRequest request,
                         final HttpServletResponse response,
-                        final @RequestBody CNote cnote) {
+                        @RequestBody final CNote cnote) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(cnote.getId());
-            val msg = user.getId() + " - " + new Date().toString() + " : \n    "
+            val msg = user.getId() + " - " + LocalDateTime.now(Clock.systemUTC()) + " : \n    "
                     + cnote.getText().replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
         }

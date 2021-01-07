@@ -36,7 +36,7 @@ public class ContactLookupController {
      * @return - List of RegisteredServiceContact
      */
     @GetMapping
-    public Collection<RegisteredServiceContact> lookupContact(final @RequestParam String query) {
+    public Collection<RegisteredServiceContact> lookupContact(@RequestParam final String query) {
         return contactLookup.query(query);
     }
 

@@ -88,7 +88,7 @@ public class ChangeController extends AbstractVersionControlController {
     @PostMapping
     public List<Diff> changes(final HttpServletResponse response,
                               final HttpServletRequest request,
-                              final @RequestBody String branch) throws VersionControlException {
+                              @RequestBody final String branch) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.getDiffsMinus1(branch).stream()
@@ -114,7 +114,7 @@ public class ChangeController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public void viewDiff(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         final @RequestBody String[] ids) throws VersionControlException {
+                         @RequestBody final String[] ids) throws VersionControlException {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val newId = ObjectId.fromString(ids[0]);
             val oldId = ObjectId.fromString(ids[1]);
@@ -138,7 +138,7 @@ public class ChangeController extends AbstractVersionControlController {
     @GetMapping("{id}")
     public RegisteredService viewChange(final HttpServletResponse response,
                                         final HttpServletRequest request,
-                                        final @PathVariable String id) throws VersionControlException {
+                                        @PathVariable final String id) throws VersionControlException {
         isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return CasManagementUtils.fromJson(git.readObject(id));
@@ -161,7 +161,7 @@ public class ChangeController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public String changeMade(final HttpServletResponse response,
                              final HttpServletRequest request,
-                             final @RequestBody String[] data) throws VersionControlException {
+                             @RequestBody final String[] data) throws VersionControlException {
         val path = data[0];
         val id = data[1];
         try (GitUtil git = repositoryFactory.from(request, response)) {
@@ -190,7 +190,7 @@ public class ChangeController extends AbstractVersionControlController {
     @PostMapping("compare")
     public String compareWithHead(final HttpServletResponse response,
                                   final HttpServletRequest request,
-                                  final @RequestBody String[] data) throws VersionControlException {
+                                  @RequestBody final String[] data) throws VersionControlException {
         val path = data[0];
         val id = data[1];
         try (GitUtil git = repositoryFactory.from(request, response)) {
@@ -220,7 +220,7 @@ public class ChangeController extends AbstractVersionControlController {
     @GetMapping("pair/{id}")
     public RegisteredService[] changePair(final HttpServletResponse response,
                                           final HttpServletRequest request,
-                                          final @PathVariable String id) throws VersionControlException {
+                                          @PathVariable final String id) throws VersionControlException {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val change = CasManagementUtils.fromJson(git.readObject(id));
             val orig = managerFactory.from(request, response).findServiceBy(change.getId());
@@ -243,7 +243,7 @@ public class ChangeController extends AbstractVersionControlController {
     @GetMapping("json/{id}")
     public String viewJSON(final HttpServletRequest request,
                            final HttpServletResponse response,
-                           final @PathVariable String id) throws VersionControlException {
+                           @PathVariable final String id) throws VersionControlException {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return git.readObject(id);
         } catch (final IOException ex) {
@@ -264,7 +264,7 @@ public class ChangeController extends AbstractVersionControlController {
     @GetMapping("yaml/{id}")
     public String viewYaml(final HttpServletRequest request,
                            final HttpServletResponse response,
-                           final @PathVariable String id) throws VersionControlException {
+                           @PathVariable final String id) throws VersionControlException {
         try (GitUtil git = repositoryFactory.from(request, response)) {
             val service = CasManagementUtils.fromJson(git.readObject(id));
             return CasManagementUtils.toYaml(service);

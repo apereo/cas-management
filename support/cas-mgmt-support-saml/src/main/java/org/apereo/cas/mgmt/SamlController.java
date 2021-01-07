@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import org.apereo.cas.authentication.principal.WebApplicationServiceFactory;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider;
@@ -19,7 +20,6 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -112,7 +112,7 @@ public class SamlController {
      */
     @GetMapping("find")
     @SneakyThrows
-    public List<String> find(final @RequestParam String query) {
+    public List<String> find(@RequestParam final String query) {
         return this.entities.stream()
             .filter(e -> e.contains(query))
             .collect(Collectors.toList());
@@ -126,7 +126,7 @@ public class SamlController {
      */
     @GetMapping("search")
     @SneakyThrows
-    public List<String> search(final @RequestParam String query) {
+    public List<String> search(@RequestParam final String query) {
         return sps.query(query);
     }
 
@@ -139,7 +139,7 @@ public class SamlController {
     @PostMapping("upload")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
-    public SamlRegisteredService upload(final @RequestBody String xml) {
+    public SamlRegisteredService upload(@RequestBody final String xml) {
         val entity = MetadataUtil.fromXML(xml, configBean);
         val service = createService(entity);
         val entityId = entity.getEntityID();
@@ -161,11 +161,10 @@ public class SamlController {
      *
      * @param id - the entity id of the SP
      * @return - SamlRegisteredService
-     * @throws SignatureException - invalid metadata
      */
     @GetMapping("add")
     @SneakyThrows
-    public SamlRegisteredService add(final @RequestParam String id) {
+    public SamlRegisteredService add(@RequestParam final String id) {
         if (exists(id)) {
             throw new IllegalArgumentException("Service already registered");
         }
@@ -181,7 +180,7 @@ public class SamlController {
 
     @GetMapping("download")
     @SneakyThrows
-    public SamlRegisteredService download(final @RequestParam String url) {
+    public SamlRegisteredService download(@RequestParam final String url) {
         val entity = this.urlMetadataResolver.xml(url);
         LOGGER.error(entity);
         val service = createService(MetadataUtil.fromXML(entity, configBean));
@@ -191,7 +190,8 @@ public class SamlController {
 
     @SneakyThrows
     private boolean exists(final String id) {
-        return managerFactory.master().findServiceBy(id, SamlRegisteredService.class) != null;
+        val service = new WebApplicationServiceFactory().createService(id);
+        return managerFactory.master().findServiceBy(service, SamlRegisteredService.class) != null;
     }
 
     private SamlRegisteredService createService(final EntityDescriptor entity) {
@@ -305,7 +305,7 @@ public class SamlController {
     @SneakyThrows
     public Metadata getMetadata(final HttpServletRequest request,
                                 final HttpServletResponse response,
-                                final @PathVariable Long id) {
+                                @PathVariable final Long id) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         if (!sps.query(service.getServiceId()).isEmpty()) {
             return new Metadata(true, sps.xml(service.getServiceId()));
@@ -327,8 +327,8 @@ public class SamlController {
     @SneakyThrows
     public void saveMetadata(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @PathVariable Long id,
-                             final @RequestBody String metadata) {
+                             @PathVariable final Long id,
+                             @RequestBody final String metadata) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         Files.writeString(Paths.get(service.getMetadataLocation()), metadata);
     }

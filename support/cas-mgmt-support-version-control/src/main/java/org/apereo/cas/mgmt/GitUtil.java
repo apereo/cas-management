@@ -4,6 +4,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.History;
 import org.apereo.cas.mgmt.exception.NoDifferenceException;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.Getter;
@@ -43,6 +44,7 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -51,13 +53,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -324,19 +327,6 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
-     * Returns a RawText representation of a file in the passed repository.  Used in creating diffs.
-     *
-     * @param repo - The repository to pull the change.
-     * @param path - The path to the file.
-     * @return - RawText representation of the file.
-     * @throws IOException - failed.
-     */
-    public RawText raw(final Repository repo, final String path) throws IOException {
-        val file = new File(repo.getWorkTree().getAbsolutePath() + '/' + path);
-        return new RawText(FileUtils.readFileToByteArray(file));
-    }
-
-    /**
      * Returns the file as a String form the repository indexed by the passed String
      * representing its ObjectId.
      *
@@ -600,7 +590,7 @@ public class GitUtil implements AutoCloseable {
     }
 
     private static String formatCommitTime(final int ctime) {
-        return LocalDateTime.ofInstant(new Date(ctime * 1000L).toInstant(),
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(ctime * 1000L),
             ZoneId.systemDefault())
             .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
@@ -640,7 +630,7 @@ public class GitUtil implements AutoCloseable {
      * @throws IOException - failed
      */
     public void markAsSubmitted(final RevObject c) throws GitAPIException, IOException {
-        appendNote(c, "SUBMITTED on " + new Date().toString() + "\n    ");
+        appendNote(c, "SUBMITTED on " + LocalDateTime.now(Clock.systemUTC()) + "\n    ");
     }
 
 
@@ -1053,7 +1043,7 @@ public class GitUtil implements AutoCloseable {
     public void markAsReverted(final String branch, final CasUserProfile user) throws GitAPIException, IOException {
         val revWalk = new RevWalk(git.getRepository());
         val com = revWalk.parseCommit(git.getRepository().resolve(branch));
-        val msg = "REVERTED by " + user.getId() + " on " + new Date().toString() + "\n    ";
+        val msg = "REVERTED by " + user.getId() + " on " + LocalDateTime.now(Clock.systemUTC()) + "\n    ";
         appendNote(com, msg);
     }
 

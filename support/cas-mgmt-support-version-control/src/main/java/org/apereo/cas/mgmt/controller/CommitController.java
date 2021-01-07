@@ -12,6 +12,7 @@ import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.ServicesManager;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -77,7 +79,7 @@ public class CommitController extends AbstractVersionControlController {
     @SneakyThrows
     public void commit(final HttpServletResponse response,
                        final HttpServletRequest request,
-                       final @RequestBody String msg) {
+                       @RequestBody final String msg) {
         val user = casUserProfileFactory.from(request, response);
         isUser(user);
         try (GitUtil git = repositoryFactory.from(request, response)) {
@@ -189,10 +191,10 @@ public class CommitController extends AbstractVersionControlController {
     }
 
     /**
-     * Returns true if the master repository has committs ahead of the published repository.
+     * Returns true if the master repository has commits ahead of the published repository.
      *
      * @return - true if there are commits to publish.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
     private boolean isPublishedBehind() throws IOException {
         try (GitUtil git = repositoryFactory.masterRepository()) {

@@ -31,8 +31,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Instant;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +84,7 @@ public class DashboardController {
     @GetMapping("{index}")
     public Server update(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         final @PathVariable int index) throws IllegalAccessException {
+                         @PathVariable final int index) throws IllegalAccessException {
         isAdmin(request, response);
         return getServer(mgmtProperties.getCasServers().get(index));
     }
@@ -124,7 +124,7 @@ public class DashboardController {
     @GetMapping("/resolve/{id}")
     public Map<String, List<String>> resolve(final HttpServletRequest request,
                                              final HttpServletResponse response,
-                                             final @PathVariable String id) throws IllegalAccessException {
+                                             @PathVariable final String id) throws IllegalAccessException {
         isAdmin(request, response);
         return this.<Attributes>callCasServer("/actuator/resolveAttributes/" + id,
                 new ParameterizedTypeReference<Attributes>() {}).getAttributes();
@@ -142,7 +142,7 @@ public class DashboardController {
     @PostMapping(value = "/release", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<String>> release(final HttpServletRequest request,
                                              final HttpServletResponse response,
-                                             final @RequestBody Map<String, String> data) throws IllegalAccessException {
+                                             @RequestBody final Map<String, String> data) throws IllegalAccessException {
         isAdmin(request, response);
         return this.<Attributes>callCasServer("/actuator/releaseAttributes", data,
                 new ParameterizedTypeReference<Attributes>() {}).getAttributes();
@@ -195,7 +195,7 @@ public class DashboardController {
     @ResponseStatus(HttpStatus.OK)
     public void setLogger(final HttpServletRequest request,
                           final HttpServletResponse response,
-                          final @RequestBody Map<String, String> map) throws IllegalAccessException {
+                          @RequestBody final Map<String, String> map) throws IllegalAccessException {
         isAdmin(request, response);
         val level = Map.of("configuredLevel", map.get("level"));
         val server = mgmtProperties.getCasServers().stream().filter(s -> s.getName().equals(map.get("server"))).findFirst().get().getUrl();
@@ -215,7 +215,7 @@ public class DashboardController {
     @PostMapping("/audit")
     public List<AuditLog> audit(final HttpServletRequest request,
                                 final HttpServletResponse response,
-                                final @RequestBody Map<String, String> query) throws IllegalAccessException {
+                                @RequestBody final Map<String, String> query) throws IllegalAccessException {
         isAdmin(request, response);
         val audit = mgmtProperties.getCasServers().stream()
                 .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",
@@ -248,7 +248,7 @@ public class DashboardController {
         if (log != null) {
             val out = response.getWriter();
             response.setHeader("Content-Type", MediaType.TEXT_PLAIN_VALUE);
-            response.setHeader("Content-Disposition", "attachment; filename=audit-log-" + new Date().getTime() + ".txt");
+            response.setHeader("Content-Disposition", "attachment; filename=audit-log-" + Instant.now().toEpochMilli() + ".txt");
             log.stream().map(this::toCSV).forEach(out::println);
             out.close();
         }

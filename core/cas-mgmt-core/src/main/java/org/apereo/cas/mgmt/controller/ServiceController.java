@@ -61,7 +61,7 @@ public class ServiceController {
     @GetMapping
     public List<RegisteredServiceItem> getServices(final HttpServletRequest request,
                                                    final HttpServletResponse response,
-                                                   final @RequestParam String domain) throws IllegalAccessException {
+                                                   @RequestParam final String domain) throws IllegalAccessException {
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator() && !casUserProfile.hasPermission(domain)) {
             throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
@@ -199,7 +199,7 @@ public class ServiceController {
     @GetMapping("/yaml/{id}")
     public String getYaml(final HttpServletRequest request,
                           final HttpServletResponse response,
-                          final @PathVariable("id") Long id) {
+                          @PathVariable("id") final Long id) {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val service = getService(request, response, id);
         return casUserProfile.hasPermission(service) ? CasManagementUtils.toYaml(service) : StringUtils.EMPTY;
@@ -217,8 +217,8 @@ public class ServiceController {
     @PostMapping("yaml/{id}")
     public void saveYaml(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         final @PathVariable("id") Long id,
-                         final @RequestBody String yaml) throws IOException {
+                         @PathVariable("id") final Long id,
+                         @RequestBody final String yaml) throws IOException {
         val casUserProfile = casUserProfileFactory.from(request, response);
         val service = CasManagementUtils.parseYaml(yaml);
         if (casUserProfile.hasPermission(service)) {
@@ -241,7 +241,7 @@ public class ServiceController {
     @GetMapping("/json/{id}")
     public String getJson(final HttpServletRequest request,
                           final HttpServletResponse response,
-                          final @PathVariable("id") Long id) {
+                          @PathVariable("id") final Long id) {
         val service = getService(request, response, id);
         val casUserProfile = casUserProfileFactory.from(request, response);
         return casUserProfile.hasPermission(service) ? CasManagementUtils.toJson(service) : StringUtils.EMPTY;
@@ -259,8 +259,8 @@ public class ServiceController {
     @PostMapping("/json/{id}")
     public void saveJson(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         final @PathVariable("id") Long id,
-                         final @RequestBody String json) throws IOException {
+                         @PathVariable("id") final Long id,
+                         @RequestBody final String json) throws IOException {
         val service = CasManagementUtils.parseJson(json);
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (casUserProfile.hasPermission(service)) {
@@ -297,7 +297,7 @@ public class ServiceController {
      * @return - the parsed RegisteredService.
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public RegisteredService importService(final @RequestBody String service) {
+    public RegisteredService importService(@RequestBody final String service) {
         val svc = service.startsWith("{") ? CasManagementUtils.fromJson(service) : CasManagementUtils.fromYaml(service);
         svc.setId(-1);
         return svc;

@@ -82,7 +82,7 @@ public class LuceneSearch {
     @PostMapping
     public List<RegisteredServiceItem> search(final HttpServletRequest request,
                                               final HttpServletResponse response,
-                                              final @RequestBody String queryString) throws SearchException {
+                                              @RequestBody final String queryString) throws SearchException {
         try {
             val casUserProfile = casUserProfileFactory.from(request, response);
             val analyzer = new StandardAnalyzer();

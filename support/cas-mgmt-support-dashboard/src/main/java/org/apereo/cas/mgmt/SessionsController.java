@@ -71,7 +71,7 @@ public class SessionsController {
      * @throws IllegalAccessException - Illegal Access
      **/
     @DeleteMapping("{tgt}")
-    public void revokeSession(final @PathVariable String tgt,
+    public void revokeSession(@PathVariable final String tgt,
                               final HttpServletResponse response,
                               final HttpServletRequest request) throws IllegalAccessException {
         LOGGER.info("Attempting to revoke [{}]", tgt);
@@ -145,7 +145,7 @@ public class SessionsController {
     @ResponseStatus(HttpStatus.OK)
     public void bulkRevoke(final HttpServletRequest request,
                            final HttpServletResponse response,
-                           final @RequestBody List<String> tgts) {
+                           @RequestBody final List<String> tgts) {
         LOGGER.info("Attempting to revoke [{}]", tgts);
         val tickets = new ArrayList<String>();
         val sess = getSsoSessions(casProperties.getServer().getPrefix()

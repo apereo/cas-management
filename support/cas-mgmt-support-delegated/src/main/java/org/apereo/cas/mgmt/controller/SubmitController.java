@@ -6,7 +6,8 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.BranchData;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
-import org.apereo.cas.util.io.CommunicationsManager;
+import org.apereo.cas.notifications.CommunicationsManager;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 
@@ -53,13 +54,13 @@ public class SubmitController {
     @SneakyThrows
     public void submitPull(final HttpServletResponse response,
                            final HttpServletRequest request,
-                           final @RequestBody String msg) {
+                           @RequestBody final String msg) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 throw new IllegalArgumentException("No changes to submit");
             }
-            val timestamp = new Date().getTime();
+            val timestamp = Instant.now().toEpochMilli();
             val branchName = "submit-" + timestamp;
             val submitName = user.getId() + '_' + timestamp;
 
@@ -115,7 +116,7 @@ public class SubmitController {
     @SneakyThrows
     public void revertSubmit(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @PathVariable String branchName) {
+                             @PathVariable final String branchName) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {

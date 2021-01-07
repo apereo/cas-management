@@ -91,11 +91,6 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     @Override
-    public RegisteredService findServiceBy(final String s) {
-        return this.manager.findServiceBy(s);
-    }
-
-    @Override
     public RegisteredService findServiceBy(final Service service) {
         return this.manager.findServiceBy(service);
     }
@@ -111,13 +106,13 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     @Override
-    public <T extends RegisteredService> T findServiceBy(final String s, final Class<T> aClass) {
-        return this.manager.findServiceBy(s, aClass);
+    public RegisteredService findServiceBy(final long l) {
+        return this.manager.findServiceBy(l);
     }
 
     @Override
-    public RegisteredService findServiceBy(final long l) {
-        return this.manager.findServiceBy(l);
+    public RegisteredService findServiceByName(final String name) {
+        return this.manager.findServiceByName(name);
     }
 
     @Override
@@ -132,7 +127,7 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     @Override
-    public int count() {
+    public long count() {
         return this.manager.count();
     }
 

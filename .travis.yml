@@ -4,8 +4,9 @@ services:
 - docker
 branches:
   only:
-  - 6.2.x
+  - 6.3.x
 before_cache:
+- rm -rf $HOME/.gradle/caches/6.*/
 - rm -rf $HOME/.gradle/caches/5.*/
 - rm -rf $HOME/.gradle/caches/4.*/
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/

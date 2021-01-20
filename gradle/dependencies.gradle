@@ -76,6 +76,13 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     force = true
                 },
+                dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-properties:$jacksonVersion") {
+                    exclude(group: "org.yaml", module: "snakeyaml")
+                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
+                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
+                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
+                    force = true
+                },
                 dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")

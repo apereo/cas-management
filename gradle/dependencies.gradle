@@ -94,6 +94,7 @@ ext.libraries = [
                     force = true
                 },
                 dependencies.create("org.javassist:javassist:$javassistVersion") {
+                    exclude(group: "com.google.guava", module: "guava")
                     force = true
                 },
                 dependencies.create("org.springmodules:spring-modules-cache:0.8") {

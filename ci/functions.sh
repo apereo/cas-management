@@ -54,6 +54,6 @@ currentChangeSetAffectsDependencies() {
 }
 
 currentChangeSetAffectsSnapshots() {
-    currentChangeSetContains "\.(java|groovy|yml|properties|xml|json|ts|html)"
+    currentChangeSetContains "\.(gradle|java|groovy|yml|properties|xml|json|ts|html)"
     return `(expr "$?" + 0)`
 }

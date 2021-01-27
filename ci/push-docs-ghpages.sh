@@ -1,7 +1,6 @@
 #!/bin/bash
-source ./ci/functions.sh
 
-branchVersion="6.2.x"
+branchVersion="${GITHUB_REF}"
 
 echo -e "Copying project documentation over to $HOME/docs-latest...\n"
 cp -R docs/cas-mgmt-documentation $HOME/docs-latest
@@ -35,7 +34,7 @@ echo -e "Adding changes to the git index...\n"
 git add -f . > /dev/null
 
 echo -e "Committing changes...\n"
-git commit -m "Published documentation from $TRAVIS_BRANCH to [gh-pages]. Build $TRAVIS_BUILD_NUMBER " > /dev/null
+git commit -m "Published documentation to [gh-pages]. " > /dev/null
 
 echo -e "Pushing upstream to origin/gh-pages...\n"
 git push -fq origin --all > /dev/null

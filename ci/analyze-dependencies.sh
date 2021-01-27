@@ -1,27 +1,5 @@
 #!/bin/bash
-source ./ci/functions.sh
 
-runBuild=false
-if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
-    echo "Reviewing changes that might affect the Gradle build in this pull request..."
-    currentChangeSetAffectsDependencies
-    retval=$?
-    if [ "$retval" == 0 ]
-    then
-        echo "Changes affect Gradle build descriptors. Dependency analysis will run."
-        runBuild=true
-    else
-        echo "Changes do NOT affect Gradle build descriptors. Dependency analysis will be skipped."
-        runBuild=false
-    fi
-else
-    echo "Dependency analysis will run against branch $TRAVIS_BRANCH"
-    runBuild=true
-fi
-
-if [ "$runBuild" = false ]; then
-    exit 0
-fi
 
 
 gradle="./gradlew $@"
@@ -38,28 +16,11 @@ gradleBuild="$gradleBuild dependencyCheckAggregate -x javadoc -x check \
     -DskipNpmLint=true -DskipGradleLint=true --parallel -DskipSass=true -DskipNpmLint=true \
     -DskipNodeModulesCleanUp=true -DskipNpmCache=true -DskipNestedConfigMetadataGen=true "
 
-if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[show streams]"* ]]; then
-    gradleBuild="$gradleBuild -DshowStandardStreams=true "
-fi
-
-if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[rerun tasks]"* ]]; then
-    gradleBuild="$gradleBuild --rerun-tasks "
-fi
-
-if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[refresh dependencies]"* ]]; then
-    gradleBuild="$gradleBuild --refresh-dependencies "
-fi
-
 tasks="$gradle $gradleBuildOptions $gradleBuild"
 echo -e "***************************************************************************************"
 
 echo $tasks
 echo -e "***************************************************************************************"
-
-waitloop="while sleep 9m; do echo -e '\n=====[ Gradle build is still running ]====='; done &"
-eval $waitloop
-waitRetVal=$?
-
 
 eval $tasks
 retVal=$?

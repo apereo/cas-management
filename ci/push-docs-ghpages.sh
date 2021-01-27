@@ -1,6 +1,6 @@
 #!/bin/bash
 
-branchVersion="${GITHUB_REF}"
+branchVersion="$1"
 
 echo -e "Copying project documentation over to $HOME/docs-latest...\n"
 cp -R docs/cas-mgmt-documentation $HOME/docs-latest

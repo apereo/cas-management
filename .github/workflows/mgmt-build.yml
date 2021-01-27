@@ -193,7 +193,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Publish Documentation
-        run: ./ci/push-docs-ghpages.sh
+        run: ./ci/push-docs-ghpages.sh 6.3.x
 
   ##########################################################################
 

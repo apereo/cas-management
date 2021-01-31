@@ -39,11 +39,5 @@ echo -e "\nPublishing CAS. Please be patient as this might take a while..."
 ./gradlew publish -DpublishReleases=true --no-parallel -DsonatypeUsername="${username}" -DsonatypePassword="${password}" \
 -Dorg.gradle.internal.http.socketTimeout="${timeout}" -Dorg.gradle.internal.http.connectionTimeout="${timeout}"
 
-echo -e "\nDone! You may now finalize the release process via Sonatype:"
-echo -e "\t\tLog into https://oss.sonatype.org"
-echo -e "\t\tClick on 'Staged Repositories' and find the CAS release."
-echo -e "\t\t'Close' the repository via the toolbar button and ensure all checks pass."
-echo -e "\t\t'Release' the repository via the toolbar button when the repository is successfully closed."
-
-echo -e "\nThank you!"
+echo -e "\nDone."
 exit 0

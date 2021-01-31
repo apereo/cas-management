@@ -11,22 +11,7 @@ buildscript {
             url "https://maven.eveoh.nl/content/repositories/releases"
             mavenContent { releasesOnly() }
         }
-        maven {
-            url "https://plugins.gradle.org/m2/"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://repo.spring.io/plugins-release"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://repo.spring.io/libs-milestone"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "http://repo.spring.io/snapshot"
-            mavenContent { snapshotsOnly() }
-        }
+        gradlePluginPortal()
     }
 
     dependencies {
@@ -37,10 +22,12 @@ buildscript {
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitVersion"
         classpath "io.franzbecker:gradle-lombok:$gradleLombokVersion"
         classpath "com.github.ben-manes:gradle-versions-plugin:$gradleDependencyVersionsVersion"
-        classpath "io.spring.gradle:propdeps-plugin:$gradlePropDepsVersion"
+        
         classpath "net.ltgt.gradle:gradle-errorprone-javacplugin-plugin:$gradleErrorProneVersion"
         classpath "com.github.node-gradle:gradle-node-plugin:$gradleNodeVersion"
         classpath "org.owasp:dependency-check-gradle:$gradleDependencyCheckVersion"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:$gradleNexusStagingVersion"
+        classpath "de.marcphilipp.gradle:nexus-publish-plugin:$gradleNexusPublishingVersion"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$gradleSonarqubeVersion"
     }
 }
@@ -81,6 +68,16 @@ ext {
 
 def isArtifactSigningRequired = {
     return publishReleases
+}
+
+apply plugin: "io.codearte.nexus-staging"
+nexusStaging {
+    username = "${sonatypeUsername}"
+    password = "${sonatypePassword}"
+    packageGroup = "org.apereo"
+    stagingProfileId = "11d1ddbbdeae9d"
+    numberOfRetries = 60
+    delayBetweenRetriesInMillis = 60000
 }
 
 apply from: rootProject.file("gradle/overrides.gradle")
@@ -215,12 +212,7 @@ subprojects {
     if (!rootProject.skipErrorProneCompiler) {
         apply plugin: "net.ltgt.errorprone-javacplugin"
     }
-
-    apply plugin: "propdeps"
-    apply plugin: "propdeps-maven"
-    apply plugin: "propdeps-idea"
-    apply plugin: "propdeps-eclipse"
-
+    
     apply from: rootProject.file("gradle/tests.gradle")
 
     ext.libraries = rootProject.ext.libraries

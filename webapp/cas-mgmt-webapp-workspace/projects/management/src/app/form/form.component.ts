@@ -166,7 +166,7 @@ export class FormComponent implements OnInit {
     } else {
       this.tabs.push(['attrRelease', 'Attribute Release']);
     }
-    this.tabs.push(['accessstrategy', 'Access Srategy']);
+    this.tabs.push(['accessstrategy', 'Access Strategy']);
     this.tabs.push(['delegated', 'Delegated Authentication']);
     this.tabs.push(['sso', 'SSO Policy']);
     this.tabs.push(['tickets', 'Tickets']);

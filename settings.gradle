@@ -26,6 +26,7 @@ include ":core:cas-mgmt-core-util"
 
 include ":docs:cas-mgmt-documentation"
 
+include ":support:cas-mgmt-support-bom"
 include ":support:cas-mgmt-support-delegated"
 include ":support:cas-mgmt-support-version-control"
 include ":support:cas-mgmt-support-search"

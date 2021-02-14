@@ -458,7 +458,9 @@ subprojects {
         apply plugin: "io.franzbecker.gradle-lombok"
         lombok {
             version = "$lombokVersion"
+            sha256 = ""
         }
+        installLombok.enabled = false
     }
 
     jar {

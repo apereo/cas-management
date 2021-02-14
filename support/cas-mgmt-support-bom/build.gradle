@@ -100,8 +100,8 @@ def createDependency(dependencies, group, name, version, dependencyVersions, all
         dependency.appendNode("artifactId", name)
 
         if (name.matches(getProjectNamePattern())) {
-            dependency.appendNode("version", "\${cas.version}")
-            dependencyVersions.put("cas.version", version)
+            dependency.appendNode("version", "\${cas-mgmt.version}")
+            dependencyVersions.put("cas-mgmt.version", version)
         } else {
             def versionProp = "${group}.${name}.version"
             

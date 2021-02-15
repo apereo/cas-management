@@ -522,6 +522,37 @@ ext.libraries = [
                     exclude(group: "org.springframework", module: "spring-context")
                 }
         ],
+        springboottomcat        : [
+                dependencies.create("org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion") {
+                    exclude(group: "ch.qos.logback", module: "logback-core")
+                    exclude(group: "ch.qos.logback", module: "logback-classic")
+                    exclude(group: "org.springframework", module: "spring-web")
+                    exclude(group: "org.springframework", module: "spring-webmvc")
+                    exclude(group: "org.springframework", module: "spring-core")
+                    exclude(group: "org.springframework", module: "spring-context")
+                    exclude(group: "org.springframework", module: "spring-aop")
+                    exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket")
+                    exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-core")
+                    exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-el")
+                    exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket")
+                    exclude(group: "org.springframework.boot", module: "spring-boot-starter")
+                    exclude(group: "org.springframework.boot", module: "spring-boot-starter-web")
+                    exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
+
+                },
+                dependencies.create("org.apache.tomcat:tomcat-catalina-ha:$springBootTomcatVersion") {
+                    exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
+
+                },
+                dependencies.create("org.apache.tomcat.embed:tomcat-embed-core:$springBootTomcatVersion") {
+                    exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
+
+                },
+                dependencies.create("org.apache.tomcat.embed:tomcat-embed-el:$springBootTomcatVersion") {
+                    exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
+
+                }
+        ],
         springboot              : [
                 dependencies.create("org.springframework.boot:spring-boot-starter-websocket:$springBootVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -1080,12 +1111,6 @@ ext.libraries = [
                 web                  :
                     dependencies.create("org.apereo.cas:cas-server-core-web-api:$casVersion") {
                         force = true
-                    },
-                initTomcat           :
-                    dependencies.create("org.apereo.cas:cas-server-webapp-init-tomcat:$casVersion") {
-                        force = true
-                        exclude group: 'org.apereo.cas', module: 'cas-server-webapp-init'
-                        exclude group: 'org.apereo.cas', module: 'cas-server-webapp-config'
                     }
         ],
         validationapi           : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),

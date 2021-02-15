@@ -5,5 +5,5 @@ apply from: rootProject.file("gradle/webapp.gradle")
 dependencies {
     implementation libraries.casServer.web
     implementation libraries.casServer.utilApi
-    implementation libraries.casServer.initTomcat
+    implementation libraries.springboottomcat
 }

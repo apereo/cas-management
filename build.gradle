@@ -239,34 +239,6 @@ subprojects {
             url "https://oss.sonatype.org/content/repositories/releases"
             mavenContent { releasesOnly() }
         }
-        maven {
-            url "https://repo.spring.io/plugins-release/"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://repo.spring.io/milestone/"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://repo.spring.io/snapshot/"
-            mavenContent { snapshotsOnly() }
-        }
-        maven {
-            url "https://repo.spring.io/libs-milestone"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://splunk.jfrog.io/splunk/ext-releases-local"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://dl.bintray.com/uniconiam/maven"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://oss.jfrog.org/artifactory/oss-snapshot-local"
-            mavenContent { snapshotsOnly() }
-        }
         jcenter()
     }
 
@@ -499,7 +471,7 @@ subprojects {
         api libraries.guava
         api libraries.commons
         api libraries.springboot
-
+        api libraries.log4j
         api libraries.javax
         
         if (!Boolean.getBoolean("skipErrorProneCompiler")) {
@@ -507,7 +479,6 @@ subprojects {
             errorproneJavac "com.google.errorprone:javac:$errorproneJavacVersion"
         }
         testImplementation libraries.tests
-        testImplementation libraries.log4j
     }
 }
 

@@ -164,6 +164,7 @@ ext.libraries = [
                     exclude(group: "org.apache.logging.log4j", module: "log4j-core")
                     exclude(group: "org.apache.logging.log4j", module: "log4j-api")
                     exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
+                    exclude(group: "org.apache.logging.log4j", module: "log4j-jul")
                     force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-api:$log4jVersion") {
@@ -175,6 +176,10 @@ ext.libraries = [
                     force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-jcl:$log4jVersion") {
+                    exclude(group: "org.slf4j", module: "slf4j-api")
+                    force = true
+                },
+                dependencies.create("org.apache.logging.log4j:log4j-jul:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     force = true
                 },
@@ -653,19 +658,6 @@ ext.libraries = [
                     exclude(group: "com.vaadin.external.google", module: "android-json")
                     force = true
                 },
-                dependencies.create("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion") {
-                    exclude(group: "org.springframework", module: "spring-web")
-                    exclude(group: "org.springframework", module: "spring-webmvc")
-                    exclude(group: "org.springframework", module: "spring-core")
-                    exclude(group: "org.springframework", module: "spring-context")
-                    exclude(group: "org.slf4j", module: "slf4j-api")
-                    exclude(group: "org.slf4j", module: "jul-to-slf4j")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-core")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-api")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
-                    force = true
-                },
                 dependencies.create("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion") {
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-web")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
@@ -1041,9 +1033,6 @@ ext.libraries = [
                     },
                 configuration        : [
                     dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
-                        force = true
-                    },
-                    dependencies.create("org.apereo.cas:cas-server-core-logging-api:$casVersion")  {
                         force = true
                     },
                     dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {

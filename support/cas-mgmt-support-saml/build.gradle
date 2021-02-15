@@ -4,7 +4,7 @@ dependencies {
     implementation libraries.git
     implementation libraries.opensaml
     implementation libraries.casServer.saml
-    implementation libraries.shibboleth
+    implementation libraries.shibidpjavasupport
     //implementation libraries.shibidp
     implementation libraries.shibidpjavasupport
     implementation libraries.casServer.configuration

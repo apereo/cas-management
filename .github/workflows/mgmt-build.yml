@@ -89,11 +89,6 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Build with Gradle
         run: ./ci/build.sh
-      - uses: actions/upload-artifact@v2
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        with:
-          name: binary-artifacts
-          path: ./**/build/libs/*.*
 
   ##########################################################################
   
@@ -115,9 +110,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - uses: actions/download-artifact@v2
-        with:
-          name: binary-artifacts
       - name: Run Static Analysis
         run: ./ci/analyze-style.sh
       - name: Configuration Factory Analysis
@@ -144,9 +136,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - uses: actions/download-artifact@v2
-        with:
-          name: binary-artifacts
       - name: Validate Javadocs
         run: ./ci/build-javadocs.sh
 
@@ -170,9 +159,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - uses: actions/download-artifact@v2
-        with:
-          name: binary-artifacts
       - name: Publish SNAPSHOTs
         if: ${{ env.SONATYPE_USER != null && env.SONATYPE_PWD != null }}
         run: ./ci/publish-snapshots-release.sh

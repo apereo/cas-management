@@ -467,8 +467,6 @@ subprojects {
         implementation libraries.validationapi
 
         api libraries.jaxb
-        api libraries.slf4j
-        api libraries.guava
         api libraries.commons
         api libraries.springboot
         api libraries.log4j

@@ -28,113 +28,6 @@ ext.libraries = [
                     force = true
                 }
         ],
-        jackson                 : [
-                dependencies.create("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion") {
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                },
-                dependencies.create("com.fasterxml.jackson.core:jackson-core:$jacksonVersion") {
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                },
-                dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion") {
-                    exclude(group: "com.google.guava", module: "guava")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    force = true
-                },
-                dependencies.create("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion") {
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                },
-                dependencies.create("com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion") {
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                },
-                dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion") {
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    exclude(group: "com.fasterxml.jackson", module: "jackson-bom")
-                },
-                dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion") {
-                    exclude(group: "com.fasterxml.jackson", module: "jackson-bom")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                },
-                dependencies.create("org.hjson:hjson:$hjsonVersion") {
-                    force = true
-                },
-                dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion") {
-                    exclude(group: "org.yaml", module: "snakeyaml")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                },
-                dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-properties:$jacksonVersion") {
-                    exclude(group: "org.yaml", module: "snakeyaml")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                },
-                dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion") {
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                }
-        ],
-        guava                   : [
-                dependencies.create("com.google.guava:guava:$guavaVersion") {
-                    exclude(group: "com.google.errorprone", module: "error_prone_annotations")
-                    force = true
-                },
-                dependencies.create("org.reflections:reflections:$reflectionsVersion") {
-                    exclude(group: "com.google.guava", module: "guava")
-                    exclude(group: "org.javassist", module: "javassist")
-                    force = true
-                },
-                dependencies.create("org.javassist:javassist:$javassistVersion") {
-                    exclude(group: "com.google.guava", module: "guava")
-                    force = true
-                },
-                dependencies.create("org.springmodules:spring-modules-cache:0.8") {
-                    exclude(group: "commons-logging", module: "commons-logging")
-                    exclude(group: "ant", module: "ant")
-                    exclude(group: "xstream", module: "xstream")
-                    exclude(group: "commons-lang", module: "commons-lang")
-                    exclude(group: "xpp3", module: "xpp3_min")
-                    exclude(group: "jcs", module: "jcs")
-                    exclude(group: "jboss", module: "jboss-system")
-                    exclude(group: "jboss", module: "javassist")
-                    exclude(group: "jboss", module: "jboss-cache")
-                    exclude(group: "jboss", module: "jboss-jmx")
-                    exclude(group: "jboss", module: "jboss-minimal")
-                    exclude(group: "jboss", module: "jboss-common")
-                    exclude(group: "jgroups", module: "jgroups-all")
-                    exclude(group: "log4j", module: "log4j")
-                    exclude(group: "xjavadoc", module: "xjavadoc")
-                    exclude(group: "jini", module: "xjavadoc")
-                    exclude(group: "jini", module: "jsk-platform")
-                    exclude(group: "jini", module: "boot")
-                    exclude(group: "jini", module: "jsk-lib")
-                    exclude(group: "jini", module: "mahalo")
-                    exclude(group: "jini", module: "reggie")
-                    exclude(group: "jini", module: "start")
-                    exclude(group: "jini", module: "webster")
-                    exclude(group: "ehcache", module: "ehcache")
-                    exclude(group: "gigaspaces", module: "gigaspaces-ce")
-                    exclude(group: "commons-collections", module: "commons-collections")
-                    exclude(group: "org.springframework", module: "spring")
-                    force = true
-                }
-        ],
         aspectj                 : [
                 dependencies.create("org.aspectj:aspectjrt:$aspectjVersion") {
                     force = true
@@ -143,24 +36,9 @@ ext.libraries = [
                     force = true
                 }
         ],
-        slf4j                   : [
-                dependencies.create("org.slf4j:slf4j-api:$slf4jVersion"),
-                dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion"),
-                dependencies.create("org.slf4j:jcl-over-slf4j:$slf4jVersion"),
-        ],
+    
         log4j                   : [
                 dependencies.create("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion") {
-                    exclude(group: "org.springframework", module: "spring-web")
-                    exclude(group: "org.springframework", module: "spring-webmvc")
-                    exclude(group: "org.springframework", module: "spring-core")
-                    exclude(group: "org.springframework", module: "spring-context")
-                    exclude(group: "org.slf4j", module: "slf4j-api")
-                    exclude(group: "org.slf4j", module: "jul-to-slf4j")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-core")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-api")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
-                    exclude(group: "org.apache.logging.log4j", module: "log4j-jul")
                     force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-api:$log4jVersion") {
@@ -558,8 +436,6 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "log4j-over-slf4j")
                     exclude(group: "org.slf4j", module: "jul-to-slf4j")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "org.jboss.logging", module: "jboss-logging")
                     exclude(group: "org.springframework", module: "spring-web")
                     exclude(group: "org.springframework", module: "spring-core")
@@ -595,8 +471,6 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "jul-to-slf4j")
                     exclude(group: "org.jboss.logging", module: "jboss-logging")
                     exclude(group: "com.fasterxml", module: "classmate")
-                    exclude(group: "org.hibernate", module: "hibernate-validator")
-                    exclude(group: "org.hibernate", module: "hibernate-core")
                     exclude(group: "org.hibernate", module: "hibernate-entitymanager")
                     exclude(group: "org.springframework", module: "spring-web")
                     exclude(group: "org.springframework", module: "spring-core")

@@ -471,6 +471,8 @@ subprojects {
         api libraries.springboot
         api libraries.log4j
         api libraries.javax
+        api libraries.groovy
+        api libraries.jackson
         
         if (!Boolean.getBoolean("skipErrorProneCompiler")) {
             errorprone "com.google.errorprone:error_prone_core:$errorProneVersion"

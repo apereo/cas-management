@@ -36,7 +36,7 @@ ext.libraries = [
                     force = true
                 }
         ],
-                jackson                 : [
+        jackson                 : [
                 dependencies.create("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
@@ -124,6 +124,17 @@ ext.libraries = [
                     exclude(group: "org.codehaus.groovy", module: "groovy-console")
                     force = true
                 }
+        ],
+        slf4j                   : [
+                dependencies.create("org.slf4j:slf4j-api:$slf4jVersion"){
+                    force = true
+                },
+                dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion"){
+                    force = true
+                },
+                dependencies.create("org.slf4j:jcl-over-slf4j:$slf4jVersion"){
+                    force = true
+                },
         ],
         log4j                   : [
                 dependencies.create("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion") {

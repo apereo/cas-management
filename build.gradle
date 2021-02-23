@@ -470,6 +470,7 @@ subprojects {
         api libraries.commons
         api libraries.springboot
         api libraries.log4j
+        api libraries.slf4j
         api libraries.javax
         api libraries.groovy
         api libraries.jackson

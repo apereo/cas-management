@@ -91,7 +91,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     /**
      * Flag to enable/disable calling cas discovery endpoint.
      */
-    private boolean enableDiscoveryEndpointCall = true;
+    private boolean enableDiscoveryEndpointCall;
 
     /**
      * Path to discovery endpoint.
@@ -136,7 +136,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     /**
      * InCommon MDQ URL.
      */
-    private String inCommonMDQUrl = "https://mdq.incommon.org/entities";
+    private String inCommonMDQUrl;
 
     /**
      * List of cas servers that available in the Dashboard.

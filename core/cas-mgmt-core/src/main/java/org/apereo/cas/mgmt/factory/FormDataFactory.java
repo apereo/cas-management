@@ -62,7 +62,7 @@ public class FormDataFactory {
     @PostConstruct
     public void callForProfile() {
         if (!mgmtProperties.isEnableDiscoveryEndpointCall()) {
-            LOGGER.warn("Call to cas/actuator/discoveryProfile disabled by management configuration.  Using default FormData values.");
+            LOGGER.info("Call to {} disabled by management configuration. Using default FormData values.", mgmtProperties.getDiscoveryEndpointPath());
             return;
         }
         if (StringUtils.isBlank(casProperties.getServer().getName())) {

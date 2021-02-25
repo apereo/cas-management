@@ -349,7 +349,6 @@ ext.libraries = [
                     force = true
                 },
                 dependencies.create("org.pac4j:pac4j-config:$pac4jVersion") {
-                    exclude(group: "com.nimbusds", module: "oauth2-oidc-sdk")
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "com.zaxxer", module: "HikariCP")
@@ -382,7 +381,6 @@ ext.libraries = [
                     exclude(group: "net.shibboleth.ext", module: "spring-extensions")
                     exclude(group: "net.shibboleth.utilities", module: "java-support")
                     exclude(group: "xml-apis", module: "xml-apis")
-                    exclude(group: "com.nimbusds", module: "nimbus-jose-jwt")
                     exclude(group: "org.opensaml", module: "xmltooling")
                     exclude(group: "org.cryptacular", module: "cryptacular")
                     force = true
@@ -418,25 +416,6 @@ ext.libraries = [
                     exclude(group: "commons-collections", module: "commons-collections")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
-                }
-        ],
-        nimbus : [
-                dependencies.create("com.nimbusds:nimbus-jose-jwt:$nimbusJoseVersion") {
-                    exclude(group: "net.minidev", module: "json-smart")
-                    exclude(group: "org.bouncycastle", module: "bcpkix-jdk15on")
-                    exclude(group: "commons-collections", module: "commons-collections")
-                    force = true
-                },
-                dependencies.create("com.nimbusds:oauth2-oidc-sdk:$nimbusOidcVersion") {
-                    exclude(group: "net.minidev", module: "json-smart")
-                    exclude(group: "com.nimbusds", module: "nimbus-jose-jwt")
-                    exclude(group: "org.apache.commons", module: "commons-lang3")
-                    exclude(group: "commons-collections", module: "commons-collections")
-                    exclude(group: "com.sun.mail", module: "javax.mail")
-                    force = true
-                },
-                dependencies.create("net.minidev:json-smart:$jsonSmartVersion") {
                     force = true
                 }
         ],

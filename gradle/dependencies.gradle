@@ -40,9 +40,11 @@ ext.libraries = [
                 dependencies.create("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
+                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.core:jackson-core:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
+                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion") {
                     exclude(group: "com.google.guava", module: "guava")
@@ -67,12 +69,14 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     exclude(group: "com.fasterxml.jackson", module: "jackson-bom")
+                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson", module: "jackson-bom")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
+                    force = true
                 },
                 dependencies.create("org.hjson:hjson:$hjsonVersion") {
                     force = true
@@ -184,17 +188,22 @@ ext.libraries = [
                     exclude(group: "commons-logging", module: "commons-logging")
                     exclude(group: "commons-lang", module: "commons-lang")
                     exclude(group: "junit", module: "junit")
+                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-text:$commonsTextVersion") {
                     exclude(group: "commons-lang", module: "commons-lang")
                     exclude(group: "org.apache.commons", module: "commons-lang3")
+                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-pool2:$commonsPoolVersion") {
+                    force = true
                 },
                 dependencies.create("commons-cli:commons-cli:$commonsCliVersion") {
+                    force = true
                 },
                 dependencies.create("commons-beanutils:commons-beanutils:$commonsBeansVersion") {
                     exclude(group: "commons-logging", module: "commons-logging")
+                    force = true
                 },
                 dependencies.create("commons-logging:commons-logging:$commonsLoggingVersion") {
                 },
@@ -204,18 +213,25 @@ ext.libraries = [
                     exclude(group: "commons-collections", module: "commons-collections")
                     exclude(group: "commons-beanutils", module: "commons-beanutils")
                     exclude(group: "commons-digester", module: "commons-digester")
+                    force = true
                 },
                 dependencies.create("commons-codec:commons-codec:$commonsCodecVersion") {
+                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-lang3:$commonsLangVersion") {
+                    force = true
                 },
                 dependencies.create("commons-lang:commons-lang:2.6") {
+                    force = true
                 },
                 dependencies.create("org.jooq:jool:$joolVersion") {
+                    force = true
                 },
                 dependencies.create("commons-collections:commons-collections:$commonsCollections3Version") {
+                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-collections4:$commonsCollectionsVersion") {
+                    force = true
                 }
         ],
         javax                   : [
@@ -224,8 +240,12 @@ ext.libraries = [
                 }
         ],
         javaximpl               : [
-                dependencies.create("javax.servlet:jstl:$javaxJstlVersion"),
-                dependencies.create("javax.transaction:jta:$jtaVersion")
+                dependencies.create("javax.servlet:jstl:$javaxJstlVersion") {
+                    force = true
+                },
+                dependencies.create("javax.transaction:jta:$jtaVersion") {
+                    force = true
+                }
         ],
         thymeleaf               : [
                 dependencies.create("org.thymeleaf:thymeleaf-spring5:$thymeleafVersion") {
@@ -251,13 +271,16 @@ ext.libraries = [
                     exclude(group: "org.objenesis", module: "objenesis")
                     exclude(group: "junit", module: "junit")
                     exclude(group: "net.bytebuddy", module: "byte-buddy")
+                    force = true
                 },
                 dependencies.create("org.mockito:mockito-junit-jupiter:$mockitoVersion") {
                     exclude(group: "org.mockito", module: "mockito-core")
                     exclude(group: "org.junit.jupiter", module: "junit-jupiter-api")
+                    force = true
                 },
                 dependencies.create("org.objenesis:objenesis:$objenesisVersion") {
                     exclude(group: "org.mockito", module: "mockito-all")
+                    force = true
                 },
                 dependencies.create("org.junit.jupiter:junit-jupiter-api:$junitVersion") {
                 },
@@ -297,17 +320,21 @@ ext.libraries = [
                     exclude(group: "ch.qos.logback", module: "logback-core")
                     exclude(group: "ch.qos.logback", module: "logback-classic")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
+                    force = true
                 },
                 dependencies.create("org.skyscreamer:jsonassert:$jsonassertVersion") {
                     exclude(group: "org.json", module: "json")
                     exclude(group: "com.vaadin.external.google", module: "android-json")
+                    force = true
                 },
                 dependencies.create("org.springframework:spring-test:$springVersion") {
                     exclude(group: "junit", module: "junit")
                     exclude(group: "ch.qos.logback", module: "logback-core")
                     exclude(group: "ch.qos.logback", module: "logback-classic")
+                    force = true
                 },
                 dependencies.create("org.json:json:$jsonVersion") {
+                    force = true
                 }
         ],
         pac4j                   : [
@@ -419,6 +446,7 @@ ext.libraries = [
                     exclude(group: "org.springframework", module: "spring-webmvc")
                     exclude(group: "org.springframework", module: "spring-core")
                     exclude(group: "org.springframework", module: "spring-context")
+                    force = true
                 }
         ],
         springboottomcat        : [
@@ -437,18 +465,19 @@ ext.libraries = [
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-web")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
-
+                    force = true
                 },
                 dependencies.create("org.apache.tomcat:tomcat-catalina-ha:$springBootTomcatVersion") {
                     exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
-
+                    force = true
                 },
                 dependencies.create("org.apache.tomcat.embed:tomcat-embed-core:$springBootTomcatVersion") {
                     exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
-
+                    force = true
                 },
                 dependencies.create("org.apache.tomcat.embed:tomcat-embed-el:$springBootTomcatVersion") {
                     exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
+                    force = true
                 }
         ],
         springboot              : [
@@ -991,8 +1020,8 @@ ext.libraries = [
                             force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-core-api:$casVersion") {
-                            force = true
                             exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
+                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
                             force = true
@@ -1014,10 +1043,17 @@ ext.libraries = [
                     exclude group: 'org.slf4j', module: 'slf4j'
                     exclude group: 'org.slf4j', module: 'slf4j-api'
                     exclude group: 'org.apache.commons', module: 'commons-lang3'
+                    force = true
                 },
         lucene                 : [
-                dependencies.create("org.apache.lucene:lucene-core:7.5.0"),
-                dependencies.create("org.apache.lucene:lucene-queryparser:7.5.0"),
-                dependencies.create("org.apache.lucene:lucene-analyzers-common:7.5.0")
+                dependencies.create("org.apache.lucene:lucene-core:$luceneVersion") {
+                    force = true
+                },
+                dependencies.create("org.apache.lucene:lucene-queryparser:$luceneVersion") {
+                    force = true
+                },
+                dependencies.create("org.apache.lucene:lucene-analyzers-common:$luceneVersion") {
+                    force = true
+                }
         ]
 ]

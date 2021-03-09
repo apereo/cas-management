@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TabOauthComponent} from './tab-oauth.component';
 
@@ -6,7 +6,7 @@ describe('TabOauthComponent', () => {
   let component: TabOauthComponent;
   let fixture: ComponentFixture<TabOauthComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TabOauthComponent ]
     })

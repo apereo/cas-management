@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {GroovySamlComponent} from './groovy-saml.component';
 
@@ -6,7 +6,7 @@ describe('GroovySamlComponent', () => {
   let component: GroovySamlComponent;
   let fixture: ComponentFixture<GroovySamlComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroovySamlComponent ]
     })

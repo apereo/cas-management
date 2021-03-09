@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TabSamlAssertionComponent} from './tab-saml-assertion.component';
 
@@ -6,7 +6,7 @@ describe('TabSamlAssertionComponent', () => {
   let component: TabSamlAssertionComponent;
   let fixture: ComponentFixture<TabSamlAssertionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TabSamlAssertionComponent ]
     })

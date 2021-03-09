@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {GroovySurrogateComponent} from './groovy-surrogate.component';
 
@@ -6,7 +6,7 @@ describe('GroovySurrogateComponent', () => {
   let component: GroovySurrogateComponent;
   let fixture: ComponentFixture<GroovySurrogateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroovySurrogateComponent ]
     })

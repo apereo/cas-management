@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 
 import {LogouttypeevalComponent} from './logouttypeeval.component';
@@ -9,7 +9,7 @@ describe('LogouttypeevalComponent', () => {
   let component: LogouttypeevalComponent;
   let fixture: ComponentFixture<LogouttypeevalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ LogouttypeevalComponent ]

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TimeoutComponent} from './timeout.component';
 
@@ -6,7 +6,7 @@ describe('TimeoutComponent', () => {
   let component: TimeoutComponent;
   let fixture: ComponentFixture<TimeoutComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TimeoutComponent ]
     })

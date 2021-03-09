@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 
 import {ServicedescComponent} from './servicedesc.component';
@@ -9,7 +9,7 @@ describe('ServicedescComponent', () => {
   let component: ServicedescComponent;
   let fixture: ComponentFixture<ServicedescComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ ServicedescComponent ]

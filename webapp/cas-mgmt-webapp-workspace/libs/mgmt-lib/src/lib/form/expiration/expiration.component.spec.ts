@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {ExpirationComponent} from './expiration.component';
 
@@ -6,7 +6,7 @@ describe('ExpirationComponent', () => {
   let component: ExpirationComponent;
   let fixture: ComponentFixture<ExpirationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExpirationComponent ]
     })

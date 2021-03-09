@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {RestfulComponent} from './restful.component';
 
@@ -6,7 +6,7 @@ describe('RestfulComponent', () => {
   let component: RestfulComponent;
   let fixture: ComponentFixture<RestfulComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RestfulComponent ]
     })

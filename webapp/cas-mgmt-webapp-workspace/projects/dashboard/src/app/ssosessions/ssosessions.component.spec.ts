@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {SsosessionsComponent} from './ssosessions.component';
 
@@ -6,7 +6,7 @@ describe('SsosessionsComponent', () => {
   let component: SsosessionsComponent;
   let fixture: ComponentFixture<SsosessionsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SsosessionsComponent ]
     })

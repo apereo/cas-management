@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {RefreshTokenExpirationComponent} from './refresh-token-expiration.component';
 
@@ -6,7 +6,7 @@ describe('RefreshTokenExpirationComponent', () => {
   let component: RefreshTokenExpirationComponent;
   let fixture: ComponentFixture<RefreshTokenExpirationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RefreshTokenExpirationComponent ]
     })

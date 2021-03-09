@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {ValueTypesComponent} from './value-types.component';
 
@@ -6,7 +6,7 @@ describe('ValueTypesComponent', () => {
   let component: ValueTypesComponent;
   let fixture: ComponentFixture<ValueTypesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ValueTypesComponent ]
     })

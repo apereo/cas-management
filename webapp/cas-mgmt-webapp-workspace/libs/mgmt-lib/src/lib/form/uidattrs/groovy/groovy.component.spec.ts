@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {GroovyComponent} from './groovy.component';
 
@@ -6,7 +6,7 @@ describe('GroovyComponent', () => {
   let component: GroovyComponent;
   let fixture: ComponentFixture<GroovyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroovyComponent ]
     })

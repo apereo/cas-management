@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TabSamlAttributesComponent} from './tab-saml-attributes.component';
 
@@ -6,7 +6,7 @@ describe('TabSamlAttributesComponent', () => {
   let component: TabSamlAttributesComponent;
   let fixture: ComponentFixture<TabSamlAttributesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TabSamlAttributesComponent ]
     })

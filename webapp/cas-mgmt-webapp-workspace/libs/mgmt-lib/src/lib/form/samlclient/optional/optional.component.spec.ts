@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {SamlOptionalComponent} from './optional.component';
 
@@ -6,7 +6,7 @@ describe('OptionalComponent', () => {
   let component: SamlOptionalComponent;
   let fixture: ComponentFixture<SamlOptionalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SamlOptionalComponent ]
     })

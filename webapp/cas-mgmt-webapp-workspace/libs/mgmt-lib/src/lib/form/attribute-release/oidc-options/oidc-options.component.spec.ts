@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {OidcOptionsComponent} from './oidc-options.component';
 
@@ -6,7 +6,7 @@ describe('OidcOptionsComponent', () => {
   let component: OidcOptionsComponent;
   let fixture: ComponentFixture<OidcOptionsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ OidcOptionsComponent ]
     })

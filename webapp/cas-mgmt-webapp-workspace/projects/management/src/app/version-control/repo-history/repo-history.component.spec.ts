@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {RepoHistoryComponent} from './repo-history.component';
 
@@ -6,7 +6,7 @@ describe('RepoHistoryComponent', () => {
   let component: RepoHistoryComponent;
   let fixture: ComponentFixture<RepoHistoryComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RepoHistoryComponent ]
     })

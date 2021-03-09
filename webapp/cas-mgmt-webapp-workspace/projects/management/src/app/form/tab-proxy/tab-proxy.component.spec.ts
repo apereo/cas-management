@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 
 import {TabProxyComponent} from './tab-proxy.component';
@@ -10,7 +10,7 @@ describe('TabProxyComponent', () => {
   let component: TabProxyComponent;
   let fixture: ComponentFixture<TabProxyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ TabProxyComponent, ProxyComponent ],

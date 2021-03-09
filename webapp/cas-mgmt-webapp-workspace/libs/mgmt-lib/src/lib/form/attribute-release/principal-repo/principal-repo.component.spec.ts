@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {PrincipalRepoComponent} from './principal-repo.component';
 import {SharedModule} from '../../../shared/shared.module';
@@ -8,7 +8,7 @@ describe('PrincipalRepoComponent', () => {
   let component: PrincipalRepoComponent;
   let fixture: ComponentFixture<PrincipalRepoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, SharedModule],
       declarations: [ PrincipalRepoComponent ]

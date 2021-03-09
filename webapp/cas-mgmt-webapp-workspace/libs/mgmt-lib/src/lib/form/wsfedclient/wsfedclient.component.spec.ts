@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {WsfedclientComponent} from './wsfedclient.component';
 import {SharedModule} from '../../shared/shared.module';
@@ -8,7 +8,7 @@ describe('WsfedclientComponent', () => {
   let component: WsfedclientComponent;
   let fixture: ComponentFixture<WsfedclientComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, SharedModule ],
       declarations: [ WsfedclientComponent ]

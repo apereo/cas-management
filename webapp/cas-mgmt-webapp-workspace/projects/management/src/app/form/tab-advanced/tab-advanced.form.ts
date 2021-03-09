@@ -24,8 +24,8 @@ export class TabAdvancedForm extends FormGroup implements MgmtFormGroup<Abstract
 
   mapForm(service: AbstractRegisteredService) {
     service.evaluationOrder = this.evalOrder.value;
-    service.requiredHandlers = this.required && this.required.value.length > 0 ? this.required.value.split(',') : null;
-    service.environments = this.environments && this.environments.value.length > 0 ? this.environments.value.split(',') : null;
+    service.requiredHandlers = this.required?.value?.length > 0 ? this.required.value.split(',') : null;
+    service.environments = this.environments?.value?.length > 0 ? this.environments.value.split(',') : null;
     service.responseType = this.responseType.value;
     service.publicKey = this.publicKey.mapForm();
     service.expirationPolicy = this.expirationPolicy.mapForm();

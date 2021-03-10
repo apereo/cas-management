@@ -27,7 +27,7 @@ export class DelegatedComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.delegatedAuthn = [...this.form.allowedProviders.value];
+    this.delegatedAuthn = this.form?.allowedProviders?.value ? [...this.form.allowedProviders.value] : [];
   }
 
   add(event: MatChipInputEvent): void {

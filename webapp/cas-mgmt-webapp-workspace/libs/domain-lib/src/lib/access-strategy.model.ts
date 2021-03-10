@@ -1,4 +1,4 @@
-import {RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn.model';
+import {DefaultRegisteredServiceDelegatedAuthenticationPolicy, RegisteredServiceDelegatedAuthenticationPolicy} from './delegated-authn.model';
 
 export abstract class RegisteredServiceAccessStrategy {
   enabled: boolean;
@@ -14,7 +14,7 @@ export abstract class RegisteredServiceAccessStrategy {
     this.enabled = strat?.enabled ?? true;
     this.ssoEnabled = strat?.ssoEnabled ?? true;
     this.unauthorizedRedirectUrl = strat?.unauthorizedRedirectUrl;
-    this.delegatedAuthenticationPolicy = strat?.delegatedAuthenticationPolicy;
+    this.delegatedAuthenticationPolicy = strat?.delegatedAuthenticationPolicy || new DefaultRegisteredServiceDelegatedAuthenticationPolicy();
     this.requiredAttributes = strat?.requiredAttributes;
     this.requireAllAttributes = strat?.requireAllAttributes ?? true;
     this.rejectedAttributes = strat?.rejectedAttributes;

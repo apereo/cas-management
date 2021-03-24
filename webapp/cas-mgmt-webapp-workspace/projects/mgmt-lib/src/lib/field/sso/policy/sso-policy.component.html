@@ -1,0 +1,10 @@
+<ng-container *ngIf="form.type === TYPE.AUTH_DATE || form.type === TYPE.LAST_USED">
+  <lib-text-input [control]="timePolicy().timeValue" label="Duration"
+                  toolTip="Number representing how long to still honor the SSO session.">
+  </lib-text-input>
+
+  <lib-select-input [control]="timePolicy().timeUnit" label="Time Unit"
+                    [options]="['SECONDS', 'MINUTES', 'HOURS', 'DAYS']"
+                    toolTip="Units used in calculating SSO policy duration.">
+  </lib-select-input>
+</ng-container>

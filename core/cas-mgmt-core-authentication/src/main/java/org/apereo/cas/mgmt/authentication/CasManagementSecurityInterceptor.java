@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authentication;
 
 import org.apereo.cas.CasProtocolConstants;
+
 import lombok.val;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
@@ -14,6 +15,7 @@ import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -39,7 +41,6 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
     }
 
     @Override
-    @SuppressWarnings("JdkObsolete")
     public void postHandle(final HttpServletRequest request, final HttpServletResponse response,
                            final Object handler, final ModelAndView modelAndView) {
         if (modelAndView != null && !StringUtils.isEmpty(request.getQueryString()) && request.getQueryString().contains(CasProtocolConstants.PARAMETER_TICKET)) {

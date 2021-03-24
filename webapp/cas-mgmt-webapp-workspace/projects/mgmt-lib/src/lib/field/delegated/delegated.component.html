@@ -1,0 +1,34 @@
+<lib-checkbox [control]="form.permitUndefined" label="Permit Undefined"
+              toolTip="Decides whether access should be granted in the event that no allowed providers are defined explicitly.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.exclusive" label="Exclusive"
+              toolTip="Decides whether authentication should be exclusively limited to allowed providers, disabling other methods
+                       such as username/password, etc">
+</lib-checkbox>
+
+<lib-input toolTip="List of authentication providers this services is allowed to delegate authentication to.">
+  <mat-form-field style="width: 100%;" appearance="standard">
+    <mat-label i18n>Allowed Providers</mat-label>
+    <input matInput
+           [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           matChipInputAddOnBlur="true"
+           (matChipInputTokenEnd)="add($event)"
+           [matAutocomplete]="auto"
+           #providerInput>
+  </mat-form-field>
+</lib-input>
+
+<h5 *ngIf="delegatedAuthn.length > 0" i18n>Allowed Providers</h5>
+<mat-chip-list #chipList [selectable]="false">
+  <mat-chip *ngFor="let provider of delegatedAuthn" [selectable]="false"
+            removable="true" (removed)="remove(provider)">
+    {{ provider }}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+</mat-chip-list>
+
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event);">
+  <mat-option *ngFor="let opt of config.options.delegatedAuthnProviders" [value]="opt">{{ opt }}</mat-option>
+</mat-autocomplete>

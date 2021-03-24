@@ -3,22 +3,25 @@ package org.apereo.cas.mgmt;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy;
 import org.apereo.cas.services.DomainAwareServicesManager;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.DigestUtils;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 
 /**
  * Class used to manage services in Git repository.
@@ -28,10 +31,9 @@ import java.util.stream.Stream;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ManagementServicesManager implements ServicesManager {
+public class ManagementServicesManager implements ServicesManager, DomainAwareServicesManager {
 
     private final ServicesManager manager;
-
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
 
     /**
@@ -45,7 +47,7 @@ public class ManagementServicesManager implements ServicesManager {
 
     public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
         return services.map(this::createServiceItem)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
     /**
@@ -61,6 +63,12 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
+        if (service.getMultifactorPolicy() instanceof DefaultRegisteredServiceMultifactorPolicy) {
+            serviceItem.setDuo(service.getMultifactorPolicy().getMultifactorAuthenticationProviders().contains("mfa-duo"));
+        }
+        serviceItem.setSso(service.getAccessStrategy().isServiceAccessAllowedForSso());
+        serviceItem.setStaged(service.getEnvironments() != null && service.getEnvironments().contains("staged"));
+        serviceItem.setCName(service.getClass().getCanonicalName());
         serviceItem.setType(CasManagementUtils.getType(service));
         return serviceItem;
     }
@@ -91,6 +99,11 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     @Override
+    public RegisteredService findServiceByName(final String name) {
+        return this.manager.findServiceByName(name);
+    }
+
+    @Override
     public RegisteredService findServiceBy(final Service service) {
         return this.manager.findServiceBy(service);
     }
@@ -111,11 +124,6 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     @Override
-    public RegisteredService findServiceByName(final String name) {
-        return this.manager.findServiceByName(name);
-    }
-
-    @Override
     public Collection<RegisteredService> getAllServices() {
         return this.manager.getAllServices();
     }
@@ -131,11 +139,17 @@ public class ManagementServicesManager implements ServicesManager {
         return this.manager.count();
     }
 
-    //@Override
+    @Override
     public Collection<RegisteredService> getServicesForDomain(final String domain) {
-        return manager instanceof DomainAwareServicesManager
-            ? ((DomainAwareServicesManager) this.manager).getServicesForDomain(domain)
-            : this.manager.getAllServices();
+        if (this.manager instanceof DomainAwareServicesManager) {
+            return ((DomainAwareServicesManager) this.manager).getServicesForDomain(domain);
+        }
+        return this.manager.getAllServices();
+    }
+
+    @Override
+    public Stream<String> getDomains() {
+        return ((DomainAwareServicesManager) this.manager).getDomains();
     }
 
     /**

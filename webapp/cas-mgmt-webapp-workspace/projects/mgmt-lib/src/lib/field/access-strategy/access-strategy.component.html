@@ -1,0 +1,43 @@
+<lib-select-input [control]="type" label="Access Strategy Type" [valueOptions]="types"
+                  toolTip="Access strategy type">
+</lib-select-input>
+
+<lib-checkbox [control]="form.requireAll" label="Require All Attributes"
+              toolTip="Decides whether all attributes AND corresponding values should be evaluated before access can be granted.
+               If left unchecked, the first successful match on attribute name and value will allow access.">
+</lib-checkbox>
+
+<lib-text-input [control]="form.unauthorizedUrl" label="Unauthorized Redirect Url"
+                toolTip="URL to which CAS should direct in the event that service access is defined.">
+</lib-text-input>
+
+<ng-container *ngIf="type.value === TYPE.REMOTE">
+  <lib-remote [form]="form"></lib-remote>
+</ng-container>
+
+<ng-container *ngIf="type.value === TYPE.TIME">
+  <lib-time [form]="form"></lib-time>
+</ng-container>
+
+<ng-container *ngIf="type.value === TYPE.GROUPER">
+  <lib-grouper [form]="form"></lib-grouper>
+  <lib-time [form]="form"></lib-time>
+</ng-container>
+
+<ng-container *ngIf="type.value === TYPE.SURROGATE">
+  <lib-surrogate [form]="form"></lib-surrogate>
+</ng-container>
+
+
+<ng-container *ngIf="type.value == TYPE.GROOVY_SURROGATE">
+  <lib-text-input [control]="form" label="Groovy Script File"
+                  toolTip="Location where the groovy script file to determine granting access to this service is loaded">
+  </lib-text-input>
+</ng-container>
+
+<ng-container *ngIf="type.value == TYPE.GROOVY">
+  <lib-text-input [control]="form" label="Groovy Script File"
+                  toolTip="Location where the groovy script file to determine granting access to this service is loaded">
+  </lib-text-input>
+</ng-container>
+

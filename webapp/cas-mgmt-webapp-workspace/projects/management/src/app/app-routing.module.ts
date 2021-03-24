@@ -1,14 +1,10 @@
-/**
- * Created by tschmidt on 2/23/17.
- */
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {InitComponent} from './core/init.component';
 
 const routes: Routes = [
   {
     path: 'registry',
-    loadChildren: () => import('./registry/registry.module').then(m => m.RegistryModule)
+    loadChildren: () => import('@apereo/mgmt-lib').then(m => m.RegistryModule)
   },
   {
     path: 'form',
@@ -16,20 +12,32 @@ const routes: Routes = [
   },
   {
     path: 'version-control',
-    loadChildren: () => import('./version-control/version-control.module').then(m => m.VersionControlModule)
+    loadChildren: () => import('@apereo/mgmt-lib').then(m => m.VersionControlModule)
   },
   {
     path: 'delegated',
-    loadChildren: () => import('./delegated/delegated.module').then(m => m.DelegatedModule)
+    loadChildren: () => import('@apereo/mgmt-lib').then(m => m.DelegatedModule)
+  },
+  {
+    path: 'submissions',
+    loadChildren: () => import('@apereo/mgmt-lib').then(m => m.SubmissionsModule)
+  },
+  {
+    path: 'definitions',
+    loadChildren: () => import('@apereo/mgmt-lib').then(m => m.DefinitionStoreModule)
   },
   {
     path: '',
-    component: InitComponent
+    pathMatch: 'full',
+    redirectTo: 'registry'
   }
 ];
 
+/**
+ * Main routing module for the application.
+ */
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 

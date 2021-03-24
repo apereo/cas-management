@@ -1,5 +1,7 @@
 package org.apereo.cas.mgmt.factory;
 
+import org.apereo.cas.authentication.attribute.AttributeDefinition;
+import org.apereo.cas.authentication.attribute.DefaultAttributeDefinitionStore;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.discovery.CasServerProfile;
@@ -7,25 +9,30 @@ import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.support.saml.web.idp.profile.builders.attr.SamlIdPAttributeDefinition;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.HttpUtils;
 import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.services.persondir.IPersonAttributeDao;
-import org.apereo.services.persondir.IPersonAttributeDaoFilter;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Class used to create a FormData record to be delivered to the client.
@@ -38,10 +45,8 @@ import static java.util.stream.Collectors.toList;
 public class FormDataFactory {
 
     private final CasConfigurationProperties casProperties;
-
     private final CasManagementConfigurationProperties mgmtProperties;
-
-    private final IPersonAttributeDao attributeRepository;
+    private final DefaultAttributeDefinitionStore attributeDefinitionStore;
 
     private Optional<CasServerProfile> profile = Optional.empty();
 
@@ -56,13 +61,17 @@ public class FormDataFactory {
         loadMfaProviders(formData);
         loadDelegatedClientTypes(formData);
         loadAvailableAttributes(formData);
+        loadAttributeRepositories(formData);
+        loadSamlIdpAttributes(formData);
+        loadUserDefinedScopes(formData);
         return formData;
     }
 
     @PostConstruct
-    public void callForProfile() {
+    @Scheduled(fixedDelayString = "PT60M")
+    private void callForProfile() {
         if (!mgmtProperties.isEnableDiscoveryEndpointCall()) {
-            LOGGER.info("Call to {} disabled by management configuration. Using default FormData values.", mgmtProperties.getDiscoveryEndpointPath());
+            LOGGER.warn("Call to cas/actuator/discoveryProfile disabled by management configuration.  Using default FormData values.");
             return;
         }
         if (StringUtils.isBlank(casProperties.getServer().getName())) {
@@ -153,12 +162,27 @@ public class FormDataFactory {
     }
 
     private void loadAvailableAttributes(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
-            val p = profile.get();
-            formData.setAvailableAttributes(p.getAvailableAttributes().stream().sorted().collect(Collectors.toList()));
-        } else {
-            formData.setAvailableAttributes(this.attributeRepository.getPossibleUserAttributeNames(IPersonAttributeDaoFilter.alwaysChoose()).stream().sorted().collect(Collectors.toList()));
-        }
+        formData.setAvailableAttributes(
+                attributeDefinitionStore.getAttributeDefinitions().stream()
+                .map(AttributeDefinition::getKey)
+                .collect(toSet()));
     }
 
+    private void loadAttributeRepositories(final FormData formData) {
+        formData.setAttributeRepositories(new HashSet<>(mgmtProperties.getAttributeRepositories()));
+    }
+
+    private void loadSamlIdpAttributes(final FormData formData) {
+        formData.setSamlIdpAttributes(attributeDefinitionStore.getAttributeDefinitions().stream()
+                .filter(d -> d instanceof SamlIdPAttributeDefinition)
+                .map(AttributeDefinition::getKey)
+                .collect(toSet()));
+    }
+
+    private void loadUserDefinedScopes(final FormData formData) {
+        if (profile.isPresent() && !profile.get().getUserDefinedScopes().isEmpty()) {
+            val p = profile.get();
+            formData.setUserDefinedScopes(p.getUserDefinedScopes());
+        }
+    }
 }

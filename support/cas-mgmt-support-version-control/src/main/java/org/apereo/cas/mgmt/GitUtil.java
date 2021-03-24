@@ -18,6 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand;
@@ -53,14 +54,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -327,6 +327,19 @@ public class GitUtil implements AutoCloseable {
     }
 
     /**
+     * Returns a RawText representation of a file in the passed repository.  Used in creating diffs.
+     *
+     * @param repo - The repository to pull the change.
+     * @param path - The path to the file.
+     * @return - RawText representation of the file.
+     * @throws IOException - failed.
+     */
+    public RawText raw(final Repository repo, final String path) throws IOException {
+        val file = new File(repo.getWorkTree().getAbsolutePath() + "/" + path);
+        return new RawText(FileUtils.readFileToByteArray(file));
+    }
+
+    /**
      * Returns the file as a String form the repository indexed by the passed String
      * representing its ObjectId.
      *
@@ -590,7 +603,7 @@ public class GitUtil implements AutoCloseable {
     }
 
     private static String formatCommitTime(final int ctime) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(ctime * 1000L),
+        return LocalDateTime.ofInstant(new Date(ctime * 1000L).toInstant(),
             ZoneId.systemDefault())
             .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
@@ -630,7 +643,7 @@ public class GitUtil implements AutoCloseable {
      * @throws IOException - failed
      */
     public void markAsSubmitted(final RevObject c) throws GitAPIException, IOException {
-        appendNote(c, "SUBMITTED on " + LocalDateTime.now(Clock.systemUTC()) + "\n    ");
+        appendNote(c, "SUBMITTED on " + new Date().toString() + "\n    ");
     }
 
 
@@ -995,7 +1008,7 @@ public class GitUtil implements AutoCloseable {
      * @throws IOException - failed.
      */
     public RawText rawText(final String path) throws IOException {
-        val file = new File(git.getRepository().getWorkTree().getAbsolutePath() + '/' + path);
+        val file = new File(git.getRepository().getWorkTree().getAbsolutePath() + "/" + path);
         return new RawText(FileUtils.readFileToByteArray(file));
     }
 
@@ -1043,7 +1056,7 @@ public class GitUtil implements AutoCloseable {
     public void markAsReverted(final String branch, final CasUserProfile user) throws GitAPIException, IOException {
         val revWalk = new RevWalk(git.getRepository());
         val com = revWalk.parseCommit(git.getRepository().resolve(branch));
-        val msg = "REVERTED by " + user.getId() + " on " + LocalDateTime.now(Clock.systemUTC()) + "\n    ";
+        val msg = "REVERTED by " + user.getId() + " on " + new Date().toString() + "\n    ";
         appendNote(com, msg);
     }
 

@@ -38,14 +38,17 @@ dependencies {
     implementation project(":config:cas-mgmt-config-authz")
     implementation project(":config:cas-mgmt-config-core")
     implementation project(":config:cas-mgmt-config-search")
+    implementation project(":config:cas-mgmt-config-register")
     implementation project(":config:cas-mgmt-config-version-control")
-    implementation project(":webapp:cas-mgmt-webapp-config")
-    implementation project(":webapp:cas-mgmt-webapp-init")
-    implementation project(":config:cas-mgmt-config-dashboard")
     implementation project(":config:cas-mgmt-config-saml")
     implementation project(":config:cas-mgmt-config-oauth")
+    implementation project(":webapp:cas-mgmt-webapp-config")
+    implementation project(":webapp:cas-mgmt-webapp-init")
     implementation project(":config:cas-mgmt-config-delegated")
+    implementation project(":config:cas-mgmt-config-dashboard")
+    implementation project(":config:cas-mgmt-config-submissions")
 
+    implementation libraries.nimbus
     //implementation libraries.cassecurityfilter
     
 }

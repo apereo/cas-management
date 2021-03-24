@@ -1,8 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AuthenticatedService, SsoSession} from '../../domain/sessions.model';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {MatTableDataSource} from '@angular/material/table';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
+/**
+ * Dialog component that displays a session detail.
+ *
+ * @author Travis Schmidt
+ */
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -19,7 +24,9 @@ export class DetailComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: SsoSession) {
   }
 
-
+  /**
+   * Gets detail passed to the component and loads the view.
+   */
   ngOnInit() {
     this.detail = this.data;
     const services: AuthenticatedService[] = [];

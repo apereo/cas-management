@@ -15,7 +15,7 @@
 
 .selected {
   background: #607d8b;
-  opacity: 50%;
+  opacity: 0.5;
   color: white;
 }
 

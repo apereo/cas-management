@@ -1,0 +1,112 @@
+<div fxLayout="column">
+
+  <mat-form-field floatLabel="never" style="width:100%;min-width:250px;">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter Service Providers" >
+  </mat-form-field>
+
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container>&nbsp;</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'statusWidth'">
+        <ng-container i18n>Status</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'statusWidth'">
+        <span *ngIf="added(row)" style="color:green;">A</span>
+        <span *ngIf="modified(row)" style="color:blue;">M</span>
+        <span *ngIf="deleted(row)" style="color:red;">D</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'nameWidth'">
+        <ng-container i18n>Name</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <mat-chip-list *ngIf="row.staged">
+          <mat-chip color="cas-primary">Staged</mat-chip>
+        </mat-chip-list>
+        <a (click)="serviceEdit(row)">
+          {{ row.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'serviceIdWidth'">
+        <ng-container i18n>Service Url</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceIdWidth'">
+        {{ row.serviceId }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'descriptionWidth'">
+        <ng-container i18n>Description</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'descriptionWidth'">
+        {{ row.description }}
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="status(row)"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #serviceMenu>
+  <button mat-menu-item (click)="serviceEdit()">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>Edit</ng-container>
+  </button>
+  <button mat-menu-item (click)="getYaml()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>YAML</ng-container>
+  </button>
+  <button mat-menu-item (click)="getJson()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>JSON</ng-container>
+  </button>
+  <button mat-menu-item (click)="getMetadata()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>Metadata</ng-container>
+  </button>
+  <button mat-menu-item (click)="serviceDuplicate()">
+    <mat-icon>content_copy</mat-icon>
+    <ng-container i18n>Duplicate</ng-container>
+  </button>
+  <button mat-menu-item (click)="openModalDelete()">
+    <mat-icon>delete</mat-icon>
+    <ng-container i18n>Delete</ng-container>
+  </button>
+  <button mat-menu-item (click)="history()" *ngIf="showHistory()">
+    <mat-icon>history</mat-icon>
+    <ng-container i18n>History</ng-container>
+  </button>
+  <button mat-menu-item (click)="openModalRevert()" *ngIf="showRevert()">
+    <mat-icon>undo</mat-icon>
+    <ng-container i18n>Revert</ng-container>
+  </button>
+  <button mat-menu-item (click)="promote()" *ngIf="staged()">
+    <mat-icon>call_made</mat-icon>
+    <ng-container i18n>Promote</ng-container>
+  </button>
+  <button mat-menu-item (click)="demote()" *ngIf="!staged()">
+    <mat-icon>call_received</mat-icon>
+    <ng-container i18n>Demote</ng-container>
+  </button>
+</mat-menu>

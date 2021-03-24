@@ -8,33 +8,64 @@ import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SamlController;
 import org.apereo.cas.mgmt.UrlMetadataResolver;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.controller.EmailManager;
+import org.apereo.cas.mgmt.factory.FormDataFactory;
+import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
-import org.apereo.cas.support.saml.SamlUtils;
-import org.apereo.cas.util.ResourceUtils;
+
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import org.apache.commons.lang3.ClassUtils;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
+
+import org.apereo.cas.support.saml.services.SamlIdPServicesManagerRegisteredServiceLocator;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.SamlRegisteredServiceCachingMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.SamlRegisteredServiceDefaultCachingMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.SamlRegisteredServiceMetadataResolverCacheLoader;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.resolver.ClasspathResourceMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.resolver.FileSystemResourceMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.resolver.GroovyResourceMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.resolver.JsonResourceMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.resolver.MetadataQueryProtocolMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.cache.resolver.UrlResourceMetadataResolver;
+import org.apereo.cas.support.saml.services.idp.metadata.plan.DefaultSamlRegisteredServiceMetadataResolutionPlan;
+import org.apereo.cas.support.saml.services.idp.metadata.plan.SamlRegisteredServiceMetadataResolutionPlan;
+import org.apereo.cas.support.saml.services.idp.metadata.plan.SamlRegisteredServiceMetadataResolutionPlanConfigurer;
+import org.apereo.cas.util.http.HttpClient;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import java.util.HashMap;
 
 /**
- * Configuration for register end point features.
+ *Configuration for register end point features.
  *
  * @author Travis Schmidt
  * @since 6.1
  */
 @Configuration("casManagementSamlConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
+@Slf4j
 public class CasManagementSamlConfiguration {
 
     private static final int POOL_SIZE = 200;
+
+    @Autowired
+    private ConfigurableApplicationContext applicationContext;
+
+    @Autowired
+    @Qualifier("noRedirectHttpClient")
+    private ObjectProvider<HttpClient> httpClient;
+
 
     @Autowired
     @Qualifier("managerFactory")
@@ -50,35 +81,41 @@ public class CasManagementSamlConfiguration {
     @Qualifier("casUserProfileFactory")
     private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
+    @Autowired
+    @Qualifier("servicesManager")
+    private ObjectProvider<ServicesManager> servicesManager;
+
+    @Autowired
+    @Qualifier("emailManager")
+    private ObjectProvider<EmailManager> emailManager;
+
+    @Autowired
+    @Qualifier("shibboleth.OpenSAMLConfig")
+    private ObjectProvider<OpenSamlConfigBean> openSamlConfigBean;
+
+    @Autowired
+    @Qualifier("formDataFactory")
+    private ObjectProvider<FormDataFactory> formDataFactory;
+
     @Bean
     public SamlController samlController() {
         return new SamlController(casUserProfileFactory.getIfAvailable(),
-            managerFactory.getIfAvailable(),
-            managementProperties,
-            openSamlConfigBean(),
-            metadataAggregateResolver(),
-            urlMetadataResolver());
+                managerFactory.getIfAvailable(),
+                managementProperties,
+                formDataFactory.getIfAvailable().create(),
+                openSamlConfigBean(),
+                metadataAggregateResolver(),
+                urlMetadataResolver());
     }
 
     @Bean
-    @SneakyThrows
     public MetadataAggregateResolver metadataAggregateResolver() {
-        return new InCommonMetadataAggregateResolver(casProperties, managementProperties,
-            openSamlConfigBean(), getMetadataAggregateFilter());
-    }
-
-    private MetadataFilter getMetadataAggregateFilter() throws Exception {
-        if (ResourceUtils.doesResourceExist(managementProperties.getInCommonCert())) {
-            val signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(managementProperties.getInCommonCert());
-            signatureValidationFilter.setRequireSignedRoot(false);
-            return signatureValidationFilter;
-        }
-        return (xmlObject, metadataFilterContext) -> xmlObject;
+        return new InCommonMetadataAggregateResolver(casProperties, managementProperties, openSamlConfigBean());
     }
 
     @Bean
     public UrlMetadataResolver urlMetadataResolver() {
-        return new UrlMetadataResolver(casProperties);
+        return new UrlMetadataResolver(casProperties, openSamlConfigBean());
     }
 
     @Bean(name = "shibboleth.OpenSAMLConfig")
@@ -111,5 +148,53 @@ public class CasManagementSamlConfiguration {
         features.put("http://xml.org/sax/features/external-parameter-entities", Boolean.FALSE);
         pool.setBuilderFeatures(features);
         return pool;
+    }
+
+    @ConditionalOnMissingBean(name = "samlRegisteredServiceMetadataResolvers")
+    @Bean
+    public SamlRegisteredServiceMetadataResolutionPlan samlRegisteredServiceMetadataResolvers() {
+        val plan = new DefaultSamlRegisteredServiceMetadataResolutionPlan();
+
+        val samlIdp = casProperties.getAuthn().getSamlIdp();
+        val cfgBean = openSamlConfigBean.getObject();
+        plan.registerMetadataResolver(new MetadataQueryProtocolMetadataResolver(samlIdp, cfgBean));
+        plan.registerMetadataResolver(new JsonResourceMetadataResolver(samlIdp, cfgBean));
+        plan.registerMetadataResolver(new FileSystemResourceMetadataResolver(samlIdp, cfgBean));
+        plan.registerMetadataResolver(new UrlResourceMetadataResolver(samlIdp, cfgBean));
+        plan.registerMetadataResolver(new ClasspathResourceMetadataResolver(samlIdp, cfgBean));
+        plan.registerMetadataResolver(new GroovyResourceMetadataResolver(samlIdp, cfgBean));
+
+        val configurers = applicationContext.getBeansOfType(SamlRegisteredServiceMetadataResolutionPlanConfigurer.class, false, true);
+
+        configurers.values().forEach(c -> {
+            LOGGER.trace("Configuring saml metadata resolution plan [{}]", c.getName());
+            c.configureMetadataResolutionPlan(plan);
+        });
+        return plan;
+    }
+
+    @ConditionalOnMissingBean(name = "chainingMetadataResolverCacheLoader")
+    @Bean
+    @RefreshScope
+    public SamlRegisteredServiceMetadataResolverCacheLoader chainingMetadataResolverCacheLoader() {
+        return new SamlRegisteredServiceMetadataResolverCacheLoader(
+                openSamlConfigBean.getObject(),
+                httpClient.getObject(),
+                samlRegisteredServiceMetadataResolvers());
+    }
+
+    @ConditionalOnMissingBean(name = "defaultSamlRegisteredServiceCachingMetadataResolver")
+    @Bean
+    @RefreshScope
+    public SamlRegisteredServiceCachingMetadataResolver defaultSamlRegisteredServiceCachingMetadataResolver() {
+        return new SamlRegisteredServiceDefaultCachingMetadataResolver(
+                casProperties.getAuthn().getSamlIdp().getMetadata().getCacheExpirationMinutes(),
+                chainingMetadataResolverCacheLoader(), openSamlConfigBean.getObject()
+        );
+    }
+    @Bean
+    @ConditionalOnMissingBean(name = "samlIdPServicesManagerRegisteredServiceLocator")
+    public ServicesManagerRegisteredServiceLocator samlIdPServicesManagerRegisteredServiceLocator() {
+        return new SamlIdPServicesManagerRegisteredServiceLocator(defaultSamlRegisteredServiceCachingMetadataResolver());
     }
 }

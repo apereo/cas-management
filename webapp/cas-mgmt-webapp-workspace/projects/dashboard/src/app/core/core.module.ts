@@ -1,10 +1,14 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {NavigationComponent} from './navigation/navigation.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
-import {MgmtLibModule} from 'mgmt-lib';
-import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
+/**
+ * Core module for dashboard application.
+ *
+ * @author Travis Schmidt
+ */
 @NgModule({
   declarations: [
     NavigationComponent,
@@ -12,8 +16,7 @@ import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
   ],
   imports: [
     CommonModule,
-    ProjectShareModule,
-    MgmtLibModule
+    ProjectShareModule
   ],
   exports: [
     NavigationComponent

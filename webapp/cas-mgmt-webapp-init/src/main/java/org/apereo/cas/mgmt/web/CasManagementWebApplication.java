@@ -1,15 +1,18 @@
 package org.apereo.cas.mgmt.web;
 
+import org.apereo.cas.config.CasCoreAuthenticationSupportConfiguration;
 import org.apereo.cas.config.CasCoreServicesAuthenticationConfiguration;
+import org.apereo.cas.config.CasCoreTicketsSchedulingConfiguration;
 import org.apereo.cas.config.CasDiscoveryProfileConfiguration;
 import org.apereo.cas.config.CasPersonDirectoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.CasManagementEmbeddedContainerUtils;
+
 import lombok.NoArgsConstructor;
 import lombok.val;
+
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
@@ -25,6 +28,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -35,6 +39,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
+@EnableDiscoveryClient
 @SpringBootApplication(exclude = {
     HibernateJpaAutoConfiguration.class,
     JerseyAutoConfiguration.class,
@@ -42,18 +47,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     JmxAutoConfiguration.class,
     CasPersonDirectoryConfiguration.class,
     CasDiscoveryProfileConfiguration.class,
+    CasCoreServicesAuthenticationConfiguration.class,
+    CasCoreAuthenticationSupportConfiguration.class,
+    CasCoreTicketsSchedulingConfiguration.class,
     DataSourceAutoConfiguration.class,
-    DataSourceHealthContributorAutoConfiguration.class,
     RedisAutoConfiguration.class,
     MongoAutoConfiguration.class,
     MongoDataAutoConfiguration.class,
     CassandraAutoConfiguration.class,
     DataSourceTransactionManagerAutoConfiguration.class,
     RedisRepositoriesAutoConfiguration.class,
-    MetricsAutoConfiguration.class,
-
-    CasCoreServicesAuthenticationConfiguration.class
-})
+    MetricsAutoConfiguration.class})
 @EnableConfigurationProperties({CasManagementConfigurationProperties.class, CasConfigurationProperties.class})
 @EnableAsync
 @EnableTransactionManagement(proxyTargetClass = true)
@@ -70,11 +74,11 @@ public class CasManagementWebApplication {
         val properties = CasManagementEmbeddedContainerUtils.getRuntimeProperties(Boolean.TRUE);
         val banner = CasManagementEmbeddedContainerUtils.getCasManagementBannerInstance();
         new SpringApplicationBuilder(CasManagementWebApplication.class)
-            .banner(banner)
-            .web(WebApplicationType.SERVLET)
-            .properties(properties)
-            .logStartupInfo(true)
-            .contextClass(CasManagementWebApplicationContext.class)
-            .run(args);
+                .banner(banner)
+                .web(WebApplicationType.SERVLET)
+                .properties(properties)
+                .logStartupInfo(true)
+                .contextClass(CasManagementWebApplicationContext.class)
+                .run(args);
     }
 }

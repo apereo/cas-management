@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.PendingRequests;
+import org.apereo.cas.mgmt.SubmissionRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.GitStatus;
@@ -16,6 +17,7 @@ import org.apereo.cas.services.ServicesManager;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.AbbreviatedObjectId;
@@ -54,17 +56,20 @@ public class CommitController extends AbstractVersionControlController {
     private final CasManagementConfigurationProperties managementProperties;
     private final ServicesManager servicesManager;
     private final ObjectProvider<PendingRequests> pendingRequests;
+    private final ObjectProvider<SubmissionRequests> submissionRequests;
 
     public CommitController(final RepositoryFactory repositoryFactory,
                             final CasUserProfileFactory casUserProfileFactory,
                             final CasManagementConfigurationProperties managementProperties,
                             final ServicesManager servicesManager,
-                            final ObjectProvider<PendingRequests> pendingRequests) {
+                            final ObjectProvider<PendingRequests> pendingRequests,
+                            final ObjectProvider<SubmissionRequests> submissionRequests) {
         super(casUserProfileFactory);
         this.repositoryFactory =repositoryFactory;
         this.managementProperties = managementProperties;
         this.servicesManager = servicesManager;
         this.pendingRequests = pendingRequests;
+        this.submissionRequests = submissionRequests;
     }
 
     /**
@@ -79,7 +84,7 @@ public class CommitController extends AbstractVersionControlController {
     @SneakyThrows
     public void commit(final HttpServletResponse response,
                        final HttpServletRequest request,
-                       @RequestBody final String msg) {
+                       final @RequestBody String msg) {
         val user = casUserProfileFactory.from(request, response);
         isUser(user);
         try (GitUtil git = repositoryFactory.from(request, response)) {
@@ -191,10 +196,10 @@ public class CommitController extends AbstractVersionControlController {
     }
 
     /**
-     * Returns true if the master repository has commits ahead of the published repository.
+     * Returns true if the master repository has committs ahead of the published repository.
      *
      * @return - true if there are commits to publish.
-     * @throws IOException - failed.
+     * @throws Exception - failed.
      */
     private boolean isPublishedBehind() throws IOException {
         try (GitUtil git = repositoryFactory.masterRepository()) {
@@ -224,7 +229,14 @@ public class CommitController extends AbstractVersionControlController {
             gitStatus.setDeleted(status.getMissing().stream()
                     .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(isPublishedBehind());
-            pendingRequests.ifAvailable(p -> gitStatus.setPullRequests(p.pendingSubmits(request, response)));
+            val pr = pendingRequests.getIfAvailable();
+            if (pr != null) {
+                gitStatus.setPullRequests(pr.pendingSubmits(request, response));
+            }
+            val sr = submissionRequests.getIfAvailable();
+            if (sr != null) {
+                gitStatus.setSubmissions(sr.submissions());
+            }
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

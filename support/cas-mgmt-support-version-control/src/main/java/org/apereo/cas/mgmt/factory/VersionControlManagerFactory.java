@@ -1,30 +1,31 @@
 package org.apereo.cas.mgmt.factory;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import lombok.SneakyThrows;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
+import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.VersionControlServicesManager;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.ChainingServicesManager;
-import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.ServicesManagerConfigurationContext;
-import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
-import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
+import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.io.WatcherService;
 
-import com.github.benmanes.caffeine.cache.Cache;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.eclipse.jgit.api.Git;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.FileSystemResource;
@@ -36,7 +37,6 @@ import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Factory class to create ServiceManagers for the logged in user.
@@ -51,23 +51,12 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     private static final String SERVICES_MANAGER_KEY = "servicesManager";
 
     private final ServicesManager servicesManager;
-
-    private final CasManagementConfigurationProperties managementProperties;
-
-    private final RepositoryFactory repositoryFactory;
-
-    private final CasUserProfileFactory casUserProfileFactory;
-
-    private final CasConfigurationProperties casProperties;
-
-    private final RegisteredServiceResourceNamingStrategy namingStrategy;
-
-    private final List<ServicesManagerRegisteredServiceLocator> servicesManagerRegisteredServiceLocators;
-
     private final ConfigurableApplicationContext applicationContext;
-
-    private final Cache<Long, RegisteredService> servicesManagerCache;
-    
+    private final CasManagementConfigurationProperties managementProperties;
+    private final RepositoryFactory repositoryFactory;
+    private final CasUserProfileFactory casUserProfileFactory;
+    private final CasConfigurationProperties casProperties;
+    private final RegisteredServiceResourceNamingStrategy namingStrategy;
     private VersionControlServicesManager master;
 
     /**
@@ -84,7 +73,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
             }
             try (GitUtil git = repositoryFactory.masterRepository()) {
                 servicesManager.load();
-                val manager = new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+                val manager = new VersionControlServicesManager(createChainingServiceManager(git), namingStrategy, git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();
                 git.commit("Initial commit");
@@ -94,7 +83,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
             }
         }
         val git = repositoryFactory.masterRepository();
-        this.master = new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+        this.master = new VersionControlServicesManager(createChainingServiceManager(git), namingStrategy, git);
     }
 
     /**
@@ -116,7 +105,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @return - manager
      */
     public ManagementServicesManager from(final GitUtil git) {
-        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+        return new VersionControlServicesManager(createChainingServiceManager(git), namingStrategy, git);
     }
 
 
@@ -126,12 +115,12 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
             return master();
         }
         val session = request.getSession();
-        val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session) : createNewManager(request, response);
+        val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session, user) : createNewManager(request, response);
         session.setAttribute(SERVICES_MANAGER_KEY, manager);
         return manager;
     }
 
-    private ManagementServicesManager getSessionManager(final HttpSession session) {
+    private ManagementServicesManager getSessionManager(final HttpSession session, final CasUserProfile user) {
         val manager = (VersionControlServicesManager) session.getAttribute(SERVICES_MANAGER_KEY);
         manager.load();
         return manager;
@@ -139,7 +128,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
 
     private ManagementServicesManager createNewManager(final HttpServletRequest request, final HttpServletResponse response) {
         val git = repositoryFactory.from(request, response);
-        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+        return new VersionControlServicesManager(createChainingServiceManager(git), namingStrategy, git);
     }
 
     /**
@@ -153,29 +142,40 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     }
 
     @SneakyThrows
-    private ServicesManager createJSONServiceManager(final GitUtil git) {
+    private ServicesManager createChainingServiceManager(final GitUtil git) {
+        val cm = new ChainingServicesManager();
         val path = Paths.get(git.repoPath());
 
         val serviceRegistryDAO = new JsonServiceRegistry(new FileSystemResource(path),
-            WatcherService.noOp(), applicationContext, null, namingStrategy, null);
+                WatcherService.noOp(), null, null, namingStrategy, null);
 
+        cm.registerServiceManager(createJSONServiceManager(serviceRegistryDAO));
+        return cm;
+    }
+
+    @SneakyThrows
+    private ServicesManager createJSONServiceManager(final JsonServiceRegistry serviceRegistry) {
+        val activeProfiles = new HashSet<String>();
         val context = ServicesManagerConfigurationContext.builder()
-            .environments(new HashSet<>())
-            .serviceRegistry(serviceRegistryDAO)
-            .applicationContext(applicationContext)
-            .registeredServiceLocators(servicesManagerRegisteredServiceLocators)
-            .servicesCache(servicesManagerCache)
-            .build();
+                .serviceRegistry(serviceRegistry)
+                .applicationContext(applicationContext)
+                .environments(activeProfiles)
+                .servicesCache(servicesManagerCache())
+                .build();
+        val cm = new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor());
+        cm.load();
+        return cm;
+    }
 
-        val casManager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
-            ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
-            : new DefaultServicesManager(context));
-        
-        val manager = new ChainingServicesManager();
-        manager.registerServiceManager(casManager);
-        manager.load();
-
-        return manager;
+    public Cache<Long, RegisteredService> servicesManagerCache() {
+        val serviceRegistry = casProperties.getServiceRegistry();
+        val duration = Beans.newDuration(serviceRegistry.getCache());
+        return Caffeine.newBuilder()
+                .initialCapacity(serviceRegistry.getCacheCapacity())
+                .maximumSize(serviceRegistry.getCacheSize())
+                .expireAfterWrite(duration)
+                .recordStats()
+                .build();
     }
 
 }

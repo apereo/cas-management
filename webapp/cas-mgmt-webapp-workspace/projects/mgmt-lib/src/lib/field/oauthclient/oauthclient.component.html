@@ -1,0 +1,55 @@
+<div fxLayout="column">
+
+<div fxFlex="grow" fxLayout="row">
+  <div fxFlex="grow">
+      <lib-text-input [control]="form.clientId" label="Client ID"
+                 toolTip="OAuth 2.0 client id for this OAuth client. Only applies to OAuth/OIDC service types.">
+      </lib-text-input>
+  </div>
+  <div fxFlex="20px">
+    <mat-icon class="icon" (click)="generateId.emit()">refresh</mat-icon>
+  </div>
+</div>
+
+<div fxFlex="grow" fxLayout="row">
+  <div fxFlex="grow">
+    <lib-input toolTip="Secret key for this OAuth 2.0 client. Only applies to OAuth/OIDC service types.">
+      <mat-form-field style="width: 100%;" appearance="standard">
+        <mat-label>Client Secret</mat-label>
+        <input matInput required [type]="showOAuthSecret ? 'text' : 'password'" [formControl]="form.clientSecret">
+      </mat-form-field>
+    </lib-input>
+  </div>
+  <div fxFlex="20px">
+    <mat-icon class="icon" (click)="generateId.emit()">refresh</mat-icon>
+  </div>
+</div>
+
+<lib-checkbox [control]="form.showClient" label="Show Client Secret" toolTip="Enable to show your Client Secret.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.bypassApprovalPrompt" label="Bypass Approval Prompt"
+              toolTip="Indicates whether the OAuth 2.0 confirmation screen should be displayed before accessing the service application.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.generateRefreshToken" label="Refresh Token Generation"
+              toolTip="Indicates whether a refresh token should be generated with the access token for this OAuth 2.0 client.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.jwtAccessToken" label="JWT Access Token"
+              toolTip="Indicates whether access token should be formatted as JWT.">
+</lib-checkbox>
+
+<lib-select-input [control]="form.responseTypes" label="Allowed Response Types" multiple
+                  [valueOptions]="config.options.oauth20ResponseTypes"
+                  toolTip="Set of allowed response types that can be used with this service.  If no values are chosen all response
+                           types are allowed implicitly.">
+</lib-select-input>
+
+<lib-select-input [control]="form.grantTypes" label="Allowed Grant Types" multiple
+                  [valueOptions]="config.options.oauth20GrantTypes"
+                  toolTip="Set of allowed grant types that can be used with this service.  If no values are chosen all grant types
+                           are allowed implicitly.">
+</lib-select-input>
+
+</div>

@@ -1,25 +1,10 @@
-
-<div style="position:fixed;margin-bottom:10px;margin-left:10px;margin-right:10px;z-index:1000;background-color: #f2f2f2;"
-     [style.width]="(isHandset$ | async) === false ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">
-
-    <div style="display:flex;flex-direction: row;padding-top: 3px;">
-      <div *ngIf="!view">
-        <mat-icon style="padding-top: 3px;">add_circle</mat-icon>
-        <h4 style="display: inline;position: relative;top: -5px;" i18n>Edit Service</h4>
-      </div>
-      <div *ngIf="view">
-        <mat-icon style="padding-top: 3px;">visibility</mat-icon>
-        <h4 style="display: inline;position: relative;top: -5px;" i18n>View Service</h4>
-      </div>
-    <div style="flex: 1 1 auto"></div>
-    <div>
-      <app-controls (save)="save()" [showEdit]="showEdit()" (reset)="baseForm.reset()"></app-controls>
+<div fxFlex="grow" fxLayout="column">
+  <div fxLayout="column" style="background-color: #f2f2f2;width: 100%">
+    <div fxFlex>
+      <lib-tabs style="width: 100%;" [tabs]="tabList"></lib-tabs>
     </div>
   </div>
-  <lib-base-form #baseForm [tabs]="tabs"></lib-base-form>
-</div>
-<div style="padding-top:90px;padding-bottom:0px;display:flex;flex-direction: column; margin-right: auto; margin-left: auto;"
-     [style.width]="(isHandset$ | async) === false ? 'calc(100vw - 220px)' : 'calc(100vw - 20px)'">
+  <div style="margin-right: auto; margin-left: auto;overflow: auto;width: 100%;height: calc(100vh - 188px)">
     <router-outlet name="form"></router-outlet>
+  </div>
 </div>
-

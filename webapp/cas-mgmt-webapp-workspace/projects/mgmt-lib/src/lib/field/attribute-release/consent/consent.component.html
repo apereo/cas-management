@@ -1,0 +1,15 @@
+<lib-checkbox [control]="form.consentEnabled" label="User Consent Enabled"
+              toolTip="Control whether consent is active/inactive for this service.">
+</lib-checkbox>
+
+<ng-container *ngIf="form.consentEnabled.value">
+  <lib-select-input [control]="form.excluded" label="Excluded Attributes" [options]="config.options.availableAttributes" multiple
+                    toolTip="Exclude the indicated attributes from consent.">
+  </lib-select-input>
+</ng-container>
+
+<ng-container *ngIf="form.consentEnabled.value">
+  <lib-select-input [control]="form.includeOnly" label="Include Only Attributes" [options]="config.options.availableAttributes" multiple
+                    toolTip="Force-include the indicated attributes in consent, provided attributes are resolved.">
+  </lib-select-input>
+</ng-container>

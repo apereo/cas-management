@@ -4,9 +4,12 @@ import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.CNote;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Clock;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Controller for handling note requests.
@@ -30,6 +33,7 @@ import java.time.LocalDateTime;
 @RestController("noteController")
 @RequestMapping(path = "api/note", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class NoteController {
 
     private final RepositoryFactory repositoryFactory;
@@ -43,7 +47,7 @@ public class NoteController {
      */
     @GetMapping("/{id}")
     @SneakyThrows
-    public void getNotes(final HttpServletResponse response, @PathVariable final String id) {
+    public void getNotes(final HttpServletResponse response, final @PathVariable String id) {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val note = git.note(id);
             if (note != null) {
@@ -64,11 +68,11 @@ public class NoteController {
     @SneakyThrows
     public void addNote(final HttpServletRequest request,
                         final HttpServletResponse response,
-                        @RequestBody final CNote cnote) {
+                        final @RequestBody CNote cnote) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(cnote.getId());
-            val msg = user.getId() + " - " + LocalDateTime.now(Clock.systemUTC()) + " : \n    "
+            val msg = user.getId() + " - " + new Date().toString() + " : \n    "
                     + cnote.getText().replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
         }

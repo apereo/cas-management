@@ -21,4 +21,6 @@ public class AppConfig {
     private boolean contactLookup;
     private boolean oauthEnabled;
     private boolean samlEnabled;
+    private boolean attributeStoreEnabled;
+    private boolean submissionsEnabled;
 }

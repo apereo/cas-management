@@ -1,0 +1,16 @@
+<lib-text-input [control]="form.expirationDate" label="Expiration Date"
+                toolTip="The date on which the registration record is deemed expired. The expiration date may be
+                         specified in 2011-12-03T10:15:30, 09/24/1980 04:30 PM, 09/24/2014 6:30 AM, 09/24/2013 18:45,
+                          09/24/2017 or 2017-10-25 formats.">
+</lib-text-input>
+
+<lib-checkbox [control]="form.deleteWhenExpired"  label="Delete service when expired"
+              toolTip="When true, removes the application from the CAS service registry if and when expired.
+                       Otherwise the application record will be marked as disabled.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.notifyWhenDeleted" label="Notifiy contacts when service is deleted"
+              toolTip="Notifies contacts of the application via email or text, assuming valid contacts with email
+                       addresses or phone numbers are defined and CAS is configured to send email messages or SMS notifications.
+                       The notification is only sent if the application is expired and is about to be deleted from the registry.">
+</lib-checkbox>

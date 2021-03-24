@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authentication;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -8,6 +9,7 @@ import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;

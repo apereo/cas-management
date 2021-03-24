@@ -5,10 +5,12 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.exception.SearchException;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,6 +43,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -82,14 +85,14 @@ public class LuceneSearch {
     @PostMapping
     public List<RegisteredServiceItem> search(final HttpServletRequest request,
                                               final HttpServletResponse response,
-                                              @RequestBody final String queryString) throws SearchException {
+                                              final @RequestBody String queryString) throws SearchException {
         try {
             val casUserProfile = casUserProfileFactory.from(request, response);
             val analyzer = new StandardAnalyzer();
             val query = new QueryParser("body", analyzer).parse(queryString);
             val fields = getFields(query, new ArrayList<String>());
             val manager = (ManagementServicesManager) mgmtManagerFactory.from(request, response);
-            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + '/' + casUserProfile.getUsername()))) {
+            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()))) {
                 val docs = manager.getAllServices().stream()
                         .filter(casUserProfile::hasPermission)
                         .map(CasManagementUtils::toJson)

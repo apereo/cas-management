@@ -1,29 +1,44 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {FormService} from './form.service';
-import {Observable} from 'rxjs/index';
+import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {BaseFormComponent, DataRecord, MgmtFormGroup} from 'mgmt-lib';
-import {SpinnerService, UserService} from 'shared-lib';
-import {AbstractRegisteredService, OAuthRegisteredService, OidcRegisteredService, RegexRegisteredService, SamlRegisteredService, WSFederationRegisterdService,} from 'domain-lib';
-import {ImportService} from '../registry/import/import.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import {
+  FormService,
+  UserService,
+  SpinnerService,
+  AppConfigService,
+  AbstractRegisteredService,
+  TabsComponent,
+  ImportService, ControlsService, ServiceForm
+} from '@apereo/mgmt-lib';
+import {FormArray, FormGroup} from '@angular/forms';
+import {childRoutes, FormRoutingModule} from './form-routing.module';
 
+/**
+ * Component to display/update a service.
+ *
+ * @author Travis Schmidt
+ */
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
 
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   id: string;
   view: boolean;
   created: false;
 
-  tabs: Array<string[]> = [];
+  tabList: Array<string[]> = [];
+
+  @ViewChild(TabsComponent, {static: true})
+  tabs: TabsComponent;
+
+  subscriptions: Subscription[] = [];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 799px)'])
     .pipe(
@@ -32,40 +47,63 @@ export class FormComponent implements OnInit {
 
   imported = false;
 
-  @ViewChild(BaseFormComponent, {static: true})
-  baseForm: BaseFormComponent;
-
   constructor(private route: ActivatedRoute,
               private router: Router,
               private service: FormService,
               private importService: ImportService,
-              public data: DataRecord,
+              // private submissionService: SubmissionsService,
               private location: Location,
-              public snackBar: MatSnackBar,
+              public app: AppConfigService,
+              public controls: ControlsService,
               public userService: UserService,
               private breakpointObserver: BreakpointObserver,
               private spinner: SpinnerService) {
+    this.controls.title = 'Service';
+    this.controls.icon = 'article';
   }
 
+  /**
+   * Starts the component by loading the service passed in from the resolver.
+   */
   ngOnInit() {
     this.view = this.route.snapshot.data.view;
     this.imported = this.route.snapshot.data.import;
     this.created = this.route.snapshot.data.created;
     this.route.data
-      .subscribe((data: { resp: AbstractRegisteredService[] }) => {
-        if (data.resp && data.resp[1]) {
-          this.data.original = data.resp[1];
-        }
-        if (data.resp && data.resp[0]) {
-          this.loadService(data.resp[0]);
+      .subscribe((data: { resp: AbstractRegisteredService }) => {
+        if (data.resp) {
+          this.loadService(data.resp);
         }
       });
-    this.data.typeChange.subscribe(() => this.setNav());
+    this.service.typeChange.subscribe(() => this.setNav());
+    this.controls.resetButtons();
+    this.controls.showEdit = this.showEdit();
+    this.subscriptions.push(this.controls.save.subscribe(() => this.save()));
+    this.subscriptions.push(this.controls.reset.subscribe(() => this.reset()));
   }
 
+  /**
+   * Destroy subscriptions.
+   */
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  /**
+   * Check if form changed to show edit buttons.
+   *
+   * @param changes - SimpleChanges
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    this.controls.showEdit = this.showEdit();
+  }
+
+  /**
+   * Saves the current changes for the service.
+   */
   save() {
-    if (this.baseForm.validate() && this.baseForm.mapForm()) {
-      this.service.saveService(this.data.service)
+    if (this.validate() && this.map()) {
+      this.service.saveService(this.service.registeredService)
         .subscribe(
           resp => this.handleSave(resp),
           () => this.handleNotSaved()
@@ -73,108 +111,201 @@ export class FormComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles the return of a successful save of the service.
+   *
+   * @param id - assigned id of the service returned from the server.
+   */
+  handleSave(id: number) {
+    const hasIdAssignedAlready = this.service.registeredService.id && this.service.registeredService.id > 0;
+
+    if (!hasIdAssignedAlready && id && id !== -1) {
+      this.service.registeredService.id = id;
+      this.app.showSnackBar('Service has been added successfully.');
+    } else {
+      this.app.showSnackBar('Service has been successfully updated.');
+    }
+
+    this.service.registeredService.id = id;
+    if (this.imported && this.importService.submissionFile) {
+      this.spinner.start('Adding to registry');
+      /*
+      this.submissionService.added(this.importService.submissionFile)
+        .pipe(finalize(() => this.spinner.stop()))
+        .subscribe(() => {
+          this.location.back();
+        });
+       */
+    } else {
+      this.location.back();
+    }
+  }
+
+  /**
+   * Handles the return of an unsuccessful save of a service.
+   */
+  handleNotSaved() {
+    this.app.showSnackBar('An error has occurred while attempting to save the service. Please try again later.');
+  }
+
+  /**
+   * Loads the passed service in to the component forms.
+   *
+   * @param service - AbstractRegisteredService
+   */
   loadService(service: AbstractRegisteredService) {
-    this.data.service = service;
-    this.data.formMap = new Map<string, MgmtFormGroup<AbstractRegisteredService>>();
+    this.service.registeredService = service;
+    this.service.form = new ServiceForm(service);
+    this.service.form.statusChanges.subscribe(() => {
+      this.controls.showEdit = this.showEdit();
+    });
     this.setNav();
     setTimeout(() => {
-      if (this.data.service.id < 0) {
-        this.baseForm.markDirty();
+      if (service.id < 0) {
+        this.markDirty();
       }}, 10);
   }
 
-  isOidc(): boolean {
-    return OidcRegisteredService.instanceOf(this.data.service);
+  /**
+   * Returns true if form is new or modified to display save controls.
+   */
+  showEdit(): boolean {
+    return this.dirty() || this.service?.registeredService?.id < 0;
   }
 
-  isSaml(): boolean {
-    return SamlRegisteredService.instanceOf(this.data.service);
-  }
-
-  isWsFed(): boolean {
-    return WSFederationRegisterdService.instanceOf(this.data.service);
-  }
-
-  isOauth() {
-    return OAuthRegisteredService.instanceOf(this.data.service);
-  }
-
-  isCas() {
-    return RegexRegisteredService.instanceOf(this.data.service);
-  }
-
-  showEdit() {
-    return this.baseForm.dirty() || this.data.service.id < 0;
-  }
-
-  handleSave(id: number) {
-    const hasIdAssignedAlready = this.data.service.id && this.data.service.id > 0;
-
-    if (!hasIdAssignedAlready && id && id !== -1) {
-      this.data.service.id = id;
-      this.snackBar
-        .open('Service has been added successfully.',
-          'Dismiss',
-          {duration: 5000}
-        );
-    } else {
-      this.snackBar
-        .open('Service has been successfully updated.',
-          'Dismiss',
-          {duration: 5000}
-        );
-    }
-
-    this.data.service.id = id;
-    this.location.back();
-  }
-
-  handleNotSaved() {
-    this.snackBar
-      .open('An error has occurred while attempting to save the service. Please try again later.',
-        'Dismiss',
-        {duration: 5000}
-      );
-  }
-
+  /**
+   * Sets the tabs that are displayed in the component based on service types.
+   */
   setNav() {
-    this.tabs = [];
-    this.tabs.push(['basics', 'Basics']);
-    if (this.isSaml()) {
-      this.tabs.push(['saml-metadata', 'Metadata']);
-      this.tabs.push(['saml-assertion', 'Assertion']);
-      this.tabs.push(['saml-attributes', 'Attributes']);
-      this.tabs.push(['saml-encryption', 'Encryption']);
-      this.tabs.push(['saml-signing', 'Signing']);
+    this.tabList = [];
+    this.tabList.push(['basics', 'Basics']);
+    if (this.app.isSaml(this.service.registeredService)) {
+      this.tabList.push(['saml-metadata', 'Metadata']);
+      this.tabList.push(['saml-assertion', 'Assertion']);
+      this.tabList.push(['saml-attributes', 'Attributes']);
+      this.tabList.push(['saml-encryption', 'Encryption']);
+      this.tabList.push(['saml-signing', 'Signing']);
     }
-    if (this.isOauth() || this.isOidc()) {
-      this.tabs.push(['oauth', 'Client']);
-      this.tabs.push(['tokens', 'Tokens']);
+    if (this.app.isOauth(this.service.registeredService) || this.app.isOidc(this.service.registeredService)) {
+      this.tabList.push(['oauth', 'Client']);
+      this.tabList.push(['tokens', 'Tokens']);
     }
-    if (this.isOidc()) {
-      this.tabs.push(['oidc', 'OIDC']);
+    if (this.app.isOidc(this.service.registeredService)) {
+      this.tabList.push(['oidc', 'OIDC']);
     }
-    if (this.isWsFed()) {
-      this.tabs.push(['wsfed', 'WS Fed']);
+    if (this.app.isWsFed(this.service.registeredService)) {
+      this.tabList.push(['wsfed', 'WS Fed']);
     }
-    this.tabs.push(['contacts', 'Contacts']);
-    this.tabs.push(['logout', 'Logout']);
-    if (this.isOidc()) {
-      this.tabs.push(['scopes', 'Scopes']);
-    } else if (this.isWsFed()) {
-      this.tabs.push(['claims', 'Claims']);
+    this.tabList.push(['contacts', 'Contacts']);
+    this.tabList.push(['logout', 'Logout']);
+    if (this.app.isOidc(this.service.registeredService)) {
+      this.tabList.push(['scopes', 'Scopes']);
+    } else if (this.app.isWsFed(this.service.registeredService)) {
+      this.tabList.push(['claims', 'Claims']);
     } else {
-      this.tabs.push(['attrRelease', 'Attribute Release']);
+      this.tabList.push(['attrRelease', 'Attribute Release']);
     }
-    this.tabs.push(['accessstrategy', 'Access Strategy']);
-    this.tabs.push(['delegated', 'Delegated Authentication']);
-    this.tabs.push(['sso', 'SSO Policy']);
-    this.tabs.push(['tickets', 'Tickets']);
-    this.tabs.push(['userattr', 'Username Attribute']);
-    this.tabs.push(['multiauth', 'Multifactor']);
-    this.tabs.push(['proxy', 'Proxy']);
-    this.tabs.push(['properties', 'Properties']);
-    this.tabs.push(['advanced', 'Advanced']);
-    this.baseForm.navTo('basics');
+    this.tabList.push(['accessstrategy', 'Access Srategy']);
+    this.tabList.push(['delegated', 'Delegated Authentication']);
+    this.tabList.push(['sso', 'SSO Policy']);
+    this.tabList.push(['tickets', 'Tickets']);
+    this.tabList.push(['userattr', 'Username Attribute']);
+    this.tabList.push(['multiauth', 'Multifactor']);
+    this.tabList.push(['proxy', 'Proxy']);
+    this.tabList.push(['properties', 'Properties']);
+    this.tabList.push(['advanced', 'Advanced']);
+    this.tabs.navTo('basics');
+  }
+
+  /**
+   * Returns true if the form data is valid.
+   */
+  validate(): boolean {
+    if (this.service.form.invalid) {
+      this.touch(this.service.form);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Programmatically ensures all controls in the passed form group are marked as touch for validation.
+   *
+   * @param group - form group
+   */
+  touch(group: FormGroup | FormArray) {
+    Object.keys(group.controls).forEach(k => {
+      const control = group.get(k);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.touch(control);
+      } else {
+        if (control.invalid) {
+          control.markAsTouched();
+        }
+      }
+    });
+  }
+
+  /**
+   * Marks all form groups in the form as being dirty.
+   */
+  markDirty() {
+    this.makeDirty(this.service.form);
+  }
+
+  /**
+   * Marks all controls in the passed form group as being dirty.
+   *
+   * @param group - form group
+   */
+  makeDirty(group: FormGroup | FormArray) {
+    Object.keys(group.controls).forEach(k => {
+      const control = group.get(k);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.makeDirty(control);
+      } else {
+        control.markAsDirty();
+        control.markAsTouched();
+      }
+    });
+  }
+
+  /**
+   * Maps the form to the service int the DataRecord.
+   */
+  map(): boolean {
+    let touched: boolean = this.created;
+    if (this.service.form.valid && this.service.form.touched) {
+      this.service.form.map();
+      touched = true;
+    }
+    return touched;
+  }
+
+  /**
+   * Resets all the form controls to what they were when the service was loaded.
+   */
+  reset() {
+    this.service.form.reset();
+  }
+
+  /**
+   * Returns true if any control in the form was touched by the user.
+   */
+  touched(): boolean {
+    if (this.service.form.touched) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Returns true if the user changed any value in the form.
+   */
+  dirty(): boolean {
+    if (this.service.form.dirty) {
+      return true;
+    }
+    return false;
   }
 }

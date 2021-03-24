@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 5.2.0
  */
 @Controller("forwarding")
+@Slf4j
 public class ForwardingController {
 
     /**
@@ -19,12 +21,16 @@ public class ForwardingController {
      * @return string url
      */
     @RequestMapping({
+            "management/registry",
             "management/registry/domains",
             "management/registry/services/{domain}",
             "management/registry/search",
             "management/registry/json/{id}",
             "management/registry/yaml/{id}",
             "management/registry/import",
+            "management/registry/oauth",
+            "management/registry/saml",
+            "management/registry/metadata/{id}",
             "management/version-control/history/{fileName}",
             "management/version-control/localChanges",
             "management/version-control/changes/{branch}",
@@ -36,9 +42,13 @@ public class ForwardingController {
             "management/form/importService",
             "management/delegated/pulls",
             "management/delegated/submits",
-            "management/delegated/notes/{id}"
+            "management/delegated/notes/{id}",
+            "management/submissions",
+            "management/definitions",
+            "management/definitions/{def}"
     })
     public String forward() {
+        LOGGER.debug("IN FORWARD CONTROLLER");
         return "management/index.html";
     }
 }

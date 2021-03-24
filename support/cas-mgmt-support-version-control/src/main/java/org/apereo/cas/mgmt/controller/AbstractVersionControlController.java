@@ -2,8 +2,11 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 6.0
  */
 @RequiredArgsConstructor
+@Slf4j
 public class AbstractVersionControlController {
 
     /**

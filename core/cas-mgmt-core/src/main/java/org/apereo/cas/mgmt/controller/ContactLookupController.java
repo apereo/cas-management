@@ -3,13 +3,17 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.RegisteredServiceContact;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
@@ -22,11 +26,11 @@ import java.util.Collection;
  */
 @RestController("contactLookup")
 @RequestMapping(path = "/api/contacts", produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 @RequiredArgsConstructor
 public class ContactLookupController {
 
     private final ContactLookup contactLookup;
-
     private final CasUserProfileFactory casUserProfileFactory;
 
     /**
@@ -36,14 +40,14 @@ public class ContactLookupController {
      * @return - List of RegisteredServiceContact
      */
     @GetMapping
-    public Collection<RegisteredServiceContact> lookupContact(@RequestParam final String query) {
+    public Collection<RegisteredServiceContact> lookupContact(final @RequestParam String query) {
         return contactLookup.query(query);
     }
 
     /**
      * Returns a RegisteredServiceContact representing the currently logged in user.
      *
-     * @param request  - the request
+     * @param request - the request
      * @param response - the response
      * @return - RegisteredServiceContact
      */

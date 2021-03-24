@@ -1,11 +1,25 @@
 <lib-navigation #navcom>
-  <a mat-list-item *ngIf="appService.config.mgmtType === 'DOMAIN'" (click)="navto('registry/domains')">
+  <a mat-list-item *ngIf="appService.config.mgmtType === 'DOMAIN'"
+    (click)="navto('registry/domains')" [ngClass]="isSelected(['domains', 'services'])">
     <mat-icon>apps</mat-icon>
-    <ng-container i18n>Domains</ng-container>
+    <ng-container i18n>CAS Services</ng-container>
   </a>
-  <a mat-list-item *ngIf="appService.config.mgmtType === 'DEFAULT'" (click)="navto('registry/services/default')" >
+  <a mat-list-item *ngIf="appService.config.mgmtType === 'DEFAULT'"
+    (click)="navto('registry/services/default')" [ngClass]="isSelected(['default'])">
     <mat-icon>apps</mat-icon>
-    <ng-container i18n>Services</ng-container>
+    <ng-container i18n>CAS Services</ng-container>
+  </a>
+  <a mat-list-item *ngIf="isOauth()" (click)="navto('registry/oauth')" [ngClass]="isSelected(['oauth'])">
+    <mat-icon>apps</mat-icon>
+    <ng-container i18n>OAuth Services</ng-container>
+  </a>
+  <a mat-list-item *ngIf="isSaml()" (click)="navto('registry/saml')" [ngClass]="isSelected(['saml'])">
+    <mat-icon>apps</mat-icon>
+    <ng-container i18n>SAML Services</ng-container>
+  </a>
+  <a mat-list-item *ngIf="appService.config.attributeStoreEnabled" (click)="navto('definitions')" [ngClass]="isSelected(['definitions'])">
+    <mat-icon>apps</mat-icon>
+    <ng-container i18n>Attribute Definitions</ng-container>
   </a>
   <a mat-list-item (click)="navto('registry/search')" [ngClass]="isSelected(['search'])">
     <mat-icon>search</mat-icon>
@@ -19,27 +33,25 @@
           matBadgeColor="accent"
           [matBadgeHidden]="pullRequests() === 0" i18n>Pull Requests</span>
   </a>
-  <a mat-list-item *ngIf="isDelegated() && !isAdmin()" (click)="navto('delegated/submits')">
+  <a mat-list-item *ngIf="isDelegated() && !isAdmin()" (click)="navto('delegated/submits')" [ngClass]="isSelected(['submits'])">
     <mat-icon>file_upload</mat-icon>
     <ng-container i18n>Submit Requests</ng-container>
   </a>
-  <a *ngIf="canCreateCasServices" mat-list-item (click)="navto('form/edit/-1')">
-    <mat-icon>add_circle</mat-icon>
-    <span i18n>Add CAS Service</span>
-  </a>
-  <a *ngIf="canCreateOauthServices || canCreateOidcServices" mat-list-item (click)="createOAuthService()">
-    <mat-icon>add_circle</mat-icon>
-    <span i18n>Add OAuth Service</span>
-  </a>
-  <a *ngIf="canCreateSamlServices" mat-list-item (click)="createSamlService()">
-    <mat-icon>add_circle</mat-icon>
-    <span i18n>Add SAML Service</span>
-  </a>
-  <a mat-list-item (click)="navto('registry/import')" *ngIf="isAdmin()">
+  <a mat-list-item (click)="navto('registry/import')" *ngIf="isAdmin()" [ngClass]="isSelected(['import'])">
     <mat-icon>add_circle</mat-icon>
     <ng-container i18n>Import Service</ng-container>
   </a>
-  <a mat-list-item *ngIf="appService.config.versionControl" (click)="navto('version-control/localChanges')">
+  <a mat-list-item (click)="navto('submissions')" *ngIf="appService.config.submissionsEnabled && isAdmin()"
+     [ngClass]="isSelected(['submissions'])">
+    <mat-icon>file_upload</mat-icon>
+    <span i18n
+          [matBadge]="submissions()"
+          matBadgePosition="above after"
+          matBadgeOverlap="false"
+          matBadgeColor="accent"
+          [matBadgeHidden]="submissions() === 0">Submissions</span>
+  </a>
+  <a mat-list-item *ngIf="appService.config.versionControl" (click)="navto('version-control/localChanges')" [ngClass]="isSelected(['localChanges'])">
     <mat-icon>build</mat-icon>
     <ng-container i18n>Working Changes</ng-container>
   </a>

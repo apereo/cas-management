@@ -1,3 +1,6 @@
+/**
+ * AuditLog model.
+ */
 export class AuditLog {
   principal: string;
   resourcesOperatedUpon: string;

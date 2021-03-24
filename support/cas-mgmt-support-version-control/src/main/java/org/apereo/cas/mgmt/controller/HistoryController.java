@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.mgmt.GitUtil;
+import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.Diff;
@@ -8,9 +9,11 @@ import org.apereo.cas.mgmt.domain.History;
 import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.springframework.http.HttpStatus;
@@ -23,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -44,11 +49,14 @@ public class HistoryController extends AbstractVersionControlController {
     private static final int NO_CHANGES_FOUND = 244;
 
     private final RepositoryFactory repositoryFactory;
+    private final MgmtManagerFactory managerFactory;
 
     public HistoryController(final RepositoryFactory repositoryFactory,
+                             final MgmtManagerFactory managerFactory,
                              final CasUserProfileFactory casUserProfileFactory) {
         super(casUserProfileFactory);
         this.repositoryFactory = repositoryFactory;
+        this.managerFactory = managerFactory;
     }
 
     /**
@@ -90,7 +98,7 @@ public class HistoryController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public List<History> history(final HttpServletRequest request,
                                  final HttpServletResponse response,
-                                 @RequestBody final String path) throws VersionControlException {
+                                 final @RequestBody String path) throws VersionControlException {
         isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             return git.history(path);
@@ -112,7 +120,7 @@ public class HistoryController extends AbstractVersionControlController {
     @GetMapping("commit/{id}")
     public List<Diff> commitHistoryList(final HttpServletResponse response,
                                         final HttpServletRequest request,
-                                        @PathVariable final String id) throws VersionControlException {
+                                        final @PathVariable String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val r = git.getCommit(id);
@@ -143,7 +151,7 @@ public class HistoryController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public void revertRepo(final HttpServletRequest request,
                            final HttpServletResponse response,
-                           @PathVariable final String id) throws VersionControlException {
+                           final @PathVariable String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.reset(id);
@@ -166,7 +174,7 @@ public class HistoryController extends AbstractVersionControlController {
     @SneakyThrows
     public void revertDelete(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             @RequestParam final String path) {
+                             final @RequestParam String path) {
         isUser(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
@@ -189,7 +197,7 @@ public class HistoryController extends AbstractVersionControlController {
     @PostMapping("checkout")
     public void checkout(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         @RequestBody final String[] data) throws VersionControlException {
+                         final @RequestBody String[] data) throws VersionControlException {
         isUser(request, response);
         val path = data[0];
         val id = data[1];
@@ -214,7 +222,7 @@ public class HistoryController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public void checkoutCommit(final HttpServletResponse response,
                                final HttpServletRequest request,
-                               @PathVariable final String id) throws VersionControlException {
+                               final @PathVariable String id) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             for (val d : git.getDiffsToRevert(id)) {

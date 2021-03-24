@@ -5,6 +5,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.DelegatedUtil;
+import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.controller.NoteController;
 import org.apereo.cas.mgmt.controller.PullController;
 import org.apereo.cas.mgmt.controller.SubmitController;
@@ -13,6 +14,7 @@ import org.apereo.cas.notifications.CommunicationsManager;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +22,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * Configuration class for version control.
@@ -46,6 +49,11 @@ public class CasManagementDelegatedConfiguration {
     @Qualifier("communicationsManager")
     private ObjectProvider<CommunicationsManager> communicationsManager;
 
+    @Autowired
+    @Qualifier("mailSender")
+    private ObjectProvider<JavaMailSender> mailSender;
+
+
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public SubmitController submitController() {
@@ -68,6 +76,13 @@ public class CasManagementDelegatedConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
+
+    public EmailManager emailManager() {
+        return new EmailManager(mailSender.getIfAvailable());
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PendingRequests pendingRequests() {
         return (request, response) -> {
             val user = casUserProfileFactory.getIfAvailable().from(request, response);
@@ -79,7 +94,7 @@ public class CasManagementDelegatedConfiguration {
                             .filter(r -> DelegatedUtil.filterPulls(r, new boolean[]{true, false, false}))
                             .count();
                 } catch (final Exception e) {
-                    LOGGER.error(e.getMessage(), e);
+                    return 0;
                 }
             }
             return 0;

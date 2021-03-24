@@ -2,6 +2,6 @@ description "Apereo CAS Management API Version Control"
 
 dependencies {
     implementation libraries.git
-    implementation libraries.pac4j
+    implementation libraries.pac4jcore
     
 }

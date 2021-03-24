@@ -1,13 +1,16 @@
 package org.apereo.cas.mgmt;
 
+import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
+
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.eclipse.jgit.api.Status;
-import java.io.File;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.stream.Stream;
  * @author Travis Schmidt
  * @since 6.0.0
  */
+@Slf4j
 public class VersionControlServicesManager extends ManagementServicesManager {
 
     private final GitUtil git;
@@ -43,14 +47,14 @@ public class VersionControlServicesManager extends ManagementServicesManager {
     }
 
     public String determineStatus(final String id, final Status status) {
-        if (status.getModified().stream().anyMatch(f -> f.contains(id))) {
+        val fileName = "service-" + id + ".json";
+        if (status.getModified().contains(fileName)) {
             return "MODIFY";
         }
-        if (status.getRemoved().stream().anyMatch(f -> f.contains(id))) {
+        if (status.getRemoved().contains(fileName)) {
             return "DELETE";
         }
-        if (status.getAdded().stream().anyMatch(f -> f.contains(id))
-                || status.getUntracked().stream().anyMatch(f -> f.contains(id))) {
+        if (status.getAdded().contains(fileName) || status.getUntracked().contains(fileName)) {
             return "ADD";
         }
         return null;
@@ -58,7 +62,7 @@ public class VersionControlServicesManager extends ManagementServicesManager {
 
     private boolean changed() {
         val max = Arrays.stream(git.getRepository().getWorkTree().getAbsoluteFile().listFiles())
-                .map(File::lastModified)
+                .map(f -> f.lastModified())
                 .max(Long::compare).get();
         if (this.lastModified == max) {
             return false;
@@ -89,8 +93,8 @@ public class VersionControlServicesManager extends ManagementServicesManager {
     public void checkForRename(final RegisteredService service) {
         val existing = findServiceBy(service.getId());
         if (existing != null) {
-            val oldName = getNamingStrategy().build(existing, ".json");
-            val newName = getNamingStrategy().build(service, ".json");
+            val oldName = getNamingStrategy().build(existing, "json");
+            val newName = getNamingStrategy().build(service, "json");
             if (!oldName.equals(newName)) {
                 try (git) {
                     git.move(oldName, newName);

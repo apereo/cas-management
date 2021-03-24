@@ -50,6 +50,9 @@ const routes: Routes = [
   }
 ];
 
+/**
+ * Top level routing module for the application.
+ */
 @NgModule({
   imports: [ RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }) ],
   exports: [ RouterModule ]

@@ -8,6 +8,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {ProjectShareModule} from './project-share/project-share.module';
 import {CoreModule} from './core/core.module';
 
+/**
+ * Main module for the application.
+ *
+ * @author Travis Schmidt
+ */
 @NgModule({
   imports: [
     BrowserModule,
@@ -21,6 +26,7 @@ import {CoreModule} from './core/core.module';
     AppComponent
   ],
   bootstrap: [AppComponent]
+
 })
 export class AppModule {
 }

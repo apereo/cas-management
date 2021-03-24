@@ -1,0 +1,69 @@
+<lib-checkbox [control]="form.signAssertions" label="Sign Assertions" toolTip="Sign Assertions."></lib-checkbox>
+
+<lib-checkbox [control]="form.signResponses" label="Sign Responses" toolTip="Sign Responses."></lib-checkbox>
+
+<lib-select-input [control]="form.signingCredentialType" label="Signing Credential Type"
+                  [options]="config.options.samlCredentialTypes"
+                  toolTip="This setting controls the type of the signature block produced in the final SAML response
+                           for this application. The latter, being the default, encodes the signature in PEM format inside a X509Data
+                           block while the former encodes the signature based on the resolved public key under a DEREncodedKeyValue block.">
+</lib-select-input>
+
+<lib-text-input [control]="form.signingCredentialFingerPrint" label="Signing Credential Fingerprint"
+                toolTip="SHA-1 digest of the signing credential’s public key, parsed as a regular expression, used for
+                         the purposes of key rotation when dealing with multiple credentials.">
+</lib-text-input>
+
+<lib-select-input [control]="form.signingSignatureReferenceDigestMethods" label="Signing Signature Reference Digest Methods" multiple
+                  [valueOptions]="[{value: 'http://www.w3.org/2001/04/xmlenc#sha256', display: 'SHA-256'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#sha384', display: 'SHA-384'},
+                                   {value: 'http://www.w3.org/2001/04/xmlenc#sha512', display: 'SHA-512'},
+                                   {value: 'http://www.w3.org/2000/09/xmldsig#sha1', display:'SHA-1'}]"
+                  toolTip="Collection of signing signature reference digest methods, if any, to override the global defaults.">
+</lib-select-input>
+
+<lib-select-input [control]="form.signingSignatureAlgorithms" label="Signing Signature Algorithms" multiple
+                  [valueOptions]="[{value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256', display: 'RSA-SHA256'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha384', display: 'RSA-SHA384'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha512', display: 'RSA-SHA512'},
+                                   {value: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1', display: 'RAS-SHA1'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256', display: 'ECDSA-SHA256'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384', display: 'ECDSA-SHA384'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512', display: 'ECDSA-SHA512'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1', display: 'ECDSA-SHA1'},
+                                   {value: 'http://www.w3.org/2000/09/xmldsig#dsa-sha1', display: 'DSA-SHA1'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#hmac-sha256', display: 'HMAC-SHA256'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#hmac-sha384', display: 'HMAC-SHA384'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#hmac-sha512', display: 'HMAC-SHA512'},
+                                   {value: 'http://www.w3.org/2000/09/xmldsig#hmac-sha1', display: 'HMAC-SHA1'}]"
+                  toolTip="Collection of signing signature algorithms, if any, to override the global defaults.">
+</lib-select-input>
+
+<lib-select-input [control]="form.signingSignatureBlackListedAlgorithms" label="Signing Signature Black Listed Algorithms" multiple
+                  [valueOptions]="[{value: 'http://www.w3.org/2001/04/xmldsig-more#md5', display: 'MD5'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-md5', display: 'RSA-MD5'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#hmac-md5', display: 'HMAC-MD5'}]"
+                  toolTip="Collection of signing signature algorithms, if any, to override the global defaults.">
+</lib-select-input>
+
+<lib-select-input [control]="form.signingSignatureWhiteListedAlgorithms" label="Signing Signature White Listed Algorithms" multiple
+                  [valueOptions]="[{value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256', display: 'RSA-SHA256'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha384', display: 'RSA-SHA384'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha512', display: 'RSA-SHA512'},
+                                   {value: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1', display: 'RAS-SHA1'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256', display: 'ECDSA-SHA256'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384', display: 'ECDSA-SHA384'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512', display: 'ECDSA-SHA512'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1', display: 'ECDSA-SHA1'},
+                                   {value: 'http://www.w3.org/2000/09/xmldsig#dsa-sha1', display: 'DSA-SHA1'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#hmac-sha256', display: 'HMAC-SHA256'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#hmac-sha384', display: 'HMAC-SHA384'},
+                                   {value: 'http://www.w3.org/2001/04/xmldsig-more#hmac-sha512', display: 'HMAC-SHA512'},
+                                   {value: 'http://www.w3.org/2000/09/xmldsig#hmac-sha1', display: 'HMAC-SHA1'}]"
+                  toolTip="Collection of signing signature algorithms, if any, to override the global defaults.">
+</lib-select-input>
+
+<lib-select-input [control]="form.signingSignatureCanonicalizationAlgorithm" label="Signing Signature Canonicalization Algorithm"
+                  [valueOptions]="[{value: 'http://www.w3.org/2001/10/xml-exc-c14n#', display: 'XML-C14N'}]"
+                  toolTip="Collection of signing signature algorithms, if any, to override the global defaults.">
+</lib-select-input>

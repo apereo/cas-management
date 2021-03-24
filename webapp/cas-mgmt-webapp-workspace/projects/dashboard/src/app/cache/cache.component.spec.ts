@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {CacheComponent} from './sessions.component';
+import { CacheComponent } from './sessions.component';
 
 describe('SessionsComponent', () => {
   let component: CacheComponent;

@@ -1,0 +1,45 @@
+<div fxLayout="column">
+
+  <mat-form-field floatLabel="never" style="width:100%;min-width:250px;">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter Domains" >
+  </mat-form-field>
+
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+       <ng-container i18n>Name</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <a (click)="view(row.name)">
+          {{ row.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #serviceMenu>
+  <button mat-menu-item (click)="view(selectedItem.name)">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>Edit</ng-container>
+  </button>
+</mat-menu>

@@ -1,8 +1,8 @@
-<div fxLayout="column" style="margin-left: 10px;margin-right:10px;">
-  <div fxLayout="row" style="padding-top: 10px;">
-    <mat-icon>local_activity</mat-icon>
-    <span style="font-weight: bold; font-size: 14px; white-space: nowrap" i18n>SSO Sessions</span>
-  </div>
+<div fxLayout="column">
+
+  <mat-form-field floatLabel="never" style="margin-left: 10px">
+    <input matInput (keyup)="doLookup($event.target.value)" placeholder="Enter user id to find sessions" >
+  </mat-form-field>
 
   <mat-table #table [dataSource]="dataSource" matSort>
 
@@ -46,7 +46,7 @@
         <ng-container>Created</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'creationWidth'">
-        {{ row.authenticationDate }}
+        {{ row.authenticationDate | date: 'M-dd-yyyy HH:mm:ss' }}
       </mat-cell>
     </ng-container>
 

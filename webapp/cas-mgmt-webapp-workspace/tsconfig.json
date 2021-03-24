@@ -20,27 +20,14 @@
       "dom"
     ],
     "paths": {
-      "domain-lib": [
-        "dist/domain-lib"
+      "@apereo/mgmt-lib/*": [
+        "projects/mgmt-lib/*",
+        "projects/mgmt-lib"
       ],
-      "domain-lib/*": [
-        "dist/domain-lib/*"
-      ],
-      "shared-lib": [
-        "dist/shared-lib"
-      ],
-      "shared-lib/*": [
-        "dist/shared-lib/*"
-      ],
-      "mgmt-lib": [
+      "@apereo/mgmt-lib": [
+        "dist/mgmt-lib/*",
         "dist/mgmt-lib"
       ],
-      "mgmt-lib/*": [
-        "dist/mgmt-lib/*"
-      ],
-      "@app/*": [
-        "projects/management/src/app/*"
-      ]
     }
   }
 }

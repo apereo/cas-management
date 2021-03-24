@@ -1,0 +1,13 @@
+<div [formGroup]="tab" fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;">
+  <lib-card heading="Assertion">
+    <lib-assertion [form]="tab.assertion"></lib-assertion>
+  </lib-card>
+
+  <lib-card heading="Optional Fields">
+    <lib-optional [form]="tab.optional"></lib-optional>
+  </lib-card>
+
+  <lib-card heading="Name ID">
+    <lib-nameid [form]="tab.nameId"></lib-nameid>
+  </lib-card>
+</div>

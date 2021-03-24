@@ -1,0 +1,5 @@
+<div fxLayout="column">
+  <div [style.height]="'calc(100vh - 151px)'">
+    <lib-editor #editor [file]="file" (changed)="change()" mode="yaml" theme="eclipse" style="width:100%;height:100%;"></lib-editor>
+  </div>
+</div>

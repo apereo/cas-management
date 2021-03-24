@@ -1,0 +1,14 @@
+<lib-text-input [control]="form.userInfoSigningAlg" label="User Info Signing Algorithm"
+                [autoOptions]="config.options.encryptAlgOptions"
+                toolTip="Encryption algorithm to use with user info responses.">
+</lib-text-input>
+
+<lib-text-input [control]="form.userInfoEncryptedResponseAlg" label="User Info Encrypted Response Algorithm"
+                [autoOptions]="config.options.encryptAlgOptions"
+                toolTip="Encryption algorithm to use with ID tokens.">
+</lib-text-input>
+
+<lib-text-input [control]="form.userInfoEncryptedResponseEncoding" label="User Info Encrypted Response Encoding"
+                [autoOptions]="config.options.encodingAlgOptions"
+                toolTip="Encryption content encoding algorithm to use with ID tokens.">
+</lib-text-input>

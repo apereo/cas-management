@@ -1,12 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavigationEnd, Router, RouterEvent} from '@angular/router';
-import {AppConfigService, LibNavigationComponent, UserService} from 'shared-lib';
-import {ControlsService} from '../../project-share/controls/controls.service';
-import {OAuthAddComponent, SamlAddComponent} from 'mgmt-lib';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatDialog} from '@angular/material/dialog';
-import { FormDataService } from 'mgmt-lib';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {AppConfigService, UserService, LibNavigationComponent, ControlsService} from '@apereo/mgmt-lib';
 
+/**
+ * Component to display main router and side navigation for application.
+ *
+ * @author Travis Schmidt.
+ */
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -23,67 +24,99 @@ export class NavigationComponent {
               public appService: AppConfigService,
               public userService: UserService,
               public controlsService: ControlsService,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog,
-              public formData: FormDataService) {
+              public snackBar: MatSnackBar) {
     router.events.subscribe((e: RouterEvent) => {
       if (e instanceof NavigationEnd) {
         this.current = e.url;
       }
     });
-
-    // console.log(formData.options.serviceTypes);
   }
 
+  /**
+   * Logs the user out the application.
+   */
   logout() {
     window.location.href = '../logout.html';
   }
 
+  /**
+   * Returns true if the logged in user is an admin.
+   */
   isAdmin(): boolean {
     return this.userService.user && this.userService.user.administrator;
   }
 
+  /**
+   * Returns true if the app is configured with a sync script.
+   */
   isSyncScript(): boolean {
     return this.appService.config.syncScript;
   }
 
+  /**
+   * Returns true if the app is configures with delagation.
+   */
   isDelegated(): boolean {
     return this.appService.config.delegatedMgmt;
   }
 
+  /**
+   * Returns true if the app is configured with version control.
+   */
   isVersionControl(): boolean {
     return this.appService.config.versionControl;
   }
 
+  /**
+   * Calls the server to sync the management registry to CAS servers using the sync script.
+   */
   sync() {
-    this.controlsService.sync().subscribe(resp => {
-      this.snackBar.open('Services Synchronized', 'Dismiss', {
-        duration: 5000
-      });
-    });
+    this.controlsService.sync().subscribe(() =>  this.appService.showSnackBar('Services Synchronized'));
   }
 
+  /**
+   * Returns the number of open pull requests.
+   */
   pullRequests(): number {
     return this.controlsService.status && this.controlsService.status.pullRequests;
   }
 
+  /**
+   * Returns the number of open submissions by users.
+   */
   submissions(): number {
     return this.controlsService.status && this.controlsService.status.submissions;
   }
 
+  /**
+   * Navigates the main router to the passed path.
+   *
+   * @param path - path to a component in the router
+   */
   navto(path: string) {
-    this.router.navigate([path]);
+    this.router.navigate([path]).then();
     this.navcom.close();
   }
 
+  /**
+   * Returns true if SAML authentication is configured.
+   */
   isSaml(): boolean {
     return this.appService.config.samlEnabled;
   }
 
+  /**
+   * Returns true if OAuth authentication is configured.
+   */
   isOauth(): boolean {
     return this.appService.config.oauthEnabled;
   }
 
+  /**
+   * Returns the style to be applied to a nav item based on if that router is currently displaying that item.
+   *
+   * @param rte - route paths a nav item represents
+   */
   isSelected(rte: string[]): string {
     let style = '';
     if (this.current) {
@@ -94,54 +127,5 @@ export class NavigationComponent {
       });
     }
     return style;
-  }
-
-  createSamlService() {
-    const dialogRef = this.dialog.open(SamlAddComponent, {
-      position: {top: '100px'}
-    });
-    dialogRef.afterClosed().subscribe(resp => {
-        if (resp === 'upload') {
-          this.router.navigate(['form/saml']);
-        }
-      }
-    );
-  }
-
-  createOAuthService() {
-    if (this.canCreateOauthServices && this.canCreateOidcServices) {
-      const dialogRef = this.dialog.open(OAuthAddComponent, {
-        width: '500px',
-        position: { top: '100px' }
-      });
-      dialogRef.afterClosed().subscribe(type => {
-        if (type) {
-          this.router.navigate(['form/' + type]);
-        }
-      });
-    } else {
-      const type = this.canCreateOauthServices ? 'oauth' : 'oidc';
-      this.router.navigate(['form/' + type]);
-    }
-  }
-
-  optionsHasServiceType(type: string): boolean {
-    return this.formData.options?.serviceTypes?.some(t => t.value.match(type));
-  }
-
-  get canCreateCasServices(): boolean {
-    return this.optionsHasServiceType('RegexRegisteredService');
-  }
-
-  get canCreateSamlServices(): boolean {
-    return this.optionsHasServiceType('SamlRegisteredService');
-  }
-
-  get canCreateOauthServices(): boolean {
-    return this.optionsHasServiceType('OAuthRegisteredService');
-  }
-
-  get canCreateOidcServices(): boolean {
-    return this.optionsHasServiceType('OidcRegisteredService');
   }
 }

@@ -1,10 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTableDataSource} from '@angular/material/table';
-import {PaginatorComponent} from 'shared-lib';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import {ControlsService, PaginatorComponent} from '@apereo/mgmt-lib';
 import {DialogComponent} from './dialog/dialog.component';
 
+/**
+ * Attribute model.
+ */
 export class Attribute {
   key: string;
   values: string[];
@@ -15,6 +18,11 @@ export class Attribute {
   }
 }
 
+/**
+ * Component to test and display attributes that are released by service.
+ *
+ * @author Travis Schmidt
+ */
 @Component({
   selector: 'app-release',
   templateUrl: './release.component.html',
@@ -29,25 +37,43 @@ export class ReleaseComponent implements OnInit {
   paginator: PaginatorComponent;
 
   constructor(private service: DashboardService,
+              private controls: ControlsService,
               private dialog: MatDialog) { }
 
+  /**
+   * Starts the component by opening dialog to get credentials.
+   */
   ngOnInit() {
     this.dataSource = new MatTableDataSource([]);
     this.dataSource.paginator = this.paginator.paginator;
     this.resolve();
+    this.controls.resetButtons();
+    this.controls.title = 'Attribute Release';
+    this.controls.icon = 'list';
   }
 
+  /**
+   * Opens dialog to get credentials and service id.
+   */
   resolve() {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    this.dialog.open(DialogComponent, {
       width: '500px',
       position: {top: '100px'}
-    });
-    dialogRef.afterClosed().subscribe(data => {
+    }).afterClosed().subscribe(data => {
       if (data) {
-        this.service.getRelease(data).subscribe(attr => {
-          this.dataSource.data = Object.keys(attr).map(k => new Attribute(k, attr[k]));
-        });
+        this.call(data);
       }
+    });
+  }
+
+  /**
+   * Calls the server with passed credentials loads view.
+   *
+   * @param data - credentials and service resolve
+   */
+  private call(data: any) {
+    this.service.getRelease(data).subscribe(attr => {
+      this.dataSource.data = Object.keys(attr).map(k => new Attribute(k, attr[k]));
     });
   }
 }

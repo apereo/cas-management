@@ -8,12 +8,17 @@ import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
+import org.apereo.cas.mgmt.domain.SsoSessionResponse;
 import org.apereo.cas.mgmt.domain.SystemHealth;
+import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,10 +34,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Instant;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +90,7 @@ public class DashboardController {
     @GetMapping("{index}")
     public Server update(final HttpServletRequest request,
                          final HttpServletResponse response,
-                         @PathVariable final int index) throws IllegalAccessException {
+                         final @PathVariable int index) throws IllegalAccessException {
         isAdmin(request, response);
         return getServer(mgmtProperties.getCasServers().get(index));
     }
@@ -124,7 +130,7 @@ public class DashboardController {
     @GetMapping("/resolve/{id}")
     public Map<String, List<String>> resolve(final HttpServletRequest request,
                                              final HttpServletResponse response,
-                                             @PathVariable final String id) throws IllegalAccessException {
+                                             final @PathVariable String id) throws IllegalAccessException {
         isAdmin(request, response);
         return this.<Attributes>callCasServer("/actuator/resolveAttributes/" + id,
                 new ParameterizedTypeReference<Attributes>() {}).getAttributes();
@@ -142,10 +148,28 @@ public class DashboardController {
     @PostMapping(value = "/release", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<String>> release(final HttpServletRequest request,
                                              final HttpServletResponse response,
-                                             @RequestBody final Map<String, String> data) throws IllegalAccessException {
+                                             final @RequestBody Map<String, String> data) throws IllegalAccessException {
         isAdmin(request, response);
         return this.<Attributes>callCasServer("/actuator/releaseAttributes", data,
                 new ParameterizedTypeReference<Attributes>() {}).getAttributes();
+    }
+
+    /**
+     * Method calls the CAS Server samlResponse for the passed user and service and returns the produced SAML Response.
+     *
+     * @param request - the request
+     * @param response - the response
+     * @param data - SAML Response
+     * @return - the attributes
+     * @throws IllegalAccessException - insufficient permissions
+     */
+    @PostMapping("/response")
+    public String response(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final @RequestBody Map<String, String> data) throws IllegalAccessException {
+        isAdmin(request, response);
+        return this.<String>callCasServer("/actuator/samlResponse", data,
+                new ParameterizedTypeReference<String>() {});
     }
 
     /**
@@ -195,7 +219,7 @@ public class DashboardController {
     @ResponseStatus(HttpStatus.OK)
     public void setLogger(final HttpServletRequest request,
                           final HttpServletResponse response,
-                          @RequestBody final Map<String, String> map) throws IllegalAccessException {
+                          final @RequestBody Map<String, String> map) throws IllegalAccessException {
         isAdmin(request, response);
         val level = Map.of("configuredLevel", map.get("level"));
         val server = mgmtProperties.getCasServers().stream().filter(s -> s.getName().equals(map.get("server"))).findFirst().get().getUrl();
@@ -215,7 +239,7 @@ public class DashboardController {
     @PostMapping("/audit")
     public List<AuditLog> audit(final HttpServletRequest request,
                                 final HttpServletResponse response,
-                                @RequestBody final Map<String, String> query) throws IllegalAccessException {
+                                final @RequestBody Map<String, String> query) throws IllegalAccessException {
         isAdmin(request, response);
         val audit = mgmtProperties.getCasServers().stream()
                 .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",
@@ -248,14 +272,14 @@ public class DashboardController {
         if (log != null) {
             val out = response.getWriter();
             response.setHeader("Content-Type", MediaType.TEXT_PLAIN_VALUE);
-            response.setHeader("Content-Disposition", "attachment; filename=audit-log-" + Instant.now().toEpochMilli() + ".txt");
+            response.setHeader("Content-Disposition", "attachment; filename=audit-log-" + new Date().getTime() + ".txt");
             log.stream().map(this::toCSV).forEach(out::println);
             out.close();
         }
     }
 
     private String toCSV(final AuditLog log) {
-        return new StringBuilder()
+        return new StringBuffer()
                .append(log.getWhenActionWasPerformed())
                .append("|")
                .append(log.getClientIpAddress())
@@ -270,6 +294,14 @@ public class DashboardController {
                .append("|")
                .append(log.getApplicationCode())
                .toString();
+    }
+
+    private SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
+        val resp = callCasServer(serverUrl, new ParameterizedTypeReference<SsoSessionResponse>() {});
+        if (mask) {
+            resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
+        }
+        return resp;
     }
 
     private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {

@@ -2,23 +2,30 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AbstractRegisteredService, OidcRegisteredService} from 'domain-lib';
-import {OauthAddService} from 'mgmt-lib';
+import {OidcRegisteredService, AbstractRegisteredService, OauthAddService} from '@apereo/mgmt-lib';
 
+/**
+ * Resolver to create a new OIDC service.
+ *
+ * @author Travis Schmidt
+ */
 @Injectable({
   providedIn: 'root'
 })
-export class OidcResolve implements Resolve<AbstractRegisteredService[]> {
+export class OidcResolve implements Resolve<AbstractRegisteredService> {
 
   constructor(private service: OauthAddService) {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService[]>
-                                                                    | AbstractRegisteredService[] {
-    return this.service.createOidcService()
-      .pipe(
-        map(v => [new OidcRegisteredService(v), null]),
-      );
+  /**
+   * Calls the server to generate a new OIDC service.
+   *
+   * @param route - route snapshot
+   * @param state - route state
+   */
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<AbstractRegisteredService>
+                                                                    | AbstractRegisteredService {
+    return this.service.createOidcService();
   }
 }

@@ -1,0 +1,8 @@
+<div [formGroup]="tab" style="padding-top: 10px; padding-bottom: 20px;">
+  <lib-card heading="Logout Options" [collapse]="false">
+    <div fxLayout="column">
+      <lib-logout [control]="tab.logout"></lib-logout>
+      <lib-logouttypeeval [control]="tab.logoutType"></lib-logouttypeeval>
+    </div>
+  </lib-card>
+</div>

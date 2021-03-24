@@ -1,0 +1,17 @@
+<div fxFlex="grow" fxLayout="row">
+  <div fxFlex="grow">
+    <mat-form-field style="width: 100%;" appearance="standard">
+      <mat-label *ngIf="label">{{ label }}</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="control">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <ng-container *ngFor="let e of errors">
+        <mat-error *ngIf="control.hasError(e.key)">{{ e.display }}</mat-error>
+      </ng-container>
+    </mat-form-field>
+  </div>
+  <div fxFlex="20px">
+    <mat-icon class="icon" *ngIf="toolTip" libHelp [matTooltip]="toolTip"></mat-icon>
+  </div>
+</div>
+
+<mat-datepicker #picker></mat-datepicker>

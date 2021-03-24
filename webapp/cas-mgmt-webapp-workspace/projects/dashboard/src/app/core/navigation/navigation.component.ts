@@ -1,7 +1,12 @@
 import {Component, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {LibNavigationComponent, UserService} from 'shared-lib';
+import {LibNavigationComponent, UserService} from '@apereo/mgmt-lib';
 
+/**
+ * Component for navigation and main router outlet for the app.
+ *
+ * @author Travis Schmidt
+ */
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -20,12 +25,20 @@ export class NavigationComponent {
     });
   }
 
+  /**
+   * Logs the user out of the app.
+   */
   logout() {
     window.location.href = '../logout.html';
   }
 
+  /**
+   * Navigates the main router outlet to the passes path.
+   *
+   * @param path - path to route to
+   */
   navto(path: string) {
-    this.router.navigate([path]);
+    this.router.navigate([path]).then();
     this.navcom.close();
   }
 

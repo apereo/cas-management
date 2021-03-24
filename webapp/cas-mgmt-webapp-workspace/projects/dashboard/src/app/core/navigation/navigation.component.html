@@ -19,6 +19,10 @@
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Release Attributes</span>
   </a>
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('response')">
+    <mat-icon>view_quilt</mat-icon>
+    <span i18n>SAML Response</span>
+  </a>
   <a *ngIf="isAdmin" mat-list-item (click)="navto('audit')">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Audit Log</span>

@@ -10,7 +10,9 @@ import org.apereo.cas.notifications.CommunicationsManager;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -36,6 +40,7 @@ import static java.util.stream.Collectors.toList;
 @RestController("submitController")
 @RequestMapping(path = "api/submit", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class SubmitController {
 
     private final RepositoryFactory repositoryFactory;
@@ -54,13 +59,13 @@ public class SubmitController {
     @SneakyThrows
     public void submitPull(final HttpServletResponse response,
                            final HttpServletRequest request,
-                           @RequestBody final String msg) {
+                           final @RequestBody String msg) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 throw new IllegalArgumentException("No changes to submit");
             }
-            val timestamp = Instant.now().toEpochMilli();
+            val timestamp = new Date().getTime();
             val branchName = "submit-" + timestamp;
             val submitName = user.getId() + '_' + timestamp;
 
@@ -116,7 +121,7 @@ public class SubmitController {
     @SneakyThrows
     public void revertSubmit(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             @PathVariable final String branchName) {
+                             final @PathVariable String branchName) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {

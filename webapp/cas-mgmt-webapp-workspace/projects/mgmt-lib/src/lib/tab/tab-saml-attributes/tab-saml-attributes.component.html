@@ -1,0 +1,14 @@
+<div [formGroup]="tab" fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;">
+  <lib-card heading="Attribute Name Id Format">
+    <lib-saml-attributes [form]="tab.nameFormats"></lib-saml-attributes>
+  </lib-card>
+
+  <lib-card heading="Attribute Friendly Names">
+    <lib-friendly [form]="tab.friendlyNames"></lib-friendly>
+  </lib-card>
+
+  <lib-card heading="Attribute Value Types">
+    <lib-value-types [form]="tab.valueTypes"></lib-value-types>
+  </lib-card>
+
+</div>

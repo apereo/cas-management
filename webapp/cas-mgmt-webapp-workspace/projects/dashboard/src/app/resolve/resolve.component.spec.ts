@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {ResolveComponent} from './resolve.component';
+import { ResolveComponent } from './resolve.component';
 
 describe('ResolveComponent', () => {
   let component: ResolveComponent;

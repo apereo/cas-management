@@ -1,0 +1,8 @@
+<lib-text-input [control]="form.endpointUrl" label="Remote URL" required
+                toolTip="URL that CAS should contact to determine if access to this service should be granted.">
+</lib-text-input>
+
+<lib-text-input [control]="form.responseCodes" label="Acceptable HTTP Codes" required [autoOptions]="config.options.remoteCodes"
+                toolTip="Acceptable HTTP codes before granting access to this service.">
+</lib-text-input>
+

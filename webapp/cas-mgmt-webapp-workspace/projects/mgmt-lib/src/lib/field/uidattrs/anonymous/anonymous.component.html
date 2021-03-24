@@ -1,0 +1,7 @@
+<lib-text-input [control]="form.salt" label="Salt Setting" required toolTip="The salt used for anonymous id generation.">
+</lib-text-input>
+
+<lib-text-input [control]="form.attribute" label="Username Attribute" required [autoOptions]="config.options.availableAttributes"
+                toolTip="Username attribute used for anonymous id generation.">
+</lib-text-input>
+

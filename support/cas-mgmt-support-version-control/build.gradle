@@ -5,7 +5,7 @@ dependencies {
     api project(":api:cas-mgmt-api-configuration")
     
     implementation libraries.git
-    implementation libraries.pac4j
+    implementation libraries.pac4jcore
     implementation libraries.casServer.versionControl
     implementation libraries.casServer.services
     implementation libraries.casServer.oauth

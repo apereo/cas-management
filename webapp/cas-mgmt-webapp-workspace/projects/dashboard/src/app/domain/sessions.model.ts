@@ -1,4 +1,6 @@
-
+/**
+ * SsoSessionsResponse model.
+ */
 export class SsoSessionsResponse {
 
   activeSsoSessions: SsoSession[];
@@ -14,6 +16,9 @@ export class SsoSessionsResponse {
   totalUsageCount: number;
 }
 
+/**
+ * SsoSession model.
+ */
 export class SsoSession {
   authenticatedPrincipal: string;
 
@@ -32,6 +37,9 @@ export class SsoSession {
   ticketGrantingTicket: string;
 }
 
+/**
+ * AuthenticatedService model.
+ */
 export class AuthenticatedService {
   artifactId: string;
 
@@ -48,6 +56,9 @@ export class AuthenticatedService {
   source: string;
 }
 
+/**
+ * AuthenticationAttributes model.
+ */
 export class AuthenticationAttributes {
 
   authenticationMethod: string[];
@@ -59,6 +70,9 @@ export class AuthenticationAttributes {
   successfulAuthenticationHandlers: string[];
 }
 
+/**
+ * OAuthToken model.
+ */
 export class OAuthToken {
   id: string;
   expirationPolicy: ExpirationPolicy;
@@ -70,6 +84,9 @@ export class OAuthToken {
   clientId: string;
 }
 
+/**
+ * ExpirationPolicy model.
+ */
 export class ExpirationPolicy {
   timeToIdle: number;
   timeToLive: number;

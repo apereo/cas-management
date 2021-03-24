@@ -4,7 +4,10 @@ import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 5.2.0
  */
 @RequiredArgsConstructor
+@Slf4j
 public class ServicesManagerFactory implements MgmtManagerFactory<ServicesManager> {
 
     private final ServicesManager servicesManager;

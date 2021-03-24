@@ -1,0 +1,27 @@
+<lib-text-input [control]="form.requiredAuthenticationContextClass" label="Authentication Context Class"
+                toolTip="The authentication context class that may be passed to the service provider. If
+                         none is defined here forcefully, metadata will be consulted instead.">
+</lib-text-input>
+
+<lib-text-input [control]="form.assertionAudiences" label="Assertion Audiences"
+                toolTip="Comma-separated list of audience urls to include in the assertion, in addition to the entity id.">
+</lib-text-input>
+
+<lib-text-input [control]="form.issuerEntityId" label="Issuer Entity ID"
+                toolTip="If defined, will override the issue value with the given identity provider entity id.
+                         This may be useful in cases where CAS needs to maintain multiple identity provider entity ids.">
+</lib-text-input>
+
+<lib-text-input [control]="form.issuerSigningKeyLocation" label="Issuer Signing Key Location"
+                toolTip="If defined, the key at the specified location will be used to sign the assertion instead of the default IdP Key.
+                         This may be useful in cases where CAS needs to maintain multiple identity provider entity ids.">
+</lib-text-input>
+
+<lib-text-input [control]="form.issuerSigningAlgorithm" label="Issuer Signing Algorithm"
+                toolTip="If defined, it is the algorithm used by the overriding signing key">
+</lib-text-input>
+
+<lib-text-input [control]="form.skewAllowance" label="Skew Allowance"
+                toolTip="If defined, indicates number of seconds used to skew authentication dates such as valid-from
+                            and valid-until elements, etc">
+</lib-text-input>

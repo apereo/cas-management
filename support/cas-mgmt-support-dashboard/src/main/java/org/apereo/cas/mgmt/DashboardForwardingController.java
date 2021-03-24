@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 5.2.0
  */
 @Controller("dashboardForwarding")
+@Slf4j
 public class DashboardForwardingController {
 
     /**
-     * Dashboard index url.
+     *
      * @return string url
      */
     @RequestMapping({
@@ -24,6 +26,7 @@ public class DashboardForwardingController {
             "dashboard/release",
             "dashboard/audit",
             "dashboard/sessions",
+            "dashboard/tokens",
             "dashboard/loggers",
             "dashboard"
     })

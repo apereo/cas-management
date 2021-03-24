@@ -1,0 +1,57 @@
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+  <ng-container *ngIf="service.showNew">
+    <div fxLayout="row" class='controlButton' (click)="service.newService.emit()">
+      <mat-icon matTooltip="Add New CAS Service">add_circle</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showOpen">
+    <div fxLayout="row" class='controlButton' (click)="open.click();">
+      <mat-icon matTooltip="Upload a file from computer">file_upload</mat-icon>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="service.save.emit()">
+      <mat-icon matTooltip="Import Service into Registry">add_circle</mat-icon>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="goBack();">
+      <mat-icon matTooltip="Discard changes">cancel</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showEdit">
+    <div fxLayout="row" class='controlButton' (click)="service.save.emit();">
+      <mat-icon matTooltip="Save current changes">save</mat-icon>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="service.reset.emit();">
+      <mat-icon matTooltip="Undo current changes">undo</mat-icon>
+    </div>
+    <div fxLayout="row" class='controlButton' (click)="goBack();">
+      <mat-icon matTooltip="Discard Changes">cancel</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showVersionControl">
+    <div fxLayout="row" class='controlButton' id="commit" *ngIf="isAdmin() && hasChanges()" (click)="openModalCommit()">
+      <mat-icon matTooltip="Commit changes to repository">input</mat-icon>
+    </div>
+    <div fxLayout="row" class='controlButton' *ngIf="isAdmin() && unpublished()" id="publish" (click)="openModalPublish()">
+      <mat-icon matTooltip="Publish cahnges to CAS servers">launch</mat-icon>
+    </div>
+    <div fxLayout="row" class='controlButton' *ngIf="!isAdmin() && hasChanges()" (click)="openModalCommit()">
+      <mat-icon matTooltip="Submits changes for review">file_upload</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showRefresh">
+    <div class='controlButton' (click)="service.refresh.emit()">
+      <mat-icon matTooltip="Refresh">refresh</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!service.showEdit && service.showBack">
+    <div class='controlButton' (click)="goBack()">
+      <mat-icon matTooltip="Navigate back">arrow_back</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showEditorOptions">
+    <div class='controlButton' (click)="service.editorOptions.emit()">
+      <mat-icon matTooltip="Options for Editor">more_vert</mat-icon>
+    </div>
+  </ng-container>
+</div>
+<input #open type="file" (change)="service.openFile.emit($event);" style="display:none;">
+

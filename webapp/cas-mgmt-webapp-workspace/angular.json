@@ -3,126 +3,6 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "domain-lib": {
-      "projectType": "library",
-      "root": "libs/domain-lib",
-      "sourceRoot": "libs/domain-lib/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "libs/domain-lib/tsconfig.lib.json",
-            "project": "libs/domain-lib/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/domain-lib/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "libs/domain-lib/src/test.ts",
-            "tsConfig": "libs/domain-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/domain-lib/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/domain-lib/tsconfig.lib.json",
-              "libs/domain-lib/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "shared-lib": {
-      "projectType": "library",
-      "root": "libs/shared-lib",
-      "sourceRoot": "libs/shared-lib/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "libs/shared-lib/tsconfig.lib.json",
-            "project": "libs/shared-lib/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/shared-lib/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "libs/shared-lib/src/test.ts",
-            "tsConfig": "libs/shared-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/shared-lib/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/shared-lib/tsconfig.lib.json",
-              "libs/shared-lib/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "mgmt-lib": {
-      "projectType": "library",
-      "root": "libs/mgmt-lib",
-      "sourceRoot": "libs/mgmt-lib/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "libs/mgmt-lib/tsconfig.lib.json",
-            "project": "libs/mgmt-lib/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/mgmt-lib/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "libs/mgmt-lib/src/test.ts",
-            "tsConfig": "libs/mgmt-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/mgmt-lib/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/mgmt-lib/tsconfig.lib.json",
-              "libs/mgmt-lib/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
     "management": {
       "projectType": "application",
       "schematics": {},
@@ -353,6 +233,46 @@
             "production": {
               "devServerTarget": "dashboard:serve:production"
             }
+          }
+        }
+      }
+    },
+    "mgmt-lib": {
+      "projectType": "library",
+      "root": "projects/mgmt-lib",
+      "sourceRoot": "projects/mgmt-lib/src",
+      "prefix": "apereo",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/mgmt-lib/tsconfig.lib.json",
+            "project": "projects/mgmt-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/mgmt-lib/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/mgmt-lib/src/test.ts",
+            "tsConfig": "projects/mgmt-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/mgmt-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/mgmt-lib/tsconfig.lib.json",
+              "projects/mgmt-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }

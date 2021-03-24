@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authz.yaml;
 
 import org.apereo.cas.mgmt.authz.json.JsonResourceAuthorizationGenerator;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.springframework.core.io.Resource;
@@ -12,6 +13,7 @@ import org.springframework.core.io.Resource;
  * @since 5.2.0
  */
 public class YamlResourceAuthorizationGenerator extends JsonResourceAuthorizationGenerator {
+
     public YamlResourceAuthorizationGenerator(final Resource resource) {
         super(resource);
     }

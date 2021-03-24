@@ -1,0 +1,12 @@
+<lib-input toolTip="An string that represents the EntityId of the SAML2 SP. This can be a regex pattern.">
+  <mat-form-field style="width: 100%;" appearance="standard">
+    <mat-label>Entity Id</mat-label>
+    <input matInput libValidateEntityId pattern="^\S+" required [formControl]="control">
+    <mat-error i18n *ngIf="control.hasError('invalidEntityId')">EntityIds must begin with https://, http:// or urn:mace</mat-error>
+    <mat-error i18n *ngIf="control.hasError('pattern')">Please remove any leading or trailing spaces from your service id.</mat-error>
+  </mat-form-field>
+</lib-input>
+
+
+
+

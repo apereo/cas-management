@@ -1,0 +1,23 @@
+<div fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;">
+  <lib-card heading="Service Access Strategy" *ngIf="!groovyAccessStrategy">
+    <lib-access-strategy [form]="tab.strategy" [type]="tab.type"></lib-access-strategy>
+  </lib-card>
+
+  <lib-card heading="Required Attributes" *ngIf="!groovyAccessStrategy">
+    <lib-required [form]="tab.strategy"></lib-required>
+  </lib-card>
+
+  <lib-card heading="Rejected Attributes" *ngIf="!groovyAccessStrategy">
+    <lib-attributes [form]="tab.strategy.rejectedAttributes"
+                    [keys]="config.options.availableAttributes">
+    </lib-attributes>
+  </lib-card>
+
+  <lib-card heading="Principal Attribute Repository">
+    <lib-attribute-release-principal-repo
+      [form]="tab.strategy.principalRepo"
+      [typeControl]="tab.strategy.principalRepoType">
+    </lib-attribute-release-principal-repo>
+  </lib-card>
+</div>
+

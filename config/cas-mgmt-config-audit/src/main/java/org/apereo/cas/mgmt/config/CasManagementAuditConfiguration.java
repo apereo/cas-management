@@ -4,6 +4,7 @@ import org.apereo.cas.audit.spi.resource.ShortenedReturnValueAsStringAuditResour
 import org.apereo.cas.mgmt.audit.Pac4jAuditablePrincipalResolver;
 import org.apereo.cas.mgmt.audit.ServiceManagementResourceResolver;
 import org.apereo.cas.util.CollectionUtils;
+
 import lombok.val;
 import org.apereo.inspektr.audit.AuditTrailManagementAspect;
 import org.apereo.inspektr.audit.AuditTrailManager;
@@ -18,6 +19,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import java.util.HashMap;
 import java.util.Map;
 

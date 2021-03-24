@@ -5,6 +5,7 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
+import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
@@ -12,6 +13,8 @@ import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
+
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.client.Client;
@@ -24,6 +27,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,9 +49,10 @@ import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 import org.springframework.web.servlet.mvc.UrlFilenameViewController;
 import org.springframework.web.servlet.view.RedirectView;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -62,6 +67,7 @@ import java.util.stream.Collectors;
  */
 @Configuration("casManagementWebAppConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
+@Slf4j
 public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
@@ -81,7 +87,11 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Autowired
     @Qualifier("managementWebappAuthorizer")
     private ObjectProvider<Authorizer> managementWebappAuthorizer;
-    
+
+    @Autowired
+    @Qualifier("casUserProfileFactory")
+    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
+
     @Autowired
     private CasConfigurationProperties casProperties;
 
@@ -94,7 +104,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
             @Override
             protected ModelAndView handleRequestInternal(final HttpServletRequest request,
                                                          final HttpServletResponse response) {
-                val url = request.getContextPath() + '/';
+                val url = request.getContextPath() + "/";
                 return new ModelAndView(new RedirectView(url));
             }
 
@@ -148,7 +158,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(casManagementLocaleChangeInterceptor());
         registry.addInterceptor(casManagementSecurityInterceptor())
-            .addPathPatterns("/", "/management/**", "/dashboard/**", "/api/**");
+            .addPathPatterns("/", "/management/**", "/register/**", "/dashboard/**", "/api/**");
     }
 
     @Bean
@@ -178,7 +188,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return new DefaultCasManagementEventListener();
     }
 
-    @Bean(name = "namingStrategy")
+    @Bean
     @RefreshScope
     public RegisteredServiceResourceNamingStrategy registeredServiceResourceNamingStrategy() {
         return new RegisteredServiceResourceNamingStrategy() {
@@ -190,17 +200,31 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public SpringResourceTemplateResolver casManagementTemplateResolver() {
+    public SpringResourceTemplateResolver manageStaticTemplateResolver() {
         val resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
         resolver.setCacheable(false);
         resolver.setOrder(1);
         resolver.setCheckExistence(true);
         resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("management/**"));
+        return resolver;
+    }
+
+    @Bean SpringResourceTemplateResolver staticTemplateResolver() {
+        val resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(this.context);
+        resolver.setPrefix("classpath:/dist/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML");
+        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
+        resolver.setCacheable(false);
+        resolver.setOrder(1);
+        resolver.setCheckExistence(true);
+        resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("register/**"));
         return resolver;
     }
 
@@ -210,7 +234,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        resolver.setCharacterEncoding(Charset.forName("UTF-8").name());
         resolver.setCacheable(false);
         resolver.setOrder(2);
         resolver.setCheckExistence(true);
@@ -228,7 +252,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Bean
     public ViewController viewController() {
         val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
+        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl),
+                                  casUserProfileFactory.getIfAvailable());
     }
 
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
@@ -248,7 +273,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
      */
     public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("management/index.html");
+            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("register/index.html");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }

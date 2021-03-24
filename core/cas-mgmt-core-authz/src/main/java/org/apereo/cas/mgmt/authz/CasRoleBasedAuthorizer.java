@@ -5,6 +5,7 @@ import lombok.val;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.CommonProfile;
+
 import java.util.List;
 
 /**
@@ -23,12 +24,31 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
     @Override
     protected boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) {
         LOGGER.debug("Evaluating profile [{}]", profile);
-        val result = super.isProfileAuthorized(context, profile);
-        if (!result) {
+        if (!isStaffOrFaculty(profile)) {
             LOGGER.warn("Unable to authorize access, since the authenticated profile [{}] does not contain any required roles", profile);
-        } else {
-            LOGGER.debug("Successfully authorized access for profile [{}]", profile);
+            return false;
         }
-        return result;
+        val admin = profile.getRoles().contains("ROLE_ADMIN");
+        if (context.getPath().contains("management") && profile.getRoles().isEmpty()) {
+            LOGGER.warn("Unknown user attempted access to management: access denied");
+            return false;
+        }
+        if (context.getPath().contains("dashboard") && !admin) {
+            LOGGER.warn("Non Admin user attempted to access dashboard: access denied");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isStaffOrFaculty(final CommonProfile profile) {
+        val aff = profile.getAttribute("eduPersonAffiliation");
+        if (aff == null) {
+            LOGGER.error("Person is neither staff or faculty");
+            return false;
+        }
+        if (aff instanceof String) {
+            return ((String) aff).contains("staff") || ((String) aff).contains("faculty");
+        }
+        return ((List) aff).contains("staff") || ((List) aff).contains("faculty");
     }
 }

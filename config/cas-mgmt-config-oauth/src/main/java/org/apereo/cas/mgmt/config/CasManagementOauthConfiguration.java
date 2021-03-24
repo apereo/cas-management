@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.OauthController;
-import org.apereo.cas.mgmt.OidcController;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +22,4 @@ public class CasManagementOauthConfiguration {
         return new OauthController();
     }
 
-    @Bean
-    public OidcController oidcController() {
-        return new OidcController();
-    }
 }

@@ -1,0 +1,5 @@
+<div [formGroup]="tab" style="padding-top: 10px; padding-bottom: 20px;">
+  <lib-card heading="Multifactor Policy" [collapse]="false">
+    <lib-mfa [typeControl]="tab.type" [form]="tab.policy"></lib-mfa>
+  </lib-card>
+</div>

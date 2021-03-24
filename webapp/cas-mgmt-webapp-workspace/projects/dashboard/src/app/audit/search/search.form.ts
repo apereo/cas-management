@@ -1,5 +1,10 @@
 import {FormControl, FormGroup} from '@angular/forms';
 
+/**
+ * Form group for displaying and updating search options for audit records.
+ *
+ * @author Travis Schmidt
+ */
 export class SearchForm extends FormGroup {
 
   get interval() { return this.get('interval') as FormControl; }

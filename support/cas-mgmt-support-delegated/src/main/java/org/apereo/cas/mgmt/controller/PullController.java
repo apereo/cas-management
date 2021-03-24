@@ -13,6 +13,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,11 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.time.Clock;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Controller to handle pull requests.
@@ -46,15 +46,13 @@ public class PullController extends AbstractVersionControlController {
     private static final String NEW_LINE_INDENT = "\n   ";
 
     private final RepositoryFactory repositoryFactory;
-
     private final CasManagementConfigurationProperties managementProperties;
-
     private final CommunicationsManager communicationsManager;
 
     public PullController(final RepositoryFactory repositoryFactory,
-                          final CasUserProfileFactory casUserProfileFactory,
-                          final CasManagementConfigurationProperties managementProperties,
-                          final CommunicationsManager communicationsManager) {
+                               final CasUserProfileFactory casUserProfileFactory,
+                               final CasManagementConfigurationProperties managementProperties,
+                               final CommunicationsManager communicationsManager) {
         super(casUserProfileFactory);
         this.repositoryFactory = repositoryFactory;
         this.managementProperties = managementProperties;
@@ -73,14 +71,14 @@ public class PullController extends AbstractVersionControlController {
     @PostMapping
     public List<BranchData> branches(final HttpServletResponse response,
                                      final HttpServletRequest request,
-                                     @RequestBody final boolean[] options) throws VersionControlException {
+                                     final @RequestBody boolean[] options) throws VersionControlException {
         isAdministrator(request, response);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.branches()
-                .map(git::mapBranches)
-                .filter(r -> DelegatedUtil.filterPulls(r, options))
-                .map(DelegatedUtil::createBranch)
-                .collect(toList());
+                    .map(git::mapBranches)
+                    .filter(r -> DelegatedUtil.filterPulls(r, options))
+                    .map(DelegatedUtil::createBranch)
+                    .collect(toList());
         } catch (final GitAPIException ex) {
             LOGGER.error(ex.getMessage(), ex);
             throw new VersionControlException();
@@ -99,7 +97,7 @@ public class PullController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public void acceptChange(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             @RequestBody final BranchActionData acception) throws VersionControlException {
+                             final @RequestBody BranchActionData acception) throws VersionControlException {
         val user = casUserProfileFactory.from(request, response);
         isAdministrator(user);
         val branch = acception.getBranch();
@@ -107,8 +105,8 @@ public class PullController extends AbstractVersionControlController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.merge(branch.getId());
             val com = git.getCommit(branch.getId());
-            val msg = "ACCEPTED by " + user.getId() + " on " + LocalDateTime.now(Clock.systemUTC()) + NEW_LINE_INDENT
-                + text.replaceAll("\\n", NEW_LINE_INDENT);
+            val msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + NEW_LINE_INDENT
+                    + text.replaceAll("\\n", NEW_LINE_INDENT);
             git.appendNote(com, msg);
             sendAcceptMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), com.getCommitterIdent().getEmailAddress());
         } catch (final GitAPIException | IOException ex) {
@@ -136,15 +134,15 @@ public class PullController extends AbstractVersionControlController {
     @PostMapping(value = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void rejectChange(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             @RequestBody final BranchActionData rejection) throws VersionControlException {
+                             final @RequestBody BranchActionData rejection) throws VersionControlException {
         val user = casUserProfileFactory.from(request, response);
         isAdministrator(user);
         val branch = rejection.getBranch();
         val text = rejection.getNote();
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(branch.getId());
-            val msg = "REJECTED by " + user.getId() + " on " + LocalDateTime.now(Clock.systemUTC()) + NEW_LINE_INDENT
-                + text.replaceAll("\\n", NEW_LINE_INDENT);
+            val msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + NEW_LINE_INDENT
+                    + text.replaceAll("\\n", NEW_LINE_INDENT);
             git.appendNote(com, msg);
 
             sendRejectMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), text, com.getCommitterIdent().getEmailAddress());

@@ -1,0 +1,36 @@
+<div fxLayout="column">
+  <div [formGroup]="form" fxLayout="column">
+    <lib-card heading="Definition">
+      <lib-text-input [control]="form.key" required label="Key"
+                      toolTip="Attribute name, as resolved by the CAS attribute resolution engine.">
+      </lib-text-input>
+      <lib-text-input [control]="form.name" required label="Name"
+                      toolTip="Attribute name to be used and shared with the target application during attribute release.">
+      </lib-text-input>
+      <lib-text-input *ngIf="isSaml" [control]="saml().urn" label="URN"
+                      toolTip="(Optional) Friendly name of the attribute shared with the target application during attribute release.">
+      </lib-text-input>
+      <lib-text-input *ngIf="isSaml" [control]="saml().friendlyName" label="Friendly Name"
+                      toolTip="(Optional) Friendly name of the attribute shared with the target application during attribute release.">
+      </lib-text-input>
+      <lib-checkbox [control]="form.scoped" label="Scoped"
+                     toolTip="(Optional) If true, the attribute value be scoped to the scope of the CAS server deployment defined
+                              in settings.">
+      </lib-checkbox>
+      <lib-checkbox [control]="form.encrypted" label="Encrypted"
+                     toolTip="(Optional) If true, the attribute value will be encrypted and encoded in base-64 using the
+                              service definition’s defined public key.">
+      </lib-checkbox>
+      <lib-select-input [control]="form.attribute" label="Attribute" [options]="config.options.availableAttributes"
+                         toolTip="(Optional) The source attribute to provide values for the attribute definition itself,
+                                  replacing that of the original source.">
+      </lib-select-input>
+      <lib-text-input [control]="form.patternFormat" label="Pattern Format"
+                       toolTip="(Optional) Template used in a java.text.MessageFormat to decorate the attribute values.">
+      </lib-text-input>
+      <lib-text-input [control]="form.script" label="Script"
+                      toolTip="(Optional) Groovy script, external or embedded to process and produce attributes values.">
+      </lib-text-input>
+    </lib-card>
+  </div>
+</div>

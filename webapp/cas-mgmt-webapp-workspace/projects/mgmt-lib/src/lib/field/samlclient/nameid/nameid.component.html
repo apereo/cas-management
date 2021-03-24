@@ -1,0 +1,19 @@
+<lib-input toolTip="Force the indicated Name ID format in the final SAML response.">
+  <mat-form-field style="width: 100%;" appearance="standard">
+    <mat-label i18n>Required NameID Format</mat-label>
+    <input matInput [formControl]="form.requiredNameIdFormat" [matAutocomplete]="auto">
+  </mat-form-field>
+</lib-input>
+
+<lib-text-input [control]="form.nameIdQualifier" label="NameID Qualifier"
+                toolTip="Overwrite the NameQualifier attribute of the produced subject name id.">
+</lib-text-input>
+
+<lib-text-input [control]="form.serviceProviderNameIdQualifier" label="Service Provider NameID Qualifier"
+                toolTip="Overwrite the Service Provier NameQualifier attribute of the produced subject name id.">
+</lib-text-input>
+
+<mat-autocomplete #auto="matAutocomplete" panelWidth="auto">
+  <mat-option *ngFor="let opt of config.options.samlNameIdFormats" [value]="opt.value">{{ opt.display }}</mat-option>
+</mat-autocomplete>
+

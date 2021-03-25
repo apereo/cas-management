@@ -10,6 +10,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Class used to configure beans used by the /dashboard endpoint.
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Bean;
  * @author Travis Schmidt
  * @since 6.0
  */
+@Configuration("casManagementDashboard")
 public class CasManagementDashboardConfiguration {
 
     @Autowired

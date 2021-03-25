@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt;
 
-import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;

@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {OidcRegisteredService, AbstractRegisteredService, OauthAddService} from '@apereo/mgmt-lib';
+import {AbstractRegisteredService, OauthAddService} from '@apereo/mgmt-lib';
 
 /**
  * Resolver to create a new OIDC service.

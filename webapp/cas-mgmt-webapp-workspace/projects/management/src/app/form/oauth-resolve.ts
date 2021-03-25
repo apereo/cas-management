@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {OAuthRegisteredService, AbstractRegisteredService, OauthAddService} from '@apereo/mgmt-lib';
-import {map} from 'rxjs/operators';
+import {AbstractRegisteredService, OauthAddService} from '@apereo/mgmt-lib';
 
 /**
  * Resolver for creating a new OAuthRegisteredService.

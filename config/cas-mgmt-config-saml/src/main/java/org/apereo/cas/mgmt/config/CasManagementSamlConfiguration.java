@@ -13,13 +13,6 @@ import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
-
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
-import org.apache.commons.lang3.ClassUtils;
-
 import org.apereo.cas.support.saml.services.SamlIdPServicesManagerRegisteredServiceLocator;
 import org.apereo.cas.support.saml.services.idp.metadata.cache.SamlRegisteredServiceCachingMetadataResolver;
 import org.apereo.cas.support.saml.services.idp.metadata.cache.SamlRegisteredServiceDefaultCachingMetadataResolver;
@@ -34,6 +27,13 @@ import org.apereo.cas.support.saml.services.idp.metadata.plan.DefaultSamlRegiste
 import org.apereo.cas.support.saml.services.idp.metadata.plan.SamlRegisteredServiceMetadataResolutionPlan;
 import org.apereo.cas.support.saml.services.idp.metadata.plan.SamlRegisteredServiceMetadataResolutionPlanConfigurer;
 import org.apereo.cas.util.http.HttpClient;
+
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import org.apache.commons.lang3.ClassUtils;
+
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -115,7 +115,7 @@ public class CasManagementSamlConfiguration {
 
     @Bean
     public UrlMetadataResolver urlMetadataResolver() {
-        return new UrlMetadataResolver(casProperties, openSamlConfigBean());
+        return new UrlMetadataResolver(casProperties);
     }
 
     @Bean(name = "shibboleth.OpenSAMLConfig")

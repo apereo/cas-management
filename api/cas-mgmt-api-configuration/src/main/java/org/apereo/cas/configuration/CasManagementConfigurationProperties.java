@@ -169,8 +169,14 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private String cacheHealthIndicator = "session";
 
+    /**
+     * List the attributeRepositories defined in the cas server.
+     */
     private List<String> attributeRepositories = new ArrayList<>();
 
+    /**
+     * Flag to enable the feature AttributeDefinitions.
+     */
     private boolean attributeStoreEnabled;
 
     @Getter

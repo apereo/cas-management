@@ -7,19 +7,13 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.jose4j.json.JsonUtil;
 import org.pac4j.cas.client.direct.DirectCasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.direct.AnonymousClient;
-import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
-import org.pac4j.jwt.config.encryption.RSAEncryptionConfiguration;
-import org.pac4j.jwt.config.signature.RSASignatureConfiguration;
-import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
-import org.pac4j.jwt.util.JWKHelper;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,11 +22,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is {@link CasManagementAuthenticationConfiguration}.
@@ -64,19 +56,6 @@ public class CasManagementAuthenticationConfiguration {
     @Bean
     public List<Client> authenticationClients() {
         val clients = new ArrayList<Client>();
-        //val rsa = JWKHelper.buildRSAKeyPairFromJwk(jwk());
-        //val jwt = new JwtAuthenticator();
-        //val encConfig = new RSAEncryptionConfiguration();
-        //encConfig.setKeyPair(rsa);
-        //jwt.addEncryptionConfiguration(encConfig);
-        //jwt.addSignatureConfiguration(new RSASignatureConfiguration(rsa));
-        //val jwtClient = new HeaderClient();
-        //jwtClient.setHeaderName("Authorization");
-        //jwtClient.setPrefixHeader("Bearer");
-        //jwtClient.setAuthenticator(jwt);
-        //jwtClient.addAuthorizationGenerator(authorizationGenerator.getIfAvailable());
-        //jwtClient.setName("JWTAuth");
-        //clients.add(jwtClient);
 
         if (StringUtils.hasText(casProperties.getServer().getName())) {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
@@ -115,16 +94,4 @@ public class CasManagementAuthenticationConfiguration {
         return new CasUserProfileFactory(managementProperties);
     }
 
-    /*
-    @Bean
-    public String jwk() {
-        val restTemplate = new RestTemplate();
-        val serverUrl = casProperties.getServer().getPrefix() + "/oidc/jwks";
-        val resp = restTemplate.getForEntity(serverUrl, Map.class);
-        val keys = resp.getBody();
-        val jwk = JsonUtil.toJson((Map<String, Object>) ((List) keys.get("keys")).get(0));
-        LOGGER.debug(jwk);
-        return jwk;
-    }
-     */
 }

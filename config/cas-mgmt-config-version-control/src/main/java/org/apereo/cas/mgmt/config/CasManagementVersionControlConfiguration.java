@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt.config;
 
-import com.github.benmanes.caffeine.cache.Cache;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
@@ -12,7 +11,6 @@ import org.apereo.cas.mgmt.controller.CommitController;
 import org.apereo.cas.mgmt.controller.HistoryController;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
-import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
@@ -96,7 +94,7 @@ public class CasManagementVersionControlConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public HistoryController historyController() {
-        return new HistoryController(repositoryFactory(), managerFactory(), casUserProfileFactory.getIfAvailable());
+        return new HistoryController(repositoryFactory(), casUserProfileFactory.getIfAvailable());
     }
 
 }

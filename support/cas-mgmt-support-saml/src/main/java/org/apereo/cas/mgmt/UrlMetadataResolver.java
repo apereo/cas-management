@@ -2,7 +2,6 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.UnauthorizedServiceException;
-import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.util.HttpUtils;
 
 import lombok.SneakyThrows;
@@ -24,12 +23,9 @@ import java.util.LinkedHashMap;
 @Slf4j
 public class UrlMetadataResolver {
     private final CasConfigurationProperties casProperties;
-    private final OpenSamlConfigBean configBean;
 
-    public UrlMetadataResolver(final CasConfigurationProperties casProperties,
-                               final OpenSamlConfigBean configBean) {
+    public UrlMetadataResolver(final CasConfigurationProperties casProperties) {
         this.casProperties = casProperties;
-        this.configBean = configBean;
     }
 
     @SneakyThrows

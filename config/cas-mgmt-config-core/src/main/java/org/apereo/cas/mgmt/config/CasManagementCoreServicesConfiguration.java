@@ -1,8 +1,5 @@
 package org.apereo.cas.mgmt.config;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import lombok.SneakyThrows;
 import org.apereo.cas.authentication.attribute.DefaultAttributeDefinitionStore;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
@@ -24,12 +21,16 @@ import org.apereo.cas.services.ServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.ServicesManagerConfigurationContext;
 import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
-import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
 import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
+import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.support.oauth.services.OAuth20ServicesManagerRegisteredServiceLocator;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -149,11 +150,11 @@ public class CasManagementCoreServicesConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "servicesManagerCache")
     public Cache<Long, RegisteredService> servicesManagerCache() {
-        val serviceRegistry = casProperties.getServiceRegistry();
-        val duration = Beans.newDuration(serviceRegistry.getCache());
+        val registry = casProperties.getServiceRegistry();
+        val duration = Beans.newDuration(registry.getCache());
         return Caffeine.newBuilder()
-                .initialCapacity(serviceRegistry.getCacheCapacity())
-                .maximumSize(serviceRegistry.getCacheSize())
+                .initialCapacity(registry.getCacheCapacity())
+                .maximumSize(registry.getCacheSize())
                 .expireAfterWrite(duration)
                 .recordStats()
                 .build();
@@ -172,23 +173,7 @@ public class CasManagementCoreServicesConfiguration {
         val cm = new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor());
         cm.load();
         return cm;
-        /*
-        val casManager = new DefaultDomainAwareServicesManager();
-        val casManager = (ServicesManager) (casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
-                ? new DefaultDomainAwareServicesManager(serviceRegistry.getIfAvailable(), null, new DefaultRegisteredServiceDomainExtractor(), new HashSet<>())
-                : new DefaultServicesManager(serviceRegistry.getIfAvailable(), null, new HashSet<>()));
-        //val oauthManager = new OauthServicesManager(serviceRegistry.getIfAvailable(), null, new HashSet<>());
-        //val samlManager = new SamlServicesManager(serviceRegistry.getIfAvailable(), null, new HashSet<>());
-        //val manager = new ChainingServicesManager();
-        //manager.registerServiceManager(casManager);
-        //manager.registerServiceManager(oauthManager);
-        //manager.registerServiceManager(samlManager);
-        casManager.load();
-        return casManager;
-         */
     }
-
-
 
     @Bean(name = "forwarding")
     @RefreshScope
@@ -201,6 +186,4 @@ public class CasManagementCoreServicesConfiguration {
     public ServicesManagerRegisteredServiceLocator oauthServicesManagerRegisteredServiceLocator() {
         return new OAuth20ServicesManagerRegisteredServiceLocator();
     }
-
-
 }

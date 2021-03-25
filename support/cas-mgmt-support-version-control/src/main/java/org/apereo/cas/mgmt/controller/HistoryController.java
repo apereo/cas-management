@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.mgmt.GitUtil;
-import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.Diff;
@@ -49,14 +48,11 @@ public class HistoryController extends AbstractVersionControlController {
     private static final int NO_CHANGES_FOUND = 244;
 
     private final RepositoryFactory repositoryFactory;
-    private final MgmtManagerFactory managerFactory;
 
     public HistoryController(final RepositoryFactory repositoryFactory,
-                             final MgmtManagerFactory managerFactory,
                              final CasUserProfileFactory casUserProfileFactory) {
         super(casUserProfileFactory);
         this.repositoryFactory = repositoryFactory;
-        this.managerFactory = managerFactory;
     }
 
     /**

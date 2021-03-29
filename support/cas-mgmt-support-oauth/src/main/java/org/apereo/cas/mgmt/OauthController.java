@@ -27,7 +27,6 @@ public class OauthController {
     @GetMapping("generate")
     public OAuthRegisteredService generateOauth() {
         val service = new OAuthRegisteredService();
-        val rg = new DefaultRandomStringGenerator();
         service.setClientId(generateId());
         service.setClientSecret(generateId());
         return service;

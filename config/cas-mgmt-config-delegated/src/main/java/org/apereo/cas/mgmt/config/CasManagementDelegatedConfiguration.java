@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.util.Objects;
+
 /**
  * Configuration class for version control.
  *
@@ -85,9 +87,9 @@ public class CasManagementDelegatedConfiguration {
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PendingRequests pendingRequests() {
         return (request, response) -> {
-            val user = casUserProfileFactory.getIfAvailable().from(request, response);
+            val user = Objects.requireNonNull(casUserProfileFactory.getIfAvailable()).from(request, response);
             if (user.isAdministrator()) {
-                val git = repositoryFactory.getIfAvailable().masterRepository();
+                val git = Objects.requireNonNull(repositoryFactory.getIfAvailable()).masterRepository();
                 try {
                     return (int) git.branches()
                             .map(git::mapBranches)

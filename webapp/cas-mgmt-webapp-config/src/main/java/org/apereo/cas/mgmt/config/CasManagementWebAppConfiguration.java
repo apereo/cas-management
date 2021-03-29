@@ -16,7 +16,11 @@ import org.apereo.cas.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.pac4j.cas.client.CasClient;
+import org.pac4j.cas.client.direct.DirectCasClient;
+import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.authorizer.Authorizer;
+import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
 import org.springframework.beans.factory.BeanCreationException;
@@ -79,10 +83,15 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Autowired
     @Qualifier("webApplicationServiceFactory")
     private ServiceFactory<WebApplicationService> webApplicationServiceFactory;
-
+/*
     @Autowired
     @Qualifier("authenticationClients")
     private List<Client> authenticationClients;
+*/
+
+    @Autowired
+    @Qualifier("authorizationGenerator")
+    private ObjectProvider<AuthorizationGenerator> authorizationGenerator;
 
     @Autowired
     @Qualifier("managementWebappAuthorizer")
@@ -125,10 +134,12 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return mapping;
     }
 
+    /*
     @Bean
     public HandlerInterceptorAdapter casManagementSecurityInterceptor() {
         return new CasManagementSecurityInterceptor(casManagementSecurityConfiguration());
     }
+     */
 
     @ConditionalOnMissingBean(name = "localeResolver")
     @Bean
@@ -154,12 +165,14 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return bean;
     }
 
+    /*
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(casManagementLocaleChangeInterceptor());
         registry.addInterceptor(casManagementSecurityInterceptor())
             .addPathPatterns("/", "/management/**", "/register/**", "/dashboard/**", "/api/**");
     }
+     */
 
     @Bean
     public SimpleControllerHandlerAdapter casManagementSimpleControllerHandlerAdapter() {
@@ -259,9 +272,17 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
     @Bean
     public Config casManagementSecurityConfiguration() {
+        val casConfiguration = new CasConfiguration("https://ssodev.ucdavis.edu/cas/login");
+        val casClient = new CasClient(casConfiguration);
+        casClient.addAuthorizationGenerator(authorizationGenerator.getIfAvailable());
+        casClient.setName("CasClient");
+        val cfg = new Config("https://localhost:8444/callback", casClient);
+        return cfg;
+        /*
         val cfg = new Config(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients);
         cfg.setAuthorizer(this.managementWebappAuthorizer.getIfAvailable());
         return cfg;
+         */
     }
 
     /**

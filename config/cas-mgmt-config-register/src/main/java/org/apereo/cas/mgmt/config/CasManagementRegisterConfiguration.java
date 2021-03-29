@@ -6,6 +6,7 @@ import org.apereo.cas.mgmt.BulkActionController;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.RegisterController;
 import org.apereo.cas.mgmt.RegisterForwardingController;
+import org.apereo.cas.mgmt.VersionControlServicesManager;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
@@ -40,7 +41,7 @@ public class CasManagementRegisterConfiguration {
 
     @Autowired
     @Qualifier("managerFactory")
-    private ObjectProvider<MgmtManagerFactory> managerFactory;
+    private ObjectProvider<VersionControlManagerFactory> managerFactory;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;

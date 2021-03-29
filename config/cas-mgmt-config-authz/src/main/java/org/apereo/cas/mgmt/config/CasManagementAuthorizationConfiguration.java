@@ -12,6 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.FromAttributesAuthorizationGenerator;
+import org.pac4j.core.profile.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -60,7 +62,7 @@ public class CasManagementAuthorizationConfiguration {
 
     @ConditionalOnMissingBean(name = "managementWebappAuthorizer")
     @Bean
-    public Authorizer managementWebappAuthorizer() {
+    public Authorizer<? extends UserProfile> managementWebappAuthorizer() {
         val roles = new ArrayList<String>();
         roles.addAll(casProperties.getAdminRoles());
         roles.addAll(casProperties.getUserRoles());
@@ -71,7 +73,7 @@ public class CasManagementAuthorizationConfiguration {
     @ConditionalOnMissingBean(name = "springSecurityPropertiesAuthorizationGenerator")
     public AuthorizationGenerator springSecurityPropertiesAuthorizationGenerator() {
         val userPropertiesFile = casProperties.getUserPropertiesFile();
-        if (userPropertiesFile.getFilename().endsWith("json")) {
+        if (Objects.requireNonNull(userPropertiesFile.getFilename()).endsWith("json")) {
             return new JsonResourceAuthorizationGenerator(userPropertiesFile);
         }
         if (userPropertiesFile.getFilename().endsWith("yml")) {

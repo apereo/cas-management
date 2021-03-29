@@ -48,7 +48,6 @@ public class ForwardingController {
             "management/definitions/{def}"
     })
     public String forward() {
-        LOGGER.debug("IN FORWARD CONTROLLER");
         return "management/index.html";
     }
 }

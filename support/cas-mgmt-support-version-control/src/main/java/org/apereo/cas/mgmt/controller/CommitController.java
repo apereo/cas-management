@@ -199,7 +199,7 @@ public class CommitController extends AbstractVersionControlController {
      * Returns true if the master repository has committs ahead of the published repository.
      *
      * @return - true if there are commits to publish.
-     * @throws Exception - failed.
+     * @throws IOException - failed.
      */
     private boolean isPublishedBehind() throws IOException {
         try (GitUtil git = repositoryFactory.masterRepository()) {

@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt.authz;
 
 import lombok.val;
+
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.UserProfile;
@@ -20,12 +21,9 @@ public class ChainingAuthorizationGenerator implements AuthorizationGenerator {
 
     @Override
     public Optional<UserProfile> generate(final WebContext webContext, final UserProfile commonProfile) {
-        var profile = commonProfile;
-        val it = this.genenerators.iterator();
 
-        while (it.hasNext()) {
-            val authz = it.next();
-            return authz.generate(webContext, profile);
+        for (val authz : this.genenerators) {
+            return authz.generate(webContext, commonProfile);
         }
         return Optional.empty();
     }

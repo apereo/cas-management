@@ -7,7 +7,6 @@ import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.VersionControlServicesManager;
-import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.ChainingServicesManager;
 import org.apereo.cas.services.JsonServiceRegistry;
@@ -115,12 +114,12 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
             return master();
         }
         val session = request.getSession();
-        val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session, user) : createNewManager(request, response);
+        val manager = session.getAttribute(SERVICES_MANAGER_KEY) != null ? getSessionManager(session) : createNewManager(request, response);
         session.setAttribute(SERVICES_MANAGER_KEY, manager);
         return manager;
     }
 
-    private ManagementServicesManager getSessionManager(final HttpSession session, final CasUserProfile user) {
+    private ManagementServicesManager getSessionManager(final HttpSession session) {
         val manager = (VersionControlServicesManager) session.getAttribute(SERVICES_MANAGER_KEY);
         manager.load();
         return manager;

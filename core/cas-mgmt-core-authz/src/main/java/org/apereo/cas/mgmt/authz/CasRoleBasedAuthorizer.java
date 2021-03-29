@@ -49,6 +49,6 @@ public class CasRoleBasedAuthorizer extends RequireAnyRoleAuthorizer<CommonProfi
         if (aff instanceof String) {
             return ((String) aff).contains("staff") || ((String) aff).contains("faculty");
         }
-        return ((List) aff).contains("staff") || ((List) aff).contains("faculty");
+        return ((List<String>) aff).contains("staff") || ((List<String>) aff).contains("faculty");
     }
 }

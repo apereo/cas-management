@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -122,11 +123,11 @@ public class HistoryController extends AbstractVersionControlController {
             val r = git.getCommit(id);
             return git.getPublishDiffs(id).stream()
                     .map(d -> VersionControlUtil.createDiff(d, git))
-                    .map(d -> {
+                    .filter(Objects::nonNull)
+                    .peek(d -> {
                         d.setCommitter(r.getCommitterIdent().getName());
                         d.setCommitTime(CasManagementUtils.formatDateTime(r.getCommitTime()));
                         d.setCommit(id);
-                        return d;
                     })
                     .collect(toList());
         } catch (final GitAPIException | IOException ex) {

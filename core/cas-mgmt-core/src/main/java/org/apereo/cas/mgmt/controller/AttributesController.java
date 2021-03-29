@@ -68,7 +68,7 @@ public class AttributesController {
         if (!casUserProfile.isUser()) {
             throw new IllegalAccessException("Insufficient permissions");
         }
-        return attributeDefinitionStore.locateAttributeDefinition(key).get();
+        return attributeDefinitionStore.locateAttributeDefinition(key).orElseThrow();
     }
 
     @PostMapping

@@ -14,10 +14,33 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PendingItem {
+    /**
+     * Unique identifier for the the pending submission.
+     */
     private String id;
+
+    /**
+     * Name of the pending submission.
+     */
     private String name;
+
+    /**
+     * Service ID of the pending Submission.
+     */
     private String serviceId;
+
+    /**
+     * Timestamp the service was submitted.
+     */
     private String submitted;
+
+    /**
+     * Current status of the pending submission.
+     */
     private String status;
+
+    /**
+     * Service type of the pending submission.
+     */
     private String type;
 }

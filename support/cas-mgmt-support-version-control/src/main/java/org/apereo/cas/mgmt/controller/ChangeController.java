@@ -8,8 +8,10 @@ import org.apereo.cas.mgmt.domain.Diff;
 import org.apereo.cas.mgmt.exception.NoDifferenceException;
 import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
+import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
+import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -49,10 +51,10 @@ public class ChangeController extends AbstractVersionControlController {
     private static final int NO_DIFFERENCE_STATUS = 266;
 
     private final RepositoryFactory repositoryFactory;
-    private final MgmtManagerFactory managerFactory;
+    private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
 
     public ChangeController(final RepositoryFactory repositoryFactory,
-                            final MgmtManagerFactory managerFactory,
+                            final VersionControlManagerFactory managerFactory,
                             final CasUserProfileFactory casUserProfileFactory) {
         super(casUserProfileFactory);
         this.repositoryFactory = repositoryFactory;

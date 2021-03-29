@@ -4,6 +4,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider;
+import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
@@ -69,7 +70,7 @@ public class SamlController {
     /**
      * Manager Factory.
      */
-    protected final MgmtManagerFactory<ServicesManager> managerFactory;
+    protected final MgmtManagerFactory<? extends ServicesManager> managerFactory;
 
     /**
      * Management Configuration properties.
@@ -85,7 +86,7 @@ public class SamlController {
 
 
     public SamlController(final CasUserProfileFactory casUserProfileFactory,
-                          final MgmtManagerFactory managerFactory,
+                          final MgmtManagerFactory<? extends ServicesManager> managerFactory,
                           final CasManagementConfigurationProperties managementProperties,
                           final FormData formData,
                           final OpenSamlConfigBean configBean,
@@ -101,7 +102,7 @@ public class SamlController {
         try {
             val manager = (ManagementServicesManager) managerFactory.master();
             this.entities = manager.findServiceBy(s -> s instanceof SamlRegisteredService).stream()
-                    .map(s -> s.getServiceId())
+                    .map(RegisteredService::getServiceId)
                     .collect(Collectors.toList());
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -239,7 +240,7 @@ public class SamlController {
                     service.setSigningCredentialType("BASIC");
                 }
             }
-            if (!kdEncryption.isPresent() && !kdSigning.isPresent() && !keyDescriptors.isEmpty()
+            if (kdEncryption.isEmpty() && kdSigning.isEmpty() && !keyDescriptors.isEmpty()
                 && !keyDescriptors.get(0).getKeyInfo().getX509Datas().isEmpty()) {
                 service.setEncryptAssertions(true);
                 service.setSignResponses(true);

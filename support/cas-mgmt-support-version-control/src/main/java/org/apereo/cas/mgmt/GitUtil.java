@@ -1023,7 +1023,7 @@ public class GitUtil implements AutoCloseable {
      */
     public RevCommit findCommitBeforeSubmit(final String branchName) throws GitAPIException, IOException, NoSuchFieldException {
         val com = findSubmitCommit(branchName);
-        return commitLogs(com).skip(1).findFirst().get();
+        return commitLogs(com).skip(1).findFirst().orElseThrow();
     }
 
     /**

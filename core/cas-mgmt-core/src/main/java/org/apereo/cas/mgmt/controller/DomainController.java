@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.services.ServicesManager;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 public class DomainController {
 
     private final CasUserProfileFactory casUserProfileFactory;
-    private final MgmtManagerFactory managerFactory;
+    private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
 
     /**
      * Gets domains.

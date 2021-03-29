@@ -5,6 +5,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
+import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.ReturnAllAttributeReleasePolicy;
 import org.apereo.cas.services.ReturnMappedAttributeReleasePolicy;
@@ -43,7 +44,7 @@ import static java.util.stream.Collectors.toList;
 public class RegisterController extends BaseRegisterController {
 
     public RegisterController(final CasUserProfileFactory casUserProfileFactory,
-                              final MgmtManagerFactory<ServicesManager> managerFactory,
+                              final VersionControlManagerFactory managerFactory,
                               final CasManagementConfigurationProperties managementProperties,
                               final EmailManager communicationsManager,
                               final ServicesManager published){

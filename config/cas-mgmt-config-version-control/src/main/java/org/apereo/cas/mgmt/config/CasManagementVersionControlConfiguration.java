@@ -5,6 +5,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.SubmissionRequests;
+import org.apereo.cas.mgmt.VersionControlServicesManager;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ChangeController;
 import org.apereo.cas.mgmt.controller.CommitController;
@@ -67,7 +68,7 @@ public class CasManagementVersionControlConfiguration {
 
     @Bean(name = "managerFactory")
     @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
-    public MgmtManagerFactory managerFactory() {
+    public VersionControlManagerFactory managerFactory() {
         return new VersionControlManagerFactory(servicesManager.getIfAvailable(), applicationContext, managementProperties,
                 repositoryFactory(), casUserProfileFactory.getIfAvailable(), casProperties, namingStrategy.getIfAvailable());
     }

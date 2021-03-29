@@ -5,6 +5,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.exception.SearchException;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.services.ServicesManager;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -69,7 +70,7 @@ public class LuceneSearch {
 
     private static final int MAX_RESULTS = 1000;
 
-    private final MgmtManagerFactory mgmtManagerFactory;
+    private final MgmtManagerFactory<? extends ServicesManager> mgmtManagerFactory;
     private final CasUserProfileFactory casUserProfileFactory;
     private final CasManagementConfigurationProperties managementProperties;
 
@@ -90,7 +91,7 @@ public class LuceneSearch {
             val casUserProfile = casUserProfileFactory.from(request, response);
             val analyzer = new StandardAnalyzer();
             val query = new QueryParser("body", analyzer).parse(queryString);
-            val fields = getFields(query, new ArrayList<String>());
+            val fields = getFields(query, new ArrayList<>());
             val manager = (ManagementServicesManager) mgmtManagerFactory.from(request, response);
             try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()))) {
                 val docs = manager.getAllServices().stream()
@@ -152,10 +153,11 @@ public class LuceneSearch {
         val fields = new ArrayList<Field>();
         if (!"body".equals(field)) {
             if (type == JsonType.NUMBER) {
-                fields.add(new LongPoint(field, ((Long) value).longValue()));
+                fields.add(new LongPoint(field, (Long) value));
                 fields.add(new StringField(field, String.valueOf(value), Field.Store.NO));
             }
             if (EnumSet.of(JsonType.ARRAY, JsonType.OBJECT, JsonType.BOOLEAN).contains(type)) {
+                assert value instanceof String;
                 fields.add(new TextField(field, (String) value, Field.Store.NO));
             }
             if (type == JsonType.STRING) {

@@ -6,6 +6,7 @@ import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
+import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
@@ -63,7 +64,7 @@ public abstract class BaseRegisterController {
     /**
      * Manager Factory.
      */
-    protected final MgmtManagerFactory<ServicesManager> managerFactory;
+    protected final VersionControlManagerFactory managerFactory;
 
     /**
      * Management Configuration properties.
@@ -87,7 +88,7 @@ public abstract class BaseRegisterController {
 
     @SneakyThrows
     public BaseRegisterController(final CasUserProfileFactory casUserProfileFactory,
-                              final MgmtManagerFactory<ServicesManager> managerFactory,
+                              final VersionControlManagerFactory managerFactory,
                               final CasManagementConfigurationProperties managementProperties,
                               final EmailManager communicationsManager,
                               final ServicesManager published){

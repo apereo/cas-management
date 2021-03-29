@@ -21,7 +21,7 @@ public class OAuthConfigExclusionFilter implements AutoConfigurationImportFilter
         val list = new ArrayList<Boolean>();
         Arrays.stream(autoConfigurationClasses)
                 .map(c -> !"org.apereo.cas.config.OAuthProtocolTicketCatalogConfiguration".equalsIgnoreCase(c))
-                .forEach(m -> list.add(m));
+                .forEach(list::add);
         val matches = new boolean[list.size()];
         for (int i = 0; i < list.size(); i++) {
             matches[i] = list.get(i);

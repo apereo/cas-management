@@ -9,15 +9,17 @@ import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.support.saml.services.SamlRegisteredService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +52,7 @@ public class ServiceController {
 
     private static final String NOT_FOUND_PATTERN = "Service '{}' not found";
     private final CasUserProfileFactory casUserProfileFactory;
-    private final MgmtManagerFactory<ServicesManager> managerFactory;
+    private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
 
     /**
      * Gets services.
@@ -64,7 +66,9 @@ public class ServiceController {
     @GetMapping
     public List<RegisteredServiceItem> getServices(final HttpServletRequest request,
                                                    final HttpServletResponse response,
+                                                   final Authentication authentication,
                                                    final @RequestParam String domain) throws IllegalAccessException {
+        LOGGER.error("Auth is [{}}", authentication);
         val casUserProfile = casUserProfileFactory.from(request, response);
         if (!casUserProfile.isAdministrator() && !casUserProfile.hasPermission(domain)) {
             throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');

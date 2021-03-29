@@ -20,6 +20,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,8 +94,8 @@ public class CasManagementAuditConfiguration {
     }
 
     @Bean
-    public FilterRegistrationBean casClientInfoLoggingFilter() {
-        val bean = new FilterRegistrationBean();
+    public FilterRegistrationBean<Filter> casClientInfoLoggingFilter() {
+        val bean = new FilterRegistrationBean<>();
         bean.setFilter(new ClientInfoThreadLocalFilter());
         bean.setUrlPatterns(CollectionUtils.wrap("/*"));
         bean.setName("CAS Client Info Logging Filter");

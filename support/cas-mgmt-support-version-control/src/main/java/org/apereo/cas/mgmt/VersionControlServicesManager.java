@@ -10,9 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.eclipse.jgit.api.Status;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,9 +62,9 @@ public class VersionControlServicesManager extends ManagementServicesManager {
     }
 
     private boolean changed() {
-        val max = Arrays.stream(git.getRepository().getWorkTree().getAbsoluteFile().listFiles())
-                .map(f -> f.lastModified())
-                .max(Long::compare).get();
+        val max = Arrays.stream(Objects.requireNonNull(git.getRepository().getWorkTree().getAbsoluteFile().listFiles()))
+                .map(File::lastModified)
+                .max(Long::compare).orElse(this.lastModified);
         if (this.lastModified == max) {
             return false;
         }

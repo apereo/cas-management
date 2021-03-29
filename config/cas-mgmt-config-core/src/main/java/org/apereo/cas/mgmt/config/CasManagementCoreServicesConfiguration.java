@@ -68,11 +68,6 @@ public class CasManagementCoreServicesConfiguration {
     private ConfigurableApplicationContext applicationContext;
 
     @Autowired
-    @Qualifier("namingStrategy")
-    private ObjectProvider<RegisteredServiceResourceNamingStrategy> namingStrategy;
-
-
-    @Autowired
     @Qualifier("casUserProfileFactory")
     private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
 
@@ -93,7 +88,7 @@ public class CasManagementCoreServicesConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "managerFactory")
-    public MgmtManagerFactory managerFactory() {
+    public MgmtManagerFactory<? extends ServicesManager> managerFactory() {
         return new ServicesManagerFactory(servicesManager(), namingStrategy());
     }
 

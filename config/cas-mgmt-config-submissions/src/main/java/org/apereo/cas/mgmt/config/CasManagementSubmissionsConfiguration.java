@@ -8,6 +8,7 @@ import org.apereo.cas.mgmt.SubmissionRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
+import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +40,7 @@ public class CasManagementSubmissionsConfiguration {
 
     @Autowired
     @Qualifier("managerFactory")
-    private ObjectProvider<MgmtManagerFactory> managerFactory;
+    private ObjectProvider<MgmtManagerFactory<? extends ServicesManager>> managerFactory;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;

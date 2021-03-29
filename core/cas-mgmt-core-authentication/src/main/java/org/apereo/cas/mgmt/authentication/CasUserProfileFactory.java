@@ -34,7 +34,7 @@ public class CasUserProfileFactory {
      * @return the cas user profile
      */
     public CasUserProfile from(final HttpServletRequest request, final HttpServletResponse response) {
-        val manager = new ProfileManager(new JEEContext(request, response));
+        val manager = new ProfileManager<>(new JEEContext(request, response));
         val profile = (Optional<UserProfile>) manager.get(true);
         if (profile.isPresent()) {
             val up = profile.get();

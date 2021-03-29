@@ -115,7 +115,7 @@ public class ViewController {
     @GetMapping(value = "/logout.html")
     public String logoutView(final HttpServletRequest request, final HttpServletResponse response) {
         LOGGER.debug("Invalidating application session...");
-        new ProfileManager(new JEEContext(request, response)).logout();
+        new ProfileManager<>(new JEEContext(request, response)).logout();
         request.getSession(false).invalidate();
         return "logout";
     }

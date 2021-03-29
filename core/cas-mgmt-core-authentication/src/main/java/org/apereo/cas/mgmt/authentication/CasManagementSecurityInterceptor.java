@@ -56,7 +56,7 @@ public class CasManagementSecurityInterceptor extends SecurityInterceptor {
     }
 
     private static String getAuthorizerNames(final Config config) {
-        return config.getAuthorizers().keySet().stream().collect(Collectors.joining(Pac4jConstants.ELEMENT_SEPARATOR));
+        return String.join(Pac4jConstants.ELEMENT_SEPARATOR, config.getAuthorizers().keySet());
     }
 
     /**

@@ -45,6 +45,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  *Configuration for register end point features.
@@ -69,7 +70,7 @@ public class CasManagementSamlConfiguration {
 
     @Autowired
     @Qualifier("managerFactory")
-    private ObjectProvider<MgmtManagerFactory> managerFactory;
+    private ObjectProvider<MgmtManagerFactory<? extends ServicesManager>> managerFactory;
 
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
@@ -102,7 +103,7 @@ public class CasManagementSamlConfiguration {
         return new SamlController(casUserProfileFactory.getIfAvailable(),
                 managerFactory.getIfAvailable(),
                 managementProperties,
-                formDataFactory.getIfAvailable().create(),
+                Objects.requireNonNull(formDataFactory.getIfAvailable()).create(),
                 openSamlConfigBean(),
                 metadataAggregateResolver(),
                 urlMetadataResolver());

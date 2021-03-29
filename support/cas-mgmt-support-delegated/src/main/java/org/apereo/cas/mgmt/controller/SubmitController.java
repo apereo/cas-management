@@ -114,23 +114,23 @@ public class SubmitController {
      *
      * @param request    - HttpServletRequest
      * @param response   - HttpServletResponse
-     * @param branchName - Name of the pull requet
+     * @param branch - Name of the pull requet
      */
-    @GetMapping("revert/{bracnch}")
+    @GetMapping("revert/{branch}")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void revertSubmit(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final @PathVariable String branchName) {
+                             final @PathVariable String branch) {
         val user = casUserProfileFactory.from(request, response);
         try (GitUtil git = repositoryFactory.from(request, response)) {
             if (git.isUndefined()) {
                 throw new IllegalArgumentException("No changes to revert");
             }
-            git.reset(git.findCommitBeforeSubmit(branchName));
+            git.reset(git.findCommitBeforeSubmit(branch));
         }
         try (GitUtil master = repositoryFactory.masterRepository()) {
-            master.markAsReverted(branchName, user);
+            master.markAsReverted(branch, user);
         }
     }
 }

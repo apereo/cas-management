@@ -2,9 +2,11 @@ description "Apereo CAS Management Webapp Config"
 
 dependencies {
     api libraries.pac4jcore
+    api libraries.pac4jcas
     implementation libraries.thymeleaf
     implementation libraries.casServer.authentication
-    implementation libraries.casServer.oidc 
+    implementation libraries.casServer.oidc
+    implementation libraries.springboot
     
     api project(":api:cas-mgmt-api-configuration")
     

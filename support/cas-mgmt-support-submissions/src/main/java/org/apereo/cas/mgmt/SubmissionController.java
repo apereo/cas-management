@@ -75,13 +75,13 @@ public class SubmissionController extends AbstractVersionControlController {
     private static final int MAX_EMAIL_LENGTH = 200;
 
     private final RepositoryFactory repositoryFactory;
-    private final MgmtManagerFactory<ServicesManager> managerFactory;
+    private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
     private final EmailManager communicationsManager;
 
     public SubmissionController(final RepositoryFactory repositoryFactory,
-                                final MgmtManagerFactory<ServicesManager> managerFactory,
+                                final MgmtManagerFactory<? extends ServicesManager> managerFactory,
                                 final CasManagementConfigurationProperties managementProperties,
                                 final CasConfigurationProperties casProperties,
                                 final CasUserProfileFactory casUserProfileFactory,
@@ -251,8 +251,7 @@ public class SubmissionController extends AbstractVersionControlController {
         if (location.contains("mdq.incommon.org")) {
             val resp = fetchMetadata(svc.getMetadataLocation().replace("{0}", EncodingUtils.urlEncode(svc.getServiceId())));
             val entity = resp.getEntity();
-            val metadata = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-            return metadata;
+            return IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
         }
         val fileName = DigestUtils.sha(svc.getServiceId()) + ".xml";
         val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + "/" + fileName).getFile();
@@ -440,9 +439,8 @@ public class SubmissionController extends AbstractVersionControlController {
     public RegisteredService importSubmission(final HttpServletResponse response,
                                               final HttpServletRequest request,
                                               final @RequestBody String id) throws Exception {
-        val service = CasManagementUtils.fromJson(
+        return CasManagementUtils.fromJson(
                 new File(managementProperties.getSubmissions().getSubmitDir() + "/" + id));
-        return service;
     }
 
     private String[] getSubmitter(final Path path) {

@@ -141,7 +141,6 @@ public class ManagementServicesManager implements ServicesManager, DomainAwareSe
 
     @Override
     public Collection<RegisteredService> getServicesForDomain(final String domain) {
-        LOGGER.warn("Services Manage = [{}]", this.manager);
         if (this.manager instanceof DomainAwareServicesManager) {
             return ((DomainAwareServicesManager) this.manager).getServicesForDomain(domain);
         }

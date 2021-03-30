@@ -76,6 +76,10 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private LdapAuthenticationProperties ldapAuth = new LdapAuthenticationProperties();
 
+    /**
+     * Use CAS server for SSO for management application.
+     */
+    private boolean casSso = true;
 
     /**
      * Location of the resource that contains the authorized accounts.

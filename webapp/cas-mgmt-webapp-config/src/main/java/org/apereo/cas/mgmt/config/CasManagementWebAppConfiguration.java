@@ -12,8 +12,6 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
 import lombok.val;
-import org.pac4j.cas.client.CasClient;
-import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
@@ -240,17 +238,9 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
     @Bean
     public Config casManagementSecurityConfiguration() {
-        final CasConfiguration casConfiguration = new CasConfiguration("https://ssodev.ucdavis.edu/cas/login");
-        final CasClient casClient = new CasClient(casConfiguration);
-        casClient.addAuthorizationGenerator(authorizationGenerators.getIfAvailable());
-        val cfg = new Config("https://localhost:8444/callback", List.of(casClient));
-        cfg.setAuthorizer(this.managementWebappAuthorizer.getIfAvailable());
-        return cfg;
-        /*
         val cfg = new Config(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients);
         cfg.setAuthorizer(this.managementWebappAuthorizer.getIfAvailable());
         return cfg;
-         */
     }
 
     /**
@@ -262,7 +252,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
      */
     public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
         try {
-            return managementProperties.getServerName().concat(serverProperties.getServlet().getContextPath()).concat("management/index.html");
+            return managementProperties.getServerName().concat(serverProperties.getServlet().getContextPath()).concat("/callback");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }

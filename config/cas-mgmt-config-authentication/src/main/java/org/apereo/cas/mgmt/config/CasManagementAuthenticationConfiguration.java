@@ -6,7 +6,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.pac4j.cas.client.direct.DirectCasClient;
+import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
@@ -42,7 +42,6 @@ public class CasManagementAuthenticationConfiguration {
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
 
-
     @Autowired
     @Qualifier("authorizationGenerator")
     private ObjectProvider<AuthorizationGenerator> authorizationGenerator;
@@ -56,10 +55,10 @@ public class CasManagementAuthenticationConfiguration {
     public List<Client> authenticationClients() {
         val clients = new ArrayList<Client>();
 
-        if (StringUtils.hasText(casProperties.getServer().getName())) {
+        if (managementProperties.isCasSso()) {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
             val cfg = new CasConfiguration(casProperties.getServer().getLoginUrl());
-            val client = new DirectCasClient(cfg);
+            val client = new CasClient(cfg);
             client.setAuthorizationGenerator(authorizationGenerator.getIfAvailable());
             client.setName("CasClient");
             clients.add(client);

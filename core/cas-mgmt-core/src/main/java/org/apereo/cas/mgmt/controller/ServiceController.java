@@ -67,10 +67,8 @@ public class ServiceController {
             throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
-        LOGGER.warn("Manager = [{}]", manager);
         return manager.getServiceItems(manager.getServicesForDomain(domain)
                 .stream()
-                .peek(s -> LOGGER.error(s.getServiceId()))
                 .filter(s -> s.getClass().getName().contains("RegexRegistered"))
                 .sorted(Comparator.comparing(RegisteredService::getEvaluationOrder)));
     }

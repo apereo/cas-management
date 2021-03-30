@@ -10,9 +10,11 @@ import lombok.val;
 
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
+import org.springframework.security.core.Authentication;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This is {@link CasUserProfile}.
@@ -33,6 +35,10 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
         this.delegate = false;
     }
 
+    public CasUserProfile(final Authentication authentication) {
+        this((CommonProfile) authentication.getPrincipal(), List.of("ROLE_ADMIN"));
+    }
+
     public CasUserProfile(final CommonProfile up, final Collection<String> adminRoles) {
         build(up.getId(), up.getAttributes());
         setClientName(up.getClientName());
@@ -43,6 +49,10 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
 
         this.administrator = adminRoles.stream().anyMatch(r -> getRoles().contains(r));
         this.delegate = getRoles().contains("ROLE_USER");
+    }
+
+    public static CasUserProfile from(final Authentication authentication) {
+        return new CasUserProfile(authentication);
     }
 
     public String getDepartment() {

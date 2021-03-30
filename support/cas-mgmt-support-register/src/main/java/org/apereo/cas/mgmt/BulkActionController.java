@@ -2,7 +2,6 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
@@ -14,14 +13,13 @@ import lombok.val;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -41,7 +39,6 @@ import java.util.stream.Stream;
 @Slf4j
 public class BulkActionController {
 
-    private final CasUserProfileFactory casUserProfileFactory;
     private final VersionControlManagerFactory managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final RepositoryFactory repositoryFactory;
@@ -50,18 +47,16 @@ public class BulkActionController {
     /**
      * Method used to remove the logged in user as contact from multiple services.
      *
-     * @param response - HttpServletResponse
-     * @param request - HttpServletRequest
+     * @param authentication - the user
      * @param services - Array of service IDs
      * @throws IllegalAccessException - Does not own service
      * @throws IllegalStateException - Service requires at least one contact
      */
     @PostMapping("unclaim")
     @ResponseStatus(HttpStatus.OK)
-    public void bulkUnclaim(final HttpServletResponse response,
-                            final HttpServletRequest request,
+    public void bulkUnclaim(final Authentication authentication,
                             final @RequestBody String[] services) throws IllegalStateException, IllegalAccessException {
-        val casUserProfile = casUserProfileFactory.from(request, response);
+        val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();
         val clone = managementProperties.getDelegated().getUserReposDir() + "/bulk-" + timestamp;
@@ -108,17 +103,15 @@ public class BulkActionController {
     /**
      * Method will add the logged in user as contact to multiple services.
      *
-     * @param response - HttpServletResponse
-     * @param request - HttpServletRequest
+     * @param authentication - the user
      * @param services - Array of Service IDs
      * @throws IllegalStateException - failed
      */
     @PostMapping("claim")
     @ResponseStatus(HttpStatus.OK)
-    public void bulkclaim(final HttpServletResponse response,
-                          final HttpServletRequest request,
+    public void bulkclaim(final Authentication authentication,
                           final @RequestBody String[] services) throws IllegalStateException {
-        val casUserProfile = casUserProfileFactory.from(request, response);
+        val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();
         val clone = managementProperties.getDelegated().getUserReposDir() + "/bulk-" + timestamp;

@@ -4,7 +4,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.LuceneSearch;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,12 +33,8 @@ public class CasManagementSearchConfiguration {
     @Qualifier("managerFactory")
     private ObjectProvider<MgmtManagerFactory<? extends ServicesManager>> managerFactory;
 
-    @Autowired
-    @Qualifier("casUserProfileFactory")
-    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
-
     @Bean
     public LuceneSearch luceneSearch() {
-        return new LuceneSearch(managerFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(), managementProperties);
+        return new LuceneSearch(managerFactory.getIfAvailable(), managementProperties);
     }
 }

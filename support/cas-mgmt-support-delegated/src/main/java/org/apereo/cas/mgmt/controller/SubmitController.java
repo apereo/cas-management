@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.BranchData;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
@@ -15,6 +14,7 @@ import lombok.val;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -44,24 +42,21 @@ import static java.util.stream.Collectors.toList;
 public class SubmitController {
 
     private final RepositoryFactory repositoryFactory;
-    private final CasUserProfileFactory casUserProfileFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CommunicationsManager communicationsManager;
 
     /**
      * Method commits the working dir of the user and creates a submit branch that is made into a pull request.
      *
-     * @param response - HttpServletResponse
-     * @param request  - HttpServletRequest
+     * @param authentication - the user
      * @param msg      - message from user
      */
     @PostMapping
     @SneakyThrows
-    public void submitPull(final HttpServletResponse response,
-                           final HttpServletRequest request,
+    public void submitPull(final Authentication authentication,
                            final @RequestBody String msg) {
-        val user = casUserProfileFactory.from(request, response);
-        try (GitUtil git = repositoryFactory.from(request, response)) {
+        val user = CasUserProfile.from(authentication);
+        try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {
                 throw new IllegalArgumentException("No changes to submit");
             }
@@ -91,15 +86,13 @@ public class SubmitController {
     /**
      * Method will create and return a list of branches that have been submitted as pull request by users.
      *
-     * @param request  - HttpServletRequest
-     * @param response - HttpServletResponse
+     * @param authentication  - HttpServletRequest
      * @return - List of BranchData
      */
     @GetMapping
     @SneakyThrows
-    public List<BranchData> submits(final HttpServletRequest request,
-                                    final HttpServletResponse response) {
-        val user = casUserProfileFactory.from(request, response);
+    public List<BranchData> submits(final Authentication authentication) {
+        val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.branches()
                     .filter(r -> r.getName().contains('/' + user.getId() + '_'))
@@ -112,18 +105,16 @@ public class SubmitController {
     /**
      * Method will revert a submitted pull request from a user's repository if it has been rejected by an admin.
      *
-     * @param request    - HttpServletRequest
-     * @param response   - HttpServletResponse
+     * @param authentication    - the user
      * @param branch - Name of the pull requet
      */
     @GetMapping("revert/{branch}")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
-    public void revertSubmit(final HttpServletRequest request,
-                             final HttpServletResponse response,
+    public void revertSubmit(final Authentication authentication,
                              final @PathVariable String branch) {
-        val user = casUserProfileFactory.from(request, response);
-        try (GitUtil git = repositoryFactory.from(request, response)) {
+        val user = CasUserProfile.from(authentication);
+        try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {
                 throw new IllegalArgumentException("No changes to revert");
             }

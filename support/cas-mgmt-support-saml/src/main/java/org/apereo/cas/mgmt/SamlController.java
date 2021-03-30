@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider;
 import org.apereo.cas.services.RegisteredService;
@@ -34,8 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,11 +60,6 @@ public class SamlController {
     private static final String EPPN_NAME_ID = "urn:oid:1.3.6.1.4.1.5923.1.1.1.6";
 
     /**
-     * User Profile Factory.
-     */
-    protected final CasUserProfileFactory casUserProfileFactory;
-
-    /**
      * Manager Factory.
      */
     protected final MgmtManagerFactory<? extends ServicesManager> managerFactory;
@@ -85,14 +77,12 @@ public class SamlController {
     private List<String> entities;
 
 
-    public SamlController(final CasUserProfileFactory casUserProfileFactory,
-                          final MgmtManagerFactory<? extends ServicesManager> managerFactory,
+    public SamlController(final MgmtManagerFactory<? extends ServicesManager> managerFactory,
                           final CasManagementConfigurationProperties managementProperties,
                           final FormData formData,
                           final OpenSamlConfigBean configBean,
                           final MetadataAggregateResolver sps,
                           final UrlMetadataResolver urlMetadataResolver){
-        this.casUserProfileFactory = casUserProfileFactory;
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
         this.formData = formData;
@@ -293,16 +283,12 @@ public class SamlController {
     /**
      * Method to return the metadata for the saml service wih the passed id.
      *
-     * @param request - the request
-     * @param response - the response
      * @param id - the id of the service
      * @return - Metadata
      */
     @GetMapping("/metadata/{id}")
     @SneakyThrows
-    public Metadata getMetadata(final HttpServletRequest request,
-                                final HttpServletResponse response,
-                                final @PathVariable Long id) {
+    public Metadata getMetadata(final @PathVariable Long id) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         if (!sps.query(service.getServiceId()).isEmpty()) {
             return new Metadata(true, sps.xml(service.getServiceId()));
@@ -315,16 +301,12 @@ public class SamlController {
     /**
      * Saves changes made to local metadata by the management app.
      *
-     * @param request - the request
-     * @param response - the response
      * @param id - the id of the service
      * @param metadata - the metadata to save
      */
     @PostMapping("/metadata/{id}")
     @SneakyThrows
-    public void saveMetadata(final HttpServletRequest request,
-                             final HttpServletResponse response,
-                             final @PathVariable Long id,
+    public void saveMetadata(final @PathVariable Long id,
                              final @RequestBody String metadata) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         val fileName = DigestUtils.sha(service.getServiceId()) + ".xml";

@@ -1,7 +1,7 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,7 @@ import lombok.val;
 
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.profile.ProfileManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,7 +33,6 @@ public class ViewController {
     private static final String STATUS = "status";
 
     private final Service defaultService;
-    private final CasUserProfileFactory casUserProfileFactory;
 
 
     /**
@@ -76,12 +76,12 @@ public class ViewController {
      * Root mapping that navigates to managment or register depending on user role.
      *
      * @param request - the request
-     * @param response - the response
+     * @param authentication - the user
      * @return - ModelAndView
      */
     @GetMapping({"cas-management", "/", "index.html", "register.html", "manage.html"})
-    public ModelAndView root(final HttpServletRequest request, final HttpServletResponse response) {
-        val casUserProfile = casUserProfileFactory.from(request, response);
+    public ModelAndView root(final HttpServletRequest request, final Authentication authentication) {
+        val casUserProfile = CasUserProfile.from(authentication);
         val reqUrl = request.getRequestURL().toString();
         var url = request.getContextPath();
         if (reqUrl.contains("register.html")) {

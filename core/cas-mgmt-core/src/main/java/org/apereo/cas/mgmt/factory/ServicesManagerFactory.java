@@ -7,9 +7,7 @@ import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 
 /**
  * Factory class to create ServiceManagers for the logged in user.
@@ -28,11 +26,10 @@ public class ServicesManagerFactory implements MgmtManagerFactory<ServicesManage
      * Method will look up the CasUserProfile for the logged in user and the return the GitServicesManager for
      * that user.
      *
-     * @param request  - HttpServeltRequest
-     * @param response - HttpServletRespone
+     * @param authentication - user authentication
      * @return - GitServicesManager for the logged in user
      */
-    public ManagementServicesManager from(final HttpServletRequest request, final HttpServletResponse response) {
+    public ManagementServicesManager from(final Authentication authentication) {
         return new ManagementServicesManager(servicesManager, namingStrategy);
     }
 

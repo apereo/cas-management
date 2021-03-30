@@ -2,18 +2,15 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-import org.jose4j.json.JsonUtil;
 import org.pac4j.cas.client.direct.DirectCasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.direct.AnonymousClient;
-import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
 import org.springframework.beans.factory.ObjectProvider;
@@ -88,12 +85,6 @@ public class CasManagementAuthenticationConfiguration {
             clients.add(anon);
         }
         return clients;
-    }
-
-    @ConditionalOnMissingBean(name = "casUserProfileFactory")
-    @Bean
-    public CasUserProfileFactory casUserProfileFactory() {
-        return new CasUserProfileFactory(managementProperties);
     }
 
 }

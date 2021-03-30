@@ -5,7 +5,6 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SubmissionController;
 import org.apereo.cas.mgmt.SubmissionRequests;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.services.ServicesManager;
@@ -49,10 +48,6 @@ public class CasManagementSubmissionsConfiguration {
     private CasConfigurationProperties casProperties;
 
     @Autowired
-    @Qualifier("casUserProfileFactory")
-    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
-
-    @Autowired
     @Qualifier("emailManager")
     private ObjectProvider<EmailManager> emailManager;
 
@@ -62,7 +57,6 @@ public class CasManagementSubmissionsConfiguration {
                 managerFactory.getIfAvailable(),
                 managementProperties,
                 casProperties,
-                casUserProfileFactory.getIfAvailable(),
                 emailManager.getIfAvailable());
     }
 

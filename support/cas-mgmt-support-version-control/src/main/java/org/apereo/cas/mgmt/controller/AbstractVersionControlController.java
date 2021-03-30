@@ -1,14 +1,11 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 
 /**
  * Base class for all controllers that handle version control functionality.
@@ -21,23 +18,16 @@ import javax.servlet.http.HttpServletResponse;
 public class AbstractVersionControlController {
 
     /**
-     * {@link CasUserProfileFactory}.
-     */
-    protected final CasUserProfileFactory casUserProfileFactory;
-
-    /**
      * Method to check if the current user is an Administrator.
      * Throws Exception if not an administrator.
      * Plan to replace this method with methdd level annotation @RequreAllRoles("ROLE_ADMIN")
      * with next Pac4J release.
      *
-     * @param request - the request
-     * @param response - the response
+     * @param authentication - the user
      * @return - True if user has ROLE_ADMIN
      */
-    protected boolean isAdministrator(final HttpServletRequest request,
-                                      final HttpServletResponse response) {
-        return isAdministrator(casUserProfileFactory.from(request, response));
+    protected boolean isAdministrator(final Authentication authentication) {
+        return isAdministrator(CasUserProfile.from(authentication));
     }
 
     /**
@@ -56,9 +46,8 @@ public class AbstractVersionControlController {
         return true;
     }
 
-    protected boolean isUser(final HttpServletRequest request,
-                             final HttpServletResponse response) {
-        return isUser(casUserProfileFactory.from(request, response));
+    protected boolean isUser(final Authentication authentication) {
+        return isUser(CasUserProfile.from(authentication));
     }
 
     protected boolean isUser(final CasUserProfile casUserProfile) {

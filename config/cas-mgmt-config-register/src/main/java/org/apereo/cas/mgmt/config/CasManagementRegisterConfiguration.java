@@ -3,11 +3,8 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.BulkActionController;
-import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.RegisterController;
 import org.apereo.cas.mgmt.RegisterForwardingController;
-import org.apereo.cas.mgmt.VersionControlServicesManager;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
@@ -47,10 +44,6 @@ public class CasManagementRegisterConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    @Qualifier("casUserProfileFactory")
-    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
-
-    @Autowired
     @Qualifier("emailManager")
     private ObjectProvider<EmailManager> emailManager;
 
@@ -60,7 +53,7 @@ public class CasManagementRegisterConfiguration {
 
     @Bean
     public RegisterController registerController() {
-        return new RegisterController(casUserProfileFactory.getIfAvailable(),
+        return new RegisterController(
                 managerFactory.getIfAvailable(),
                 managementProperties,
                 emailManager.getIfAvailable(),
@@ -70,7 +63,7 @@ public class CasManagementRegisterConfiguration {
 
     @Bean
     public BulkActionController bulkActionController() {
-        return new BulkActionController(casUserProfileFactory.getIfAvailable(),
+        return new BulkActionController(
                 (VersionControlManagerFactory) managerFactory.getIfAvailable(),
                 managementProperties,
                 repositoryFactory.getIfAvailable(),

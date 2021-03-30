@@ -2,7 +2,7 @@ package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.BranchActionData;
 import org.apereo.cas.mgmt.domain.BranchData;
 import org.apereo.cas.mgmt.exception.VersionControlException;
@@ -17,14 +17,13 @@ import lombok.val;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -50,10 +49,9 @@ public class PullController extends AbstractVersionControlController {
     private final CommunicationsManager communicationsManager;
 
     public PullController(final RepositoryFactory repositoryFactory,
-                               final CasUserProfileFactory casUserProfileFactory,
-                               final CasManagementConfigurationProperties managementProperties,
-                               final CommunicationsManager communicationsManager) {
-        super(casUserProfileFactory);
+                          final CasManagementConfigurationProperties managementProperties,
+                          final CommunicationsManager communicationsManager) {
+        super();
         this.repositoryFactory = repositoryFactory;
         this.managementProperties = managementProperties;
         this.communicationsManager = communicationsManager;
@@ -62,17 +60,15 @@ public class PullController extends AbstractVersionControlController {
     /**
      * Method will create a list of branches that have been submitted by users to be merged into the services-repo.
      *
-     * @param response - HttpServletResponse
-     * @param request  - HttpsServletRequest
+     * @param authentication - the user
      * @param options  - List of Branch statuses filter the returned branches by
      * @return - List of BranchData
      * @throws VersionControlException - failed
      */
     @PostMapping
-    public List<BranchData> branches(final HttpServletResponse response,
-                                     final HttpServletRequest request,
+    public List<BranchData> branches(final Authentication authentication,
                                      final @RequestBody boolean[] options) throws VersionControlException {
-        isAdministrator(request, response);
+        isAdministrator(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.branches()
                     .map(git::mapBranches)
@@ -88,17 +84,15 @@ public class PullController extends AbstractVersionControlController {
     /**
      * Method will merge the submitted pull request into the services-repo.
      *
-     * @param request   - HttpServletRequest
-     * @param response  - HttpServletResponse
+     * @param authentication - the user
      * @param acception - BranchActionData
      * @throws VersionControlException - failed
      */
     @PostMapping(value = "/accept", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void acceptChange(final HttpServletRequest request,
-                             final HttpServletResponse response,
+    public void acceptChange(final Authentication authentication,
                              final @RequestBody BranchActionData acception) throws VersionControlException {
-        val user = casUserProfileFactory.from(request, response);
+        val user = CasUserProfile.from(authentication);
         isAdministrator(user);
         val branch = acception.getBranch();
         val text = acception.getNote();
@@ -126,16 +120,14 @@ public class PullController extends AbstractVersionControlController {
     /**
      * Method will mark the submitted pull request as being rejected by an admin.
      *
-     * @param request   - HttpServletRequest
-     * @param response  - HttpServletResponse
+     * @param authentication - the user
      * @param rejection - BranchActionData
      * @throws VersionControlException - failed
      */
     @PostMapping(value = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void rejectChange(final HttpServletRequest request,
-                             final HttpServletResponse response,
+    public void rejectChange(final Authentication authentication,
                              final @RequestBody BranchActionData rejection) throws VersionControlException {
-        val user = casUserProfileFactory.from(request, response);
+        val user = CasUserProfile.from(authentication);
         isAdministrator(user);
         val branch = rejection.getBranch();
         val text = rejection.getNote();

@@ -7,7 +7,6 @@ import org.apereo.cas.mgmt.MetadataAggregateResolver;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SamlController;
 import org.apereo.cas.mgmt.UrlMetadataResolver;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.services.ServicesManager;
@@ -79,10 +78,6 @@ public class CasManagementSamlConfiguration {
     private CasConfigurationProperties casProperties;
 
     @Autowired
-    @Qualifier("casUserProfileFactory")
-    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
-
-    @Autowired
     @Qualifier("servicesManager")
     private ObjectProvider<ServicesManager> servicesManager;
 
@@ -100,7 +95,7 @@ public class CasManagementSamlConfiguration {
 
     @Bean
     public SamlController samlController() {
-        return new SamlController(casUserProfileFactory.getIfAvailable(),
+        return new SamlController(
                 managerFactory.getIfAvailable(),
                 managementProperties,
                 Objects.requireNonNull(formDataFactory.getIfAvailable()).create(),

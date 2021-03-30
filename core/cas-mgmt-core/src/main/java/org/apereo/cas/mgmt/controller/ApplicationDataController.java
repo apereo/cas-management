@@ -4,7 +4,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.NoOpContactLookup;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.AppConfig;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
@@ -17,12 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * MultiActionController to handle the deletion of RegisteredServices as well as
@@ -38,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ApplicationDataController {
 
     private final FormDataFactory formDataFactory;
-    private final CasUserProfileFactory casUserProfileFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
     private final ContactLookup contactLookup;
@@ -51,14 +48,12 @@ public class ApplicationDataController {
     /**
      * Gets user.
      *
-     * @param request  the request
-     * @param response the response
+     * @param authentication - the user
      * @return the user
      */
     @GetMapping(value = "/user")
-    public MgmtUserProfile getUser(final HttpServletRequest request,
-                                   final HttpServletResponse response) {
-        return casUserProfileFactory.from(request, response);
+    public MgmtUserProfile getUser(final Authentication authentication) {
+        return CasUserProfile.from(authentication);
     }
 
     /**

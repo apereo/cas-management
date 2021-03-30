@@ -1,18 +1,20 @@
 package org.apereo.cas.mgmt.factory;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.eclipse.jgit.api.Git;
+import org.springframework.security.core.Authentication;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,27 +33,28 @@ public class RepositoryFactory {
     private static final String REPO_VAR = "userRepo";
 
     private final CasManagementConfigurationProperties casProperties;
-    private final CasUserProfileFactory casUserProfileFactory;
     private GitUtil masterRepository;
+    private Cache<Authentication, GitUtil> repositoryCache;
+
+    @PostConstruct
+    public void init() {
+        this.repositoryCache = managementServicesManagerCache();
+    }
 
     /**
      * Method looks up user from servlet request to return correct repository.
      *
-     * @param request  - HttpServletRequest
-     * @param response - HttpServletResponse
+     * @param authentication  - HttpServletRequest
      * @return - GitUtil wrapping the user's repository
      */
-    public GitUtil from(final HttpServletRequest request, final HttpServletResponse response) {
-        return from(casUserProfileFactory.from(request, response), request);
-    }
-
     @SneakyThrows
-    private GitUtil from(final CasUserProfile user, final HttpServletRequest request) {
+    public GitUtil from(final Authentication authentication) {
+        val user = new CasUserProfile(authentication);
         if (!user.isUser() || user.isAdministrator()) {
             return masterRepository();
         }
-        if (request.getSession().getAttribute(REPO_VAR) != null) {
-            val userRepo = (GitUtil) request.getSession().getAttribute(REPO_VAR);
+        if (repositoryCache.asMap().containsKey(authentication)) {
+            val userRepo = (GitUtil) repositoryCache.getIfPresent(authentication);
             userRepo.rebase();
             return userRepo;
         }
@@ -60,7 +63,7 @@ public class RepositoryFactory {
             clone(path.toString());
         }
         val userRepo = userRepository(user.getId());
-        request.setAttribute(REPO_VAR, userRepo);
+        repositoryCache.put(authentication, userRepo);
         return userRepo;
     }
 
@@ -102,5 +105,15 @@ public class RepositoryFactory {
             LOGGER.error(e.getMessage(), e);
             return null;
         }
+    }
+
+    public Cache<Authentication, GitUtil> managementServicesManagerCache() {
+        val duration = Beans.newDuration("PT30M");
+        return Caffeine.newBuilder()
+                .initialCapacity(10)
+                .maximumSize(100)
+                .expireAfterWrite(duration)
+                .recordStats()
+                .build();
     }
 }

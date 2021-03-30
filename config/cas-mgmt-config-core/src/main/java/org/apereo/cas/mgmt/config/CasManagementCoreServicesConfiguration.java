@@ -7,7 +7,6 @@ import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.NoOpContactLookup;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
 import org.apereo.cas.mgmt.controller.ApplicationDataController;
 import org.apereo.cas.mgmt.controller.AttributesController;
 import org.apereo.cas.mgmt.controller.ContactLookupController;
@@ -68,10 +67,6 @@ public class CasManagementCoreServicesConfiguration {
     private ConfigurableApplicationContext applicationContext;
 
     @Autowired
-    @Qualifier("casUserProfileFactory")
-    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
-
-    @Autowired
     @Qualifier("serviceRegistry")
     private ObjectProvider<ServiceRegistry> serviceRegistry;
 
@@ -111,23 +106,23 @@ public class CasManagementCoreServicesConfiguration {
 
     @Bean
     public ApplicationDataController applicationDataController() {
-        return new ApplicationDataController(formDataFactory(), casUserProfileFactory.getIfAvailable(),
+        return new ApplicationDataController(formDataFactory(),
                 managementProperties, casProperties, contactLookup());
     }
 
     @Bean
     public ServiceController serviceController() {
-        return new ServiceController(casUserProfileFactory.getIfAvailable(), managerFactory());
+        return new ServiceController(managerFactory());
     }
 
     @Bean
     public DomainController domainController() {
-        return new DomainController(casUserProfileFactory.getIfAvailable(), managerFactory());
+        return new DomainController(managerFactory());
     }
 
     @Bean
     public AttributesController attributesController() {
-        return new AttributesController(casUserProfileFactory.getIfAvailable(), attributeDefinitionStore(), casProperties);
+        return new AttributesController(attributeDefinitionStore(), casProperties);
     }
 
     @ConditionalOnMissingBean(name ="contactLookup")
@@ -138,7 +133,7 @@ public class CasManagementCoreServicesConfiguration {
 
     @Bean
     public ContactLookupController contactLookupController() {
-        return new ContactLookupController(contactLookup(), casUserProfileFactory.getIfAvailable());
+        return new ContactLookupController(contactLookup());
     }
 
     @RefreshScope

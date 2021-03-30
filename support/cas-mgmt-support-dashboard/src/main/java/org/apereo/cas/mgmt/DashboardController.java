@@ -13,12 +13,10 @@ import org.apereo.cas.mgmt.domain.SystemHealth;
 import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

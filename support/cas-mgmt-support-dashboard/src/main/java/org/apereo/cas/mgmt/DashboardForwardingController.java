@@ -20,15 +20,15 @@ public class DashboardForwardingController {
      * @return string url
      */
     @RequestMapping({
-            "dashboard/info",
-            "dashboard/cache",
-            "dashboard/resolve",
-            "dashboard/release",
-            "dashboard/audit",
-            "dashboard/sessions",
-            "dashboard/tokens",
-            "dashboard/loggers",
-            "dashboard"
+        "dashboard/info",
+        "dashboard/cache",
+        "dashboard/resolve",
+        "dashboard/release",
+        "dashboard/audit",
+        "dashboard/sessions",
+        "dashboard/tokens",
+        "dashboard/loggers",
+        "dashboard"
     })
     public String forward() {
         return "dashboard/index.html";

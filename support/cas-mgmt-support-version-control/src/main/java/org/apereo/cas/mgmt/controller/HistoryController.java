@@ -11,7 +11,6 @@ import org.apereo.cas.mgmt.util.CasManagementUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.springframework.http.HttpStatus;

@@ -11,7 +11,6 @@ import org.apereo.cas.mgmt.CasManagementEmbeddedContainerUtils;
 
 import lombok.NoArgsConstructor;
 import lombok.val;
-
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

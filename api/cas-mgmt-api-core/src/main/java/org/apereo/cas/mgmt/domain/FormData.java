@@ -18,7 +18,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
-
 import org.apereo.services.persondir.util.CaseCanonicalizationMode;
 import org.opensaml.saml.saml2.core.NameID;
 import org.springframework.http.HttpStatus;

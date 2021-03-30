@@ -5,7 +5,6 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;

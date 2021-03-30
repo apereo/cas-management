@@ -4,7 +4,6 @@ import org.apereo.cas.configuration.model.support.email.EmailProperties;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**

@@ -7,7 +7,6 @@ import org.apereo.cas.services.RegisteredService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.springframework.security.core.Authentication;

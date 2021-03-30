@@ -8,7 +8,6 @@ import org.apereo.cas.util.LdapUtils;
 
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-
 import org.ldaptive.SearchOperation;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

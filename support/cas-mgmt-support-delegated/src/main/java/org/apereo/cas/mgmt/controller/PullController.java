@@ -13,7 +13,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

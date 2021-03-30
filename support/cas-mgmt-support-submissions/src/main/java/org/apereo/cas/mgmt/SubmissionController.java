@@ -23,12 +23,10 @@ import org.apereo.cas.util.ResourceUtils;
 import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
-
 import org.eclipse.jgit.diff.RawText;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

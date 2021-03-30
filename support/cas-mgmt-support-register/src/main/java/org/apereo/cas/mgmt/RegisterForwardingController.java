@@ -20,13 +20,13 @@ public class RegisterForwardingController {
      * @return string url
      */
     @RequestMapping({
-            "register/form/edit/{id}",
-            "register/form/wizard",
-            "register/services",
-            "register/lookup",
-            "register/pending",
-            "register/sessions",
-            "register/tokens"
+        "register/form/edit/{id}",
+        "register/form/wizard",
+        "register/services",
+        "register/lookup",
+        "register/pending",
+        "register/sessions",
+        "register/tokens"
     })
     public String forward() {
         return "register/index.html";

@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.eclipse.jgit.api.Git;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.FileSystemResource;
@@ -45,6 +44,9 @@ import java.util.HashSet;
 @RequiredArgsConstructor
 @Slf4j
 public class VersionControlManagerFactory implements MgmtManagerFactory<ManagementServicesManager> {
+
+    private static final int INITIAL_CACHE_SIZE = 10;
+    private static final int MAX_CACHE_SIZE = 100;
 
     private final ServicesManager servicesManager;
     private final ConfigurableApplicationContext applicationContext;
@@ -169,8 +171,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     public Cache<Authentication, ManagementServicesManager> managementServicesManagerCache() {
         val duration = Beans.newDuration("PT30M");
         return Caffeine.newBuilder()
-                .initialCapacity(10)
-                .maximumSize(100)
+                .initialCapacity(INITIAL_CACHE_SIZE)
+                .maximumSize(MAX_CACHE_SIZE)
                 .expireAfterWrite(duration)
                 .recordStats()
                 .build();

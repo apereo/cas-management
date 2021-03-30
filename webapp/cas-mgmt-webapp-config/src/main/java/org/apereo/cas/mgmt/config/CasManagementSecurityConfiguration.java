@@ -4,9 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.web.CallbackFilter;
-import org.pac4j.springframework.security.web.Pac4jEntryPoint;
 import org.pac4j.springframework.security.web.SecurityFilter;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -34,11 +35,12 @@ public class CasManagementSecurityConfiguration {
     protected static class CallbackFilterConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        private Config config;
+        @Qualifier("pac4jConfig")
+        private ObjectProvider<Config> config;
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring Callback security filter");
-            val callbackFilter = new CallbackFilter(config);
+            val callbackFilter = new CallbackFilter(config.getIfAvailable());
             callbackFilter.setMultiProfile(true);
             http.antMatcher("/callback/**")
                     .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class);
@@ -51,11 +53,12 @@ public class CasManagementSecurityConfiguration {
     protected static class CasFilterConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        private Config config;
+        @Qualifier("pac4jConfig")
+        private ObjectProvider<Config> config;
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring CAS security filter");
-            val securityFilter = new SecurityFilter(config, "CasClient", "mgmtAuthorizer");
+            val securityFilter = new SecurityFilter(config.getIfAvailable(), "CasClient", "mgmtAuthorizer");
 
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
@@ -69,11 +72,12 @@ public class CasManagementSecurityConfiguration {
     protected static class StaticFilterConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        private Config config;
+        @Qualifier("pac4jConfig")
+        private ObjectProvider<Config> config;
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring Static IP security filter.");
-            val securityFilter = new SecurityFilter(config, "IpClient", "mgmtAuthorizer");
+            val securityFilter = new SecurityFilter(config.getIfAvailable(), "IpClient", "mgmtAuthorizer");
 
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)

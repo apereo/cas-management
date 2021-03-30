@@ -8,7 +8,6 @@ import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

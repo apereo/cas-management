@@ -5,11 +5,9 @@ import org.apereo.cas.util.io.FileWatcherService;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.hjson.JsonValue;
 import org.jooq.lambda.Unchecked;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;

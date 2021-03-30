@@ -1,20 +1,14 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.mgmt.authentication.CasUserProfile;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.profile.ProfileManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -34,30 +28,17 @@ public class ViewController {
 
     private final Service defaultService;
 
-
     /**
      * Mapped method to return the manage.html.
      *
      * @return - ModelAndView
      */
-    @GetMapping({"management/index.html", "management/", "management"})
+    @GetMapping({"/", "management/index.html", "management/", "management"})
     public ModelAndView manage() {
         val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
         model.put("defaultServiceUrl", this.defaultService.getId());
         return new ModelAndView("management/index", model);
-    }
-
-    /**
-     * Mapped method to return the register.html.
-     *
-     * @return - ModelAndView
-     */
-    @GetMapping({"register/index.html", "register/", "register"})
-    public ModelAndView register() {
-        val model = new HashMap<String, Object>();
-        model.put(STATUS, HttpServletResponse.SC_OK);
-        return new ModelAndView("register/index", model);
     }
 
     /**
@@ -71,29 +52,6 @@ public class ViewController {
         model.put(STATUS, HttpServletResponse.SC_OK);
         return new ModelAndView("dashboard/index", model);
     }
-
-    /**
-     * Root mapping that navigates to managment or register depending on user role.
-     *
-     * @param request - the request
-     * @param authentication - the user
-     * @return - ModelAndView
-     */
-    @GetMapping({"cas-management", "/", "index.html", "register.html", "manage.html"})
-    public ModelAndView root(final HttpServletRequest request, final Authentication authentication) {
-        val casUserProfile = CasUserProfile.from(authentication);
-        val reqUrl = request.getRequestURL().toString();
-        var url = request.getContextPath();
-        if (reqUrl.contains("register.html")) {
-            url += "/register";
-        } else if (reqUrl.contains("manage.html") && casUserProfile.isAdministrator()) {
-            url += "/management";
-        } else {
-            url += casUserProfile.isUser() ? "/management" : "/register";
-        }
-        return new ModelAndView(new RedirectView(url));
-    }
-
 
     /**
      * Authorization failure handling. Simply returns the view name.

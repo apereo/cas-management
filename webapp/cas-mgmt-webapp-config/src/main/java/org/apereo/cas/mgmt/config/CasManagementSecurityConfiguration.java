@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.web.CallbackFilter;
+import org.pac4j.springframework.security.web.Pac4jEntryPoint;
 import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -38,6 +39,7 @@ public class CasManagementSecurityConfiguration {
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring Callback security filter");
             val callbackFilter = new CallbackFilter(config);
+            callbackFilter.setMultiProfile(true);
             http.antMatcher("/callback/**")
                     .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class);
         }
@@ -53,7 +55,8 @@ public class CasManagementSecurityConfiguration {
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring CAS security filter");
-            val securityFilter = new SecurityFilter(config, "CasClient");
+            val securityFilter = new SecurityFilter(config, "CasClient", "mgmtAuthorizer");
+
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
@@ -70,10 +73,12 @@ public class CasManagementSecurityConfiguration {
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring Static IP security filter.");
-            val securityFilter = new SecurityFilter(config, "IpClient");
+            val securityFilter = new SecurityFilter(config, "IpClient", "mgmtAuthorizer");
+
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+
         }
     }
 }

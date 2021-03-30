@@ -11,10 +11,11 @@ import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
+
 import lombok.val;
 import org.pac4j.core.authorization.authorizer.Authorizer;
-import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
+import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.ObjectProvider;
@@ -75,10 +76,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Autowired
     @Qualifier("authenticationClients")
     private List<Client> authenticationClients;
-
-    @Autowired
-    @Qualifier("authorizationGenerator")
-    private ObjectProvider<AuthorizationGenerator> authorizationGenerators;
 
     @Autowired
     @Qualifier("managementWebappAuthorizer")
@@ -238,8 +235,8 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
     @Bean
     public Config casManagementSecurityConfiguration() {
-        val cfg = new Config(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients);
-        cfg.setAuthorizer(this.managementWebappAuthorizer.getIfAvailable());
+        val cfg = new Config(new Clients(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients));
+        cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getIfAvailable());
         return cfg;
     }
 

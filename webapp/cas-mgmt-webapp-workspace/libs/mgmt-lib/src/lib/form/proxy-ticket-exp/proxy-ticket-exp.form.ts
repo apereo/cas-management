@@ -1,5 +1,9 @@
 import {FormGroup} from '@angular/forms';
-import {RegisteredServiceProxyTicketExpirationPolicy} from 'domain-lib';
+import {
+  proxyTicketExpirationPolicy,
+  RegisteredServiceProxyTicketExpirationPolicy,
+  DefaultRegisteredServiceProxyTicketExpirationPolicy
+} from 'domain-lib';
 import {MgmtFormControl} from '../mgmt-formcontrol';
 
 export class ProxyTicketExpForm extends FormGroup {
@@ -16,9 +20,11 @@ export class ProxyTicketExpForm extends FormGroup {
 
   mapForm(): RegisteredServiceProxyTicketExpirationPolicy {
     if (this.numberOfUses.value || this.timeToLive.value) {
-      const policy = new RegisteredServiceProxyTicketExpirationPolicy();
-      policy.timeToLive = this.timeToLive.value;
-      policy.numberOfUses = this.numberOfUses.value;
+      const policy = proxyTicketExpirationPolicy({
+        timeToLive: this.timeToLive.value,
+        numberOfUses: this.numberOfUses.value,
+        '@class': DefaultRegisteredServiceProxyTicketExpirationPolicy.cName
+      });
       return policy;
     }
     return null;

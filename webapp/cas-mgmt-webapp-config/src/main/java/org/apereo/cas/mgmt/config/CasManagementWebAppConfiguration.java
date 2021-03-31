@@ -228,14 +228,13 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Bean
     public ViewController viewController() {
-        val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
+        return new ViewController();
     }
 
-    @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
+    @ConditionalOnMissingBean(name = "pac4jClientConfiguration")
     @Bean
-    public Config casManagementSecurityConfiguration() {
-        val cfg = new Config(new Clients(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients));
+    public Config pac4jClientConfiguration() {
+        val cfg = new Config(new Clients(getDefaultCallbackUrl(serverProperties), authenticationClients));
         cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getIfAvailable());
         return cfg;
     }
@@ -243,16 +242,17 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     /**
      * Gets default callback url.
      *
-     * @param casProperties    the cas properties
      * @param serverProperties the server properties
      * @return the default callback url
      */
-    public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
+    public String getDefaultCallbackUrl(final ServerProperties serverProperties) {
         try {
             return managementProperties.getServerName().concat(serverProperties.getServlet().getContextPath()).concat("/callback");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }
     }
+
+
 
 }

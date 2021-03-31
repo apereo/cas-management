@@ -8,6 +8,7 @@ import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -23,9 +24,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
  * @since 6.3.3
  * @author Travis Schmidt
  */
+@ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
 @EnableWebSecurity
 @Slf4j
 public class CasManagementSecurityConfiguration {
+
 
     /**
      * Configure the callback filter.
@@ -35,7 +38,7 @@ public class CasManagementSecurityConfiguration {
     protected static class CallbackFilterConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        @Qualifier("pac4jConfig")
+        @Qualifier("pac4jClientConfiguration")
         private ObjectProvider<Config> config;
 
         protected void configure(final HttpSecurity http) throws Exception {
@@ -53,7 +56,7 @@ public class CasManagementSecurityConfiguration {
     protected static class CasFilterConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        @Qualifier("pac4jConfig")
+        @Qualifier("pac4jClientConfiguration")
         private ObjectProvider<Config> config;
 
         protected void configure(final HttpSecurity http) throws Exception {
@@ -72,7 +75,7 @@ public class CasManagementSecurityConfiguration {
     protected static class StaticFilterConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        @Qualifier("pac4jConfig")
+        @Qualifier("pac4jClientConfiguration")
         private ObjectProvider<Config> config;
 
         protected void configure(final HttpSecurity http) throws Exception {

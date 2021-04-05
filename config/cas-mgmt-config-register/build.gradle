@@ -6,6 +6,7 @@ dependencies {
     api project(":api:cas-mgmt-api-delegated")
     
     implementation libraries.git
+    implementation libraries.thymeleaf
    
     implementation project(":support:cas-mgmt-support-submissions")
     implementation project(":core:cas-mgmt-core-authentication")

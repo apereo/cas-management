@@ -1,6 +1,9 @@
 {
   "name": "@apereo/mgmt-lib",
   "version": "0.0.1",
+  "repository": {
+    "url": "git://github.com/apereo/cas-management.git"
+  },
   "peerDependencies": {
     "@angular/common": "^11.2.4",
     "@angular/core": "^11.2.4"

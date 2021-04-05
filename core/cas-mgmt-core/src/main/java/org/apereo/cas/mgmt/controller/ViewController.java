@@ -37,17 +37,7 @@ public class ViewController {
         return new ModelAndView("management/index", model);
     }
 
-    /**
-     * Mapped method to return the register.html.
-     *
-     * @return - ModelAndView
-     */
-    @GetMapping({"dashboard/index.html", "dashboard/", "dashboard"})
-    public ModelAndView dashboard() {
-        val model = new HashMap<String, Object>();
-        model.put(STATUS, HttpServletResponse.SC_OK);
-        return new ModelAndView("dashboard/index", model);
-    }
+
 
     /**
      * Authorization failure handling. Simply returns the view name.

@@ -18,7 +18,7 @@ export class CommitComponent implements OnInit {
   isAdmin: boolean;
 
   constructor(public dialogRef: MatDialogRef<CommitComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: [any, boolean]) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   /**
    * Starts the component by accessing flags passed.

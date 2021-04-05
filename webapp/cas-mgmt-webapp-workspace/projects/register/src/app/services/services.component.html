@@ -1,0 +1,132 @@
+<div fxLayout="column">
+
+  <mat-slide-toggle [(ngModel)]="controls.bulk" (change)="clear()" style="width:50px;"
+                    matTooltip="When toggled on the table will be put into bulk selection mode and bulk options will be displayed in the control line."
+                    matTooltipPosition="above">
+  </mat-slide-toggle>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          <mat-checkbox #allSelect *ngIf="controls.bulk" (change)="selectAll(allSelect.checked)"></mat-checkbox>
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button style="left:-10px;" mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row" *ngIf="!controls.bulk">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-checkbox *ngIf="controls.bulk" [(ngModel)]="row.selected"></mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'nameWidth'">
+        <ng-container i18n>
+          Name
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        <a (click)="edit(row)">
+          {{ row.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'serviceIdWidth'">
+        <ng-container i18n>
+          Service Url
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceIdWidth'">
+        {{ row.serviceId }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceType">
+      <mat-header-cell *matHeaderCellDef mat-sort-header="type" [ngClass]="'serviceTypeWidth'">
+        <ng-container i18n>
+          Service Type
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceTypeWidth'">
+        {{ row.type }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'descriptionWidth'">
+        <ng-container i18n>
+          Description
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'descriptionWidth'">
+        {{ row.description }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="duo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'duoWidth'">
+        <ng-container i18n>Duo</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'duoWidth'">
+        <mat-icon *ngIf="row.duo">check_box</mat-icon>
+        <mat-icon *ngIf="!row.duo">check_box_outline_blank</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sso">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'duoWidth'">
+        <ng-container i18n>SSO</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'duoWidth'">
+        <mat-icon *ngIf="row.sso">check_box</mat-icon>
+        <mat-icon *ngIf="!row.sso">check_box_outline_blank</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="staged">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'expiresWidth'">
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'expiresWidth'">
+        <mat-chip-list *ngIf="row.staged">
+          <mat-chip color="cas-primary">Staged</mat-chip>
+        </mat-chip-list>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #serviceMenu>
+  <button mat-menu-item (click)="edit()">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>Edit</ng-container>
+  </button>
+  <button mat-menu-item (click)="removeModal()">
+    <mat-icon>delete</mat-icon>
+    <ng-container i18n>Delete</ng-container>
+  </button>
+  <button mat-menu-item (click)="serviceDuplicate()">
+    <mat-icon>content_copy</mat-icon>
+    <ng-container i18n>Duplicate</ng-container>
+  </button>
+  <button mat-menu-item (click)="promote()" *ngIf="staged()">
+    <mat-icon>call_made</mat-icon>
+    <ng-container i18n>Promote</ng-container>
+  </button>
+  <button mat-menu-item *ngIf="this.selectedItem && this.selectedItem.type === 'SAML'" (click)="getMetadata()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>Metadata</ng-container>
+  </button>
+  <button mat-menu-item (click)="unclaim()">
+    <mat-icon>person_outline</mat-icon>
+    <ng-container i18n>Remove Me</ng-container>
+  </button>
+</mat-menu>

@@ -1,0 +1,80 @@
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
+    <mat-toolbar color="primary">
+      <a class="brand" href="index.html" target="_self" id="homepageUrlLink">
+        <img src="../images/logo_cas.png" alt="CAS" />
+      </a>
+    </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item (click)="navto('services')">
+        <mat-icon>apps</mat-icon>
+        <span i18n>Your Services</span>
+      </a>
+      <a mat-list-item (click)="navto('form/edit/-1')">
+        <mat-icon>add_circle</mat-icon>
+        <span i18n>Add CAS Service</span>
+      </a>
+      <a mat-list-item (click)="addOauth()">
+        <mat-icon>add_circle</mat-icon>
+        <span i18n>Add OAuth Service</span>
+      </a>
+      <a mat-list-item (click)="addSaml()">
+        <mat-icon>add_circle</mat-icon>
+        <span i18n>Add SAML SP</span>
+      </a>
+      <a mat-list-item (click)="navto('pending')">
+        <mat-icon>hourglass_empty</mat-icon>
+        <ng-container i18n>Pending</ng-container>
+      </a>
+      <a mat-list-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <ng-container i18n>Logout</ng-container>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" style="z-index: 1000;">
+      <div fxLayout="row" fxFlex="grow">
+        <div fxFlex  *ngIf="isHandset$ | async">
+          <button
+            type="button"
+            aria-label="Toggle sidenav"
+            mat-icon-button
+            (click)="drawer.toggle()">
+            <mat-icon aria-label="Side nav toggle icon"
+                      matBadge="!"
+                      matBadgeColor="accent"
+                      [matBadgeHidden]="badge()"
+                      matBadgePosition="above after">menu</mat-icon>
+          </button>
+        </div>
+        <div fxFlex>
+          <div fxLayout="row">
+            <div fxLayout="row">
+              <div fxFlex>
+                <mat-icon>{{ controls.icon }}</mat-icon>
+              </div>
+              <div fxFlex>
+                <span style="font-weight: bold; font-size: 20px;position: relative;top: -4px; left: 5px;white-space: nowrap">{{ controls.title }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="grow">
+          <app-controls></app-controls>
+        </div>
+      </div>
+    </mat-toolbar>
+    <div style="background-color:#f2f2f2; overflow: auto; margin: 15px;">
+      <router-outlet></router-outlet>
+    </div>
+    <lib-footer fxHide.lt-md></lib-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

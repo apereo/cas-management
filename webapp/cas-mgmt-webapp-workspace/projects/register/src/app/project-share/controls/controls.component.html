@@ -1,0 +1,37 @@
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+  <ng-container *ngIf="service.showBulk">
+    <div fxLayout="row" class="controlButton" *ngIf="service.bulk" (click)="service.bulkAdd.emit()">
+      <mat-icon>person_add</mat-icon>
+    </div>
+    <div fxLayout="row" class="controlButton" *ngIf="service.bulk" (click)="service.bulkRemove.emit()">
+      <mat-icon>person_outline</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showSessions">
+    <div fxLayout="row" class="controlButton" *ngIf="service.bulk" (click)="service.bulkRevoke.emit()">
+      <mat-icon>block</mat-icon>
+    </div>
+    <div fxLayout="row" class="controlButton" (click)="service.revokeAll.emit()">
+      <mat-icon>block</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showEdit">
+    <div fxLayout="row" class="controlButton" (click)="service.save.emit();">
+      <mat-icon>save</mat-icon>
+    </div>
+    <div fxLayout="row" class="controlButton" (click)="goBack();">
+      <mat-icon>cancel</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container  *ngIf="service.showRefresh">
+    <div class="controlButton" (click)="service.refresh.emit()">
+      <mat-icon>refresh</mat-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="service.showBack">
+    <div class="controlButton" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </div>
+  </ng-container>
+</div>
+

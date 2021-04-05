@@ -1,0 +1,31 @@
+.descriptionWidth {
+  flex: 1 1 auto;
+}
+
+.serviceIdWidth {
+  flex: 1 1 300px;
+  margin-left: 10px;
+}
+
+.nameWidth {
+  flex: 0 1 240px;
+}
+
+.duoWidth {
+  flex: 0 1 100px;
+}
+
+.expiresWidth {
+  flex: 0 1 150px;
+}
+
+
+.actionWidth {
+  flex: 0 0 50px;
+}
+
+.serviceTypeWidth {
+  flex: 0 1 200px;
+  color: inherit !important
+}
+

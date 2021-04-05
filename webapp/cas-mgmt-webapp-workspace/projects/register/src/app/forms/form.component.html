@@ -1,0 +1,10 @@
+<div fxFlex="grow" fxLayout="column">
+  <div fxLayout="column" style="background-color: #f2f2f2;width: 100%">
+    <div fxFlex>
+      <lib-tabs style="width: 100%;" [tabs]="tabList"></lib-tabs>
+    </div>
+  </div>
+  <div style="margin-right: auto; margin-left: auto;overflow: auto;width: 100%;height: calc(100vh - 188px)">
+    <router-outlet name="form"></router-outlet>
+  </div>
+</div>

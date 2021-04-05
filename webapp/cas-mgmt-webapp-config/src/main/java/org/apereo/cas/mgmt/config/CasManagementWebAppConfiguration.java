@@ -191,33 +191,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return resolver;
     }
 
-    @Bean SpringResourceTemplateResolver staticTemplateResolver() {
-        val resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(this.context);
-        resolver.setPrefix("classpath:/dist/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        resolver.setCacheable(false);
-        resolver.setOrder(1);
-        resolver.setCheckExistence(true);
-        resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("register/**"));
-        return resolver;
-    }
 
-    @Bean SpringResourceTemplateResolver dashboardTemplateResolver() {
-        val resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(this.context);
-        resolver.setPrefix("classpath:/dist/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        resolver.setCacheable(false);
-        resolver.setOrder(2);
-        resolver.setCheckExistence(true);
-        resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("dashboard/**"));
-        return resolver;
-    }
 
 
     @Override

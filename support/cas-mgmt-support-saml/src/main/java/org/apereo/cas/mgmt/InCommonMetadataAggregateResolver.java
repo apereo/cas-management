@@ -4,7 +4,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.services.UnauthorizedServiceException;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
-import org.apereo.cas.support.saml.SamlUtils;
 import org.apereo.cas.util.EncodingUtils;
 import org.apereo.cas.util.HttpUtils;
 
@@ -14,8 +13,8 @@ import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
-import org.opensaml.saml.metadata.resolver.filter.impl.SignatureValidationFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -43,17 +42,17 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
     private final CasManagementConfigurationProperties mgmtProperties;
     private final OpenSamlConfigBean configBean;
     private List<String> sps;
-    private final SignatureValidationFilter signatureValidationFilter;
+    private final MetadataFilter signatureValidationFilter;
 
     @SneakyThrows
     public InCommonMetadataAggregateResolver(final CasConfigurationProperties casProperties,
                                              final CasManagementConfigurationProperties mgmtProperties,
-                                             final OpenSamlConfigBean configBean) {
+                                             final OpenSamlConfigBean configBean,
+                                             final MetadataFilter signatureValidationFilter) {
         this.casProperties = casProperties;
         this.mgmtProperties = mgmtProperties;
         this.configBean = configBean;
-        this.signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(mgmtProperties.getInCommonCert());
-        this.signatureValidationFilter.setRequireSignedRoot(false);
+        this.signatureValidationFilter = signatureValidationFilter;
         reloadInCommon();
     }
 

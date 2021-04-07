@@ -4,7 +4,6 @@ import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy;
-import org.apereo.cas.services.DomainAwareServicesManager;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
@@ -30,7 +29,7 @@ import java.util.stream.Stream;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ManagementServicesManager implements ServicesManager, DomainAwareServicesManager {
+public class ManagementServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
@@ -140,15 +139,12 @@ public class ManagementServicesManager implements ServicesManager, DomainAwareSe
 
     @Override
     public Collection<RegisteredService> getServicesForDomain(final String domain) {
-        if (this.manager instanceof DomainAwareServicesManager) {
-            return ((DomainAwareServicesManager) this.manager).getServicesForDomain(domain);
-        }
-        return this.manager.getAllServices();
+        return this.manager.getServicesForDomain(domain);
     }
 
     @Override
     public Stream<String> getDomains() {
-        return ((DomainAwareServicesManager) this.manager).getDomains();
+        return this.manager.getDomains();
     }
 
     /**

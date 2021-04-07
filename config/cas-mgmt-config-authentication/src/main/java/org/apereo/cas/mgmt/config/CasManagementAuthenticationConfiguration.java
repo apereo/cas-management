@@ -62,7 +62,7 @@ public class CasManagementAuthenticationConfiguration {
             client.setName("CasClient");
             clients.add(client);
         } else {
-            LOGGER.debug("Skipping CAS authentication strategy configuration; no CAS server name is defined");
+            LOGGER.debug("Skipping CAS authentication strategy configuration; because you turned off the flag for CAS SSO");
         }
 
         if (StringUtils.hasText(managementProperties.getAuthzIpRegex())) {

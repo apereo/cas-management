@@ -51,7 +51,7 @@ public class CasManagementSecurityConfiguration {
     }
 
     @Configuration("casFilter")
-    @ConditionalOnProperty(prefix = "mgmt", name="casSso", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "mgmt", name="cas-sso", matchIfMissing = true)
     @Order(2)
     protected static class CasFilterConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -70,7 +70,7 @@ public class CasManagementSecurityConfiguration {
     }
 
     @Configuration("staticFilter")
-    @ConditionalOnProperty(prefix = "mgmt", name="authzIpRegex")
+    @ConditionalOnProperty(prefix = "mgmt", name="authz-ip-regex")
     @Order(3)
     protected static class StaticFilterConfiguration extends WebSecurityConfigurerAdapter {
 

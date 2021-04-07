@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {UiModule} from '@apereo/mgmt-lib';
 import {MatIconModule} from '@angular/material/icon';

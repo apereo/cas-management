@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
  * Configures security adapters for CAS Management.
@@ -66,6 +67,9 @@ public class CasManagementSecurityConfiguration {
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+            http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+            http.headers().frameOptions().sameOrigin();
+            http.requiresChannel().anyRequest().requiresSecure();
         }
     }
 
@@ -85,7 +89,9 @@ public class CasManagementSecurityConfiguration {
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-
+            http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+            http.headers().frameOptions().sameOrigin();
+            http.requiresChannel().anyRequest().requiresSecure();
         }
     }
 }

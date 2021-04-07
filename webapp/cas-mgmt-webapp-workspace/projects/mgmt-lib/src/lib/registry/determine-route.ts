@@ -26,7 +26,7 @@ export class DetermineRoute implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     this.config.getConfig().subscribe(c => {
-      if (c.delegatedMgmt) {
+      if (c.mgmtType === 'DOMAIN') {
         this.router.navigate(['registry/domains']).then();
       } else {
         this.router.navigate(['registry/services', 'default']).then();

@@ -64,7 +64,7 @@ import java.util.stream.Stream;
 @RequestMapping(path = "api/search", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LuceneSearch {
 
-    private static final int MAX_RESULTS = 1000;
+    private static final int MAX_RESULTS = 5_000;
 
     private final MgmtManagerFactory mgmtManagerFactory;
     private final CasUserProfileFactory casUserProfileFactory;

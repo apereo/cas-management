@@ -7,7 +7,6 @@ import org.apereo.cas.mgmt.MetadataAggregateResolver;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SamlController;
 import org.apereo.cas.mgmt.UrlMetadataResolver;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
@@ -78,14 +77,6 @@ public class CasManagementSamlConfiguration {
 
     @Autowired
     private CasConfigurationProperties casProperties;
-
-    @Autowired
-    @Qualifier("servicesManager")
-    private ObjectProvider<ServicesManager> servicesManager;
-
-    @Autowired
-    @Qualifier("emailManager")
-    private ObjectProvider<EmailManager> emailManager;
 
     @Autowired
     @Qualifier("shibboleth.OpenSAMLConfig")

@@ -4,9 +4,9 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.RegisterNotifications;
 import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
@@ -66,7 +66,7 @@ public abstract class BaseRegisterController {
     /**
      * EMail Manager.
      */
-    protected final EmailManager communicationsManager;
+    protected final CommunicationsManager communicationsManager;
 
     /**
      * Services Manager.
@@ -81,7 +81,7 @@ public abstract class BaseRegisterController {
     @SneakyThrows
     public BaseRegisterController(final VersionControlManagerFactory managerFactory,
                                   final CasManagementConfigurationProperties managementProperties,
-                                  final EmailManager communicationsManager,
+                                  final CommunicationsManager communicationsManager,
                                   final ServicesManager published){
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
@@ -227,13 +227,8 @@ public abstract class BaseRegisterController {
                              final String textArg,
                              final String subjectArg) {
         if (communicationsManager.isMailSenderDefined()) {
-            communicationsManager.email(
-                    MessageFormat.format(emailProperties.getText(), textArg),
-                    emailProperties.getFrom(),
-                    MessageFormat.format(emailProperties.getSubject(), subjectArg),
-                    user.getEmail(),
-                    emailProperties.getCc(),
-                    emailProperties.getBcc());
+            emailProperties.setSubject(MessageFormat.format(emailProperties.getSubject(), subjectArg));
+            communicationsManager.email(emailProperties, user.getEmail(), MessageFormat.format(emailProperties.getText(), textArg));
         }
     }
 

@@ -5,8 +5,8 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.SubmissionController;
 import org.apereo.cas.mgmt.SubmissionRequests;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
+import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,8 +47,8 @@ public class CasManagementSubmissionsConfiguration {
     private CasConfigurationProperties casProperties;
 
     @Autowired
-    @Qualifier("emailManager")
-    private ObjectProvider<EmailManager> emailManager;
+    @Qualifier("communicationsManager")
+    private ObjectProvider<CommunicationsManager> communicationsManager;
 
     @Bean
     public SubmissionController submissionController() {
@@ -56,7 +56,7 @@ public class CasManagementSubmissionsConfiguration {
                 managerFactory.getIfAvailable(),
                 managementProperties,
                 casProperties,
-                emailManager.getIfAvailable());
+                communicationsManager.getIfAvailable());
     }
 
     @Bean

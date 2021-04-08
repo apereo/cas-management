@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {Observable, Subscription} from 'rxjs';
@@ -7,14 +7,16 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {
   FormService,
   UserService,
-  SpinnerService,
   AppConfigService,
   AbstractRegisteredService,
   TabsComponent,
-  ImportService, ControlsService, ServiceForm
+  ImportService, ServiceForm
 } from '@apereo/mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
-import {childRoutes, FormRoutingModule} from './form-routing.module';
+import {ControlsService} from '../project-share/controls/controls.service';
+import {SubmitComponent} from '../project-share/submit/submit.component';
+import {MatDialog} from '@angular/material/dialog';
+import {RegisterService} from '../core/register.servivce';
 
 /**
  * Component to display/update a service.
@@ -27,7 +29,7 @@ import {childRoutes, FormRoutingModule} from './form-routing.module';
   styleUrls: ['./form.component.css']
 })
 
-export class FormComponent implements OnInit, OnDestroy, OnChanges {
+export class FormComponent implements OnInit, OnDestroy {
 
   id: string;
   view: boolean;
@@ -49,15 +51,15 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private service: FormService,
+              private service: RegisterService,
+              private form: FormService,
               private importService: ImportService,
-              // private submissionService: SubmissionsService,
               private location: Location,
               public app: AppConfigService,
               public controls: ControlsService,
               public userService: UserService,
               private breakpointObserver: BreakpointObserver,
-              private spinner: SpinnerService) {
+              private dialog: MatDialog) {
     this.controls.title = 'Service';
     this.controls.icon = 'article';
   }
@@ -75,11 +77,9 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
           this.loadService(data.resp);
         }
       });
-    this.service.typeChange.subscribe(() => this.setNav());
     this.controls.resetButtons();
-    this.controls.showEdit = this.showEdit();
+    this.controls.showEdit = true;
     this.subscriptions.push(this.controls.save.subscribe(() => this.save()));
-    this.subscriptions.push(this.controls.reset.subscribe(() => this.reset()));
   }
 
   /**
@@ -90,87 +90,55 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Check if form changed to show edit buttons.
-   *
-   * @param changes - SimpleChanges
-   */
-  ngOnChanges(changes: SimpleChanges) {
-    this.controls.showEdit = this.showEdit();
-  }
-
-  /**
-   * Saves the current changes for the service.
+   * Saves the service and submits a pending request.
    */
   save() {
     if (this.validate() && this.map()) {
-      this.service.saveService(this.service.registeredService)
-        .subscribe(
-          resp => this.handleSave(resp),
-          () => this.handleNotSaved()
-        );
+      const id = this.route.snapshot.params.id;
+      if ((id && id.includes('json')) || this.form.registeredService.id > -1) {
+        this.submitEdit();
+      } else {
+        this.submitNew();
+      }
     }
   }
 
   /**
-   * Handles the return of a successful save of the service.
-   *
-   * @param id - assigned id of the service returned from the server.
+   * Submits a new service to be added.
    */
-  handleSave(id: number) {
-    const hasIdAssignedAlready = this.service.registeredService.id && this.service.registeredService.id > 0;
-
-    if (!hasIdAssignedAlready && id && id !== -1) {
-      this.service.registeredService.id = id;
-      this.app.showSnackBar('Service has been added successfully.');
-    } else {
-      this.app.showSnackBar('Service has been successfully updated.');
-    }
-
-    this.service.registeredService.id = id;
-    if (this.imported && this.importService.submissionFile) {
-      this.spinner.start('Adding to registry');
-      /*
-      this.submissionService.added(this.importService.submissionFile)
-        .pipe(finalize(() => this.spinner.stop()))
-        .subscribe(() => {
-          this.location.back();
-        });
-       */
-    } else {
-      this.location.back();
-    }
+  submitNew() {
+    this.service.submitService(this.form.registeredService)
+      .subscribe(() => this.showSubmit());
   }
 
   /**
-   * Handles the return of an unsuccessful save of a service.
+   * Submits changes to a service or pending submission.
    */
-  handleNotSaved() {
-    this.app.showSnackBar('An error has occurred while attempting to save the service. Please try again later.');
+  submitEdit() {
+    this.service.saveService(this.form.registeredService, this.route.snapshot.params.id)
+      .subscribe(() => this.showSubmit());
   }
 
   /**
-   * Loads the passed service in to the component forms.
-   *
-   * @param service - AbstractRegisteredService
+   * Dialog to inform the user of the submission process.
+   */
+  showSubmit() {
+    this.dialog.open(SubmitComponent, {
+      data: ['changeService', ''],
+      width: '500px',
+      position: {top: '100px'}
+    }).afterClosed().subscribe(() => {
+      this.router.navigate(['pending']).then();
+    });
+  }
+
+  /**
+   * Loads the passed service into the form.
    */
   loadService(service: AbstractRegisteredService) {
-    this.service.registeredService = service;
-    this.service.form = new ServiceForm(service);
-    this.service.form.statusChanges.subscribe(() => {
-      this.controls.showEdit = this.showEdit();
-    });
+    this.form.registeredService = service;
+    this.form.form = new ServiceForm(service);
     this.setNav();
-    setTimeout(() => {
-      if (service.id < 0) {
-        this.markDirty();
-      }}, 10);
-  }
-
-  /**
-   * Returns true if form is new or modified to display save controls.
-   */
-  showEdit(): boolean {
-    return this.dirty() || this.service?.registeredService?.id < 0;
   }
 
   /**
@@ -179,28 +147,28 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   setNav() {
     this.tabList = [];
     this.tabList.push(['basics', 'Basics']);
-    if (this.app.isSaml(this.service.registeredService)) {
+    if (this.app.isSaml(this.form.registeredService)) {
       this.tabList.push(['saml-metadata', 'Metadata']);
       this.tabList.push(['saml-assertion', 'Assertion']);
       this.tabList.push(['saml-attributes', 'Attributes']);
       this.tabList.push(['saml-encryption', 'Encryption']);
       this.tabList.push(['saml-signing', 'Signing']);
     }
-    if (this.app.isOauth(this.service.registeredService) || this.app.isOidc(this.service.registeredService)) {
+    if (this.app.isOauth(this.form.registeredService) || this.app.isOidc(this.form.registeredService)) {
       this.tabList.push(['oauth', 'Client']);
       this.tabList.push(['tokens', 'Tokens']);
     }
-    if (this.app.isOidc(this.service.registeredService)) {
+    if (this.app.isOidc(this.form.registeredService)) {
       this.tabList.push(['oidc', 'OIDC']);
     }
-    if (this.app.isWsFed(this.service.registeredService)) {
+    if (this.app.isWsFed(this.form.registeredService)) {
       this.tabList.push(['wsfed', 'WS Fed']);
     }
     this.tabList.push(['contacts', 'Contacts']);
     this.tabList.push(['logout', 'Logout']);
-    if (this.app.isOidc(this.service.registeredService)) {
+    if (this.app.isOidc(this.form.registeredService)) {
       this.tabList.push(['scopes', 'Scopes']);
-    } else if (this.app.isWsFed(this.service.registeredService)) {
+    } else if (this.app.isWsFed(this.form.registeredService)) {
       this.tabList.push(['claims', 'Claims']);
     } else {
       this.tabList.push(['attrRelease', 'Attribute Release']);
@@ -221,8 +189,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Returns true if the form data is valid.
    */
   validate(): boolean {
-    if (this.service.form.invalid) {
-      this.touch(this.service.form);
+    if (this.form.form?.invalid) {
+      this.touch(this.form?.form);
       return false;
     }
     return true;
@@ -250,7 +218,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Marks all form groups in the form as being dirty.
    */
   markDirty() {
-    this.makeDirty(this.service.form);
+    this.makeDirty(this.form?.form);
   }
 
   /**
@@ -275,8 +243,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    */
   map(): boolean {
     let touched: boolean = this.created;
-    if (this.service.form.valid && this.service.form.touched) {
-      this.service.form.map();
+    if (this.form.form?.valid && this.form.form?.touched) {
+      this.form.form?.map();
       touched = true;
     }
     return touched;
@@ -286,14 +254,14 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Resets all the form controls to what they were when the service was loaded.
    */
   reset() {
-    this.service.form.reset();
+    this.form.form?.reset();
   }
 
   /**
    * Returns true if any control in the form was touched by the user.
    */
   touched(): boolean {
-    if (this.service.form.touched) {
+    if (this.form.form?.touched) {
       return true;
     }
     return false;
@@ -303,7 +271,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Returns true if the user changed any value in the form.
    */
   dirty(): boolean {
-    if (this.service.form.dirty) {
+    if (this.form.form?.dirty) {
       return true;
     }
     return false;

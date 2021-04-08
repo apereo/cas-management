@@ -2,9 +2,9 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
+import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.RegisteredServiceContact;
 
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class BulkActionController {
     private final VersionControlManagerFactory managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final RepositoryFactory repositoryFactory;
-    private final EmailManager communicationsManager;
+    private final CommunicationsManager communicationsManager;
 
     /**
      * Method used to remove the logged in user as contact from multiple services.
@@ -89,13 +89,7 @@ public class BulkActionController {
     private void sendBulkRemoveMessage(final String services, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getRegister().getBulkNotifications().getRemove();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), services),
-                    emailProps.getFrom(),
-                    emailProps.getSubject(),
-                    user.getEmail(),
-                    emailProps.getCc(),
-                    emailProps.getBcc());
+            communicationsManager.email(emailProps, user.getEmail(), MessageFormat.format(emailProps.getText(), services));
         }
     }
 
@@ -142,13 +136,7 @@ public class BulkActionController {
     private void sendBulkAddMessage(final String services, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getRegister().getBulkNotifications().getAdd();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), services),
-                    emailProps.getFrom(),
-                    emailProps.getSubject(),
-                    user.getEmail(),
-                    emailProps.getCc(),
-                    emailProps.getBcc());
+            communicationsManager.email(emailProps, user.getEmail(), MessageFormat.format(emailProps.getText(), services));
         }
     }
 

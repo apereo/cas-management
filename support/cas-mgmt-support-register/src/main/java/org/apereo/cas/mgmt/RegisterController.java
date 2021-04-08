@@ -2,9 +2,9 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
+import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class RegisterController extends BaseRegisterController {
 
     public RegisterController(final VersionControlManagerFactory managerFactory,
                               final CasManagementConfigurationProperties managementProperties,
-                              final EmailManager communicationsManager,
+                              final CommunicationsManager communicationsManager,
                               final ServicesManager published){
         super(managerFactory, managementProperties, communicationsManager, published);
     }

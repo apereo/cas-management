@@ -5,7 +5,6 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.controller.DelegatedUtil;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.controller.NoteController;
 import org.apereo.cas.mgmt.controller.PullController;
 import org.apereo.cas.mgmt.controller.SubmitController;
@@ -21,7 +20,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.Objects;
 
@@ -46,11 +44,6 @@ public class CasManagementDelegatedConfiguration {
     @Qualifier("communicationsManager")
     private ObjectProvider<CommunicationsManager> communicationsManager;
 
-    @Autowired
-    @Qualifier("mailSender")
-    private ObjectProvider<JavaMailSender> mailSender;
-
-
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public SubmitController submitController() {
@@ -69,13 +62,6 @@ public class CasManagementDelegatedConfiguration {
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public NoteController noteController() {
         return new NoteController(repositoryFactory.getIfAvailable());
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
-
-    public EmailManager emailManager() {
-        return new EmailManager(mailSender.getIfAvailable());
     }
 
     @Bean

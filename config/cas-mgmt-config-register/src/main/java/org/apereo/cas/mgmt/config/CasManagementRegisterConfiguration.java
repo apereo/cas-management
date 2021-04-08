@@ -6,9 +6,9 @@ import org.apereo.cas.mgmt.BulkActionController;
 import org.apereo.cas.mgmt.RegisterController;
 import org.apereo.cas.mgmt.RegisterForwardingController;
 import org.apereo.cas.mgmt.RegisterViewController;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
+import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.CollectionUtils;
 
@@ -53,8 +53,8 @@ public class CasManagementRegisterConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    @Qualifier("emailManager")
-    private ObjectProvider<EmailManager> emailManager;
+    @Qualifier("communicationsManager")
+    private ObjectProvider<CommunicationsManager> communicationsManager;
 
     @Autowired
     @Qualifier("servicesManager")
@@ -82,10 +82,11 @@ public class CasManagementRegisterConfiguration {
 
     @Bean
     public RegisterController registerController() {
+        LOGGER.error("EMAIL MANAGER = " + communicationsManager.getIfAvailable());
         return new RegisterController(
                 managerFactory.getIfAvailable(),
                 managementProperties,
-                emailManager.getIfAvailable(),
+                communicationsManager.getIfAvailable(),
                 servicesManager.getIfAvailable());
     }
 
@@ -96,7 +97,7 @@ public class CasManagementRegisterConfiguration {
                 (VersionControlManagerFactory) managerFactory.getIfAvailable(),
                 managementProperties,
                 repositoryFactory.getIfAvailable(),
-                emailManager.getIfAvailable());
+                communicationsManager.getIfAvailable());
     }
 
     @Bean(name = "registerForwarding")

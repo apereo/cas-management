@@ -40,6 +40,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.HashSet;
 
@@ -66,6 +67,11 @@ public class CasManagementCoreServicesConfiguration {
     @Autowired
     @Qualifier("serviceRegistry")
     private ObjectProvider<ServiceRegistry> serviceRegistry;
+
+    @Autowired
+    @Qualifier("mailSender")
+    private ObjectProvider<JavaMailSender> mailSender;
+
 
     @ConditionalOnMissingBean(name = "attributeDefinitionStore")
     @Bean
@@ -173,4 +179,5 @@ public class CasManagementCoreServicesConfiguration {
     public ServicesManagerRegisteredServiceLocator oauthServicesManagerRegisteredServiceLocator() {
         return new OAuth20ServicesManagerRegisteredServiceLocator();
     }
+
 }

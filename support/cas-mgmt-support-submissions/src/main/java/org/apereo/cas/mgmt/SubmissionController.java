@@ -4,12 +4,12 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.controller.AbstractVersionControlController;
-import org.apereo.cas.mgmt.controller.EmailManager;
 import org.apereo.cas.mgmt.domain.PendingItem;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.domain.RejectData;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.UnauthorizedServiceException;
@@ -75,13 +75,13 @@ public class SubmissionController extends AbstractVersionControlController {
     private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
     private final CasManagementConfigurationProperties managementProperties;
     private final CasConfigurationProperties casProperties;
-    private final EmailManager communicationsManager;
+    private final CommunicationsManager communicationsManager;
 
     public SubmissionController(final RepositoryFactory repositoryFactory,
                                 final MgmtManagerFactory<? extends ServicesManager> managerFactory,
                                 final CasManagementConfigurationProperties managementProperties,
                                 final CasConfigurationProperties casProperties,
-                                final EmailManager communicationsManager) {
+                                final CommunicationsManager communicationsManager) {
         this.repositoryFactory = repositoryFactory;
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
@@ -268,14 +268,8 @@ public class SubmissionController extends AbstractVersionControlController {
         if (communicationsManager.isMailSenderDefined()) {
             val notifications = managementProperties.getSubmissions().getNotifications();
             val emailProps = isChange ? notifications.getRejectChange() : notifications.getReject();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), submitName, note),
-                    emailProps.getFrom(),
-                    MessageFormat.format(emailProps.getSubject(), submitName),
-                    email,
-                    emailProps.getCc(),
-                    emailProps.getBcc()
-            );
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
         }
     }
 
@@ -301,14 +295,8 @@ public class SubmissionController extends AbstractVersionControlController {
     private void sendAddedMessage(final String submitName, final String note, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getSubmissions().getNotifications().getAdded();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), submitName, note),
-                    emailProps.getFrom(),
-                    MessageFormat.format(emailProps.getSubject(), submitName),
-                    email,
-                    emailProps.getCc(),
-                    emailProps.getBcc()
-            );
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
         }
     }
     /**
@@ -358,14 +346,8 @@ public class SubmissionController extends AbstractVersionControlController {
     private void sendAcceptMessage(final String submitName, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getSubmissions().getNotifications().getAccept();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), submitName),
-                    emailProps.getFrom(),
-                    MessageFormat.format(emailProps.getSubject(), submitName),
-                    email,
-                    emailProps.getCc(),
-                    emailProps.getBcc()
-            );
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
         }
     }
 
@@ -393,14 +375,8 @@ public class SubmissionController extends AbstractVersionControlController {
     private void sendDeleteMessage(final String submitName, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getSubmissions().getNotifications().getDelete();
-            communicationsManager.email(
-                    MessageFormat.format(emailProps.getText(), submitName),
-                    emailProps.getFrom(),
-                    MessageFormat.format(emailProps.getSubject(), submitName),
-                    email,
-                    emailProps.getCc(),
-                    emailProps.getBcc()
-            );
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
         }
     }
 

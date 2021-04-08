@@ -40,6 +40,8 @@ export class PendingComponent implements OnInit, OnDestroy {
               public dialog: MatDialog,
               public mediaObserver: MediaObserver,
               public router: Router) {
+    controls.title = 'Pending';
+    controls.icon = 'list';
   }
 
   /**

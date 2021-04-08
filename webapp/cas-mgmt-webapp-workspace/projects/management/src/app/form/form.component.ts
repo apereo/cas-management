@@ -2,7 +2,7 @@ import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from 
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {Observable, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {finalize, map} from 'rxjs/operators';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {
   FormService,
@@ -11,7 +11,7 @@ import {
   AppConfigService,
   AbstractRegisteredService,
   TabsComponent,
-  ImportService, ControlsService, ServiceForm
+  ImportService, ControlsService, ServiceForm, SubmissionsService
 } from '@apereo/mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
 import {childRoutes, FormRoutingModule} from './form-routing.module';
@@ -51,7 +51,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               private router: Router,
               private service: FormService,
               private importService: ImportService,
-              // private submissionService: SubmissionsService,
+              private submissionService: SubmissionsService,
               private location: Location,
               public app: AppConfigService,
               public controls: ControlsService,
@@ -128,14 +128,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
     this.service.registeredService.id = id;
     if (this.imported && this.importService.submissionFile) {
-      this.spinner.start('Adding to registry');
-      /*
       this.submissionService.added(this.importService.submissionFile)
-        .pipe(finalize(() => this.spinner.stop()))
         .subscribe(() => {
           this.location.back();
         });
-       */
     } else {
       this.location.back();
     }

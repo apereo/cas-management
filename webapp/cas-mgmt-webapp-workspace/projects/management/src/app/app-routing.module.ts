@@ -30,6 +30,10 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'registry'
+  },
+  {
+    path: '**',
+    redirectTo: 'registry'
   }
 ];
 

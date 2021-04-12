@@ -16,6 +16,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Attributes {
     /**
      * User id whose attributes were resolved.

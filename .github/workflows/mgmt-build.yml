@@ -114,9 +114,7 @@ jobs:
         run: ./ci/analyze-style.sh
       - name: Configuration Factory Analysis
         run: ./ci/check-config-factories.sh
-      - name: Dependency Analysis
-        run: ./ci/analyze-dependencies.sh
-
+        
   ##########################################################################
 
   validate-javadocs:

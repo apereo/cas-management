@@ -14,6 +14,7 @@ import java.util.Set;
  */
 @Data
 @NoArgsConstructor
+
 public class GitStatus implements Serializable {
     /**
      * True if there are uncommitted changes.

@@ -48,8 +48,6 @@ dependencies {
     implementation project(":config:cas-mgmt-config-dashboard")
     implementation project(":config:cas-mgmt-config-submissions")
 
-    implementation libraries.nimbus
-    //implementation libraries.cassecurityfilter
     
 }
 

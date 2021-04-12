@@ -334,7 +334,7 @@ public class GitUtil implements AutoCloseable {
      * @throws IOException - failed.
      */
     public RawText raw(final Repository repo, final String path) throws IOException {
-        val file = new File(repo.getWorkTree().getAbsolutePath() + "/" + path);
+        val file = new File(repo.getWorkTree().getAbsolutePath() + '/' + path);
         return new RawText(FileUtils.readFileToByteArray(file));
     }
 
@@ -1007,7 +1007,7 @@ public class GitUtil implements AutoCloseable {
      * @throws IOException - failed.
      */
     public RawText rawText(final String path) throws IOException {
-        val file = new File(git.getRepository().getWorkTree().getAbsolutePath() + "/" + path);
+        val file = new File(git.getRepository().getWorkTree().getAbsolutePath() + '/' + path);
         return new RawText(FileUtils.readFileToByteArray(file));
     }
 

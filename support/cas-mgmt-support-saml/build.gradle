@@ -3,10 +3,8 @@ description "Apereo CAS Management Support OAuth"
 dependencies {
     implementation libraries.git
     implementation libraries.opensaml
+    implementation libraries.shibidpjavasupport
     implementation libraries.casServer.saml
-    implementation libraries.shibboleth
-    //implementation libraries.shibidp
-    implementation libraries.shibutiljavasupport
     implementation libraries.casServer.configuration
     
     api project(":api:cas-mgmt-api-core")

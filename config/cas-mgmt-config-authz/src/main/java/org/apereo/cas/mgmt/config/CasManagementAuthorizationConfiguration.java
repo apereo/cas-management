@@ -14,6 +14,7 @@ import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.FromAttributesAuthorizationGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,12 +33,12 @@ import java.util.Optional;
 public class CasManagementAuthorizationConfiguration {
 
     @Autowired
-    private CasManagementConfigurationProperties casProperties;
+    private CasManagementConfigurationProperties mgmtProperties;
 
     @ConditionalOnMissingBean(name = "authorizationGenerator")
     @Bean
     public AuthorizationGenerator authorizationGenerator() {
-        val authzAttributes = casProperties.getAuthzAttributes();
+        val authzAttributes = mgmtProperties.getAuthzAttributes();
         if (!authzAttributes.isEmpty()) {
             if (authzAttributes.stream().anyMatch(a -> a.equals("*"))) {
                 return staticAdminRolesAuthorizationGenerator();
@@ -51,9 +52,9 @@ public class CasManagementAuthorizationConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "staticAdminRolesAuthorizationGenerator")
     public AuthorizationGenerator staticAdminRolesAuthorizationGenerator() {
-        return (context, profile) -> {
-            profile.addRoles(casProperties.getAdminRoles());
-            profile.addRoles(casProperties.getUserRoles());
+        return (context, sessionStore, profile) -> {
+            profile.addRoles(mgmtProperties.getAdminRoles());
+            profile.addRoles(mgmtProperties.getUserRoles());
             return Optional.of(profile);
         };
     }
@@ -62,15 +63,16 @@ public class CasManagementAuthorizationConfiguration {
     @Bean
     public Authorizer managementWebappAuthorizer() {
         val roles = new ArrayList<String>();
-        roles.addAll(casProperties.getAdminRoles());
-        roles.addAll(casProperties.getUserRoles());
+        roles.addAll(mgmtProperties.getAdminRoles());
+        roles.addAll(mgmtProperties.getUserRoles());
         return new CasRoleBasedAuthorizer(roles);
     }
 
     @Bean
     @ConditionalOnMissingBean(name = "springSecurityPropertiesAuthorizationGenerator")
+    @ConditionalOnProperty(prefix = "mgmt", name = "user-properties-file")
     public AuthorizationGenerator springSecurityPropertiesAuthorizationGenerator() {
-        val userPropertiesFile = casProperties.getUserPropertiesFile();
+        val userPropertiesFile = mgmtProperties.getUserPropertiesFile();
         if (userPropertiesFile.getFilename().endsWith("json")) {
             return new JsonResourceAuthorizationGenerator(userPropertiesFile);
         }

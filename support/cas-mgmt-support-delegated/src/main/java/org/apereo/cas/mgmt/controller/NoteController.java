@@ -7,7 +7,6 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +31,7 @@ import java.util.Date;
 @RestController("noteController")
 @RequestMapping(path = "api/note", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-@Slf4j
+
 public class NoteController {
 
     private final RepositoryFactory repositoryFactory;
@@ -45,7 +44,7 @@ public class NoteController {
      */
     @GetMapping("/{id}")
     @SneakyThrows
-    public void getNotes(final HttpServletResponse response, final @PathVariable String id) {
+    public void getNotes(final HttpServletResponse response, @PathVariable final String id) {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val note = git.note(id);
             if (note != null) {
@@ -64,7 +63,7 @@ public class NoteController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void addNote(final Authentication authentication,
-                        final @RequestBody CNote cnote) {
+                        @RequestBody final CNote cnote) {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(cnote.getId());

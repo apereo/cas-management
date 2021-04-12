@@ -12,7 +12,6 @@ import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.CollectionUtils;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import java.nio.charset.StandardCharsets;
 
 /**
- *Configuration for register end point features.
+ * Configuration for register end point features.
  *
  * @author Travis Schmidt
  * @since 5.3.5
@@ -35,7 +34,6 @@ import java.nio.charset.StandardCharsets;
 @ConditionalOnProperty(prefix = "mgmt.register", name = "enabled", havingValue = "true")
 @Configuration("casManagementRegisterConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
-@Slf4j
 public class CasManagementRegisterConfiguration {
 
     @Autowired
@@ -60,13 +58,36 @@ public class CasManagementRegisterConfiguration {
     @Qualifier("servicesManager")
     private ObjectProvider<ServicesManager> servicesManager;
 
-
     @Bean
     public RegisterViewController registerViewController() {
         return new RegisterViewController();
     }
 
-    @Bean SpringResourceTemplateResolver staticTemplateResolver() {
+    @Bean
+    public RegisterController registerController() {
+        return new RegisterController(
+            managerFactory.getObject(),
+            managementProperties,
+            communicationsManager.getObject(),
+            servicesManager.getObject());
+    }
+
+    @Bean
+    public BulkActionController bulkActionController() {
+        return new BulkActionController(
+            (VersionControlManagerFactory) managerFactory.getObject(),
+            managementProperties,
+            repositoryFactory.getObject(),
+            communicationsManager.getObject());
+    }
+
+    @Bean(name = "registerForwarding")
+    public RegisterForwardingController registerForwardingController() {
+        return new RegisterForwardingController();
+    }
+
+    @Bean
+    SpringResourceTemplateResolver staticTemplateResolver() {
         val resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(this.context);
         resolver.setPrefix("classpath:/dist/");
@@ -78,31 +99,6 @@ public class CasManagementRegisterConfiguration {
         resolver.setCheckExistence(true);
         resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("register/**"));
         return resolver;
-    }
-
-    @Bean
-    public RegisterController registerController() {
-        LOGGER.error("EMAIL MANAGER = " + communicationsManager.getIfAvailable());
-        return new RegisterController(
-                managerFactory.getIfAvailable(),
-                managementProperties,
-                communicationsManager.getIfAvailable(),
-                servicesManager.getIfAvailable());
-    }
-
-
-    @Bean
-    public BulkActionController bulkActionController() {
-        return new BulkActionController(
-                (VersionControlManagerFactory) managerFactory.getIfAvailable(),
-                managementProperties,
-                repositoryFactory.getIfAvailable(),
-                communicationsManager.getIfAvailable());
-    }
-
-    @Bean(name = "registerForwarding")
-    public RegisterForwardingController registerForwardingController() {
-        return new RegisterForwardingController();
     }
 
 }

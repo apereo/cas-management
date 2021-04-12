@@ -11,7 +11,6 @@ import org.apereo.cas.mgmt.controller.SubmitController;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import java.util.Objects;
  */
 @Configuration("casManagementDelegatedConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
-@Slf4j
 public class CasManagementDelegatedConfiguration {
 
     @Autowired
@@ -47,21 +45,21 @@ public class CasManagementDelegatedConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public SubmitController submitController() {
-        return new SubmitController(repositoryFactory.getIfAvailable(),
-                managementProperties, communicationsManager.getIfAvailable());
+        return new SubmitController(repositoryFactory.getObject(),
+                managementProperties, communicationsManager.getObject());
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PullController pullController() {
-        return new PullController(repositoryFactory.getIfAvailable(),
-                managementProperties, communicationsManager.getIfAvailable());
+        return new PullController(repositoryFactory.getObject(),
+                managementProperties, communicationsManager.getObject());
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public NoteController noteController() {
-        return new NoteController(repositoryFactory.getIfAvailable());
+        return new NoteController(repositoryFactory.getObject());
     }
 
     @Bean
@@ -70,7 +68,7 @@ public class CasManagementDelegatedConfiguration {
         return authentication -> {
             val user = Objects.requireNonNull(CasUserProfile.from(authentication));
             if (user.isAdministrator()) {
-                val git = Objects.requireNonNull(repositoryFactory.getIfAvailable()).masterRepository();
+                val git = Objects.requireNonNull(repositoryFactory.getObject()).masterRepository();
                 try {
                     return (int) git.branches()
                             .map(git::mapBranches)

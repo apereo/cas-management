@@ -4,6 +4,6 @@ dependencies {
     api project(":api:cas-mgmt-api-configuration")
     
     implementation libraries.casServer.ldap 
-    implementation libraries.pac4jcore
+    implementation libraries.pac4j
 
 }

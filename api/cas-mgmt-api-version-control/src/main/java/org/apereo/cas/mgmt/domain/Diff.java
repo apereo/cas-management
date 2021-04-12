@@ -17,6 +17,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Diff implements Serializable {
     /**
      * OldId before.

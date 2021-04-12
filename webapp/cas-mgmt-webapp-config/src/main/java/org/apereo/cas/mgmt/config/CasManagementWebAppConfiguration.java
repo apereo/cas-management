@@ -1,7 +1,5 @@
 package org.apereo.cas.mgmt.config;
 
-import org.apereo.cas.authentication.principal.ServiceFactory;
-import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.controller.ViewController;
@@ -68,11 +66,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
     private ApplicationContext context;
-
-    @Autowired
-    @Qualifier("webApplicationServiceFactory")
-    private ServiceFactory<WebApplicationService> webApplicationServiceFactory;
-
+    
     @Autowired
     @Qualifier("authenticationClients")
     private List<Client> authenticationClients;
@@ -209,7 +203,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Bean
     public Config pac4jClientConfiguration() {
         val cfg = new Config(new Clients(getDefaultCallbackUrl(serverProperties), authenticationClients));
-        cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getIfAvailable());
+        cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getObject());
         return cfg;
     }
 

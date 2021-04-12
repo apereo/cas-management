@@ -58,7 +58,7 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
             val cfg = new CasConfiguration(casProperties.getServer().getLoginUrl());
             val client = new CasClient(cfg);
-            client.setAuthorizationGenerator(authorizationGenerator.getIfAvailable());
+            client.setAuthorizationGenerator(authorizationGenerator.getObject());
             client.setName("CasClient");
             clients.add(client);
         } else {
@@ -69,7 +69,7 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.info("Configuring an authentication strategy based on authorized IP addresses matching [{}]", managementProperties.getAuthzIpRegex());
             val ipClient = new IpClient(new IpRegexpAuthenticator(managementProperties.getAuthzIpRegex()));
             ipClient.setName("IpClient");
-            ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getIfAvailable());
+            ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getObject());
             clients.add(ipClient);
         } else {
             LOGGER.debug("Skipping IP address authentication strategy configuration; no pattern is defined");
@@ -79,7 +79,7 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.warn("No authentication strategy is defined, CAS will establish an anonymous authentication mode whereby access is immediately granted. "
                 + "This may NOT be relevant for production purposes. Consider configuring alternative authentication strategies for maximum security.");
             val anon = new AnonymousClient();
-            anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getIfAvailable());
+            anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getObject());
             clients.add(anon);
         }
         return clients;

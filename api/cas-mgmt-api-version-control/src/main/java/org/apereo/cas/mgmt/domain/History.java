@@ -14,6 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @AllArgsConstructor
+
 @NoArgsConstructor
 public class History implements Serializable {
     /**

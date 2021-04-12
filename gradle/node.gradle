@@ -6,13 +6,6 @@ node {
     download = true
 }
 
-sonarqube {
-    properties {
-        property "sonar.sources", "projects"
-        property "sonar.typescript.node", node.variant.nodeExec
-    }
-}
-
 npm_update {
     args = ['--production', '--loglevel', 'warn']
 }
@@ -23,11 +16,9 @@ if (!Boolean.getBoolean("skipNpmCache")) {
     npm_install.enabled = false
 }
 
-if (!Boolean.getBoolean("skipNodeModulesCleanUp")) {
-    //clean.delete << new File(project(":webapp").projectDir, "node_modules")
-    //clean.delete << fileTree(dir: project(":webapp").projectDir.getPath() + '/resources/static/js', include: '*-bundle.js')
-} else {
-    logger.info("Skipping node_modules cleanup...")
+if (Boolean.getBoolean("enableNodeModulesCleanUp")) {
+    clean.delete << new File(project(":webapp").projectDir, "node_modules")
+    clean.delete << fileTree(dir: project(":webapp").projectDir.getPath() + '/resources/static/js', include: '*-bundle.js')
 }
 
 

@@ -1,6 +1,9 @@
-description "Aperep CAS Management API Configuration"
+description "Apereo CAS Management API Configuration"
 
 dependencies {
-        api libraries.casServer.configuration
-        api libraries.casServer.utilApi
+    api libraries.casServer.configuration
+    api libraries.casServer.utilApi
+
+    implementation libraries.springbootconfigmetadata
+    annotationProcessor libraries.springbootconfigmetadata
 }

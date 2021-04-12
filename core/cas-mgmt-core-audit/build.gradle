@@ -2,7 +2,7 @@ description "Apereo CAS Management Core Audit"
 
 dependencies {
     api project(":api:cas-mgmt-api-configuration")
-    implementation libraries.pac4jcore
+    implementation libraries.pac4j
     
 
 }

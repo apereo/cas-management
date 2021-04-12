@@ -71,7 +71,7 @@ public class SessionsController {
      * @throws IllegalAccessException - Illegal Access
      */
     @GetMapping("{user}")
-    public SsoSessionResponse getSession(final @PathVariable String user,
+    public SsoSessionResponse getSession(@PathVariable final String user,
                                          final Authentication authentication) throws IllegalAccessException {
         isAdmin(authentication);
         val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
@@ -88,8 +88,8 @@ public class SessionsController {
      * @throws IllegalAccessException - Illegal Access
      **/
     @DeleteMapping("{tgt}")
-    public void revokeSession(final @PathVariable String tgt,
-                              final @RequestParam String user,
+    public void revokeSession(@PathVariable final String tgt,
+                              @RequestParam final String user,
                               final Authentication authentication) throws IllegalAccessException {
         LOGGER.info("Attempting to revoke [{}]", tgt);
         val casUser = CasUserProfile.from(authentication);
@@ -117,11 +117,11 @@ public class SessionsController {
             val restTemplate = new RestTemplate();
             val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
                     + "/actuator/ssoSessions";
-            restTemplate.delete(serverUrl + "/" + tgtMapped);
+            restTemplate.delete(serverUrl + '/' + tgtMapped);
         }
     }
 
-    private SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
+    private static SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
         val restTemplate = new RestTemplate();
         val resp = restTemplate.getForEntity(serverUrl, SsoSessionResponse.class).getBody();
         if (mask) {
@@ -146,7 +146,7 @@ public class SessionsController {
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         val req = new HttpEntity(null, headers);
-        restTemplate.postForObject(serverUrl + "/" + casUser.getId(), req, Void.class);
+        restTemplate.postForObject(serverUrl + '/' + casUser.getId(), req, Void.class);
     }
 
     /**
@@ -159,7 +159,7 @@ public class SessionsController {
     @PostMapping("bulkRevoke")
     @ResponseStatus(HttpStatus.OK)
     public void bulkRevoke(final Authentication authentication,
-                           final @RequestBody List<String> tgts) {
+                           @RequestBody final List<String> tgts) {
         LOGGER.info("Attempting to revoke [{}]", tgts);
         val casUser = CasUserProfile.from(authentication);
         val tickets = new ArrayList<String>();
@@ -184,7 +184,7 @@ public class SessionsController {
         }
     }
 
-    private void isAdmin(final Authentication authentication) throws IllegalAccessException {
+    private static void isAdmin(final Authentication authentication) throws IllegalAccessException {
         if (!CasUserProfile.from(authentication).isAdministrator()) {
             throw new IllegalAccessException("Permission Denied");
         }

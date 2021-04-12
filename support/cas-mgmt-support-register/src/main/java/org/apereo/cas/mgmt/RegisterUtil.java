@@ -22,7 +22,7 @@ public class RegisterUtil {
      */
     public static RegisteredServiceContact createContact(final CasUserProfile casUserProfile) {
         val contact = new DefaultRegisteredServiceContact();
-        contact.setName(casUserProfile.getFirstName() + " " + casUserProfile.getFamilyName());
+        contact.setName(casUserProfile.getFirstName() + ' ' + casUserProfile.getFamilyName());
         contact.setDepartment(casUserProfile.getDepartment());
         contact.setEmail(casUserProfile.getEmail());
         contact.setPhone(casUserProfile.getPhone());

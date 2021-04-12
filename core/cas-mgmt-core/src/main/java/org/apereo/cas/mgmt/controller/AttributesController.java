@@ -55,7 +55,7 @@ public class AttributesController {
 
     @GetMapping("/{key}")
     public AttributeDefinition getAttribute(final Authentication authentication,
-                                            final @PathVariable String key) throws IllegalAccessException {
+                                            @PathVariable final String key) throws IllegalAccessException {
         if (!CasUserProfile.from(authentication).isUser()) {
             throw new IllegalAccessException("Insufficient permissions");
         }

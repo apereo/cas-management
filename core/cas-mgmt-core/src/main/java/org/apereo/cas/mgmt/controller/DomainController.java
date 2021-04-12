@@ -8,7 +8,6 @@ import org.apereo.cas.services.ServicesManager;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -27,9 +26,8 @@ import java.util.stream.Collectors;
  * @since 6.0
  */
 @RestController("domainController")
-@RequestMapping(path="api/domains", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/domains", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-@Slf4j
 public class DomainController {
 
     private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
@@ -37,7 +35,7 @@ public class DomainController {
     /**
      * Gets domains.
      *
-     * @param authentication  -  the user
+     * @param authentication -  the user
      * @return the domains
      * @throws IllegalAccessException - insufficient permissions
      */
@@ -49,9 +47,9 @@ public class DomainController {
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
         return manager.getDomains()
-                .filter(casUserProfile::hasPermission)
-                .map(DomainRpc::new)
-                .collect(Collectors.toList());
+            .filter(casUserProfile::hasPermission)
+            .map(DomainRpc::new)
+            .collect(Collectors.toList());
     }
 
     @Data

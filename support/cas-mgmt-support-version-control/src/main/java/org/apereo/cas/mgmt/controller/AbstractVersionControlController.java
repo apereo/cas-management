@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 
@@ -14,7 +13,6 @@ import org.springframework.security.core.Authentication;
  * @since 6.0
  */
 @RequiredArgsConstructor
-@Slf4j
 public class AbstractVersionControlController {
 
     /**

@@ -23,8 +23,6 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Controller for bulk operations.
@@ -54,7 +52,7 @@ public class BulkActionController {
     @PostMapping("unclaim")
     @ResponseStatus(HttpStatus.OK)
     public void bulkUnclaim(final Authentication authentication,
-                            final @RequestBody String[] services) throws IllegalStateException, IllegalAccessException {
+                            @RequestBody final String[] services) throws IllegalStateException, IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();
@@ -103,7 +101,7 @@ public class BulkActionController {
     @PostMapping("claim")
     @ResponseStatus(HttpStatus.OK)
     public void bulkclaim(final Authentication authentication,
-                          final @RequestBody String[] services) throws IllegalStateException {
+                          @RequestBody final String[] services) throws IllegalStateException {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();
@@ -140,16 +138,16 @@ public class BulkActionController {
         }
     }
 
-    private void commitBranch(final GitUtil git, final CasUserProfile casUserProfile, final String op, final String msg) {
+    private static void commitBranch(final GitUtil git, final CasUserProfile casUserProfile, final String op, final String msg) {
         try {
             val timestamp = new Date().getTime();
-            val branchName = op + "-" + casUserProfile.getEmail() + "-" + timestamp;
+            val branchName = op + '-' + casUserProfile.getEmail() + '-' + timestamp;
             git.addWorkingChanges();
             val commit = git.commit(casUserProfile, msg);
             git.createBranch(branchName, "origin/master");
             git.cherryPickCommit(commit);
             git.commit(casUserProfile, msg);
-            val submitName = casUserProfile.getId() + "_" + timestamp;
+            val submitName = casUserProfile.getId() + '_' + timestamp;
             git.createPullRequest(commit, submitName);
             git.checkout("master");
             git.close();
@@ -158,7 +156,7 @@ public class BulkActionController {
         }
     }
 
-    private void removeClone(final String clone) {
+    private static void removeClone(final String clone) {
         try {
             Runtime.getRuntime().exec("rm -rf " + clone).waitFor();
         } catch (final Exception e) {
@@ -166,24 +164,17 @@ public class BulkActionController {
         }
     }
 
-    private String getServiceNames(final String[] services, final ManagementServicesManager manager) {
+    private static String getServiceNames(final String[] services, final ManagementServicesManager manager) {
         val sb = new StringBuilder();
-        Arrays.stream(services).forEach(s -> sb.append("\t").append(manager.findServiceBy(Long.parseLong(s)).getName()).append("\n"));
+        Arrays.stream(services).forEach(s -> sb.append('\t').append(manager.findServiceBy(Long.parseLong(s)).getName()).append('\n'));
         return sb.toString();
     }
 
-    private String fullName(final CasUserProfile casUserProfile) {
-        return casUserProfile.getFirstName() + " " + casUserProfile.getFamilyName();
+    private static String fullName(final CasUserProfile casUserProfile) {
+        return casUserProfile.getFirstName() + ' ' + casUserProfile.getFamilyName();
     }
 
-    private RegisteredServiceContact owner(final List<RegisteredServiceContact> contacts, final String email) {
+    private static RegisteredServiceContact owner(final List<RegisteredServiceContact> contacts, final String email) {
         return contacts.stream().filter(c -> email.equalsIgnoreCase(c.getEmail())).findAny().orElse(null);
     }
-
-    private String names(final Stream<RegisteredServiceContact> stream) {
-        return stream
-                .map(s -> s.getName() != null ? s.getName() : s.getEmail())
-                .collect(Collectors.joining(", "));
-    }
-
 }

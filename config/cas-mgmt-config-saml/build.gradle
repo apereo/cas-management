@@ -6,8 +6,8 @@ dependencies {
     api project(":api:cas-mgmt-api-delegated")
 
     implementation libraries.git
-    implementation libraries.shibutiljavasupport
     implementation libraries.casServer.saml
+    implementation libraries.shibidpjavasupport
 
     implementation project(":core:cas-mgmt-core")
     implementation project(":support:cas-mgmt-support-submissions")

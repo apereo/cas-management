@@ -89,9 +89,9 @@ public class CasManagementSamlConfiguration {
     @Bean
     public SamlController samlController() {
         return new SamlController(
-                managerFactory.getIfAvailable(),
+                managerFactory.getObject(),
                 managementProperties,
-                Objects.requireNonNull(formDataFactory.getIfAvailable()).create(),
+                Objects.requireNonNull(formDataFactory.getObject()).create(),
                 openSamlConfigBean(),
                 metadataAggregateResolver(),
                 urlMetadataResolver());

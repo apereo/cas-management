@@ -66,7 +66,7 @@ public class PullController extends AbstractVersionControlController {
      */
     @PostMapping
     public List<BranchData> branches(final Authentication authentication,
-                                     final @RequestBody boolean[] options) throws VersionControlException {
+                                     @RequestBody final boolean[] options) throws VersionControlException {
         isAdministrator(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.branches()
@@ -90,7 +90,7 @@ public class PullController extends AbstractVersionControlController {
     @PostMapping(value = "/accept", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void acceptChange(final Authentication authentication,
-                             final @RequestBody BranchActionData acception) throws VersionControlException {
+                             @RequestBody final BranchActionData acception) throws VersionControlException {
         val user = CasUserProfile.from(authentication);
         isAdministrator(user);
         val branch = acception.getBranch();
@@ -125,7 +125,7 @@ public class PullController extends AbstractVersionControlController {
      */
     @PostMapping(value = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void rejectChange(final Authentication authentication,
-                             final @RequestBody BranchActionData rejection) throws VersionControlException {
+                             @RequestBody final BranchActionData rejection) throws VersionControlException {
         val user = CasUserProfile.from(authentication);
         isAdministrator(user);
         val branch = rejection.getBranch();

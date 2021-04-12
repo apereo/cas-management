@@ -1,8 +1,6 @@
 package org.apereo.cas.mgmt.web;
 
-import org.apereo.cas.config.CasCoreAuthenticationSupportConfiguration;
 import org.apereo.cas.config.CasCoreServicesAuthenticationConfiguration;
-import org.apereo.cas.config.CasCoreTicketsSchedulingConfiguration;
 import org.apereo.cas.config.CasDiscoveryProfileConfiguration;
 import org.apereo.cas.config.CasPersonDirectoryConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -47,8 +45,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     CasPersonDirectoryConfiguration.class,
     CasDiscoveryProfileConfiguration.class,
     CasCoreServicesAuthenticationConfiguration.class,
-    CasCoreAuthenticationSupportConfiguration.class,
-    CasCoreTicketsSchedulingConfiguration.class,
     DataSourceAutoConfiguration.class,
     RedisAutoConfiguration.class,
     MongoAutoConfiguration.class,

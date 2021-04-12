@@ -30,7 +30,6 @@ import java.nio.file.Paths;
 public class RepositoryFactory {
 
     private static final String REPO_DIR = "/.git";
-    private static final String REPO_VAR = "userRepo";
     private static final int INITIAL_CACHE_SIZE = 10;
     private static final int MAX_CACHE_SIZE = 100;
 
@@ -109,7 +108,7 @@ public class RepositoryFactory {
         }
     }
 
-    private Cache<Authentication, GitUtil> managementServicesManagerCache() {
+    private static Cache<Authentication, GitUtil> managementServicesManagerCache() {
         val duration = Beans.newDuration("PT30M");
         return Caffeine.newBuilder()
                 .initialCapacity(INITIAL_CACHE_SIZE)

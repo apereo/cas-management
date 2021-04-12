@@ -11,7 +11,7 @@ echo -e "***********************************************"
 
 gradleBuild="$gradleBuild test jacocoRootReport --parallel -x javadoc -x check \
     -DskipNpmLint=true -DskipGradleLint=true -DskipSass=true -DskipNpmLint=true -DskipClientBuild=true \
-    -DskipNodeModulesCleanUp=true -DskipNpmCache=false -DskipNestedConfigMetadataGen=true "
+    -DskipNpmCache=false -DskipNestedConfigMetadataGen=true "
 
 tasks="$gradle $gradleBuildOptions $gradleBuild"
 echo -e "***************************************************************************************"

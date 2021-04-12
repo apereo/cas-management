@@ -9,7 +9,6 @@ import org.apereo.cas.notifications.CommunicationsManager;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,7 +36,6 @@ import static java.util.stream.Collectors.toList;
 @RestController("submitController")
 @RequestMapping(path = "api/submit", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-@Slf4j
 public class SubmitController {
 
     private final RepositoryFactory repositoryFactory;
@@ -53,7 +51,7 @@ public class SubmitController {
     @PostMapping
     @SneakyThrows
     public void submitPull(final Authentication authentication,
-                           final @RequestBody String msg) {
+                           @RequestBody final String msg) {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {
@@ -111,7 +109,7 @@ public class SubmitController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void revertSubmit(final Authentication authentication,
-                             final @PathVariable String branch) {
+                             @PathVariable final String branch) {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {

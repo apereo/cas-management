@@ -6,7 +6,6 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.eclipse.jgit.api.Status;
 
@@ -24,7 +23,6 @@ import java.util.stream.Stream;
  * @author Travis Schmidt
  * @since 6.0.0
  */
-@Slf4j
 public class VersionControlServicesManager extends ManagementServicesManager {
 
     private final GitUtil git;

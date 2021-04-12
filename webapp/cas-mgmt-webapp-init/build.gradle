@@ -6,7 +6,6 @@ dependencies {
     implementation libraries.casServer.util
     implementation libraries.casServer.discovery
     implementation libraries.casServer.personDirectory
-    implementation libraries.casServer.initTomcat
     implementation libraries.casServer.configuration
     implementation project(":core:cas-mgmt-core-util")
 

@@ -81,14 +81,14 @@ public class LuceneSearch {
      */
     @PostMapping
     public List<RegisteredServiceItem> search(final Authentication authentication,
-                                              final @RequestBody String queryString) throws SearchException {
+                                              @RequestBody final String queryString) throws SearchException {
         try {
             val casUserProfile = CasUserProfile.from(authentication);
             val analyzer = new StandardAnalyzer();
             val query = new QueryParser("body", analyzer).parse(queryString);
             val fields = getFields(query, new ArrayList<>());
             val manager = (ManagementServicesManager) mgmtManagerFactory.from(authentication);
-            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()))) {
+            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + '/' + casUserProfile.getUsername()))) {
                 val docs = manager.getAllServices().stream()
                         .filter(casUserProfile::hasPermission)
                         .map(CasManagementUtils::toJson)
@@ -117,7 +117,7 @@ public class LuceneSearch {
      * @param fields - list of fields parsed from query string.
      * @return - the document
      */
-    private Document createDocument(final JsonObject json, final ArrayList<String> fields) {
+    private static Document createDocument(final JsonObject json, final ArrayList<String> fields) {
         val document = new Document();
         val id = json.asObject().getLong("id", -1);
         fields.stream()
@@ -141,7 +141,7 @@ public class LuceneSearch {
      * @param triple - the triple
      * @return - List of Field
      */
-    private ArrayList<Field> createFields(final Triple<JsonType, Object, String> triple) {
+    private static ArrayList<Field> createFields(final Triple<JsonType, Object, String> triple) {
         val field = triple.getRight();
         val type = triple.getLeft();
         val value = triple.getMiddle();
@@ -174,7 +174,7 @@ public class LuceneSearch {
      * @param docs - List of Document
      */
     @SneakyThrows
-    private void writeDocs(final StandardAnalyzer analyzer, final MMapDirectory memoryIndex, final List<Document> docs) {
+    private static void writeDocs(final StandardAnalyzer analyzer, final MMapDirectory memoryIndex, final List<Document> docs) {
         val indexWriterConfig = new IndexWriterConfig(analyzer);
         val writer = new IndexWriter(memoryIndex, indexWriterConfig);
         writer.deleteAll();
@@ -193,7 +193,7 @@ public class LuceneSearch {
      * @return -List of Document
      */
     @SneakyThrows
-    private List<Document> results(final MMapDirectory memoryIndex, final Query query) {
+    private static List<Document> results(final MMapDirectory memoryIndex, final Query query) {
         val indexReader = DirectoryReader.open(memoryIndex);
         val searcher = new IndexSearcher(indexReader);
         return Arrays.stream(searcher.search(query, MAX_RESULTS).scoreDocs)
@@ -208,7 +208,7 @@ public class LuceneSearch {
      * @param scoreDoc - the scoredoc
      * @return - Document
      */
-    private Document pullDoc(final IndexSearcher searcher, final ScoreDoc scoreDoc) {
+    private static Document pullDoc(final IndexSearcher searcher, final ScoreDoc scoreDoc) {
         try {
             return searcher.doc(scoreDoc.doc);
         } catch (final Exception e) {
@@ -225,7 +225,7 @@ public class LuceneSearch {
      * @param fields - list to hold fields
      * @return - List of Field
      */
-    private ArrayList<String> getFields(final Query query, final ArrayList<String> fields) {
+    private static ArrayList<String> getFields(final Query query, final ArrayList<String> fields) {
         if (query instanceof BooleanQuery) {
             ((BooleanQuery) query).clauses().forEach(c -> getFields(c.getQuery(), fields));
         }
@@ -259,7 +259,7 @@ public class LuceneSearch {
      * @param field - field key
      * @return - Triple
      */
-    private Triple<JsonType, Object, String> createTriple(final JsonObject json, final String field) {
+    private static Triple<JsonType, Object, String> createTriple(final JsonObject json, final String field) {
         val pair = getValue(json, field);
         return Triple.of(pair.getLeft(), pair.getRight(), field);
     }
@@ -272,7 +272,7 @@ public class LuceneSearch {
      * @param field - the field key
      * @return - Pair representing object type and value
      */
-    private Pair<JsonType, Object> getValue(final JsonObject json, final String field) {
+    private static Pair<JsonType, Object> getValue(final JsonObject json, final String field) {
         val period = field.indexOf('.');
         if (period > -1) {
             val nextObj = json.get(field.substring(0, period)).asObject();

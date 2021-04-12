@@ -12,7 +12,6 @@ import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,8 +28,8 @@ import org.springframework.context.annotation.Configuration;
  * @since 6.0
  */
 @Configuration("casManagementVersionControlConfiguration")
+@ConditionalOnProperty(prefix = "mgmt.version-control", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
-@Slf4j
 public class CasManagementVersionControlConfiguration {
 
     @Autowired
@@ -58,33 +57,28 @@ public class CasManagementVersionControlConfiguration {
 
 
     @Bean(name = "managerFactory")
-    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public VersionControlManagerFactory managerFactory() {
-        return new VersionControlManagerFactory(servicesManager.getIfAvailable(), applicationContext, managementProperties,
-                repositoryFactory(), casProperties, namingStrategy.getIfAvailable());
+        return new VersionControlManagerFactory(servicesManager.getObject(), applicationContext, managementProperties,
+                repositoryFactory(), casProperties, namingStrategy.getObject());
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public RepositoryFactory repositoryFactory() {
         return new RepositoryFactory(managementProperties);
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public CommitController commitController() {
         return new CommitController(repositoryFactory(),
-                managementProperties, servicesManager.getIfAvailable(), pendingRequests, submissionRequests);
+                managementProperties, servicesManager.getObject(), pendingRequests, submissionRequests);
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public ChangeController changeController() {
         return new ChangeController(repositoryFactory(), managerFactory());
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.versionControl", name = "enabled", havingValue = "true")
     public HistoryController historyController() {
         return new HistoryController(repositoryFactory());
     }

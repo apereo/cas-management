@@ -80,7 +80,7 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
             this.signatureValidationFilter.filter(entity, new MetadataFilterContext());
         } catch (final FilterException exception) {
             LOGGER.error(exception.getMessage(), exception);
-            throw new SignatureException("Invalid metadata signature for [" + entityId + "]");
+            throw new SignatureException("Invalid metadata signature for [" + entityId + ']');
         }
         return entity;
     }
@@ -89,7 +89,7 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
     @SneakyThrows
     public String xml(final String entityId) {
         if (sps.contains(entityId)) {
-            val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl() + "/" + EncodingUtils.urlEncode(entityId));
+            val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl() + '/' + EncodingUtils.urlEncode(entityId));
 
             try (val entity = resp.getEntity().getContent()) {
                 return IOUtils.toString(entity, StandardCharsets.UTF_8);

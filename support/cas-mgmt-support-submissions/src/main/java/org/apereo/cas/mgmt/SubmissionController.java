@@ -101,7 +101,7 @@ public class SubmissionController extends AbstractVersionControlController {
         isAdministrator(authentication);
         LOGGER.debug(managementProperties.getSubmissions().getSubmitDir());
         try (Stream<Path> stream = Files.list(Paths.get(managementProperties.getSubmissions().getSubmitDir()))) {
-            return stream.map(this::createServiceItem).collect(toList());
+            return stream.map(SubmissionController::createServiceItem).collect(toList());
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw e;
@@ -120,7 +120,7 @@ public class SubmissionController extends AbstractVersionControlController {
         val casUserProfile = CasUserProfile.from(authentication);
         try (Stream<Path> stream = Files.list(Paths.get(managementProperties.getSubmissions().getSubmitDir()))) {
             val list = stream.filter(p -> isSubmitter(p, casUserProfile))
-                    .map(this::createPendingItem).collect(toList());
+                    .map(SubmissionController::createPendingItem).collect(toList());
 
             val git = repositoryFactory.masterRepository();
             val bulks = git.branches()
@@ -138,11 +138,11 @@ public class SubmissionController extends AbstractVersionControlController {
         }
     }
 
-    private boolean isSubmitter(final Path p, final CasUserProfile casUserProfile) {
+    private static boolean isSubmitter(final Path p, final CasUserProfile casUserProfile) {
         return getSubmitter(p)[0].equals(casUserProfile.getEmail());
     }
 
-    private RegisteredServiceItem createServiceItem(final Path p) {
+    private static RegisteredServiceItem createServiceItem(final Path p) {
         val serializer = new RegisteredServiceJsonSerializer();
         val service = serializer.from(p.toFile());
         val serviceItem = new RegisteredServiceItem();
@@ -159,7 +159,7 @@ public class SubmissionController extends AbstractVersionControlController {
         return serviceItem;
     }
 
-    private PendingItem createPendingItem(final Path p) {
+    private static PendingItem createPendingItem(final Path p) {
         val service = CasManagementUtils.fromJson(p.toFile());
         val serviceItem = new PendingItem();
         serviceItem.setId(p.getFileName().toString());
@@ -171,7 +171,7 @@ public class SubmissionController extends AbstractVersionControlController {
         return serviceItem;
     }
 
-    private PendingItem createPendingItem(final GitUtil.BranchMap p, final GitUtil git) {
+    private static PendingItem createPendingItem(final GitUtil.BranchMap p, final GitUtil git) {
         try {
             val serviceItem = new PendingItem();
             serviceItem.setId(p.getId());
@@ -186,7 +186,7 @@ public class SubmissionController extends AbstractVersionControlController {
         }
     }
 
-    private String status(final String path) {
+    private static String status(final String path) {
         if (path.startsWith("edit")) {
             return "EDIT";
         }
@@ -206,9 +206,9 @@ public class SubmissionController extends AbstractVersionControlController {
      */
     @PostMapping("/yaml")
     public String getYamlSubmission(final Authentication authentication,
-                                    final @RequestBody String id) throws Exception {
+                                    @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
-        val svc = CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() +"/" + id));
+        val svc = CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id));
         return CasManagementUtils.toYaml(svc);
     }
 
@@ -222,17 +222,17 @@ public class SubmissionController extends AbstractVersionControlController {
      */
     @PostMapping("/json")
     public String getJsonSubmission(final Authentication authentication,
-                                    final @RequestBody String id) throws Exception {
+                                    @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
-        val svc = CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + "/" +id));
+        val svc = CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + '/' +id));
         return CasManagementUtils.toJson(svc);
     }
 
     @PostMapping("/metadata")
     public String getMetadataSubmission(final Authentication authentication,
-                                        final @RequestBody String id) throws Exception {
+                                        @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
-        val svc = (SamlRegisteredService) CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + "/" +id));
+        val svc = (SamlRegisteredService) CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + '/' +id));
         val location = svc.getMetadataLocation();
         if (location.contains("mdq.incommon.org")) {
             val resp = fetchMetadata(svc.getMetadataLocation().replace("{0}", EncodingUtils.urlEncode(svc.getServiceId())));
@@ -240,7 +240,7 @@ public class SubmissionController extends AbstractVersionControlController {
             return IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
         }
         val fileName = DigestUtils.sha(svc.getServiceId()) + ".xml";
-        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + "/" + fileName).getFile();
+        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + '/' + fileName).getFile();
         return com.mchange.io.FileUtils.getContentsAsString(res);
     }
 
@@ -254,9 +254,9 @@ public class SubmissionController extends AbstractVersionControlController {
     @PostMapping(path = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void rejectSubmission(final Authentication authentication,
-                                 final @RequestBody RejectData data) throws Exception {
+                                 @RequestBody final RejectData data) throws Exception {
         isAdministrator(authentication);
-        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + data.getId());
+        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + data.getId());
         val service = CasManagementUtils.fromJson(path.toFile());
         val contact = getSubmitter(path)[0];
         Files.delete(path);
@@ -283,9 +283,9 @@ public class SubmissionController extends AbstractVersionControlController {
     @PostMapping("added")
     @ResponseStatus(HttpStatus.OK)
     public void addedSubmission(final Authentication authentication,
-                                final @RequestBody String id) throws Exception {
+                                @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
-        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + id);
+        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         val service = CasManagementUtils.fromJson(path.toFile());
         val contact = getSubmitter(path)[0];
         Files.delete(path);
@@ -311,11 +311,11 @@ public class SubmissionController extends AbstractVersionControlController {
     @ResponseStatus(HttpStatus.OK)
     public void diffSubmission(final Authentication authentication,
                                final HttpServletResponse response,
-                               final @RequestBody String id) throws Exception {
+                               @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
         val git = repositoryFactory.masterRepository();
         val subPath = new RawText(FileUtils.readFileToByteArray(
-                new File(managementProperties.getSubmissions().getSubmitDir() + "/" + id)));
+                new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id)));
         val splitSub = Splitter.on("-").splitToList(id);
         val gitPath = new RawText(FileUtils.readFileToByteArray(
                 new File(managementProperties.getVersionControl().getServicesRepo() + "/service-" + splitSub.get(1))));
@@ -332,10 +332,10 @@ public class SubmissionController extends AbstractVersionControlController {
     @PostMapping("accept")
     @ResponseStatus(HttpStatus.OK)
     public void acceptSubmission(final Authentication authentication,
-                                 final @RequestBody String id) throws Exception {
+                                 @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
         val manager = managerFactory.from(authentication);
-        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + id);
+        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         val service = CasManagementUtils.fromJson(path.toFile());
         manager.save(service);
         val contact = getSubmitter(path)[0];
@@ -361,10 +361,10 @@ public class SubmissionController extends AbstractVersionControlController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     public void deleteSubmission(final Authentication authentication,
-                                 final @RequestParam String id) throws Exception {
+                                 @RequestParam final String id) throws Exception {
         isAdministrator(authentication);
         val manager = managerFactory.from(authentication);
-        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + id);
+        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         val service = CasManagementUtils.fromJson(path.toFile());
         val contact = getSubmitter(path)[0];
         manager.delete(service.getId());
@@ -388,12 +388,12 @@ public class SubmissionController extends AbstractVersionControlController {
      * @throws Exception -failed
      */
     @PostMapping("import")
-    public RegisteredService importSubmission(final @RequestBody String id) throws Exception {
+    public RegisteredService importSubmission(@RequestBody final String id) throws Exception {
         return CasManagementUtils.fromJson(
-                new File(managementProperties.getSubmissions().getSubmitDir() + "/" + id));
+                new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id));
     }
 
-    private String[] getSubmitter(final Path path) {
+    private static String[] getSubmitter(final Path path) {
         try {
             val email = new byte[MAX_EMAIL_LENGTH];
             Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
@@ -405,7 +405,7 @@ public class SubmissionController extends AbstractVersionControlController {
         }
     }
 
-    private String getSubmitted(final Path path) {
+    private static String getSubmitted(final Path path) {
         try {
             return LocalDateTime.ofInstant(Files.getLastModifiedTime(path).toInstant(), ZoneOffset.systemDefault()).toString();
         } catch (final Exception e) {

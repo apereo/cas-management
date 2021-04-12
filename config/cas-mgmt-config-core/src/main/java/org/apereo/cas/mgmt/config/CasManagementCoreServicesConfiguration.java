@@ -28,7 +28,6 @@ import org.apereo.cas.support.oauth.services.OAuth20ServicesManagerRegisteredSer
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.springframework.beans.factory.ObjectProvider;
@@ -40,7 +39,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.HashSet;
 
@@ -52,7 +50,6 @@ import java.util.HashSet;
  */
 @Configuration("casManagementCoreServicesConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
-@Slf4j
 public class CasManagementCoreServicesConfiguration {
 
     @Autowired
@@ -67,11 +64,6 @@ public class CasManagementCoreServicesConfiguration {
     @Autowired
     @Qualifier("serviceRegistry")
     private ObjectProvider<ServiceRegistry> serviceRegistry;
-
-    @Autowired
-    @Qualifier("mailSender")
-    private ObjectProvider<JavaMailSender> mailSender;
-
 
     @ConditionalOnMissingBean(name = "attributeDefinitionStore")
     @Bean
@@ -158,7 +150,7 @@ public class CasManagementCoreServicesConfiguration {
     public ServicesManager servicesManager() {
         val activeProfiles = new HashSet<String>();
         val context = ServicesManagerConfigurationContext.builder()
-                .serviceRegistry(serviceRegistry.getIfAvailable())
+                .serviceRegistry(serviceRegistry.getObject())
                 .applicationContext(applicationContext)
                 .environments(activeProfiles)
                 .servicesCache(servicesManagerCache())

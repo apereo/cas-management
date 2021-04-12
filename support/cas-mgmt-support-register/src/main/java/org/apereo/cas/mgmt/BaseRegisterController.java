@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,8 +40,6 @@ import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Base Controller for handling requests from Staff and Faculty.
@@ -100,7 +99,7 @@ public abstract class BaseRegisterController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void submit(final Authentication authentication,
-                       final @RequestBody RegisteredService service) {
+                       @RequestBody final RegisteredService service) {
         val id = service.getId() > 0 ? service.getId() : new Date().getTime();
         val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/submit-" + id +".json");
         val out = Files.newOutputStream(path);
@@ -121,7 +120,7 @@ public abstract class BaseRegisterController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void registerSave(final Authentication authentication,
-                             final @RequestBody DataPair pair) {
+                             @RequestBody final DataPair pair) {
         val service = pair.getRight();
         val id = pair.getLeft();
         val casUserProfile = CasUserProfile.from(authentication);
@@ -138,7 +137,7 @@ public abstract class BaseRegisterController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void remove(final Authentication authentication,
-                       final @PathVariable String id) {
+                       @PathVariable final String id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.master();
         val service = manager.findServiceBy(Long.parseLong(id));
@@ -160,7 +159,7 @@ public abstract class BaseRegisterController {
     @GetMapping("{id}")
     @SneakyThrows
     public RegisteredService getRegisterService(final Authentication authentication,
-                                                final @PathVariable String id) {
+                                                @PathVariable final String id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val manager = managerFactory.master();
@@ -180,9 +179,9 @@ public abstract class BaseRegisterController {
     @DeleteMapping("cancel")
     @ResponseStatus(HttpStatus.OK)
     public void cancel(final Authentication authentication,
-                       final @RequestParam String id) throws IllegalAccessException, IOException {
+                       @RequestParam final String id) throws IllegalAccessException, IOException {
         val casUserProfile = CasUserProfile.from(authentication);
-        val service = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + id);
+        val service = Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         if (!isSubmitter(service, casUserProfile)) {
             throw new IllegalAccessException("You are not the original submitter of the request");
         }
@@ -197,7 +196,7 @@ public abstract class BaseRegisterController {
      */
     @GetMapping("promote/{id}")
     @SneakyThrows
-    public void promote(final @PathVariable Long id,
+    public void promote(@PathVariable final Long id,
                         final Authentication authentication) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.master();
@@ -206,16 +205,16 @@ public abstract class BaseRegisterController {
         saveService(service, String.valueOf(id), casUserProfile);
     }
 
-    private boolean isSubmitter(final Path p, final CasUserProfile casUserProfile) {
+    private static boolean isSubmitter(final Path p, final CasUserProfile casUserProfile) {
         return getSubmitter(p)[0].equals(casUserProfile.getEmail());
     }
 
-    private String[] getSubmitter(final Path path) {
+    private static String[] getSubmitter(final Path path) {
         try {
             val email = new byte[MAX_EMAIL_LENGTH];
             Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
                     .read("original_author", ByteBuffer.wrap(email));
-            return new String(email).trim().split(":");
+            return new String(email, StandardCharsets.UTF_8).trim().split(":");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             return new String[] {StringUtils.EMPTY, StringUtils.EMPTY};
@@ -243,7 +242,7 @@ public abstract class BaseRegisterController {
     protected void saveService(final RegisteredService service, final String id, final CasUserProfile casUserProfile) throws IOException {
         val serializer = new RegisteredServiceJsonSerializer();
         val path = isNumber(id) ? Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/edit-" + service.getId() + ".json")
-                : Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/" + id);
+                : Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         val out = Files.newOutputStream(path);
         serializer.to(out, service);
         out.close();
@@ -268,20 +267,14 @@ public abstract class BaseRegisterController {
         }
     }
 
-    private String names(final Stream<RegisteredServiceContact> stream) {
-        return stream
-                .map(s -> s.getName() != null ? s.getName() : s.getEmail())
-                .collect(Collectors.joining(", "));
-    }
-
-    private void setSubmitter(final Path path, final CasUserProfile casUserProfile) throws IOException{
-        val payload = casUserProfile.getEmail() + ":" + casUserProfile.getFirstName() + " "
+    private static void setSubmitter(final Path path, final CasUserProfile casUserProfile) throws IOException{
+        val payload = casUserProfile.getEmail() + ':' + casUserProfile.getFirstName() + ' '
                 + casUserProfile.getFamilyName();
         Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
-                .write("original_author", ByteBuffer.wrap(payload.getBytes()));
+                .write("original_author", ByteBuffer.wrap(payload.getBytes(StandardCharsets.UTF_8)));
     }
 
-    private boolean isNumber(final String id) {
+    private static boolean isNumber(final String id) {
         try {
             Long.parseLong(id);
             return true;

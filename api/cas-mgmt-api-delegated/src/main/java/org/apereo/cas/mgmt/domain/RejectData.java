@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class RejectData implements Serializable {
 
     /**

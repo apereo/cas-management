@@ -89,23 +89,13 @@ public class CasManagementConfigurationProperties implements Serializable {
      * <p>
      * The file may also be specified in form of JSON or YAML. In either case, the contents should be a map
      * of user records with key being the username whose authorization rules are defined as the value linked to that key.
-     * <p>
-     * Example:
-     * <pre>
-     * {
-     * "casuser" : {
-     * "roles" : [ "ROLE_ADMIN" ],
-     * "permissions" : [ "PERMISSION_EXAMPLE" ]
-     * }
-     * }
-     * </pre>
      */
     private transient Resource userPropertiesFile = new ClassPathResource("users.json");
 
     /**
      * Flag to enable/disable calling cas discovery endpoint.
      */
-    private boolean enableDiscoveryEndpointCall = true;
+    private boolean enableDiscoveryEndpointCall;
 
     /**
      * Path to discovery endpoint.

@@ -8,9 +8,7 @@ import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
-import org.apereo.cas.mgmt.domain.SsoSessionResponse;
 import org.apereo.cas.mgmt.domain.SystemHealth;
-import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +68,7 @@ public class DashboardController {
     public List<Server> status(final Authentication authentication) throws IllegalAccessException {
         isAdmin(authentication);
         return mgmtProperties.getCasServers().stream()
-                .map(this::getServer)
+                .map(DashboardController::getServer)
                 .collect(Collectors.toList());
     }
 
@@ -84,12 +82,12 @@ public class DashboardController {
      */
     @GetMapping("{index}")
     public Server update(final Authentication authentication,
-                         final @PathVariable int index) throws IllegalAccessException {
+                         @PathVariable final int index) throws IllegalAccessException {
         isAdmin(authentication);
         return getServer(mgmtProperties.getCasServers().get(index));
     }
 
-    private Server getServer(final CasServers s) {
+    private static Server getServer(final CasServers s) {
         val server = new Server();
         server.setName(s.getName());
         server.setSystem(callCasServer(s.getUrl(), "/actuator/health/system",
@@ -121,7 +119,7 @@ public class DashboardController {
      */
     @GetMapping("/resolve/{id}")
     public Map<String, List<String>> resolve(final Authentication authentication,
-                                             final @PathVariable String id) throws IllegalAccessException {
+                                             @PathVariable final String id) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<Attributes>callCasServer("/actuator/resolveAttributes/" + id,
                 new ParameterizedTypeReference<Attributes>() {}).getAttributes();
@@ -137,7 +135,7 @@ public class DashboardController {
      */
     @PostMapping(value = "/release", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<String>> release(final Authentication authentication,
-                                             final @RequestBody Map<String, String> data) throws IllegalAccessException {
+                                             @RequestBody final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<Attributes>callCasServer("/actuator/releaseAttributes", data,
                 new ParameterizedTypeReference<Attributes>() {}).getAttributes();
@@ -153,7 +151,7 @@ public class DashboardController {
      */
     @PostMapping("/response")
     public String response(final Authentication authentication,
-                           final @RequestBody Map<String, String> data) throws IllegalAccessException {
+                           @RequestBody final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<String>callCasServer("/actuator/samlResponse", data,
                 new ParameterizedTypeReference<String>() {});
@@ -200,7 +198,7 @@ public class DashboardController {
     @PostMapping("/loggers")
     @ResponseStatus(HttpStatus.OK)
     public void setLogger(final Authentication authentication,
-                          final @RequestBody Map<String, String> map) throws IllegalAccessException {
+                          @RequestBody final Map<String, String> map) throws IllegalAccessException {
         isAdmin(authentication);
         val level = Map.of("configuredLevel", map.get("level"));
         val server = mgmtProperties.getCasServers().stream().filter(s -> s.getName().equals(map.get("server"))).findFirst().get().getUrl();
@@ -219,7 +217,7 @@ public class DashboardController {
      */
     @PostMapping("/audit")
     public List<AuditLog> audit(final Authentication authentication, final HttpServletRequest request,
-                                final @RequestBody Map<String, String> query) throws IllegalAccessException {
+                                @RequestBody final Map<String, String> query) throws IllegalAccessException {
         isAdmin(authentication);
         val audit = mgmtProperties.getCasServers().stream()
                 .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",
@@ -255,42 +253,34 @@ public class DashboardController {
             val out = response.getWriter();
             response.setHeader("Content-Type", MediaType.TEXT_PLAIN_VALUE);
             response.setHeader("Content-Disposition", "attachment; filename=audit-log-" + new Date().getTime() + ".txt");
-            log.stream().map(this::toCSV).forEach(out::println);
+            log.stream().map(DashboardController::toCSV).forEach(out::println);
             out.close();
         }
     }
 
-    private String toCSV(final AuditLog log) {
-        return new StringBuffer()
+    private static String toCSV(final AuditLog log) {
+        return new StringBuilder()
                .append(log.getWhenActionWasPerformed())
-               .append("|")
+               .append('|')
                .append(log.getClientIpAddress())
-               .append("|")
+               .append('|')
                .append(log.getServerIpAddress())
-               .append("|")
+               .append('|')
                .append(log.getPrincipal())
-               .append("|")
+               .append('|')
                .append(log.getActionPerformed())
-               .append("|")
+               .append('|')
                .append(log.getResourceOperatedUpon())
-               .append("|")
+               .append('|')
                .append(log.getApplicationCode())
                .toString();
-    }
-
-    private SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
-        val resp = callCasServer(serverUrl, new ParameterizedTypeReference<SsoSessionResponse>() {});
-        if (mask) {
-            resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
-        }
-        return resp;
     }
 
     private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {
         return callCasServer(casProperties.getServer().getPrefix(), url, type);
     }
 
-    private <T> T callCasServer(final String prefix, final String endpoint, final ParameterizedTypeReference<T> type) {
+    private static <T> T callCasServer(final String prefix, final String endpoint, final ParameterizedTypeReference<T> type) {
         val rest = new RestTemplate();
         try {
             val resp = rest.exchange(prefix + endpoint, HttpMethod.GET, null, type);
@@ -307,7 +297,7 @@ public class DashboardController {
     }
 
     @SneakyThrows
-    private <T> T callCasServer(final String prefix, final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
+    private static <T> T callCasServer(final String prefix, final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
         val rest = new RestTemplate();
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -322,7 +312,7 @@ public class DashboardController {
         }
     }
 
-    private void isAdmin(final Authentication authentication) throws IllegalAccessException {
+    private static void isAdmin(final Authentication authentication) throws IllegalAccessException {
         if (!CasUserProfile.from(authentication).isAdministrator()) {
             throw new IllegalAccessException("Permission Denied");
         }

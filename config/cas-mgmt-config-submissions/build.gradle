@@ -6,7 +6,8 @@ dependencies {
     api project(":api:cas-mgmt-api-delegated")
     
     implementation libraries.git
-   
+    implementation libraries.casServer.util
+
     implementation project(":support:cas-mgmt-support-submissions")
     implementation project(":core:cas-mgmt-core-authentication")
     implementation project(":support:cas-mgmt-support-delegated")

@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -106,7 +107,7 @@ public class SamlController {
      */
     @GetMapping("find")
     @SneakyThrows
-    public List<String> find(final @RequestParam String query) {
+    public List<String> find(@RequestParam final String query) {
         return this.entities.stream()
                 .filter(e -> e.contains(query))
                 .collect(Collectors.toList());
@@ -120,7 +121,7 @@ public class SamlController {
      */
     @GetMapping("search")
     @SneakyThrows
-    public List<String> search(final @RequestParam String query) {
+    public List<String> search(@RequestParam final String query) {
         return sps.query(query);
     }
 
@@ -133,7 +134,7 @@ public class SamlController {
     @PostMapping("upload")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
-    public SamlRegisteredService upload(final @RequestBody String xml) {
+    public SamlRegisteredService upload(@RequestBody final String xml) {
         val entity = MetadataUtil.fromXML(xml, configBean);
         val service = createService(entity);
         val entityId = entity.getEntityID();
@@ -141,8 +142,8 @@ public class SamlController {
             throw new IllegalArgumentException("Service already registered");
         }
         val fileName = DigestUtils.sha(entityId) + ".xml";
-        Files.write(Path.of(managementProperties.getMetadataRepoDir() + "/" + fileName), xml.getBytes());
-        service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + "/" + fileName);
+        Files.write(Path.of(managementProperties.getMetadataRepoDir() + '/' + fileName), xml.getBytes(StandardCharsets.UTF_8));
+        service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + '/' + fileName);
         return service;
     }
 
@@ -154,7 +155,7 @@ public class SamlController {
      * @throws SignatureException - invalid metadata
      */
     @GetMapping("add")
-    public SamlRegisteredService add(final @RequestParam String id) throws SignatureException {
+    public SamlRegisteredService add(@RequestParam final String id) throws SignatureException {
         if (exists(id)) {
             throw new IllegalArgumentException("Service already registered");
         }
@@ -167,7 +168,7 @@ public class SamlController {
 
     @GetMapping("download")
     @SneakyThrows
-    public SamlRegisteredService download(final @RequestParam String url) {
+    public SamlRegisteredService download(@RequestParam final String url) {
         val entity = this.urlMetadataResolver.xml(url);
         LOGGER.error(entity);
         val service = createService(MetadataUtil.fromXML(entity, configBean));
@@ -265,7 +266,7 @@ public class SamlController {
         return policy;
     }
 
-    private PrincipalAttributeRegisteredServiceUsernameProvider createUsernameProvider(final String format) {
+    private static PrincipalAttributeRegisteredServiceUsernameProvider createUsernameProvider(final String format) {
         if (EMAIL.equals(format)) {
             val up = new PrincipalAttributeRegisteredServiceUsernameProvider();
             up.setUsernameAttribute("mailidMail");
@@ -287,13 +288,13 @@ public class SamlController {
      */
     @GetMapping("/metadata/{id}")
     @SneakyThrows
-    public Metadata getMetadata(final @PathVariable Long id) {
+    public Metadata getMetadata(@PathVariable final Long id) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         if (!sps.query(service.getServiceId()).isEmpty()) {
             return new Metadata(true, sps.xml(service.getServiceId()));
         }
         val fileName = DigestUtils.sha(service.getServiceId()) + ".xml";
-        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + "/" + fileName).getFile();
+        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + '/' + fileName).getFile();
         return new Metadata(false, FileUtils.getContentsAsString(res));
     }
 
@@ -305,11 +306,11 @@ public class SamlController {
      */
     @PostMapping("/metadata/{id}")
     @SneakyThrows
-    public void saveMetadata(final @PathVariable Long id,
-                             final @RequestBody String metadata) {
+    public void saveMetadata(@PathVariable final Long id,
+                             @RequestBody final String metadata) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         val fileName = DigestUtils.sha(service.getServiceId()) + ".xml";
-        val res = Paths.get("/" + managementProperties.getMetadataRepoDir() + "/" + fileName);
+        val res = Paths.get('/' + managementProperties.getMetadataRepoDir() + '/' + fileName);
         Files.writeString(res, metadata);
     }
 

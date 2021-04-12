@@ -44,8 +44,7 @@ public class CasManagementSecurityConfiguration {
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring Callback security filter");
-            val callbackFilter = new CallbackFilter(config.getIfAvailable());
-            callbackFilter.setMultiProfile(true);
+            val callbackFilter = new CallbackFilter(config.getObject());
             http.antMatcher("/callback/**")
                     .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class);
         }
@@ -62,7 +61,7 @@ public class CasManagementSecurityConfiguration {
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring CAS security filter");
-            val securityFilter = new SecurityFilter(config.getIfAvailable(), "CasClient", "mgmtAuthorizer");
+            val securityFilter = new SecurityFilter(config.getObject(), "CasClient", "mgmtAuthorizer");
 
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
@@ -84,7 +83,7 @@ public class CasManagementSecurityConfiguration {
 
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring Static IP security filter.");
-            val securityFilter = new SecurityFilter(config.getIfAvailable(), "IpClient", "mgmtAuthorizer");
+            val securityFilter = new SecurityFilter(config.getObject(), "IpClient", "mgmtAuthorizer");
 
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)

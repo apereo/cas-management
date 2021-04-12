@@ -13,7 +13,6 @@ import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController("applicationDataController")
 @RequestMapping(path = "api", produces = MediaType.APPLICATION_JSON_VALUE)
-@Slf4j
 @RequiredArgsConstructor
 public class ApplicationDataController {
 

@@ -67,7 +67,7 @@ public class FormDataFactory {
 
     @PostConstruct
     @Scheduled(fixedDelayString = "PT60M")
-    private void callForProfile() {
+    void callForProfile() {
         if (!mgmtProperties.isEnableDiscoveryEndpointCall()) {
             LOGGER.warn("Call to cas/actuator/discoveryProfile disabled by management configuration.  Using default FormData values.");
             return;

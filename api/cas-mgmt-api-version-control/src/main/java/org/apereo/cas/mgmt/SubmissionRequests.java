@@ -6,6 +6,7 @@ package org.apereo.cas.mgmt;
  * @author Travis Schmidt
  * @since 6.0.0
  */
+@FunctionalInterface
 public interface SubmissionRequests {
 
     /**

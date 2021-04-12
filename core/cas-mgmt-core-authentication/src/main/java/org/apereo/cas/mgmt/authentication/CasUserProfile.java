@@ -5,7 +5,6 @@ import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
@@ -23,7 +22,6 @@ import java.util.List;
  * @since 5.2.0
  */
 @Getter
-@Slf4j
 public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     private static final long serialVersionUID = -6308325782274816263L;
     private final boolean administrator;

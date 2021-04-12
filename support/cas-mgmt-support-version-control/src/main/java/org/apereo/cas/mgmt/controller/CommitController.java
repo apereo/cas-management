@@ -81,7 +81,7 @@ public class CommitController extends AbstractVersionControlController {
     @SneakyThrows
     public void commit(final HttpServletResponse response,
                        final Authentication authentication,
-                       final @RequestBody String msg) {
+                       @RequestBody final String msg) {
         val user = CasUserProfile.from(authentication);
         isUser(user);
         try (GitUtil git = repositoryFactory.from(authentication)) {
@@ -124,12 +124,12 @@ public class CommitController extends AbstractVersionControlController {
     }
 
     @SneakyThrows
-    private String getService(final GitUtil git, final AbbreviatedObjectId id) {
+    private static String getService(final GitUtil git, final AbbreviatedObjectId id) {
         return git.readObject(id.toObjectId());
     }
 
     @SneakyThrows
-    private List<DiffEntry> publishDiffs(final GitUtil git, final Commit commit) {
+    private static List<DiffEntry> publishDiffs(final GitUtil git, final Commit commit) {
         return git.getPublishDiffs(commit.getId());
     }
 

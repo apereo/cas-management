@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- *Configuration for register end point features.
+ * Configuration for register end point features.
  *
  * @author Travis Schmidt
  * @since 6.1
@@ -89,12 +89,12 @@ public class CasManagementSamlConfiguration {
     @Bean
     public SamlController samlController() {
         return new SamlController(
-                managerFactory.getObject(),
-                managementProperties,
-                Objects.requireNonNull(formDataFactory.getObject()).create(),
-                openSamlConfigBean(),
-                metadataAggregateResolver(),
-                urlMetadataResolver());
+            managerFactory.getObject(),
+            managementProperties,
+            Objects.requireNonNull(formDataFactory.getObject()).create(),
+            openSamlConfigBean(),
+            metadataAggregateResolver(),
+            urlMetadataResolver());
     }
 
     @Bean
@@ -102,15 +102,7 @@ public class CasManagementSamlConfiguration {
     public MetadataAggregateResolver metadataAggregateResolver() {
         return new InCommonMetadataAggregateResolver(casProperties, managementProperties,
             openSamlConfigBean(), getMetadataAggregateFilter());
-    }
 
-    private MetadataFilter getMetadataAggregateFilter() throws Exception {
-        if (ResourceUtils.doesResourceExist(managementProperties.getInCommonCert())) {
-            val signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(managementProperties.getInCommonCert());
-            signatureValidationFilter.setRequireSignedRoot(false);
-            return signatureValidationFilter;
-        }
-        return (xmlObject, metadataFilterContext) -> xmlObject;
     }
 
     @Bean
@@ -178,9 +170,9 @@ public class CasManagementSamlConfiguration {
     @RefreshScope
     public SamlRegisteredServiceMetadataResolverCacheLoader chainingMetadataResolverCacheLoader() {
         return new SamlRegisteredServiceMetadataResolverCacheLoader(
-                openSamlConfigBean.getObject(),
-                httpClient.getObject(),
-                samlRegisteredServiceMetadataResolvers());
+            openSamlConfigBean.getObject(),
+            httpClient.getObject(),
+            samlRegisteredServiceMetadataResolvers());
     }
 
     @ConditionalOnMissingBean(name = "defaultSamlRegisteredServiceCachingMetadataResolver")
@@ -188,13 +180,23 @@ public class CasManagementSamlConfiguration {
     @RefreshScope
     public SamlRegisteredServiceCachingMetadataResolver defaultSamlRegisteredServiceCachingMetadataResolver() {
         return new SamlRegisteredServiceDefaultCachingMetadataResolver(
-                casProperties.getAuthn().getSamlIdp().getMetadata().getCacheExpirationMinutes(),
-                chainingMetadataResolverCacheLoader(), openSamlConfigBean.getObject()
+            casProperties.getAuthn().getSamlIdp().getMetadata().getCacheExpirationMinutes(),
+            chainingMetadataResolverCacheLoader(), openSamlConfigBean.getObject()
         );
     }
+
     @Bean
     @ConditionalOnMissingBean(name = "samlIdPServicesManagerRegisteredServiceLocator")
     public ServicesManagerRegisteredServiceLocator samlIdPServicesManagerRegisteredServiceLocator() {
         return new SamlIdPServicesManagerRegisteredServiceLocator(defaultSamlRegisteredServiceCachingMetadataResolver());
+    }
+
+    private MetadataFilter getMetadataAggregateFilter() throws Exception {
+        if (ResourceUtils.doesResourceExist(managementProperties.getInCommonCert())) {
+            val signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(managementProperties.getInCommonCert());
+            signatureValidationFilter.setRequireSignedRoot(false);
+            return signatureValidationFilter;
+        }
+        return (xmlObject, metadataFilterContext) -> xmlObject;
     }
 }

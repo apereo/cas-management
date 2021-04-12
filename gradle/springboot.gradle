@@ -36,6 +36,7 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases && !rootP
                         "Implementation-Version": project.version)
             }
             from "${buildDir}/resources/main", { into "WEB-INF/classes" }
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             launchScript()
         }
 

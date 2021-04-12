@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 
 /**
  * Interface to return number of pending requests.
@@ -15,9 +14,8 @@ public interface PendingRequests {
     /**
      * Returns number pending pull requests.
      *
-     * @param request - the request
-     * @param response - the response
+     * @param authentication - the user
      * @return - number of pull requests
      */
-    int pendingSubmits(HttpServletRequest request, HttpServletResponse response);
+    int pendingSubmits(Authentication authentication);
 }

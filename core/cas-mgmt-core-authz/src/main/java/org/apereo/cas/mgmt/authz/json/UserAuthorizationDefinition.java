@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.authz.json;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 @Getter
 @Setter
 public class UserAuthorizationDefinition implements Serializable {

@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt.controller;
 
-import org.apereo.cas.authentication.principal.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -26,8 +25,6 @@ public class ViewController {
 
     private static final String STATUS = "status";
 
-    private final Service defaultService;
-    
     /**
      * Mapped method to return the manage.html.
      *
@@ -37,21 +34,10 @@ public class ViewController {
     public ModelAndView manage() {
         val model = new HashMap<String, Object>();
         model.put(STATUS, HttpServletResponse.SC_OK);
-        model.put("defaultServiceUrl", this.defaultService.getId());
         return new ModelAndView("management/index", model);
     }
 
-    /**
-     * Mapped method to return the register.html.
-     *
-     * @return - ModelAndView
-     */
-    @GetMapping({"dashboard/index.html", "dashboard/", "dashboard"})
-    public ModelAndView dashboard() {
-        val model = new HashMap<String, Object>();
-        model.put(STATUS, HttpServletResponse.SC_OK);
-        return new ModelAndView("dashboard/index", model);
-    }
+
 
     /**
      * Authorization failure handling. Simply returns the view name.
@@ -73,7 +59,7 @@ public class ViewController {
     @GetMapping(value = "/logout.html")
     public String logoutView(final HttpServletRequest request, final HttpServletResponse response) {
         LOGGER.debug("Invalidating application session...");
-        new ProfileManager(new JEEContext(request, response)).logout();
+        new ProfileManager<>(new JEEContext(request, response)).logout();
         request.getSession(false).invalidate();
         return "logout";
     }

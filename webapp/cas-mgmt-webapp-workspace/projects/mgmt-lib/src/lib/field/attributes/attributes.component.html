@@ -1,0 +1,47 @@
+<div [formGroup]="form">
+  <div style="display: flex; flex-direction: row; border-bottom-width: 1px;
+  border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>{{ sourceHeader }}</div>
+    <div style="padding:10px;" [ngClass]="'nameWidth'" i18n>{{ valueHeader }}</div>
+    <div [ngClass]="'actionWidth'" i18n></div>
+  </div>
+  <div>
+    <div *ngFor="let row of form.rows(); let i = index;" [formGroupName]="i"  style="display: flex; flex-direction: row; border-bottom-width: 1px;
+         border-bottom-style: solid; border-bottom-color: rgba(0,0,0,0.12);">
+      <div [ngClass]="'nameWidth'">
+        <mat-form-field style="width:100%" appearance="standard">
+          <input matInput [matAutocomplete]="autoKeys" [formControl]="row.key" (click)="selectedRow = i">
+          <button [ngClass]="{'d-none': !row.isGroovy()}"
+                  type="button"
+                  class="groovy-editor"
+                  mat-icon-button
+                  matSuffix
+                  matTooltip="Use Groovy Editor"
+                  matTooltipPosition="above"
+                  (click)="openGroovyEditor(row)">
+            <mat-icon style="font-size: medium">edit</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'nameWidth'">
+        <mat-form-field style="width:100%" appearance="standard">
+          <input matInput [matAutocomplete]="autoValues" [formControl]="row.values">
+        </mat-form-field>
+      </div>
+      <div [ngClass]="'actionWidth'">
+        <button mat-icon-button (click)="delete(i)"><mat-icon style="font-size: medium">delete</mat-icon></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="height:25px;padding-top: 5px;">
+  <button mat-mini-fab (click)="addRow()" style="float:right;">+</button>
+</div>
+
+<mat-autocomplete #autoKeys="matAutocomplete" panelWidth="auto">
+  <mat-option *ngFor="let opt of keys" [value]="opt">{{ opt }}</mat-option>
+</mat-autocomplete>
+
+<mat-autocomplete #autoValues="matAutocomplete" panelWidth="auto">
+  <mat-option *ngFor="let opt of values" [value]="opt">{{ opt }}</mat-option>
+</mat-autocomplete>

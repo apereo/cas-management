@@ -5,6 +5,7 @@ import org.apereo.cas.authorization.LdapUserGroupsToRolesAuthorizationGenerator;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.LdapUtils;
+
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.ldaptive.SearchOperation;

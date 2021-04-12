@@ -2,10 +2,10 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.pac4j.cas.client.direct.DirectCasClient;
+import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.client.Client;
@@ -20,6 +20,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,6 @@ public class CasManagementAuthenticationConfiguration {
     @Autowired
     private CasManagementConfigurationProperties managementProperties;
 
-
     @Autowired
     @Qualifier("authorizationGenerator")
     private ObjectProvider<AuthorizationGenerator> authorizationGenerator;
@@ -54,15 +54,15 @@ public class CasManagementAuthenticationConfiguration {
     public List<Client> authenticationClients() {
         val clients = new ArrayList<Client>();
 
-        if (StringUtils.hasText(casProperties.getServer().getName())) {
+        if (managementProperties.isCasSso()) {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
             val cfg = new CasConfiguration(casProperties.getServer().getLoginUrl());
-            val client = new DirectCasClient(cfg);
+            val client = new CasClient(cfg);
             client.setAuthorizationGenerator(authorizationGenerator.getIfAvailable());
             client.setName("CasClient");
             clients.add(client);
         } else {
-            LOGGER.debug("Skipping CAS authentication strategy configuration; no CAS server name is defined");
+            LOGGER.debug("Skipping CAS authentication strategy configuration; because you turned off the flag for CAS SSO");
         }
 
         if (StringUtils.hasText(managementProperties.getAuthzIpRegex())) {
@@ -85,11 +85,4 @@ public class CasManagementAuthenticationConfiguration {
         return clients;
     }
 
-
-
-    @ConditionalOnMissingBean(name = "casUserProfileFactory")
-    @Bean
-    public CasUserProfileFactory casUserProfileFactory() {
-        return new CasUserProfileFactory(managementProperties);
-    }
 }

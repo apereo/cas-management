@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -28,6 +29,11 @@ public class GitStatus implements Serializable {
      * Number of Pull requests from users that are pending.
      */
     private int pullRequests;
+
+    /**
+     * List of submissions to be reviewed.
+     */
+    private int submissions;
 
     /**
      * List added files that are uncommitted.

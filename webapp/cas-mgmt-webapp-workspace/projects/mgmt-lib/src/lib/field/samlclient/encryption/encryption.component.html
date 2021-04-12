@@ -1,0 +1,40 @@
+<lib-checkbox [control]="form.encryptAssertions" label="Encrypt Assertions"
+              toolTip="Whether the assertion should be encrypted.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.encryptAttributes" label="Encrypt Attributes"
+              toolTip="Whether assertion attributes should be encrypted.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.encryptionOptional" label="Encryption Optional"
+              toolTip="Encrypt whenever possible (i.e a compatible key is found in the peer’s metadata) or skip encryption otherwise.">
+</lib-checkbox>
+
+<lib-select-input [control]="form.encryptableAttributes" label="Encryptable Attributes" multiple
+                  [options]="config.options.samlIdpAttributes"
+                  toolTip="Set of attributes nominated for encryption, disqualifying others absent in this collection.">
+</lib-select-input>
+
+<lib-select-input [control]="form.encryptionDataAlgorithms" label="Encryption Data Algorithms" [valueOptions]="encOptions"
+                  toolTip="Collection of encryption data algorithms, if any, to override the global defaults.">
+</lib-select-input>
+
+<lib-select-input [control]="form.encryptionKeyAlgorithms" label="Encryption Key Algorithms" [valueOptions]="encKeyOptions"
+                  toolTip="Collection of encryption key transport algorithms, if any, to override the global defaults.">
+</lib-select-input>
+
+<lib-select-input [control]="form.encryptionBlackListedAlgorithms" label="Encryption Black Listed Algorithms"
+                  [valueOptions]="[{value: 'http://www.w3.org/2001/04/xmlenc#rsa-1_5', display: 'RSA-1_5'}]"
+                  toolTip="Collection of encryption blacklisted algorithms, if any, to override the global defaults.">
+</lib-select-input>
+
+<lib-select-input [control]="form.encryptionWhiteListedAlgorithms" label="Encryption White Listed Algorithms" multiple
+                  [valueOptions]="[{value: 'http://www.w3.org/2001/04/xmlenc#aes128-cbc', display: 'AES128-CBC'},
+                                   {value: 'http://www.w3.org/2001/04/xmlenc#aes192-cbc', display: 'AES192-CBC'},
+                                   {value: 'http://www.w3.org/2001/04/xmlenc#aes256-cbc', display: 'AES256-CBC'},
+                                   {value: 'http://www.w3.org/2001/04/xmlenc#tripledes-cbc', display: 'TRIPLEDES-CBC'}]"
+                  toolTip="Collection of encryption whitelisted algorithms, if any, to override the global defaults.">
+</lib-select-input>
+
+
+

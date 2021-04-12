@@ -1,0 +1,41 @@
+<lib-text-input [control]="form.location" label="Metadata Location" toolTip="Metadata location for this particular service provider.">
+</lib-text-input>
+
+<lib-text-input [control]="form.maxValidity" label="Metadata Maximum Validity" toolTip="Indicates how long should metadata be considered valid.">
+</lib-text-input>
+
+<lib-text-input [control]="form.signatureLocation" label="Metadata Public Key Location"
+                toolTip="Location of the metadata signing public key so its authenticity can be verified.">
+</lib-text-input>
+
+<lib-text-input [control]="form.expirationDuration" label="Metadata Expiration Duration"
+                toolTip="If defined, will expire metadata in the cache after the indicated duration which will force
+                         CAS to retrieve and resolve the metadata again.">
+</lib-text-input>
+
+<lib-text-input [control]="form.criteriaPattern" label="Metadata Filter Regex" toolTip="Regex applied to entity ids in a metadata aggregate.">
+</lib-text-input>
+
+<lib-select-input [control]="form.criteriaDirection" label="Metadata Filter Criteria" [options]="config.options.samlDirections"
+                  toolTip="Whether to include/exclude entity ids that match the filter pattern.">
+</lib-select-input>
+
+<lib-select-input [control]="form.criteriaRoles" label="Whitelisted Metadata Roles" [options]="config.options.samlRoles"
+                  toolTip="Whitelisted roles to keep in the metadata.">
+</lib-select-input>
+
+<lib-select-input [control]="form.whiteListBlackListPrecedence" label="White/Black List Precedence"
+                  [options]="['WHITELIST', 'BLACKLIST']"
+                  toolTip="Preference value indicating which should take precedence when both whitelist and blacklist are non-empty.">
+</lib-select-input>
+
+<lib-checkbox [control]="form.requireSignedRoot" label="Require Signed Root" toolTip="Require the root to be signed.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.criteriaRemoveEmptyEntitiesDescriptors" label="Remove Empty Entities Descriptors"
+              toolTip="Controls whether to keep entities descriptors that contain no entity descriptors">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.criteriaRemoveRolelessEntityDescriptors" label="Remove Empty Roles"
+              toolTip="Controls whether to keep entity descriptors that contain no roles.">
+</lib-checkbox>

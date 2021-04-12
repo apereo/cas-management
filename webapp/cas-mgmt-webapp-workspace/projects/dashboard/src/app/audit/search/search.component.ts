@@ -1,7 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import {SearchForm} from './search.form';
 
+/**
+ * Dialog component to fill out search fields for audit records.
+ *
+ * @author Travis Schmidt
+ */
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -13,10 +18,18 @@ export class SearchComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<SearchComponent>) { }
 
+  /**
+   * Starts the component with a blank search form.
+   */
   ngOnInit() {
     this.form = new SearchForm();
   }
 
+  /**
+   * Fills out the search form and passes it back to calling component.
+   *
+   * @param download - flag to download results
+   */
   search(download: boolean = false) {
     let s = null;
     if (this.form.startDate.value) {

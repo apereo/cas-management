@@ -1,10 +1,9 @@
 description = "Apereo CAS Management Config LDAP Authz"
 
 dependencies {
-    api project(":api:cas-mgmt-api-core")
     api project(":api:cas-mgmt-api-configuration")
     
     implementation libraries.casServer.ldap 
-    implementation libraries.pac4j
+    implementation libraries.pac4jcore
 
 }

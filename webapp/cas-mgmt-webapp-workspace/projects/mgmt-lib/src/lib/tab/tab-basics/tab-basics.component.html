@@ -1,0 +1,20 @@
+<div fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;" [formGroup]="tab">
+  <lib-card heading="Basics">
+    <lib-enabled *ngIf="!groovyAccessStrategy" [control]="tab.serviceEnabled"></lib-enabled>
+    <lib-servicetype [control]="tab.serviceType"></lib-servicetype>
+
+    <lib-service-id [control]="tab.serviceId" *ngIf="!isOauth() && !isSaml()"
+                    [serviceType]="tab.serviceType">
+    </lib-service-id>
+    <lib-redirect-uri *ngIf="isOauth()" [control]="tab.serviceId"></lib-redirect-uri>
+    <lib-entityid *ngIf="isSaml()" [control]="tab.serviceId"></lib-entityid>
+    <lib-servicename [control]="tab.serviceName"></lib-servicename>
+    <lib-servicedesc [control]="tab.description"></lib-servicedesc>
+    <lib-themeid [control]="tab.theme"></lib-themeid>
+  </lib-card>
+  <lib-card heading="Reference Links">
+    <lib-logo [control]="tab.logo"></lib-logo>
+    <lib-linkrefs [control]="tab.informationUrl"></lib-linkrefs>
+    <lib-privacy-url [control]="tab.privacyUrl"></lib-privacy-url>
+  </lib-card>
+</div>

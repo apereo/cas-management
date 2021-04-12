@@ -1,10 +1,12 @@
 package org.apereo.cas.mgmt.authz.json;
 
 import org.apereo.cas.util.io.FileWatcherService;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.hjson.JsonValue;
 import org.jooq.lambda.Unchecked;
@@ -12,6 +14,7 @@ import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
+
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +28,7 @@ import java.util.Optional;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
+@Slf4j
 public class JsonResourceAuthorizationGenerator implements AuthorizationGenerator {
 
     private final ObjectMapper objectMapper;
@@ -37,7 +41,7 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
 
         loadResource(resource);
         val watcher = new FileWatcherService(resource.getFile(),
-            Unchecked.consumer(file -> loadResource(resource)));
+                Unchecked.consumer(file -> loadResource(resource)));
         watcher.start(getClass().getSimpleName());
     }
 

@@ -8,6 +8,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSource;
 import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**

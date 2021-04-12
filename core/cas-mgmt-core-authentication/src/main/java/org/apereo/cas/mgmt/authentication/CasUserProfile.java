@@ -3,12 +3,17 @@ package org.apereo.cas.mgmt.authentication;
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
+
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
+import org.springframework.security.core.Authentication;
+
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This is {@link CasUserProfile}.
@@ -18,6 +23,7 @@ import java.util.Collection;
  * @since 5.2.0
  */
 @Getter
+@Slf4j
 public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     private static final long serialVersionUID = -6308325782274816263L;
     private final boolean administrator;
@@ -26,6 +32,10 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     public CasUserProfile() {
         this.administrator = false;
         this.delegate = false;
+    }
+
+    public CasUserProfile(final Authentication authentication) {
+        this((CommonProfile) authentication.getPrincipal(), List.of("ROLE_ADMIN"));
     }
 
     public CasUserProfile(final CommonProfile up, final Collection<String> adminRoles) {
@@ -38,6 +48,10 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
 
         this.administrator = adminRoles.stream().anyMatch(r -> getRoles().contains(r));
         this.delegate = getRoles().contains("ROLE_USER");
+    }
+
+    public static CasUserProfile from(final Authentication authentication) {
+        return new CasUserProfile(authentication);
     }
 
     public String getDepartment() {

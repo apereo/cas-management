@@ -1,0 +1,23 @@
+<div>
+  <h3 matDialogTitle i18n>
+    <ng-container *ngIf="type === 'addService'">Service Submitted</ng-container>
+    <ng-container *ngIf="type === 'changeService'">Change Submitted</ng-container>
+    <ng-container *ngIf="type === 'bulkAddFailed'">No Changes Submitted</ng-container>
+    <ng-container *ngIf="type === 'bulkRemoveFailed'">No Changes Submitted</ng-container>
+  </h3>
+</div>
+<mat-dialog-content>
+  <div>
+    <span *ngIf="type === 'addService'" i18n>You have successfully submitted your service to the CAS Service Registry. A Cas Administrator will review your submission shortly, and you will be notified by email when it has been accepted and published to CAS Servers.</span>
+    <span *ngIf="type === 'changeService'" i18n>You have successfully submitted your change to the CAS Service Registry. A Cas Administrator will review your submission shortly, and you will be notified by email when it has been accepted and published to CAS Servers.</span>
+    <span *ngIf="type === 'bulkAddFailed'" i18n>Your request to add yourself to the selected services has failed for the following reason:<br><br>{{ msg }}</span>
+    <span *ngIf="type === 'bulkRemoveFailed'" i18n>Your request to remove yourself from the selected services has failed for the following reason:<br><br> {{ msg }}</span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button matDialogClose="true">
+      <ng-container i18n>OK</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>

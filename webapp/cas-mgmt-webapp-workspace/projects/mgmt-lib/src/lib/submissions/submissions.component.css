@@ -1,0 +1,70 @@
+.serviceName {
+    display:inline-block;
+    position:relative;
+}
+
+.middle {
+    bottom:5px;
+}
+
+.first {
+
+}
+
+.last {
+
+}
+
+.EDIT {
+    color: blue;
+}
+
+.SUBMITTED{
+    color:green;
+}
+
+.REMOVE {
+    color:red;
+}
+
+.descriptionWidth {
+    flex: 1 1 auto;
+    color: inherit;
+}
+
+.serviceIdWidth {
+    flex: 1 1 240px;
+    color: inherit !important;
+}
+
+.nameWidth {
+    flex: 0 1 240px;
+    color:inherit !important;
+}
+
+.nameWidth a {
+    color:inherit;
+}
+
+.submitterWidth {
+    flex: 0 1 240px;
+    color:inherit !important;
+}
+
+.submittedWidth {
+    flex: 0 1 240px;
+    color:inherit !important;
+}
+
+.serviceTypeWidth {
+  flex: 0 1 75px;
+  color:inherit !important;
+}
+
+.actionWidth {
+    flex: 0 0 50px;
+}
+
+.statusWidth {
+    flex: 0 0 50px;
+}

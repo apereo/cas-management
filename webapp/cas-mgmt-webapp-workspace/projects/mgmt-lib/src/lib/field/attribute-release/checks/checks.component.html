@@ -1,0 +1,22 @@
+<lib-checkbox [control]="form.excludeDefaultAttributes" label="Exclude default bundle of attributes for release"
+              toolTip="Indicates whether global and default attributes set to release to all applications should be excluded for
+                       release for this specific application.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.authorizedToReleaseCredentialPassword" label="Authorized to release to credential password"
+              toolTip="Release credential password to the application?">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.authorizedToReleaseProxyGrantingTicket" label="Authorized to release proxy granting ticket ID"
+              toolTip="Release proxy-granting ticket id to the application?">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.authorizedToReleaseAuthenticationAttributes" label="Authorized to release authentication attributes"
+              toolTip="Determines whether this policy should exclude the authentication/protocol attributes for release.
+                       Authentication attributes are considered those that are not tied to a specific principal and define extra
+                       supplamentary metadata about the authentication event itself, such as the commencement date.">
+</lib-checkbox>
+
+<lib-text-input [control]="form.principalIdAttribute" label="Principal Id Attribute"
+                toolTip="Attribute to release as the Principal Id.  If not specified it will default to the attribute set for the authentication in cas.properties.">
+</lib-text-input>

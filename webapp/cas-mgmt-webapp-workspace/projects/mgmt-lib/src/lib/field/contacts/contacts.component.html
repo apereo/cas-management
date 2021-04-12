@@ -1,0 +1,38 @@
+<div [formGroup]="form" fxLayout="column" fxLayoutGap="20px">
+  <mat-tab-group [(selectedIndex)]="selectedTab">
+    <mat-tab *ngFor="let row of this.form.rows(); let i = index;" [label]="getTabHeader(i)">
+      <div formGroupName="{{i}}" fxLayout="column" style="overflow: hidden">
+        <div fxFlex="grow" fxLayout="row">
+          <div fxFlex="grow">
+            <mat-form-field style="width: 100%;" appearance="standard">
+              <mat-label i18n>Name</mat-label>
+              <input matInput [matAutocomplete]="auto" required [formControl]="row.name" (keyup)="doLookupContact($event.target.value)">
+            </mat-form-field>
+          </div>
+          <div fxFlex="20px">
+            <mat-icon class="icon" libHelp i18n-matTooltip matTooltip="First and last name of the contact"></mat-icon>
+          </div>
+        </div>
+        <lib-text-input [control]="row.email" label="Email" [errors]="errors()" required
+                        toolTip="EMail of the contact">
+        </lib-text-input>
+        <lib-text-input [control]="row.phone" label="Phone" pattern="^[+]?[\d\s]+$" toolTip="Phone number of the contact"></lib-text-input>
+        <lib-text-input [control]="row.department" label="Department" toolTip="Department of the contact"></lib-text-input>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div fxLayout="row">
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
+      <button mat-mini-fab (click)="addContact()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-mini-fab (click)="deleteContact()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)" >
+  <mat-option *ngFor="let opt of foundContacts;let i = index" [value]="i" >{{ opt.name }} - {{ opt.department}}</mat-option>
+</mat-autocomplete>

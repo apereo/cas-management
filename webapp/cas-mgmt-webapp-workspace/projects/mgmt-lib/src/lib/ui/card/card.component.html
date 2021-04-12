@@ -1,0 +1,18 @@
+<mat-card style="max-width: 650px;margin-right: auto;margin-left: auto;">
+  <mat-card-title>
+    <div fxLayout="row" fxFlex="grow">
+      <div fxFlex="grow">
+        <h5 i18n>{{ heading }}</h5>
+      </div>
+      <div *ngIf="collapse" fxFlex="20px" style="margin-top:auto;margin-bottom:auto;" (click)="showContent = !showContent">
+        <mat-icon *ngIf="showContent">expand_less</mat-icon>
+        <mat-icon *ngIf="!showContent">expand_more</mat-icon>
+      </div>
+    </div>
+  </mat-card-title>
+  <mat-card-content>
+    <div *ngIf="showContent" fxFlex="0 1 550px" fxLayout="column" style="margin-left: 50px;">
+      <ng-content></ng-content>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,11 +1,16 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatSlideToggleChange} from '@angular/material/slide-toggle';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatTableDataSource } from '@angular/material/table';
 import {Cache, MapDetails} from '../domain/cache.model';
 import {DashboardService} from '../core/dashboard-service';
 import {ActivatedRoute} from '@angular/router';
-import {PaginatorComponent} from 'shared-lib';
+import {ControlsService, PaginatorComponent} from '@apereo/mgmt-lib';
 
+/**
+ * Component to inspect cache status for CAS servers.
+ *
+ * @author Travis Schmidt
+ */
 @Component({
   selector: 'app-cache',
   templateUrl: './cache.component.html',
@@ -23,10 +28,14 @@ export class CacheComponent implements OnInit {
   pagintor: PaginatorComponent;
 
   constructor(private service: DashboardService,
+              private controls: ControlsService,
               private route: ActivatedRoute) {
     this.cache = new Cache();
   }
 
+  /**
+   * Extracts results from resolver and loads the table.
+   */
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Cache}) => {
       const d = Object.keys(data.resp.details.maps).map(k => {
@@ -37,8 +46,16 @@ export class CacheComponent implements OnInit {
       this.dataSource = new MatTableDataSource<MapDetails>(d);
       this.dataSource.paginator = this.pagintor.paginator;
     });
+    this.controls.resetButtons();
+    this.controls.title = 'Cache';
+    this.controls.icon = 'list';
   }
 
+  /**
+   * Sets a recurring timer to fetch results every 1 second.
+   *
+   * @param event - toggle change event
+   */
   update(event: MatSlideToggleChange) {
     if (event.checked) {
       this.cacheTimer = () => {

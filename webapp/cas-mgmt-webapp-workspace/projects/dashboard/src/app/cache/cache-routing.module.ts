@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import {CacheComponent} from './cache.component';
 import {CacheResolve} from './cache.resolve';
 
@@ -13,6 +13,9 @@ const routes: Routes = [
   }
 ];
 
+/**
+ * Routing module for CacheModule.
+ */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

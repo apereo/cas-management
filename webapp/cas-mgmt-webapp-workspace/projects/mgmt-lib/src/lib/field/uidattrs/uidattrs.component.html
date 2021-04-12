@@ -1,0 +1,21 @@
+<lib-select-input [control]="typeControl" label="Provider" [valueOptions]="types"></lib-select-input>
+
+<lib-default [form]="form"></lib-default>
+
+<ng-container *ngIf="typeControl.value == TYPE.ANONYMOUS">
+  <lib-anonymous [form]="form"></lib-anonymous>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value == TYPE.PRINCIPAL_ATTRIBUTE">
+  <lib-principal [form]="form"></lib-principal>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value === TYPE.GROOVY">
+  <lib-groovy [form]="form"></lib-groovy>
+</ng-container>
+
+<ng-container *ngIf="typeControl.value === TYPE.SCRIPTED">
+  <lib-script [form]="form"></lib-script>
+</ng-container>
+
+

@@ -1,0 +1,62 @@
+<div fxLayout="column">
+
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="message">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'messageWidth'">
+        <ng-container i18n>
+          Message
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'messageWidth'">
+        {{ row.msg }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'nameWidth'">
+        <ng-container i18n>Branch Name</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+       {{ row.name }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'statusWidth'">
+        <ng-container i18n>Status</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'statusWidth'">
+        {{ status(row) }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container>&nbsp;</ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="submitsMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #submitsMenu>
+  <button mat-menu-item *ngIf="status(selectedItem) === 'Rejected'" (click)="openModalRevert()">
+    <mat-icon>undo</mat-icon>
+    <ng-container i18n>Revert</ng-container>
+  </button>
+  <button mat-menu-item (click)="getNotes()">
+    <mat-icon>note</mat-icon>
+    <ng-container i18n>Notes</ng-container>
+  </button>
+</mat-menu>

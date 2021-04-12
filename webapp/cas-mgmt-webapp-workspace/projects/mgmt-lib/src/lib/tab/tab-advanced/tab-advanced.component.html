@@ -1,0 +1,14 @@
+<div [formGroup]="tab" fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;">
+  <lib-card i18n-heading heading="Advanced">
+    <lib-evalorder [control]="tab.evalOrder"></lib-evalorder>
+    <lib-reqhandlers [control]="tab.required"></lib-reqhandlers>
+    <lib-responsetype [control]="tab.responseType"></lib-responsetype>
+    <lib-environments [control]="tab.environments"></lib-environments>
+  </lib-card>
+  <lib-card i18n-heading heading="Expiration" [collapse]="false">
+    <lib-expiration [form]="tab.expirationPolicy"></lib-expiration>
+  </lib-card>
+  <lib-card i18n-heading heading="Public Key Options">
+    <lib-pubkey [control]="tab.publicKey"></lib-pubkey>
+  </lib-card>
+</div>

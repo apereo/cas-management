@@ -1,0 +1,10 @@
+<lib-text-input [control]="control.location" label="Location"
+                toolTip="The location to the public key file used to authenticate and sign the CAS response. This is specifically used
+                         to encrypt and sign the credential and the proxy granting ticket returned directly in the CAS validation
+                         response, provided the service is authorized to release those attributes.">
+</lib-text-input>
+
+<lib-select-input [control]="control.algorithm" label="Algorithm" [options]="['RSA']"
+                  toolTip="Represents a public key for a CAS registered service, used to encrypt credentials,
+                           proxy granting ticket ids for release.">
+</lib-select-input>

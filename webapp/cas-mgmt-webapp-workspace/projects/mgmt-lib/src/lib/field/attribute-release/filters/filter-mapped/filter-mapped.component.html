@@ -1,0 +1,12 @@
+<lib-attributes [form]="form.patterns" [keys]="config.options.availableAttributes"></lib-attributes>
+<lib-checkbox [control]="form.excludeUnmappedAttributes" label="Exclude Unmapped Attributes" style="padding-top: 10px"
+              toolTip="Indicates whether unmapped attributes should be removed from the final bundle.">
+</lib-checkbox>
+
+<lib-checkbox style="padding-bottom: 20px;" [control]="form.completeMatch" label="Complete Match"
+              toolTip="Indicates whether pattern-matching should execute over the entire value region.">help
+</lib-checkbox>
+
+<lib-checkbox style="padding-bottom: 20px;" [control]="form.caseInsensitive" label="Case Insensitive"
+              toolTip="Indicates whether pattern-matching should ignore case.">
+</lib-checkbox>

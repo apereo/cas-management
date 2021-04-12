@@ -1,8 +1,7 @@
 package org.apereo.cas.mgmt;
 
-import org.apereo.cas.authentication.principal.WebApplicationServiceFactory;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy;
@@ -11,6 +10,7 @@ import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.ResourceUtils;
+
 import com.mchange.io.FileUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,18 +31,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import static java.nio.charset.StandardCharsets.UTF_8;
+
 import static org.opensaml.saml.saml2.core.NameID.EMAIL;
 
 /**
@@ -58,14 +59,9 @@ public class SamlController {
     private static final String EPPN_NAME_ID = "urn:oid:1.3.6.1.4.1.5923.1.1.1.6";
 
     /**
-     * User Profile Factory.
-     */
-    protected final CasUserProfileFactory casUserProfileFactory;
-
-    /**
      * Manager Factory.
      */
-    protected final MgmtManagerFactory<ServicesManager> managerFactory;
+    protected final MgmtManagerFactory<? extends ServicesManager> managerFactory;
 
     /**
      * Management Configuration properties.
@@ -73,32 +69,30 @@ public class SamlController {
     protected final CasManagementConfigurationProperties managementProperties;
 
     private final MetadataAggregateResolver sps;
-
+    private final FormData formData;
     private final OpenSamlConfigBean configBean;
-
     private final UrlMetadataResolver urlMetadataResolver;
 
     private List<String> entities;
 
 
-    public SamlController(final CasUserProfileFactory casUserProfileFactory,
-                          final MgmtManagerFactory managerFactory,
+    public SamlController(final MgmtManagerFactory<? extends ServicesManager> managerFactory,
                           final CasManagementConfigurationProperties managementProperties,
+                          final FormData formData,
                           final OpenSamlConfigBean configBean,
                           final MetadataAggregateResolver sps,
-                          final UrlMetadataResolver urlMetadataResolver) {
-        this.casUserProfileFactory = casUserProfileFactory;
+                          final UrlMetadataResolver urlMetadataResolver){
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
+        this.formData = formData;
         this.configBean = configBean;
         this.sps = sps;
         this.urlMetadataResolver = urlMetadataResolver;
         try {
             val manager = (ManagementServicesManager) managerFactory.master();
-            this.entities = manager.getAllServices().stream()
-                .filter(s -> s instanceof SamlRegisteredService)
-                .map(RegisteredService::getServiceId)
-                .collect(Collectors.toList());
+            this.entities = manager.findServiceBy(s -> s instanceof SamlRegisteredService).stream()
+                    .map(RegisteredService::getServiceId)
+                    .collect(Collectors.toList());
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -112,10 +106,10 @@ public class SamlController {
      */
     @GetMapping("find")
     @SneakyThrows
-    public List<String> find(@RequestParam final String query) {
+    public List<String> find(final @RequestParam String query) {
         return this.entities.stream()
-            .filter(e -> e.contains(query))
-            .collect(Collectors.toList());
+                .filter(e -> e.contains(query))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -126,7 +120,7 @@ public class SamlController {
      */
     @GetMapping("search")
     @SneakyThrows
-    public List<String> search(@RequestParam final String query) {
+    public List<String> search(final @RequestParam String query) {
         return sps.query(query);
     }
 
@@ -139,7 +133,7 @@ public class SamlController {
     @PostMapping("upload")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
-    public SamlRegisteredService upload(@RequestBody final String xml) {
+    public SamlRegisteredService upload(final @RequestBody String xml) {
         val entity = MetadataUtil.fromXML(xml, configBean);
         val service = createService(entity);
         val entityId = entity.getEntityID();
@@ -147,12 +141,8 @@ public class SamlController {
             throw new IllegalArgumentException("Service already registered");
         }
         val fileName = DigestUtils.sha(entityId) + ".xml";
-        val metadataRepoDir = new File(managementProperties.getMetadataRepoDir());
-        if (!metadataRepoDir.exists() && !metadataRepoDir.mkdirs()) {
-            LOGGER.warn("Unable to create metadata directory {}", metadataRepoDir);
-        }
-        Files.write(Path.of(metadataRepoDir.getCanonicalPath() + '/' + fileName), xml.getBytes(UTF_8));
-        service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + '/' + fileName);
+        Files.write(Path.of(managementProperties.getMetadataRepoDir() + "/" + fileName), xml.getBytes());
+        service.setMetadataLocation("file:/" + managementProperties.getMetadataDir() + "/" + fileName);
         return service;
     }
 
@@ -161,26 +151,23 @@ public class SamlController {
      *
      * @param id - the entity id of the SP
      * @return - SamlRegisteredService
+     * @throws SignatureException - invalid metadata
      */
     @GetMapping("add")
-    @SneakyThrows
-    public SamlRegisteredService add(@RequestParam final String id) {
+    public SamlRegisteredService add(final @RequestParam String id) throws SignatureException {
         if (exists(id)) {
             throw new IllegalArgumentException("Service already registered");
         }
         val entityD = sps.find(id);
         val service = createService(entityD);
         service.setMetadataLocation(sps.location());
-        val signatureCert = managementProperties.getInCommonCertLocation();
-        if (ResourceUtils.isFile(signatureCert) && ResourceUtils.doesResourceExist(signatureCert)) {
-            service.setMetadataSignatureLocation(signatureCert.getFile().getCanonicalPath());
-        }
+        service.setMetadataSignatureLocation(managementProperties.getInCommonCertLocation());
         return service;
     }
 
     @GetMapping("download")
     @SneakyThrows
-    public SamlRegisteredService download(@RequestParam final String url) {
+    public SamlRegisteredService download(final @RequestParam String url) {
         val entity = this.urlMetadataResolver.xml(url);
         LOGGER.error(entity);
         val service = createService(MetadataUtil.fromXML(entity, configBean));
@@ -190,18 +177,13 @@ public class SamlController {
 
     @SneakyThrows
     private boolean exists(final String id) {
-        val service = new WebApplicationServiceFactory().createService(id);
-        return managerFactory.master().findServiceBy(service, SamlRegisteredService.class) != null;
+        return this.managerFactory.master().findServiceByName(id, SamlRegisteredService.class) != null;
     }
 
     private SamlRegisteredService createService(final EntityDescriptor entity) {
         val service = new SamlRegisteredService();
         service.setServiceId(entity.getEntityID());
         val spDescriptor = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS);
-        if (spDescriptor == null) {
-            LOGGER.warn("Unable to locate SP Descriptor in metadata for entity {}", entity.getEntityID());
-            throw new IllegalArgumentException("Unable to locate SP Descriptor");
-        }
         service.setSignAssertions(spDescriptor.getWantAssertionsSigned());
         val nameFormats = spDescriptor.getNameIDFormats().stream().findFirst();
         if (nameFormats.isPresent()) {
@@ -211,8 +193,8 @@ public class SamlController {
         val extensions = spDescriptor.getExtensions();
         if (extensions != null) {
             val uiInfo = Objects.requireNonNull(extensions.getOrderedChildren()).stream()
-                .filter(c -> c instanceof UIInfo)
-                .findFirst();
+                    .filter(c -> c instanceof UIInfo)
+                    .findFirst();
             if (uiInfo.isPresent()) {
                 val info = (UIInfo) uiInfo.get();
                 if (!info.getDisplayNames().isEmpty()) {
@@ -247,7 +229,7 @@ public class SamlController {
                     service.setSigningCredentialType("BASIC");
                 }
             }
-            if (!kdEncryption.isPresent() && !kdSigning.isPresent() && !keyDescriptors.isEmpty()
+            if (kdEncryption.isEmpty() && kdSigning.isEmpty() && !keyDescriptors.isEmpty()
                 && !keyDescriptors.get(0).getKeyInfo().getX509Datas().isEmpty()) {
                 service.setEncryptAssertions(true);
                 service.setSignResponses(true);
@@ -255,6 +237,9 @@ public class SamlController {
             }
         }
 
+        val env = new HashSet<String>();
+        env.add("staged");
+        service.setEnvironments(env);
         return service;
     }
 
@@ -269,7 +254,8 @@ public class SamlController {
         }
         if (attributeService != null) {
             attributeService.getRequestedAttributes().forEach(ra -> {
-                allowed.add(ra.getFriendlyName());
+                val attr = mapAttribute(ra.getName());
+                attr.ifPresent(allowed::add);
             });
         }
         if (!allowed.isEmpty()) {
@@ -296,41 +282,41 @@ public class SamlController {
     /**
      * Method to return the metadata for the saml service wih the passed id.
      *
-     * @param request  - the request
-     * @param response - the response
-     * @param id       - the id of the service
+     * @param id - the id of the service
      * @return - Metadata
      */
     @GetMapping("/metadata/{id}")
     @SneakyThrows
-    public Metadata getMetadata(final HttpServletRequest request,
-                                final HttpServletResponse response,
-                                @PathVariable final Long id) {
+    public Metadata getMetadata(final @PathVariable Long id) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         if (!sps.query(service.getServiceId()).isEmpty()) {
             return new Metadata(true, sps.xml(service.getServiceId()));
         }
         val fileName = DigestUtils.sha(service.getServiceId()) + ".xml";
-        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + '/' + fileName).getFile();
+        val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + "/" + fileName).getFile();
         return new Metadata(false, FileUtils.getContentsAsString(res));
     }
 
     /**
      * Saves changes made to local metadata by the management app.
      *
-     * @param request  - the request
-     * @param response - the response
-     * @param id       - the id of the service
+     * @param id - the id of the service
      * @param metadata - the metadata to save
      */
     @PostMapping("/metadata/{id}")
     @SneakyThrows
-    public void saveMetadata(final HttpServletRequest request,
-                             final HttpServletResponse response,
-                             @PathVariable final Long id,
-                             @RequestBody final String metadata) {
+    public void saveMetadata(final @PathVariable Long id,
+                             final @RequestBody String metadata) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
-        Files.writeString(Paths.get(service.getMetadataLocation()), metadata);
+        val fileName = DigestUtils.sha(service.getServiceId()) + ".xml";
+        val res = Paths.get("/" + managementProperties.getMetadataRepoDir() + "/" + fileName);
+        Files.writeString(res, metadata);
     }
 
+    private Optional<String> mapAttribute(final String oid) {
+        return formData.getSamlIdpAttributeUriIds().entrySet().stream()
+                .filter(e -> e.getValue().equals(oid))
+                .map(Map.Entry::getKey)
+                .findFirst();
+    }
 }

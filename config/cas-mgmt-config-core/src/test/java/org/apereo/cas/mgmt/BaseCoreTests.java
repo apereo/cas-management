@@ -23,12 +23,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
  * @since 6.0
  */
 @SpringBootTest(classes = {
-    CasManagementCoreServicesConfiguration.class,
-    CasManagementAuthenticationConfiguration.class,
-    CasManagementAuthorizationConfiguration.class,
-    CasCoreServicesConfiguration.class,
-    RefreshAutoConfiguration.class,
-    AopAutoConfiguration.class
+        CasManagementCoreServicesConfiguration.class,
+        CasManagementAuthenticationConfiguration.class,
+        CasManagementAuthorizationConfiguration.class,
+        CasCoreServicesConfiguration.class,
+        RefreshAutoConfiguration.class,
+        AopAutoConfiguration.class
 })
 @EnableAspectJAutoProxy
 @DirtiesContext

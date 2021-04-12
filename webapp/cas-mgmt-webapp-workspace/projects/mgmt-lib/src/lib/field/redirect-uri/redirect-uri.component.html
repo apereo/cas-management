@@ -1,0 +1,26 @@
+<div fxLayout="column" *ngFor="let url of urls; let i = index;let last = last; let first = first">
+  <div fxFlex="grow" fxLayout="row">
+    <div fxFlex="grow">
+      <lib-input>
+        <mat-form-field style="width: 100%;" appearance="standard">
+          <mat-label>{{ prompt }}</mat-label>
+          <input matInput libValidateServiceId pattern="^\S+" required [formControl]="url">
+          <mat-error i18n *ngIf="control.hasError('invalidUrl')">Invalid URL</mat-error>
+          <mat-error i18n *ngIf="control.hasError('invalidDomain')">You do not have permissions to create a service for the domain entered in the service id</mat-error>
+          <mat-error i18n *ngIf="control.hasError('pattern')">Please remove any leading or trailing spaces from your service id.</mat-error>
+          <mat-error i18n *ngIf="control.hasError('noTls')">Please make sure your service url starts with 'https://'.</mat-error>
+        </mat-form-field>
+      </lib-input>
+    </div>
+    <div fxFlex="20px" *ngIf="!first">
+      <mat-icon class="icon" (click)="delete(i)" style="font-size: 17px;">cancel</mat-icon>
+    </div>
+    <div fxFlex="20px" *ngIf="first">
+      <mat-icon class="icon" (click)="addUrl()" style="font-size:17px;">add_circle</mat-icon>
+    </div>
+  </div>
+</div>
+
+
+
+

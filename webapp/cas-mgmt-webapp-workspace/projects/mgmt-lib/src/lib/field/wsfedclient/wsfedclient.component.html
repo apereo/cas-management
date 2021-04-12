@@ -1,0 +1,10 @@
+<lib-text-input [control]="form.realm" label="Realm" required
+                toolTip="The realm identifier of the application, identified via the wtrealm parameter. This needs to match the
+                         realm defined for the identity provider. By default it’s set to the realm defined for the CAS identity provider.">
+</lib-text-input>
+
+<lib-text-input [control]="form.appliesTo" label="Applies To" required
+                toolTip="Controls to whom security tokens apply. Defaults to the realm.">
+</lib-text-input>
+
+

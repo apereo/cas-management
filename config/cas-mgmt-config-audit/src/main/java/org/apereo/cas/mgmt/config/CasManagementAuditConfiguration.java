@@ -4,6 +4,7 @@ import org.apereo.cas.audit.spi.resource.ShortenedReturnValueAsStringAuditResour
 import org.apereo.cas.mgmt.audit.Pac4jAuditablePrincipalResolver;
 import org.apereo.cas.mgmt.audit.ServiceManagementResourceResolver;
 import org.apereo.cas.util.CollectionUtils;
+
 import lombok.val;
 import org.apereo.inspektr.audit.AuditTrailManagementAspect;
 import org.apereo.inspektr.audit.AuditTrailManager;
@@ -18,6 +19,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,8 +94,8 @@ public class CasManagementAuditConfiguration {
     }
 
     @Bean
-    public FilterRegistrationBean casClientInfoLoggingFilter() {
-        val bean = new FilterRegistrationBean();
+    public FilterRegistrationBean<Filter> casClientInfoLoggingFilter() {
+        val bean = new FilterRegistrationBean<>();
         bean.setFilter(new ClientInfoThreadLocalFilter());
         bean.setUrlPatterns(CollectionUtils.wrap("/*"));
         bean.setName("CAS Client Info Logging Filter");

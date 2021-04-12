@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.PendingRequests;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.controller.DelegatedUtil;
 import org.apereo.cas.mgmt.controller.NoteController;
 import org.apereo.cas.mgmt.controller.PullController;
@@ -21,6 +21,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Objects;
+
 /**
  * Configuration class for version control.
  *
@@ -36,10 +38,6 @@ public class CasManagementDelegatedConfiguration {
     private CasManagementConfigurationProperties managementProperties;
 
     @Autowired
-    @Qualifier("casUserProfileFactory")
-    private ObjectProvider<CasUserProfileFactory> casUserProfileFactory;
-
-    @Autowired
     private ObjectProvider<RepositoryFactory> repositoryFactory;
 
     @Autowired
@@ -49,37 +47,37 @@ public class CasManagementDelegatedConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public SubmitController submitController() {
-        return new SubmitController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
+        return new SubmitController(repositoryFactory.getIfAvailable(),
                 managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PullController pullController() {
-        return new PullController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable(),
+        return new PullController(repositoryFactory.getIfAvailable(),
                 managementProperties, communicationsManager.getIfAvailable());
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public NoteController noteController() {
-        return new NoteController(repositoryFactory.getIfAvailable(), casUserProfileFactory.getIfAvailable());
+        return new NoteController(repositoryFactory.getIfAvailable());
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PendingRequests pendingRequests() {
-        return (request, response) -> {
-            val user = casUserProfileFactory.getIfAvailable().from(request, response);
+        return authentication -> {
+            val user = Objects.requireNonNull(CasUserProfile.from(authentication));
             if (user.isAdministrator()) {
-                val git = repositoryFactory.getIfAvailable().masterRepository();
+                val git = Objects.requireNonNull(repositoryFactory.getIfAvailable()).masterRepository();
                 try {
                     return (int) git.branches()
                             .map(git::mapBranches)
                             .filter(r -> DelegatedUtil.filterPulls(r, new boolean[]{true, false, false}))
                             .count();
                 } catch (final Exception e) {
-                    LOGGER.error(e.getMessage(), e);
+                    return 0;
                 }
             }
             return 0;

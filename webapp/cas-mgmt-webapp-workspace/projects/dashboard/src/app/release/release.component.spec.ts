@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {ReleaseComponent} from './release.component';
+import { ReleaseComponent } from './release.component';
 
 describe('ResolveComponent', () => {
   let component: ReleaseComponent;

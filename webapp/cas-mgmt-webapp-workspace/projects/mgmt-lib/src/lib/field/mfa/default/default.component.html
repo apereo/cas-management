@@ -1,0 +1,27 @@
+<lib-select-input [control]="form.multifactorAuthenticationProviders" label="Providers" multiple
+                  [valueOptions]="config.options.mfaProviders" toolTip="List of multifactor provider ids to assign to this service.">
+</lib-select-input>
+
+<lib-select-input [control]="form.failureMode" label="Failure Mode" [options]="config.options.mfaFailureModes"
+                  toolTip="Decide what CAS should do in the event that a provider is not available.">
+</lib-select-input>
+
+<lib-text-input [control]="form.principalAttributeNameTrigger" label="Principal Attribute Name Trigger"
+                [autoOptions]="config.options.availableAttributes"
+                toolTip="Principal attribute name to trigger MFA when accessing this service.">
+</lib-text-input>
+
+<lib-text-input [control]="form.principalAttributeValueToMatch" label="Principal Attribute Value To Match"
+                toolTip="Principal attribute value to match in order to trigger MFA when accessing this service.">
+</lib-text-input>
+
+<lib-checkbox [control]="form.bypassEnabled" label="Enable Bypass" toolTip="Bypass multifactor authentication for this service.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.forceExecution" label="Force Execution"
+              toolTip="Forces exection of MFA regardless of any configured triggers or bypasses.">
+</lib-checkbox>
+
+<lib-checkbox [control]="form.bypassTrustedDeviceEnabled" label="Enable Bypass Trusted Device"
+              toolTip="Bypass multifactor authentication when a trusted device is used.">
+</lib-checkbox>

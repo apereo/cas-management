@@ -1,0 +1,36 @@
+<div>
+  <h3 matDialogTitle i18n>Add Contacts to Services</h3>
+</div>
+<mat-dialog-content>
+  <div *ngFor="let contact of selectedContact; last as isLast; index as i" style="display: flex; flex-direction: row;">
+    <mat-form-field floatLabel="never" style="flex: 1 1 auto;">
+      <input matInput autocomplete="false" [value]="contact.name"
+             placeholder="Enter contact name" [matAutocomplete]="auto"
+             (keyup)="doLookupContact($event.target.value, i)">
+    </mat-form-field>
+    <button  mat-icon-button (click)="removeContact(i)" style="flex: 0 0 50px;">
+      <mat-icon>remove</mat-icon>
+    </button>
+
+  </div>
+  <button mat-icon-button (click)="addContact()" style="float: right;">
+    <mat-icon>add</mat-icon>
+  </button>
+
+</mat-dialog-content>
+<mat-dialog-actions style="float:right;">
+  <div>
+    <button mat-button [matDialogClose]="null">
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+  </div>
+  <div>
+    <button mat-button [matDialogClose]="selectedContact">
+      <ng-container i18n>OK</ng-container>
+    </button>
+  </div>
+</mat-dialog-actions>
+
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection($event)">
+  <mat-option *ngFor="let opt of foundContacts" [value]="opt" >{{ opt.name }}</mat-option>
+</mat-autocomplete>

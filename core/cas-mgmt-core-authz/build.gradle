@@ -2,7 +2,7 @@ description "Apereo CAS Management Core Authz"
 
 dependencies {
     api project(":api:cas-mgmt-api-configuration")
-    implementation libraries.pac4j
+    implementation libraries.pac4jcore
     
 
 }

@@ -1,0 +1,26 @@
+<lib-text-input [control]="form.tokenEndpointAuthenticationMethod" label="Token Endpoint Authentication Method"
+                toolTip="Defines how a resource client should auth to the token endpount.  Default is'client_secret_basic'.">
+</lib-text-input>
+
+<lib-select-input [control]="form.applicationType" label="Application Type"
+                  [valueOptions]="config.options.oidcApplicationTypes"
+                  toolTip="Type to use when generating principal identifiers. Default is public.">
+</lib-select-input>
+
+<lib-select-input [control]="form.subjectType" label="Subject Type"
+                  [valueOptions]="config.options.oidcSubjectTypes"
+                  toolTip="Type to use when generating principal identifiers. Default is public.">
+</lib-select-input>
+
+<ng-container *ngIf="form.subjectType.value === 'pairwise'">
+  <lib-text-input [control]="form.sectorIdentifierUri" label="Sector Identifier URI"
+                  toolTip="Host value of this URL is used as the sector identifier for the pairwise identifier
+                           calculation. If left undefined, the host value of the serviceId will be used instead.">
+  </lib-text-input>
+</ng-container>
+
+<ng-container *ngIf="form.dynamicRegistrationDateTime.value">
+  <lib-text-input [control]="form.dynamicRegistrationDateTime" label="Dynamically Registered At"
+                  toolTip="Date service was dynamically registered.">
+  </lib-text-input>
+</ng-container>

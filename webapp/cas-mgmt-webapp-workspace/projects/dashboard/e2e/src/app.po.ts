@@ -1,5 +1,6 @@
-import {browser, by, element} from 'protractor';
+import { browser, by, element } from 'protractor';
 
+// tslint:disable:completed-docs
 export class AppPage {
   navigateTo() {
     return browser.get(browser.baseUrl) as Promise<any>;

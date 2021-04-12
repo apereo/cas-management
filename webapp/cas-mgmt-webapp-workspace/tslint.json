@@ -13,20 +13,15 @@
     "array-type": false,
     "arrow-parens": false,
     "arrow-return-shorthand": true,
+    "completed-docs": [true, "functions", "methods", "classes"],
+    "curly": true,
     "deprecation": {
       "severity": "warn"
     },
+    "eofline": true,
     "import-blacklist": [
       true,
       "rxjs/Rx"
-    ],
-    "curly": true,
-    "interface-name": false,
-    "max-classes-per-file": false,
-    "eofline": true,
-    "max-line-length": [
-      true,
-      140
     ],
     "import-spacing": true,
     "indent": {
@@ -34,6 +29,12 @@
         "spaces"
       ]
     },
+    "interface-name": false,
+    "max-classes-per-file": false,
+    "max-line-length": [
+      true,
+      140
+    ],
     "member-access": false,
     "member-ordering": [
       true,
@@ -74,17 +75,6 @@
       true,
       "single"
     ],
-    "trailing-comma": false,
-    "component-class-suffix": true,
-    "contextual-lifecycle": true,
-    "directive-class-suffix": true,
-    "no-conflicting-lifecycle": true,
-    "no-host-metadata-property": true,
-    "no-input-rename": true,
-    "no-inputs-metadata-property": true,
-    "no-output-native": true,
-    "no-output-on-prefix": true,
-    "no-output-rename": true,
     "semicolon": {
       "options": [
         "always"
@@ -99,6 +89,17 @@
         "named": "never"
       }
     },
+    "trailing-comma": false,
+    "component-class-suffix": true,
+    "contextual-lifecycle": true,
+    "directive-class-suffix": true,
+    "no-conflicting-lifecycle": true,
+    "no-host-metadata-property": true,
+    "no-input-rename": true,
+    "no-inputs-metadata-property": true,
+    "no-output-native": true,
+    "no-output-on-prefix": true,
+    "no-output-rename": true,
     "no-outputs-metadata-property": true,
     "template-banana-in-box": true,
     "template-no-negated-async": true,
@@ -121,8 +122,8 @@
       ]
     },
     "use-lifecycle-interface": true,
-    "use-pipe-transform-interface": true,
-    "variable-name": {
+    "use-pipe-transform-interface": true
+  ,    "variable-name": {
       "options": [
         "ban-keywords",
         "check-format",
@@ -139,5 +140,5 @@
         "check-typecast"
       ]
     }
-  }
+}
 }

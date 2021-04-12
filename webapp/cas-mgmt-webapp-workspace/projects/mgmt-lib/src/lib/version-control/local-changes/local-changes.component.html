@@ -1,0 +1,75 @@
+<div fxLayout="column">
+
+  <mat-table #table [dataSource]="datasource">
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="changeMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceType">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceTypeWidth'">
+        <ng-container i18n>
+          Service Type
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceTypeWidth'">
+        {{ row.serviceType }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceName">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'serviceNameWidth'">
+        <ng-container i18n>
+          Service Name
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceNameWidth'">
+        {{ row.serviceName }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="changeType">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'changeTypeWidth'">
+        <ng-container i18n>
+          Change Type
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'changeTypeWidth'">
+        {{ row.changeType }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="row.changeType"></mat-row>
+
+  </mat-table>
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #changeMenu>
+  <button mat-menu-item (click)="viewDiff()" *ngIf="selectedItem?.changeType === 'MODIFY'">
+    <mat-icon>compare_arrows</mat-icon>
+    <ng-container i18n>View Diff</ng-container>
+  </button>
+  <button mat-menu-item (click)="viewJSON()">
+    <mat-icon>code</mat-icon>
+    <ng-container>JSON</ng-container>
+  </button>
+  <button mat-menu-item (click)="viewYaml()">
+    <mat-icon>code</mat-icon>
+    <ng-container>Yaml</ng-container>
+  </button>
+  <button mat-menu-item (click)="openModalRevert()">
+    <mat-icon>undo</mat-icon>
+    <ng-container>Revert</ng-container>
+  </button>
+</mat-menu>

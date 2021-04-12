@@ -1,8 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
 import {Server, SystemHealth} from '../domain/dashboard.model';
-import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
+/**
+ * Component for displaying status of each CAS server in the cluster.
+ *
+ * @author Travis Schmidt
+ */
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,8 +25,10 @@ export class DashboardComponent implements OnInit {
 
   constructor(private service: DashboardService) {}
 
+  /**
+   * Starts the component by calling to get the status of servers.
+   */
   ngOnInit(): void {
-
     this.service.getStatus().subscribe(s => {
       this.servers = s;
       this.timers = [];
@@ -31,6 +38,11 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /**
+   * Returns css value for the status indicator light.
+   *
+   * @param server - server status
+   */
   statusLight(server: Server): string {
     const status = server.system ? server.system.status : 'DOWN';
     if (status === 'UP') {
@@ -42,54 +54,119 @@ export class DashboardComponent implements OnInit {
     return 'led-red';
   }
 
+  /**
+   * Formats the memory for display in MB.
+   *
+   * @param system - server health
+   */
   memory(system: SystemHealth): number {
     return system.details.heapUsed / system.details.heapCommitted * 100.0;
   }
 
+  /**
+   * Returns memory used as a percent.
+   *
+   * @param system - server health
+   */
   percent(system: SystemHealth): string {
     return this.memory(system).toFixed(0);
   }
 
+  /**
+   * Formats the jvm memory for display in MB.
+   *
+   * @param system - server health
+   */
   memoryJvm(system: SystemHealth): number {
     return system.details.jvmUsed / system.details.jvmCommitted * 100.0;
   }
 
+  /**
+   * Returns jvm memory used as a percent.
+   *
+   * @param system - server health
+   */
   percentJvm(system: SystemHealth): string {
     return this.memoryJvm(system).toFixed(0);
   }
 
+  /**
+   * Returns the CPU usage as a percentage.
+   *
+   * @param system - server health
+   */
   percentCpu(system: SystemHealth): string {
     return this.cpu(system).toFixed(0);
   }
 
+  /**
+   * Pulls out the CPU status from the server.
+   *
+   * @param system - server health
+   */
   cpu(system: SystemHealth): number {
     return system.details.systemUsage * 100.0;
   }
 
+  /**
+   * Returns the CPU process usage as percentage.
+   *
+   * @param system - server health
+   */
   percentCpuProcess(system: SystemHealth): string {
     return this.cpuProcess(system).toFixed(0);
   }
 
+  /**
+   * Extracts cpu useage from the server stats.
+   *
+   * @param system - server health
+   */
   cpuProcess(system: SystemHealth): number {
     return system.details.processUsage * 100.0;
   }
 
+  /**
+   * Formats bytes to mb.
+   *
+   * @param mem - memory in bytes
+   */
   mbs(mem: number): string {
     return (mem * 0.00000095367432).toFixed(2);
   }
 
+  /**
+   * Display system load for a server.
+   *
+   * @param system - server health
+   */
   load(system: SystemHealth): string {
     return system.details.systemLoad.toFixed(2);
   }
 
+  /**
+   * Displays the max request time on the server.
+   *
+   * @param system - server health
+   */
   maxRequest(system: SystemHealth): string {
     return system.details.maxRequest.toFixed(2);
   }
 
+  /**
+   * Display number of active threads on server.
+   *
+   * @param system - server health
+   */
   threads(system: SystemHealth): string {
     return system.details.requests.toFixed(2);
   }
 
+  /**
+   * Displays the uptime of a server.
+   *
+   * @param system - server health
+   */
   uptime(system: SystemHealth): string {
     const up = system.details.uptime;
     const days = up / (this.SECONDS_IN_A_DAY);
@@ -102,6 +179,12 @@ export class DashboardComponent implements OnInit {
       + seconds.toFixed(0);
   }
 
+  /**
+   * Sets up a timer to pull stats on the passed CAS server every second.
+   *
+   * @param event - toggle change event.
+   * @param index - index of server in the cluster
+   */
   update(event: MatSlideToggleChange, index: number) {
     if (event.checked) {
       this.timers[index] = () => {
@@ -117,7 +200,6 @@ export class DashboardComponent implements OnInit {
       this.timers[index] = null;
     }
   }
-
 
 }
 

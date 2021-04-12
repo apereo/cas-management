@@ -1,0 +1,124 @@
+<div fxLayout="column">
+
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
+        <ng-container i18n>
+          &nbsp;
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
+        <button mat-icon-button [matMenuTriggerFor]="serviceMenu" (click)="selectedItem = row">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'nameWidth'">
+        <ng-container i18n>
+          Name
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
+        {{ row.name }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'serviceIdWidth'">
+        <ng-container i18n>
+          Service Url
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceIdWidth'">
+        {{ row.serviceId }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'descriptionWidth'">
+        <ng-container i18n>
+          Description
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'descriptionWidth'">
+        {{ row.description }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serviceType">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'serviceTypeWidth'">
+        <ng-container i18n>
+          Type
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'serviceTypeWidth'">
+        {{ row.type }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="submitter">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'submitterWidth'">
+        <ng-container i18n>
+          Submitter
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'submitterWidth'">
+        {{ row.submitter }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="submitted">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'submittedWidth'">
+        <ng-container i18n>
+          Submitted
+        </ng-container>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="'submittedWidth'">
+        {{ row.submitted }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="row.status"></mat-row>
+  </mat-table>
+
+  <lib-paginator></lib-paginator>
+</div>
+
+<mat-menu #serviceMenu>
+  <button mat-menu-item *ngIf="selectedItem?.status === 'SUBMITTED'" (click)="serviceEdit()">
+    <mat-icon>edit</mat-icon>
+    <ng-container i18n>Import</ng-container>
+  </button>
+  <button mat-menu-item *ngIf="selectedItem?.status === 'EDIT'" (click)="diff()">
+    <mat-icon>compare_arrows</mat-icon>
+    <ng-container i18n>Diff</ng-container>
+  </button>
+  <button mat-menu-item *ngIf="selectedItem?.status === 'EDIT'" (click)="accept()">
+    <mat-icon>thumb_up</mat-icon>
+    <ng-container i18n>Accept</ng-container>
+  </button>
+  <button mat-menu-item *ngIf="selectedItem?.status === 'REMOVE'" (click)="delete()">
+    <mat-icon>delete</mat-icon>
+    <ng-container i18n>Delete</ng-container>
+  </button>
+  <button mat-menu-item (click)="openRejectModal()">
+    <mat-icon>thumb_down</mat-icon>
+    <ng-container i18n>Reject</ng-container>
+  </button>
+  <button mat-menu-item (click)="getYaml()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>YAML</ng-container>
+  </button>
+  <button mat-menu-item (click)="getJson()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>JSON</ng-container>
+  </button>
+  <button mat-menu-item *ngIf="selectedItem?.type === 'SAML'" (click)="getMetadata()">
+    <mat-icon>code</mat-icon>
+    <ng-container i18n>Metadata</ng-container>
+  </button>
+</mat-menu>

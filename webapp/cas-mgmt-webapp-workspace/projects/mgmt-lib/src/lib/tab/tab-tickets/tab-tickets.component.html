@@ -1,0 +1,9 @@
+<div [formGroup]="tab" fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;">
+  <lib-card heading="Service Ticket Expiration Policy" [collapse]="true">
+    <lib-service-ticket-exp [form]="tab.serviceTicket"></lib-service-ticket-exp>
+  </lib-card>
+
+  <lib-card heading="Proxy Ticket Expiration Policy" [collapse]="true">
+    <lib-proxy-ticket-exp [form]="tab.proxyTicket"></lib-proxy-ticket-exp>
+  </lib-card>
+</div>

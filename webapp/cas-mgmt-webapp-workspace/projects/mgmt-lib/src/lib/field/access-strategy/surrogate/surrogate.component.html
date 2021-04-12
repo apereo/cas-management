@@ -1,0 +1,7 @@
+<lib-checkbox [control]="form.surrogateEnabled" label="Surrogate Enabled"
+              toolTip="Determines whether this service is allowed to use surrogate authentication.">
+</lib-checkbox>
+
+<lib-attributes [form]="form.surrogateRequiredAttributes"
+                [keys]="config.options.availableAttributes">
+</lib-attributes>

@@ -4,7 +4,6 @@ import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.authentication.CasManagementSecurityInterceptor;
 import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
@@ -12,9 +11,11 @@ import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
+
 import lombok.val;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.client.Client;
+import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.ObjectProvider;
@@ -32,10 +33,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -81,7 +80,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Autowired
     @Qualifier("managementWebappAuthorizer")
     private ObjectProvider<Authorizer> managementWebappAuthorizer;
-    
+
     @Autowired
     private CasConfigurationProperties casProperties;
 
@@ -115,11 +114,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return mapping;
     }
 
-    @Bean
-    public HandlerInterceptorAdapter casManagementSecurityInterceptor() {
-        return new CasManagementSecurityInterceptor(casManagementSecurityConfiguration());
-    }
-
     @ConditionalOnMissingBean(name = "localeResolver")
     @Bean
     public LocaleResolver casManagementLocaleResolver() {
@@ -142,13 +136,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         val bean = new LocaleChangeInterceptor();
         bean.setParamName(this.casProperties.getLocale().getParamName());
         return bean;
-    }
-
-    @Override
-    public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(casManagementLocaleChangeInterceptor());
-        registry.addInterceptor(casManagementSecurityInterceptor())
-            .addPathPatterns("/", "/management/**", "/dashboard/**", "/api/**");
     }
 
     @Bean
@@ -204,19 +191,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return resolver;
     }
 
-    @Bean SpringResourceTemplateResolver dashboardTemplateResolver() {
-        val resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(this.context);
-        resolver.setPrefix("classpath:/dist/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        resolver.setCacheable(false);
-        resolver.setOrder(2);
-        resolver.setCheckExistence(true);
-        resolver.setResolvablePatterns(CollectionUtils.wrapHashSet("dashboard/**"));
-        return resolver;
-    }
+
 
 
     @Override
@@ -227,31 +202,31 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Bean
     public ViewController viewController() {
-        val defaultCallbackUrl = getDefaultCallbackUrl(casProperties, serverProperties);
-        return new ViewController(webApplicationServiceFactory.createService(defaultCallbackUrl));
+        return new ViewController();
     }
 
-    @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
+    @ConditionalOnMissingBean(name = "pac4jClientConfiguration")
     @Bean
-    public Config casManagementSecurityConfiguration() {
-        val cfg = new Config(getDefaultCallbackUrl(casProperties, serverProperties), authenticationClients);
-        cfg.setAuthorizer(this.managementWebappAuthorizer.getIfAvailable());
+    public Config pac4jClientConfiguration() {
+        val cfg = new Config(new Clients(getDefaultCallbackUrl(serverProperties), authenticationClients));
+        cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getIfAvailable());
         return cfg;
     }
 
     /**
      * Gets default callback url.
      *
-     * @param casProperties    the cas properties
      * @param serverProperties the server properties
      * @return the default callback url
      */
-    public String getDefaultCallbackUrl(final CasConfigurationProperties casProperties, final ServerProperties serverProperties) {
+    public String getDefaultCallbackUrl(final ServerProperties serverProperties) {
         try {
-            return casProperties.getServer().getName().concat(serverProperties.getServlet().getContextPath()).concat("management/index.html");
+            return managementProperties.getServerName().concat(serverProperties.getServlet().getContextPath()).concat("/callback");
         } catch (final Exception e) {
             throw new BeanCreationException(e.getMessage(), e);
         }
     }
+
+
 
 }

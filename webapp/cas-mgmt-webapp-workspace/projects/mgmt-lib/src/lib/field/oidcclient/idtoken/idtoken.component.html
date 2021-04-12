@@ -1,0 +1,16 @@
+<lib-options [form]="form.idTokenOptions"></lib-options>
+
+<lib-text-input [control]="form.idTokenEncryptionAlg" label="ID Token Encryption Algorithm"
+                [autoOptions]="config.options.encryptAlgOptions"
+                toolTip="Encryption algorithm to use with ID tokens.">
+</lib-text-input>
+
+<lib-text-input [control]="form.idTokenEncryptionEncoding" label="ID Encryption Encoding Algorithm"
+                [autoOptions]="config.options.encodingAlgOptions"
+                toolTip="Encryption content encoding algorithm to use with ID tokens.">
+</lib-text-input>
+
+<lib-text-input [control]="form.idTokenSigningAlg" label="ID Token Signing Algorithm"
+                [autoOptions]="config.options.encryptAlgOptions"
+                toolTip="Encryption algorithm to use with ID tokens.">
+</lib-text-input>

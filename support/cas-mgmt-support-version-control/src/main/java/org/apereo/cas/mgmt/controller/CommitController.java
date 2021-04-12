@@ -3,7 +3,8 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.PendingRequests;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.SubmissionRequests;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.Commit;
 import org.apereo.cas.mgmt.domain.GitStatus;
 import org.apereo.cas.mgmt.exception.PublishFailureException;
@@ -23,6 +24,7 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -54,35 +55,36 @@ public class CommitController extends AbstractVersionControlController {
     private final CasManagementConfigurationProperties managementProperties;
     private final ServicesManager servicesManager;
     private final ObjectProvider<PendingRequests> pendingRequests;
+    private final ObjectProvider<SubmissionRequests> submissionRequests;
 
     public CommitController(final RepositoryFactory repositoryFactory,
-                            final CasUserProfileFactory casUserProfileFactory,
                             final CasManagementConfigurationProperties managementProperties,
                             final ServicesManager servicesManager,
-                            final ObjectProvider<PendingRequests> pendingRequests) {
-        super(casUserProfileFactory);
+                            final ObjectProvider<PendingRequests> pendingRequests,
+                            final ObjectProvider<SubmissionRequests> submissionRequests) {
         this.repositoryFactory =repositoryFactory;
         this.managementProperties = managementProperties;
         this.servicesManager = servicesManager;
         this.pendingRequests = pendingRequests;
+        this.submissionRequests = submissionRequests;
     }
 
     /**
      * Method commits all modified and untracked work in the working tree.
      *
      * @param response - HttpServletResponse.
-     * @param request  - HttpServletRequest.
+     * @param authentication  - the user
      * @param msg      - Commit msg entered by the user.
      */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void commit(final HttpServletResponse response,
-                       final HttpServletRequest request,
-                       @RequestBody final String msg) {
-        val user = casUserProfileFactory.from(request, response);
+                       final Authentication authentication,
+                       final @RequestBody String msg) {
+        val user = CasUserProfile.from(authentication);
         isUser(user);
-        try (GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {
                 response.setStatus(NO_CHANGES_FOUND);
                 return;
@@ -95,16 +97,15 @@ public class CommitController extends AbstractVersionControlController {
     /**
      * Method will pull the services-repo to the published-repo and then execute the script to sync with all CAS nodes.
      *
-     * @param response - HttpServletResponse.
-     * @param request  - HttpServletRequest.
+     * @param authentication - the user
      * @throws PublishFailureException - failed
      * @throws SyncScriptFailureException - failed
      */
     @GetMapping(value = "/publish")
     @ResponseStatus(HttpStatus.OK)
-    public void publish(final HttpServletResponse response, final HttpServletRequest request)
+    public void publish(final Authentication authentication)
             throws PublishFailureException, SyncScriptFailureException {
-        isAdministrator(request, response);
+        isAdministrator(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.getUnpublishedCommits().forEach(commit -> {
                 val diffs = publishDiffs(git, commit);
@@ -135,15 +136,13 @@ public class CommitController extends AbstractVersionControlController {
     /**
      * Method to run sync script outside of publish.
      *
-     * @param request  - the request
-     * @param response - their resposne
+     * @param authentication  - the user
      * @throws SyncScriptFailureException - failed
      */
     @GetMapping("/sync")
     @ResponseStatus(HttpStatus.OK)
-    public void sync(final HttpServletRequest request,
-                     final HttpServletResponse response) throws SyncScriptFailureException {
-        isAdministrator(request, response);
+    public void sync(final Authentication authentication) throws SyncScriptFailureException {
+        isAdministrator(authentication);
         runSyncScript();
     }
 
@@ -173,15 +172,13 @@ public class CommitController extends AbstractVersionControlController {
     /**
      * Method returns a list of commits that have not been published to CAS Servers.
      *
-     * @param request  - HttpServletRequest
-     * @param response - HttpServletResponse
+     * @param authentication  - the user
      * @return - List of Commit
      * @throws VersionControlException - failed.
      */
     @GetMapping("unpublished")
-    public List<Commit> commits(final HttpServletRequest request,
-                                final HttpServletResponse response) throws VersionControlException {
-        isAdministrator(request, response);
+    public List<Commit> commits(final Authentication authentication) throws VersionControlException {
+        isAdministrator(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.getUnpublishedCommits();
         } catch (final IOException | GitAPIException e) {
@@ -191,7 +188,7 @@ public class CommitController extends AbstractVersionControlController {
     }
 
     /**
-     * Returns true if the master repository has commits ahead of the published repository.
+     * Returns true if the master repository has committs ahead of the published repository.
      *
      * @return - true if there are commits to publish.
      * @throws IOException - failed.
@@ -205,16 +202,14 @@ public class CommitController extends AbstractVersionControlController {
     /**
      * Method returns to the client a payload that describes the state of the user's repository.
      *
-     * @param request  - the request
-     * @param response - the response
+     * @param authentication  - the user
      * @return - GitStatus
      */
     @GetMapping("status")
-    public GitStatus gitStatus(final HttpServletRequest request,
-                               final HttpServletResponse response) {
-        isUser(request, response);
+    public GitStatus gitStatus(final Authentication authentication) {
+        isUser(authentication);
         val gitStatus = new GitStatus();
-        try (GitUtil git = repositoryFactory.from(request, response)) {
+        try (GitUtil git = repositoryFactory.from(authentication)) {
             val status = git.status();
             gitStatus.setHasChanges(!status.isClean());
             gitStatus.setAdded(status.getUntracked().stream()
@@ -224,7 +219,14 @@ public class CommitController extends AbstractVersionControlController {
             gitStatus.setDeleted(status.getMissing().stream()
                     .map(s -> getDeletedServiceName(git, s)).collect(Collectors.toSet()));
             gitStatus.setUnpublished(isPublishedBehind());
-            pendingRequests.ifAvailable(p -> gitStatus.setPullRequests(p.pendingSubmits(request, response)));
+            val pr = pendingRequests.getIfAvailable();
+            if (pr != null) {
+                gitStatus.setPullRequests(pr.pendingSubmits(authentication));
+            }
+            val sr = submissionRequests.getIfAvailable();
+            if (sr != null) {
+                gitStatus.setSubmissions(sr.submissions());
+            }
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

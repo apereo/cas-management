@@ -8,6 +8,7 @@ dependencies {
 
     implementation libraries.casServer.discovery
     implementation libraries.casServer.saml
+    implementation libraries.casServer.ldap
     implementation libraries.casServer.services
     implementation libraries.git
     implementation libraries.opensaml

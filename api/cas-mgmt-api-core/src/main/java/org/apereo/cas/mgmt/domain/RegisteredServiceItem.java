@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -53,5 +54,45 @@ public class RegisteredServiceItem implements Serializable {
      * Type of service.
      */
     private String type;
+
+    /**
+     * If Duo is required.
+     */
+    private boolean duo;
+
+    /**
+     * if SSO is enabled.
+     */
+    private boolean sso;
+
+    /**
+     * When the service expires.
+     */
+    private String expires;
+
+    /**
+     * ucdRole.
+     */
+    private String ucdRole;
+
+    /**
+     * Who submitted the request.
+     */
+    private String submitter;
+
+    /**
+     * When the request was submitted.
+     */
+    private String submitted;
+
+    /**
+     * The fully qualified class name.
+     */
+    private String cName;
+
+    /**
+     * Flag for if the service is stage only.
+     */
+    private boolean staged;
 
 }

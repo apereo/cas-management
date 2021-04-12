@@ -2,7 +2,9 @@ description "Apereo CAS Management Config Authentication"
 
 dependencies {
     api project(":api:cas-mgmt-api-configuration")
-    implementation libraries.pac4j
-   
+    implementation libraries.pac4jcore
+    implementation libraries.pac4jcas
+    implementation libraries.pac4jjwt
+    implementation libraries.jose4j
     implementation project(":core:cas-mgmt-core-authentication")
 }

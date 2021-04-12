@@ -1,10 +1,12 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.mgmt.authentication.CasUserProfileFactory;
+import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.exception.SearchException;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.services.ServicesManager;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +39,12 @@ import org.apache.lucene.store.MMapDirectory;
 import org.hjson.JsonObject;
 import org.hjson.JsonType;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -66,30 +68,27 @@ public class LuceneSearch {
 
     private static final int MAX_RESULTS = 5_000;
 
-    private final MgmtManagerFactory mgmtManagerFactory;
-    private final CasUserProfileFactory casUserProfileFactory;
+    private final MgmtManagerFactory<? extends ServicesManager> mgmtManagerFactory;
     private final CasManagementConfigurationProperties managementProperties;
 
     /**
      * Searches the current state of the the accessible services to a user from a query string.
      *
-     * @param request - the request
-     * @param response - the response
+     * @param authentication - the user
      * @param queryString - the query
      * @return - List of RegisteredServiceItem
      * @throws SearchException - failed
      */
     @PostMapping
-    public List<RegisteredServiceItem> search(final HttpServletRequest request,
-                                              final HttpServletResponse response,
-                                              @RequestBody final String queryString) throws SearchException {
+    public List<RegisteredServiceItem> search(final Authentication authentication,
+                                              final @RequestBody String queryString) throws SearchException {
         try {
-            val casUserProfile = casUserProfileFactory.from(request, response);
+            val casUserProfile = CasUserProfile.from(authentication);
             val analyzer = new StandardAnalyzer();
             val query = new QueryParser("body", analyzer).parse(queryString);
-            val fields = getFields(query, new ArrayList<String>());
-            val manager = (ManagementServicesManager) mgmtManagerFactory.from(request, response);
-            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + '/' + casUserProfile.getUsername()))) {
+            val fields = getFields(query, new ArrayList<>());
+            val manager = (ManagementServicesManager) mgmtManagerFactory.from(authentication);
+            try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + "/" + casUserProfile.getUsername()))) {
                 val docs = manager.getAllServices().stream()
                         .filter(casUserProfile::hasPermission)
                         .map(CasManagementUtils::toJson)
@@ -149,10 +148,11 @@ public class LuceneSearch {
         val fields = new ArrayList<Field>();
         if (!"body".equals(field)) {
             if (type == JsonType.NUMBER) {
-                fields.add(new LongPoint(field, ((Long) value).longValue()));
+                fields.add(new LongPoint(field, (Long) value));
                 fields.add(new StringField(field, String.valueOf(value), Field.Store.NO));
             }
             if (EnumSet.of(JsonType.ARRAY, JsonType.OBJECT, JsonType.BOOLEAN).contains(type)) {
+                assert value instanceof String;
                 fields.add(new TextField(field, (String) value, Field.Store.NO));
             }
             if (type == JsonType.STRING) {

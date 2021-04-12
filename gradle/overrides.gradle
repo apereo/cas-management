@@ -1,36 +1,150 @@
-/*
-  Override the version used by Spring boot to match CAS.
-  As boot is upgraded, some of these enforcements below
-  may become unnecessary when/if version numbers match.
+configurations.all {
+    resolutionStrategy {
+        if (!Boolean.getBoolean("skipVersionConflict")) {
+            failOnVersionConflict()
+        }
+        preferProjectModules()
 
-  Override the version used by Spring boot to match CAS.
-  As boot is upgraded, some of these enforcements below
-  may become unnecessary when/if version numbers match.
-  
-  Versions are explicitly kept here so that gradle-based
-  overlays could use and pull this file and have their 
-  dependencies match that of CAS. 
- */
-ext["springVersion"] = "5.2.12.RELEASE"
-ext["springBootTomcatVersion"] = "9.0.43"
-ext["thymeleafVersion"] = "3.0.11.RELEASE"
-ext["thymeleafDialectVersion"] = "2.4.1"
-ext["hsqlVersion"] = "2.5.0"
-ext["hibernateVersion"] = "5.4.25.Final"
-ext["jacksonVersion"] = "2.12.0"
-ext["jacksonCoreVersion"] = "2.12.0"
-ext["httpCoreVersion"] = "4.4.13"
-ext["groovyVersion"] = "3.0.7"
-ext["commonsBeansVersion"] = "1.9.4"
-ext["caffeinVersion"] = "2.8.4"
-ext["log4jVersion"] = "2.14.0"
+        cacheDynamicVersionsFor 5, 'days'
+        cacheChangingModulesFor 5, 'days'
 
-ext["log4j2.version"] = ext["log4jVersion"]
-ext["spring.version"] = ext["springVersion"]
+        def dependencyUpdates = gradle.startParameter.taskNames.any {task -> task.equalsIgnoreCase('dependencyUpdates') }
+        if (!dependencyUpdates) {
+            eachDependency { DependencyResolveDetails details ->
+                def requested = details.requested
+                if (requested.group == "gnu-getopt")  {
+                    details.useTarget group: "gnu.getopt", name: "java-getopt", version: details.requested.version
+                }
+                if (requested.group == "com.h2database")  {
+                    details.useVersion("${h2Version}")
+                }
+                if (requested.group == "org.hibernate")  {
+                    details.useVersion("${hibernateVersion}")
+                }
+                if (requested.group == "org.postgresql")  {
+                    details.useVersion("${postgresqlVersion}")
+                }
+                if (requested.group == "com.hazelcast" && requested.name == "hazelcast")  {
+                    details.useVersion("${hazelcastVersion}")
+                }
+                if (requested.group == "org.infinispan")  {
+                    details.useVersion("${infinispanVersion}")
+                }
+                if (requested.group == "org.springframework")  {
+                    details.useVersion("${springVersion}")
+                }
+                if (requested.group == "org.springframework.session")  {
+                    if (requested.name == "spring-session-data-mongodb") {
+                        details.useVersion("${springSessionMongoVersion}")
+                    } else {
+                        details.useVersion("${springSessionVersion}")
+                    }
+                }
+                if (requested.group == "org.apache.tomcat")  {
+                    details.useVersion("${tomcatVersion}")
+                }
+                if (requested.group == "org.hsqldb")  {
+                    details.useVersion("${hsqlVersion}")
+                }
+                if (requested.group == "org.mariadb.jdbc")  {
+                    details.useVersion("${mariaDbVersion}")
+                }
+                if (requested.group == "com.microsoft.sqlserver")  {
+                    details.useVersion("${mssqlServerVersion}")
+                }
+                if (requested.group == "com.oracle.ojdbc:ojdbc10")  {
+                    details.useVersion("${oracleJdbcVersion}")
+                }
+                if (requested.group == "org.mongodb")  {
+                    details.useVersion("${mongoDriverVersion}")
+                }
+                if (requested.group == "mysql")  {
+                    details.useVersion("${mysqlVersion}")
+                }
+                if (requested.group == "net.sourceforge.jtds")  {
+                    details.useVersion("${jtdsVersion}")
+                }
+                if (requested.group == "com.couchbase.client" && details.requested.name == "java-client")  {
+                    details.useVersion("${couchbaseVersion}")
+                }
+                if (requested.group == "com.github.ben-manes.caffeine")  {
+                    details.useVersion("${caffeinVersion}")
+                }
+                if (requested.group == "org.apache.logging.log4j")  {
+                    details.useVersion("${log4jVersion}")
+                }
+                if (requested.group == "org.codehaus.groovy")  {
+                    details.useVersion("${groovyVersion}")
+                }
+                if (requested.group == "com.zaxxer")  {
+                    details.useVersion("${hikariVersion}")
+                }
+                if (requested.group == "org.thymeleaf")  {
+                    details.useVersion("${thymeleafVersion}")
+                }
+                if (requested.group == "nz.net.ultraq.thymeleaf" && requested.name == "thymeleaf-layout-dialect")  {
+                    details.useVersion("${thymeleafDialectVersion}")
+                }
+                if (requested.group == "commons-beanutils" && requested.name == "commons-beanutils")  {
+                    details.useVersion("${commonsBeansVersion}")
+                }
+                if (requested.group == "ch.qos.logback")  {
+                    details.useVersion("${logbackVersion}")
+                }
+                if (requested.group == "org.apache.httpcomponents")  {
+                    if (details.requested.name == "httpcore") {
+                        details.useVersion("${httpCoreVersion}")
+                    } else {
+                        details.useVersion("${httpclientVersion}")
+                    }
+                }
+                if (requested.group.startsWith("com.fasterxml.jackson"))  {
+                    details.useVersion("${jacksonVersion}")
+                }
+                if (requested.group == "io.micrometer")  {
+                    details.useVersion("${micrometerVersion}")
+                }
+                if (requested.group == "com.timgroup")  {
+                    details.useVersion("${statsdVersion}")
+                }
+                if (requested.group == "com.signalfx.public")  {
+                    details.useVersion("${signalFxVersion}")
+                }
+            }
+        }
+    }
+    exclude(group: "cglib", module: "cglib")
+    exclude(group: "cglib", module: "cglib-full")
+    exclude(group: "org.slf4j", module: "slf4j-log4j12")
+    exclude(group: "org.slf4j", module: "slf4j-simple")
+    exclude(group: "org.apache.logging.log4j", module: "log4j-to-slf4j")
+    exclude(group: "pull-parser", module: "pull-parser")
+}
+
+ext["couchbase-client.version"] = ext["couchbaseVersion"]
+ext["caffeine.version"] = ext["caffeinVersion"]
 ext["commons-beanutils.version"] = ext["commonsBeansVersion"]
-ext["tomcat.version"] = ext["springBootTomcatVersion"]
+ext["hazelcast.version"] = ext["hazelcastVersion"]
 ext["hibernate.version"] = ext["hibernateVersion"]
+ext["tomcat.version"] = ext["tomcatVersion"]
+ext["infinispan.version"] = ext["infinispanVersion"]
+ext["h2.version"] = ext["h2Version"]
+ext["spring.version"] = ext["springVersion"]
 ext["jackson.version"] = ext["jacksonVersion"]
+ext["thymeleaf.version"] = ext["thymeleafVersion"]
+ext["thymeleaf-layout-dialect.version"] = ext["thymeleafDialectVersion"]
+ext["spring-session.version"] = ext["springSessionVersion"]
+ext["hsqldb.version"] = ext["hsqlVersion"]
 ext["httpcore.version"] = ext["httpCoreVersion"]
+ext["hikaricp.version"] = ext["hikariVersion"]
 ext["groovy.version"] = ext["groovyVersion"]
 ext["log4j2.version"] = ext["log4jVersion"]
+ext["logback.version"] = ext["logbackVersion"]
+ext["commons-beanutils.version"] = ext["commonsBeansVersion"]
+ext["mysql.version"] = ext["mysqlVersion"]
+ext["postgresql.version"] = ext["postgresqlVersion"]
+ext["mariadb.version"] = ext["mariaDbVersion"]
+ext["jtds.version"] = ext["jtdsVersion"]
+ext["mssql-jdbc.version"] = ext["mssqlServerVersion"]
+ext["mongodb.version"] = ext["mongoDriverVersion"]
+ext["micrometer.version"] = ext["micrometerVersion"]

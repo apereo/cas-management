@@ -1,18 +1,23 @@
 package org.apereo.cas.configuration;
 
+import org.apereo.cas.configuration.model.BulkNotifications;
 import org.apereo.cas.configuration.model.CasServers;
-import org.apereo.cas.configuration.model.NotificationsProperties;
+import org.apereo.cas.configuration.model.DelegatedNotifications;
+import org.apereo.cas.configuration.model.RegisterNotifications;
+import org.apereo.cas.configuration.model.SubmissionNotifications;
 import org.apereo.cas.configuration.model.support.ldap.AbstractLdapProperties;
+import org.apereo.cas.configuration.model.support.ldap.LdapAuthenticationProperties;
 import org.apereo.cas.configuration.model.support.ldap.LdapAuthorizationProperties;
 import org.apereo.cas.configuration.support.RequiresModule;
 import org.apereo.cas.util.CollectionUtils;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +33,6 @@ import java.util.List;
 @ConfigurationProperties(value = "mgmt", ignoreUnknownFields = false)
 public class CasManagementConfigurationProperties implements Serializable {
     private static final long serialVersionUID = -7686426966125636166L;
-
     /**
      * List of roles that allow admin access to the web application.
      */
@@ -67,31 +71,41 @@ public class CasManagementConfigurationProperties implements Serializable {
     private Ldap ldap = new Ldap();
 
     /**
+     * LDAP for contact lookup.
+     */
+    private LdapAuthenticationProperties ldapAuth = new LdapAuthenticationProperties();
+
+    /**
+     * Use CAS server for SSO for management application.
+     */
+    private boolean casSso = true;
+
+    /**
      * Location of the resource that contains the authorized accounts.
      * This file lists the set of users that are allowed access to the CAS sensitive/admin endpoints.
      * The syntax of each entry should be in the form of:
      * {@code username=notused,grantedAuthority[,grantedAuthority][,enabled|disabled]}
      *
-     * &lt;p&gt;
+     * <p>
      * The file may also be specified in form of JSON or YAML. In either case, the contents should be a map
      * of user records with key being the username whose authorization rules are defined as the value linked to that key.
-     * &lt;p&gt;
+     * <p>
      * Example:
-     * &lt;pre&gt;
+     * <pre>
      * {
      * "casuser" : {
      * "roles" : [ "ROLE_ADMIN" ],
      * "permissions" : [ "PERMISSION_EXAMPLE" ]
      * }
      * }
-     * &lt;/pre&gt;
+     * </pre>
      */
     private transient Resource userPropertiesFile = new ClassPathResource("users.json");
 
     /**
      * Flag to enable/disable calling cas discovery endpoint.
      */
-    private boolean enableDiscoveryEndpointCall;
+    private boolean enableDiscoveryEndpointCall = true;
 
     /**
      * Path to discovery endpoint.
@@ -107,6 +121,16 @@ public class CasManagementConfigurationProperties implements Serializable {
      * Properties for delegated mgmt.
      */
     private Delegated delegated = new Delegated();
+
+    /**
+     * Properties for submissions.
+     */
+    private Submissions submissions = new Submissions();
+
+    /**
+     * Properties for register.
+     */
+    private Register register = new Register();
 
     /**
      * Lucence directory for writting indexes.
@@ -131,12 +155,12 @@ public class CasManagementConfigurationProperties implements Serializable {
     /**
      * Incommon Cert location for CAS Servers.
      */
-    private Resource inCommonCertLocation = new FileSystemResource("/etc/cas/idp/inc-md-cert-mdq.pem");
+    private String inCommonCertLocation = "/etc/cas/idp/inc-md-cert-mdq.pem";
 
     /**
      * InCommon MDQ URL.
      */
-    private String inCommonMDQUrl;
+    private String inCommonMDQUrl= "https://mdq.incommon.org/entities";
 
     /**
      * List of cas servers that available in the Dashboard.
@@ -148,12 +172,21 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private String cacheHealthIndicator = "session";
 
+    /**
+     * List the attributeRepositories defined in the cas server.
+     */
+    private List<String> attributeRepositories = new ArrayList<>();
+
+    /**
+     * Flag to enable the feature AttributeDefinitions.
+     */
+    private boolean attributeStoreEnabled;
+
     @Getter
     @Setter
     @RequiresModule(name = "cas-mgmt-config-ldap-authz")
     public static class Ldap extends AbstractLdapProperties {
         private static final long serialVersionUID = -8129280052479631538L;
-
         /**
          * Defines authorization settings that allow access to the app via LDAP.
          */
@@ -199,6 +232,48 @@ public class CasManagementConfigurationProperties implements Serializable {
          * Notifications.
          */
         @NestedConfigurationProperty
-        private NotificationsProperties notifications = new NotificationsProperties();
+        private DelegatedNotifications notifications = new DelegatedNotifications();
+    }
+
+    @Getter
+    @Setter
+    @RequiresModule(name = "cas-mgmt-config-submissions")
+    public static class Submissions implements Serializable {
+        /**
+         * Directory to store submitted services.
+         */
+        private String submitDir = "/etc/cas/submitted";
+
+        /**
+         * Submissions flag.
+         */
+        private boolean enabled;
+
+        /**
+         * Notifications.
+         */
+        @NestedConfigurationProperty
+        private SubmissionNotifications notifications = new SubmissionNotifications();
+    }
+
+    @Getter
+    @Setter
+    @RequiresModule(name = "cas-mgmt-config-register")
+    public static class Register implements Serializable {
+        /**
+         * Register enabled flag.
+         */
+        private boolean enabled;
+
+        /**
+         * Register Notifications.
+         */
+        private RegisterNotifications notifications = new RegisterNotifications();
+
+        /**
+         * Bulk action notifications.
+         */
+        private BulkNotifications bulkNotifications = new BulkNotifications();
+
     }
 }

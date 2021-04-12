@@ -1,6 +1,6 @@
 package org.apereo.cas.mgmt;
 
-import org.apereo.cas.services.ReturnMappedAttributeReleasePolicy;
+import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
 import lombok.val;
@@ -25,13 +25,32 @@ public class OauthController {
      * @return - OAuthRegisteredService
      */
     @GetMapping("generate")
-    public OAuthRegisteredService generate() {
+    public OAuthRegisteredService generateOauth() {
         val service = new OAuthRegisteredService();
-        val rg = new DefaultRandomStringGenerator();
-        service.setClientId(rg.getNewString());
-        service.setClientSecret(rg.getNewString());
-        val policy = new ReturnMappedAttributeReleasePolicy();
-        service.setAttributeReleasePolicy(policy);
+        service.setClientId(generateId());
+        service.setClientSecret(generateId());
         return service;
+    }
+
+    /**
+     * Creates and returns a new OidcRegisteredService with generated client id and secret.
+     *
+     * @return - OidcRegisteredService
+     */
+    @GetMapping("generate/oidc")
+    public OidcRegisteredService generateOidc() {
+        val service = new OidcRegisteredService();
+        service.setClientId(generateId());
+        service.setClientSecret(generateId());
+        return service;
+    }
+    /**
+     * Generates a new random string used for client Id and Secrets.
+     *
+     * @return - Random String value
+     */
+    @GetMapping({"generateId", "generateSecret"})
+    public String generateId() {
+        return new DefaultRandomStringGenerator().getNewString();
     }
 }

@@ -1,54 +1,69 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ControlsComponent} from './controls/controls.component';
-import {MgmtLibModule} from 'mgmt-lib';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {HttpClientModule} from '@angular/common/http';
-import {CommitComponent} from './commit/commit.component';
-import {PublishComponent} from './publish/publish.component';
-import {RevertComponent} from './revert/revert.component';
-import {SharedLibModule} from 'shared-lib';
+import {HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {AcceptComponent} from '@app/project-share/accept/accept.component';
-import {RejectComponent} from '@app/project-share/reject/reject.component';
+import {UiModule} from '@apereo/mgmt-lib';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTableModule} from '@angular/material/table';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSortModule} from '@angular/material/sort';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatListModule} from '@angular/material/list';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatChipsModule} from '@angular/material/chips';
 
+/**
+ * Common share module imported by all modules in the application.
+ *
+ * @author Travis Schmidt
+ */
 @NgModule({
   declarations: [
-    ControlsComponent,
-    CommitComponent,
-    PublishComponent,
-    RevertComponent,
-    AcceptComponent,
-    RejectComponent
-  ],
-  entryComponents: [
-    CommitComponent,
-    PublishComponent,
-    RevertComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MgmtLibModule,
-    SharedLibModule,
     HttpClientModule,
     RouterModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    UiModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatMenuModule,
+    MatSortModule,
+    MatButtonModule,
+    MatInputModule,
+    MatBadgeModule,
+    MatListModule,
+    MatDialogModule,
+    MatChipsModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MgmtLibModule,
     HttpClientModule,
     RouterModule,
-    ControlsComponent,
-    AcceptComponent,
-    RejectComponent,
-    SharedLibModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    UiModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatMenuModule,
+    MatSortModule,
+    MatButtonModule,
+    MatInputModule,
+    MatBadgeModule,
+    MatListModule,
+    MatDialogModule,
+    MatChipsModule
   ]
 })
 export class ProjectShareModule { }

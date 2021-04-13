@@ -17,7 +17,6 @@ buildscript {
 
     dependencies {
         classpath "gradle.plugin.com.ewerk.gradle.plugins:jaxb2-plugin:1.0.10"
-        classpath "org.gradle:test-retry-gradle-plugin:$gradleRetryVersion"
         classpath "com.github.jk1:gradle-license-report:$gradleLicenseVersion"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitVersion"
@@ -89,9 +88,6 @@ allprojects {
         apply plugin: "maven"
     }
 
-    if (!Boolean.getBoolean("skipTestRetry")) {
-        apply plugin: "org.gradle.test-retry"
-    }
 
     apply from: rootProject.file("gradle/tasks.gradle")
 
@@ -99,6 +95,7 @@ allprojects {
         apply plugin: "com.gorylenko.gradle-git-properties"
         gitProperties {
             extProperty = "gitProps"
+            gitPropertiesName = "mgmt-git.properties"
             keys = ["git.branch", "git.build.time", "git.build.user.name",
                     "git.build.version", "git.commit.id", "git.remote.origin.url"]
         }
@@ -533,14 +530,6 @@ task jacocoRootReport(type: JacocoReport) {
     reports {
         html.enabled = true
         xml.enabled = true
-    }
-    onlyIf = {
-        true
-    }
-    doFirst {
-        executionData files(executionData.findAll {
-            it.exists()
-        })
     }
 }
 

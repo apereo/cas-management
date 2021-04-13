@@ -30,20 +30,16 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.mvc.Controller;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
 import org.springframework.web.servlet.mvc.UrlFilenameViewController;
-import org.springframework.web.servlet.view.RedirectView;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
@@ -66,7 +62,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @Autowired
     private ApplicationContext context;
-    
+
     @Autowired
     @Qualifier("authenticationClients")
     private List<Client> authenticationClients;
@@ -82,26 +78,11 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     private CasManagementConfigurationProperties managementProperties;
 
     @Bean
-    protected Controller rootController() {
-        return new ParameterizableViewController() {
-            @Override
-            protected ModelAndView handleRequestInternal(final HttpServletRequest request,
-                                                         final HttpServletResponse response) {
-                val url = request.getContextPath() + '/';
-                return new ModelAndView(new RedirectView(url));
-            }
-
-        };
-    }
-
-    @Bean
     @Lazy
     public SimpleUrlHandlerMapping handlerMapping() {
         val mapping = new SimpleUrlHandlerMapping();
         mapping.setOrder(0);
         mapping.setAlwaysUseFullPath(true);
-        mapping.setRootHandler(rootController());
-
         val properties = new Properties();
         properties.put("/*.html", new UrlFilenameViewController());
         mapping.setMappings(properties);
@@ -147,12 +128,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
             .collect(Collectors.toSet());
     }
 
-    @Bean
-    @Lazy
-    protected UrlFilenameViewController passThroughController() {
-        return new UrlFilenameViewController();
-    }
-
     @RefreshScope
     @Bean
     public DefaultCasManagementEventListener defaultCasManagementEventListener() {
@@ -185,13 +160,10 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return resolver;
     }
 
-
-
-
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/dist/", "classpath:/static/");
+            .addResourceLocations("classpath:/dist/", "classpath:/static/");
     }
 
     @Bean
@@ -221,6 +193,11 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         }
     }
 
+    @Bean
+    @Lazy
+    protected UrlFilenameViewController passThroughController() {
+        return new UrlFilenameViewController();
+    }
 
 
 }

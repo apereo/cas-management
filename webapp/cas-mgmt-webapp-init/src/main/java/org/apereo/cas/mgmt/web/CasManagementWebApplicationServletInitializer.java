@@ -18,8 +18,7 @@ public class CasManagementWebApplicationServletInitializer extends SpringBootSer
     protected SpringApplicationBuilder configure(final SpringApplicationBuilder builder) {
         //val properties = CasManagementEmbeddedContainerUtils.getRuntimeProperties(Boolean.FALSE);
         return builder
-                .sources(CasManagementWebApplication.class)
-          //      .properties(properties)
-                .banner(CasManagementEmbeddedContainerUtils.getCasManagementBannerInstance());
+            .sources(CasManagementWebApplication.class)
+            .banner(CasManagementEmbeddedContainerUtils.getCasManagementBannerInstance());
     }
 }

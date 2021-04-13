@@ -112,8 +112,6 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Run Static Analysis
         run: ./ci/analyze-style.sh
-      - name: Configuration Factory Analysis
-        run: ./ci/check-config-factories.sh
         
   ##########################################################################
 

@@ -39,7 +39,7 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases && !rootP
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             launchScript()
         }
-
+    
     } else {
         bootJar {
             mainClassName = project.ext.mainClassName

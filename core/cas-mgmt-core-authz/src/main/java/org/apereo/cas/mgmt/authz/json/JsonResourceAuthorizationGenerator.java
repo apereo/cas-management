@@ -11,7 +11,6 @@ import org.hjson.JsonValue;
 import org.jooq.lambda.Unchecked;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
 
@@ -40,12 +39,21 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
 
         loadResource(resource);
         val watcher = new FileWatcherService(resource.getFile(),
-            Unchecked.consumer(file -> loadResource(resource)));
+                Unchecked.consumer(file -> loadResource(resource)));
         watcher.start(getClass().getSimpleName());
     }
 
+    @SneakyThrows
+    private void loadResource(final Resource res) {
+        try (Reader reader = new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8)) {
+            val personList = new TypeReference<Map<String, UserAuthorizationDefinition>>() {
+            };
+            this.rules = this.objectMapper.readValue(JsonValue.readHjson(reader).toString(), personList);
+        }
+    }
+
     @Override
-    public Optional<UserProfile> generate(final WebContext context, final SessionStore sessionStore, final UserProfile profile) {
+    public Optional<UserProfile> generate(final WebContext context, final UserProfile profile) {
         val id = profile.getId();
         if (rules.containsKey(id)) {
             val defn = rules.get(id);
@@ -57,14 +65,5 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
 
     protected JsonFactory getJsonFactory() {
         return null;
-    }
-
-    @SneakyThrows
-    private void loadResource(final Resource res) {
-        try (Reader reader = new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8)) {
-            val personList = new TypeReference<Map<String, UserAuthorizationDefinition>>() {
-            };
-            this.rules = this.objectMapper.readValue(JsonValue.readHjson(reader).toString(), personList);
-        }
     }
 }

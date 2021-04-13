@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.pac4j.core.context.JEEContext;
-import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.profile.ProfileManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +59,7 @@ public class ViewController {
     @GetMapping(value = "/logout.html")
     public String logoutView(final HttpServletRequest request, final HttpServletResponse response) {
         LOGGER.debug("Invalidating application session...");
-        new ProfileManager(new JEEContext(request, response), JEESessionStore.INSTANCE).removeProfiles();
+        new ProfileManager<>(new JEEContext(request, response)).logout();
         request.getSession(false).invalidate();
         return "logout";
     }

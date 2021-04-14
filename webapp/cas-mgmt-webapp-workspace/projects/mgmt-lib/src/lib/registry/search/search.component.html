@@ -1,7 +1,7 @@
 <div fxLayout="column">
   <div fxLayout="row">
     <mat-form-field floatLabel="never" fxFlex="90%" fxGrow>
-      <input #searchText matInput [value]="searchService.query || ''" placeholder="Enter text to find services">
+      <input #searchText matInput [value]="searchService.query || ''" (keydown.enter)="doSearch(searchText.value)" placeholder="Enter text to find services">
     </mat-form-field>
     <button mat-button fxFlex="10%" (click)="doSearch(searchText.value)">Search</button>
   </div>
@@ -98,5 +98,9 @@
   <button mat-menu-item (click)="demote()" *ngIf="!staged()">
     <mat-icon>call_received</mat-icon>
     <ng-container i18n>Demote</ng-container>
+  </button>
+  <button mat-menu-item (click)="serviceDuplicate()">
+    <mat-icon>content_copy</mat-icon>
+    <ng-container i18n>Duplicate</ng-container>
   </button>
 </mat-menu>

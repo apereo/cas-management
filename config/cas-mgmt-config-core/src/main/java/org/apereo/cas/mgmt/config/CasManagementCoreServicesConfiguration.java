@@ -65,6 +65,10 @@ public class CasManagementCoreServicesConfiguration {
     @Qualifier("serviceRegistry")
     private ObjectProvider<ServiceRegistry> serviceRegistry;
 
+    @Autowired
+    @Qualifier("servicesManagerCache")
+    private ObjectProvider<Cache<Long, RegisteredService>> servicesManagerCache;
+
     @ConditionalOnMissingBean(name = "attributeDefinitionStore")
     @Bean
     @RefreshScope
@@ -131,19 +135,6 @@ public class CasManagementCoreServicesConfiguration {
         return new ContactLookupController(contactLookup());
     }
 
-    @RefreshScope
-    @Bean
-    @ConditionalOnMissingBean(name = "servicesManagerCache")
-    public Cache<Long, RegisteredService> servicesManagerCache() {
-        val registry = casProperties.getServiceRegistry();
-        val duration = Beans.newDuration(registry.getCache());
-        return Caffeine.newBuilder()
-                .initialCapacity(registry.getCacheCapacity())
-                .maximumSize(registry.getCacheSize())
-                .expireAfterWrite(duration)
-                .recordStats()
-                .build();
-    }
 
     @Bean(name = "servicesManager")
     @RefreshScope
@@ -153,7 +144,7 @@ public class CasManagementCoreServicesConfiguration {
                 .serviceRegistry(serviceRegistry.getObject())
                 .applicationContext(applicationContext)
                 .environments(activeProfiles)
-                .servicesCache(servicesManagerCache())
+                .servicesCache(servicesManagerCache.getObject())
                 .build();
         val cm = new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor());
         cm.load();

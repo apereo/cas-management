@@ -101,13 +101,14 @@ public class LuceneSearch {
                         .map(id -> manager.findServiceBy(Long.parseLong(id.stringValue())))
                         .map(manager::createServiceItem)
                         .collect(Collectors.toList());
+                LOGGER.debug("Found search results [{}]", results);
                 FileUtils.deleteDirectory(memoryIndex.getDirectory().toFile());
                 return results;
             }
         } catch (final IOException | ParseException ex) {
             LOGGER.error(ex.getMessage(), ex);
-            throw new SearchException();
         }
+        return List.of();
     }
 
     /**
@@ -126,9 +127,24 @@ public class LuceneSearch {
                 .forEach(document::add);
         if (fields.contains("body")) {
             document.add(new TextField("body", json.toString(), Field.Store.NO));
+
+            addFieldFor(json, document, "attributeReleasePolicy");
+            addFieldFor(json, document, "accessStrategy");
+            addFieldFor(json, document, "multifactorPolicy");
+            addFieldFor(json, document, "contacts");
+            addFieldFor(json, document, "usernameAttributeProvider");
+            addFieldFor(json, document, "acceptableUsagePolicy");
         }
         document.add(new StringField("id", String.valueOf(id), Field.Store.YES));
+        LOGGER.debug("Final search document: [{}]", document);
         return document;
+    }
+
+    private static void addFieldFor(final JsonObject json, final Document document, final String name) {
+        var innerObject = json.get(name);
+        if (innerObject != null) {
+            document.add(new TextField(name, innerObject.toString(), Field.Store.NO));
+        }
     }
 
     /**

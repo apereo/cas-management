@@ -140,7 +140,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return new RegisteredServiceResourceNamingStrategy() {
             @Override
             public String build(final RegisteredService service, final String extenstion) {
-                return "service-" + service.getId() + ".json";
+                return service.getName() + "-" + service.getId() + ".json";
             }
         };
     }

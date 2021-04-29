@@ -97,7 +97,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
             protected Locale determineDefaultLocale(final HttpServletRequest request) {
                 val locale = request.getLocale();
                 if (StringUtils.isEmpty(managementProperties.getDefaultLocale())
-                        || !locale.getLanguage().equals(managementProperties.getDefaultLocale())) {
+                    || !locale.getLanguage().equals(managementProperties.getDefaultLocale())) {
                     return locale;
                 }
                 return new Locale(managementProperties.getDefaultLocale());
@@ -123,9 +123,9 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public Collection<BaseOidcScopeAttributeReleasePolicy> userDefinedScopeBasedAttributeReleasePolicies() {
         val oidc = casProperties.getAuthn().getOidc();
         return oidc.getUserDefinedScopes().entrySet()
-                .stream()
-                .map(k -> new OidcCustomScopeAttributeReleasePolicy(k.getKey(), CollectionUtils.wrapList(k.getValue().split(","))))
-                .collect(Collectors.toSet());
+            .stream()
+            .map(k -> new OidcCustomScopeAttributeReleasePolicy(k.getKey(), CollectionUtils.wrapList(k.getValue().split(","))))
+            .collect(Collectors.toSet());
     }
 
     @RefreshScope
@@ -159,7 +159,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/dist/", "classpath:/static/");
+            .addResourceLocations("classpath:/dist/", "classpath:/static/");
     }
 
     @Bean

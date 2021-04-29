@@ -6,8 +6,6 @@ import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
 import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
-import org.apereo.cas.services.RegisteredService;
-import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
 
 import lombok.val;
@@ -132,17 +130,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Bean
     public DefaultCasManagementEventListener defaultCasManagementEventListener() {
         return new DefaultCasManagementEventListener();
-    }
-
-    @Bean(name = "namingStrategy")
-    @RefreshScope
-    public RegisteredServiceResourceNamingStrategy registeredServiceResourceNamingStrategy() {
-        return new RegisteredServiceResourceNamingStrategy() {
-            @Override
-            public String build(final RegisteredService service, final String extenstion) {
-                return "service-" + service.getId() + ".json";
-            }
-        };
     }
 
     @Bean

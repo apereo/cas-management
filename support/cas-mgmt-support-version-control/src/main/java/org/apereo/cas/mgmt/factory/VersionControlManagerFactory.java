@@ -159,21 +159,17 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
 
     public Cache<Long, RegisteredService> servicesManagerCache() {
         val serviceRegistry = casProperties.getServiceRegistry();
-        val duration = Beans.newDuration(serviceRegistry.getCache());
         return Caffeine.newBuilder()
                 .initialCapacity(serviceRegistry.getCacheCapacity())
                 .maximumSize(serviceRegistry.getCacheSize())
-                .expireAfterWrite(duration)
                 .recordStats()
                 .build();
     }
 
     public Cache<Authentication, ManagementServicesManager> managementServicesManagerCache() {
-        val duration = Beans.newDuration("PT30M");
         return Caffeine.newBuilder()
                 .initialCapacity(INITIAL_CACHE_SIZE)
                 .maximumSize(MAX_CACHE_SIZE)
-                .expireAfterWrite(duration)
                 .recordStats()
                 .build();
     }

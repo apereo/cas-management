@@ -13,6 +13,7 @@ import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
+import org.pac4j.core.matching.matcher.PathMatcher;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,6 +164,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public Config pac4jClientConfiguration() {
         val cfg = new Config(new Clients(getDefaultCallbackUrl(serverProperties), authenticationClients));
         cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getObject());
+        cfg.addMatcher("excludedPath", new PathMatcher().excludeRegex("^/.*\\.(css|png|ico)$"));
         return cfg;
     }
 

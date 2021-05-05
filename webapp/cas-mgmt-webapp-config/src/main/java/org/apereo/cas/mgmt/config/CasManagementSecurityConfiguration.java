@@ -62,7 +62,7 @@ public class CasManagementSecurityConfiguration {
         protected void configure(final HttpSecurity http) throws Exception {
             LOGGER.debug("Configuring CAS security filter");
             val securityFilter = new SecurityFilter(config.getObject(), "CasClient", "mgmtAuthorizer");
-
+            securityFilter.setMatchers("excludedPath");
             http.antMatcher("/**")
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);

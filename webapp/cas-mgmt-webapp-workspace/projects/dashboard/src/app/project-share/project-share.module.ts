@@ -14,13 +14,13 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
-import {MatSliderModule} from '@angular/material/slider';
 import {MatListModule} from '@angular/material/list';
 import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 /**
  * Module to load common modules used by other modules in the app.
@@ -47,6 +47,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatSortModule,
     MatSelectModule,
     MatMenuModule,
+    MatCheckboxModule,
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
@@ -71,6 +72,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatSortModule,
     MatSelectModule,
     MatMenuModule,
+    MatCheckboxModule,
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,

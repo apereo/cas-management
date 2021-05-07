@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {ControlsService, PaginatorComponent} from '@apereo/mgmt-lib';
 import {DialogComponent} from './dialog/dialog.component';
+import {Subscription} from 'rxjs';
 
 /**
  * Attribute model.
@@ -28,7 +29,7 @@ export class Attribute {
   templateUrl: './release.component.html',
   styleUrls: ['./release.component.css']
 })
-export class ReleaseComponent implements OnInit {
+export class ReleaseComponent implements OnInit, OnDestroy {
 
   dataSource: MatTableDataSource<Attribute>;
   displayedColumns = ['key', 'values'];
@@ -36,20 +37,32 @@ export class ReleaseComponent implements OnInit {
   @ViewChild(PaginatorComponent, {static: true})
   paginator: PaginatorComponent;
 
+  subscription: Subscription;
+
   constructor(private service: DashboardService,
               private controls: ControlsService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+    this.controls.title = 'Attribute Release';
+    this.controls.icon = 'list';
+  }
 
   /**
    * Starts the component by opening dialog to get credentials.
    */
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataSource = new MatTableDataSource([]);
     this.dataSource.paginator = this.paginator.paginator;
-    this.resolve();
     this.controls.resetButtons();
-    this.controls.title = 'Attribute Release';
-    this.controls.icon = 'list';
+    this.controls.showLookup = true;
+    this.subscription = this.controls.lookup.subscribe( () => this.resolve() );
+    this.resolve();
+  }
+
+  /**
+   * Destroys subscription.
+   */
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /**

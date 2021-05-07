@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ResolveRoutingModule } from './resolve-routing.module';
 import { ResolveComponent } from './resolve.component';
 import {ProjectShareModule} from '../project-share/project-share.module';
+import {DialogComponent} from './dialog/dialog.component';
 
 /**
  * Module to lazy-load resolve attributes functionality.
@@ -11,7 +12,10 @@ import {ProjectShareModule} from '../project-share/project-share.module';
  * @author Travis Schmidt
  */
 @NgModule({
-  declarations: [ResolveComponent],
+  declarations: [
+    ResolveComponent,
+    DialogComponent
+  ],
   imports: [
     CommonModule,
     ProjectShareModule,

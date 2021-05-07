@@ -1,20 +1,4 @@
 <div fxLayout="column">
-  <div fxLayout="row" style="margin-top: 10px;">
-    <div fxFlex="75%" fxGrow fxLayoutAlign="center">
-      <lib-input>
-        <mat-form-field style="width: 400px;" class="textInput">
-          <mat-label>Username</mat-label>
-          <input matInput placeholder="Enter a username to resolve" #uid>
-        </mat-form-field>
-      </lib-input>
-    </div>
-    <div fxFlex="25%">
-      <div fxLayoutAlign="end">
-        <button mat-button (click)="resolve(uid.value)">Resolve</button>
-      </div>
-    </div>
-  </div>
-
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="actions">

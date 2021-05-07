@@ -37,6 +37,11 @@
       <mat-icon matTooltip="Submits changes for review">file_upload</mat-icon>
     </div>
   </ng-container>
+  <ng-container *ngIf="service.showLookup">
+    <div class='controlButton' (click)="service.lookup.emit()">
+      <mat-icon matTooltip="Look Up">search</mat-icon>
+    </div>
+  </ng-container>
   <ng-container *ngIf="service.showRefresh">
     <div class='controlButton' (click)="service.refresh.emit()">
       <mat-icon matTooltip="Refresh">refresh</mat-icon>

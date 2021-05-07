@@ -153,7 +153,7 @@ public class DashboardController {
     public String response(final Authentication authentication,
                            @RequestBody final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
-        return this.<String>callCasServer("/actuator/samlResponse", data,
+        return this.<String>callCasServer("/actuator/samlPostProfileResponse", data,
                 new ParameterizedTypeReference<String>() {});
     }
 

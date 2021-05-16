@@ -21,6 +21,7 @@ public class DashboardForwardingController {
         "dashboard/info",
         "dashboard/cache",
         "dashboard/resolve",
+        "dashboard/response",
         "dashboard/release",
         "dashboard/audit",
         "dashboard/sessions",

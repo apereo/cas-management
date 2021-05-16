@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.factory;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
-import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
@@ -159,21 +158,17 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
 
     public Cache<Long, RegisteredService> servicesManagerCache() {
         val serviceRegistry = casProperties.getServiceRegistry();
-        val duration = Beans.newDuration(serviceRegistry.getCache());
         return Caffeine.newBuilder()
                 .initialCapacity(serviceRegistry.getCacheCapacity())
                 .maximumSize(serviceRegistry.getCacheSize())
-                .expireAfterWrite(duration)
                 .recordStats()
                 .build();
     }
 
     public Cache<Authentication, ManagementServicesManager> managementServicesManagerCache() {
-        val duration = Beans.newDuration("PT30M");
         return Caffeine.newBuilder()
                 .initialCapacity(INITIAL_CACHE_SIZE)
                 .maximumSize(MAX_CACHE_SIZE)
-                .expireAfterWrite(duration)
                 .recordStats()
                 .build();
     }

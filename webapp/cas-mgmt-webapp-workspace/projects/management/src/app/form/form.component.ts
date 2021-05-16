@@ -135,6 +135,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.location.back();
     }
+    this.controls.gitStatus();
   }
 
   /**

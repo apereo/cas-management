@@ -1,0 +1,20 @@
+  <div>
+    <h3 matDialogTitle>SAML Response Credentials</h3>
+  </div>
+  <mat-dialog-content fxLayout="column">
+    <lib-text-input [control]="form.username" label="Username"></lib-text-input>
+    <lib-text-input [control]="form.password" type="password" label="Password"></lib-text-input>
+    <div fxFlex="grow" fxLayout="row">
+      <mat-form-field style="width: 100%;" appearance="standard">
+        <mat-label>Entity ID</mat-label>
+        <input matInput [formControl]="form.entityId" autocomplete="false" [matAutocomplete]="auto" (keyup)="doLookupEntity($event.target.value)">
+      </mat-form-field>
+    </div>
+    <lib-checkbox [control]="form.encrypt" label="Encrypt" style="margin-bottom: 15px; margin-top:15px"></lib-checkbox>
+  </mat-dialog-content>
+  <mat-dialog-actions style="float: right;">
+    <button mat-button (click)="resolve()">Resolve</button>
+  </mat-dialog-actions>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let opt of foundEntities" [value]="opt" >{{ opt }}</mat-option>
+  </mat-autocomplete>

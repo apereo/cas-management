@@ -24,8 +24,6 @@ export class DialogComponent {
   resolve() {
     const data = {
       username: this.form.username.value,
-      password: this.form.password.value,
-      service: this.form.service.value
     };
     this.dialogRef.close(data);
   }

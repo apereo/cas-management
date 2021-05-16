@@ -20,6 +20,11 @@ const routes: Routes = [
     canActivate: [AdminGuard]
   },
   {
+    path: 'response',
+    loadChildren: () => import('./response/response.module').then(m => m.ResponseModule),
+    canActivate: [AdminGuard]
+  },
+  {
     path: 'info',
     loadChildren: () => import('./info/info.module').then(m => m.InfoModule),
     canActivate: [AdminGuard]

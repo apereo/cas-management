@@ -4,6 +4,7 @@ import org.apereo.cas.authentication.attribute.AttributeDefinition;
 import org.apereo.cas.authentication.attribute.DefaultAttributeDefinitionStore;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.discovery.CasServerProfile;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.OidcRegisteredService;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.services.persondir.support.NamedStubPersonAttributeDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -29,8 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 
 /**
  * Class used to create a FormData record to be delivered to the client.
@@ -43,7 +44,9 @@ import static java.util.stream.Collectors.toSet;
 public class FormDataFactory {
 
     private final CasConfigurationProperties casProperties;
+
     private final CasManagementConfigurationProperties mgmtProperties;
+
     private final DefaultAttributeDefinitionStore attributeDefinitionStore;
 
     private Optional<CasServerProfile> profile = Optional.empty();
@@ -160,14 +163,12 @@ public class FormDataFactory {
     }
 
     private void loadAvailableAttributes(final FormData formData) {
-        val attributes = new HashSet<String>();
-        if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
-            attributes.addAll(profile.get().getAvailableAttributes());
-        }
-        attributes.addAll(attributeDefinitionStore.getAttributeDefinitions().stream()
-                .map(AttributeDefinition::getKey)
-                .collect(toSet()));
-        attributes.addAll(casProperties.getAuthn().getAttributeRepository().getStub().getAttributes().keySet());
+        val attributes = attributeDefinitionStore.getAttributeDefinitions().stream()
+            .map(AttributeDefinition::getKey)
+            .collect(toSet());
+        val props = casProperties.getAuthn().getAttributeRepository();
+        val stub = (NamedStubPersonAttributeDao) Beans.newStubAttributeRepository(props);
+        attributes.addAll(stub.getBackingMap().keySet());
         formData.setAvailableAttributes(attributes);
     }
 
@@ -177,9 +178,9 @@ public class FormDataFactory {
 
     private void loadSamlIdpAttributes(final FormData formData) {
         formData.setSamlIdpAttributes(attributeDefinitionStore.getAttributeDefinitions().stream()
-                .filter(d -> d instanceof SamlIdPAttributeDefinition)
-                .map(AttributeDefinition::getKey)
-                .collect(toSet()));
+            .filter(d -> d instanceof SamlIdPAttributeDefinition)
+            .map(AttributeDefinition::getKey)
+            .collect(toSet()));
     }
 
     private void loadUserDefinedScopes(final FormData formData) {

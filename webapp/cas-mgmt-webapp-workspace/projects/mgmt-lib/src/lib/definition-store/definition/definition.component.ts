@@ -43,6 +43,7 @@ export class DefinitionComponent implements OnInit, OnDestroy {
       }
     });
     this.controls.resetButtons();
+    this.controls.showEdit = true;
     this.subscription = this.controls.save.subscribe(() => this.save());
   }
 
@@ -58,7 +59,7 @@ export class DefinitionComponent implements OnInit, OnDestroy {
    */
   save() {
     this.service.save(this.form.map()).subscribe(
-      () => this.router.navigate(['attributes']).then()
+      () => this.router.navigate(['definitions']).then()
     );
   }
 

@@ -160,10 +160,15 @@ public class FormDataFactory {
     }
 
     private void loadAvailableAttributes(final FormData formData) {
-        formData.setAvailableAttributes(
-                attributeDefinitionStore.getAttributeDefinitions().stream()
+        val attributes = new HashSet<String>();
+        if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
+            attributes.addAll(profile.get().getAvailableAttributes());
+        }
+        attributes.addAll(attributeDefinitionStore.getAttributeDefinitions().stream()
                 .map(AttributeDefinition::getKey)
                 .collect(toSet()));
+        attributes.addAll(casProperties.getAuthn().getAttributeRepository().getStub().getAttributes().keySet());
+        formData.setAvailableAttributes(attributes);
     }
 
     private void loadAttributeRepositories(final FormData formData) {

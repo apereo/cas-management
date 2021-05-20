@@ -21,10 +21,10 @@
                      toolTip="(Optional) If true, the attribute value will be encrypted and encoded in base-64 using the
                               service definition’s defined public key.">
       </lib-checkbox>
-      <lib-select-input [control]="form.attribute" label="Attribute" [options]="config.options.availableAttributes"
+      <lib-text-input [control]="form.attribute" label="Attribute"
                          toolTip="(Optional) The source attribute to provide values for the attribute definition itself,
                                   replacing that of the original source.">
-      </lib-select-input>
+      </lib-text-input>
       <lib-text-input [control]="form.patternFormat" label="Pattern Format"
                        toolTip="(Optional) Template used in a java.text.MessageFormat to decorate the attribute values.">
       </lib-text-input>

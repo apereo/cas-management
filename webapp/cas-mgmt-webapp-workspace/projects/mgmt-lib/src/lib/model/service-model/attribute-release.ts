@@ -21,6 +21,7 @@ export abstract class RegisteredServiceAttributeReleasePolicy {
   principalIdAttribute: string;
   consentPolicy: RegisteredServiceConsentPolicy;
   order: number;
+  policies: RegisteredServiceAttributeReleasePolicy[];
 
   constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
     this.attributeFilter = attributeFilterFactory(policy?.attributeFilter);
@@ -392,6 +393,29 @@ export class EduPersonTargetedIdAttributeReleasePolicy extends ReturnAllowedAttr
   }
 }
 
+export class ChainingAttributeReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
+  static cName = 'org.apereo.cas.support.saml.services.ChainingAttributeReleasePolicy';
+
+  policies: RegisteredServiceAttributeReleasePolicy[];
+
+  /**
+   * Returns true if the passed object is an instance of EduPersonTargetedIdAttributeReleasePolicy.
+   *
+   * @param obj - object to be inspected
+   */
+  static instanceOf(obj: any): boolean {
+    return obj && obj['@class'] === ChainingAttributeReleasePolicy.cName;
+  }
+
+  constructor(policy?: RegisteredServiceAttributeReleasePolicy) {
+    super(policy);
+    const p: ChainingAttributeReleasePolicy = ChainingAttributeReleasePolicy.instanceOf(policy)
+      ? policy as ChainingAttributeReleasePolicy : undefined;
+    this.policies = p?.policies;
+    this['@class'] = ChainingAttributeReleasePolicy.cName;
+  }
+}
+
 export enum ReleasePolicyType {
   RETURN_ALL,
   DENY_ALL,
@@ -406,6 +430,7 @@ export enum ReleasePolicyType {
   GROOVY_SAML,
   WS_FED,
   SAML_IDP,
+  CHAINING
 }
 
 export enum PrincipalRepoType {
@@ -458,6 +483,9 @@ export function attributeReleaseFactory(policy?: any, type?: ReleasePolicyType):
   }
   if (type === ReleasePolicyType.SAML_IDP || (!type && SamlIdpRegisteredServiceAttributeReleasePolicy.instanceOf(policy))) {
     return new SamlIdpRegisteredServiceAttributeReleasePolicy(policy);
+  }
+  if (type === ReleasePolicyType.CHAINING || (!type && ChainingAttributeReleasePolicy.instanceOf(policy))) {
+    return new ChainingAttributeReleasePolicy(policy);
   }
   if (!type && !policy) {
     return new DenyAllAttributeReleasePolicy();

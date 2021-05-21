@@ -23,11 +23,12 @@ export class PoliciesComponent {
     {value: ReleasePolicyType.RETURN_ALLOWED,  display: 'RETURN ALLOWED'},
     {value: ReleasePolicyType.RETURN_MAPPED,  display: 'RETURN MAPPED'},
     {value: ReleasePolicyType.RESTFUL,  display: 'RESTFUL'},
-    {value: ReleasePolicyType.SAML_IDP,  display: 'SAML_IDP'}
+    {value: ReleasePolicyType.SAML_IDP,  display: 'SAML_IDP'},
+    {value: ReleasePolicyType.CHAINING, display: 'CHAINING'}
   ];
 
   display = ['Script Engine', 'Groovy Script', 'Return All',
-    'Deny All', 'Return Allowed', 'Return Mapped', 'Return Restful'];
+    'Deny All', 'Return Allowed', 'Return Mapped', 'Return Restful', 'Chaining'];
 
   @Input()
   isSaml: boolean;

@@ -11,6 +11,7 @@ import {MappedComponent} from './policies/mapped/mapped.component';
 import {WsfedattrrelpoliciesModule} from '../wsfedattrrelpolocies/wsfedattrrelpolicies.module';
 import { ScriptComponent } from './policies/script/script.component';
 import { GroovyComponent } from './policies/groovy/groovy.component';
+import { ChainingComponent } from './policies/chaining/chaining.component';
 import { AllowedComponent } from './policies/allowed/allowed.component';
 import { MetadataComponent } from './policies/metadata/metadata.component';
 import { RestfulComponent } from './policies/restful/restful.component';
@@ -21,6 +22,7 @@ import {UiModule} from '@apereo/mgmt-lib/src/lib/ui';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
+import { MatListModule } from '@angular/material/list';
 
 /**
  * Module to lazy-load Attribute Release functionality.
@@ -37,7 +39,8 @@ import {MatRadioModule} from '@angular/material/radio';
     WsfedattrrelpoliciesModule,
     MatExpansionModule,
     MatMenuModule,
-    MatRadioModule
+    MatRadioModule,
+    MatListModule
   ],
   declarations: [
     ChecksComponent,
@@ -54,6 +57,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MetadataComponent,
     RestfulComponent,
     GroovySamlComponent,
+    ChainingComponent
   ],
   exports: [
     ChecksComponent,
@@ -66,6 +70,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MappedComponent,
     ScriptComponent,
     GroovyComponent,
+    ChainingComponent,
     AllowedComponent,
     MetadataComponent,
     RestfulComponent,

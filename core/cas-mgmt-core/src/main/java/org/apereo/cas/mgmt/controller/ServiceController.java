@@ -68,7 +68,7 @@ public class ServiceController {
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
         return manager.getServiceItems(manager.getServicesForDomain(domain)
                 .stream()
-                .filter(s -> s.getClass().getName().contains("RegexRegistered"))
+                .filter(s -> s.getFriendlyName().equalsIgnoreCase(RegexRegisteredService.FRIENDLY_NAME))
                 .sorted(Comparator.comparing(RegisteredService::getEvaluationOrder)));
     }
 

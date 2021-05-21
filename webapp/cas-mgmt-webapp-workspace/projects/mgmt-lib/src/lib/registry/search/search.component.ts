@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewContainerRef, ChangeDetectorRef} from '@angular/core';
 import {AppConfigService, ControlsService, PaginatorComponent} from '@apereo/mgmt-lib/src/lib/ui';
 import {ServiceItem} from '@apereo/mgmt-lib/src/lib/model';
 import { MatSort } from '@angular/material/sort';
@@ -41,6 +41,7 @@ export class SearchComponent extends BaseServicesComponent implements OnInit {
               public app: AppConfigService,
               public controls: ControlsService,
               public mediaObserver: MediaObserver,
+              private changeDetectorRefs: ChangeDetectorRef,
               protected viewRef: ViewContainerRef) {
     super(service, route, router, app, controls, dialog, mediaObserver);
     this.controls.title = 'Search';
@@ -112,6 +113,10 @@ export class SearchComponent extends BaseServicesComponent implements OnInit {
    * stub.
    */
   getServices() {
+    let index = this.dataSource.data.indexOf(this.deleteItem);
+    this.dataSource.data.splice(index, 1);
+    this.dataSource._updateChangeSubscription();
+    this.changeDetectorRefs.detectChanges();
   }
 
   /**

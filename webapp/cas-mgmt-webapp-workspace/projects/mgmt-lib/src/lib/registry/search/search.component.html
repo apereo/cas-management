@@ -91,6 +91,10 @@
     <mat-icon>code</mat-icon>
     <ng-container i18n>JSON</ng-container>
   </button>
+  <button mat-menu-item (click)="openModalDelete()">
+    <mat-icon>delete</mat-icon>
+    <ng-container i18n>Delete</ng-container>
+  </button>
   <button mat-menu-item (click)="promote()" *ngIf="staged()">
     <mat-icon>call_made</mat-icon>
     <ng-container i18n>Promote</ng-container>

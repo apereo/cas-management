@@ -967,9 +967,7 @@ ext.libraries = [
                         }
                 ],
                 versionControl       : [
-                        dependencies.create("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
-                            force = true
-                        }
+                        
                 ],
                 audit                :
                         dependencies.create("org.apereo.cas:cas-server-core-audit-api:$casVersion") {

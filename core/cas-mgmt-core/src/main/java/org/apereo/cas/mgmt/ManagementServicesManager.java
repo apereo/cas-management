@@ -3,9 +3,7 @@ package org.apereo.cas.mgmt;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
-import org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy;
 import org.apereo.cas.services.RegisteredService;
-import org.apereo.cas.services.RegisteredServiceMultifactorPolicy;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.DigestUtils;
@@ -33,6 +31,7 @@ import java.util.stream.Stream;
 public class ManagementServicesManager implements ServicesManager {
 
     private final ServicesManager manager;
+
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
 
     /**
@@ -46,7 +45,7 @@ public class ManagementServicesManager implements ServicesManager {
 
     public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
         return services.map(this::createServiceItem)
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     /**
@@ -123,6 +122,11 @@ public class ManagementServicesManager implements ServicesManager {
         return this.manager.findServiceBy(l);
     }
 
+    @Override
+    public <T extends RegisteredService> Collection<T> getAllServicesOfType(final Class<T> clazz) {
+        return this.manager.getAllServicesOfType(clazz);
+    }
+    
     @Override
     public Collection<RegisteredService> getAllServices() {
         return this.manager.getAllServices();

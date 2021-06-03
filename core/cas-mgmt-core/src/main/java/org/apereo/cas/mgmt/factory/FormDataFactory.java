@@ -146,19 +146,7 @@ public class FormDataFactory {
             val p = profile.get();
             formData.setDelegatedAuthnProviders(p.getDelegatedClientTypesSupported());
         } else {
-            val delegatedAuthnProviders = new HashSet<String>();
-            delegatedAuthnProviders.add("Twitter");
-            delegatedAuthnProviders.add("Paypal");
-            delegatedAuthnProviders.add("Wordpress");
-            delegatedAuthnProviders.add("Yahoo");
-            delegatedAuthnProviders.add("Orcid");
-            delegatedAuthnProviders.add("Dropbox");
-            delegatedAuthnProviders.add("Github");
-            delegatedAuthnProviders.add("Facebook");
-            delegatedAuthnProviders.add("Foursquare");
-            delegatedAuthnProviders.add("WindowsLive");
-            delegatedAuthnProviders.add("Google");
-            formData.setDelegatedAuthnProviders(delegatedAuthnProviders);
+            formData.setDelegatedAuthnProviders(mgmtProperties.getDelegatedIdentityProviders());
         }
     }
 

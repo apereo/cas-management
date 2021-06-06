@@ -33,7 +33,7 @@ export class DelegatedComponent {
 
   constructor(public config: AppConfigService, private service: FormService) {
     let policy = service?.registeredService?.accessStrategy?.delegatedAuthenticationPolicy;
-    policy.allowedProviders.forEach(provider => {
+    policy?.allowedProviders?.forEach(provider => {
       this.delegatedAuthn.push(provider);
     });
   }

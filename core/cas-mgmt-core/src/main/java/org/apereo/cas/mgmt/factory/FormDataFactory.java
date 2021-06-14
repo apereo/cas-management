@@ -151,18 +151,17 @@ public class FormDataFactory {
     }
 
     private void loadAvailableAttributes(final FormData formData) {
+        val attributes = attributeDefinitionStore.getAttributeDefinitions().stream()
+            .map(AttributeDefinition::getKey)
+            .collect(toSet());
+        val props = casProperties.getAuthn().getAttributeRepository();
+        val stub = (NamedStubPersonAttributeDao) Beans.newStubAttributeRepository(props);
+        attributes.addAll(stub.getBackingMap().keySet());
         if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
             val p = profile.get();
-            formData.setAvailableAttributes(p.getAvailableAttributes());
-        } else {
-            val attributes = attributeDefinitionStore.getAttributeDefinitions().stream()
-                .map(AttributeDefinition::getKey)
-                .collect(toSet());
-            val props = casProperties.getAuthn().getAttributeRepository();
-            val stub = (NamedStubPersonAttributeDao) Beans.newStubAttributeRepository(props);
-            attributes.addAll(stub.getBackingMap().keySet());
-            formData.setAvailableAttributes(attributes);
+            attributes.addAll(p.getAvailableAttributes());
         }
+        formData.setAvailableAttributes(attributes);
     }
 
     private void loadAttributeRepositories(final FormData formData) {

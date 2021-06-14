@@ -157,6 +157,10 @@ public class FormDataFactory {
         val props = casProperties.getAuthn().getAttributeRepository();
         val stub = (NamedStubPersonAttributeDao) Beans.newStubAttributeRepository(props);
         attributes.addAll(stub.getBackingMap().keySet());
+        if (profile.isPresent() && !profile.get().getAvailableAttributes().isEmpty()) {
+            val p = profile.get();
+            attributes.addAll(p.getAvailableAttributes());
+        }
         formData.setAvailableAttributes(attributes);
     }
 

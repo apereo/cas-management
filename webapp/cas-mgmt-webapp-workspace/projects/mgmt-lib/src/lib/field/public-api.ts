@@ -19,6 +19,7 @@ export * from './attribute-release/policies/script/script.component';
 export * from './attribute-release/policies/policies.component';
 export * from './attribute-release/principal-repo/principal-repo.component';
 export * from './attributes/attributes.component';
+export * from './authn-policy/authn-policy.component';
 export * from './contacts/contacts.component';
 export * from './delegated/delegated.component';
 export * from './enabled/enabled.component';

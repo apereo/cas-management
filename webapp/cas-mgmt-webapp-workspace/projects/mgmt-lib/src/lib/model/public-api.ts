@@ -19,6 +19,7 @@ export * from './service-model/attribute-filter.model';
 export * from './service-model/attribute-provider.model';
 export * from './service-model/attribute-release';
 export * from './service-model/attribute-repo.model';
+export * from './service-model/authn-policy-model';
 export * from './service-model/code-expiration.model';
 export * from './service-model/consent-policy.model';
 export * from './service-model/contact.model';

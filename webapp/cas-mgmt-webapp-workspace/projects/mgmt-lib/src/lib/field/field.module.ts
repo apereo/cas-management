@@ -65,6 +65,7 @@ import {SsoComponent} from './sso/sso-chain.component';
 import {ThemeidComponent} from './themeid/themeid.component';
 import {WsfedclientComponent} from './wsfedclient/wsfedclient.component';
 import {AttributesModule} from './attributes/attributes.module';
+import {AuthenticationPolicyComponent} from "./authn-policy/authn-policy.component";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
@@ -139,6 +140,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ServicetypeComponent,
     SsoPolicyComponent,
     SsoComponent,
+    AuthenticationPolicyComponent,
     ThemeidComponent,
     WsfedclientComponent
   ],
@@ -229,6 +231,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ServicetypeComponent,
     SsoPolicyComponent,
     SsoComponent,
+    AuthenticationPolicyComponent,
     ThemeidComponent,
     WsfedclientComponent
   ]

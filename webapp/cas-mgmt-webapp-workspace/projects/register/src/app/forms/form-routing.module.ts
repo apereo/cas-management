@@ -23,6 +23,7 @@ import {
   TabTokensComponent, TabUsernameattrComponent, TabWsfedAttrreleaseComponent,
   TabWsfedComponent
 } from '@apereo/mgmt-lib';
+import {TabAuthnPolicyComponent, TabAuthnPolicyForm} from "@apereo/mgmt-lib/src";
 
 export const childRoutes: Routes = [
   {
@@ -123,6 +124,11 @@ export const childRoutes: Routes = [
   {
     path: 'sso',
     component: TabSsoComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'authnPolicy',
+    component: TabAuthnPolicyComponent,
     outlet: 'form'
   },
   {

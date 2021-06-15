@@ -22,6 +22,7 @@ import {TabSamlEncryptionComponent} from './tab-saml-encryption/tab-saml-encrypt
 import {TabSamlMetadataComponent} from './tab-saml-metadata/tab-saml-metadata.component';
 import {TabSamlSigningComponent} from './tab-saml-signing/tab-saml-signing.component';
 import {TabSsoComponent} from './tab-sso/tab-sso.component';
+import {TabAuthnPolicyComponent} from './tab-authn-policy/tab-authn-policy.component';
 import {TabTicketsComponent} from './tab-tickets/tab-tickets.component';
 import {TabTokensComponent} from './tab-tokens/tab-tokens.component';
 import {TabUsernameattrComponent} from './tab-usernameattr/tab-usernameattr.component';
@@ -56,6 +57,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     TabSamlMetadataComponent,
     TabSamlSigningComponent,
     TabSsoComponent,
+    TabAuthnPolicyComponent,
     TabTicketsComponent,
     TabTokensComponent,
     TabUsernameattrComponent,
@@ -92,6 +94,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     TabSamlMetadataComponent,
     TabSamlSigningComponent,
     TabSsoComponent,
+    TabAuthnPolicyComponent,
     TabTicketsComponent,
     TabTokensComponent,
     TabUsernameattrComponent,

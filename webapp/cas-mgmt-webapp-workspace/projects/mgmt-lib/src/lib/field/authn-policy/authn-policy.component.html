@@ -1,11 +1,33 @@
 <ng-container>
-  <lib-select-input [control]="form.requiredAuthenticationHandlers"
-                    label="Required Authentication Handlers"
-                    toolTip="Required Authentication Handlers">
-  </lib-select-input>
+<!--  <lib-select-input [control]="form.excludedAuthenticationHandlers"-->
+<!--                    label="Excluded Authentication Handlers"-->
+<!--                    toolTip="A set of identifiers/names for excluded authentication handlers. These names can be used to enforce a service definition to exclude and disqualify certain authentication handlers when an authentication request is submitted to CAS.">-->
+<!--  </lib-select-input>-->
 
-  <lib-select-input [control]="form.excludedAuthenticationHandlers"
-                    label="Excluded Authentication Handlers"
-                    toolTip="Excluded Authentication Handlers">
-  </lib-select-input>
+  <lib-input toolTip="A set of identifiers/names for the required authentication handlers available and configured in CAS. These names can be used to enforce a service definition to only use the authentication strategy carrying that name when an authentication request is submitted to CAS.">
+    <mat-form-field style="width: 100%;" appearance="standard">
+      <mat-label i18n>Required Authentication Handlers</mat-label>
+      <input matInput
+             [matChipInputFor]="chipList"
+             matChipInputAddOnBlur="true"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matAutocomplete]="auto"
+             (matChipInputTokenEnd)="addRequiredHandler($event)"
+             #requiredHandlerInput>
+    </mat-form-field>
+  </lib-input>
+
+  <h5 *ngIf="requiredHandlers.length > 0" i18n>Required Authentication Handlers Providers</h5>
+
+  <mat-chip-list #chipList [selectable]="false">
+    <mat-chip *ngFor="let handler of requiredHandlers" [selectable]="false"
+              removable="true" (removed)="removeRequiredHandler(handler)">
+      {{ handler }}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectionRequiredHandler($event);">
+    <mat-option *ngFor="let h of requiredHandlers" [value]="h">{{ h }}</mat-option>
+  </mat-autocomplete>
 </ng-container>

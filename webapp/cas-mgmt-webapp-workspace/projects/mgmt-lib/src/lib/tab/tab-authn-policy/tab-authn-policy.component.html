@@ -1,5 +1,5 @@
-<div style="padding-top: 10px; padding-bottom: 20px;">
-  <lib-card heading="Authentication Policies" [collapse]="false">
-
-  </lib-card>
+<div [formGroup]="tab" fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;">
+<lib-card i18n-heading heading="Authentication Policies" [collapse]="false">
+  <lib-authn-policy [form]="tab.policy"></lib-authn-policy>
+</lib-card>
 </div>

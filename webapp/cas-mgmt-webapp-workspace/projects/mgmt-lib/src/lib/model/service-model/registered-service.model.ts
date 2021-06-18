@@ -58,7 +58,6 @@ export abstract class RegisteredService {
   authenticationPolicy: RegisteredServiceAuthenticationPolicy
   evaluationOrder: number;
   usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider;
-  requiredHandlers: string[];
   attributeReleasePolicy: RegisteredServiceAttributeReleasePolicy;
   multifactorPolicy: RegisteredServiceMultifactorPolicy;
   logo: string;
@@ -87,7 +86,6 @@ export abstract class RegisteredService {
     this.authenticationPolicy = authenticationPolicy(service?.authenticationPolicy);
     this.evaluationOrder = service?.evaluationOrder ?? -1;
     this.usernameAttributeProvider = usernameProviderFactory(service?.usernameAttributeProvider);
-    this.requiredHandlers = service?.requiredHandlers;
     this.attributeReleasePolicy = attributeReleaseFactory(service?.attributeReleasePolicy);
     this.multifactorPolicy = mfaPolicyFactory(service?.multifactorPolicy);
     this.logo = service?.logo;

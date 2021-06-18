@@ -51,7 +51,6 @@ export * from './proxy/proxy.component';
 export * from './proxy-ticket-exp/proxy-ticket-exp.component';
 export * from './pubkey/pubkey.component';
 export * from './redirect-uri/redirect-uri.component';
-export * from './reqhandlers/reqhandlers.component';
 export * from './responsetype/responsetype.component';
 export * from './samlclient/assertion/assertion.component';
 export * from './samlclient/attributes/attributes.component';

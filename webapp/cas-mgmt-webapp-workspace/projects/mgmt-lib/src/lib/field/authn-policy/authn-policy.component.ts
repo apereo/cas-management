@@ -13,8 +13,8 @@ import {AppConfigService} from '@apereo/mgmt-lib/src/lib/ui';
 export class AuthenticationPolicyComponent {
 
   separatorKeysCodes = [ENTER, COMMA];
-  requiredHandlers: string[] = [];
-  excludedHandlers: string[] = [];
+  requiredAuthenticationHandlers: string[] = [];
+  excludedAuthenticationHandlers: string[] = [];
 
   @ViewChild(MatAutocompleteTrigger, { static: true })
   autoTrigger: MatAutocompleteTrigger;
@@ -28,10 +28,10 @@ export class AuthenticationPolicyComponent {
   constructor(public config: AppConfigService, private service: FormService) {
     let policy = service?.registeredService?.authenticationPolicy;
     policy?.requiredAuthenticationHandlers?.forEach(h => {
-      this.requiredHandlers.push(h);
+      this.requiredAuthenticationHandlers.push(h);
     });
     policy?.excludedAuthenticationHandlers?.forEach(h => {
-      this.excludedHandlers.push(h);
+      this.excludedAuthenticationHandlers.push(h);
     });
 
   }
@@ -41,9 +41,9 @@ export class AuthenticationPolicyComponent {
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.requiredHandlers.push(value.trim());
+      this.requiredAuthenticationHandlers.push(value.trim());
       this.autoTrigger.closePanel();
-      this.form.requiredAuthenticationHandlers.setValue(this.requiredHandlers);
+      this.form.requiredAuthenticationHandlers.setValue(this.requiredAuthenticationHandlers);
       this.form.requiredAuthenticationHandlers.markAsTouched();
       this.form.requiredAuthenticationHandlers.markAsDirty();
     }
@@ -55,11 +55,11 @@ export class AuthenticationPolicyComponent {
 
 
   removeRequiredHandler(handler: any): void {
-    const index = this.requiredHandlers.indexOf(handler);
+    const index = this.requiredAuthenticationHandlers.indexOf(handler);
 
     if (index >= 0) {
-      this.requiredHandlers.splice(index, 1);
-      this.form.requiredAuthenticationHandlers.setValue(this.requiredHandlers);
+      this.requiredAuthenticationHandlers.splice(index, 1);
+      this.form.requiredAuthenticationHandlers.setValue(this.requiredAuthenticationHandlers);
       this.form.requiredAuthenticationHandlers.markAsTouched();
       this.form.requiredAuthenticationHandlers.markAsDirty();
     }
@@ -68,8 +68,8 @@ export class AuthenticationPolicyComponent {
   selectionRequiredHandler(val: MatAutocompleteSelectedEvent) {
     const value =  val.option.value;
     if ((value || '').trim()) {
-      this.requiredHandlers.push(value.trim());
-      this.form.requiredAuthenticationHandlers.setValue(this.requiredHandlers);
+      this.requiredAuthenticationHandlers.push(value.trim());
+      this.form.requiredAuthenticationHandlers.setValue(this.requiredAuthenticationHandlers);
       this.form.requiredAuthenticationHandlers.markAsTouched();
       this.form.requiredAuthenticationHandlers.markAsDirty();
     }

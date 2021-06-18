@@ -44,7 +44,6 @@ import {ProxyComponent} from './proxy/proxy.component';
 import {ProxyTicketExpComponent} from './proxy-ticket-exp/proxy-ticket-exp.component';
 import {PubkeyComponent} from './pubkey/pubkey.component';
 import {RedirectUriComponent} from './redirect-uri/redirect-uri.component';
-import {RequiredHandlersComponent} from './reqhandlers/reqhandlers.component';
 import {ResponsetypeComponent} from './responsetype/responsetype.component';
 import {AssertionComponent} from './samlclient/assertion/assertion.component';
 import {AttributeNameFormatsComponent} from './samlclient/attributes/attributes.component';
@@ -121,7 +120,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ProxyTicketExpComponent,
     PubkeyComponent,
     RedirectUriComponent,
-    RequiredHandlersComponent,
     ResponsetypeComponent,
     AssertionComponent,
     AttributeNameFormatsComponent,
@@ -212,7 +210,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ProxyTicketExpComponent,
     PubkeyComponent,
     RedirectUriComponent,
-    RequiredHandlersComponent,
     ResponsetypeComponent,
     AssertionComponent,
     AttributeNameFormatsComponent,

@@ -22,6 +22,6 @@ export class TabAuthnPolicyForm extends FormGroup implements MgmtFormGroup<Abstr
   }
 
   map(service: AbstractRegisteredService) {
-    //this.policy.map(service);
+    service.authenticationPolicy = this.policy.map();
   }
 }

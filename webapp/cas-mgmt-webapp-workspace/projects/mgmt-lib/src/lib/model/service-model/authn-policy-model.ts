@@ -23,9 +23,10 @@ export class DefaultRegisteredServiceAuthenticationPolicy extends RegisteredServ
   constructor(policy?: RegisteredServiceAuthenticationPolicy) {
     super(policy);
     this['@class'] = DefaultRegisteredServiceAuthenticationPolicy.cName;
+    this.requiredAuthenticationHandlers = policy?.requiredAuthenticationHandlers || [];
+    this.excludedAuthenticationHandlers = policy?.excludedAuthenticationHandlers || [];
   }
 }
-
 
 export function authenticationPolicy(policy?: any): RegisteredServiceAuthenticationPolicy {
   return new DefaultRegisteredServiceAuthenticationPolicy(policy);

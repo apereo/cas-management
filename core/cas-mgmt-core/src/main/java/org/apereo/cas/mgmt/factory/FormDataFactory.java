@@ -161,7 +161,7 @@ public class FormDataFactory {
             val p = profile.get();
             attributes.addAll(p.getAvailableAttributes());
         }
-        formData.setAvailableAttributes(attributes);
+        formData.setAvailableAttributes(attributes.stream().sorted().collect(toList()));
     }
 
     private void loadAttributeRepositories(final FormData formData) {

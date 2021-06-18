@@ -4,6 +4,7 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from "@angular/material/autocomplete";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {AppConfigService} from '@apereo/mgmt-lib/src/lib/ui';
+import {CriteriaType} from '@apereo/mgmt-lib/src/lib/model';
 
 @Component({
   selector: 'lib-authn-policy',
@@ -12,15 +13,28 @@ import {AppConfigService} from '@apereo/mgmt-lib/src/lib/ui';
 })
 export class AuthenticationPolicyComponent {
 
+  type: CriteriaType;
+  TYPE = CriteriaType;
+  types = [
+    {value: CriteriaType.ALLOWED_AUTHN_HANDLERS, display: 'Allowed Authentication Handlers'},
+    {value: CriteriaType.EXCLUDED_AUTHN_HANDLERS, display: 'Excluded Authentication Handlers'}
+  ];
+
   separatorKeysCodes = [ENTER, COMMA];
   requiredAuthenticationHandlers: string[] = [];
   excludedAuthenticationHandlers: string[] = [];
 
-  @ViewChild(MatAutocompleteTrigger, { static: true })
-  autoTrigger: MatAutocompleteTrigger;
+  @ViewChild('autoRequiredHandler', { static: true })
+  autoRequiredTrigger: MatAutocompleteTrigger;
 
   @ViewChild('requiredHandlerInput', { static: true })
   requiredHandlerInput: ElementRef;
+
+  @ViewChild('autoExcludedHandler', { static: true })
+  autoExcludedTrigger: MatAutocompleteTrigger;
+
+  @ViewChild('excludedHandlerInput', { static: true })
+  excludedHandlerInput: ElementRef;
 
   @Input()
   form: AuthenticationPolicyForm;
@@ -42,7 +56,7 @@ export class AuthenticationPolicyComponent {
 
     if ((value || '').trim()) {
       this.requiredAuthenticationHandlers.push(value.trim());
-      this.autoTrigger.closePanel();
+      //this.autoRequiredTrigger.closePanel();
       this.form.requiredAuthenticationHandlers.setValue(this.requiredAuthenticationHandlers);
       this.form.requiredAuthenticationHandlers.markAsTouched();
       this.form.requiredAuthenticationHandlers.markAsDirty();
@@ -54,6 +68,23 @@ export class AuthenticationPolicyComponent {
   }
 
 
+  addExcludedHandler(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      this.excludedAuthenticationHandlers.push(value.trim());
+      //this.autoExcludedTrigger.closePanel();
+      this.form.excludedAuthenticationHandlers.setValue(this.excludedAuthenticationHandlers);
+      this.form.excludedAuthenticationHandlers.markAsTouched();
+      this.form.excludedAuthenticationHandlers.markAsDirty();
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
   removeRequiredHandler(handler: any): void {
     const index = this.requiredAuthenticationHandlers.indexOf(handler);
 
@@ -62,6 +93,17 @@ export class AuthenticationPolicyComponent {
       this.form.requiredAuthenticationHandlers.setValue(this.requiredAuthenticationHandlers);
       this.form.requiredAuthenticationHandlers.markAsTouched();
       this.form.requiredAuthenticationHandlers.markAsDirty();
+    }
+  }
+
+  removeExcludedHandler(handler: any): void {
+    const index = this.excludedAuthenticationHandlers.indexOf(handler);
+
+    if (index >= 0) {
+      this.excludedAuthenticationHandlers.splice(index, 1);
+      this.form.excludedAuthenticationHandlers.setValue(this.excludedAuthenticationHandlers);
+      this.form.excludedAuthenticationHandlers.markAsTouched();
+      this.form.excludedAuthenticationHandlers.markAsDirty();
     }
   }
 
@@ -76,6 +118,20 @@ export class AuthenticationPolicyComponent {
 
     if (this.requiredHandlerInput) {
       this.requiredHandlerInput.nativeElement.value = '';
+    }
+  }
+
+  selectionExcludedHandler(val: MatAutocompleteSelectedEvent) {
+    const value =  val.option.value;
+    if ((value || '').trim()) {
+      this.excludedAuthenticationHandlers.push(value.trim());
+      this.form.excludedAuthenticationHandlers.setValue(this.requiredAuthenticationHandlers);
+      this.form.excludedAuthenticationHandlers.markAsTouched();
+      this.form.excludedAuthenticationHandlers.markAsDirty();
+    }
+
+    if (this.excludedHandlerInput) {
+      this.excludedHandlerInput.nativeElement.value = '';
     }
   }
 }

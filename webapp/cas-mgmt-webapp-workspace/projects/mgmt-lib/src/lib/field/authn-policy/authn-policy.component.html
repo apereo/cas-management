@@ -1,28 +1,74 @@
 <ng-container>
-  <lib-input toolTip="A set of identifiers/names for the required authentication handlers available and configured in CAS. These names can be used to enforce a service definition to only use the authentication strategy carrying that name when an authentication request is submitted to CAS.">
-    <mat-form-field style="width: 100%;" appearance="standard">
-      <mat-label i18n>Required Authentication Handlers</mat-label>
-      <input matInput
-             [matChipInputFor]="chipList"
-             matChipInputAddOnBlur="true"
-             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-             [matAutocomplete]="auto"
-             (matChipInputTokenEnd)="addRequiredHandler($event)"
-             #requiredHandlerInput>
-    </mat-form-field>
-  </lib-input>
 
-  <h5 *ngIf="requiredAuthenticationHandlers.length > 0" i18n>Required Authentication Handlers Providers</h5>
+  <lib-select-input [control]="form.authenticationCriteria" label="Authentication Policy Criteria"
+                    toolTip="Authentication policy criteria can also be assigned to each application definition."
+                    [valueOptions]="types"></lib-select-input>
 
-  <mat-chip-list #chipList [selectable]="false">
-    <mat-chip *ngFor="let handler of requiredAuthenticationHandlers" [selectable]="false"
-              removable="true" (removed)="removeRequiredHandler(handler)">
-      {{ handler }}
-      <mat-icon matChipRemove>cancel</mat-icon>
-    </mat-chip>
-  </mat-chip-list>
+  <div *ngIf="form.authenticationCriteria.value == TYPE.ALLOWED_AUTHN_HANDLERS">
+  <lib-input
+      toolTip="A set of identifiers/names for the required authentication handlers available and configured in CAS. These names can be used to enforce a service definition to only use the authentication strategy carrying that name when an authentication request is submitted to CAS.">
+      <mat-form-field style="width: 100%;" appearance="standard">
+        <mat-label i18n>Required Authentication Handlers</mat-label>
+        <input matInput
+               [matChipInputFor]="requiredChipList"
+               matChipInputAddOnBlur="true"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matAutocomplete]="autoRequiredHandler"
+               (matChipInputTokenEnd)="addRequiredHandler($event)"
+               #requiredHandlerInput>
+      </mat-form-field>
+    </lib-input>
 
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectionRequiredHandler($event);">
-    <mat-option *ngFor="let h of requiredAuthenticationHandlers" [value]="h">{{ h }}</mat-option>
-  </mat-autocomplete>
+    <div>
+      <h5 *ngIf="requiredAuthenticationHandlers.length > 0" i18n>Required Authentication Handlers</h5>
+      <mat-chip-list #requiredChipList [selectable]="false">
+        <mat-chip *ngFor="let handler of requiredAuthenticationHandlers" [selectable]="false"
+                  removable="true" (removed)="removeRequiredHandler(handler)">
+          {{ handler }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+<!--    <mat-autocomplete #autoRequiredHandler="matAutocomplete" (optionSelected)="selectionRequiredHandler($event);">-->
+<!--      <mat-option *ngFor="let h of requiredAuthenticationHandlers" [value]="h">{{ h }}</mat-option>-->
+<!--    </mat-autocomplete>-->
+  </div>
+
+
+
+
+  <div *ngIf="form.authenticationCriteria.value == TYPE.EXCLUDED_AUTHN_HANDLERS">
+    <lib-input
+      toolTip="A set of identifiers/names for excluded authentication handlers. These names can be used to enforce a service definition to exclude and disqualify certain authentication handlers when an authentication request is submitted to CAS.">
+      <mat-form-field style="width: 100%;" appearance="standard">
+        <mat-label i18n>Excluded Authentication Handlers</mat-label>
+        <input matInput
+               [matChipInputFor]="excludedChipList"
+               matChipInputAddOnBlur="true"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matAutocomplete]="autoExcludedHandler"
+               (matChipInputTokenEnd)="addExcludedHandler($event)"
+               #excludedHandlerInput>
+      </mat-form-field>
+    </lib-input>
+
+    <div>
+      <h5 *ngIf="excludedAuthenticationHandlers.length > 0" i18n>Excluded Authentication Handlers</h5>
+      <mat-chip-list #excludedChipList [selectable]="false">
+        <mat-chip *ngFor="let handler of excludedAuthenticationHandlers" [selectable]="false"
+                  removable="true" (removed)="removeExcludedHandler(handler)">
+          {{ handler }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+<!--    <mat-autocomplete #autoExcludedHandler="matAutocomplete" (optionSelected)="selectionExcludedHandler($event);">-->
+<!--      <mat-option *ngFor="let h of excludedAuthenticationHandlers" [value]="h">{{ h }}</mat-option>-->
+<!--    </mat-autocomplete>-->
+
+
+  </div>
+
 </ng-container>

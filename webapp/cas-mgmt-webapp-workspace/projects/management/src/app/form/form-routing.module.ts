@@ -6,21 +6,30 @@ import {SamlResolve} from './saml-resolve';
 import {OAuthResolve} from './oauth-resolve';
 import {OidcResolve} from './oidc-resolve';
 import {
-  TabAccessstrategyComponent, TabAdvancedComponent, TabAttrreleaseComponent,
+  TabAccessstrategyComponent,
+  TabAdvancedComponent,
+  TabAttrreleaseComponent,
   TabBasicsComponent,
   TabContactsComponent,
   TabDelegatedComponent,
   TabLogoutComponent,
   TabMulitauthComponent,
-  TabOauthComponent, TabOidcAttrreleaseComponent,
-  TabOIDCComponent, TabPropertiesComponent, TabProxyComponent,
+  TabOauthComponent,
+  TabOidcAttrreleaseComponent,
+  TabOIDCComponent,
+  TabPropertiesComponent,
+  TabProxyComponent,
   TabSamlAssertionComponent,
   TabSamlAttributesComponent,
   TabSamlEncryptionComponent,
   TabSamlMetadataComponent,
-  TabSamlSigningComponent, TabSsoComponent,
+  TabSamlSigningComponent,
+  TabSsoComponent,
+  TabAuthnPolicyComponent,
   TabTicketsComponent,
-  TabTokensComponent, TabUsernameattrComponent, TabWsfedAttrreleaseComponent,
+  TabTokensComponent,
+  TabUsernameattrComponent,
+  TabWsfedAttrreleaseComponent,
   TabWsfedComponent
 } from '@apereo/mgmt-lib';
 
@@ -123,6 +132,11 @@ export const childRoutes: Routes = [
   {
     path: 'sso',
     component: TabSsoComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'authnPolicy',
+    component: TabAuthnPolicyComponent,
     outlet: 'form'
   },
   {

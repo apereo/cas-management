@@ -44,7 +44,6 @@ import {ProxyComponent} from './proxy/proxy.component';
 import {ProxyTicketExpComponent} from './proxy-ticket-exp/proxy-ticket-exp.component';
 import {PubkeyComponent} from './pubkey/pubkey.component';
 import {RedirectUriComponent} from './redirect-uri/redirect-uri.component';
-import {RequiredHandlersComponent} from './reqhandlers/reqhandlers.component';
 import {ResponsetypeComponent} from './responsetype/responsetype.component';
 import {AssertionComponent} from './samlclient/assertion/assertion.component';
 import {AttributeNameFormatsComponent} from './samlclient/attributes/attributes.component';
@@ -65,6 +64,7 @@ import {SsoComponent} from './sso/sso-chain.component';
 import {ThemeidComponent} from './themeid/themeid.component';
 import {WsfedclientComponent} from './wsfedclient/wsfedclient.component';
 import {AttributesModule} from './attributes/attributes.module';
+import {AuthenticationPolicyComponent} from "./authn-policy/authn-policy.component";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
@@ -120,7 +120,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ProxyTicketExpComponent,
     PubkeyComponent,
     RedirectUriComponent,
-    RequiredHandlersComponent,
     ResponsetypeComponent,
     AssertionComponent,
     AttributeNameFormatsComponent,
@@ -139,6 +138,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ServicetypeComponent,
     SsoPolicyComponent,
     SsoComponent,
+    AuthenticationPolicyComponent,
     ThemeidComponent,
     WsfedclientComponent
   ],
@@ -210,7 +210,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ProxyTicketExpComponent,
     PubkeyComponent,
     RedirectUriComponent,
-    RequiredHandlersComponent,
     ResponsetypeComponent,
     AssertionComponent,
     AttributeNameFormatsComponent,
@@ -229,6 +228,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ServicetypeComponent,
     SsoPolicyComponent,
     SsoComponent,
+    AuthenticationPolicyComponent,
     ThemeidComponent,
     WsfedclientComponent
   ]

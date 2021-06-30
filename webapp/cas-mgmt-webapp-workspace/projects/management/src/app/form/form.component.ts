@@ -135,6 +135,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.location.back();
     }
+    this.controls.gitStatus();
   }
 
   /**
@@ -201,9 +202,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.tabList.push(['attrRelease', 'Attribute Release']);
     }
-    this.tabList.push(['accessstrategy', 'Access Srategy']);
+    this.tabList.push(['accessstrategy', 'Access Strategy']);
     this.tabList.push(['delegated', 'Delegated Authentication']);
     this.tabList.push(['sso', 'SSO Policy']);
+    this.tabList.push(['authnPolicy', 'Authentication Policy']);
     this.tabList.push(['tickets', 'Tickets']);
     this.tabList.push(['userattr', 'Username Attribute']);
     this.tabList.push(['multiauth', 'Multifactor']);

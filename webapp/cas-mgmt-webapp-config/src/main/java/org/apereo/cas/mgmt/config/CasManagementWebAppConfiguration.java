@@ -6,8 +6,6 @@ import org.apereo.cas.mgmt.controller.ViewController;
 import org.apereo.cas.mgmt.web.DefaultCasManagementEventListener;
 import org.apereo.cas.oidc.claims.BaseOidcScopeAttributeReleasePolicy;
 import org.apereo.cas.oidc.claims.OidcCustomScopeAttributeReleasePolicy;
-import org.apereo.cas.services.RegisteredService;
-import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.CollectionUtils;
 
 import lombok.val;
@@ -15,6 +13,7 @@ import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
+import org.pac4j.core.matching.matcher.PathMatcher;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,17 +133,6 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return new DefaultCasManagementEventListener();
     }
 
-    @Bean(name = "namingStrategy")
-    @RefreshScope
-    public RegisteredServiceResourceNamingStrategy registeredServiceResourceNamingStrategy() {
-        return new RegisteredServiceResourceNamingStrategy() {
-            @Override
-            public String build(final RegisteredService service, final String extenstion) {
-                return "service-" + service.getId() + ".json";
-            }
-        };
-    }
-
     @Bean
     public SpringResourceTemplateResolver casManagementTemplateResolver() {
         val resolver = new SpringResourceTemplateResolver();
@@ -176,6 +164,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     public Config pac4jClientConfiguration() {
         val cfg = new Config(new Clients(getDefaultCallbackUrl(serverProperties), authenticationClients));
         cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getObject());
+        cfg.addMatcher("excludedPath", new PathMatcher().excludeRegex("^/.*\\.(css|png|ico)$"));
         return cfg;
     }
 

@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 public class FormData implements Serializable {
     private static final long serialVersionUID = -5201796557461644152L;
 
-    private Set<String> availableAttributes = new HashSet<>();
+    private List<String> availableAttributes = new ArrayList<>();
 
     private Set<String> attributeRepositories = new HashSet<>();
 

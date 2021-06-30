@@ -23,7 +23,7 @@ export class TabOIDCComponent {
    * a new form is created and inserted in the map.
    */
   constructor(private service: FormService) {
-    if (service.form.contains(this.key)) {
+    if (!service.form.contains(this.key)) {
       this.tab = new TabOidcForm(service.registeredService as OidcRegisteredService);
     }
   }

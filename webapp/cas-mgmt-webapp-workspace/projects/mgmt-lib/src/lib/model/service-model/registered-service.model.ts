@@ -34,6 +34,10 @@ import {
 } from './service-ticket-expiration.model';
 import {proxyTicketExpirationPolicy, RegisteredServiceProxyTicketExpirationPolicy} from './proxy-ticket-expiration.model';
 import {RegisteredServiceSingleSignOnParticipationPolicy, ssoParticipationPolicy} from './sso-expiration.model';
+import {
+  authenticationPolicy,
+  RegisteredServiceAuthenticationPolicy,
+} from "./authn-policy-model";
 
 /**
  * Data class for RegisteredService.
@@ -51,9 +55,9 @@ export abstract class RegisteredService {
   proxyTicketExpirationPolicy: RegisteredServiceProxyTicketExpirationPolicy;
   serviceTicketExpirationPolicy: RegisteredServiceServiceTicketExpirationPolicy;
   singleSignOnParticipationPolicy: RegisteredServiceSingleSignOnParticipationPolicy;
+  authenticationPolicy: RegisteredServiceAuthenticationPolicy
   evaluationOrder: number;
   usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider;
-  requiredHandlers: string[];
   attributeReleasePolicy: RegisteredServiceAttributeReleasePolicy;
   multifactorPolicy: RegisteredServiceMultifactorPolicy;
   logo: string;
@@ -66,7 +70,7 @@ export abstract class RegisteredService {
   expirationPolicy: RegisteredServiceExpirationPolicy;
   environments: string[];
 
-  constructor(service?: RegisteredService) {
+  protected constructor(service?: RegisteredService) {
     this.serviceId = service?.serviceId;
     this.name = service?.name;
     this.theme = service?.theme;
@@ -79,9 +83,9 @@ export abstract class RegisteredService {
     this.proxyTicketExpirationPolicy = proxyTicketExpirationPolicy(service?.proxyTicketExpirationPolicy);
     this.serviceTicketExpirationPolicy = serviceTicketExpirationPolicy(service?.serviceTicketExpirationPolicy);
     this.singleSignOnParticipationPolicy = ssoParticipationPolicy(service?.singleSignOnParticipationPolicy);
+    this.authenticationPolicy = authenticationPolicy(service?.authenticationPolicy);
     this.evaluationOrder = service?.evaluationOrder ?? -1;
     this.usernameAttributeProvider = usernameProviderFactory(service?.usernameAttributeProvider);
-    this.requiredHandlers = service?.requiredHandlers;
     this.attributeReleasePolicy = attributeReleaseFactory(service?.attributeReleasePolicy);
     this.multifactorPolicy = mfaPolicyFactory(service?.multifactorPolicy);
     this.logo = service?.logo;

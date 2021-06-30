@@ -16,7 +16,6 @@ export class OauthclientComponent {
 
   @Input()
   form: OauthClientForm;
-  showOAuthSecret: boolean;
 
   @Output()
   generateId: EventEmitter<void> = new EventEmitter<void>();

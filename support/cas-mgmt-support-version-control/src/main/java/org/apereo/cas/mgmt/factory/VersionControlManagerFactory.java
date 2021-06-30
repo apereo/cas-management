@@ -3,21 +3,19 @@ package org.apereo.cas.mgmt.factory;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
-import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
+import org.apereo.cas.mgmt.VersionControlServiceRegistry;
 import org.apereo.cas.mgmt.VersionControlServicesManager;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.services.DefaultServicesManager;
-import org.apereo.cas.services.JsonServiceRegistry;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.ServicesManagerConfigurationContext;
 import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
-import org.apereo.cas.util.io.WatcherService;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -34,6 +32,7 @@ import javax.annotation.PostConstruct;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Factory class to create ServiceManagers for the logged in user.
@@ -46,16 +45,32 @@ import java.util.HashSet;
 public class VersionControlManagerFactory implements MgmtManagerFactory<ManagementServicesManager> {
 
     private static final int INITIAL_CACHE_SIZE = 10;
+
     private static final int MAX_CACHE_SIZE = 100;
 
     private final ServicesManager servicesManager;
+
     private final ConfigurableApplicationContext applicationContext;
+
     private final CasManagementConfigurationProperties managementProperties;
+
     private final RepositoryFactory repositoryFactory;
+
     private final CasConfigurationProperties casProperties;
+
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
+
     private VersionControlServicesManager master;
+
     private Cache<Authentication, ManagementServicesManager> managerCache;
+
+    private static Cache<Authentication, ManagementServicesManager> managementServicesManagerCache() {
+        return Caffeine.newBuilder()
+            .initialCapacity(INITIAL_CACHE_SIZE)
+            .maximumSize(MAX_CACHE_SIZE)
+            .recordStats()
+            .build();
+    }
 
     /**
      * Init repository.
@@ -72,7 +87,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
             }
             try (GitUtil git = repositoryFactory.masterRepository()) {
                 servicesManager.load();
-                val manager = new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+                val manager = new VersionControlServicesManager(createVersionControlServiceManager(git), namingStrategy, git);
                 manager.loadFrom(servicesManager);
                 git.addWorkingChanges();
                 git.commit("Initial commit");
@@ -82,14 +97,14 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
             }
         }
         val git = repositoryFactory.masterRepository();
-        this.master = new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+        this.master = new VersionControlServicesManager(createVersionControlServiceManager(git), namingStrategy, git);
     }
 
     /**
      * Method will look up the CasUserProfile for the logged in user and the return the GitServicesManager for
      * that user.
      *
-     * @param authentication  - user authentication
+     * @param authentication - user authentication
      * @return - GitServicesManager for the logged in user
      */
     public ManagementServicesManager from(final Authentication authentication) {
@@ -103,29 +118,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @return - manager
      */
     public ManagementServicesManager from(final GitUtil git) {
-        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
-    }
-
-    private ManagementServicesManager getManagementServicesManager(final Authentication authentication) {
-        val user = new CasUserProfile(authentication);
-        if (!user.isUser() || user.isAdministrator()) {
-            return master();
-        }
-
-        val manager = managerCache.asMap().containsKey(authentication)
-                ? managerCache.getIfPresent(authentication)
-                : createNewManager(authentication);
-        if (managerCache.asMap().containsKey(authentication)) {
-            manager.load();
-        } else {
-            managerCache.put(authentication, manager);
-        }
-        return manager;
-    }
-
-    private ManagementServicesManager createNewManager(final Authentication authentication) {
-        val git = repositoryFactory.from(authentication);
-        return new VersionControlServicesManager(createJSONServiceManager(git), namingStrategy, git);
+        return new VersionControlServicesManager(createVersionControlServiceManager(git), namingStrategy, git);
     }
 
     /**
@@ -138,44 +131,53 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         return master;
     }
 
-    @SneakyThrows
-    private ServicesManager createJSONServiceManager(final GitUtil git) {
-        val activeProfiles = new HashSet<String>();
-        val serviceRegistryDAO = new JsonServiceRegistry(new FileSystemResource(Paths.get(git.repoPath())),
-                WatcherService.noOp(), null, null, namingStrategy, null);
-        val context = ServicesManagerConfigurationContext.builder()
-                .serviceRegistry(serviceRegistryDAO)
-                .applicationContext(applicationContext)
-                .environments(activeProfiles)
-                .servicesCache(servicesManagerCache())
-                .build();
-
-        val cm = casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
-                ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
-                : new DefaultServicesManager(context);
-        cm.load();
-        return cm;
-    }
-
     public Cache<Long, RegisteredService> servicesManagerCache() {
         val serviceRegistry = casProperties.getServiceRegistry();
-        val duration = Beans.newDuration(serviceRegistry.getCache());
         return Caffeine.newBuilder()
-                .initialCapacity(serviceRegistry.getCacheCapacity())
-                .maximumSize(serviceRegistry.getCacheSize())
-                .expireAfterWrite(duration)
-                .recordStats()
-                .build();
+            .initialCapacity(serviceRegistry.getCacheCapacity())
+            .maximumSize(serviceRegistry.getCacheSize())
+            .recordStats()
+            .build();
     }
 
-    public Cache<Authentication, ManagementServicesManager> managementServicesManagerCache() {
-        val duration = Beans.newDuration("PT30M");
-        return Caffeine.newBuilder()
-                .initialCapacity(INITIAL_CACHE_SIZE)
-                .maximumSize(MAX_CACHE_SIZE)
-                .expireAfterWrite(duration)
-                .recordStats()
-                .build();
+    private ManagementServicesManager getManagementServicesManager(final Authentication authentication) {
+        val user = new CasUserProfile(authentication);
+        if (!user.isUser() || user.isAdministrator()) {
+            return master();
+        }
+
+        val manager = Objects.requireNonNull(managerCache.asMap().containsKey(authentication)
+            ? managerCache.getIfPresent(authentication)
+            : createNewManager(authentication));
+        if (managerCache.asMap().containsKey(authentication)) {
+            manager.load();
+        } else {
+            managerCache.put(authentication, manager);
+        }
+        return manager;
+    }
+
+    private ManagementServicesManager createNewManager(final Authentication authentication) {
+        val git = repositoryFactory.from(authentication);
+        return new VersionControlServicesManager(createVersionControlServiceManager(git), namingStrategy, git);
+    }
+
+    @SneakyThrows
+    private ServicesManager createVersionControlServiceManager(final GitUtil git) {
+        val activeProfiles = new HashSet<String>();
+        val serviceRegistryDAO = new VersionControlServiceRegistry(new FileSystemResource(Paths.get(git.repoPath())), namingStrategy);
+        val context = ServicesManagerConfigurationContext.builder()
+            .serviceRegistry(serviceRegistryDAO)
+            .applicationContext(applicationContext)
+            .environments(activeProfiles)
+            .servicesCache(servicesManagerCache())
+            .build();
+
+        val cm = casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
+            ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
+            : new DefaultServicesManager(context);
+        cm.load();
+        return cm;
     }
 
 }

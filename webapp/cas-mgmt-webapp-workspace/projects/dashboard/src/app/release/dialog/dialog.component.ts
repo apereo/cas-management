@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import {DialogForm} from './dialog.form';
 
 /**
  * Dialog component for user to enter credentials for resolving attributes.
  *
- * @author Travis Scchmidt
+ * @author Travis Schmidt
  */
 @Component({
   selector: 'app-dialog',
@@ -13,17 +14,19 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogComponent {
 
+  form = new DialogForm();
+
   constructor(private dialogRef: MatDialogRef<DialogComponent>) { }
 
   /**
    * Gets values form ui and passes back to calling component.
-   *
-   * @param uid - user id
-   * @param password - user password
-   * @param serviceId - service id
    */
-  resolve(uid: string, password: string, serviceId: string) {
-    const data = {username: uid, password, service: serviceId};
+  resolve() {
+    const data = {
+      username: this.form.username.value,
+      password: this.form.password.value,
+      service: this.form.service.value
+    };
     this.dialogRef.close(data);
   }
 

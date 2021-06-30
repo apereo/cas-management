@@ -21,6 +21,9 @@ import org.springframework.core.io.Resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This is {@link CasManagementConfigurationProperties}.
@@ -166,6 +169,12 @@ public class CasManagementConfigurationProperties implements Serializable {
      * List the attributeRepositories defined in the cas server.
      */
     private List<String> attributeRepositories = new ArrayList<>();
+
+    /**
+     * List of supported identity providers to display in the user interface.
+     */
+    private Set<String> delegatedIdentityProviders = Stream.of("Twitter", "Orcid", "Dropbox", "Github", "Facebook",
+        "Yahoo", "Wordpress", "PayPal", "Google", "WindowsLive", "Foursquare").collect(Collectors.toSet());
 
     /**
      * Flag to enable the feature AttributeDefinitions.

@@ -4,7 +4,8 @@
       <mat-label *ngIf="label">{{ label }}</mat-label>
       <input matInput [formControl]="control" [required]="required"
              [matAutocomplete]="auto"
-             [pattern]="pattern ? pattern : ''">
+             [pattern]="pattern ? pattern : ''"
+             [type] = type>
       <mat-error *ngIf="control.hasError('required')">This field is required</mat-error>
       <ng-container *ngFor="let e of errors">
         <mat-error *ngIf="control.hasError(e.key)">{{ e.display }}</mat-error>

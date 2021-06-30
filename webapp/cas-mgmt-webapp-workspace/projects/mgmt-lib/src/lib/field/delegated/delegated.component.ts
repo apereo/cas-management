@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import {DelegatedForm} from '@apereo/mgmt-lib/src/lib/form';
+import {DelegatedForm, FormService} from '@apereo/mgmt-lib/src/lib/form';
 import {AppConfigService} from '@apereo/mgmt-lib/src/lib/ui';
 
 /**
@@ -31,7 +31,11 @@ export class DelegatedComponent {
   @Input()
   providers: string[];
 
-  constructor(public config: AppConfigService) {
+  constructor(public config: AppConfigService, private service: FormService) {
+    let policy = service?.registeredService?.accessStrategy?.delegatedAuthenticationPolicy;
+    policy?.allowedProviders?.forEach(provider => {
+      this.delegatedAuthn.push(provider);
+    });
   }
 
   /**
@@ -73,7 +77,7 @@ export class DelegatedComponent {
   }
 
   /**
-   * Handles the autcomplete selection to add an allowed provider.
+   * Handles the autocomplete selection to add an allowed provider.
    *
    * @param val - autocomplete selection event
    */

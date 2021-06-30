@@ -36,9 +36,11 @@ export class ControlsComponent implements OnInit {
    * Starts the component by retrieving git status if version control is configured.
    */
   ngOnInit() {
-    if (this.appService.config.versionControl && this.service.showVersionControl) {
-      this.service.gitStatus();
-    }
+    setTimeout(() => {
+      if (this.appService.config.versionControl && this.service.showVersionControl) {
+        this.service.gitStatus();
+      }
+    }, 10);
   }
 
   /**

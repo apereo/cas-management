@@ -16,7 +16,7 @@
     <lib-input toolTip="Secret key for this OAuth 2.0 client. Only applies to OAuth/OIDC service types.">
       <mat-form-field style="width: 100%;" appearance="standard">
         <mat-label>Client Secret</mat-label>
-        <input matInput required [type]="showOAuthSecret ? 'text' : 'password'" [formControl]="form.clientSecret">
+        <input matInput required [type]="form.showClient.value === true ? 'text' : 'password'" [formControl]="form.clientSecret">
       </mat-form-field>
     </lib-input>
   </div>

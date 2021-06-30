@@ -58,3 +58,4 @@ export * from './attribute-release/script.form';
 export * from './attribute-release/attribute-release.form';
 export * from './oidc/options.form';
 export * from './sso-policy.form';
+export * from './authn-policy.form';

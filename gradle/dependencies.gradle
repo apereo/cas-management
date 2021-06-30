@@ -302,7 +302,6 @@ ext.libraries = [
                     exclude(group: "com.fasterxml", module: "classmate")
                     exclude(group: "org.hibernate", module: "hibernate-validator")
                     exclude(group: "org.objenesis", module: "objenesis")
-                    exclude(group: "org.springframework", module: "spring-test")
                     exclude(group: "org.springframework", module: "spring-beans")
                     exclude(group: "org.springframework", module: "spring-context")
                     exclude(group: "org.springframework", module: "spring-context-support")
@@ -968,9 +967,7 @@ ext.libraries = [
                         }
                 ],
                 versionControl       : [
-                        dependencies.create("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
-                            force = true
-                        }
+                        
                 ],
                 audit                :
                         dependencies.create("org.apereo.cas:cas-server-core-audit-api:$casVersion") {

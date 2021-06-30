@@ -10,7 +10,7 @@ import {MgmtFormGroup, ExpirationForm, PublicKeyForm} from '@apereo/mgmt-lib/src
 export class TabAdvancedForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   static readonly EVAL_ORDER = '0';
-  static readonly REQUIRED = '1';
+
   static readonly ENVIRONMENTS = '2';
   static readonly RESPONSE_TYPE = '3';
   static readonly PUBLIC_KEY = '4';
@@ -18,8 +18,6 @@ export class TabAdvancedForm extends FormGroup implements MgmtFormGroup<Abstract
 
   get evalOrder() { return this.get(TabAdvancedForm.EVAL_ORDER) as FormControl; }
   set evalOrder(c: FormControl) { this.setControl(TabAdvancedForm.EVAL_ORDER, c); }
-  get required() { return this.get(TabAdvancedForm.REQUIRED) as FormControl; }
-  set required(c: FormControl) { this.setControl(TabAdvancedForm.REQUIRED, c); }
   get environments() { return this.get(TabAdvancedForm.ENVIRONMENTS) as FormControl; }
   set environments(c: FormControl) { this.setControl(TabAdvancedForm.ENVIRONMENTS, c); }
   get responseType() { return this.get(TabAdvancedForm.RESPONSE_TYPE) as FormControl; }
@@ -39,7 +37,6 @@ export class TabAdvancedForm extends FormGroup implements MgmtFormGroup<Abstract
    */
   reset(): void {
     this.evalOrder = new FormControl(this.service?.evaluationOrder);
-    this.required = new FormControl(this.service?.requiredHandlers);
     this.environments = new FormControl(this.service?.environments);
     this.responseType = new FormControl(this.service?.responseType);
     this.publicKey = new PublicKeyForm(this.service?.publicKey);
@@ -53,7 +50,6 @@ export class TabAdvancedForm extends FormGroup implements MgmtFormGroup<Abstract
    */
   map(service: AbstractRegisteredService) {
     service.evaluationOrder = this.evalOrder.value;
-    service.requiredHandlers = this.required.value && this.required.value.length > 0 ? this.required.value.split(',') : null;
     service.environments = this.environments.value && this.environments.value.length > 0 ? this.environments.value.split(',') : null;
     service.responseType = this.responseType.value;
     service.publicKey = this.publicKey.map();

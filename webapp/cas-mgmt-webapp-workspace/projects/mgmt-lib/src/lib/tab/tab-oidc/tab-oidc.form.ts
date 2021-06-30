@@ -12,7 +12,7 @@ export class TabOidcForm extends FormGroup implements MgmtFormGroup<AbstractRegi
   get oidcClient() { return this.get('oidcClient') as OidcClientForm; }
   set oidcClient(c: OidcClientForm) { this.setControl('oidcClient', c); }
   get jwks() { return this.get('jwks') as JwksForm; }
-  set jwks(c: JwksForm) { this.setControl('jwlks', c); }
+  set jwks(c: JwksForm) { this.setControl('jwks', c); }
   get idToken() { return this.get('idToken') as IdTokenForm; }
   set idToken(c: IdTokenForm) { this.setControl('idToken', c); }
   get userinfo() { return this.get('userinfo') as UserinfoForm; }

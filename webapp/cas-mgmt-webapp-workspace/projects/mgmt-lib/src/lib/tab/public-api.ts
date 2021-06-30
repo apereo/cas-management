@@ -36,6 +36,8 @@ export * from './tab-saml-signing/tab-saml-signing.form';
 export * from './tab-saml-signing/tab-saml-signing.component';
 export * from './tab-sso/tab-sso.form';
 export * from './tab-sso/tab-sso.component';
+export * from './tab-authn-policy/tab-authn-policy.form';
+export * from './tab-authn-policy/tab-authn-policy.component';
 export * from './tab-tickets/tab-tickets.form';
 export * from './tab-tickets/tab-tickets.component';
 export * from './tab-tokens/tab-tokens.form';

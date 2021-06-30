@@ -1,19 +1,19 @@
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { RegisteredServiceAttributeReleasePolicy } from '@apereo/mgmt-lib/src/lib/model';
+import { FormArray } from '@angular/forms';
+import { AttributeReleaseForm } from './attribute-release.form';
+import { ChainingAttributeReleasePolicy } from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group to display and update fields for Consent.
  *
  * @author Ryan Mathis
  */
-export class ChainingForm extends FormGroup {
+export class ChainingForm extends AttributeReleaseForm {
 
     get policies() { return this.get('policies') as FormArray; }
 
-    constructor(policy: RegisteredServiceAttributeReleasePolicy[]) {
-        super({
-            policies: new FormArray([]),
-        });
+    constructor(policy: ChainingAttributeReleasePolicy) {
+        super(policy);
+        this.addControl('policies', new FormArray([]));
     }
 
     /**
@@ -21,7 +21,8 @@ export class ChainingForm extends FormGroup {
      *
      * @param policy - RegisteredServiceConsentPolicy
      */
-    map(policies: RegisteredServiceAttributeReleasePolicy[]) {
-        
+    map(policy: ChainingAttributeReleasePolicy) {
+        super.map(policy);
+        policy.policies = this.policies.value;
     }
 }

@@ -15,15 +15,18 @@ import {FormControl} from '@angular/forms';
 export class PoliciesComponent {
   type: ReleasePolicyType;
   TYPE = ReleasePolicyType;
+  chainableTypes = [
+    { value: ReleasePolicyType.SCRIPT, display: 'SCRIPT' },
+    { value: ReleasePolicyType.GROOVY, display: 'GROOVY' },
+    { value: ReleasePolicyType.RETURN_ALL, display: 'RETURN ALL' },
+    { value: ReleasePolicyType.DENY_ALL, display: 'DENY ALL' },
+    { value: ReleasePolicyType.RETURN_ALLOWED, display: 'RETURN ALLOWED' },
+    { value: ReleasePolicyType.RETURN_MAPPED, display: 'RETURN MAPPED' },
+    { value: ReleasePolicyType.RESTFUL, display: 'RESTFUL' },
+    { value: ReleasePolicyType.SAML_IDP, display: 'SAML_IDP' }
+  ];
   types = [
-    {value: ReleasePolicyType.SCRIPT, display: 'SCRIPT'},
-    {value: ReleasePolicyType.GROOVY, display: 'GROOVY'},
-    {value: ReleasePolicyType.RETURN_ALL, display: 'RETURN ALL'},
-    {value: ReleasePolicyType.DENY_ALL, display: 'DENY ALL'},
-    {value: ReleasePolicyType.RETURN_ALLOWED,  display: 'RETURN ALLOWED'},
-    {value: ReleasePolicyType.RETURN_MAPPED,  display: 'RETURN MAPPED'},
-    {value: ReleasePolicyType.RESTFUL,  display: 'RESTFUL'},
-    {value: ReleasePolicyType.SAML_IDP,  display: 'SAML_IDP'},
+    ...this.chainableTypes,
     {value: ReleasePolicyType.CHAINING, display: 'CHAINING'}
   ];
 

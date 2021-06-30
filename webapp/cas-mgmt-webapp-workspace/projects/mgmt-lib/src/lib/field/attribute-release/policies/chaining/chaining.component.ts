@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
+import { ChainingForm } from '@apereo/mgmt-lib/src/lib/form';
 // import { ChainingReleaseForm } from '@apereo/mgmt-lib/src/lib/form';
 
 /**
@@ -10,15 +11,24 @@ import { Component, Input } from '@angular/core';
     selector: 'lib-chaining',
     templateUrl: './chaining.component.html'
 })
-export class ChainingComponent {
-
-    // @Input()
-    // form: ChainingReleaseForm;
+export class ChainingComponent implements OnChanges {
 
     @Input()
-    types: {value: number, display: string};
+    form: ChainingForm;
+
+    @Input()
+    types: {value: number, display: string}[];
+
+    chainableTypes: { value: number, display: string }[] = [];
 
     constructor() {
     }
 
+    ngOnChanges() {
+        console.log(this.form);
+    }
+
+    addPolicy() {
+        this.form.policies.
+    }
 }

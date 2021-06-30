@@ -23,6 +23,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 /**
  * Module to lazy-load Attribute Release functionality.
@@ -40,7 +42,9 @@ import { MatListModule } from '@angular/material/list';
     MatExpansionModule,
     MatMenuModule,
     MatRadioModule,
-    MatListModule
+    MatListModule,
+    MatIconModule,
+    MatButtonModule
   ],
   declarations: [
     ChecksComponent,

@@ -7,7 +7,7 @@ import { ChainingForm } from '@apereo/mgmt-lib/src/lib/form';
  * @author Ryan Mathis
  */
 @Component({
-    selector: 'lib-attribute-release-checks',
+    selector: 'lib-attribute-release-chain',
     templateUrl: './chain.component.html'
 })
 export class ChainComponent {

@@ -17,9 +17,7 @@ export class ChainingComponent implements OnChanges {
     form: ChainingForm;
 
     @Input()
-    types: {value: number, display: string}[];
-
-    chainableTypes: { value: number, display: string }[] = [];
+    types: {value: number, display: string}[]
 
     constructor() {
     }
@@ -29,6 +27,6 @@ export class ChainingComponent implements OnChanges {
     }
 
     addPolicy() {
-        this.form.policies.
+        // this.form.policies.push();
     }
 }

@@ -1,10 +1,17 @@
+export enum ConsentStatus {
+  TRUE = 'TRUE',
+  FALSE = 'FALSE',
+  UNDEFINED = 'UNDEFINED'
+}
+
 /**
  * Data class for RegisteredServiceConsentPolicy.
  */
+
 export class RegisteredServiceConsentPolicy {
   static cName = 'org.apereo.cas.services.RegisteredServiceConsentPolicy';
 
-  enabled: boolean;
+  status: ConsentStatus;
   excludedAttributes: string[];
   includeOnlyAttributes: string[];
 
@@ -18,7 +25,7 @@ export class RegisteredServiceConsentPolicy {
   }
 
   constructor(policy?: RegisteredServiceConsentPolicy) {
-    this.enabled = policy?.enabled ?? true;
+    this.status = policy?.status || ConsentStatus.UNDEFINED;
     this.excludedAttributes = policy?.excludedAttributes;
     this.includeOnlyAttributes = policy?.includeOnlyAttributes;
     this['@class'] = RegisteredServiceConsentPolicy.cName;

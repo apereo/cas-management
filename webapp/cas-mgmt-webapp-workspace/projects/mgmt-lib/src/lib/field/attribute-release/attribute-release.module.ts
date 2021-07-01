@@ -21,6 +21,8 @@ import {UiModule} from '@apereo/mgmt-lib/src/lib/ui';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /**
  * Module to lazy-load Attribute Release functionality.
@@ -37,7 +39,9 @@ import {MatRadioModule} from '@angular/material/radio';
     WsfedattrrelpoliciesModule,
     MatExpansionModule,
     MatMenuModule,
-    MatRadioModule
+    MatRadioModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   declarations: [
     ChecksComponent,

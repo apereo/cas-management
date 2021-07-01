@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import { ConsentStatus } from '@apereo/mgmt-lib/src/lib/model';
 import {ConsentForm} from '@apereo/mgmt-lib/src/lib/form';
 import {AppConfigService} from '@apereo/mgmt-lib/src/lib/ui';
 
@@ -18,6 +19,8 @@ export class ConsentComponent {
 
   @Input()
   attributes: string[];
+
+  STATUS_OPTIONS = ConsentStatus;
 
   constructor(public config: AppConfigService) {
   }

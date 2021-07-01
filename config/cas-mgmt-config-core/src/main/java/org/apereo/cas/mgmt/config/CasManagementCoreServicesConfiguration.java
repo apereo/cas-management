@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.authentication.attribute.DefaultAttributeDefinitionStore;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
@@ -15,6 +16,7 @@ import org.apereo.cas.mgmt.controller.ForwardingController;
 import org.apereo.cas.mgmt.controller.ServiceController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
+import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
@@ -145,7 +147,9 @@ public class CasManagementCoreServicesConfiguration {
                 .environments(activeProfiles)
                 .servicesCache(servicesManagerCache.getObject())
                 .build();
-        val cm = new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor());
+        val cm = casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
+                ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
+                : new DefaultServicesManager(context);
         cm.load();
         return cm;
     }

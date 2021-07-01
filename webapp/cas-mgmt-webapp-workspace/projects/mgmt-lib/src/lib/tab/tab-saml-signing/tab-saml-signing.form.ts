@@ -10,7 +10,7 @@ import {MgmtFormGroup, SigningFrom} from '@apereo/mgmt-lib/src/lib/form';
 export class TabSamlSigningForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
 
   get signing() { return this.get('signing') as SigningFrom; }
-  set signing(c: SigningFrom) { this.setControl('singning', c); }
+  set signing(c: SigningFrom) { this.setControl('signing', c); }
 
   constructor(private service: SamlRegisteredService) {
     super({});

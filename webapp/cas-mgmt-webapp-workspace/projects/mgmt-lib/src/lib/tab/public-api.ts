@@ -1,6 +1,7 @@
 export * from './tabs/tabs.component';
 export * from './tab-accessstrategy/tab-access-strategy-form';
 export * from './tab-accessstrategy/tab-accessstrategy.component';
+export * from './tab-acceptable-usage-policy/tab-acceptable-usage-policy.component';
 export * from './tab-advanced/tab-advanced.form';
 export * from './tab-advanced/tab-advanced.component';
 export * from './tab-attrrelease/tab-attrrelease.form';

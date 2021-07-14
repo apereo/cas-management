@@ -30,7 +30,8 @@ import {
   TabTokensComponent,
   TabUsernameattrComponent,
   TabWsfedAttrreleaseComponent,
-  TabWsfedComponent
+  TabWsfedComponent,
+  TabAcceptableUsagePolicyComponent
 } from '@apereo/mgmt-lib';
 
 export const childRoutes: Routes = [
@@ -137,6 +138,11 @@ export const childRoutes: Routes = [
   {
     path: 'authnPolicy',
     component: TabAuthnPolicyComponent,
+    outlet: 'form'
+  },
+  {
+    path: 'acceptableUsagePolicy',
+    component: TabAcceptableUsagePolicyComponent,
     outlet: 'form'
   },
   {

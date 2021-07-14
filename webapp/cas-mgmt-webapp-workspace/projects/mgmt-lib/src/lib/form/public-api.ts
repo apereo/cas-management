@@ -1,3 +1,4 @@
+export * from './acceptable-usage-policy.form';
 export * from './access-strategy/access-strategy.form';
 export * from './attributes.form';
 export * from './access-strategy/grouper.form';

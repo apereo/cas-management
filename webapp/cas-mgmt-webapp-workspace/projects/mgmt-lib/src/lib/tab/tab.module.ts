@@ -31,6 +31,7 @@ import {TabWsfedAttrreleaseComponent} from './tab-wsfed-attrrelease/tab-wsfed-at
 import {FieldModule} from '@apereo/mgmt-lib/src/lib/field';
 import {TabsComponent} from './tabs/tabs.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import { TabAcceptableUsagePolicyComponent } from './tab-acceptable-usage-policy/tab-acceptable-usage-policy.component';
 
 /**
  * Tabs.
@@ -41,6 +42,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     TabAccessstrategyComponent,
     TabAdvancedComponent,
     TabAttrreleaseComponent,
+    TabAcceptableUsagePolicyComponent,
     TabBasicsComponent,
     TabContactsComponent,
     TabDelegatedComponent,
@@ -76,6 +78,7 @@ import {MatTabsModule} from '@angular/material/tabs';
   exports: [
     TabsComponent,
     TabAccessstrategyComponent,
+    TabAcceptableUsagePolicyComponent,
     TabAdvancedComponent,
     TabAttrreleaseComponent,
     TabBasicsComponent,

@@ -1,5 +1,5 @@
 export * from './acceptable-usage-policy/policyEnabled/aup-enabled.component';
-export * from './acceptable-usage-policy/messageCode/aup-messageCode.component';
+export * from './acceptable-usage-policy/messageCode/aup-messagecode.component';
 export * from './acceptable-usage-policy/text/aup-text.component';
 export * from './acceptable-usage-policy/acceptable-usage-policy.component';
 export * from './access-strategy/access-strategy.component';

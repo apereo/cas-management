@@ -39,3 +39,4 @@ export * from './service-model/saml-service.model';
 export * from './service-model/service-ticket-expiration.model';
 export * from './service-model/sso-expiration.model';
 export * from './service-model/wsfed-service.model';
+export * from './service-model/acceptable-usage-policy.model';

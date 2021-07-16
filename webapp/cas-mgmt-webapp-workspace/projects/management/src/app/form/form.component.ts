@@ -206,6 +206,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.tabList.push(['delegated', 'Delegated Authentication']);
     this.tabList.push(['sso', 'SSO Policy']);
     this.tabList.push(['authnPolicy', 'Authentication Policy']);
+    this.tabList.push(['acceptableUsagePolicy', 'Acceptable Usage Policy']);
     this.tabList.push(['tickets', 'Tickets']);
     this.tabList.push(['userattr', 'Username Attribute']);
     this.tabList.push(['multiauth', 'Multifactor']);

@@ -39,6 +39,11 @@ import {
   RegisteredServiceAuthenticationPolicy,
 } from "./authn-policy-model";
 
+import {
+  acceptableUsagePolicy,
+  RegisteredServiceAcceptableUsagePolicy,
+} from "./acceptable-usage-policy.model";
+
 /**
  * Data class for RegisteredService.
  */
@@ -60,6 +65,7 @@ export abstract class RegisteredService {
   usernameAttributeProvider: RegisteredServiceUsernameAttributeProvider;
   attributeReleasePolicy: RegisteredServiceAttributeReleasePolicy;
   multifactorPolicy: RegisteredServiceMultifactorPolicy;
+  acceptableUsagePolicy: RegisteredServiceAcceptableUsagePolicy;
   logo: string;
   logoutUrl: string;
   logoutType: string;
@@ -97,6 +103,7 @@ export abstract class RegisteredService {
     this.contacts = contactsFactory(service?.contacts);
     this.expirationPolicy = expirationPolicyFactory(service?.expirationPolicy);
     this.environments = service?.environments;
+    this.acceptableUsagePolicy = acceptableUsagePolicy(service?.acceptableUsagePolicy);
   }
 }
 

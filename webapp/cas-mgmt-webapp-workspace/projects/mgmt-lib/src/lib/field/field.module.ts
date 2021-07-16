@@ -4,6 +4,9 @@ import {ServicenameComponent} from './servicename/servicename.component';
 import {UiModule} from '@apereo/mgmt-lib/src/lib/ui';
 import {EnabledComponent} from './enabled/enabled.component';
 import {AccessStrategyComponent} from './access-strategy/access-strategy.component';
+import { AcceptableUsagePolicyTextComponent } from './acceptable-usage-policy/text/aup-text.component';
+import { AcceptableUsagePolicyMessageCode } from './acceptable-usage-policy/messageCode/aup-messagecode.component';
+import { AcceptableUsagePolicyEnabledComponent } from './acceptable-usage-policy/policyEnabled/aup-enabled.component';
 import {TimeComponent} from './access-strategy/time/time.component';
 import {SurrogateComponent} from './access-strategy/surrogate/surrogate.component';
 import {RequiredComponent} from './access-strategy/required/required.component';
@@ -77,6 +80,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MfaModule} from './mfa/mfa.module';
 import {FlexModule} from '@angular/flex-layout';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { AcceptableUsagePolicyComponent } from './acceptable-usage-policy/acceptable-usage-policy.component';
+
 
 /**
  * Fields.
@@ -140,7 +145,11 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     SsoComponent,
     AuthenticationPolicyComponent,
     ThemeidComponent,
-    WsfedclientComponent
+    WsfedclientComponent,
+    AcceptableUsagePolicyTextComponent,
+    AcceptableUsagePolicyMessageCode,
+    AcceptableUsagePolicyEnabledComponent,
+    AcceptableUsagePolicyComponent
   ],
   imports: [
     CommonModule,
@@ -230,7 +239,11 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     SsoComponent,
     AuthenticationPolicyComponent,
     ThemeidComponent,
-    WsfedclientComponent
+    WsfedclientComponent,
+    AcceptableUsagePolicyTextComponent,
+    AcceptableUsagePolicyMessageCode,
+    AcceptableUsagePolicyEnabledComponent,
+    AcceptableUsagePolicyComponent
   ]
 })
 export class FieldModule { }

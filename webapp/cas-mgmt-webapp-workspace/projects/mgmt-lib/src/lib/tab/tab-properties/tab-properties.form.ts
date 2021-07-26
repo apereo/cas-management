@@ -34,7 +34,7 @@ export class TabPropertiesForm extends FormGroup implements MgmtFormGroup<Abstra
     service.properties = new Map<string, DefaultRegisteredServiceProperty>();
     for (const p of this.properties.rows()) {
       const drp = new DefaultRegisteredServiceProperty();
-      drp.values = p.value.split(',');
+      drp.values = p.value.values.split(',');
       service.properties[p.key.value] = drp;
     }
   }
@@ -47,7 +47,7 @@ export class TabPropertiesForm extends FormGroup implements MgmtFormGroup<Abstra
   unpack(props: Map<string, DefaultRegisteredServiceProperty>): Map<string, string[]> {
     const ret = new Map<string, string[]>();
     Object.keys(props).forEach(k => {
-      ret.set(k, props.get(k).values);
+      ret.set(k, props[k].values);
     });
     return ret;
   }

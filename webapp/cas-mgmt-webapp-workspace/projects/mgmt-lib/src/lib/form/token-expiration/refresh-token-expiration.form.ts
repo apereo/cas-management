@@ -1,5 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {RegisteredServiceOAuthRefreshTokenExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
+import { RegisteredServiceOAuthRefreshTokenExpirationPolicy, refreshTokenExpirationPolicy } from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group for displaying and updating Refresh Token Expiration policy.
@@ -21,7 +21,7 @@ export class RefreshTokenExpirationForm extends FormGroup {
    */
   map(): RegisteredServiceOAuthRefreshTokenExpirationPolicy {
     if (this.timeToKill.value) {
-      const policy = new RegisteredServiceOAuthRefreshTokenExpirationPolicy();
+      const policy = refreshTokenExpirationPolicy();
       policy.timeToKill = this.timeToKill.value;
       return policy;
     }

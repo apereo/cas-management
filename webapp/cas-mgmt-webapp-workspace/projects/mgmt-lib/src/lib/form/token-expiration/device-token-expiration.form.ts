@@ -1,5 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {RegisteredServiceOAuthDeviceTokenExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
+import { RegisteredServiceOAuthDeviceTokenExpirationPolicy, deviceTokenExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group for displaying and updating Device Token Expiration policy.
@@ -21,7 +21,7 @@ export class DeviceTokenExpirationForm extends FormGroup {
    */
   map(): RegisteredServiceOAuthDeviceTokenExpirationPolicy {
     if (this.timeToKill.value) {
-      const policy = new RegisteredServiceOAuthDeviceTokenExpirationPolicy();
+      const policy = deviceTokenExpirationPolicy();
       policy.timeToKill = this.timeToKill.value;
       return policy;
     }

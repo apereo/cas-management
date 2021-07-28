@@ -1,5 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {RegisteredServiceProxyTicketExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
+import { RegisteredServiceProxyTicketExpirationPolicy, proxyTicketExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group for displaying and updating Proxy Ticket Expiration policies.
@@ -23,7 +23,7 @@ export class ProxyTicketExpForm extends FormGroup {
    */
   map(): RegisteredServiceProxyTicketExpirationPolicy {
     if (this.numberOfUses.value || this.timeToLive.value) {
-      const policy = new RegisteredServiceProxyTicketExpirationPolicy();
+      const policy = proxyTicketExpirationPolicy();
       policy.timeToLive = this.timeToLive.value;
       policy.numberOfUses = this.numberOfUses.value;
       return policy;

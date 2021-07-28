@@ -1,5 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {RegisteredServiceOAuthCodeExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
+import { codeExpirationPolicy, RegisteredServiceOAuthCodeExpirationPolicy } from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group for displaying and updating Access Code Expiration policy.
@@ -23,7 +23,7 @@ export class CodeExpirationForm extends FormGroup {
    */
   map(): RegisteredServiceOAuthCodeExpirationPolicy {
     if (this.numberOfUses.value) {
-      const policy = new RegisteredServiceOAuthCodeExpirationPolicy();
+      const policy = codeExpirationPolicy();
       policy.numberOfUses = this.numberOfUses.value;
       policy.timeToLive = this.timeToLive.value;
       return policy;

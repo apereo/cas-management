@@ -1,0 +1,6 @@
+{
+    "/api": {
+        "target": "http://localhost:8443/cas-management/api/",
+        "secure": false
+    }
+}

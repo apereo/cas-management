@@ -1,14 +1,38 @@
-<lib-checkbox [control]="form.consentEnabled" label="User Consent Enabled"
-              toolTip="Control whether consent is active/inactive for this service.">
-</lib-checkbox>
+<div>
+  <label id="consent-enabled">
+    User Consent Enabled
+    <mat-icon class="icon" i18n-matTooltip libHelp
+      matTooltip="Control whether consent is active/inactive for this service."></mat-icon>
+  </label>
+</div>
+<br />
 
-<ng-container *ngIf="form.consentEnabled.value">
+<mat-radio-group [formControl]="form.consentEnabled" aria-labelledby="consent-enabled">
+
+  <mat-radio-button [value]="STATUS_OPTIONS.TRUE" style="margin-right: 1em;">
+    <ng-container i18n>True</ng-container>
+    <mat-icon class="icon" style="margin-left: 0.25em;" libHelp i18n-matTooltip matTooltip="Consent policy is disabled, overriding the global configuration."></mat-icon>
+  </mat-radio-button>
+
+  <mat-radio-button [value]="STATUS_OPTIONS.FALSE" style="margin-right: 1em;">
+    <ng-container i18n>False</ng-container>
+    <mat-icon class="icon" style="margin-left: 0.25em;" libHelp i18n-matTooltip matTooltip="Consent policy is enabled, overriding the global configuration."></mat-icon>
+  </mat-radio-button>
+
+  <mat-radio-button [value]="STATUS_OPTIONS.UNDEFINED">
+    <ng-container i18n>Undefined</ng-container>
+    <mat-icon class="icon" style="margin-left: 0.25em;" libHelp i18n-matTooltip matTooltip="Consent policy is undefined, delegating the decision to the global configuration."></mat-icon>
+  </mat-radio-button>
+
+</mat-radio-group>
+
+<ng-container *ngIf="form.consentEnabled.value === STATUS_OPTIONS.TRUE">
   <lib-select-input [control]="form.excluded" label="Excluded Attributes" [options]="config.options.availableAttributes" multiple
                     toolTip="Exclude the indicated attributes from consent.">
   </lib-select-input>
 </ng-container>
 
-<ng-container *ngIf="form.consentEnabled.value">
+<ng-container *ngIf="form.consentEnabled.value === STATUS_OPTIONS.TRUE">
   <lib-select-input [control]="form.includeOnly" label="Include Only Attributes" [options]="config.options.availableAttributes" multiple
                     toolTip="Force-include the indicated attributes in consent, provided attributes are resolved.">
   </lib-select-input>

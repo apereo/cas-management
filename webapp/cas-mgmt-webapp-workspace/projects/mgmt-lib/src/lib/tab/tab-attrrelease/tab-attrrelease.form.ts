@@ -15,10 +15,12 @@ import {
   ReturnRestfulAttributeReleasePolicy,
   ScriptedRegisteredServiceAttributeReleasePolicy,
   SamlIdpRegisteredServiceAttributeReleasePolicy,
-  attributeReleaseFactory
+  attributeReleaseFactory,
+  ChainingAttributeReleasePolicy
 } from '@apereo/mgmt-lib/src/lib/model';
 import {
   AllowedReleasedForm,
+  ChainingForm,
   GroovyReleaseForm,
   GroovySamlReleaseForm,
   MappedReleaseForm,
@@ -110,6 +112,9 @@ export class TabReleaseForm extends FormGroup implements MgmtFormGroup<AbstractR
     }
     if (type === ReleasePolicyType.SAML_IDP) {
       return new SamlIdpReleaseForm(this.releasePolicy as SamlIdpRegisteredServiceAttributeReleasePolicy);
+    }
+    if (type === ReleasePolicyType.CHAINING) {
+      return new ChainingForm(this.releasePolicy as ChainingAttributeReleasePolicy);
     }
   }
 

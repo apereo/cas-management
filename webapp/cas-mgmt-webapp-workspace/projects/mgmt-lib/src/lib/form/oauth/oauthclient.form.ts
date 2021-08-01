@@ -24,7 +24,7 @@ export class OauthClientForm extends FormGroup implements MgmtFormGroup<OAuthReg
       clientSecret: new FormControl(service?.clientSecret, Validators.required),
       bypassApprovalPrompt: new FormControl(service?.bypassApprovalPrompt),
       generateRefreshToken: new FormControl(service?.generateRefreshToken),
-      responseTypes: new FormControl(service?.responseType),
+      responseTypes: new FormControl(service?.supportedResponseTypes),
       grantTypes: new FormControl(service?.supportedGrantTypes),
       jwtAccessToken: new FormControl(service?.jwtAccessToken),
       showClient: new FormControl(false)

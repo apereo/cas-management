@@ -44,7 +44,9 @@ export class AttributesForm extends FormArray {
   constructor(map?: Map<string, string[] | string>) {
     super([]);
     if (map) {
-      Object.keys(map).forEach(k => this.createRow(k, map[k]));
+      for (let key of map.keys()) {
+        this.createRow(key, map.get(key) as string[]);
+      }
     }
   }
 

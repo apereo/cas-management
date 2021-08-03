@@ -1,5 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {RegisteredServiceServiceTicketExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
+import {RegisteredServiceServiceTicketExpirationPolicy, serviceTicketExpirationPolicy} from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group for displaying and updating Service Ticket Expiration policy.
@@ -23,7 +23,7 @@ export class ServiceTicketExpForm extends FormGroup {
    */
   map(): RegisteredServiceServiceTicketExpirationPolicy {
     if (this.numberOfUses.value || this.timeToLive.value) {
-      const policy = new RegisteredServiceServiceTicketExpirationPolicy();
+      const policy = serviceTicketExpirationPolicy();
       policy.timeToLive = this.timeToLive.value;
       policy.numberOfUses = this.numberOfUses.value;
       return policy;

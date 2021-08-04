@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.services.UnauthorizedServiceException;
@@ -119,18 +120,21 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
     @SneakyThrows
     private List<String> fromInCommon() {
         //return new ArrayList<>();
-        val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl());
-        val entity = resp.getEntity();
-        val result = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-        val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        val doc = docBuilder.parse(new InputSource(new StringReader(result)));
-        val list = new ArrayList<String>();
-        val nodes = doc.getDocumentElement().getElementsByTagName("EntityDescriptor");
-        for (int i = 0; i < nodes.getLength(); i++) {
-            if (((Element) nodes.item(i)).getElementsByTagName("SPSSODescriptor").getLength() > 0) {
-                list.add(((Element) nodes.item(i)).getAttribute("entityID"));
+        if (StringUtils.isNotBlank(mgmtProperties.getInCommonMDQUrl())) {
+            val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl());
+            val entity = resp.getEntity();
+            val result = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
+            val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            val doc = docBuilder.parse(new InputSource(new StringReader(result)));
+            val list = new ArrayList<String>();
+            val nodes = doc.getDocumentElement().getElementsByTagName("EntityDescriptor");
+            for (int i = 0; i < nodes.getLength(); i++) {
+                if (((Element) nodes.item(i)).getElementsByTagName("SPSSODescriptor").getLength() > 0) {
+                    list.add(((Element) nodes.item(i)).getAttribute("entityID"));
+                }
             }
+            return list;
         }
-        return list;
+        return new ArrayList<>(0);
     }
 }

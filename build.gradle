@@ -6,8 +6,7 @@ defaultTasks "clean", "build"
 
 buildscript {
     repositories {
-        mavenCentral()
-        jcenter()
+        mavenCentral() 
         gradlePluginPortal()
         maven {
             url "https://maven.eveoh.nl/content/repositories/releases"
@@ -130,7 +129,6 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
         maven {
             url "$sonatypeReleasesRepositoryUrl"
             mavenContent { releasesOnly() }
@@ -179,16 +177,6 @@ subprojects {
             }
         }
         maven {
-            url "https://dl.bintray.com/apereocas/webauthn-cas/"
-            mavenContent { releasesOnly() }
-        }
-        maven {
-            url "https://dl.bintray.com/apereocas/jradius/"
-            content {
-                includeGroupByRegex "net\\.jradius.*"
-            }
-        }
-        maven {
             url "https://oss.sonatype.org/content/repositories/snapshots"
             mavenContent { snapshotsOnly() }
         }
@@ -204,21 +192,12 @@ subprojects {
             mavenContent { releasesOnly() }
         }
         maven {
-            url "https://dl.bintray.com/uniconiam/maven"
-            mavenContent { releasesOnly() }
-        }
-        maven {
             url "https://repo.terracotta.org/maven2"
             mavenContent { releasesOnly() }
             content {
                 includeGroup "org.terracotta"
             }
         }
-        maven {
-            url "https://oss.jfrog.org/artifactory/oss-snapshot-local"
-            mavenContent { snapshotsOnly() }
-        }
-        jcenter()
     }
 
     configurations {

@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.services.UnauthorizedServiceException;
@@ -12,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
@@ -40,10 +40,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class InCommonMetadataAggregateResolver implements MetadataAggregateResolver {
     private final CasConfigurationProperties casProperties;
+
     private final CasManagementConfigurationProperties mgmtProperties;
+
     private final OpenSamlConfigBean configBean;
-    private List<String> sps;
+
     private final MetadataFilter signatureValidationFilter;
+
+    private List<String> sps;
 
     @SneakyThrows
     public InCommonMetadataAggregateResolver(final CasConfigurationProperties casProperties,
@@ -57,16 +61,11 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
         reloadInCommon();
     }
 
-    @Scheduled(fixedDelayString = "PT60M")
-    private void reloadInCommon() {
-        this.sps = fromInCommon();
-    }
-
     @Override
     public List<String> query(final String regexp) {
         return sps.stream()
-                .filter(e -> e.contains(regexp))
-                .collect(Collectors.toList());
+            .filter(e -> e.contains(regexp))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -101,6 +100,11 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
         throw new IllegalArgumentException("Entity not found");
     }
 
+    @Scheduled(fixedDelayString = "PT60M")
+    private void reloadInCommon() {
+        this.sps = fromInCommon();
+    }
+
     private HttpResponse fetchMetadata(final String metadataLocation) {
         val metadata = casProperties.getAuthn().getSamlIdp().getMetadata();
         val headers = new LinkedHashMap<String, Object>();
@@ -109,7 +113,7 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);
         val response = HttpUtils.executeGet(metadataLocation, metadata.getBasicAuthnUsername(),
-                casProperties.getAuthn().getSamlIdp().getMetadata().getBasicAuthnPassword(), new HashMap<>(), headers);
+            casProperties.getAuthn().getSamlIdp().getMetadata().getBasicAuthnPassword(), new HashMap<>(), headers);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);
             throw new UnauthorizedServiceException(UnauthorizedServiceException.CODE_UNAUTHZ_SERVICE);

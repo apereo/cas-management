@@ -1,0 +1,32 @@
+<div fxFlex="grow" fxLayout="row" class="chip-autocomplete">
+    <div fxFlex="grow">
+        <mat-form-field class="chip-list" fxFlex="grow" appearance="fill">
+            <mat-label *ngIf="label">{{ label }}</mat-label>
+            <mat-chip-list #chipList aria-label="Scope selection" [formControl]="control">
+                <mat-chip *ngFor="let opt of options"
+                    removable="true"
+                    (removed)="remove(opt)">
+                    {{opt}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="New scope..."
+                    #optInput
+                    [matChipAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event);">
+                <mat-option *ngFor="let opt of valueOptions" [value]="opt.value">{{ opt.display }}</mat-option>
+            </mat-autocomplete>
+            <ng-container *ngIf="errors && errors.length > 0">
+                <ng-container *ngFor="let e of errors">
+                    <mat-error *ngIf="control.hasError(e.key)">{{ e.display }}</mat-error>
+                </ng-container>
+            </ng-container>
+        </mat-form-field>
+    </div>
+    <div fxFlex="20px">
+        <mat-icon style="margin-top: 20px" *ngIf="toolTip" libHelp [matTooltip]="toolTip"></mat-icon>
+    </div>
+</div>

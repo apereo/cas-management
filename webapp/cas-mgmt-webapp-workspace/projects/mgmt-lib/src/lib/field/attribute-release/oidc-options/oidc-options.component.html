@@ -1,2 +1,5 @@
-<lib-select-input [control]=control label="Scopes" multiple [valueOptions]="config.options.oidcScopes" toolTip="Scopes">
-</lib-select-input>
+<!--<lib-select-input [control]="control" label="Scopes" multiple [valueOptions]="config.options.oidcScopes" toolTip="Scopes">
+</lib-select-input>-->
+
+<lib-chip-autocomplete [control]="control" label="Scopes" multiple [valueOptions]="config.options.oidcScopes" toolTip="Scopes">
+</lib-chip-autocomplete>

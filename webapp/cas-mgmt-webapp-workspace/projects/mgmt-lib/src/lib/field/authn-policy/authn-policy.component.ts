@@ -24,14 +24,14 @@ export class AuthenticationPolicyComponent {
   requiredAuthenticationHandlers: string[] = [];
   excludedAuthenticationHandlers: string[] = [];
 
-  @ViewChild('autoRequiredHandler', { static: true })
-  autoRequiredTrigger: MatAutocompleteTrigger;
+  /*@ViewChild('autoRequiredHandler', { static: true })
+  autoRequiredTrigger: MatAutocompleteTrigger;*/
 
   @ViewChild('requiredHandlerInput', { static: true })
   requiredHandlerInput: ElementRef;
 
-  @ViewChild('autoExcludedHandler', { static: true })
-  autoExcludedTrigger: MatAutocompleteTrigger;
+  /*@ViewChild('autoExcludedHandler', { static: true })
+  autoExcludedTrigger: MatAutocompleteTrigger;*/
 
   @ViewChild('excludedHandlerInput', { static: true })
   excludedHandlerInput: ElementRef;

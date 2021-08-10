@@ -18,6 +18,7 @@ export class ServiceForm extends FormGroup implements MgmtFormGroup<AbstractRegi
 
   constructor(private service: AbstractRegisteredService) {
     super({});
+    this.valueChanges.subscribe(v => this.map());
   }
 
   /**

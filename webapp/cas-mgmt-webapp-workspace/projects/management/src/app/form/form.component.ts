@@ -2,7 +2,7 @@ import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from 
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {Observable, Subscription} from 'rxjs';
-import {finalize, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {
   FormService,
@@ -14,7 +14,6 @@ import {
   ImportService, ControlsService, ServiceForm, SubmissionsService
 } from '@apereo/mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
-import {childRoutes, FormRoutingModule} from './form-routing.module';
 
 /**
  * Component to display/update a service.
@@ -96,6 +95,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     this.controls.showEdit = this.showEdit();
+    console.log('changes', this.controls.showEdit);
   }
 
   /**
@@ -153,7 +153,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   loadService(service: AbstractRegisteredService) {
     this.service.registeredService = service;
     this.service.form = new ServiceForm(service);
-    this.service.form.statusChanges.subscribe(() => {
+    this.service.form.statusChanges.subscribe((s) => {
+      console.log('form status changes', s);
       this.controls.showEdit = this.showEdit();
     });
     this.setNav();
@@ -302,6 +303,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Returns true if the user changed any value in the form.
    */
   dirty(): boolean {
+    console.log('dirty', this.service.form.dirty);
     if (this.service.form.dirty) {
       return true;
     }

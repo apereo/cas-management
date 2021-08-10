@@ -50,9 +50,9 @@ export class DelegatedComponent {
     if ((value || '').trim()) {
       this.delegatedAuthn.push(value.trim());
       this.autoTrigger.closePanel();
-      this.form.allowedProviders.setValue(this.delegatedAuthn);
       this.form.allowedProviders.markAsTouched();
       this.form.allowedProviders.markAsDirty();
+      this.form.allowedProviders.setValue(this.delegatedAuthn);
     }
 
     if (input) {
@@ -70,9 +70,9 @@ export class DelegatedComponent {
 
     if (index >= 0) {
       this.delegatedAuthn.splice(index, 1);
-      this.form.allowedProviders.setValue(this.delegatedAuthn);
       this.form.allowedProviders.markAsTouched();
       this.form.allowedProviders.markAsDirty();
+      this.form.allowedProviders.setValue(this.delegatedAuthn);
     }
   }
 
@@ -85,9 +85,9 @@ export class DelegatedComponent {
     const value =  val.option.value;
     if ((value || '').trim()) {
       this.delegatedAuthn.push(value.trim());
-      this.form.allowedProviders.setValue(this.delegatedAuthn);
       this.form.allowedProviders.markAsTouched();
       this.form.allowedProviders.markAsDirty();
+      this.form.allowedProviders.setValue(this.delegatedAuthn);
     }
 
     if (this.providerInput) {

@@ -6,7 +6,7 @@
                 <mat-chip *ngFor="let opt of options"
                     removable="true"
                     (removed)="remove(opt)">
-                    {{opt}}
+                    {{getLabel(opt)}}
                     <mat-icon matChipRemove>cancel</mat-icon>
                 </mat-chip>
                 <input placeholder="New scope..."

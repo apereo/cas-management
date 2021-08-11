@@ -5,8 +5,8 @@ import { MatAutocomplete, MatAutocompleteTrigger } from "@angular/material/autoc
 
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Observable, of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 @Component({
     selector: 'lib-chip-autocomplete',
@@ -53,18 +53,7 @@ export class ChipAutocompleteComponent implements OnInit {
     ngOnInit(): void {
         this.control.valueChanges.pipe(startWith(this.control.value)).subscribe(v => {
             this.options = v;
-            // this.markChanged();
         });
-    }
-
-    ngOnChanges(): void {
-        console.log('changes', this.control.value);
-    }
-
-    private markChanged(): void {
-        this.control.updateValueAndValidity();
-        this.control.markAsDirty();
-        this.control.markAsTouched();
     }
 
     add(event: MatChipInputEvent): void {
@@ -73,8 +62,7 @@ export class ChipAutocompleteComponent implements OnInit {
 
         // Add our fruit
         if ((value || '').trim()) {
-            this.control.setValue([...this.options, value.trim()]);
-            this.markChanged();
+            this.updateValue([...this.options, value.trim()]);
         }
 
         // Reset the input value
@@ -87,24 +75,27 @@ export class ChipAutocompleteComponent implements OnInit {
         const index = this.control.value.indexOf(i);
 
         if (index >= 0) {
-            this.control.value.splice(index, 1);
-            this.markChanged();
+            this.updateValue(this.control.value.filter(v => v !== i));
         }
     }
 
     select(event: MatAutocompleteSelectedEvent): void {
-        this.control.setValue([...(this.control.value || []), event.option.value]);
-        this.markChanged();
+        this.updateValue([...(this.control.value || []), event.option.value]);
         this.optInput.nativeElement.value = '';
         this.inputCtrl.setValue(null);
     }
 
-    private _filter(value: string): string[] {
-        const filterValue = value?.toLowerCase();
-
-        return this.valueOptions.filter(o => o?.value?.toLowerCase().includes(filterValue));
+    getLabel(value: string): void {
+        const hasLabel = this.valueOptions?.find(v => v.value === value);
+        return hasLabel ? hasLabel.display : value;
     }
 
+    private updateValue(value: string[]) {
+        this.control.markAsDirty();
+        this.control.markAsTouched();
+        this.control.setValue(value);
+        this.control.updateValueAndValidity();
+    }
 }
 
 

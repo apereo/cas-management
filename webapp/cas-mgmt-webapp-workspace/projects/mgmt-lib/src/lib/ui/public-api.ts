@@ -21,6 +21,7 @@ export * from './publish/publish.component';
 export * from './reject/reject.component';
 export * from './revert/revert.component';
 export * from './select-input/select-input.component';
+export * from './chip-autocomplete/chip-autocomplete.component';
 export * from './spinner/spinner.component';
 export * from './spinner/spinner.service';
 export * from './text-input/text-input.component';

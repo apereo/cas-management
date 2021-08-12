@@ -61,6 +61,7 @@ import {PublishComponent} from './publish/publish.component';
 import {RevertComponent} from './revert/revert.component';
 import {AcceptComponent} from './accept/accept.component';
 import {RejectComponent} from './reject/reject.component';
+import { ChipAutocompleteComponent, MatChipAutocompleteTrigger } from './chip-autocomplete/chip-autocomplete.component';
 
 /**
  * UI Module.
@@ -127,6 +128,7 @@ import {RejectComponent} from './reject/reject.component';
     RejectComponent,
     RevertComponent,
     SelectInputComponent,
+    ChipAutocompleteComponent,
     SpinnerComponent,
     TextInputComponent,
     TimeoutComponent,
@@ -135,6 +137,7 @@ import {RejectComponent} from './reject/reject.component';
     ViewComponent,
     OAuthAddComponent,
     SamlAddComponent,
+    MatChipAutocompleteTrigger
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ServiceInterceptor, multi: true}
@@ -158,6 +161,7 @@ import {RejectComponent} from './reject/reject.component';
     RejectComponent,
     RevertComponent,
     SelectInputComponent,
+    ChipAutocompleteComponent,
     SpinnerComponent,
     TextInputComponent,
     TimeoutComponent,
@@ -165,7 +169,8 @@ import {RejectComponent} from './reject/reject.component';
     UnknownComponent,
     ViewComponent,
     OAuthAddComponent,
-    SamlAddComponent
+    SamlAddComponent,
+    MatChipAutocompleteTrigger
   ]
 })
 export class UiModule { }

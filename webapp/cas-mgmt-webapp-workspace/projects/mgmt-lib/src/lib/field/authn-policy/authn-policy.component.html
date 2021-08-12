@@ -13,7 +13,6 @@
                [matChipInputFor]="requiredChipList"
                matChipInputAddOnBlur="true"
                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matAutocomplete]="autoRequiredHandler"
                (matChipInputTokenEnd)="addRequiredHandler($event)"
                #requiredHandlerInput>
       </mat-form-field>
@@ -30,9 +29,9 @@
       </mat-chip-list>
     </div>
 
-<!--    <mat-autocomplete #autoRequiredHandler="matAutocomplete" (optionSelected)="selectionRequiredHandler($event);">-->
-<!--      <mat-option *ngFor="let h of requiredAuthenticationHandlers" [value]="h">{{ h }}</mat-option>-->
-<!--    </mat-autocomplete>-->
+    <!--<mat-autocomplete #autoRequiredHandler="matAutocomplete" (optionSelected)="selectionRequiredHandler($event);">
+      <mat-option *ngFor="let h of requiredAuthenticationHandlers" [value]="h">{{ h }}</mat-option>
+    </mat-autocomplete>-->
   </div>
 
 
@@ -47,7 +46,6 @@
                [matChipInputFor]="excludedChipList"
                matChipInputAddOnBlur="true"
                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matAutocomplete]="autoExcludedHandler"
                (matChipInputTokenEnd)="addExcludedHandler($event)"
                #excludedHandlerInput>
       </mat-form-field>
@@ -64,9 +62,9 @@
       </mat-chip-list>
     </div>
 
-<!--    <mat-autocomplete #autoExcludedHandler="matAutocomplete" (optionSelected)="selectionExcludedHandler($event);">-->
-<!--      <mat-option *ngFor="let h of excludedAuthenticationHandlers" [value]="h">{{ h }}</mat-option>-->
-<!--    </mat-autocomplete>-->
+  <!--<mat-autocomplete #autoExcludedHandler="matAutocomplete" (optionSelected)="selectionExcludedHandler($event);">
+      <mat-option *ngFor="let h of excludedAuthenticationHandlers" [value]="h">{{ h }}</mat-option>
+  </mat-autocomplete>-->
 
 
   </div>

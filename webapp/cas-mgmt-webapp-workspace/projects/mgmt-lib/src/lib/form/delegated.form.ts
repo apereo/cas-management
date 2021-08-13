@@ -1,5 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import {RegisteredServiceDelegatedAuthenticationPolicy} from '@apereo/mgmt-lib/src/lib/model';
+import {delegatedAuthenticationPolicyFactory, RegisteredServiceDelegatedAuthenticationPolicy} from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group for displaying and updating delegated authentication policies.
@@ -25,10 +25,11 @@ export class DelegatedForm extends FormGroup {
    *
    * @param policy - RegisteredServiceDelegatedAuthenticationPolicy
    */
-  map(policy: RegisteredServiceDelegatedAuthenticationPolicy) {
+  map(policy: RegisteredServiceDelegatedAuthenticationPolicy = delegatedAuthenticationPolicyFactory({}) as RegisteredServiceDelegatedAuthenticationPolicy): RegisteredServiceDelegatedAuthenticationPolicy {
     policy.allowedProviders = this.allowedProviders.value;
     policy.permitUndefined = this.permitUndefined.value;
     policy.exclusive = this.exclusive.value;
+    return policy;
   }
 
 }

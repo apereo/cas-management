@@ -95,7 +95,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     this.controls.showEdit = this.showEdit();
-    console.log('changes', this.controls.showEdit);
   }
 
   /**
@@ -117,6 +116,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * @param id - assigned id of the service returned from the server.
    */
   handleSave(id: number) {
+    console.log('handleSave', id);
     const hasIdAssignedAlready = this.service.registeredService.id && this.service.registeredService.id > 0;
 
     if (!hasIdAssignedAlready && id && id !== -1) {
@@ -154,7 +154,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.service.registeredService = service;
     this.service.form = new ServiceForm(service);
     this.service.form.statusChanges.subscribe((s) => {
-      console.log('form status changes', s);
       this.controls.showEdit = this.showEdit();
     });
     this.setNav();
@@ -204,7 +203,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
       this.tabList.push(['attrRelease', 'Attribute Release']);
     }
     this.tabList.push(['accessstrategy', 'Access Strategy']);
-    this.tabList.push(['delegated', 'Delegated Authentication']);
+    // this.tabList.push(['delegated', 'Delegated Authentication']);
     this.tabList.push(['sso', 'SSO Policy']);
     this.tabList.push(['authnPolicy', 'Authentication Policy']);
     this.tabList.push(['acceptableUsagePolicy', 'Acceptable Usage Policy']);
@@ -303,7 +302,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Returns true if the user changed any value in the form.
    */
   dirty(): boolean {
-    console.log('dirty', this.service.form.dirty);
     if (this.service.form.dirty) {
       return true;
     }

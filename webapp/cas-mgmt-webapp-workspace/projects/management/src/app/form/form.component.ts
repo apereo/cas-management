@@ -116,7 +116,6 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * @param id - assigned id of the service returned from the server.
    */
   handleSave(id: number) {
-    console.log('handleSave', id);
     const hasIdAssignedAlready = this.service.registeredService.id && this.service.registeredService.id > 0;
 
     if (!hasIdAssignedAlready && id && id !== -1) {

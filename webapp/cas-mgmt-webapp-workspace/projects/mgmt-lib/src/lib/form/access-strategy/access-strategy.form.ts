@@ -2,6 +2,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {PrincipalRepoType, RegisteredServiceAccessStrategy} from '@apereo/mgmt-lib/src/lib/model';
 import {AttributesForm} from '../attributes.form';
 import {PrincipalRepoForm} from '../attribute-release/principal-repo.form';
+import { DelegatedForm } from '../delegated.form';
 
 /**
  * Form group for displaying and updating access strategy policies.
@@ -17,6 +18,7 @@ export class AccessStrategyForm extends FormGroup {
   get caseInsensitive() { return this.get('caseInsensitive') as FormControl; }
   get rejectedAttributes() { return this.get('rejectedAttributes') as AttributesForm; }
   get principalRepo() { return this.get('repo') as PrincipalRepoForm; }
+  get delegatedAuthenticationPolicy() { return this.get('delegatedAuthenticationPolicy') as DelegatedForm; }
 
   constructor(strategy: RegisteredServiceAccessStrategy) {
     super({
@@ -25,7 +27,8 @@ export class AccessStrategyForm extends FormGroup {
       requiredAttributes: new AttributesForm(strategy?.requiredAttributes),
       caseInsensitive: new FormControl(strategy?.caseInsensitive),
       rejectedAttributes: new AttributesForm(strategy?.rejectedAttributes),
-      repo: new PrincipalRepoForm(strategy?.principalAttributesRepository)
+      repo: new PrincipalRepoForm(strategy?.principalAttributesRepository),
+      delegatedAuthenticationPolicy: new DelegatedForm(strategy?.delegatedAuthenticationPolicy)
     });
     this.principalRepoType = new FormControl(PrincipalRepoType.DEFAULT);
   }
@@ -41,5 +44,6 @@ export class AccessStrategyForm extends FormGroup {
     strategy.requiredAttributes = this.requiredAttributes.map();
     strategy.caseInsensitive = this.caseInsensitive.value;
     strategy.rejectedAttributes = this.rejectedAttributes.map();
+    strategy.delegatedAuthenticationPolicy = this.delegatedAuthenticationPolicy.map();
   }
 }

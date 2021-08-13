@@ -1,9 +1,10 @@
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, SimpleChanges, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import {DelegatedForm, FormService} from '@apereo/mgmt-lib/src/lib/form';
 import {AppConfigService} from '@apereo/mgmt-lib/src/lib/ui';
+import { RegisteredServiceDelegatedAuthenticationPolicy } from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Component for displaying allowed delegated authenticators.
@@ -32,7 +33,18 @@ export class DelegatedComponent {
   providers: string[];
 
   constructor(public config: AppConfigService, private service: FormService) {
-    let policy = service?.registeredService?.accessStrategy?.delegatedAuthenticationPolicy;
+    this.reset(this.service?.registeredService?.accessStrategy?.delegatedAuthenticationPolicy);
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.form) {
+      this.reset(this.form.value);
+    }
+  }
+
+  reset(policy: RegisteredServiceDelegatedAuthenticationPolicy): void {
+    this.delegatedAuthn = [];
     policy?.allowedProviders?.forEach(provider => {
       this.delegatedAuthn.push(provider);
     });
@@ -50,9 +62,9 @@ export class DelegatedComponent {
     if ((value || '').trim()) {
       this.delegatedAuthn.push(value.trim());
       this.autoTrigger.closePanel();
-      this.form.allowedProviders.setValue(this.delegatedAuthn);
       this.form.allowedProviders.markAsTouched();
       this.form.allowedProviders.markAsDirty();
+      this.form.allowedProviders.setValue(this.delegatedAuthn);
     }
 
     if (input) {
@@ -70,9 +82,9 @@ export class DelegatedComponent {
 
     if (index >= 0) {
       this.delegatedAuthn.splice(index, 1);
-      this.form.allowedProviders.setValue(this.delegatedAuthn);
       this.form.allowedProviders.markAsTouched();
       this.form.allowedProviders.markAsDirty();
+      this.form.allowedProviders.setValue(this.delegatedAuthn);
     }
   }
 
@@ -85,9 +97,9 @@ export class DelegatedComponent {
     const value =  val.option.value;
     if ((value || '').trim()) {
       this.delegatedAuthn.push(value.trim());
-      this.form.allowedProviders.setValue(this.delegatedAuthn);
       this.form.allowedProviders.markAsTouched();
       this.form.allowedProviders.markAsDirty();
+      this.form.allowedProviders.setValue(this.delegatedAuthn);
     }
 
     if (this.providerInput) {

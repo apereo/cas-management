@@ -38,6 +38,7 @@ export class FiltersComponent {
    */
   removeFilter() {
     this.form.removeAt(this.selectedFilter);
+    this.form.markAsDirty();
     this.form.markAsTouched();
   }
 
@@ -111,6 +112,8 @@ export class FiltersComponent {
     const up = this.form.controls[index];
     this.form.controls[index] = this.form.controls[index - 1];
     this.form.controls[index - 1] = up;
+    this.form.markAsDirty();
+    this.form.markAsTouched();
   }
 
   /**
@@ -121,6 +124,8 @@ export class FiltersComponent {
     const down = this.form.controls[index];
     this.form.controls[index] = this.form.controls[index + 1];
     this.form.controls[index + 1] = down;
+    this.form.markAsDirty();
+    this.form.markAsTouched();
   }
 
   /**

@@ -1,6 +1,7 @@
 import { FormArray } from '@angular/forms';
 import { AttributeReleaseForm } from './attribute-release.form';
 import { ChainingAttributeReleasePolicy } from '@apereo/mgmt-lib/src/lib/model';
+import { ChainedPolicyForm } from './chained-policy.form';
 
 /**
  * Form group to display and update fields for Consent.
@@ -23,6 +24,6 @@ export class ChainingForm extends AttributeReleaseForm {
      */
     map(policy: ChainingAttributeReleasePolicy) {
         super.map(policy);
-        policy.policies = this.policies.value;
+        policy.policies = this.policies.controls.map(( c: ChainedPolicyForm ) => c.map());
     }
 }

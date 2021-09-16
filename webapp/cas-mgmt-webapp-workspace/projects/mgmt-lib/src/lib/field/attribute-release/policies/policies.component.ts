@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ReleasePolicyType} from '@apereo/mgmt-lib/src/lib/model';
 import {AttributeReleaseForm} from '@apereo/mgmt-lib/src/lib/form';
 import {FormControl} from '@angular/forms';
@@ -13,8 +13,8 @@ import {FormControl} from '@angular/forms';
   templateUrl: './policies.component.html'
 })
 export class PoliciesComponent {
-  type: ReleasePolicyType;
-  TYPE = ReleasePolicyType;
+  selectedType: ReleasePolicyType;
+  TYPE_OPTIONS = ReleasePolicyType;
   chainableTypes = [
     { value: ReleasePolicyType.SCRIPT, display: 'SCRIPT' },
     { value: ReleasePolicyType.GROOVY, display: 'GROOVY' },

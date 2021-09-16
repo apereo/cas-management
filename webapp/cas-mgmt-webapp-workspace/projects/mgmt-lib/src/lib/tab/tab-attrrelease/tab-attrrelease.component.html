@@ -1,7 +1,6 @@
 <div [formGroup]="tab" fxLayout="column" fxLayoutGap="20px" style="padding-top: 10px; padding-bottom: 20px;">
-  <lib-card i18n-heading heading="Attribute Release Policy">
-    <lib-attribute-release-policies [typeControl]="tab.type" [form]="tab.policy"></lib-attribute-release-policies>
-  </lib-card>
+  <lib-attribute-release-policies [typeControl]="tab.type" [form]="tab.policy"></lib-attribute-release-policies>
+  
   <ng-container *ngIf="tab.type.value !== TYPE.CHAINING">
     <lib-card i18n-heading heading="Attribute Release Options" *ngIf="tab.type.value !== TYPE.DENY_ALL">
       <lib-attribute-release-checks [form]="tab.policy.checks"></lib-attribute-release-checks>

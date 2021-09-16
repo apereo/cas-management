@@ -1,0 +1,11 @@
+.no-shadow {
+    box-shadow: none;
+}
+
+.bordered {
+    border: 1px solid #EEEEEE;
+}
+
+.mt-2 {
+    margin-top: 0.75rem;
+}

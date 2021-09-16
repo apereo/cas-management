@@ -394,7 +394,7 @@ export class EduPersonTargetedIdAttributeReleasePolicy extends ReturnAllowedAttr
 }
 
 export class ChainingAttributeReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
-  static cName = 'org.apereo.cas.support.saml.services.ChainingAttributeReleasePolicy';
+  static cName = 'org.apereo.cas.services.ChainingAttributeReleasePolicy';
 
   policies: RegisteredServiceAttributeReleasePolicy[];
 

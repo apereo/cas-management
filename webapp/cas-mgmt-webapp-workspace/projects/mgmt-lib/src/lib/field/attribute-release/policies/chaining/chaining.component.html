@@ -1,32 +1,13 @@
-<!--<mat-tab-group [(selectedIndex)]="selectedTab">
-    <mat-tab *ngFor="let row of this.form.rows(); let i = index;" [label]="getTabHeader(i)">
-        <div formGroupName="{{i}}" fxLayout="column" style="overflow: hidden">
-        </div>
-    </mat-tab>
-</mat-tab-group>-->
-<div fxLayout="row">
+
+<div *ngIf="form.value.policies?.length > 0">
+    <ng-controller *ngFor="let p of form.policies.controls; let first=last;let i = index" [expanded]="last">
+        <lib-chained-attribute-release-policies [typeControl]="p.typeControl" [form]="p.policy" ></lib-chained-attribute-release-policies>
+    </ng-controller>
+</div>
+<div class="max-width: 550px; margin-right: auto; margin-left: auto;">
     <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
         <button mat-mini-fab (click)="addPolicy()">
             <mat-icon>add</mat-icon>
         </button>
     </div>
-</div>
-
-<div *ngIf="form.policies">
-    <mat-accordion #accordian style="width:600px;" multi="true">
-        <mat-expansion-panel *ngFor="let policy of form.policies; let last=last;let i = index" [expanded]="last">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <button [matMenuTriggerFor]="panelMenu" (click)="selectedPolicy = i" mat-icon-button>
-                        <mat-icon style="font-size: medium;">menu</mat-icon>
-                    </button>
-                </mat-panel-title>
-                <mat-panel-description>
-                    <span>{{ (policy.timeValue.value || '') + ' ' + (policy.timeUnit.value || '')
-                        }}</span>
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <lib-attribute-release-policies [form]="policy"></lib-attribute-release-policies>
-        </mat-expansion-panel>
-    </mat-accordion>
 </div>

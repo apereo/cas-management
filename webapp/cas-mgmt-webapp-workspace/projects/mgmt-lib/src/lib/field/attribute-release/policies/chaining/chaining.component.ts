@@ -1,7 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { attributeReleaseFactory } from '@apereo/mgmt-lib/src/lib/model';
-import { ChainingForm, AttributeReleaseForm } from '@apereo/mgmt-lib/src/lib/form';
-// import { ChainingReleaseForm } from '@apereo/mgmt-lib/src/lib/form';
+import { ChainingForm, ChainedPolicyForm } from '@apereo/mgmt-lib/src/lib/form';
 
 /**
  * Component to display Groovy Attribute Release policy.
@@ -10,9 +9,10 @@ import { ChainingForm, AttributeReleaseForm } from '@apereo/mgmt-lib/src/lib/for
  */
 @Component({
     selector: 'lib-chaining',
-    templateUrl: './chaining.component.html'
+    templateUrl: './chaining.component.html',
+    styleUrls: ['./chaining.component.css']
 })
-export class ChainingComponent implements OnChanges {
+export class ChainingComponent {
 
     selectedPolicy: number;
 
@@ -25,13 +25,9 @@ export class ChainingComponent implements OnChanges {
     constructor() {
     }
 
-    ngOnChanges() {
-        //console.log(this.form);
-    }
-
     addPolicy() {
-        this.form.policies.push(new AttributeReleaseForm(attributeReleaseFactory()));
-        console.log(this.form);
+        const policy = new ChainedPolicyForm(attributeReleaseFactory());
+        this.form.policies.push(policy);
     }
 
     /**

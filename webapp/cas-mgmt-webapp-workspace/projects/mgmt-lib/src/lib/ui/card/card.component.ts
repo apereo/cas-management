@@ -15,6 +15,9 @@ export class CardComponent {
   showContent = true;
 
   @Input()
+  flex: string = '0 1 550px';
+
+  @Input()
   heading: string;
 
   @Input()

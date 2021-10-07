@@ -160,6 +160,9 @@ export class TabReleaseForm extends FormGroup implements MgmtFormGroup<AbstractR
     if (SamlIdpRegisteredServiceAttributeReleasePolicy.instanceOf(policy)) {
       return ReleasePolicyType.SAML_IDP;
     }
+    if (ChainingAttributeReleasePolicy.instanceOf(policy)) {
+      return ReleasePolicyType.CHAINING;
+    }
     return ReleasePolicyType.DENY_ALL;
   }
 }

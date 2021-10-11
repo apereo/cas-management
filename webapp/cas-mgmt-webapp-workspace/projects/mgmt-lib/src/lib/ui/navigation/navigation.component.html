@@ -8,7 +8,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false">
     <mat-toolbar color="primary">
-      <a class="brand" href="index.html" target="_self" id="homepageUrlLink">
+      <a class="brand" [routerLink]="['/']" target="_self" id="homepageUrlLink">
         <img src="../images/logo_cas.png" alt="CAS" />
       </a>
     </mat-toolbar>

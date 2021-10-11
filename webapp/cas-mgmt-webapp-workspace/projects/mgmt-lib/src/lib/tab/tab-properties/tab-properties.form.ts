@@ -47,7 +47,7 @@ export class TabPropertiesForm extends FormGroup implements MgmtFormGroup<Abstra
   unpack(props: Map<string, DefaultRegisteredServiceProperty>): Map<string, string[]> {
     const ret = new Map<string, string[]>();
     Object.keys(props).forEach(k => {
-      ret.set(k, props[k].values);
+      ret.set(k, props[k]?.values);
     });
     return ret;
   }

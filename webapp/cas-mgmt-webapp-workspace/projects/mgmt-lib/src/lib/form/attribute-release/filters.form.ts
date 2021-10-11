@@ -12,11 +12,19 @@ import {AttributesForm} from '../attributes.form';
 /**
  * Base Filter form group.
  */
-export class FilterForm extends FormGroup {
+export abstract class FilterForm extends FormGroup {
+  private readonly _filter: RegisteredServiceAttributeFilter;
 
-  constructor(form: any, public type: FilterType) {
+  protected constructor(form: any, public type: FilterType, filter: RegisteredServiceAttributeFilter) {
     super(form);
+    this._filter = filter;
   }
+
+  get filter() : RegisteredServiceAttributeFilter {
+    return this._filter;
+  }
+
+  abstract map() : RegisteredServiceAttributeFilter;
 }
 
 /**
@@ -29,7 +37,14 @@ export class RegexFilterForm extends FilterForm {
   constructor(filter: RegisteredServiceRegexAttributeFilter) {
     super({
       pattern: new FormControl(filter?.pattern)
-    }, FilterType.REGEX);
+    }, FilterType.REGEX, filter);
+  }
+
+
+  map(): RegisteredServiceAttributeFilter {
+    let f = new RegisteredServiceRegexAttributeFilter();
+    f.pattern = this.pattern.value;
+    return f;
   }
 }
 
@@ -43,7 +58,13 @@ export class ScriptFilterForm extends FilterForm {
   constructor(filter: RegisteredServiceScriptedAttributeFilter) {
     super({
       script: new FormControl(filter?.script)
-    }, FilterType.SCRIPTED);
+    }, FilterType.SCRIPTED, filter);
+  }
+
+  map(): RegisteredServiceAttributeFilter {
+    let f = new RegisteredServiceScriptedAttributeFilter();
+    f.script = this.script.value;
+    return f;
   }
 }
 
@@ -60,19 +81,20 @@ export class FilterMappedRegExForm extends FilterForm {
   constructor(filter: RegisteredServiceMappedRegexAttributeFilter, type?: FilterType) {
     super({
       patterns: new AttributesForm(filter?.patterns),
-      caseInsensitive: new FormControl(filter?.caseInsensitive),
+      caseInsensitive: new FormControl(filter?.caseInsensitive ?? true),
       completeMatch: new FormControl(filter?.completeMatch),
       excludeUnmappedAttributes: new FormControl(filter?.excludeUnmappedAttributes)
-    }, type ? type : FilterType.MAPPED_REGEX);
+    }, type ? type : FilterType.MAPPED_REGEX, filter);
   }
 
-  /**
-   * Maps the form values to the passed DTO.
-   *
-   * param filter - RegisteredServiceMappedRegexAttributeFilter
-   */
-  map(filter: RegisteredServiceMappedRegexAttributeFilter) {
-    filter.patterns = this.patterns.value;
+  map(): RegisteredServiceAttributeFilter {
+    let filter = new RegisteredServiceMappedRegexAttributeFilter();
+    this.mapDetails(filter);
+    return filter;
+  }
+
+  protected mapDetails(filter: RegisteredServiceMappedRegexAttributeFilter) {
+    filter.patterns = this.patterns.mapString();
     filter.excludeUnmappedAttributes = this.excludeUnmappedAttributes.value;
     filter.completeMatch = this.completeMatch.value;
     filter.caseInsensitive = this.caseInsensitive.value;
@@ -87,6 +109,12 @@ export class FilterMappedMutantForm extends FilterMappedRegExForm {
   constructor(filter: RegisteredServiceMutantRegexAttributeFilter) {
     super(filter, FilterType.MUTANT_REGEX);
   }
+
+  map(): RegisteredServiceAttributeFilter {
+    let filter = new RegisteredServiceMutantRegexAttributeFilter();
+    this.mapDetails(filter);
+    return filter;
+  }
 }
 
 /**
@@ -96,6 +124,12 @@ export class FilterMappedReverseForm extends FilterMappedRegExForm {
 
   constructor(filter: RegisteredServiceReverseMappedRegexAttributeFilter) {
     super(filter, FilterType.REVERSE_MAPPED_REGEX);
+  }
+
+  map(): RegisteredServiceAttributeFilter {
+    let filter = new RegisteredServiceReverseMappedRegexAttributeFilter();
+    this.mapDetails(filter);
+    return filter;
   }
 }
 
@@ -144,10 +178,18 @@ export class ChainingFilterForm extends FormArray {
     }
   }
 
-  /**
-   * stub
-   */
   map(): RegisteredServiceAttributeFilter {
+    if (this.length > 0) {
+      let chain = new RegisteredServiceChainingAttributeFilter();
+      chain.order = 0;
+      for (let i = 0; i < this.length; i++) {
+        let form = this.at(i) as FilterForm;
+        let filter = form.map();
+        filter.order = i;
+        chain.filters.push(filter);
+      }
+      return chain;
+    }
     return null;
   }
 }

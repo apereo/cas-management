@@ -26,7 +26,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ChainedPoliciesComponent } from './policies/chained-policies.component';
+import { ChainedPoliciesComponent } from './policies/chaining/chained-policy.component';
 
 /**
  * Module to lazy-load Attribute Release functionality.

@@ -1,4 +1,4 @@
-<lib-card heading="Chained Policy" *ngIf="typeControl" flex="0 1 550px" class="mt-3">
+<div *ngIf="typeControl">
     <lib-select-input [control]="typeControl" label="Policy" [valueOptions]="types"></lib-select-input>
 
     <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.SCRIPT">
@@ -51,6 +51,6 @@
             <lib-attribute-release-principal-repo [form]="form.principalRepo" [typeControl]="form.principalRepoType"></lib-attribute-release-principal-repo>
         </div>
     </ng-container>
-</lib-card>
+</div>
 
 

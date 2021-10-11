@@ -33,15 +33,14 @@ export class ChainingComponent {
     /**
    * Removed the selected poilicy from the chain.
    */
-    removePolicy() {
-        this.form.policies.removeAt(this.selectedPolicy);
+    removePolicy(i) {
+        this.form.policies.removeAt(i);
     }
 
     /**
    * Moves the selected policy up the chain.
    */
-    moveUp() {
-        const index = this.selectedPolicy;
+    moveUp(index) {
         const chain = this.form.policies;
         const up = chain.controls[index];
         chain.controls[index] = chain.controls[index - 1];
@@ -53,8 +52,7 @@ export class ChainingComponent {
     /**
      * Moves the selected policy down the chain.
      */
-    moveDown() {
-        const index = this.selectedPolicy;
+    moveDown(index) {
         const chain = this.form.policies;
         const down = chain.controls[index];
         chain.controls[index] = chain.controls[index + 1];

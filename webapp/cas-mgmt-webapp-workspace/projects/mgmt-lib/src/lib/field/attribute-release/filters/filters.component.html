@@ -1,8 +1,7 @@
 <div [formGroup]="form">
   <div>
 <mat-accordion #accordian style="width:600px;" multi="true">
-  <mat-expansion-panel *ngFor="let filter of form.controls;let last=last;let i = index" style="width:630px;left:-35px;position:relative;"
-       [expanded]="last" [formGroupName]="i">
+  <mat-expansion-panel *ngFor="let filter of form.controls;let last=last;let i = index" [expanded]="last" [formGroupName]="i">
     <mat-expansion-panel-header>
       <mat-panel-title>
           <button [matMenuTriggerFor]="panelMenu" (click)="selectedFilter = i;" mat-icon-button style="width:auto;height:auto;line-height: 0px!important;">

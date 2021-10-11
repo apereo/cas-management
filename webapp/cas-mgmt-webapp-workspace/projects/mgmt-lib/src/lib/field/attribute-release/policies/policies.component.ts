@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ReleasePolicyType} from '@apereo/mgmt-lib/src/lib/model';
 import {AttributeReleaseForm} from '@apereo/mgmt-lib/src/lib/form';
 import {FormControl} from '@angular/forms';

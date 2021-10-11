@@ -9,3 +9,15 @@
 .mt-2 {
     margin-top: 0.75rem;
 }
+
+.chained-policy-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.chained-policy {
+    max-width: 680px;
+    margin-right: auto;
+    margin-left: auto;
+}

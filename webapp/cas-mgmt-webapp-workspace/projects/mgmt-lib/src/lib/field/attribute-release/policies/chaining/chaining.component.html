@@ -1,13 +1,39 @@
 
-<div *ngIf="form.value.policies?.length > 0">
-    <ng-controller *ngFor="let p of form.policies.controls; let first=last;let i = index" [expanded]="last">
-        <lib-chained-attribute-release-policies [typeControl]="p.typeControl" [form]="p.policy" ></lib-chained-attribute-release-policies>
+<div *ngIf="form.value.policies?.length > 0" class="chained-policy-container" style="width:680px; margin: auto;">
+    <ng-controller *ngFor="let p of form.policies.controls; let first=f;let last=l;let i = index">
+        <div *ngIf="p.policy" class="mt-2">
+            <mat-accordion #accordian multi="true" class="chained-policy">
+                <mat-expansion-panel style="width:680px;" [expanded]="last">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <button [matMenuTriggerFor]="panelMenu" (click)="selectedPolicy = i" mat-icon-button
+                                style="width:auto;height:auto;line-height: 0px!important;">
+                                <mat-icon style="font-size: medium;">menu</mat-icon>
+                            </button>
+                            Chained Policy
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <lib-chained-attribute-release-policies [typeControl]="p.typeControl" [form]="p.policy">
+                    </lib-chained-attribute-release-policies>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        
+        <mat-menu #panelMenu>
+            <button mat-menu-item (click)="moveUp(i)" i18n disabled="f">Move UP</button>
+            <button mat-menu-item (click)="moveDown(i)" i18n disabled="l">Move Down</button>
+            <button mat-menu-item (click)="removePolicy(i)" i18n>Remove</button>
+        </mat-menu>
+        
     </ng-controller>
-</div>
-<div class="max-width: 550px; margin-right: auto; margin-left: auto;">
-    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
-        <button mat-mini-fab (click)="addPolicy()">
-            <mat-icon>add</mat-icon>
-        </button>
+
+
+    <div class="max-width: 550px;">
+        <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
+            <button mat-mini-fab (click)="addPolicy()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
     </div>
 </div>
+

@@ -1,6 +1,6 @@
 
 <div *ngIf="form.value.policies?.length > 0" class="chained-policy-container" style="width:680px; margin: auto;">
-    <ng-controller *ngFor="let p of form.policies.controls; let first=f;let last=l;let i = index">
+    <ng-controller *ngFor="let p of form.policies.controls; first as isFirst;last as isLast; index as i">
         <div *ngIf="p.policy" class="mt-2">
             <mat-accordion #accordian multi="true" class="chained-policy">
                 <mat-expansion-panel style="width:680px;" [expanded]="last">
@@ -20,15 +20,15 @@
         </div>
         
         <mat-menu #panelMenu>
-            <button mat-menu-item (click)="moveUp(i)" i18n disabled="f">Move UP</button>
-            <button mat-menu-item (click)="moveDown(i)" i18n disabled="l">Move Down</button>
+            <button mat-menu-item (click)="moveUp(i)" i18n [disabled]="isFirst">Move UP</button>
+            <button mat-menu-item (click)="moveDown(i)" i18n [disabled]="isLast">Move Down</button>
             <button mat-menu-item (click)="removePolicy(i)" i18n>Remove</button>
         </mat-menu>
         
     </ng-controller>
 
 
-    <div class="max-width: 550px;">
+    <div style="max-width: 550px; margin-left: auto; margin-top: 1rem;">
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxLayoutGap="10px">
             <button mat-mini-fab (click)="addPolicy()">
                 <mat-icon>add</mat-icon>

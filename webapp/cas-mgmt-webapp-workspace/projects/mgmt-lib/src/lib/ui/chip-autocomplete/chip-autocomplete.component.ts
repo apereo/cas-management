@@ -64,7 +64,9 @@ export class ChipAutocompleteComponent implements OnInit {
 
         // Add our fruit
         if ((value || '').trim()) {
-            this.updateValue([...this.options, value.trim()]);
+            if (this.options.indexOf(value.trim()) < 0) {
+                this.updateValue([...this.options, value?.trim()]);
+            }
         }
 
         // Reset the input value

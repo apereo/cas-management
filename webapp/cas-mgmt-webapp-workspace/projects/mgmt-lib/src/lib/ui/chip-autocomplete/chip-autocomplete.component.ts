@@ -52,7 +52,9 @@ export class ChipAutocompleteComponent implements OnInit {
 
     ngOnInit(): void {
         this.control.valueChanges.pipe(startWith(this.control.value)).subscribe(v => {
-            this.options = v;
+            if (v) {
+                this.options = v;
+            }
         });
     }
 

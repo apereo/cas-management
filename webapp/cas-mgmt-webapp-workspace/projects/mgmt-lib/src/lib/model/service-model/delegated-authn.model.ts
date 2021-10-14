@@ -33,3 +33,7 @@ export class DefaultRegisteredServiceDelegatedAuthenticationPolicy extends Regis
       this['@class'] = DefaultRegisteredServiceDelegatedAuthenticationPolicy.cName;
     }
 }
+
+export function delegatedAuthenticationPolicyFactory (policy: any): RegisteredServiceDelegatedAuthenticationPolicy {
+  return new DefaultRegisteredServiceDelegatedAuthenticationPolicy(policy);
+}

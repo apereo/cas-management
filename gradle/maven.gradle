@@ -166,8 +166,8 @@ ext.createPom = { pom, project ->
 
 ext.createPomRepositories = { node ->
     def repositories = node.appendNode("repositories")
-
-    repository = repositories.appendNode("repository")
+   
+    def repository = repositories.appendNode("repository")
     repository.appendNode("id", "shib-release")
     repository.appendNode("url", "https://build.shibboleth.net/nexus/content/repositories/releases")
     repository.appendNode("releases").appendNode("enabled", "true")
@@ -183,4 +183,3 @@ ext.createPomRepositories = { node ->
     repository.appendNode("snapshots").appendNode("enabled", "true")
 
 }
-

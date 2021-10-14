@@ -2,7 +2,9 @@
  * Abstract class for RegisteredServiceAttributeFilter.
  */
 export abstract class RegisteredServiceAttributeFilter {
-  constructor() {
+  order: number;
+
+  protected constructor() {
   }
 }
 
@@ -27,8 +29,9 @@ export class RegisteredServiceChainingAttributeFilter extends RegisteredServiceA
     super();
     const f: RegisteredServiceChainingAttributeFilter = RegisteredServiceChainingAttributeFilter.instanceof(filter)
       ? filter as RegisteredServiceChainingAttributeFilter : undefined;
-    this.filters = f?.filters;
+    this.filters = f?.filters || [];
     this['@class'] = RegisteredServiceChainingAttributeFilter.cName;
+    this.order = 0;
   }
 }
 
@@ -38,7 +41,6 @@ export class RegisteredServiceChainingAttributeFilter extends RegisteredServiceA
 export class RegisteredServiceRegexAttributeFilter extends RegisteredServiceAttributeFilter {
   static cName = 'org.apereo.cas.services.support.RegisteredServiceRegexAttributeFilter';
 
-  order: number;
   pattern: string;
 
   /**
@@ -70,7 +72,6 @@ export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServi
   excludeUnmappedAttributes: boolean;
   caseInsensitive: boolean;
   completeMatch: boolean;
-  order: number;
 
   /**
    * Returns true if the passed object is an instance of RegisteredServiceMappedRegexAttributeFilter.
@@ -87,7 +88,7 @@ export class RegisteredServiceMappedRegexAttributeFilter extends RegisteredServi
       ? filter as RegisteredServiceMappedRegexAttributeFilter : undefined;
     this.patterns = f?.patterns;
     this.excludeUnmappedAttributes = f?.excludeUnmappedAttributes ?? false;
-    this.caseInsensitive = f?.caseInsensitive ?? false;
+    this.caseInsensitive = f?.caseInsensitive ?? true;
     this.completeMatch = f?.completeMatch ?? false;
     this.order = f?.order;
     this['@class'] = RegisteredServiceMappedRegexAttributeFilter.cName;
@@ -143,7 +144,6 @@ export class RegisteredServiceScriptedAttributeFilter extends RegisteredServiceA
   static cName = 'org.apereo.cas.services.support.RegisteredServiceScriptedAttributeFilter';
 
   script: string;
-  order: number;
 
   /**
    * Returns true if the passed object is an instance of RegisteredServiceScriptedAttributeFilter.

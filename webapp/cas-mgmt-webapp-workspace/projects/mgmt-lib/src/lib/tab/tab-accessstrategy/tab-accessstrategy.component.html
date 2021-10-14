@@ -2,6 +2,10 @@
   <lib-card heading="Service Access Strategy" *ngIf="!groovyAccessStrategy">
     <lib-access-strategy [form]="tab.strategy" [type]="tab.type"></lib-access-strategy>
   </lib-card>
+  <lib-card heading="Delegated Authentication">
+    <lib-delegated [form]="tab.strategy.delegatedAuthenticationPolicy">
+    </lib-delegated>
+  </lib-card>
 
   <lib-card heading="Required Attributes" *ngIf="!groovyAccessStrategy">
     <lib-required [form]="tab.strategy"></lib-required>

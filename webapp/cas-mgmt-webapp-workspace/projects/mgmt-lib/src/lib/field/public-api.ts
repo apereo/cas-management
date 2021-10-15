@@ -21,6 +21,8 @@ export * from './attribute-release/policies/metadata/metadata.component';
 export * from './attribute-release/policies/restful/restful.component';
 export * from './attribute-release/policies/script/script.component';
 export * from './attribute-release/policies/policies.component';
+export * from './attribute-release/policies/chaining/chained-policy.component';
+export * from './attribute-release/policies/chaining/chaining.component';
 export * from './attribute-release/principal-repo/principal-repo.component';
 export * from './attributes/attributes.component';
 export * from './authn-policy/authn-policy.component';

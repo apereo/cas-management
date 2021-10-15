@@ -23,6 +23,8 @@ export * from './access-strategy/surrogate.form';
 export * from './attribute-release/checks.form';
 export * from './attribute-release/consent.form';
 export * from './attribute-release/filters.form';
+export * from './attribute-release/chaining.form';
+export * from './attribute-release/chained-policy.form';
 export * from './contacts.form';
 export * from './delegated.form';
 export * from './mfa/mfa.form';

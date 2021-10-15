@@ -1,30 +1,35 @@
-<lib-select-input [control]="typeControl" label="Policy" [valueOptions]="types"></lib-select-input>
-
-<ng-container *ngIf="typeControl.value == TYPE.SCRIPT">
-  <lib-script [form]="form"></lib-script>
-</ng-container>
-
-<ng-container *ngIf="typeControl.value == TYPE.GROOVY">
-  <lib-groovy [form]="form"></lib-groovy>
-</ng-container>
-
-<ng-container *ngIf="typeControl.value == TYPE.RETURN_ALLOWED">
-  <lib-allowed [form]="form"></lib-allowed>
-</ng-container>
-
-<ng-container *ngIf="typeControl.value == TYPE.RETURN_MAPPED">
-  <lib-mapped [form]="form"></lib-mapped>
-</ng-container>
-
-<ng-container *ngIf="typeControl.value == TYPE.METADATA" style="padding-top:25px;">
-  <lib-metadata-release [form]="form"></lib-metadata-release>
-</ng-container>
-
-<ng-container *ngIf="typeControl.value == TYPE.RESTFUL">
-  <lib-restful [form]="form"></lib-restful>
-</ng-container>
-
-<ng-container *ngIf="typeControl.value == TYPE.GROOVY_SAML">
-  <lib-groovy-saml [form]="form"></lib-groovy-saml>
-</ng-container>
-
+<ng-controller *ngIf="typeControl">
+  <lib-card i18n-heading heading="Attribute Release Policy">
+    <lib-select-input [control]="typeControl" label="Policy" [valueOptions]="types"></lib-select-input>
+    <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.SCRIPT">
+      <lib-script [form]="form"></lib-script>
+    </ng-container>
+    
+    <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.GROOVY">
+      <lib-groovy [form]="form"></lib-groovy>
+    </ng-container>
+    
+    <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.RETURN_ALLOWED">
+      <lib-allowed [form]="form"></lib-allowed>
+    </ng-container>
+    
+    <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.RETURN_MAPPED">
+      <lib-mapped [form]="form"></lib-mapped>
+    </ng-container>
+    
+    <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.METADATA" style="padding-top:25px;">
+      <lib-metadata-release [form]="form"></lib-metadata-release>
+    </ng-container>
+    
+    <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.RESTFUL">
+      <lib-restful [form]="form"></lib-restful>
+    </ng-container>
+    
+    <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.GROOVY_SAML">
+      <lib-groovy-saml [form]="form"></lib-groovy-saml>
+    </ng-container>
+  </lib-card>
+  <ng-container *ngIf="typeControl.value == TYPE_OPTIONS.CHAINING">
+    <lib-chaining [form]="form" [types]="chainableTypes"></lib-chaining>
+  </ng-container>
+</ng-controller>

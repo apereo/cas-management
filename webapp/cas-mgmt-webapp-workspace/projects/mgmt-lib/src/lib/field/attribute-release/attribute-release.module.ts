@@ -11,6 +11,7 @@ import {MappedComponent} from './policies/mapped/mapped.component';
 import {WsfedattrrelpoliciesModule} from '../wsfedattrrelpolocies/wsfedattrrelpolicies.module';
 import { ScriptComponent } from './policies/script/script.component';
 import { GroovyComponent } from './policies/groovy/groovy.component';
+import { ChainingComponent } from './policies/chaining/chaining.component';
 import { AllowedComponent } from './policies/allowed/allowed.component';
 import { MetadataComponent } from './policies/metadata/metadata.component';
 import { RestfulComponent } from './policies/restful/restful.component';
@@ -21,8 +22,11 @@ import {UiModule} from '@apereo/mgmt-lib/src/lib/ui';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
+import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ChainedPoliciesComponent } from './policies/chaining/chained-policy.component';
 
 /**
  * Module to lazy-load Attribute Release functionality.
@@ -40,7 +44,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatExpansionModule,
     MatMenuModule,
     MatRadioModule,
+    MatListModule,
     MatIconModule,
+    MatButtonModule,
     MatTooltipModule
   ],
   declarations: [
@@ -50,6 +56,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FilterMappedComponent,
     OidcOptionsComponent,
     PoliciesComponent,
+    ChainedPoliciesComponent,
     PrincipalRepoComponent,
     MappedComponent,
     ScriptComponent,
@@ -58,6 +65,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MetadataComponent,
     RestfulComponent,
     GroovySamlComponent,
+    ChainingComponent
   ],
   exports: [
     ChecksComponent,
@@ -66,10 +74,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FilterMappedComponent,
     OidcOptionsComponent,
     PoliciesComponent,
+    ChainedPoliciesComponent,
     PrincipalRepoComponent,
     MappedComponent,
     ScriptComponent,
     GroovyComponent,
+    ChainingComponent,
     AllowedComponent,
     MetadataComponent,
     RestfulComponent,

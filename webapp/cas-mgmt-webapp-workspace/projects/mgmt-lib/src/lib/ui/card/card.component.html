@@ -11,7 +11,7 @@
     </div>
   </mat-card-title>
   <mat-card-content>
-    <div *ngIf="showContent" fxFlex="0 1 550px" fxLayout="column" style="margin-left: 50px;">
+    <div *ngIf="showContent" [fxFlex]="flex" fxLayout="column" style="margin-left: 50px;">
       <ng-content></ng-content>
     </div>
   </mat-card-content>

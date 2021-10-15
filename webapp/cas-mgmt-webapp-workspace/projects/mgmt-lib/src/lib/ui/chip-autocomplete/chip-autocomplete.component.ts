@@ -52,7 +52,9 @@ export class ChipAutocompleteComponent implements OnInit {
 
     ngOnInit(): void {
         this.control.valueChanges.pipe(startWith(this.control.value)).subscribe(v => {
-            this.options = v;
+            if (v) {
+                this.options = v;
+            }
         });
     }
 
@@ -62,7 +64,9 @@ export class ChipAutocompleteComponent implements OnInit {
 
         // Add our fruit
         if ((value || '').trim()) {
-            this.updateValue([...this.options, value.trim()]);
+            if (this.options.indexOf(value.trim()) < 0) {
+                this.updateValue([...this.options, value?.trim()]);
+            }
         }
 
         // Reset the input value

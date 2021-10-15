@@ -25,7 +25,7 @@ buildscript {
         classpath "net.ltgt.gradle:gradle-errorprone-plugin:$gradleErrorProneVersion"
         classpath "com.github.node-gradle:gradle-node-plugin:$gradleNodeVersion"
         classpath "org.owasp:dependency-check-gradle:$gradleDependencyCheckVersion"
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:$gradleNexusStagingVersion"
+        classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishingVersion" 
     }
 }
 
@@ -64,14 +64,23 @@ def isArtifactSigningRequired = {
     return publishReleases
 }
 
-apply plugin: "io.codearte.nexus-staging"
-nexusStaging {
-    username = "${sonatypeUsername}"
-    password = "${sonatypePassword}"
+apply plugin: "io.github.gradle-nexus.publish-plugin"
+nexusPublishing {
     packageGroup = "org.apereo"
-    stagingProfileId = "11d1ddbbdeae9d"
-    numberOfRetries = 30
-    delayBetweenRetriesInMillis = 60000
+    repositories {
+        sonatype {
+            stagingProfileId = "11d1ddbbdeae9d"
+            username = "${sonatypeUsername}"
+            password = "${sonatypePassword}"
+        }
+    }
+    
+    clientTimeout = java.time.Duration.ofSeconds(120)
+    connectTimeout = java.time.Duration.ofSeconds(120)
+    transitionCheckOptions {
+        maxRetries.set(60)
+        delayBetween.set(java.time.Duration.ofMillis(60000))
+    }
 }
 
 apply from: rootProject.file("gradle/dependencies.gradle")

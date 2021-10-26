@@ -200,7 +200,7 @@ public class GitUtil implements AutoCloseable {
      */
     public RevCommit commit(final String message) throws GitAPIException {
         if (!isUndefined()) {
-            return git.commit().setAll(true).setMessage(message).call();
+            return git.commit().setAll(true).setSign(false).setMessage(message).call();
         }
         return null;
     }
@@ -218,6 +218,7 @@ public class GitUtil implements AutoCloseable {
             .setAll(true)
             .setCommitter(getCommitterId(user))
             .setMessage(msg)
+            .setSign(false)
             .call();
     }
 
@@ -235,6 +236,7 @@ public class GitUtil implements AutoCloseable {
         return git.commit()
                 .setCommitter(getCommitterId(user))
                 .setMessage(msg)
+                .setSign(false)
                 .call();
     }
 

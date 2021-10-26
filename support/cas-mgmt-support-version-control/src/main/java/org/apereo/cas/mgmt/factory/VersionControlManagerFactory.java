@@ -81,9 +81,10 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
         this.managerCache = managementServicesManagerCache();
         if (!Files.exists(servicesRepo)) {
             try {
-                Git.init().setDirectory(servicesRepo.toFile()).call().commit().setMessage("Created").call();
+                Git.init().setDirectory(servicesRepo.toFile()).call().commit().setSign(false).setMessage("Created").call();
             } catch (final Exception e) {
-                return;
+                LOGGER.error(e.getMessage(), e);
+                throw new RuntimeException(e);
             }
             try (GitUtil git = repositoryFactory.masterRepository()) {
                 servicesManager.load();
@@ -124,7 +125,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     /**
      * Returns the master repo.
      *
-     * @return - maste repo manager
+     * @return - master repo manager
      */
     public ManagementServicesManager master() {
         master.load();

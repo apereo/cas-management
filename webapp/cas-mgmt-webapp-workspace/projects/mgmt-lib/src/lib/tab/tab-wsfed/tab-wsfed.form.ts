@@ -1,5 +1,5 @@
 import {FormGroup} from '@angular/forms';
-import {WSFederationRegisterdService, AbstractRegisteredService} from '@apereo/mgmt-lib/src/lib/model';
+import {WSFederationRegisteredService, AbstractRegisteredService} from '@apereo/mgmt-lib/src/lib/model';
 import {MgmtFormGroup, WsfedclientForm} from '@apereo/mgmt-lib/src/lib/form';
 
 /**
@@ -12,7 +12,7 @@ export class TabWsfedForm extends FormGroup implements MgmtFormGroup<AbstractReg
   get wsfed() { return this.get('wsfed') as WsfedclientForm; }
   set wsfed(c: WsfedclientForm) { this.setControl('wsfed', c); }
 
-  constructor(private service: WSFederationRegisterdService) {
+  constructor(private service: WSFederationRegisteredService) {
     super({});
     this.reset();
   }
@@ -30,6 +30,6 @@ export class TabWsfedForm extends FormGroup implements MgmtFormGroup<AbstractReg
    * @param service - AbstractRegisteredService
    */
   map(service: AbstractRegisteredService) {
-    this.wsfed.map(service as WSFederationRegisterdService);
+    this.wsfed.map(service as WSFederationRegisteredService);
   }
 }

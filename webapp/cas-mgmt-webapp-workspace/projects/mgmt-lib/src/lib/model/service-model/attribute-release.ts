@@ -271,7 +271,7 @@ export class SamlIdpRegisteredServiceAttributeReleasePolicy extends ReturnMapped
  * Data class for WsFederationClaimsReleasePolicy.
  */
 export class WsFederationClaimsReleasePolicy extends AbstractRegisteredServiceAttributeReleasePolicy {
-  static cName = 'org.apereo.cas.ws.idp.services.WsFederationClaimsReleasePolicy';
+  static cName = 'org.apereo.cas.ws.idp.services.CustomNamespaceWSFederationClaimsReleasePolicy';
 
   allowedAttributes: Map<string, string>;
 

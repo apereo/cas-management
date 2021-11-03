@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {
   SamlRegisteredService,
-  WSFederationRegisterdService,
+  WSFederationRegisteredService,
   OAuthRegisteredService,
   OidcRegisteredService
 } from '@apereo/mgmt-lib/src/lib/model';
@@ -52,7 +52,7 @@ export class ServiceIdComponent implements OnInit {
     } else if (OidcRegisteredService.cName === type ||
       OAuthRegisteredService.cName === type) {
       this.prompt =  'Redirect URL';
-    } else if (WSFederationRegisterdService.cName === type) {
+    } else if (WSFederationRegisteredService.cName === type) {
       this.prompt = 'Consumer URL';
     } else {
       this.prompt = 'Service URL';
@@ -67,10 +67,9 @@ export class ServiceIdComponent implements OnInit {
   tooltip(type: string) {
     if (SamlRegisteredService.cName === type) {
       this.tip = 'An string that represents the EntityId of the SAML2 SP. This can be a regex pattern.';
-    } else if (OidcRegisteredService.cName === type ||
-      OAuthRegisteredService.cName === type) {
+    } else if (OidcRegisteredService.cName === type || OAuthRegisteredService.cName === type) {
       this.tip = 'A url that represents the OAuth/OIDC server to redirect to.';
-    } else if (WSFederationRegisterdService.cName === type) {
+    } else if (WSFederationRegisteredService.cName === type) {
       this.tip = 'A url that represents a WS Federation Consumer URL';
     } else {
       this.tip = 'A url that represents the application. This can be a regex/ant formatted url.';

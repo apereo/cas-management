@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormService} from '@apereo/mgmt-lib/src/lib/form';
 import {TabWsfedForm} from './tab-wsfed.form';
-import {WSFederationRegisterdService} from '@apereo/mgmt-lib/src/lib/model';
+import {WSFederationRegisteredService} from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Component to display/update WS Fed options for a service.
@@ -24,7 +24,7 @@ export class TabWsfedComponent {
    */
   constructor(private service: FormService) {
     if (!service.form.contains(this.key)) {
-      this.tab = new TabWsfedForm(service.registeredService as WSFederationRegisterdService);
+      this.tab = new TabWsfedForm(service.registeredService as WSFederationRegisteredService);
     }
   }
 }

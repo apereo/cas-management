@@ -4,6 +4,7 @@ import {
   ChainingRegisteredServiceSingleSignOnParticipationPolicy,
   SsoPolicyType
 } from '@apereo/mgmt-lib/src/lib/model';
+import { takeUntil } from 'rxjs/operators';
 import {ChainingSsoForm, createSsoForm, SsoPolicyForm} from './sso-policy.form';
 
 /**
@@ -14,21 +15,20 @@ import {ChainingSsoForm, createSsoForm, SsoPolicyForm} from './sso-policy.form';
 export class SsoForm extends FormGroup {
 
   get ssoEnabled() { return this.get('ssoEnabled') as FormControl; }
-  get policyForm() { return this.get('policy') as FormControl; }
+  get policyForm() { return this.get('policy') as ChainingSsoForm; }
   get policy() { return this.get('policy').value as SsoPolicyForm; }
 
   constructor(service: AbstractRegisteredService) {
     super({
       ssoEnabled: new FormControl(service?.accessStrategy?.ssoEnabled),
-      policy: new FormControl(null)
+      policy: new ChainingSsoForm(ChainingRegisteredServiceSingleSignOnParticipationPolicy.instanceOf(service?.singleSignOnParticipationPolicy) ? 
+        new ChainingRegisteredServiceSingleSignOnParticipationPolicy(service?.singleSignOnParticipationPolicy) :
+        new ChainingRegisteredServiceSingleSignOnParticipationPolicy()
+      )
     });
-    const p = createSsoForm(service?.singleSignOnParticipationPolicy);
-    if (p.type === SsoPolicyType.CHAINING) {
-      this.policyForm.setValue(p);
-    } else {
-      const c = new ChainingSsoForm(new ChainingRegisteredServiceSingleSignOnParticipationPolicy());
-      c.policies.push(p);
-      this.policyForm.setValue(c);
+
+    if (!ChainingRegisteredServiceSingleSignOnParticipationPolicy.instanceOf(service?.singleSignOnParticipationPolicy)) {
+      this.policyForm.policies.push(createSsoForm(service?.singleSignOnParticipationPolicy))
     }
   }
 
@@ -39,7 +39,7 @@ export class SsoForm extends FormGroup {
    */
   map(service: AbstractRegisteredService) {
     service.accessStrategy.ssoEnabled = this.ssoEnabled.value;
-    service.singleSignOnParticipationPolicy = this.policy.map();
+    service.singleSignOnParticipationPolicy = this.policyForm.map();
   }
 
 }

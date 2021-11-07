@@ -323,7 +323,7 @@ public class ServiceController {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val service = (RegexRegisteredService) manager.findServiceBy(id);
-        if (casUserProfile.hasPermission(service)) {
+        if (!casUserProfile.hasPermission(service)) {
             throw new IllegalAccessException("You do not have permission");
         }
         service.setEnvironments(null);

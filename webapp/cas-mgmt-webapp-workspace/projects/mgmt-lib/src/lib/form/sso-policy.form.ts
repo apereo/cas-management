@@ -94,8 +94,14 @@ export class ChainingSsoForm extends SsoPolicyForm {
 
   constructor(policy: ChainingRegisteredServiceSingleSignOnParticipationPolicy) {
     super({
-      policies: new FormArray([])
+      policies: new FormArray(policy?.policies?.map(p => createSsoForm(p)) || [])
     }, SsoPolicyType.CHAINING);
+  }
+
+  map(): ChainingRegisteredServiceSingleSignOnParticipationPolicy {
+    const policy = new ChainingRegisteredServiceSingleSignOnParticipationPolicy();
+    policy.policies = this.forms.map(c => c.map());
+    return policy;
   }
 }
 

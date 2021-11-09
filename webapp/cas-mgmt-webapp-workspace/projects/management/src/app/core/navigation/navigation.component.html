@@ -63,6 +63,11 @@
     <mat-icon>history</mat-icon>
     <ng-container i18n>History</ng-container>
   </a>
+  <a mat-list-item (click)="navto('user/current-user')"
+    [ngClass]="isSelected(['user'])">
+    <mat-icon>account_circle</mat-icon>
+    <ng-container i18n>User</ng-container>
+  </a>
   <a mat-list-item target="_self" id="logoutUrlLink" (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>
     <ng-container i18n>Log Out</ng-container>

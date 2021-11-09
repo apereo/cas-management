@@ -49,6 +49,10 @@ const routes: Routes = [
     canActivate: [AdminGuard]
   },
   {
+    path: 'user',
+    loadChildren: () => import('@apereo/mgmt-lib').then(m => m.UserModule)
+  },
+  {
     path: '',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [AdminGuard]

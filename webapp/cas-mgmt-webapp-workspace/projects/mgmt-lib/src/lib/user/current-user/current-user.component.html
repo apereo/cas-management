@@ -1,0 +1,36 @@
+<h2 class="mat-h2">{{(usr | async)?.username}}</h2>
+<h3 class="mat-h4">
+    {{ userInfo | async }}
+</h3>
+<div fxLayout="column" fxLayoutGap="1.5rem">
+    <mat-card class="example-card">
+        <mat-card-title>Attributes</mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item *ngFor="let attr of attrs | async; last as last">
+                    <div fxLayout="row" fxLayoutGap="1.5rem" fxFlexFill fxLayoutAlign="start center">
+                        <strong style="width:50%">{{ attr.label }}:</strong>
+                        <span>{{ attr.value }}</span>
+                    </div>
+                    <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="user-card">
+        <mat-card-title>Permissions</mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <mat-list *ngIf="(perms | async)?.length > 0">
+                <mat-list-item *ngFor="let perm of perms | async; last as last">
+                    <div fxLayout="row" fxLayoutGap="1.5rem" fxFlexFill fxLayoutAlign="start center">
+                        <span style="width:50%">{{ perm }}</span>
+                    </div>
+                    <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+                </mat-list-item>
+            </mat-list>
+            <p *ngIf="(perms | async)?.length <= 0" style="padding-top: 1rem;">No permissions set at this time.</p>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -11,3 +11,4 @@ export * from '@apereo/mgmt-lib/src/lib/delegated';
 export * from '@apereo/mgmt-lib/src/lib/submissions';
 export * from '@apereo/mgmt-lib/src/lib/version-control';
 export * from '@apereo/mgmt-lib/src/lib/registry';
+export * from '@apereo/mgmt-lib/src/lib/user';

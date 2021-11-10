@@ -2,10 +2,10 @@ import {RegexRegisteredService, RegisteredService} from './registered-service.mo
 import {WsFederationClaimsReleasePolicy} from './attribute-release';
 
 /**
- * Data class for WSFederationRegisterdService.
+ * Data class for WSFederationRegisteredService.
  */
-export class WSFederationRegisterdService extends RegexRegisteredService {
-  static readonly cName = 'org.apereo.cas.ws.idp.services.WSFederationRegisteredService';
+export class WSFederationRegisteredService extends RegexRegisteredService {
+  static cName = 'org.apereo.cas.ws.idp.services.WSFederationRegisteredService';
 
   realm: string;
   protocol: string;
@@ -19,18 +19,18 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
   appliesTo: string;
 
   /**
-   * Returns true if the passed object is an instance of WSFederationRegisterdService.
+   * Returns true if the passed object is an instance of WSFederationRegisteredService.
    *
    * @param obj - object to be inspected
    */
   static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === WSFederationRegisterdService.cName;
+    return obj && obj['@class'] === WSFederationRegisteredService.cName;
   }
 
   constructor(service?: RegisteredService) {
     super(service);
-    const s: WSFederationRegisterdService = WSFederationRegisterdService.instanceOf(service)
-      ? service as WSFederationRegisterdService : undefined;
+    const s: WSFederationRegisteredService = WSFederationRegisteredService.instanceOf(service)
+      ? service as WSFederationRegisteredService : undefined;
     this.realm = s?.realm;
     this.protocol = s?.protocol;
     this.tokenType = s?.tokenType;
@@ -44,6 +44,7 @@ export class WSFederationRegisterdService extends RegexRegisteredService {
     this.attributeReleasePolicy = s?.attributeReleasePolicy && WsFederationClaimsReleasePolicy.instanceOf(s.attributeReleasePolicy)
       ? s.attributeReleasePolicy
       : new WsFederationClaimsReleasePolicy();
-    this['@class'] = WSFederationRegisterdService.cName;
+
+    this['@class'] = WSFederationRegisteredService.cName;
   }
 }

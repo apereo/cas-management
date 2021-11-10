@@ -20,7 +20,7 @@ export class TabWsFedReleaseForm extends FormGroup implements MgmtFormGroup<Abst
   /**
    * Creates or resets controls in the form.
    */
-  rest(): void {
+  reset(): void {
     this.attributes = new AttributesForm(this.policy.allowedAttributes);
   }
 

@@ -2,7 +2,7 @@ import {
   AbstractRegisteredService,
   OAuthRegisteredService, OidcRegisteredService,
   RegexRegisteredService,
-  SamlRegisteredService, WSFederationRegisterdService
+  SamlRegisteredService, WSFederationRegisteredService
 } from '@apereo/mgmt-lib/src/lib/model';
 import {MgmtFormGroup} from './mgmt-form-group';
 import {FormGroup} from '@angular/forms';
@@ -15,8 +15,18 @@ import {catchError, map, take} from 'rxjs/operators';
  * Service Form.
  */
 export class ServiceForm extends FormGroup implements MgmtFormGroup<AbstractRegisteredService> {
+  // private _service: AbstractRegisteredService;
 
-  constructor(private service: AbstractRegisteredService) {
+  get service(): AbstractRegisteredService {
+    return this._service;
+  };
+
+  set service(s: AbstractRegisteredService) {
+    this._service = s;
+    // this.form = new ServiceForm(s);
+  };
+
+  constructor(private _service: AbstractRegisteredService) {
     super({});
   }
 
@@ -60,11 +70,33 @@ export class ServiceForm extends FormGroup implements MgmtFormGroup<AbstractRegi
   providedIn: 'root'
 })
 export class FormService extends Service {
+
+  private service: AbstractRegisteredService;
+  private serviceForm: ServiceForm;
+
   typeChange = new EventEmitter<void>();
-  registeredService: AbstractRegisteredService;
-  form: ServiceForm;
 
   controller = 'api/services/';
+
+
+  get registeredService() : AbstractRegisteredService {
+    return this.service;
+  };
+
+  set registeredService (s: AbstractRegisteredService) {
+    this.service = s;
+    if (this.serviceForm) {
+      this.serviceForm.service = s;
+    }
+  };
+
+  get form(): ServiceForm {
+    return this.serviceForm;
+  }
+
+  set form (s: ServiceForm) {
+    this.serviceForm = s;
+  }
 
   /**
    * Calls the server to get the service for the passed id.
@@ -88,8 +120,8 @@ export class FormService extends Service {
           if (OidcRegisteredService.instanceOf(resp)) {
             return new OidcRegisteredService(resp);
           }
-          if (WSFederationRegisterdService.instanceOf(resp)) {
-            return new WSFederationRegisterdService(resp);
+          if (WSFederationRegisteredService.instanceOf(resp)) {
+            return new WSFederationRegisteredService(resp);
           }
         }),
         catchError(e => this.handleError(e, this.dialog))

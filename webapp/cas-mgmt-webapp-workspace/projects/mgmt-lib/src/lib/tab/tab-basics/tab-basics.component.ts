@@ -4,7 +4,7 @@ import {
   OAuthRegisteredService,
   OidcRegisteredService,
   SamlRegisteredService,
-  WSFederationRegisterdService,
+  WSFederationRegisteredService,
   RegexRegisteredService
 } from '@apereo/mgmt-lib/src/lib/model';
 import {TabBasicsForm} from './tab-basics.form';
@@ -35,8 +35,8 @@ export class TabBasicsComponent {
           service.registeredService = new OidcRegisteredService(service.registeredService);
         } else if (val === SamlRegisteredService.cName) {
           service.registeredService = new SamlRegisteredService(service.registeredService);
-        } else if (val === WSFederationRegisterdService.cName) {
-          service.registeredService = new WSFederationRegisterdService(service.registeredService);
+        } else if (val === WSFederationRegisteredService.cName) {
+          service.registeredService = new WSFederationRegisteredService(service.registeredService);
         } else {
           service.registeredService = new RegexRegisteredService(service.registeredService);
         }

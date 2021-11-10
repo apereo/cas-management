@@ -31,7 +31,7 @@ export class SsoComponent {
    * Cast the form to ChainingSsoForm.
    */
   chaining(): ChainingSsoForm {
-    return this.form.policy as ChainingSsoForm;
+    return this.form.policyForm as ChainingSsoForm;
   }
 
   /**
@@ -64,12 +64,14 @@ export class SsoComponent {
    */
   moveUp() {
     const index = this.selectedPolicy;
-    const chain = this.chaining().policies;
+    const form = this.chaining();
+    const chain = form.policies;
     const up = chain.controls[index];
     chain.controls[index] = chain.controls[index - 1];
     chain.controls[index - 1] = up;
-    chain.markAsTouched();
-    chain.markAsDirty();
+    form.updateValueAndValidity();
+    form.markAsTouched();
+    form.markAsDirty();
   }
 
   /**
@@ -77,12 +79,14 @@ export class SsoComponent {
    */
   moveDown() {
     const index = this.selectedPolicy;
-    const chain = this.chaining().policies;
+    const form = this.chaining();
+    const chain = form.policies;
     const down = chain.controls[index];
     chain.controls[index] = chain.controls[index + 1];
     chain.controls[index + 1] = down;
-    chain.markAsTouched();
-    chain.markAsDirty();
+    form.updateValueAndValidity();
+    form.markAsTouched();
+    form.markAsDirty();
   }
 
   /**
@@ -92,6 +96,8 @@ export class SsoComponent {
    */
   addPolicy(type: SsoPolicyType) {
     this.chaining().policies.push(createSsoForm(ssoParticipationPolicy(null, type)));
+    this.chaining().markAllAsTouched;
+    this.chaining().markAsDirty();
   }
 
 }

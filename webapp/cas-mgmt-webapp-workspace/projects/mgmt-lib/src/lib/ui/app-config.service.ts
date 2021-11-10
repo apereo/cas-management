@@ -9,7 +9,7 @@ import {
   AbstractRegisteredService, OAuthRegisteredService,
   OidcRegisteredService, RegexRegisteredService,
   SamlRegisteredService,
-  WSFederationRegisterdService,
+  WSFederationRegisteredService,
   AppData
 } from '@apereo/mgmt-lib/src/lib/model';
 import {ViewComponent} from './view/view.component';
@@ -87,7 +87,7 @@ export class AppConfigService extends Service {
    * Returns true if the service is an instance of WsFedereationRegisteredService.
    */
   isWsFed(service: AbstractRegisteredService): boolean {
-    return WSFederationRegisterdService.instanceOf(service);
+    return WSFederationRegisteredService.instanceOf(service);
   }
 
   /**

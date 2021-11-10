@@ -6,7 +6,7 @@ import {
   OAuthRegisteredService,
   OidcRegisteredService,
   SamlRegisteredService,
-  WSFederationRegisterdService
+  WSFederationRegisteredService
 } from '@apereo/mgmt-lib/src/lib/model';
 import {catchError, tap} from 'rxjs/operators';
 import {Service} from './service';
@@ -60,8 +60,8 @@ export class ImportService extends Service {
           if (OidcRegisteredService.instanceOf(resp)) {
             this.service = new OidcRegisteredService(resp);
           }
-          if (WSFederationRegisterdService.instanceOf(resp)) {
-            this.service = new WSFederationRegisterdService(resp);
+          if (WSFederationRegisteredService.instanceOf(resp)) {
+            this.service = new WSFederationRegisteredService(resp);
           }
         }),
         catchError((e) => this.handleError(e, this.dialog))

@@ -27,10 +27,6 @@ const routes: Routes = [
     loadChildren: () => import('@apereo/mgmt-lib').then(m => m.DefinitionStoreModule)
   },
   {
-    path: 'user',
-    loadChildren: () => import('@apereo/mgmt-lib').then(m => m.UserModule)
-  },
-  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'registry'

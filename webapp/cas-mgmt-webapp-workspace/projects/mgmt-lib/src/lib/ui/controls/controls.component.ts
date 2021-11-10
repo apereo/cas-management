@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {AppConfigService} from '../app-config.service';
 import {UserService} from '../user.service';
+import { CurrentUserDialog } from '../current-user/current-user-dialog.component';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 /**
  * Component that displays and emits events for work flow controls in the application.
@@ -48,6 +50,20 @@ export class ControlsComponent implements OnInit {
    */
   goBack() {
     this.location.back();
+  }
+
+  /**
+   * Opens a modal with user information
+   */
+
+  showUser(): void {
+    const dialogRef = this.dialog.open(CurrentUserDialog, {
+      width: '720px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
 

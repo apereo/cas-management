@@ -2,3 +2,6 @@
   cursor: pointer;
 }
 
+.mat-menu-item.menu-item-static, .mat-menu-item.menu-item-static[disabled] {
+  color: rgba(0, 0, 0, 0.65)
+}

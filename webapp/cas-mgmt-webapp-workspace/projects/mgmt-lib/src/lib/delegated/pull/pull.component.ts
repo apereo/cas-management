@@ -163,7 +163,7 @@ export class PullComponent implements OnInit, OnDestroy {
    * Navigates to the Notes component for the selected branch.
    */
   getNotes() {
-    this.router.navigate(['notes', this.selectedBranch.id]).then();
+    this.router.navigate(['./delegated/notes', this.selectedBranch.id]);
   }
 
   /**

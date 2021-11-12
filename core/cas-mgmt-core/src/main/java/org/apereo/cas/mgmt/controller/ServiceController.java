@@ -17,6 +17,7 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,19 +48,33 @@ import java.util.List;
 public class ServiceController {
 
     private static final String NOT_FOUND_PATTERN = "Service '{}' not found";
+
     private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
+
+    private static void save(final RegisteredService service, final ManagementServicesManager manager) {
+        if (service.getEvaluationOrder() < 0) {
+            val domain = manager.extractDomain(service.getServiceId());
+            service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
+        }
+        if (service.getId() > -1) {
+            manager.checkForRename(service);
+        }
+        manager.save(service);
+        LOGGER.info("Saved changes to service [{}]", service.getId());
+    }
 
     /**
      * Gets services.
      *
      * @param authentication - HttpServletResponse
-     * @param domain   the domain for which services will be retrieved
+     * @param domain         the domain for which services will be retrieved
      * @return the services
      * @throws IllegalAccessException - Auth failed
      */
     @GetMapping
     public List<RegisteredServiceItem> getServices(final Authentication authentication,
-                                                   @RequestParam final String domain) throws IllegalAccessException {
+                                                   @RequestParam
+                                                   final String domain) throws IllegalAccessException {
         val casUserProfile = new CasUserProfile(authentication);
 
         if (!casUserProfile.isAdministrator() && !casUserProfile.hasPermission(domain)) {
@@ -67,9 +82,9 @@ public class ServiceController {
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
         return manager.getServiceItems(manager.getServicesForDomain(domain)
-                .stream()
-                .filter(s -> s.getFriendlyName().equalsIgnoreCase(RegexRegisteredService.FRIENDLY_NAME))
-                .sorted(Comparator.comparing(RegisteredService::getEvaluationOrder)));
+            .stream()
+            .filter(s -> s.getFriendlyName().equalsIgnoreCase(RegexRegisteredService.FRIENDLY_NAME))
+            .sorted(Comparator.comparing(RegisteredService::getEvaluationOrder)));
     }
 
     /**
@@ -114,13 +129,14 @@ public class ServiceController {
      * the default service that is the management app itself cannot be deleted
      * or the user will be locked out.
      *
-     * @param authentication  - the user
-     * @param id -  the id
+     * @param authentication - the user
+     * @param id             -  the id
      */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteRegisteredService(final Authentication authentication,
-                                        @PathVariable("id") final long id) {
+                                        @PathVariable("id")
+                                        final long id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val svc = manager.findServiceBy(id);
@@ -136,13 +152,14 @@ public class ServiceController {
     /**
      * Adds the service to the Service Registry.
      *
-     * @param authentication  - the user
-     * @param service  the edit bean
+     * @param authentication - the user
+     * @param service        the edit bean
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void saveService(final Authentication authentication,
-                            @RequestBody final RegisteredService service) {
+                            @RequestBody
+                            final RegisteredService service) {
         val user = CasUserProfile.from(authentication);
         if (user.isUser() && user.hasPermission(service)) {
             val manager = (ManagementServicesManager) managerFactory.from(authentication);
@@ -150,28 +167,17 @@ public class ServiceController {
         }
     }
 
-    private static void save(final RegisteredService service, final ManagementServicesManager manager) {
-        if (service.getEvaluationOrder() < 0) {
-            val domain = manager.extractDomain(service.getServiceId());
-            service.setEvaluationOrder(manager.getServicesForDomain(domain).size());
-        }
-        if (service.getId() > -1) {
-            manager.checkForRename(service);
-        }
-        manager.save(service);
-        LOGGER.info("Saved changes to service [{}]", service.getId());
-    }
-
     /**
      * Gets service by id.
      *
-     * @param authentication  - the user
-     * @param id       the id
+     * @param authentication - the user
+     * @param id             the id
      * @return the service by id
      */
     @GetMapping("/{id}")
     public RegisteredService getServiceById(final Authentication authentication,
-                                            @PathVariable(value = "id") final Long id) {
+                                            @PathVariable(value = "id")
+                                            final Long id) {
         val casUserProfile = CasUserProfile.from(authentication);
         if (casUserProfile.isUser()) {
             val service = getService(authentication, id);
@@ -185,13 +191,14 @@ public class ServiceController {
     /**
      * Method will return a YAML representation of the service.
      *
-     * @param authentication  - the user
-     * @param id       - Long representing id of the service
+     * @param authentication - the user
+     * @param id             - Long representing id of the service
      * @return - String representing the service in Yaml notation.
      */
     @GetMapping("/yaml/{id}")
     public String getYaml(final Authentication authentication,
-                          @PathVariable("id") final Long id) {
+                          @PathVariable("id")
+                          final Long id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val service = getService(authentication, id);
         return casUserProfile.hasPermission(service) ? CasManagementUtils.toYaml(service) : StringUtils.EMPTY;
@@ -201,14 +208,16 @@ public class ServiceController {
      * Methods that saves changes made to a service through a YAML string.
      *
      * @param authentication - the user
-     * @param id - the id of the service
-     * @param yaml - the service as a yaml string
+     * @param id             - the id of the service
+     * @param yaml           - the service as a yaml string
      * @throws IOException - failed
      */
     @PostMapping("yaml/{id}")
     public void saveYaml(final Authentication authentication,
-                         @PathVariable("id") final Long id,
-                         @RequestBody final String yaml) throws IOException {
+                         @PathVariable("id")
+                         final Long id,
+                         @RequestBody
+                         final String yaml) throws IOException {
         val casUserProfile = CasUserProfile.from(authentication);
         val service = CasManagementUtils.parseYaml(yaml);
         if (casUserProfile.hasPermission(service)) {
@@ -219,16 +228,38 @@ public class ServiceController {
             save(service, manager);
         }
     }
+
+    @PostMapping("validateService")
+    public ResponseEntity<String> validateYaml(final Authentication authentication,
+                                               @RequestParam(required = false, name = "format", defaultValue = "json")
+                                               final String format,
+                                               @RequestBody
+                                               final String body) throws IOException {
+        val casUserProfile = CasUserProfile.from(authentication);
+        val service = CasManagementUtils.parseJson(body);
+        if (casUserProfile.hasPermission(service)) {
+            var result = StringUtils.EMPTY;
+            if (StringUtils.equalsIgnoreCase(format, "json")) {
+                result = CasManagementUtils.toJson(service);
+            } else if (StringUtils.equalsIgnoreCase(format, "yaml")) {
+                result = CasManagementUtils.toYaml(service);
+            }
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     /**
      * Method that will return the service as an HJson string.
      *
-     * @param authentication  - HttpServletRequest
-     * @param id       - Long representing the id of the service
+     * @param authentication - HttpServletRequest
+     * @param id             - Long representing the id of the service
      * @return - String representing the service in HJson
      */
     @GetMapping("/json/{id}")
     public String getJson(final Authentication authentication,
-                          @PathVariable("id") final Long id) {
+                          @PathVariable("id")
+                          final Long id) {
         val service = getService(authentication, id);
         val casUserProfile = CasUserProfile.from(authentication);
         return casUserProfile.hasPermission(service) ? CasManagementUtils.toJson(service) : StringUtils.EMPTY;
@@ -238,14 +269,16 @@ public class ServiceController {
      * Saves a service that was edited as Json string.
      *
      * @param authentication - the request
-     * @param id - the service id
-     * @param json - the sevice as a json string
+     * @param id             - the service id
+     * @param json           - the sevice as a json string
      * @throws IOException - failed
      */
     @PostMapping("/json/{id}")
     public void saveJson(final Authentication authentication,
-                         @PathVariable("id") final Long id,
-                         @RequestBody final String json) throws IOException {
+                         @PathVariable("id")
+                         final Long id,
+                         @RequestBody
+                         final String json) throws IOException {
         val service = CasManagementUtils.parseJson(json);
         val casUserProfile = CasUserProfile.from(authentication);
         if (casUserProfile.hasPermission(service)) {
@@ -257,26 +290,17 @@ public class ServiceController {
         }
     }
 
-    private RegisteredService getService(final Authentication authentication,
-                                         final Long id) {
-        val manager = managerFactory.from(authentication);
-        val service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
-        if (service == null) {
-            LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
-            throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));
-        }
-        return service;
-    }
-
     /**
      * Parses the passes json or yaml string into a Registered Service object and returns to the client.
      * The id of the service will be set to -1 to force adding a new assigned id if saved.
      *
-     * @param service  - the json/yaml string of the service.
+     * @param service - the json/yaml string of the service.
      * @return - the parsed RegisteredService.
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public RegisteredService importService(@RequestBody final String service) {
+    public RegisteredService importService(
+        @RequestBody
+        final String service) {
         val svc = service.startsWith("{") ? CasManagementUtils.fromJson(service) : CasManagementUtils.fromYaml(service);
         svc.setId(-1);
         return svc;
@@ -286,13 +310,14 @@ public class ServiceController {
      * Method will update the order of two services passed in.
      *
      * @param authentication - the user
-     * @param svcs     the services to be updated
+     * @param svcs           the services to be updated
      * @throws IllegalAccessException the exception
      */
     @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final Authentication authentication,
-                            @RequestBody final List<RegisteredServiceItem> svcs) throws IllegalAccessException {
+                            @RequestBody
+                            final List<RegisteredServiceItem> svcs) throws IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         for (val svc : svcs) {
@@ -313,13 +338,15 @@ public class ServiceController {
     /**
      * Promotes a service to be included in production registry.
      *
-     * @param id - the id
+     * @param id             - the id
      * @param authentication - the user
      * @throws IllegalAccessException - failed
      */
     @GetMapping("promote/{id}")
-    public void promote(@PathVariable final Long id,
-                        final Authentication authentication) throws IllegalAccessException {
+    public void promote(
+        @PathVariable
+        final Long id,
+        final Authentication authentication) throws IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val service = (RegexRegisteredService) manager.findServiceBy(id);
@@ -333,13 +360,15 @@ public class ServiceController {
     /**
      * Demotes a service to be only available in stage.
      *
-     * @param id - the id
+     * @param id             - the id
      * @param authentication - the user
      * @throws IllegalAccessException - failed
      */
     @GetMapping("demote/{id}")
-    public void demote(@PathVariable final Long id,
-                       final Authentication authentication) throws IllegalAccessException {
+    public void demote(
+        @PathVariable
+        final Long id,
+        final Authentication authentication) throws IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val service = (RegexRegisteredService) manager.findServiceBy(id);
@@ -350,6 +379,17 @@ public class ServiceController {
         env.add("staged");
         service.setEnvironments(env);
         manager.save(service);
+    }
+
+    private RegisteredService getService(final Authentication authentication,
+                                         final Long id) {
+        val manager = managerFactory.from(authentication);
+        val service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
+        if (service == null) {
+            LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
+            throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));
+        }
+        return service;
     }
 
 }

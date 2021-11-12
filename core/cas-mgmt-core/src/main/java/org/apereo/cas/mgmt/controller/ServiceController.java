@@ -229,7 +229,7 @@ public class ServiceController {
         }
     }
 
-    @PostMapping("validateService")
+    @PostMapping("validate")
     public ResponseEntity<String> validateYaml(final Authentication authentication,
                                                @RequestParam(required = false, name = "format", defaultValue = "json")
                                                final String format,

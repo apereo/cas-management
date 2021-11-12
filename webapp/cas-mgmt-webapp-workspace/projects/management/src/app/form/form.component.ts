@@ -15,6 +15,7 @@ import {
 } from '@apereo/mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ScrollStrategyOptions } from '@angular/cdk/overlay';
 
 /**
  * Component to display/update a service.
@@ -49,7 +50,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private service: FormService,
+              public service: FormService,
               private importService: ImportService,
               private submissionService: SubmissionsService,
               private location: Location,
@@ -103,7 +104,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.map();
     const dialogRef = this.dialog.open(PreviewDialog, {
       width: '960px',
-      data: this.service.registeredService
+      data: JSON.stringify(this.service.registeredService, null, 4),
+      height: '90vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>Preview</h1>
-<div mat-dialog-content>
-    <div style="height:calc(100vh - 240px)" *ngIf="data">
-        <lib-editor #editor [file]="data | json" mode="hjson" theme="eclipse" style="width:100%;height:100%;"></lib-editor>
+<div mat-dialog-content style="max-height: none;">
+    <div style="height:calc(100vh - 240px)">
+        <lib-editor #editor mode="hjson" theme="eclipse" style="width:100%;height:100%;"></lib-editor>
     </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="onOkClick()" cdkFocusInitial>Ok</button>
+    <button mat-raised-button color="primary" (click)="onOkClick()">Ok</button>
 </div>

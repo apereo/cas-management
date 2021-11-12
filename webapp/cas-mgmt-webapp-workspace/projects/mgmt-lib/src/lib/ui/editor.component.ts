@@ -62,14 +62,15 @@ export class EditorComponent implements OnInit {
 
   @Input()
   set file(file: string) {
-    console.log(typeof file);
+    console.log(file);
     if (this.editor) {
       this.editor.setValue(file ? file : '');
+      setTimeout(() => this.editor.setValue(file));
       // this.editor.once('change', () => this.changed.emit());
     }
     setTimeout(() => {
-      // this.editor.focus();
-      // this.editor.navigateTo(0, 0);
+      this.editor.focus();
+      this.editor.navigateTo(0, 0);
     }, 100);
   }
 

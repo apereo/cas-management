@@ -62,6 +62,7 @@ import {RevertComponent} from './revert/revert.component';
 import {AcceptComponent} from './accept/accept.component';
 import {RejectComponent} from './reject/reject.component';
 import { ChipAutocompleteComponent, MatChipAutocompleteTrigger } from './chip-autocomplete/chip-autocomplete.component';
+import { PreviewDialog } from './preview/preview-dialog.component';
 
 /**
  * UI Module.
@@ -137,7 +138,8 @@ import { ChipAutocompleteComponent, MatChipAutocompleteTrigger } from './chip-au
     ViewComponent,
     OAuthAddComponent,
     SamlAddComponent,
-    MatChipAutocompleteTrigger
+    MatChipAutocompleteTrigger,
+    PreviewDialog
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ServiceInterceptor, multi: true}
@@ -170,7 +172,8 @@ import { ChipAutocompleteComponent, MatChipAutocompleteTrigger } from './chip-au
     ViewComponent,
     OAuthAddComponent,
     SamlAddComponent,
-    MatChipAutocompleteTrigger
+    MatChipAutocompleteTrigger,
+    PreviewDialog
   ]
 })
 export class UiModule { }

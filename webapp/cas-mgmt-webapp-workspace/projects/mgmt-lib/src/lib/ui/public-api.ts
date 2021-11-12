@@ -36,3 +36,4 @@ export * from './saml-add/saml-add-service';
 export * from './saml-add/saml-add.component';
 export * from './oauth.service';
 export * from './ui.module';
+export * from './preview/preview-dialog.component';

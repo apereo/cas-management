@@ -23,6 +23,7 @@ export class RepoHistoryComponent implements OnInit, OnDestroy {
   displayedColumns = ['actions', 'id', 'message', 'time'];
   selectedItem: Commit;
   subscription: Subscription;
+  loading: boolean;
 
   @ViewChild(PaginatorComponent, { static: true })
   paginator: PaginatorComponent;
@@ -74,8 +75,12 @@ export class RepoHistoryComponent implements OnInit, OnDestroy {
    * Refreshes the commits.
    */
   refresh() {
+    this.loading = true;
     this.service.commitLogs()
-      .subscribe(resp => this.dataSource.data = resp);
+      .subscribe(resp => {
+        setTimeout(() => this.loading = false, 1000);
+        this.dataSource.data = resp;
+      });
   }
 
   /**

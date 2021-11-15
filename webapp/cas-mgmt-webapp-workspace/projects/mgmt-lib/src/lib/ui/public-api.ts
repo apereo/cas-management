@@ -35,4 +35,5 @@ export * from './oauth-add/oauth-add.component';
 export * from './saml-add/saml-add-service';
 export * from './saml-add/saml-add.component';
 export * from './oauth.service';
+export * from './wsfed-add/wsfed-add.service';
 export * from './ui.module';

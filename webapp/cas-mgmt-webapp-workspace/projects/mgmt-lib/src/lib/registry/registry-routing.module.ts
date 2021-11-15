@@ -17,6 +17,8 @@ import {JSONComponent} from './json/json.component';
 import {JSONResolver} from './json/json.resolver';
 import {YamlComponent} from './yaml/yaml.component';
 import {YamlResolver} from './yaml/yaml.resolver';
+import { WsFedComponent } from './wsfed/wsfed.component';
+import { WsFedResolve } from './wsfed/wsfed.resolver';
 
 const routes: Routes = [
   {
@@ -46,6 +48,13 @@ const routes: Routes = [
     component: SamlComponent,
     resolve: {
       resp: SamlResolve
+    }
+  },
+  {
+    path: 'wsfed',
+    component: WsFedComponent,
+    resolve: {
+      resp: WsFedResolve
     }
   },
   {

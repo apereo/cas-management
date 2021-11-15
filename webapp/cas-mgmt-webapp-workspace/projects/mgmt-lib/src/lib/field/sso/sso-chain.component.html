@@ -17,7 +17,7 @@
             <span *ngIf="isAuthDate(policy)">Authentication Date</span>
           </mat-panel-title>
           <mat-panel-description style="flex-grow: 0; margin-right: 60px;">
-            <span style="float: right">{{ (policy.timeValue.value || '') + ' ' + (policy.timeUnit.value || '') }}</span>
+            <span style="float: right">{{ (policy?.timeValue?.value || '') + ' ' + (policy?.timeUnit?.value || '') }}</span>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <lib-sso-policy [form]="policy"></lib-sso-policy>

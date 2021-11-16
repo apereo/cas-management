@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>User Information</h1>
+<div mat-dialog-content>
+    <lib-current-user [user]="usr | async"></lib-current-user>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onOkClick()" cdkFocusInitial>Ok</button>
+</div>

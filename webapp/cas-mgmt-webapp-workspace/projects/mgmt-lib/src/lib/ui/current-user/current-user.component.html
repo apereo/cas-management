@@ -1,0 +1,33 @@
+<h2 class="mat-h2">{{ user?.username }}</h2>
+<h3 class="mat-h4">
+    {{ userInfo }}
+</h3>
+<div fxLayout="column" fxLayoutGap="1.5rem">
+    <div>
+        <mat-card-title>Attributes</mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-list>
+            <mat-list-item *ngFor="let attr of attrs; last as last">
+                <div fxLayout="row" fxLayoutGap="1.5rem" fxFlexFill fxLayoutAlign="start center">
+                    <strong style="min-width:50%">{{ attr.label }}:</strong>
+                    <span>{{ attr.value }}</span>
+                </div>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    
+    <div>
+        <mat-card-title>Permissions</mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-list *ngIf="perms?.length > 0">
+            <mat-list-item *ngFor="let perm of perms; last as last">
+                <div fxLayout="row" fxLayoutGap="1.5rem" fxFlexFill fxLayoutAlign="start center">
+                    <span style="min-width:50%">{{ perm }}</span>
+                </div>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </mat-list>
+        <p *ngIf="perms?.length <= 0" style="padding-top: 1rem;">No permissions set at this time.</p>
+    </div>
+</div>

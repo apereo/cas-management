@@ -1,8 +1,9 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NotesService} from './notes.service';
 import {ControlsService, EditorComponent} from '@apereo/mgmt-lib/src/lib/ui';
-import {Subscription} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import { share, startWith, switchMapTo, takeUntil } from 'rxjs/operators';
 
 /**
  * Component to display/update notes made to a pull request.
@@ -25,13 +26,17 @@ export class NotesComponent implements OnInit, OnDestroy {
   @Input()
   viewOnly: boolean;
 
-  file: string;
+  file$: Observable<string>;
 
-  subscription: Subscription;
+  private subj = new Subject<string>();
+  val$ = this.subj.asObservable();
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(public route: ActivatedRoute,
               public service: NotesService,
-              public controls: ControlsService) {
+              public controls: ControlsService,
+              public router: Router) {
     this.controls.icon = 'edit';
     this.controls.title = 'Notes';
   }
@@ -40,26 +45,47 @@ export class NotesComponent implements OnInit, OnDestroy {
    * Pulls the note id from the route and calls the server.
    */
   ngOnInit() {
-    const id = this.route.snapshot.params.id;
-    this.service.getNotes(id)
-      .subscribe(resp => this.file = resp);
+    this.file$ = this.getNote();
+    this.file$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(v => this.subj.next(v));
     this.controls.resetButtons();
     this.controls.showEdit = true;
-    this.subscription = this.controls.save.subscribe(() => this.saveNote());
+    this.controls.save.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.saveNote());
+    this.controls.reset.pipe(startWith(''), switchMapTo(this.getNote()), takeUntil(this.ngUnsubscribe)).subscribe(v => this.subj.next(v));
   }
 
   /**
    * Destroy subscriptions.
    */
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  getNote(): Observable<string> {
+    return this.service.getNotes(this.route.snapshot.params.id).pipe(share());
+  }
+
+  onEditorChange(val: string) {
+    this.subj.next(val);
   }
 
   /**
    *  Gets updated note from editor and emits event.
    */
   saveNote() {
-    this.commit.emit(this.editor.getFile());
+    const id = this.route.snapshot.params.id;
+    const saved = this.service.addNote(id, this.editor.getFile()).subscribe((txt) => {
+      this.router.navigate(['./delegated/pulls']);
+      saved.unsubscribe();
+    });
+  }
+
+  /**
+   *  Gets updated note from editor and emits event.
+   */
+  resetNote() {
+    const id = this.route.snapshot.params.id;
+    this.file$ = this.service.getNotes(id);
   }
 
 }

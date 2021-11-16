@@ -22,7 +22,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'notes',
+    path: 'notes/:id',
     component: NotesComponent
   }
 ];

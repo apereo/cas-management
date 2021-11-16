@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AppConfigService, ControlsService, OAuthAddComponent } from '@apereo/mgmt-lib/src/lib/ui';
+import { Component, ViewChild } from '@angular/core';
+import { AppConfigService, ControlsService } from '@apereo/mgmt-lib/src/lib/ui';
+import { ServiceItem } from '@apereo/mgmt-lib/src/lib/model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { WsFedService } from './wsfed.service';
 import { MatSort } from '@angular/material/sort';
 import { MediaObserver } from '@angular/flex-layout';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BaseServicesComponent } from '../base-services.component';
 import { RegistryService } from '../registry.service';
 
@@ -60,5 +62,31 @@ export class WsFedComponent extends BaseServicesComponent {
    */
     createService() {
         this.router.navigate(['./form/wsfed']);
+    }
+
+    /**
+   * .
+   * @param event - event
+   */
+    drop(event: CdkDragDrop<ServiceItem[]>) {
+        moveItemInArray(this.dataSource.data, event.previousIndex, event.currentIndex);
+        this.dataSource._updateChangeSubscription();
+        setTimeout(() => this.updateIndexes(), 10);
+    }
+
+    /**
+     * Call server for services that changed
+     */
+    updateIndexes() {
+        const chgs = [];
+        this.dataSource.data.forEach((s, index) => {
+            if (index !== s.evalOrder) {
+                s.evalOrder = index;
+                chgs.push(s);
+            }
+        });
+        if (chgs.length > 0) {
+            this.service.updateOrder(chgs).subscribe(() => this.refresh());
+        }
     }
 }

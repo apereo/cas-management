@@ -1,6 +1,10 @@
 <div fxLayout="column">
 
-    <mat-table #table [dataSource]="dataSource">
+    <mat-form-field floatLabel="never" style="width:100%;min-width:250px;">
+        <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter WSFed Services">
+    </mat-form-field>
+
+    <mat-table #table [dataSource]="dataSource"  cdkDropList (cdkDropListDropped)="drop($event)">
 
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef [ngClass]="'actionWidth'">
@@ -58,7 +62,7 @@
 
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="status(row)"></mat-row>
+        <mat-row cdkDrag *matRowDef="let row; columns: displayedColumns;" [ngClass]="status(row)"></mat-row>
     </mat-table>
 
     <lib-paginator></lib-paginator>

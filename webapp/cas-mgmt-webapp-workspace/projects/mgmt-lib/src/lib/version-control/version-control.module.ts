@@ -15,6 +15,8 @@ import {CommitHistoryComponent} from './commit-history/commit-history.component'
 import {HistoryComponent} from './history/history.component';
 import {LocalChangesComponent} from './local-changes/local-changes.component';
 import {RepoHistoryComponent} from './repo-history/repo-history.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /**
  * Module to lazy-load version control functionality for the application.
@@ -37,6 +39,8 @@ import {RepoHistoryComponent} from './repo-history/repo-history.component';
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
     VersionControlRoutingModule
   ],
   exports: [

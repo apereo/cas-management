@@ -14,7 +14,7 @@ export class ChainingForm extends AttributeReleaseForm {
 
     constructor(policy: ChainingAttributeReleasePolicy) {
         super(policy);
-        const policies = policy.policies.map(p => new ChainedPolicyForm(p));
+        const policies = policy?.policies?.map(p => new ChainedPolicyForm(p)) || [];
         this.addControl('policies', new FormArray(policies));
     }
 
@@ -25,6 +25,6 @@ export class ChainingForm extends AttributeReleaseForm {
      */
     map(policy: ChainingAttributeReleasePolicy) {
         super.map(policy);
-        policy.policies = this.policies.controls.map(( c: ChainedPolicyForm ) => c.map());
+        policy.policies = this.policies?.controls?.map(( c: ChainedPolicyForm ) => c.map());
     }
 }

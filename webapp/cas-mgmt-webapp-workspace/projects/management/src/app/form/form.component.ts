@@ -11,11 +11,14 @@ import {
   AppConfigService,
   AbstractRegisteredService,
   TabsComponent,
-  ImportService, ControlsService, ServiceForm, SubmissionsService, PreviewDialog
+  ImportService,
+  ControlsService,
+  ServiceForm,
+  SubmissionsService,
+  PreviewDialog
 } from '@apereo/mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ScrollStrategyOptions } from '@angular/cdk/overlay';
 
 /**
  * Component to display/update a service.
@@ -80,8 +83,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.service.typeChange.subscribe(() => this.setNav());
     this.controls.resetButtons();
     this.controls.showEdit = this.showEdit();
+    this.controls.showPreview = true;
     this.subscriptions.push(this.controls.save.subscribe(() => this.save()));
     this.subscriptions.push(this.controls.reset.subscribe(() => this.reset()));
+    this.subscriptions.push(this.controls.preview.subscribe((format: string) => this.preview(format)));
   }
 
   /**
@@ -100,17 +105,21 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.controls.showEdit = this.showEdit();
   }
 
-  preview() {
+  preview(format: string) {
     this.map();
     const dialogRef = this.dialog.open(PreviewDialog, {
       width: '960px',
-      data: JSON.stringify(this.service.registeredService, null, 4),
+      data: {
+        format,
+        service: this.service.registeredService
+      },
       height: '90vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
     });
+    
   }
 
   /**

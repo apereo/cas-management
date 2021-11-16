@@ -27,6 +27,7 @@ public class DashboardForwardingController {
         "dashboard/sessions",
         "dashboard/tokens",
         "dashboard/loggers",
+        "dashboard/user",
         "dashboard"
     })
     public String forward() {

@@ -27,7 +27,7 @@ export class SsoForm extends FormGroup {
       )
     });
 
-    if (!ChainingRegisteredServiceSingleSignOnParticipationPolicy.instanceOf(service?.singleSignOnParticipationPolicy)) {
+    if (service?.singleSignOnParticipationPolicy && !ChainingRegisteredServiceSingleSignOnParticipationPolicy.instanceOf(service?.singleSignOnParticipationPolicy)) {
       this.policyForm.policies.push(createSsoForm(service?.singleSignOnParticipationPolicy))
     }
   }

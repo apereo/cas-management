@@ -9,10 +9,14 @@ export class UserProfile {
   email: string;
   firstName: string;
   familyName: string;
+  displayName: string;
   username: string;
   phone: string;
   department: string;
   administrator: boolean;
+  attributes: unknown;
+  authenticationAttributes: unknown;
+  roles: string[];
 
   /**
    * Returns true if the passed object is an instance of UserProfile.

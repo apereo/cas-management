@@ -43,7 +43,8 @@ public class ForwardingController {
         "management/delegated/notes/{id}",
         "management/submissions",
         "management/definitions",
-        "management/definitions/{def}"
+        "management/definitions/{def}",
+        "management/user/current-user"
     })
     public String forward() {
         return "management/index.html";

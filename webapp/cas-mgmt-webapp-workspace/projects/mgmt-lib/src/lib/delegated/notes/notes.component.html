@@ -1,6 +1,6 @@
 <div fxLayout="column">
-  <div style="calc(100vh - 151px)">
-    <lib-editor [file]="file" mode="text" style="width:100%;height:100%;"></lib-editor>
+  <div style="height:calc(100vh - 151px)">
+    <lib-editor [file]="val$ | async" mode="text" style="width:100%;height:100%;" #editor (blur)="onEditorChange($event)"></lib-editor>
   </div>
 </div>
 

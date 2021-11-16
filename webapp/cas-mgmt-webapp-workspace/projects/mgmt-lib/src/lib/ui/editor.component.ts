@@ -1,4 +1,4 @@
-import {Input, Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Input, Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {Ace} from 'ace-builds';
 import Editor = Ace.Editor;
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +13,7 @@ declare var ace: any;
  */
 @Component({
     selector: 'lib-editor',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
          <div id="editor" style="width:100%;height:100%;"></div>
     `
@@ -26,7 +27,10 @@ export class EditorComponent implements OnInit {
   theme = 'default';
 
   @Output()
-  changed: EventEmitter<void> = new EventEmitter<void>();
+  changed: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  blur: EventEmitter<string> = new EventEmitter<string>();
 
   editor: Editor;
 
@@ -58,6 +62,8 @@ export class EditorComponent implements OnInit {
     this.userFontSize = localStorage.getItem('editor-fontSize') || '15px';
     this.editor.setFontSize(this.userFontSize);
     (this.editor as any).$blockScrolling = Infinity;
+
+    this.editor.on('blur', (evt) => this.blur.emit(this.getFile()))
   }
 
   @Input()

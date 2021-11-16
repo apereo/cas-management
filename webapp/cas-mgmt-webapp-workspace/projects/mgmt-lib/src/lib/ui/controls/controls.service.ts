@@ -1,7 +1,8 @@
-import {EventEmitter, Injectable, Input, Output, ViewChild} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Change, Commit, GitStatus} from '@apereo/mgmt-lib/src/lib/model';
 import {Service} from '../service';
 import {Observable} from 'rxjs/internal/Observable';
+
 
 /**
  * Service to handle requests to the server for application controls.

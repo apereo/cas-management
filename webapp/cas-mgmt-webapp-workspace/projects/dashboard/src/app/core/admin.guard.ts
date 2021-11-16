@@ -2,6 +2,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {UserService} from '@apereo/mgmt-lib';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
+import { map } from 'rxjs/operators';
 
 /**
  * Route guard to ensure a user has ROLE_ADMIN.
@@ -23,11 +24,12 @@ export class AdminGuard implements CanActivate {
    * @param state - router state
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean | UrlTree {
-    if (this.user.user.administrator) {
+    /*if (this.user?.user?.administrator) {
       return true;
     }
-    this.router.navigate(['unauthorized']).then();
-    return false;
+    this.router.navigate().then();
+    return false;*/
+    return this.user.getUser().pipe(map(u => u.administrator ? true : this.router.parseUrl('unauthorized')));
   }
 
 }

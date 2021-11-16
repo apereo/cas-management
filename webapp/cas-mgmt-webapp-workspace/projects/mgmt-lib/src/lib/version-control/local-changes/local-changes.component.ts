@@ -67,8 +67,12 @@ export class LocalChangesComponent implements OnInit, OnDestroy {
    * Refreshes the changes.
    */
   refresh() {
+    this.loading = true;
     this.controls.untracked()
-      .subscribe(resp => this.datasource.data = resp ? resp : []);
+      .subscribe(resp => {
+        setTimeout(() => this.loading = false, 1000);
+        this.datasource.data = resp ? resp : [];
+      });
     this.controls.gitStatus();
   }
 

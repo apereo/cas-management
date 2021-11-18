@@ -166,7 +166,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Returns true if form is new or modified to display save controls.
    */
   showEdit(): boolean {
-    return this.dirty() || this.service?.registeredService?.id < 0;
+    return this.dirty() || this.service?.registeredService?.id < 0 || this.imported;
   }
 
   /**
@@ -272,7 +272,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    * Maps the form to the service int the DataRecord.
    */
   map(): boolean {
-    let touched: boolean = this.created;
+    let touched: boolean = this.created || this.imported;
     if (this.service.form.valid && this.service.form.touched) {
       this.service.form.map();
       touched = true;

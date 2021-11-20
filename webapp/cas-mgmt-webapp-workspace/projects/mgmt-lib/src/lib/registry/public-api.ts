@@ -9,6 +9,7 @@ export * from './saml/saml.component';
 export * from './search/search.component';
 export * from './services/services.component';
 export * from './yaml/yaml.component';
+export * from './wsfed/wsfed.component';
 export * from './base-services.component';
 export * from './registry.service';
 export * from './registry.module';

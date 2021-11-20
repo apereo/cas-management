@@ -33,6 +33,7 @@ import {
   TabWsfedComponent,
   TabAcceptableUsagePolicyComponent
 } from '@apereo/mgmt-lib';
+import { WsFedResolve } from './wsfed-resolve';
 
 export const childRoutes: Routes = [
   {
@@ -230,6 +231,17 @@ export const childRoutes: Routes = [
         component: FormComponent,
         resolve: {
           resp: OidcResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
+      },
+      {
+        path: 'wsfed',
+        component: FormComponent,
+        resolve: {
+          resp: WsFedResolve
         },
         children: childRoutes,
         data: {

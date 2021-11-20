@@ -23,7 +23,8 @@ import {
   TabTokensComponent, TabUsernameattrComponent, TabWsfedAttrreleaseComponent,
   TabWsfedComponent
 } from '@apereo/mgmt-lib';
-import {TabAuthnPolicyComponent, TabAuthnPolicyForm} from "@apereo/mgmt-lib/src";
+import {TabAuthnPolicyComponent} from "@apereo/mgmt-lib/src";
+import { WsFedResolve } from './wsfed-resolve';
 
 export const childRoutes: Routes = [
   {
@@ -216,6 +217,17 @@ export const childRoutes: Routes = [
         component: FormComponent,
         resolve: {
           resp: OidcResolve
+        },
+        children: childRoutes,
+        data: {
+          created: true
+        }
+      },
+      {
+        path: 'wsfed',
+        component: FormComponent,
+        resolve: {
+          resp: WsFedResolve
         },
         children: childRoutes,
         data: {

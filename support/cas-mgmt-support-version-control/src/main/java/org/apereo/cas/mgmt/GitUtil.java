@@ -37,9 +37,11 @@ import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.notes.Note;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevObject;
+import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.RefSpec;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.treewalk.TreeWalk;
@@ -839,12 +841,13 @@ public class GitUtil implements AutoCloseable {
      * @throws IOException - failed
      */
     public List<DiffEntry> getDiffs(final String first, final String second) throws GitAPIException, IOException {
+        var repository = git.getRepository();
         val oldTreeIter = new CanonicalTreeParser();
-        try (val reader = git.getRepository().newObjectReader()) {
-            oldTreeIter.reset(reader, git.getRepository().resolve(first));
-            val newTreeIter = new CanonicalTreeParser();
-            newTreeIter.reset(reader, git.getRepository().resolve(second));
-            return git.diff().setOldTree(oldTreeIter).setNewTree(newTreeIter).call();
+        val newTreeIter = new CanonicalTreeParser();
+        try (val reader = repository.newObjectReader()) {
+            oldTreeIter.reset(reader, repository.resolve(first));
+            newTreeIter.reset(reader, repository.resolve(second));
+            return git.diff().setOldTree(newTreeIter).setNewTree(oldTreeIter).call();
         }
     }
 

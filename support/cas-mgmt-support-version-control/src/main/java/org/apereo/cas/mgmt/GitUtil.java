@@ -1098,7 +1098,10 @@ public class GitUtil implements AutoCloseable {
     private Collection<String> attemptRebase() throws GitAPIException {
         val conflicts = new HashSet<String>();
         createStashIfNeeded();
-        val pr = git.pull().setStrategy(MergeStrategy.RESOLVE).setRebase(true).call();
+        val pr = git.pull()
+            .setStrategy(MergeStrategy.RESOLVE)
+            .setRebase(true)
+            .call();
         if (pr.getRebaseResult().getConflicts() != null) {
             conflicts.addAll(pr.getRebaseResult().getConflicts());
         }

@@ -1,143 +1,86 @@
 ext.libraries = [
-        jaxb                    : [
-                dependencies.create("javax.xml.bind:jaxb-api:$jaxbApiVersion") {
-                    force = true
-                    transitive = false
-                },
-                dependencies.create("javax.xml.ws:jaxws-api:$jaxbApiVersion") {
-                    force = true
-                    transitive = false
-                },
-                dependencies.create("org.glassfish.main.javaee-api:javax.jws:$javaxJwsVersion") {
-                    force = true
-                    transitive = false
-                },
-                dependencies.create("org.glassfish.main.javaee-api:javax.jms:$javaxJmsVersion") {
-                    force = true
-                    transitive = false
-                },
-                dependencies.create("javax.xml.soap:javax.xml.soap-api:$javaxSoapApiVersion") {
-                    force = true
-                    transitive = false
-                },
-                dependencies.create("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion") {
-                    force = true
-                    transitive = false
-                },
-                dependencies.create("org.glassfish.jaxb:jaxb-core:$jaxbGlassfishVersion") {
-                    force = true
-                }
-        ],
-        aspectj                 : [
-                dependencies.create("org.aspectj:aspectjrt:$aspectjVersion") {
-                    force = true
-                },
-                dependencies.create("org.aspectj:aspectjweaver:$aspectjVersion") {
-                    force = true
-                }
-        ],
         jackson                 : [
                 dependencies.create("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.core:jackson-core:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion") {
                     exclude(group: "com.google.guava", module: "guava")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     exclude(group: "com.fasterxml.jackson", module: "jackson-bom")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson", module: "jackson-bom")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("org.hjson:hjson:$hjsonVersion") {
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion") {
                     exclude(group: "org.yaml", module: "snakeyaml")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-properties:$jacksonVersion") {
                     exclude(group: "org.yaml", module: "snakeyaml")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 }
         ],
         groovy                  : [
                 dependencies.create("org.codehaus.groovy:groovy-jsr223:$groovyVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")
-                    force = true
                 },
                 dependencies.create("org.codehaus.groovy:groovy-json:$groovyVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")
-                    force = true
                 },
                 dependencies.create("org.codehaus.groovy:groovy-xml:$groovyVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")
-                    force = true
                 },
                 dependencies.create("org.codehaus.groovy:groovy-datetime:$groovyVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")
-                    force = true
                 },
                 dependencies.create("org.codehaus.groovy:groovy-sql:$groovyVersion") {
                     exclude(group: "commons-cli", module: "commons-cli")
-                    force = true
                 },
                 dependencies.create("org.codehaus.groovy:groovy-groovysh:$groovyVersion") {
                     exclude(group: "org.codehaus.groovy", module: "groovy-swing")
                     exclude(group: "org.codehaus.groovy", module: "groovy-console")
-                    force = true
                 }
         ],
         slf4j                   : [
-                dependencies.create("org.slf4j:slf4j-api:$slf4jVersion"){
-                    force = true
+                dependencies.create("org.slf4j:slf4j-api:$slf4jVersion") {
                 },
-                dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion"){
-                    force = true
+                dependencies.create("org.slf4j:jul-to-slf4j:$slf4jVersion") {
                 },
-                dependencies.create("org.slf4j:jcl-over-slf4j:$slf4jVersion"){
-                    force = true
+                dependencies.create("org.slf4j:jcl-over-slf4j:$slf4jVersion") {
                 },
         ],
         log4j                   : [
@@ -153,31 +96,24 @@ ext.libraries = [
                     exclude(group: "org.apache.logging.log4j", module: "log4j-api")
                     exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
                     exclude(group: "org.apache.logging.log4j", module: "log4j-jul")
-                    force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-api:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-core:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-jcl:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-jul:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 },
                 dependencies.create("org.apache.logging.log4j:log4j-web:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 },
-                dependencies.create("org.apache.logging.log4j:log4j-slf4j18-impl:$log4jVersion") {
+                dependencies.create("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 },
                 dependencies.create("com.lmax:disruptor:$disruptorVersion")
         ],
@@ -188,22 +124,17 @@ ext.libraries = [
                     exclude(group: "commons-logging", module: "commons-logging")
                     exclude(group: "commons-lang", module: "commons-lang")
                     exclude(group: "junit", module: "junit")
-                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-text:$commonsTextVersion") {
                     exclude(group: "commons-lang", module: "commons-lang")
                     exclude(group: "org.apache.commons", module: "commons-lang3")
-                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-pool2:$commonsPoolVersion") {
-                    force = true
                 },
                 dependencies.create("commons-cli:commons-cli:$commonsCliVersion") {
-                    force = true
                 },
                 dependencies.create("commons-beanutils:commons-beanutils:$commonsBeansVersion") {
                     exclude(group: "commons-logging", module: "commons-logging")
-                    force = true
                 },
                 dependencies.create("commons-logging:commons-logging:$commonsLoggingVersion") {
                 },
@@ -213,35 +144,26 @@ ext.libraries = [
                     exclude(group: "commons-collections", module: "commons-collections")
                     exclude(group: "commons-beanutils", module: "commons-beanutils")
                     exclude(group: "commons-digester", module: "commons-digester")
-                    force = true
                 },
                 dependencies.create("commons-codec:commons-codec:$commonsCodecVersion") {
-                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-lang3:$commonsLangVersion") {
-                    force = true
                 },
                 dependencies.create("commons-lang:commons-lang:2.6") {
-                    force = true
                 },
                 dependencies.create("commons-collections:commons-collections:$commonsCollections3Version") {
-                    force = true
                 },
                 dependencies.create("org.apache.commons:commons-collections4:$commonsCollectionsVersion") {
-                    force = true
                 }
         ],
         javax                   : [
                 dependencies.create("javax.servlet:javax.servlet-api:$javaxServletVersion") {
-                    force = true
                 }
         ],
         javaximpl               : [
                 dependencies.create("javax.servlet:jstl:$javaxJstlVersion") {
-                    force = true
                 },
                 dependencies.create("javax.transaction:jta:$jtaVersion") {
-                    force = true
                 }
         ],
         thymeleaf               : [
@@ -249,7 +171,6 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.javassist", module: "javassist")
                     exclude(group: "org.sourceforge.nekohtml", module: "nekohtml")
-                    force = true
                 },
                 dependencies.create("org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion") {
                     exclude(group: "com.fasterxml", module: "classmate")
@@ -259,7 +180,6 @@ ext.libraries = [
                     exclude(group: "nz.net.ultraq.thymeleaf", module: "thymeleaf-layout-dialect")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
                     exclude(group: "org.sourceforge.nekohtml", module: "nekohtml")
-                    force = true
                 }
         ],
         tests                   : [
@@ -268,16 +188,13 @@ ext.libraries = [
                     exclude(group: "org.objenesis", module: "objenesis")
                     exclude(group: "junit", module: "junit")
                     exclude(group: "net.bytebuddy", module: "byte-buddy")
-                    force = true
                 },
                 dependencies.create("org.mockito:mockito-junit-jupiter:$mockitoVersion") {
                     exclude(group: "org.mockito", module: "mockito-core")
                     exclude(group: "org.junit.jupiter", module: "junit-jupiter-api")
-                    force = true
                 },
                 dependencies.create("org.objenesis:objenesis:$objenesisVersion") {
                     exclude(group: "org.mockito", module: "mockito-all")
-                    force = true
                 },
                 dependencies.create("org.junit.jupiter:junit-jupiter-api:$junitVersion") {
                 },
@@ -316,15 +233,12 @@ ext.libraries = [
                     exclude(group: "ch.qos.logback", module: "logback-core")
                     exclude(group: "ch.qos.logback", module: "logback-classic")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
-                    force = true
                 },
                 dependencies.create("org.skyscreamer:jsonassert:$jsonassertVersion") {
                     exclude(group: "org.json", module: "json")
                     exclude(group: "com.vaadin.external.google", module: "android-json")
-                    force = true
                 },
                 dependencies.create("org.json:json:$jsonVersion") {
-                    force = true
                 }
         ],
         pac4j                   : [
@@ -336,7 +250,6 @@ ext.libraries = [
                     exclude(group: "com.google.guava", module: "guava")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("org.pac4j:pac4j-config:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
@@ -373,7 +286,6 @@ ext.libraries = [
                     exclude(group: "xml-apis", module: "xml-apis")
                     exclude(group: "org.opensaml", module: "xmltooling")
                     exclude(group: "org.cryptacular", module: "cryptacular")
-                    force = true
                 },
                 dependencies.create("org.pac4j:pac4j-core:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -384,7 +296,6 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     exclude(group: "com.zaxxer", module: "HikariCP")
-                    force = true
                 },
                 dependencies.create("org.pac4j:pac4j-http:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
@@ -394,7 +305,6 @@ ext.libraries = [
                     exclude(group: "commons-collections", module: "commons-collections")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("org.pac4j:spring-webmvc-pac4j:$pac4jSpringWebmvcVersion") {
                     exclude(group: "org.springframework", module: "spring-webmvc")
@@ -406,7 +316,6 @@ ext.libraries = [
                     exclude(group: "commons-collections", module: "commons-collections")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
-                    force = true
                 },
                 dependencies.create("org.pac4j:spring-security-pac4j:$pac4jSpringSecurityVersion") {
                     exclude(group: "org.springframework", module: "spring-webmvc")
@@ -461,38 +370,15 @@ ext.libraries = [
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-web")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
-                    force = true
                 },
                 dependencies.create("org.apache.tomcat.embed:tomcat-embed-core:$springBootTomcatVersion") {
                     exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
-                    force = true
                 },
                 dependencies.create("org.apache.tomcat.embed:tomcat-embed-el:$springBootTomcatVersion") {
                     exclude(group: "org.apache.tomcat", module: "tomcat-annotations-api")
-                    force = true
                 }
         ],
         springboot              : [
-                dependencies.create("org.springframework.boot:spring-boot-starter-websocket:$springBootVersion") {
-                    exclude(group: "org.slf4j", module: "slf4j-api")
-                    exclude(group: "org.slf4j", module: "log4j-over-slf4j")
-                    exclude(group: "org.slf4j", module: "jul-to-slf4j")
-                    exclude(group: "org.jboss.logging", module: "jboss-logging")
-                    exclude(group: "org.springframework", module: "spring-web")
-                    exclude(group: "org.springframework", module: "spring-core")
-                    exclude(group: "org.springframework", module: "spring-webmvc")
-                    exclude(group: "org.springframework", module: "spring-context")
-                    exclude(group: "org.springframework", module: "spring-messaging")
-                    exclude(group: "org.springframework.boot", module: "spring-boot-starter-json")
-                    exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
-                    exclude(group: "org.springframework.boot", module: "spring-boot-starter-actuator")
-                    exclude(group: "org.hibernate", module: "hibernate-validator")
-                    exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-core")
-                    exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-el")
-                    exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket")
-                    exclude(group: "org.springframework.boot", module: "spring-boot-starter-tomcat")
-                    force = true
-                },
                 dependencies.create("org.springframework.boot:spring-boot-starter-mail:$springBootVersion") {
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-logging")
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -504,7 +390,6 @@ ext.libraries = [
                     exclude(group: "org.springframework", module: "spring-context")
                     exclude(group: "org.springframework", module: "spring-context-support")
                     exclude(group: "org.springframework", module: "spring-beans")
-                    force = true
                 },
                 dependencies.create("org.springframework.boot:spring-boot-starter-web:$springBootVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -528,7 +413,6 @@ ext.libraries = [
                     exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-el")
                     exclude(group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket")
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-tomcat")
-                    force = true
                 },
                 dependencies.create("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion") {
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-actuator")
@@ -545,7 +429,6 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-core")
                     exclude(group: "com.fasterxml.jackson.datatype", module: "jackson-datatype-jsr310")
-                    force = true
                 },
                 dependencies.create("org.springframework.boot:spring-boot:$springBootVersion") {
                     exclude(group: "org.hibernate", module: "hibernate-validator")
@@ -557,7 +440,6 @@ ext.libraries = [
                     exclude(group: "org.springframework", module: "spring-context")
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "jul-to-slf4j")
-                    force = true
                 },
                 dependencies.create("org.springframework.boot:spring-boot-properties-migrator:$springBootVersion") {
                     exclude(group: "org.hibernate", module: "hibernate-validator")
@@ -571,7 +453,6 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "jul-to-slf4j")
                     exclude(group: "com.vaadin.external.google", module: "android-json")
                     exclude(group: "com.vaadin.external.google", module: "android-json")
-                    force = true
                 },
                 dependencies.create("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion") {
                     exclude(group: "org.springframework.boot", module: "spring-boot-starter-web")
@@ -588,7 +469,6 @@ ext.libraries = [
                     exclude(group: "org.springframework", module: "spring-context")
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "jul-to-slf4j")
-                    force = true
                 },
                 dependencies.create("org.springframework.boot:spring-boot-actuator:$springBootVersion") {
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-annotations")
@@ -598,7 +478,6 @@ ext.libraries = [
                     exclude(group: "org.springframework", module: "spring-core")
                     exclude(group: "org.springframework", module: "spring-context")
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 }
         ],
         springsecurity          : [
@@ -622,9 +501,8 @@ ext.libraries = [
                 dependencies.create("xerces:xercesImpl:$xercesVersion") {
                     exclude(group: "commons-codec", module: "commons-codec")
                     exclude(group: "org.slf4j", module: "slf4j-api")
-                    force = true
                 },
-                
+
                 dependencies.create("org.opensaml:opensaml-core:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
                     exclude(group: "commons-collections", module: "commons-collections")
@@ -646,7 +524,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-security-api")
                     exclude(group: "org.opensaml", module: "opensaml-saml-api")
                     exclude(group: "org.opensaml", module: "opensaml-saml-impl")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-xmlsec-impl:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -661,7 +538,6 @@ ext.libraries = [
                     exclude(group: "io.dropwizard.metrics", module: "metrics-core")
                     exclude(group: "net.shibboleth.utilities", module: "java-support")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-saml-api:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -680,7 +556,6 @@ ext.libraries = [
                     exclude(group: "org.apache.velocity", module: "velocity")
                     exclude(group: "org.opensaml", module: "opensaml-core")
                     exclude(group: "org.opensaml", module: "opensaml-profile-api")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-profile-api:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -701,7 +576,6 @@ ext.libraries = [
                     exclude(group: "net.shibboleth.utilities", module: "java-support")
                     exclude(group: "org.apache.velocity", module: "velocity")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-saml-impl:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -722,7 +596,6 @@ ext.libraries = [
                     exclude(group: "net.shibboleth.utilities", module: "java-support")
                     exclude(group: "org.apache.velocity", module: "velocity")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-security-api:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -741,7 +614,6 @@ ext.libraries = [
                     exclude(group: "io.dropwizard.metrics", module: "metrics-core")
                     exclude(group: "net.shibboleth.utilities", module: "java-support")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-xacml-saml-impl:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -759,7 +631,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-saml-api")
                     exclude(group: "org.opensaml", module: "opensaml-saml-impl")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-xacml-saml-api:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -777,7 +648,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-saml-api")
                     exclude(group: "org.opensaml", module: "opensaml-saml-impl")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-security-impl:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -798,7 +668,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-saml-impl")
                     exclude(group: "org.opensaml", module: "opensaml-core")
                     exclude(group: "org.opensaml", module: "opensaml-security-api")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-soap-api:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -818,7 +687,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-saml-api")
                     exclude(group: "org.opensaml", module: "opensaml-saml-impl")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-messaging-impl:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -838,7 +706,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-saml-api")
                     exclude(group: "org.opensaml", module: "opensaml-saml-impl")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-profile-impl:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -862,7 +729,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-core")
                     exclude(group: "org.opensaml", module: "opensaml-messaging-api")
                     exclude(group: "org.opensaml", module: "opensaml-security-api")
-                    force = true
                 },
                 dependencies.create("org.opensaml:opensaml-storage-impl:$opensamlVersion") {
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -888,7 +754,6 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "opensaml-saml-api")
                     exclude(group: "org.opensaml", module: "opensaml-saml-impl")
                     exclude(group: "org.opensaml", module: "opensaml-core")
-                    force = true
                 }
         ],
         shibidpjavasupport      : [
@@ -918,113 +783,90 @@ ext.libraries = [
                     exclude(group: "io.dropwizard.metrics", module: "metrics-core")
                     exclude(group: "io.dropwizard.metrics", module: "metrics-json")
                     exclude(group: "net.shibboleth.idp", module: "idp-authn-api")
-                    force = true
                 }
         ],
-        casServer              : [
-                util                 : [
+        casServer               : [
+                util           : [
                         dependencies.create("org.apereo.cas:cas-server-core-util:$casVersion") {
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-notifications:$casVersion") {
-                            force = true
                         }
                 ],
-                utilApi             :
+                utilApi        :
                         dependencies.create("org.apereo.cas:cas-server-core-util-api:$casVersion") {
-                            force = true
                         },
-                configuration        : [
+                configuration  : [
                         dependencies.create("org.apereo.cas:cas-server-core-api-configuration-model:$casVersion") {
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
-                            force = true
                         }
                 ],
-                testCore             : [
+                testCore       : [
                         dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
                             force = true;
                         }
                 ],
-                core                 : [
+                core           : [
                         dependencies.create("org.apereo.cas:cas-server-core-util-api:$casVersion") {
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
-                            force = true
                             exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
                             exclude group: 'org.apereo.cas', module: 'cas-server-core-web'
                         },
-                        dependencies.create ("org.apereo.cas:cas-server-support-oidc-services:$casVersion") {
-                            force = true
+                        dependencies.create("org.apereo.cas:cas-server-support-oidc-services:$casVersion") {
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
-                            force = true
                         }
                 ],
-                versionControl       : [
-                        
+                versionControl : [
+
                 ],
-                audit                :
+                audit          :
                         dependencies.create("org.apereo.cas:cas-server-core-audit-api:$casVersion") {
-                            force = true
                         },
-                ldap                 :
+                ldap           :
                         dependencies.create("org.apereo.cas:cas-server-support-ldap-core:$casVersion") {
-                            force = true
                         },
-                personDirectory      :
+                personDirectory:
                         dependencies.create("org.apereo.cas:cas-server-support-person-directory:$casVersion") {
-                            force = true
                         },
-                discovery            :
+                discovery      :
                         dependencies.create("org.apereo.cas:cas-server-support-discovery-profile:$casVersion") {
                             transitive = false
-                            force = true
                         },
-                saml                 : [
+                saml           : [
                         dependencies.create("org.apereo.cas:cas-server-support-saml-core-api:$casVersion") {
                             transitive = false
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {
                             transitive = false
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-saml-idp-metadata:$casVersion") {
                             transitive = false
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-saml-idp-web:$casVersion") {
                             transitive = false
-                            force = true
                         }
                 ],
-                services             : [
+                services       : [
                         dependencies.create("org.apereo.cas:cas-server-core-services-api:$casVersion") {
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-surrogate-api:$casVersion") {
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-services-registry:$casVersion") {
-                            force = true
                         }
                 ],
-                authentication       : [
+                authentication : [
                         dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
-                            force = true
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
                             force = true
                         }
 
                 ],
-                oauth                 : [
+                oauth          : [
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-api:$casVersion") {
                             force = true
                         },
@@ -1039,17 +881,17 @@ ext.libraries = [
                             force = true
                         }
                 ],
-                oidc                 :
+                oidc           :
                         dependencies.create("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
                             force = true
                         },
-                web                  :
+                web            :
                         dependencies.create("org.apereo.cas:cas-server-core-web-api:$casVersion") {
                             force = true
                         }
         ],
         validationapi           : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),
-        git                   :
+        git                     :
                 dependencies.create("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion") {
                     exclude group: 'org.apache.httpcomponents', module: 'httpclient'
                     exclude group: 'org.slf4j', module: 'slf4j'
@@ -1057,7 +899,7 @@ ext.libraries = [
                     exclude group: 'org.apache.commons', module: 'commons-lang3'
                     force = true
                 },
-        lucene                 : [
+        lucene                  : [
                 dependencies.create("org.apache.lucene:lucene-core:$luceneVersion") {
                     force = true
                 },

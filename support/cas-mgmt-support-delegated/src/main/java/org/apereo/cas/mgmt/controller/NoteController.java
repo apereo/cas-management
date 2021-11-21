@@ -67,7 +67,7 @@ public class NoteController {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(cnote.getId());
-            val msg = user.getId() + " - " + new Date().toString() + " : \n    "
+            val msg = user.getId() + " - " + new Date() + " : \n    "
                     + cnote.getText().replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
         }

@@ -103,7 +103,6 @@ public class ServiceController {
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
         val services = manager.findServiceBy(s -> s instanceof OAuthRegisteredService);
-        //val services = manager.getAllServicesByType(new OAuthWebApplicationService()).stream().filter(casUserProfile::hasPermission);
         return manager.getServiceItems(services.stream().filter(casUserProfile::hasPermission));
     }
 
@@ -249,13 +248,12 @@ public class ServiceController {
     }
 
     @PostMapping("validate")
-    public ResponseEntity<String> validateYaml(final Authentication authentication,
-                                               @RequestParam(required = false, name = "format", defaultValue = "json")
-                                               final String format,
-                                               @RequestBody
-                                               final String body) throws IOException {
+    public ResponseEntity<String> validate(final Authentication authentication,
+                                           @RequestParam(required = false, name = "format", defaultValue = "json")
+                                           final String format,
+                                           @RequestBody
+                                           final RegisteredService service) throws IOException {
         val casUserProfile = CasUserProfile.from(authentication);
-        val service = CasManagementUtils.parseJson(body);
         if (casUserProfile.hasPermission(service)) {
             var result = StringUtils.EMPTY;
             if (StringUtils.equalsIgnoreCase(format, "json")) {

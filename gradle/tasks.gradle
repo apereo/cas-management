@@ -23,7 +23,7 @@ tasks.withType(Javadoc) {
 
 task pathingJar(type: Jar, description: "Produces a 'pathing' JAR whose manifest class-path contains project runtime dependencies") {
     dependsOn configurations.runtimeClasspath
-    appendix = "pathing"
+    archiveAppendix = "pathing"
 
     doFirst {
         manifest {

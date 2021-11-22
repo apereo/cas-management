@@ -30,6 +30,7 @@ import java.util.Objects;
  */
 @Configuration("casManagementDelegatedConfiguration")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
+@ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
 public class CasManagementDelegatedConfiguration {
 
     @Autowired
@@ -43,27 +44,23 @@ public class CasManagementDelegatedConfiguration {
     private ObjectProvider<CommunicationsManager> communicationsManager;
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public SubmitController submitController() {
         return new SubmitController(repositoryFactory.getObject(),
-                managementProperties, communicationsManager.getObject());
+            managementProperties, communicationsManager.getObject());
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PullController pullController() {
         return new PullController(repositoryFactory.getObject(),
-                managementProperties, communicationsManager.getObject());
+            managementProperties, communicationsManager.getObject());
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public NoteController noteController() {
         return new NoteController(repositoryFactory.getObject());
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
     public PendingRequests pendingRequests() {
         return authentication -> {
             val user = Objects.requireNonNull(CasUserProfile.from(authentication));
@@ -71,9 +68,9 @@ public class CasManagementDelegatedConfiguration {
                 val git = Objects.requireNonNull(repositoryFactory.getObject()).masterRepository();
                 try {
                     return (int) git.branches()
-                            .map(git::mapBranches)
-                            .filter(r -> DelegatedUtil.filterPulls(r, new boolean[]{true, false, false}))
-                            .count();
+                        .map(git::mapBranches)
+                        .filter(r -> DelegatedUtil.filterPulls(r, new boolean[]{true, false, false}))
+                        .count();
                 } catch (final Exception e) {
                     return 0;
                 }

@@ -15,12 +15,10 @@ buildscript {
     }
 
     dependencies {
-        classpath "gradle.plugin.com.ewerk.gradle.plugins:jaxb2-plugin:1.0.10"
         classpath "com.github.jk1:gradle-license-report:$gradleLicenseVersion"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitVersion"
         classpath "io.franzbecker:gradle-lombok:$gradleLombokVersion"
-        classpath "com.github.ben-manes:gradle-versions-plugin:$gradleDependencyVersionsVersion"
 
         classpath "net.ltgt.gradle:gradle-errorprone-plugin:$gradleErrorProneVersion"
         classpath "com.github.node-gradle:gradle-node-plugin:$gradleNodeVersion"
@@ -84,7 +82,6 @@ nexusPublishing {
 }
 
 apply from: rootProject.file("gradle/dependencies.gradle")
-apply from: rootProject.file("gradle/dependencyUpdates.gradle")
 
 allprojects {
     apply plugin: "idea"
@@ -431,10 +428,8 @@ subprojects {
 
     dependencies {
 
-        implementation libraries.aspectj
         implementation libraries.validationapi
 
-        api libraries.jaxb
         api libraries.slf4j
 
         api libraries.commons
@@ -516,8 +511,8 @@ task jacocoRootReport(type: JacocoReport) {
     executionData jacocoMerge.destinationFile
 
     reports {
-        html.enabled = true
-        xml.enabled = true
+        html.required = true
+        xml.required = true
     }
 }
 

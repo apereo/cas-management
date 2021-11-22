@@ -98,7 +98,7 @@ public class PullController extends AbstractVersionControlController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.merge(branch.getId());
             val com = git.getCommit(branch.getId());
-            val msg = "ACCEPTED by " + user.getId() + " on " + new Date().toString() + NEW_LINE_INDENT
+            val msg = "ACCEPTED by " + user.getId() + " on " + new Date() + NEW_LINE_INDENT
                     + text.replaceAll("\\n", NEW_LINE_INDENT);
             git.appendNote(com, msg);
             sendAcceptMessage(Iterables.get(Splitter.on('/').split(branch.getName()), 2), com.getCommitterIdent().getEmailAddress());
@@ -132,7 +132,7 @@ public class PullController extends AbstractVersionControlController {
         val text = rejection.getNote();
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(branch.getId());
-            val msg = "REJECTED by " + user.getId() + " on " + new Date().toString() + NEW_LINE_INDENT
+            val msg = "REJECTED by " + user.getId() + " on " + new Date() + NEW_LINE_INDENT
                     + text.replaceAll("\\n", NEW_LINE_INDENT);
             git.appendNote(com, msg);
 

@@ -23,6 +23,7 @@ import {JSONComponent} from './json/json.component';
 import {MetadataEditorComponent} from './metadata/metadata.component';
 import {ImportComponent} from './import/import.component';
 import {RegistryRoutingModule} from './registry-routing.module';
+import { WsFedComponent } from './wsfed/wsfed.component';
 
 /**
  * Registry Module.
@@ -38,7 +39,8 @@ import {RegistryRoutingModule} from './registry-routing.module';
     YamlComponent,
     JSONComponent,
     MetadataEditorComponent,
-    ImportComponent
+    ImportComponent,
+    WsFedComponent
   ],
   imports: [
     CommonModule,
@@ -66,6 +68,7 @@ import {RegistryRoutingModule} from './registry-routing.module';
     YamlComponent,
     JSONComponent,
     MetadataEditorComponent,
-    ImportComponent
+    ImportComponent,
+    WsFedComponent
   ]
 }) export class RegistryModule {}

@@ -52,7 +52,7 @@ export class ImportComponent implements OnInit, OnDestroy{
   save() {
     this.service.import(this.editor.getFile())
       .subscribe(
-        () => this.router.navigate(['importService']),
+        () => this.router.navigate(['./form/importService']),
         () => alert('The system was not able to parse your imported service as a valid Registered Service.')
       );
   }

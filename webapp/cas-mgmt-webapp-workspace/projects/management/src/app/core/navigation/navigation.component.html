@@ -17,6 +17,10 @@
     <mat-icon>apps</mat-icon>
     <ng-container i18n>SAML Services</ng-container>
   </a>
+  <a mat-list-item (click)="navto('registry/wsfed')" [ngClass]="isSelected(['wsfed'])">
+    <mat-icon>apps</mat-icon>
+    <ng-container i18n>WSFed Services</ng-container>
+  </a>
   <a mat-list-item *ngIf="appService.config.attributeStoreEnabled" (click)="navto('definitions')" [ngClass]="isSelected(['definitions'])">
     <mat-icon>apps</mat-icon>
     <ng-container i18n>Attribute Definitions</ng-container>

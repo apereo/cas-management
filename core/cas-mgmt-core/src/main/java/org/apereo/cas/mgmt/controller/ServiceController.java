@@ -10,6 +10,7 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
+import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -102,7 +103,24 @@ public class ServiceController {
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
         val services = manager.findServiceBy(s -> s instanceof OAuthRegisteredService);
-        //val services = manager.getAllServicesByType(new OAuthWebApplicationService()).stream().filter(casUserProfile::hasPermission);
+        return manager.getServiceItems(services.stream().filter(casUserProfile::hasPermission));
+    }
+
+    /**
+     * Returns a list of WsFed services.
+     *
+     * @param authentication - the response
+     * @return - list of Wsfed registered Service items
+     * @throws IllegalAccessException - insufficient permissions
+     */
+    @GetMapping("wsfed")
+    public List<RegisteredServiceItem> getWsfedServices(final Authentication authentication) throws IllegalAccessException {
+        val casUserProfile = new CasUserProfile(authentication);
+        if (!casUserProfile.isUser()) {
+            throw new IllegalAccessException("You do not have permission");
+        }
+        val manager = (ManagementServicesManager) managerFactory.from(authentication);
+        val services = manager.findServiceBy(s -> s instanceof WSFederationRegisteredService);
         return manager.getServiceItems(services.stream().filter(casUserProfile::hasPermission));
     }
 
@@ -230,13 +248,12 @@ public class ServiceController {
     }
 
     @PostMapping("validate")
-    public ResponseEntity<String> validateYaml(final Authentication authentication,
-                                               @RequestParam(required = false, name = "format", defaultValue = "json")
-                                               final String format,
-                                               @RequestBody
-                                               final String body) throws IOException {
+    public ResponseEntity<String> validate(final Authentication authentication,
+                                           @RequestParam(required = false, name = "format", defaultValue = "json")
+                                           final String format,
+                                           @RequestBody
+                                           final RegisteredService service) throws IOException {
         val casUserProfile = CasUserProfile.from(authentication);
-        val service = CasManagementUtils.parseJson(body);
         if (casUserProfile.hasPermission(service)) {
             var result = StringUtils.EMPTY;
             if (StringUtils.equalsIgnoreCase(format, "json")) {

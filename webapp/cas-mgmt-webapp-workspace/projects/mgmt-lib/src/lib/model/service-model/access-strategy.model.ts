@@ -14,7 +14,6 @@ export abstract class RegisteredServiceAccessStrategy {
   requiredAttributes: Map<string, string[]>;
   rejectedAttributes: Map<string, string[]>;
   caseInsensitive: boolean;
-  principalAttributesRepository: PrincipalAttributesRepository;
 
   constructor(strat?: RegisteredServiceAccessStrategy) {
     this.enabled = strat?.enabled ?? true;
@@ -25,7 +24,6 @@ export abstract class RegisteredServiceAccessStrategy {
     this.requireAllAttributes = strat?.requireAllAttributes ?? true;
     this.rejectedAttributes = strat?.rejectedAttributes;
     this.caseInsensitive = strat?.caseInsensitive ?? false;
-    this.principalAttributesRepository = attributeRepoFactory(strat?.principalAttributesRepository);
   }
 }
 

@@ -21,6 +21,15 @@ export class PreviewService extends Service {
      */
 
     validate(format: string, service: AbstractRegisteredService): Observable<unknown> {
-        return this.post(`${this.controller}/validate?format=${format}`, service);
+        return this.postText(`${this.controller}/validate?format=${format}`, this.removeNull(service));
+    }
+
+
+    private removeNull(data) {
+        return JSON.parse(JSON.stringify(data), (key, value) => {
+            if (value == null || value == '' || value == [] || value == {})
+                return undefined;
+            return value;
+        });
     }
 }

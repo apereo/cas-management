@@ -121,9 +121,6 @@ export class TabAccessStrategyForm extends FormGroup implements MgmtFormGroup<Ab
       const pr = new DefaultPrincipalAttributesRepository();
       pr.attributeRepositoryIds = ['samlStub', 'ldap'];
       pr.mergingStrategy = 'MULTIVALUED';
-      service.accessStrategy.principalAttributesRepository = pr;
-    } else {
-      service.accessStrategy.principalAttributesRepository = null;
     }
   }
 

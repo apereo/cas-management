@@ -80,6 +80,13 @@ export class ControlsComponent implements OnInit {
   }
 
   /**
+   * Logs the user out the application.
+   */
+  logout() {
+    window.location.href = '../logout.html';
+  }
+
+  /**
    * Inspects result from commit dialog and takes action.
    *
    * @param msg - commit message or action.

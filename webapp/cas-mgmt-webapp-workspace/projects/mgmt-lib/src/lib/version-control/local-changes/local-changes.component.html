@@ -1,13 +1,3 @@
-<div style="display:flex; align-items: center;">
-<button mat-raised-button (click)="refresh()" color="primary" [disabled]="loading">
-    <mat-icon >refresh</mat-icon>
-    <span>Refresh (pull)</span>
-</button>
-<mat-spinner diameter="20" strokeWidth="4" *ngIf="loading" style="margin-left: 1rem;"></mat-spinner>
-</div>
-
-<mat-divider style="margin-top: 1rem;margin-bottom: 1rem;"></mat-divider>
-
 <div fxLayout="column">
   
   <mat-table #table [dataSource]="datasource">

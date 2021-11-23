@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import { SpinnerService } from '@apereo/mgmt-lib/src/lib/ui';
 
 /**
  * Component to display history of pull requests and allows reverting them.
@@ -32,6 +33,7 @@ export class SubmitsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(private service: SubmitService,
+              private spinner: SpinnerService,
               public controls: ControlsService,
               public dialog: MatDialog,
               public app: AppConfigService,
@@ -65,8 +67,12 @@ export class SubmitsComponent implements OnInit, OnDestroy {
    * Refreshes the data in the view.
    */
   refresh() {
+    this.spinner.start();
     this.service.getSubmits('Refreshing')
-      .subscribe(resp => this.dataSource.data = resp);
+      .subscribe(resp => {
+        setTimeout(() => this.spinner.stop(), 1000);
+        this.dataSource.data = resp;
+      });
   }
 
   /**

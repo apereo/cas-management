@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ChangesService} from '../changes/changes.service';
 import {VersionControlService} from '../version-control.service';
 import {Subscription} from 'rxjs';
+import { SpinnerService } from '@apereo/mgmt-lib/src/lib/ui';
 
 /**
  * Component to display current uncommitted working changes.
@@ -35,6 +36,7 @@ export class LocalChangesComponent implements OnInit, OnDestroy {
               private service: VersionControlService,
               private controls: ControlsService,
               private changeService: ChangesService,
+              private spinner: SpinnerService,
               public dialog: MatDialog,
               public app: AppConfigService,
               protected viewRef: ViewContainerRef) {
@@ -52,7 +54,6 @@ export class LocalChangesComponent implements OnInit, OnDestroy {
     });
     this.controls.resetButtons();
     this.controls.showRefresh = true;
-    this.controls.showSpinner = true;
     this.subscription = this.controls.refresh.subscribe(() => this.refresh());
   }
 
@@ -67,10 +68,10 @@ export class LocalChangesComponent implements OnInit, OnDestroy {
    * Refreshes the changes.
    */
   refresh() {
-    this.loading = true;
+    this.spinner.start();
     this.controls.untracked()
       .subscribe(resp => {
-        setTimeout(() => this.loading = false, 1000);
+        setTimeout(() => this.spinner.stop(), 1000);
         this.datasource.data = resp ? resp : [];
       });
     this.controls.gitStatus();

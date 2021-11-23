@@ -64,6 +64,8 @@ export class ChangesComponent implements OnInit {
    * Navigates the router to FormComponent to view the version of the selected item.
    */
   viewChange() {
-    this.router.navigate(['form/view', this.selectedItem.newId]).then();
+    this.service.viewJson(this.selectedItem.newId)
+      .subscribe(resp => this.app.openView(resp, 'hjson'));
+    
   }
 }

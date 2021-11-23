@@ -62,8 +62,10 @@ import {RevertComponent} from './revert/revert.component';
 import {AcceptComponent} from './accept/accept.component';
 import {RejectComponent} from './reject/reject.component';
 import { ChipAutocompleteComponent, MatChipAutocompleteTrigger } from './chip-autocomplete/chip-autocomplete.component';
+import { PreviewDialog } from './preview/preview-dialog.component';
 import { CurrentUserComponent } from './current-user/current-user.component';
 import { CurrentUserDialog } from './current-user/current-user-dialog.component';
+
 
 /**
  * UI Module.
@@ -140,6 +142,7 @@ import { CurrentUserDialog } from './current-user/current-user-dialog.component'
     OAuthAddComponent,
     SamlAddComponent,
     MatChipAutocompleteTrigger,
+    PreviewDialog,
     CurrentUserComponent,
     CurrentUserDialog
   ],
@@ -175,6 +178,7 @@ import { CurrentUserDialog } from './current-user/current-user-dialog.component'
     OAuthAddComponent,
     SamlAddComponent,
     MatChipAutocompleteTrigger,
+    PreviewDialog,
     CurrentUserComponent,
     CurrentUserDialog
   ]

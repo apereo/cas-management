@@ -37,5 +37,7 @@ export * from './saml-add/saml-add.component';
 export * from './oauth.service';
 export * from './wsfed-add/wsfed-add.service';
 export * from './ui.module';
+export * from './preview/preview-dialog.component';
+export * from './preview/preview.service';
 export * from './current-user/current-user-dialog.component';
 export * from './current-user/current-user.component';

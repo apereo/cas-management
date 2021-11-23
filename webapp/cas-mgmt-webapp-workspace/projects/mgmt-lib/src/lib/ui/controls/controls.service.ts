@@ -39,6 +39,8 @@ export class ControlsService extends Service {
 
   showLookup = false;
 
+  showPreview = false;
+
   save: EventEmitter<void> = new EventEmitter<void>();
 
   openFile: EventEmitter<any> = new EventEmitter<any>();
@@ -52,6 +54,8 @@ export class ControlsService extends Service {
   editorOptions: EventEmitter<void> = new EventEmitter<void>();
 
   lookup: EventEmitter<void> = new EventEmitter<void>();
+
+  preview: EventEmitter<string> = new EventEmitter<string>();
 
   /**
    * Resets which controls are shown to the default.
@@ -67,6 +71,7 @@ export class ControlsService extends Service {
     this.showEditorOptions = false;
     this.showLookup = false;
     this.showNew = false;
+    this.showPreview = false;
   }
 
   /**

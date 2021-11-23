@@ -27,7 +27,6 @@ export class AccessStrategyForm extends FormGroup {
       requiredAttributes: new AttributesForm(strategy?.requiredAttributes),
       caseInsensitive: new FormControl(strategy?.caseInsensitive),
       rejectedAttributes: new AttributesForm(strategy?.rejectedAttributes),
-      repo: new PrincipalRepoForm(strategy?.principalAttributesRepository),
       delegatedAuthenticationPolicy: new DelegatedForm(strategy?.delegatedAuthenticationPolicy)
     });
     this.principalRepoType = new FormControl(PrincipalRepoType.DEFAULT);

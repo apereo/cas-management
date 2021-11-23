@@ -11,9 +11,14 @@ import {
   AppConfigService,
   AbstractRegisteredService,
   TabsComponent,
-  ImportService, ControlsService, ServiceForm, SubmissionsService
+  ImportService,
+  ControlsService,
+  ServiceForm,
+  SubmissionsService,
+  PreviewDialog
 } from '@apereo/mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
 /**
  * Component to display/update a service.
@@ -48,7 +53,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private service: FormService,
+              public service: FormService,
               private importService: ImportService,
               private submissionService: SubmissionsService,
               private location: Location,
@@ -56,7 +61,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
               public controls: ControlsService,
               public userService: UserService,
               private breakpointObserver: BreakpointObserver,
-              private spinner: SpinnerService) {
+              private spinner: SpinnerService,
+              private dialog: MatDialog) {
     this.controls.title = 'Service';
     this.controls.icon = 'article';
   }
@@ -77,8 +83,10 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.service.typeChange.subscribe(() => this.setNav());
     this.controls.resetButtons();
     this.controls.showEdit = this.showEdit();
+    this.controls.showPreview = true;
     this.subscriptions.push(this.controls.save.subscribe(() => this.save()));
     this.subscriptions.push(this.controls.reset.subscribe(() => this.reset()));
+    this.subscriptions.push(this.controls.preview.subscribe((format: string) => this.preview(format)));
   }
 
   /**
@@ -95,6 +103,23 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     this.controls.showEdit = this.showEdit();
+  }
+
+  preview(format: string) {
+    this.map();
+    const dialogRef = this.dialog.open(PreviewDialog, {
+      width: '960px',
+      data: {
+        format,
+        service: this.service.registeredService
+      },
+      height: '90vh'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+    
   }
 
   /**

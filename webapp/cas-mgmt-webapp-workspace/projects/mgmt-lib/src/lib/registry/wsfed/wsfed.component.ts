@@ -18,7 +18,7 @@ import { RegistryService } from '../registry.service';
 @Component({
     selector: 'lib-wsfed',
     templateUrl: './wsfed.component.html',
-    styleUrls: []
+    styleUrls: ['./wsfed.component.css']
 })
 export class WsFedComponent extends BaseServicesComponent {
 

@@ -18,7 +18,7 @@
         <ng-container i18n>Branch Name</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
-       {{ row.name }}
+       <span [matTooltip]="'Branch: ' + row.name" matTooltipPosition="above">{{ row.title || row.name }}</span>
       </mat-cell>
     </ng-container>
 

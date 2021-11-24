@@ -22,7 +22,7 @@ export class HistoryResolve implements Resolve<History[]> {
    * @param route - route snapshot
    */
   resolve(route: ActivatedRouteSnapshot): Observable<History[]> | History[] {
-    const param: string = route.params.fileName;
+    const param: string = route.params.filename;
     if (param) {
       return this.service.history(param);
     }

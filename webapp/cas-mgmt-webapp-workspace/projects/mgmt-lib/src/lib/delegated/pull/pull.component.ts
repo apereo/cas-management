@@ -14,6 +14,7 @@ import {
 } from '@apereo/mgmt-lib/src/lib/ui';
 import {MediaObserver} from '@angular/flex-layout';
 import {Subscription} from 'rxjs';
+import { SpinnerService } from '@apereo/mgmt-lib/src/lib/ui';
 
 /**
  * Component to display a list of open pull request for admins to review and accept.
@@ -50,6 +51,7 @@ export class PullComponent implements OnInit, OnDestroy {
               private service: PullService,
               private location: Location,
               private controls: ControlsService,
+              private spinner: SpinnerService,
               public dialog: MatDialog,
               public app: AppConfigService,
               public mediaObserver: MediaObserver) {
@@ -94,8 +96,12 @@ export class PullComponent implements OnInit, OnDestroy {
    * Refreshes data in the view by making a call to the server for all open pull requests.
    */
   refresh() {
+    this.spinner.start();
     this.service.getBranches([this.showPending, this.showAccepted, this.showRejected], 'Refreshing')
-      .subscribe(resp => this.dataSource.data = resp);
+      .subscribe(resp => {
+        setTimeout(() => this.spinner.stop(), 1000);
+        this.dataSource.data = resp;
+      });
     this.controls.gitStatus();
   }
 

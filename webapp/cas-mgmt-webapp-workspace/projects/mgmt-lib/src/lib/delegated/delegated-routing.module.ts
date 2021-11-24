@@ -15,7 +15,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'submit',
+    path: 'submits',
     component: SubmitsComponent,
     resolve: {
       resp: SubmitsResolver

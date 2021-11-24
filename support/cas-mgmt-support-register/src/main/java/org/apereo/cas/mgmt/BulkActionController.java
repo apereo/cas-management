@@ -138,7 +138,8 @@ public class BulkActionController {
         }
     }
 
-    private static void commitBranch(final GitUtil git, final CasUserProfile casUserProfile, final String op, final String msg) {
+    private static void commitBranch(final GitUtil git, final CasUserProfile casUserProfile,
+                                     final String op, final String msg) {
         try {
             val timestamp = new Date().getTime();
             val branchName = op + '-' + casUserProfile.getEmail() + '-' + timestamp;

@@ -74,7 +74,7 @@ public class PullController extends AbstractVersionControlController {
                     .filter(r -> DelegatedUtil.filterPulls(r, options))
                     .map(DelegatedUtil::createBranch)
                     .collect(toList());
-        } catch (final GitAPIException ex) {
+        } catch (final Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
             throw new VersionControlException();
         }

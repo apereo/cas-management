@@ -803,7 +803,6 @@ ext.libraries = [
                 ],
                 testCore       : [
                         dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
-                            force = true;
                         }
                 ],
                 core           : [
@@ -862,32 +861,32 @@ ext.libraries = [
                         dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
-                            force = true
+
                         }
 
                 ],
                 oauth          : [
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-api:$casVersion") {
-                            force = true
+
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
-                            force = true
+
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-core-api:$casVersion") {
                             exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
-                            force = true
+
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
-                            force = true
+
                         }
                 ],
                 oidc           :
                         dependencies.create("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
-                            force = true
+
                         },
                 web            :
                         dependencies.create("org.apereo.cas:cas-server-core-web-api:$casVersion") {
-                            force = true
+
                         }
         ],
         validationapi           : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),
@@ -897,17 +896,17 @@ ext.libraries = [
                     exclude group: 'org.slf4j', module: 'slf4j'
                     exclude group: 'org.slf4j', module: 'slf4j-api'
                     exclude group: 'org.apache.commons', module: 'commons-lang3'
-                    force = true
+                    
                 },
         lucene                  : [
                 dependencies.create("org.apache.lucene:lucene-core:$luceneVersion") {
-                    force = true
+
                 },
                 dependencies.create("org.apache.lucene:lucene-queryparser:$luceneVersion") {
-                    force = true
+
                 },
                 dependencies.create("org.apache.lucene:lucene-analyzers-common:$luceneVersion") {
-                    force = true
+
                 }
         ]
 ]

@@ -644,7 +644,7 @@ public class GitUtil implements AutoCloseable {
      * @throws IOException - failed
      */
     public void markAsSubmitted(final RevObject c) throws GitAPIException, IOException {
-        appendNote(c, "SUBMITTED on " + new Date().toString() + "\n    ");
+        appendNote(c, "SUBMITTED on " + new Date() + "\n    ");
     }
 
 

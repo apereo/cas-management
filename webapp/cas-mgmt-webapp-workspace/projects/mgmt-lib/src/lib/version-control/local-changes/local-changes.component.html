@@ -1,5 +1,5 @@
 <div fxLayout="column">
-  
+
   <mat-table #table [dataSource]="datasource">
 
     <ng-container matColumnDef="actions">
@@ -44,7 +44,10 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'changeTypeWidth'">
-        {{ row.changeType }}
+        <mat-icon *ngIf="row.changeType === 'ADD'">add</mat-icon>
+        <mat-icon *ngIf="row.changeType === 'DELETE'">clear</mat-icon>
+        <mat-icon *ngIf="row.changeType === 'MODIFY'">edit</mat-icon>
+        &nbsp;{{ row.changeType }}
       </mat-cell>
     </ng-container>
 
@@ -66,7 +69,7 @@
   </button>
   <button mat-menu-item (click)="viewYaml()">
     <mat-icon>code</mat-icon>
-    <ng-container>Yaml</ng-container>
+    <ng-container>YAML</ng-container>
   </button>
   <button mat-menu-item (click)="openModalRevert()">
     <mat-icon>undo</mat-icon>

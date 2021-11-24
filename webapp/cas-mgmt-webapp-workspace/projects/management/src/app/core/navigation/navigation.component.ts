@@ -33,13 +33,6 @@ export class NavigationComponent {
   }
 
   /**
-   * Logs the user out the application.
-   */
-  logout() {
-    window.location.href = '../logout.html';
-  }
-
-  /**
    * Returns true if the logged in user is an admin.
    */
   isAdmin(): boolean {

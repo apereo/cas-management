@@ -1,12 +1,14 @@
 package org.apereo.cas.mgmt.controller;
 
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.CommitMessage;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.BranchData;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +28,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Controller to handle submit requests.
@@ -37,21 +40,20 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping(path = "api/submit", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class SubmitController {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final RepositoryFactory repositoryFactory;
+
     private final CasManagementConfigurationProperties managementProperties;
+
     private final CommunicationsManager communicationsManager;
 
-    /**
-     * Method commits the working dir of the user and creates a submit branch that is made into a pull request.
-     *
-     * @param authentication - the user
-     * @param msg      - message from user
-     */
     @PostMapping
-    @SneakyThrows
     public void submitPull(final Authentication authentication,
-                           @RequestBody final String msg) {
+                           @RequestParam
+                           final String title,
+                           @RequestBody
+                           final String msg) throws Exception {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {
@@ -62,28 +64,27 @@ public class SubmitController {
             val submitName = user.getId() + '_' + timestamp;
 
             git.addWorkingChanges();
-            val commit = git.commit(user, msg);
+
+            val message = new CommitMessage();
+            message.setMessage(msg);
+            message.setTitle(title);
+
+            val finalMessage = MAPPER.writeValueAsString(message);
+            val commit = git.commit(user, finalMessage);
+
             git.createBranch(branchName, "origin/master");
             git.cherryPickCommit(commit);
-            git.commit(user, msg);
+            git.commit(user, finalMessage);
             git.createPullRequest(commit, submitName);
             git.checkout("master");
             sendSubmitMessage(submitName, user);
         }
     }
 
-    private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
-        if (communicationsManager.isMailSenderDefined()) {
-            val emailProps = managementProperties.getDelegated().getNotifications().getSubmit();
-            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, user.getEmail(), emailProps.getText());
-        }
-    }
-
     /**
      * Method will create and return a list of branches that have been submitted as pull request by users.
      *
-     * @param authentication  - HttpServletRequest
+     * @param authentication - HttpServletRequest
      * @return - List of BranchData
      */
     @GetMapping
@@ -92,24 +93,25 @@ public class SubmitController {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.branches()
-                    .filter(r -> r.getName().contains('/' + user.getId() + '_'))
-                    .map(git::mapBranches)
-                    .map(DelegatedUtil::createBranch)
-                    .collect(toList());
+                .filter(r -> r.getName().contains('/' + user.getId() + '_'))
+                .map(git::mapBranches)
+                .map(DelegatedUtil::createBranch)
+                .collect(toList());
         }
     }
 
     /**
      * Method will revert a submitted pull request from a user's repository if it has been rejected by an admin.
      *
-     * @param authentication    - the user
-     * @param branch - Name of the pull requet
+     * @param authentication - the user
+     * @param branch         - Name of the pull requet
      */
     @GetMapping("revert/{branch}")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void revertSubmit(final Authentication authentication,
-                             @PathVariable final String branch) {
+                             @PathVariable
+                             final String branch) {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {
@@ -119,6 +121,14 @@ public class SubmitController {
         }
         try (GitUtil master = repositoryFactory.masterRepository()) {
             master.markAsReverted(branch, user);
+        }
+    }
+
+    private void sendSubmitMessage(final String submitName, final CasUserProfile user) {
+        if (communicationsManager.isMailSenderDefined()) {
+            val emailProps = managementProperties.getDelegated().getNotifications().getSubmit();
+            emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
+            communicationsManager.email(emailProps, user.getEmail(), emailProps.getText());
         }
     }
 }

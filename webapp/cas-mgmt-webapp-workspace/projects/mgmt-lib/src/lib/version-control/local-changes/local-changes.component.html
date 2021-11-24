@@ -54,7 +54,10 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'changeTypeWidth'">
-        {{ row.changeType }}
+        <mat-icon *ngIf="row.changeType === 'ADD'">add</mat-icon>
+        <mat-icon *ngIf="row.changeType === 'DELETE'">clear</mat-icon>
+        <mat-icon *ngIf="row.changeType === 'MODIFY'">edit</mat-icon>
+        &nbsp;{{ row.changeType }}
       </mat-cell>
     </ng-container>
 

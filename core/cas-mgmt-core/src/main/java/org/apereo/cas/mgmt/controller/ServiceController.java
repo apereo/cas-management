@@ -252,14 +252,14 @@ public class ServiceController {
                                            @RequestParam(required = false, name = "format", defaultValue = "json")
                                            final String format,
                                            @RequestBody
-                                           final RegisteredService service) throws IOException {
+                                           final RegisteredService service) {
         val casUserProfile = CasUserProfile.from(authentication);
         if (casUserProfile.hasPermission(service)) {
             var result = StringUtils.EMPTY;
-            if (StringUtils.equalsIgnoreCase(format, "json")) {
-                result = CasManagementUtils.toJson(service);
-            } else if (StringUtils.equalsIgnoreCase(format, "yaml")) {
+            if (StringUtils.equalsIgnoreCase(format, "yaml")) {
                 result = CasManagementUtils.toYaml(service);
+            } else {
+                result = CasManagementUtils.toJson(service);
             }
             return ResponseEntity.ok(result);
         }

@@ -89,8 +89,8 @@ export class ControlsService extends Service {
    *
    * @param msg - commit message
    */
-  commit(msg: string): Observable<string> {
-    return this.post('api/commit', msg, 'Committing');
+  commit({title, message}: {title: string, message: string}): Observable<string> {
+    return this.post('api/commit', message, 'Committing');
   }
 
   /**
@@ -105,8 +105,8 @@ export class ControlsService extends Service {
    *
    * @param msg - commit message
    */
-  submit(msg): Observable<string> {
-    return this.postText('api/submit', msg, 'Submitting');
+  submit({ title, message }: { title: string, message: string }): Observable<string> {
+    return this.postText(`api/submit?title=${title}`, message, 'Submitting');
   }
 
   /**

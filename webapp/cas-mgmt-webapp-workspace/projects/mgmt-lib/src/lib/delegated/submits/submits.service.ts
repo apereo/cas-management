@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Branch} from '@apereo/mgmt-lib/src/lib/model';
 import {Service} from '@apereo/mgmt-lib/src/lib/ui';
 import {Observable} from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 
 /**
  * Service that handles requests to the server for submits.
@@ -21,7 +22,22 @@ export class SubmitService extends Service {
    * @param msg - message for spinner
    */
   getSubmits(msg?: string): Observable<Branch[]> {
-    return this.get<Branch[]>(this.controller, msg);
+    return this.get<Branch[]>(this.controller, msg).pipe(
+      map((branches: Branch[]) => branches.map(b => {
+        let msg = b.msg,
+          json;
+        try {
+          json = JSON.parse(msg);
+        } catch (err) {}
+        const branch = {
+          ...b,
+          msg: json ? json.message : msg,
+          title: json ? json.title : null
+        };
+
+        return branch;
+      }))
+    );
   }
 
   /**

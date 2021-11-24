@@ -7,7 +7,7 @@ import {LocalChangesComponent} from './local-changes/local-changes.component';
 import {RepoHistoryComponent} from './repo-history/repo-history.component';
 import {ChangesResolve} from './changes/changes.resolver';
 import {CommitHistoryResolve} from './commit-history/commit-history.resolver';
-import {HistoryResolve} from './history/history.resolover';
+import {HistoryResolve} from './history/history.resolver';
 import {LocalChangesResolver} from './local-changes/local-changes.resolver';
 import {RepoHistoryResolver} from './repo-history/repo-history.resolver';
 

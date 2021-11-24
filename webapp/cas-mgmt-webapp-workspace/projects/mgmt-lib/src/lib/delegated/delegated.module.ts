@@ -12,6 +12,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {FormsModule} from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /**
  * Module to lazy-load delegated functionality in the app.
@@ -31,6 +32,7 @@ import {FormsModule} from '@angular/forms';
     FormsModule,
     MatIconModule,
     MatTableModule,
+    MatTooltipModule,
     MatMenuModule,
     MatButtonModule,
     DelegatedRoutingModule

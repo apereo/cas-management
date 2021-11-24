@@ -91,14 +91,15 @@ export class ControlsComponent implements OnInit {
    *
    * @param msg - commit message or action.
    */
-  private commit(msg: string) {
-    if (msg === 'CANCEL') {
+  private commit(submission: {title: string, message: string}) {
+    const { title, message } = submission;
+    if (message === 'CANCEL') {
       return;
     } else if (!this.userService.user.administrator) {
-      this.submit(msg);
+      this.submit(submission);
     } else {
-      if (msg !== null && msg !== '') {
-        this.service.commit(msg)
+      if (message !== null && message !== '') {
+        this.service.commit(submission)
           .subscribe(
             () => this.handleCommit(),
             () => this.handleNotCommitted()
@@ -176,8 +177,8 @@ export class ControlsComponent implements OnInit {
    *
    * @param msg - Commit message
    */
-  private submit(msg: string) {
-    this.service.submit(msg)
+  private submit(submission: { title: string, message: string }) {
+    this.service.submit(submission)
       .subscribe(
         () => this.handleSubmit(),
         () => this.handleNotSubmitted()

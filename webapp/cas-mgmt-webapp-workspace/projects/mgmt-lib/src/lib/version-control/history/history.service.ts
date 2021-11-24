@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Commit, DiffEntry, History} from '@apereo/mgmt-lib/src/lib/model';
 import {Service} from '@apereo/mgmt-lib/src/lib/ui';
 import {Observable} from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 
 /**
  * Service to handle request to the server for history.
@@ -66,7 +67,19 @@ export class HistoryService extends Service {
    * Calls the server to return all the commits in the repository.
    */
   commitLogs(): Observable<Commit[]> {
-    return this.get<Commit[]>(this.controller);
+    return this.get<Commit[]>(this.controller).pipe(map(commits => commits.map(c => {
+      let msg = c.text,
+        json;
+      try {
+        json = JSON.parse(msg);
+      } catch (err) { }
+      const branch = {
+        ...c,
+        text: json ? json.message : msg
+      };
+
+      return branch;
+    })));
   }
 
   /**

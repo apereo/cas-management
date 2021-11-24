@@ -9,13 +9,22 @@
   </h3>
 </div>
 <mat-dialog-content>
-  <mat-form-field style="width:400px;">
-     <textarea matInput required rows="5"
+  <div fxLayout="column" style="width:400px;">
+    <mat-form-field>
+     <input matInput required
                i18n-placeholder
-               placeholder="Enter a message"
-               [(ngModel)]="commitMessage">
-    </textarea>
-  </mat-form-field>
+               placeholder="Enter a title"
+               [(ngModel)]="commitTitle" />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput required rows="5"
+                i18n-placeholder
+                placeholder="Enter a message"
+                [(ngModel)]="commitMessage">
+      </textarea>
+    </mat-form-field>
+  </div>
+  
   <div *ngIf="isAdmin">
           <span i18n>Services to be committed:</span>
   </div>
@@ -34,7 +43,7 @@
       <mat-icon>cancel</mat-icon>
       <ng-container i18n>Cancel</ng-container>
     </button>
-    <button mat-button [matDialogClose]="commitMessage">
+    <button mat-button [matDialogClose]="{'message': commitMessage, 'title': commitTitle}">
       <mat-icon>input</mat-icon>
       <span *ngIf="isAdmin">
             <ng-container i18n>Commit</ng-container>

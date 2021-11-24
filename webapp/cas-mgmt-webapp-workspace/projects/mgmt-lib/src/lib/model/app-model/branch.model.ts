@@ -4,6 +4,7 @@
 export class Branch {
   name: string;
   msg: string;
+  title?: string;
   accepted: boolean;
   committer: string;
   time: number;

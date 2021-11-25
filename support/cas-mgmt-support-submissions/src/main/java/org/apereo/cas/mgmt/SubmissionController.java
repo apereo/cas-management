@@ -171,7 +171,7 @@ public class SubmissionController extends AbstractVersionControlController {
         return serviceItem;
     }
 
-    private static PendingItem createPendingItem(final GitUtil.BranchMap p, final GitUtil git) {
+    private static PendingItem createPendingItem(final BranchMap p, final GitUtil git) {
         try {
             val serviceItem = new PendingItem();
             serviceItem.setId(p.getId());

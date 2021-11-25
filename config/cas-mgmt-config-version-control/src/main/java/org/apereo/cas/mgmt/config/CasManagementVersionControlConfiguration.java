@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration("casManagementVersionControlConfiguration")
+@Configuration(value = "CasManagementVersionControlConfiguration", proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "mgmt.version-control", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementVersionControlConfiguration {
@@ -56,10 +56,13 @@ public class CasManagementVersionControlConfiguration {
     private ObjectProvider<RegisteredServiceResourceNamingStrategy> namingStrategy;
 
 
-    @Bean(name = "managerFactory")
-    public VersionControlManagerFactory managerFactory() {
-        return new VersionControlManagerFactory(servicesManager.getObject(), applicationContext, managementProperties,
-                repositoryFactory(), casProperties, namingStrategy.getObject());
+    @Bean
+    public VersionControlManagerFactory managerFactory(
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory) {
+        return new VersionControlManagerFactory(servicesManager.getObject(),
+            applicationContext, managementProperties,
+            repositoryFactory, casProperties, namingStrategy.getObject());
     }
 
     @Bean
@@ -68,19 +71,28 @@ public class CasManagementVersionControlConfiguration {
     }
 
     @Bean
-    public CommitController commitController() {
-        return new CommitController(repositoryFactory(),
-                managementProperties, servicesManager.getObject(), pendingRequests, submissionRequests);
+    public CommitController commitController(
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory) {
+        return new CommitController(repositoryFactory,
+            managementProperties, servicesManager.getObject(),
+            pendingRequests, submissionRequests);
     }
 
     @Bean
-    public ChangeController changeController() {
-        return new ChangeController(repositoryFactory(), managerFactory());
+    public ChangeController changeController(
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory,
+        @Qualifier("managerFactory")
+        final VersionControlManagerFactory managerFactory) {
+        return new ChangeController(repositoryFactory, managerFactory);
     }
 
     @Bean
-    public HistoryController historyController() {
-        return new HistoryController(repositoryFactory());
+    public HistoryController historyController(
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory) {
+        return new HistoryController(repositoryFactory);
     }
 
 }

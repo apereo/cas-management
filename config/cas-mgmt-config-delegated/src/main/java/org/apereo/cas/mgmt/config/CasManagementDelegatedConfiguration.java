@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.mgmt.CommitStatus;
 import org.apereo.cas.mgmt.PendingRequests;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.controller.DelegatedUtil;
@@ -20,6 +21,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.EnumSet;
 import java.util.Objects;
 
 /**
@@ -69,7 +71,7 @@ public class CasManagementDelegatedConfiguration {
                 try {
                     return (int) git.branches()
                         .map(git::mapBranches)
-                        .filter(r -> DelegatedUtil.filterPulls(r, new boolean[]{true, false, false}))
+                        .filter(r -> DelegatedUtil.filterPulls(r, EnumSet.of(CommitStatus.SUBMITTED)))
                         .count();
                 } catch (final Exception e) {
                     return 0;

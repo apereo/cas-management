@@ -1,10 +1,13 @@
 package org.apereo.cas.mgmt.controller;
 
-import org.apereo.cas.mgmt.GitUtil;
+import org.apereo.cas.mgmt.BranchMap;
+import org.apereo.cas.mgmt.CommitStatus;
 import org.apereo.cas.mgmt.domain.BranchData;
 
 import lombok.experimental.UtilityClass;
 import lombok.val;
+
+import java.util.EnumSet;
 
 /**
  * Utility class for delegated functions.
@@ -21,7 +24,7 @@ public class DelegatedUtil {
      * @param r - BranchMap
      * @return - BranchData
      */
-    public static BranchData createBranch(final GitUtil.BranchMap r) {
+    public static BranchData createBranch(final BranchMap r) {
         val branch = new BranchData();
         branch.setName(r.getName());
         branch.setMsg(r.getFullMessage());
@@ -41,16 +44,16 @@ public class DelegatedUtil {
      * @param options - 0:Submitted, 1:Accepted, 2:Rejected
      * @return - true of the pull should be included
      */
-    public static boolean filterPulls(final GitUtil.BranchMap r, final boolean[] options) {
+    public static boolean filterPulls(final BranchMap r, final EnumSet<CommitStatus> options) {
         if (r.getName().equals("refs/heads/master")) {
             return false;
         }
         if (r.isAccepted()) {
-            return options[1];
+            return options.contains(CommitStatus.ACCEPTED);
         }
         if (r.isRejected()) {
-            return options[2];
+            return options.contains(CommitStatus.REJECTED);
         }
-        return options[0];
+        return options.contains(CommitStatus.SUBMITTED);
     }
 }

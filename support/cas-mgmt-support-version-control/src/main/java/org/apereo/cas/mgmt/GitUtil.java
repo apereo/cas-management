@@ -7,10 +7,8 @@ import org.apereo.cas.mgmt.exception.NoDifferenceException;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -1044,7 +1042,7 @@ public class GitUtil implements AutoCloseable {
             .filter(r -> r.getRef().getName().contains(Iterables.get(Splitter.on('_').split(branchName), 1)))
             .findFirst()
             .orElseThrow(() -> new NoSuchFieldException("Submit '" + branchName + "' was not found"))
-            .revCommit;
+            .getRevCommit();
     }
 
     /**
@@ -1203,55 +1201,6 @@ public class GitUtil implements AutoCloseable {
         git.rm().addFilepattern(oldName).call();
     }
 
-    /**
-     * Object used to represent the history of a branch.
-     */
-    @RequiredArgsConstructor
-    @Getter
-    @Setter
-    public static class BranchMap {
-        private Ref ref;
-        private RevCommit revCommit;
-        private final GitUtil git;
-
-        public BranchMap(final GitUtil git, final Ref ref, final RevCommit revCommit) {
-            this(git);
-            this.ref = ref;
-            this.revCommit = revCommit;
-        }
-
-        public String getName() {
-            return ref.getName();
-        }
-
-        public String getFullMessage() {
-            return revCommit.getFullMessage();
-        }
-
-        public String getCommitter() {
-            return revCommit.getCommitterIdent().getName();
-        }
-
-        public int getCommitTime() {
-            return revCommit.getCommitTime();
-        }
-
-        public String getId() {
-            return revCommit.abbreviate(NAME_LENGTH).name();
-        }
-
-        public boolean isAccepted() {
-            return git.isAccepted(revCommit);
-        }
-
-        public boolean isRejected() {
-            return git.isRejected(revCommit);
-        }
-
-        public boolean isReverted() {
-            return git.isReverted(revCommit);
-        }
-    }
 
     @SneakyThrows
     private static Git initializeGitRepository(final File path, final boolean mustExist) {

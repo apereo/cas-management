@@ -26,8 +26,8 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'nameWidth'">
-        <a (click)="viewChanges(row)">
-        {{ row.name}}
+        <a (click)="viewChanges(row)" [matTooltip]="'Branch: ' + row.name" matTooltipPosition="above">
+        {{ row.title || row.name }}
         </a>
       </mat-cell>
     </ng-container>

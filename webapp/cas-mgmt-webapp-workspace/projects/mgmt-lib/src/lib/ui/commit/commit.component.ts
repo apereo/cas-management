@@ -14,6 +14,7 @@ import {GitStatus} from '@apereo/mgmt-lib/src/lib/model';
 export class CommitComponent implements OnInit {
 
   commitMessage: string;
+  commitTitle: string;
   status: GitStatus;
   isAdmin: boolean;
 

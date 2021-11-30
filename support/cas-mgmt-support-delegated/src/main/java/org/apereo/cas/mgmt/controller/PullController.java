@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,7 +66,7 @@ public class PullController extends AbstractVersionControlController {
      */
     @GetMapping
     public List<BranchData> branches(final Authentication authentication,
-                                     @RequestBody
+                                     @RequestParam
                                      final CommitStatus[] options) throws VersionControlException {
         try (GitUtil git = repositoryFactory.from(authentication)) {
             return git.branches()

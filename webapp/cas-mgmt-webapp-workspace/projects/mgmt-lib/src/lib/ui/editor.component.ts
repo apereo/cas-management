@@ -13,7 +13,6 @@ declare var ace: any;
  */
 @Component({
     selector: 'lib-editor',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
          <div id="editor" style="width:100%;height:100%;"></div>
     `
@@ -49,6 +48,10 @@ export class EditorComponent implements OnInit {
    * Initializes the component and sets the editor up wih inputted config.
    */
   ngOnInit() {
+    setTimeout(() => this.init(), 10);
+  }
+
+  private init (): void {
     ace.config.set('basePath', 'assets');
     this.editor = ace.edit('editor');
     this.editor.getSession().setUseWrapMode(true);
@@ -68,11 +71,12 @@ export class EditorComponent implements OnInit {
 
   @Input()
   set file(file: string) {
-    console.log(file);
     if (this.editor) {
-      this.editor.setValue(file ? file : '');
-      setTimeout(() => this.editor.setValue(file));
-      // this.editor.once('change', () => this.changed.emit());
+      setTimeout(() => {
+        this.editor.setValue(file ? file : '');
+        this.editor.once('change', () => this.changed.emit());
+      }, 100);
+      // 
     }
     setTimeout(() => {
       this.editor.focus();

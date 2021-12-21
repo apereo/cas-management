@@ -18,6 +18,9 @@ configurations.all {
                 if (requested.group == "org.apache.logging.log4j")  {
                     details.useVersion("${log4jVersion}")
                 }
+                if (requested.group == "org.slf4j")  {
+                    details.useVersion("${slf4jVersion}")
+                }
                 if (requested.group == "org.codehaus.groovy")  {
                     details.useVersion("${groovyVersion}")
                 }
@@ -33,7 +36,13 @@ configurations.all {
     exclude(group: "cglib", module: "cglib")
     exclude(group: "cglib", module: "cglib-full")
     exclude(group: "org.slf4j", module: "slf4j-log4j12")
+    //exclude(group: "org.slf4j", module: "slf4j-api")
     exclude(group: "org.slf4j", module: "slf4j-simple")
+    exclude(group: "org.slf4j", module: "jcl-over-slf4j")
+    exclude(group: "org.slf4j", module: "jul-to-slf4j")
     exclude(group: "org.apache.logging.log4j", module: "log4j-to-slf4j")
+    exclude(group: "commons-logging", module: "commons-logging")
     exclude(group: "pull-parser", module: "pull-parser")
 }
+
+ext["log4j2.version"] = ext["log4jVersion"]

@@ -36,7 +36,6 @@ configurations.all {
     exclude(group: "cglib", module: "cglib")
     exclude(group: "cglib", module: "cglib-full")
     exclude(group: "org.slf4j", module: "slf4j-log4j12")
-    //exclude(group: "org.slf4j", module: "slf4j-api")
     exclude(group: "org.slf4j", module: "slf4j-simple")
     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
     exclude(group: "org.slf4j", module: "jul-to-slf4j")

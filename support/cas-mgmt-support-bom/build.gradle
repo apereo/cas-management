@@ -1,4 +1,8 @@
-description = "Apereo CAS ‌‌Bill of Material"
+description = "Apereo CAS Bill of Material"
+
+ext {
+    skipPublication = true
+}
 
 def getProjectNamePattern() {
     return "^cas-mgmt-.*"
@@ -7,8 +11,7 @@ def getProjectNamePattern() {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact file("bom.md")
-
+            
             pom.withXml {
                 println "Creating BOM with all project dependencies for ${project.name}"
 
@@ -83,6 +86,27 @@ publishing {
                 issueManagement {
                     system = project.projectIssueSystem
                     url = project.projectIssueUrl
+                }
+                licenses {
+                    license {
+                        name = project.projectLicenseName
+                        url = project.projectLicenseUrl
+                    }
+                }
+                scm {
+                    connection = project.projectScmUrl
+                    developerConnection = project.projectScmUrl
+                    url = project.projectScmUrl
+                }
+                developers {
+                    developer {
+                        id = "mmoayyed"
+                        name = "Misagh Moayyed"
+                    }
+                    developer {
+                        id = "tsschmidt"
+                        name = "Travis Schmidt"
+                    }
                 }
             }
         }

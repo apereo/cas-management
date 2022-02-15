@@ -268,6 +268,8 @@ subprojects {
                                 createPomRepositories(asNode())
                             }
                         }
+                    } else if (project.hasProperty("skipPublication") && project.skipPublication) {
+                        logger.info "Skipping artifact publication for project ${project.name}"
                     } else {
                         //logger.info "Project ${project.name} should be published as a JAR"
                         mavenJava(MavenPublication) {

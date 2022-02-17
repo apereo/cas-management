@@ -33,7 +33,7 @@ if (!Boolean.getBoolean("skipClientBuild")) {
 dependencies {
 
     implementation "org.apereo.cas:cas-server-core-configuration:$casVersion"
-    implementation "org.apereo.cas:cas-server-support-json-service-registry:$casVersion"
+//    implementation "org.apereo.cas:cas-server-support-json-service-registry:$casVersion"
     
     implementation project(":config:cas-mgmt-config-audit")
     implementation project(":config:cas-mgmt-config-authentication")

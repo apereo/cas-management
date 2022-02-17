@@ -39,10 +39,10 @@ export class EncryptionForm extends FormGroup {
     service.encryptAssertions = this.encryptAssertions.value;
     service.encryptAttributes = this.encryptAttributes.value;
     service.encryptionOptional = this.encryptionOptional.value;
-    service.encryptableAttributes = this.encryptableAttributes.value;
-    service.encryptionDataAlgorithms = this.encryptionDataAlgorithms.value;
-    service.encryptionKeyAlgorithms = this.encryptionKeyAlgorithms.value;
-    service.encryptionBlackListedAlgorithms = this.encryptionBlackListedAlgorithms.value;
-    service.encryptionWhiteListedAlgorithms = this.encryptionWhiteListedAlgorithms.value;
+    service.encryptableAttributes = this.encryptableAttributes.value|| [];
+    service.encryptionDataAlgorithms = this.encryptionDataAlgorithms.value|| [];
+    service.encryptionKeyAlgorithms = this.encryptionKeyAlgorithms.value|| [];
+    service.encryptionBlackListedAlgorithms = this.encryptionBlackListedAlgorithms.value || [];
+    service.encryptionWhiteListedAlgorithms = this.encryptionWhiteListedAlgorithms.value || [];
   }
 }

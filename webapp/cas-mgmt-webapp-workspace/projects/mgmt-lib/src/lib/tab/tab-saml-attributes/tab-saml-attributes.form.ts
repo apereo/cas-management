@@ -37,9 +37,9 @@ export class TabSamlAttributesForm extends FormGroup implements MgmtFormGroup<Ab
    */
   map(service: AbstractRegisteredService) {
     const saml: SamlRegisteredService = service as SamlRegisteredService;
-    saml.attributeNameFormats = this.nameFormats.mapString();
-    saml.attributeFriendlyNames = this.friendlyNames.mapString();
-    saml.attributeValueTypes = this.valueTypes.mapString();
+    saml.attributeNameFormats = this.nameFormats.mapString() || new Map();
+    saml.attributeFriendlyNames = this.friendlyNames.mapString() || new Map();
+    saml.attributeValueTypes = this.valueTypes.mapString()|| new Map();
   }
-
+  
 }

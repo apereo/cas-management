@@ -26,8 +26,15 @@ export class NameidForm extends FormGroup {
    * @param service - SamlRegisteredService
    */
   map(service: SamlRegisteredService) {
-    service.requiredNameIdFormat = this.requiredNameIdFormat.value;
-    service.serviceProviderNameIdQualifier = this.serviceProviderNameIdQualifier.value;
-    service.nameIdQualifier = this.nameIdQualifier.value;
+    service.requiredNameIdFormat = NameidForm.toNull(this.requiredNameIdFormat.value);
+    service.serviceProviderNameIdQualifier = NameidForm.toNull(this.serviceProviderNameIdQualifier.value);
+    service.nameIdQualifier = NameidForm.toNull(this.nameIdQualifier.value);
+  }
+
+  private static toNull(value: string) {
+    if (value != null && value.trim().length === 0) {
+      return null
+    }
+    return value
   }
 }

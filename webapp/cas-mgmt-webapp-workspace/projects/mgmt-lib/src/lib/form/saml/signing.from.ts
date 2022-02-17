@@ -41,11 +41,20 @@ export class SigningFrom extends FormGroup {
     service.signAssertions = this.signAssertions.value;
     service.signResponses = this.signResponses.value;
     service.signingCredentialType = this.signingCredentialType.value;
-    service.signingCredentialFingerprint = this.signingCredentialFingerPrint.value;
-    service.signingSignatureReferenceDigestMethods = this.signingSignatureReferenceDigestMethods.value;
-    service.signingSignatureAlgorithms = this.signingSignatureAlgorithms.value;
-    service.signingSignatureBlackListedAlgorithms = this.signingSignatureBlackListedAlgorithms.value;
-    service.signingSignatureWhiteListedAlgorithms = this.signingSignatureWhiteListedAlgorithms.value;
-    service.signingSignatureCanonicalizationAlgorithm = this.signingSignatureCanonicalizationAlgorithm.value;
+
+    service.signingCredentialFingerprint = SigningFrom.toNull(this.signingCredentialFingerPrint.value);
+    service.signingSignatureCanonicalizationAlgorithm = SigningFrom.toNull(this.signingSignatureCanonicalizationAlgorithm.value);
+
+    service.signingSignatureReferenceDigestMethods = this.signingSignatureReferenceDigestMethods.value || [];
+    service.signingSignatureAlgorithms = this.signingSignatureAlgorithms.value || [];
+    service.signingSignatureBlackListedAlgorithms = this.signingSignatureBlackListedAlgorithms.value || [];
+    service.signingSignatureWhiteListedAlgorithms = this.signingSignatureWhiteListedAlgorithms.value || [];
+  }
+
+  private static toNull(value: string) {
+    if (value != null && value.trim().length === 0) {
+      return null
+    }
+    return value
   }
 }

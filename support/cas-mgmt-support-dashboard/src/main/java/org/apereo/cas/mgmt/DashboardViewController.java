@@ -12,8 +12,8 @@ import java.util.HashMap;
 /**
  * Controller to handle initial request to dashboard endpoint.
  *
- * @since 6.3.3
  * @author Travis Schmidt
+ * @since 6.3.3
  */
 @Controller("dashboardViewController")
 @RequiredArgsConstructor

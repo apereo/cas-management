@@ -41,5 +41,5 @@ export class TabSamlAttributesForm extends FormGroup implements MgmtFormGroup<Ab
     saml.attributeFriendlyNames = this.friendlyNames.mapString() || new Map();
     saml.attributeValueTypes = this.valueTypes.mapString()|| new Map();
   }
-  
+
 }

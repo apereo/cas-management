@@ -22,8 +22,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 /**
  * Configures security adapters for CAS Management.
  *
- * @since 6.3.3
  * @author Travis Schmidt
+ * @since 6.3.3
  */
 @ConditionalOnMissingBean(name = "casManagementSecurityConfiguration")
 @EnableWebSecurity

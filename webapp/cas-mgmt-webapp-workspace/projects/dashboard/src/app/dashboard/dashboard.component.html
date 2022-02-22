@@ -10,7 +10,17 @@
             </div>
           </mat-card-title>
         </mat-card-header>
-        <mat-card-content *ngIf="server.system" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
+        <mat-card-content *ngIf="!server.system"
+          style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%"
+          class="dashboard-card-content">
+          <div>Server is down or unreachable.</div>
+        </mat-card-content>
+        <mat-card-content *ngIf="server.system && !server.system.details"
+          style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%"
+          class="dashboard-card-content">
+          <div>Server details are unavailable.</div>
+        </mat-card-content>
+        <mat-card-content *ngIf="server.system?.details" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
           <div style="display: flex; flex-direction: row; justify-content: space-around">
             <div style="flex: 0 0 25%; margin: 5px">
               <div style="text-align: center;">{{ load(server.system) }}</div>
@@ -67,9 +77,6 @@
               <div style="text-align: center;">Process</div>
             </div>
           </div>
-        </mat-card-content>
-        <mat-card-content *ngIf="!server.system">
-          <div>Server is down or unreachable</div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

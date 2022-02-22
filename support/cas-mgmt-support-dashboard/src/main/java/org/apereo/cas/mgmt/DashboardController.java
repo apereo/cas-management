@@ -90,7 +90,7 @@ public class DashboardController {
     private static Server getServer(final CasServers s) {
         val server = new Server();
         server.setName(s.getName());
-        server.setSystem(callCasServer(s.getUrl(), "/actuator/health/system",
+        server.setSystem(callCasServer(s.getUrl(), "/actuator/health",
                 new ParameterizedTypeReference<SystemHealth>() {}));
         return server;
     }

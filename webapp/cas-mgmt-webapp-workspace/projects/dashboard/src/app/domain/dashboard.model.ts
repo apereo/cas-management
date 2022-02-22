@@ -11,7 +11,7 @@ export class Server {
  */
 export class SystemHealth {
   status: string;
-  details: Details;
+  details: Details | null;
 }
 
 /**

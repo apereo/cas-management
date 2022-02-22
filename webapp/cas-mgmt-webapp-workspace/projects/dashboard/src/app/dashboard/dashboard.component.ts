@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   memory(system: SystemHealth): number {
-    return system.details.heapUsed / system.details.heapCommitted * 100.0;
+    return system.details?.heapUsed / system.details?.heapCommitted * 100.0 ?? 0;
   }
 
   /**
@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   memoryJvm(system: SystemHealth): number {
-    return system.details.jvmUsed / system.details.jvmCommitted * 100.0;
+    return system.details?.jvmUsed / system.details?.jvmCommitted * 100.0 ?? 0;
   }
 
   /**
@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   cpu(system: SystemHealth): number {
-    return system.details.systemUsage * 100.0;
+    return (system.details?.systemUsage * 100.0) ?? 0;
   }
 
   /**
@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   cpuProcess(system: SystemHealth): number {
-    return system.details.processUsage * 100.0;
+    return (system.details?.processUsage * 100.0) ?? 0;
   }
 
   /**
@@ -141,7 +141,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   load(system: SystemHealth): string {
-    return system.details.systemLoad.toFixed(2);
+    return system.details?.systemLoad.toFixed(2);
   }
 
   /**
@@ -150,7 +150,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   maxRequest(system: SystemHealth): string {
-    return system.details.maxRequest.toFixed(2);
+    return system.details?.maxRequest.toFixed(2);
   }
 
   /**
@@ -159,7 +159,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   threads(system: SystemHealth): string {
-    return system.details.requests.toFixed(2);
+    return system.details?.requests.toFixed(2);
   }
 
   /**
@@ -168,7 +168,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   uptime(system: SystemHealth): string {
-    const up = system.details.uptime;
+    const up = system.details?.uptime ?? 0;
     const days = up / (this.SECONDS_IN_A_DAY);
     const hours = (up % (this.SECONDS_IN_A_DAY)) / (this.SECONDS_IN_A_HOUR);
     const minutes = (up % (this.SECONDS_IN_A_HOUR)) / this.SECONDS_IN_A_MINUTE;

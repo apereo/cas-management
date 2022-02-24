@@ -10,7 +10,8 @@ import {Subscription} from 'rxjs';
  */
 @Component({
   selector: 'lib-import',
-  templateUrl: './import.component.html'
+  templateUrl: './import.component.html',
+  styleUrls: ['./import.component.scss']
 })
 export class ImportComponent implements OnInit, OnDestroy{
 

@@ -1,5 +1,12 @@
 <div fxLayout="column">
-  <div [style.height]="'calc(100vh - 151px)'">
+  <mat-card class="mb-2">
+    <p class="body-2">Enter your (JSON or YAML) service definition in the editor below, and click 'Import service into registry (<mat-icon class="align-middle"
+      matTooltip="Import Service into Registry">add_circle</mat-icon>)' to save. You may choose to import a file from your
+    local file system using the 'Upload a file from your computer (<mat-icon class="align-middle" matTooltip="Upload a file from computer">
+      file_upload</mat-icon>)' button.</p>
+  </mat-card>
+
+  <div [style.height]="'calc(100vh - 280px)'">
     <lib-editor #editor [file]="file" mode="hjson" theme="eclipse" style="width:100%;height:100%;"></lib-editor>
   </div>
 </div>

@@ -24,6 +24,7 @@ import {MetadataEditorComponent} from './metadata/metadata.component';
 import {ImportComponent} from './import/import.component';
 import {RegistryRoutingModule} from './registry-routing.module';
 import { WsFedComponent } from './wsfed/wsfed.component';
+import { MatCardModule } from '@angular/material/card';
 
 /**
  * Registry Module.
@@ -46,6 +47,7 @@ import { WsFedComponent } from './wsfed/wsfed.component';
     CommonModule,
     UiModule,
     FlexModule,
+    MatCardModule,
     MatDialogModule,
     MatIconModule,
     MatMenuModule,

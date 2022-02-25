@@ -20,6 +20,8 @@ export class NavigationComponent {
 
   current: string;
 
+  dashboardUrl: string = `${ this.baseUrl.replace('/management', '/dashboard') }`;
+
   constructor(public router: Router,
               public appService: AppConfigService,
               public userService: UserService,
@@ -30,6 +32,11 @@ export class NavigationComponent {
         this.current = e.url;
       }
     });
+  }
+
+  get baseUrl(): string {
+    const url = new URL(document.getElementsByTagName('base')[0].href);
+    return url.pathname;
   }
 
   /**

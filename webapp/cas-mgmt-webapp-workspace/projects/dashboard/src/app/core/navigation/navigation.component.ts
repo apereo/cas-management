@@ -19,10 +19,17 @@ export class NavigationComponent {
 
   isAdmin = false;
 
+  managementUrl:string = `${this.baseUrl.replace('/dashboard', '/management')}`
+
   constructor(public router: Router, private user: UserService) {
     this.user.getUser().subscribe(usr => {
       this.isAdmin = usr.administrator;
     });
+  }
+
+  get baseUrl(): string {
+    const url = new URL(document.getElementsByTagName('base')[0].href);
+    return url.pathname;
   }
 
   /**

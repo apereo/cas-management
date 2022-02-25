@@ -50,7 +50,7 @@
         </ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'actionWidth'">
-        <button mat-icon-button [matMenuTriggerFor]="pullMenu" (click)="selectedBranch = row">
+        <button mat-icon-button [matMenuTriggerFor]="pullMenu" (click)="selectedBranch = row" [disabled]="!isAdmin()">
           <mat-icon>menu</mat-icon>
         </button>
       </mat-cell>

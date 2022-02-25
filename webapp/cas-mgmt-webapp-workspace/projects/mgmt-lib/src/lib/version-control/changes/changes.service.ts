@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
 import {AbstractRegisteredService, DiffEntry} from '@apereo/mgmt-lib/src/lib/model';
 import {Service} from '@apereo/mgmt-lib/src/lib/ui';
-import {HttpResponse} from '@angular/common/http';
+import {HttpParams, HttpResponse} from '@angular/common/http';
 
 /**
  * Service to handle requests to the server for changes.
@@ -22,7 +22,9 @@ export class ChangesService extends Service {
    * @param branch - branch name
    */
   getChanges(branch: string): Observable<DiffEntry[]> {
-    return this.post<DiffEntry[]>(this.controller, branch);
+    return this.get<DiffEntry[]>(this.controller, null, {
+      params: new HttpParams().set('branch', branch)
+    });
   }
 
   /**

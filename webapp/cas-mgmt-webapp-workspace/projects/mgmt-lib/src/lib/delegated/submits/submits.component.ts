@@ -79,7 +79,7 @@ export class SubmitsComponent implements OnInit, OnDestroy {
    * Navigates to the notes component for the selected item.
    */
   getNotes() {
-    this.router.navigate(['notes', this.selectedItem.id]).then();
+    this.router.navigate(['./delegated/notes', this.selectedItem.id]);
   }
 
   /**

@@ -29,7 +29,7 @@
     <mat-icon>search</mat-icon>
     <ng-container i18n>Search</ng-container>
   </a>
-  <a mat-list-item *ngIf="isDelegated() && isAdmin()" (click)="navto('delegated/pulls')" [ngClass]="isSelected(['pulls'])">
+  <a mat-list-item (click)="navto('delegated/pulls')" [ngClass]="isSelected(['pulls'])">
     <mat-icon>file_download</mat-icon>
     <span [matBadge]="pullRequests()"
           matBadgePosition="above after"

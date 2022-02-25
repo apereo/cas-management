@@ -15,6 +15,7 @@ import {
 import {MediaObserver} from '@angular/flex-layout';
 import {Subscription} from 'rxjs';
 import { SpinnerService } from '@apereo/mgmt-lib/src/lib/ui';
+import { UserService } from '@apereo/mgmt-lib/src/lib/ui';
 
 /**
  * Component to display a list of open pull request for admins to review and accept.
@@ -54,7 +55,8 @@ export class PullComponent implements OnInit, OnDestroy {
               private spinner: SpinnerService,
               public dialog: MatDialog,
               public app: AppConfigService,
-              public mediaObserver: MediaObserver) {
+              public mediaObserver: MediaObserver,
+              public userService: UserService) {
     this.controls.title = 'Pull Requests';
     this.controls.icon = 'file_upload';
   }
@@ -96,8 +98,18 @@ export class PullComponent implements OnInit, OnDestroy {
    * Refreshes data in the view by making a call to the server for all open pull requests.
    */
   refresh() {
+    const opts = [];
+    if (this.showPending) {
+      opts.push('SUBMITTED');
+    }
+    if (this.showAccepted) {
+      opts.push('ACCEPTED');
+    }
+    if (this.showRejected) {
+      opts.push('ACCEPTED');
+    }
     this.spinner.start();
-    this.service.getBranches([this.showPending, this.showAccepted, this.showRejected], 'Refreshing')
+    this.service.getBranches(opts, 'Refreshing')
       .subscribe(resp => {
         setTimeout(() => this.spinner.stop(), 1000);
         this.dataSource.data = resp;
@@ -111,6 +123,7 @@ export class PullComponent implements OnInit, OnDestroy {
    * @param branch - bracnch to show changes for
    */
   viewChanges(branch?: Branch) {
+    if (!this.isAdmin()) { return; }
     if (branch) {
       this.selectedBranch = branch;
     }
@@ -197,5 +210,12 @@ export class PullComponent implements OnInit, OnDestroy {
   showSnackAndRefresh(msg: string) {
     this.app.showSnackBar(msg);
     this.refresh();
+  }
+
+  /**
+   * Returns true if the logged in user is an admin.
+   */
+  isAdmin(): boolean {
+    return this.userService.user && this.userService.user.administrator;
   }
  }

@@ -1,9 +1,9 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotesService} from './notes.service';
 import {ControlsService, EditorComponent} from '@apereo/mgmt-lib/src/lib/ui';
 import {Observable, Subject} from 'rxjs';
-import { share, startWith, switchMapTo, takeUntil } from 'rxjs/operators';
+import { map, share, skip, switchMap, takeUntil } from 'rxjs/operators';
 
 /**
  * Component to display/update notes made to a pull request.
@@ -49,8 +49,9 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.file$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(v => this.subj.next(v));
     this.controls.resetButtons();
     this.controls.showEdit = true;
+
     this.controls.save.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.saveNote());
-    this.controls.reset.pipe(startWith(''), switchMapTo(this.getNote()), takeUntil(this.ngUnsubscribe)).subscribe(v => this.subj.next(v));
+    this.controls.reset.pipe(switchMap(() => this.getNote()), takeUntil(this.ngUnsubscribe)).subscribe(v => this.subj.next(v));
   }
 
   /**
@@ -62,6 +63,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   getNote(): Observable<string> {
+    console.log('notes', this.route.snapshot.params.id);
     return this.service.getNotes(this.route.snapshot.params.id).pipe(share());
   }
 

@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Branch} from '@apereo/mgmt-lib/src/lib/model';
 import {Service} from '@apereo/mgmt-lib/src/lib/ui';
@@ -9,6 +10,9 @@ import { map } from 'rxjs/operators';
  *
  * @author Travis Schmidt
  */
+
+export type CommitStatus = 'SUBMITTED' | 'ACCEPTED' | 'REJECTED';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +26,10 @@ export class PullService extends Service {
    * @param options - state options [pending, accepted, rejected]
    * @param msg - message to display in spinner
    */
-  getBranches(options: boolean[], msg: string): Observable<Branch[]> {
-    return this.post<Branch[]>(this.controller, options, msg).pipe(
+  getBranches(options: CommitStatus[], msg: string): Observable<Branch[]> {
+    return this.get<Branch[]>(this.controller, msg, {
+      params: new HttpParams().set('options', options.join(','))
+    }).pipe(
       map((branches: Branch[]) => branches.map(b => {
         let msg = b.msg,
           json;

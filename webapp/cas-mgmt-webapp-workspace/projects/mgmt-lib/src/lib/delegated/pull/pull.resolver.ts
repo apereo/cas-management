@@ -27,7 +27,7 @@ export class PullResolver implements Resolve<Branch[]> {
    * @param state - router state
    */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Branch[]> {
-    return this.service.getBranches([true, false, false], 'Loading pull requests')
+    return this.service.getBranches(['SUBMITTED'], 'Loading pull requests')
       .pipe(
         take(1),
         mergeMap(pulls => of(pulls)),

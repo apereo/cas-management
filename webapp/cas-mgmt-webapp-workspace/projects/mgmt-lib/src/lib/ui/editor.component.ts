@@ -14,8 +14,11 @@ declare var ace: any;
 @Component({
     selector: 'lib-editor',
     template: `
-         <div id="editor" style="width:100%;height:100%;"></div>
-    `
+         <div id="editor" style="width:100%;height:100%;" [class.readonly]="readonly"></div>
+    `,
+    styles: [`
+      .readonly { background: #EEE; }
+    `]
 })
 
 export class EditorComponent implements OnInit {
@@ -24,6 +27,9 @@ export class EditorComponent implements OnInit {
 
   @Input()
   theme = 'default';
+
+  @Input()
+  readonly: boolean = false;
 
   @Output()
   changed: EventEmitter<string> = new EventEmitter<string>();
@@ -65,8 +71,8 @@ export class EditorComponent implements OnInit {
     this.userFontSize = localStorage.getItem('editor-fontSize') || '15px';
     this.editor.setFontSize(this.userFontSize);
     (this.editor as any).$blockScrolling = Infinity;
-
-    this.editor.on('blur', (evt) => this.blur.emit(this.getFile()))
+    this.editor.on('blur', (evt) => this.blur.emit(this.getFile()));
+    this.editor.setReadOnly(this.readonly);
   }
 
   @Input()

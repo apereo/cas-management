@@ -106,11 +106,11 @@ public class SubmitController {
      * @param authentication - the user
      * @param branch         - Name of the pull requet
      */
-    @GetMapping("revert/{branch}")
+    @GetMapping("revert")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void revertSubmit(final Authentication authentication,
-                             @PathVariable
+                             @RequestParam
                              final String branch) {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.from(authentication)) {

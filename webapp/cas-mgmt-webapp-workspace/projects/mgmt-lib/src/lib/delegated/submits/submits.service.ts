@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Branch} from '@apereo/mgmt-lib/src/lib/model';
 import {Service} from '@apereo/mgmt-lib/src/lib/ui';
@@ -46,7 +47,9 @@ export class SubmitService extends Service {
    * @param name - name of branch to revert
    */
   revert(name: string): Observable<string> {
-    return this.getText(this.controller + '/revert/' + name, 'Reverting');
+    return this.getText(`${this.controller}/revert`, 'Reverting', {
+      params: new HttpParams().set('branch', name)
+    });
   }
 
 }

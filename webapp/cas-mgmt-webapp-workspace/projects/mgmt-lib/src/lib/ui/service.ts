@@ -68,8 +68,11 @@ export class Service {
    * @param url - url path to call
    * @param msg - message to display in spinner
    */
-  getText(url: string, msg?: string): Observable<string> {
-    return this.http.get(this.base + url, {responseType: 'text'})
+  getText(url: string, msg?: string, options: any = {}): Observable<string> {
+    return this.http.get(this.base + url, {
+      responseType: 'text',
+      ...options,
+    })
       .pipe(this.catchError, this.startSpinner(msg));
   }
 

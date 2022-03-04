@@ -1,7 +1,7 @@
 package org.apereo.cas.configuration;
 
 import org.apereo.cas.configuration.model.BulkNotifications;
-import org.apereo.cas.configuration.model.CasServers;
+import org.apereo.cas.configuration.model.CasServer;
 import org.apereo.cas.configuration.model.DelegatedNotifications;
 import org.apereo.cas.configuration.model.RegisterNotifications;
 import org.apereo.cas.configuration.model.SubmissionNotifications;
@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 @ConfigurationProperties(value = "mgmt", ignoreUnknownFields = false)
 public class CasManagementConfigurationProperties implements Serializable {
     private static final long serialVersionUID = -7686426966125636166L;
+
     /**
      * List of roles that allow admin access to the web application.
      */
@@ -146,19 +147,21 @@ public class CasManagementConfigurationProperties implements Serializable {
     private Resource inCommonCert = new ClassPathResource("incommon.pem");
 
     /**
-     * Incommon Cert location for CAS Servers.
+     * InCommon Cert location for CAS Servers.
+     * Typically set to {@code /etc/cas/idp/inc-md-cert-mdq.pem}.
      */
-    private String inCommonCertLocation = "/etc/cas/idp/inc-md-cert-mdq.pem";
+    private String inCommonCertLocation;
 
     /**
      * InCommon MDQ URL.
+     * Typically set to {@code https://mdq.incommon.org/entities}.
      */
-    private String inCommonMDQUrl= "https://mdq.incommon.org/entities";
+    private String inCommonMDQUrl;
 
     /**
      * List of cas servers that available in the Dashboard.
      */
-    private List<CasServers> casServers = new ArrayList<>();
+    private List<CasServer> casServers = new ArrayList<>();
 
     /**
      * Cache health enpdoint.
@@ -186,6 +189,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     @RequiresModule(name = "cas-mgmt-config-ldap-authz")
     public static class Ldap extends AbstractLdapProperties {
         private static final long serialVersionUID = -8129280052479631538L;
+
         /**
          * Defines authorization settings that allow access to the app via LDAP.
          */

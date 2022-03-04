@@ -21,48 +21,48 @@ public class SsoSession {
     /**
      * The user id of the authenticated principal.
      */
-    @JsonAlias("AUTHENTICATED_PRINCIPAL")
+    @JsonAlias("authenticated_principal")
     private String authenticatedPrincipal;
 
     /**
      * List of services authenticated to by this session.
      */
-    @JsonAlias("AUTHENTICATED_SERVICES")
+    @JsonAlias("authenticated_services")
     private Map<String, AuthenticatedService> authenticatedServices;
 
     /**
      * Attributes retrieved during authentication.
      */
-    @JsonAlias("AUTHENTICATION_ATTRIBUTES")
+    @JsonAlias("authentication_attributes")
     private AuthenticationAttributes authenticationAttributes;
 
     /**
      * Timestamp authentication occurred.
      */
-    @JsonAlias("AUTHENTICATION_DATE")
+    @JsonAlias("authentication_date")
     private ZonedDateTime authenticationDate;
 
     /**
      * Flag is the session is PGT.
      */
-    @JsonAlias("IS_PROXIED")
+    @JsonAlias("is_proxied")
     private Boolean proxied;
 
     /**
      * Number of times the TGT used to validate services.
      */
-    @JsonAlias("NUMBER_OF_USES")
+    @JsonAlias("number_of_uses")
     private Integer numberOfUses;
 
     /**
      * List of the principal attributes resolved for the session.
      */
-    @JsonAlias("PRINCIPAL_ATTRIBUTES")
+    @JsonAlias("principal_attributes")
     private Map<String, List<String>> principalAttributes;
 
     /**
      * The id of the TGT for this session.
      */
-    @JsonAlias("TICKET_GRANTING_TICKET")
+    @JsonAlias("ticket_granting_ticket")
     private String ticketGrantingTicket;
 }

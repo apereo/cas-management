@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class CasServers implements Serializable {
+public class CasServer implements Serializable {
 
     /**
      * User friendly name given to a server in the cluster.

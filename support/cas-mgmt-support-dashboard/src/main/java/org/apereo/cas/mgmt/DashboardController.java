@@ -2,7 +2,7 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.configuration.model.CasServers;
+import org.apereo.cas.configuration.model.CasServer;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
@@ -87,7 +87,7 @@ public class DashboardController {
         return getServer(mgmtProperties.getCasServers().get(index));
     }
 
-    private static Server getServer(final CasServers s) {
+    private static Server getServer(final CasServer s) {
         val server = new Server();
         server.setName(s.getName());
         server.setSystem(callCasServer(s.getUrl(), "/actuator/health",

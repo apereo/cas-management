@@ -46,7 +46,7 @@
         <ng-container>Created</ng-container>
       </mat-header-cell>
       <mat-cell *matCellDef="let row" [ngClass]="'creationWidth'">
-        {{ row.authenticationDate | date: 'M-dd-yyyy HH:mm:ss' }}
+        {{ row.authenticationDate | date: 'yyyy-MM-dd HH:mm:ss' }}
       </mat-cell>
     </ng-container>
 

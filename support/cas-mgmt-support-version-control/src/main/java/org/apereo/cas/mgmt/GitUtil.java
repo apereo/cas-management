@@ -476,7 +476,7 @@ public class GitUtil implements AutoCloseable {
             if (note != null) {
                 val bytes = new ByteArrayOutputStream();
                 git.getRepository().open(note.getData()).copyTo(bytes);
-                return bytes.toString();
+                return bytes.toString(StandardCharsets.UTF_8);
             }
         }
         return StringUtils.EMPTY;

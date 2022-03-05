@@ -8,19 +8,22 @@ import org.apereo.cas.mgmt.domain.Attributes;
 import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
-import org.apereo.cas.mgmt.domain.SystemHealth;
+import org.apereo.cas.mgmt.util.HttpComponentsClientHttpRequestFactoryBasicAuth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +37,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +61,76 @@ public class DashboardController {
 
     private final CasConfigurationProperties casProperties;
 
+    private Server getServer(final CasServer s) {
+        val server = new Server();
+        server.setName(s.getName());
+        server.setHealth(callCasServer(s.getUrl(), "/actuator/health",
+            new ParameterizedTypeReference<Map<String, Object>>() {
+            }));
+        return server;
+    }
+
+    private static String toCSV(final AuditLog log) {
+        return new StringBuilder()
+            .append(log.getWhenActionWasPerformed())
+            .append('|')
+            .append(log.getClientIpAddress())
+            .append('|')
+            .append(log.getServerIpAddress())
+            .append('|')
+            .append(log.getPrincipal())
+            .append('|')
+            .append(log.getActionPerformed())
+            .append('|')
+            .append(log.getResourceOperatedUpon())
+            .append('|')
+            .append(log.getApplicationCode())
+            .toString();
+    }
+
+    private <T> T callCasServer(final String prefix, final String endpoint,
+                                       final ParameterizedTypeReference<T> type) {
+        try {
+            val restTemplate = getRestTemplate(prefix, endpoint);
+            val resp = restTemplate.exchange(prefix + endpoint, HttpMethod.GET, null, type);
+            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
+        } catch (final RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+
+    }
+
+    private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {
+        return callCasServer(casProperties.getServer().getPrefix(), url, type);
+    }
+
+    private <T> T callCasServer(final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
+        return callCasServer(casProperties.getServer().getPrefix(), endpoint, data, type);
+    }
+
+    private <T> T callCasServer(final String prefix, final String endpoint,
+                                       final Object data, final ParameterizedTypeReference<T> type) {
+        try {
+            val restTemplate = getRestTemplate(prefix, endpoint);
+            val headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            val send = new ObjectMapper().writeValueAsString(data);
+            val req = new HttpEntity<String>(send, headers);
+            val resp = restTemplate.exchange(prefix + endpoint, HttpMethod.POST, req, type);
+            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    private static void isAdmin(final Authentication authentication) throws IllegalAccessException {
+        if (!CasUserProfile.from(authentication).isAdministrator()) {
+            throw new IllegalAccessException("Permission Denied");
+        }
+    }
+
     /**
      * Method returns a list of Server statuses for all configured cas servers in the cluster.
      *
@@ -68,31 +142,24 @@ public class DashboardController {
     public List<Server> status(final Authentication authentication) throws IllegalAccessException {
         isAdmin(authentication);
         return mgmtProperties.getCasServers().stream()
-                .map(DashboardController::getServer)
-                .collect(Collectors.toList());
+            .map(this::getServer)
+            .collect(Collectors.toList());
     }
 
     /**
      * Returns the server status for the configured CAS server at the passed index.
      *
      * @param authentication - the user
-     * @param index - index of CAS server
+     * @param index          - index of CAS server
      * @return - Server
      * @throws IllegalAccessException - insufficient permission
      */
     @GetMapping("{index}")
     public Server update(final Authentication authentication,
-                         @PathVariable final int index) throws IllegalAccessException {
+                         @PathVariable
+                         final int index) throws IllegalAccessException {
         isAdmin(authentication);
         return getServer(mgmtProperties.getCasServers().get(index));
-    }
-
-    private static Server getServer(final CasServer s) {
-        val server = new Server();
-        server.setName(s.getName());
-        server.setSystem(callCasServer(s.getUrl(), "/actuator/health",
-                new ParameterizedTypeReference<SystemHealth>() {}));
-        return server;
     }
 
     /**
@@ -106,55 +173,62 @@ public class DashboardController {
     public Cache cache(final Authentication authentication) throws IllegalAccessException {
         isAdmin(authentication);
         val url = "/actuator/health/" + mgmtProperties.getCacheHealthIndicator();
-        return callCasServer(url, new ParameterizedTypeReference<Cache>(){});
+        return callCasServer(url, new ParameterizedTypeReference<Cache>() {
+        });
     }
 
     /**
      * Method calls the CAS Server resolveAttribute for the passed user and returns a map of attributes.
      *
      * @param authentication - the response
-     * @param id - the user id
+     * @param id             - the user id
      * @return - the attributes
      * @throws IllegalAccessException - insufficient persmissions
      */
     @GetMapping("/resolve/{id}")
     public Map<String, List<String>> resolve(final Authentication authentication,
-                                             @PathVariable final String id) throws IllegalAccessException {
+                                             @PathVariable
+                                             final String id) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<Attributes>callCasServer("/actuator/resolveAttributes/" + id,
-                new ParameterizedTypeReference<Attributes>() {}).getAttributes();
+            new ParameterizedTypeReference<Attributes>() {
+            }).getAttributes();
     }
 
     /**
      * Method calls the CAS Server releaseAttributes for the passed user and service and returns map of attributes.
      *
      * @param authentication - the request
-     * @param data - map
+     * @param data           - map
      * @return - the attributes
      * @throws IllegalAccessException - insufficient permissions
      */
     @PostMapping(value = "/release", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<String>> release(final Authentication authentication,
-                                             @RequestBody final Map<String, String> data) throws IllegalAccessException {
+                                             @RequestBody
+                                             final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<Attributes>callCasServer("/actuator/releaseAttributes", data,
-                new ParameterizedTypeReference<Attributes>() {}).getAttributes();
+            new ParameterizedTypeReference<Attributes>() {
+            }).getAttributes();
     }
 
     /**
      * Method calls the CAS Server samlResponse for the passed user and service and returns the produced SAML Response.
      *
      * @param authentication - the request
-     * @param data - SAML Response
+     * @param data           - SAML Response
      * @return - the attributes
      * @throws IllegalAccessException - insufficient permissions
      */
     @PostMapping("/response")
     public String response(final Authentication authentication,
-                           @RequestBody final Map<String, String> data) throws IllegalAccessException {
+                           @RequestBody
+                           final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<String>callCasServer("/actuator/samlPostProfileResponse", data,
-                new ParameterizedTypeReference<String>() {});
+            new ParameterizedTypeReference<String>() {
+            });
     }
 
     /**
@@ -167,7 +241,8 @@ public class DashboardController {
     @GetMapping("/info")
     public Map<String, Object> info(final Authentication authentication) throws IllegalAccessException {
         isAdmin(authentication);
-        return callCasServer("/actuator/info", new ParameterizedTypeReference<Map<String, Object>>() {});
+        return callCasServer("/actuator/info", new ParameterizedTypeReference<Map<String, Object>>() {
+        });
     }
 
     /**
@@ -182,7 +257,8 @@ public class DashboardController {
         isAdmin(authentication);
         val ret = new HashMap<String, Map<String, Object>>();
         mgmtProperties.getCasServers().forEach(s -> {
-            val map = callCasServer("/actuator/loggers", new ParameterizedTypeReference<Map<String, Object>>() {});
+            val map = callCasServer("/actuator/loggers", new ParameterizedTypeReference<Map<String, Object>>() {
+            });
             ret.put(s.getName(), (Map<String, Object>) map.get("loggers"));
         });
         return ret;
@@ -192,17 +268,19 @@ public class DashboardController {
      * Method will update a logger on a CAS server to the passed log level.
      *
      * @param authentication - the request
-     * @param map - server, logger, level
+     * @param map            - server, logger, level
      * @throws IllegalAccessException - insufficient persmissions
      */
     @PostMapping("/loggers")
     @ResponseStatus(HttpStatus.OK)
     public void setLogger(final Authentication authentication,
-                          @RequestBody final Map<String, String> map) throws IllegalAccessException {
+                          @RequestBody
+                          final Map<String, String> map) throws IllegalAccessException {
         isAdmin(authentication);
         val level = Map.of("configuredLevel", map.get("level"));
         val server = mgmtProperties.getCasServers().stream().filter(s -> s.getName().equals(map.get("server"))).findFirst().get().getUrl();
-        callCasServer(server, "/actuator/loggers/" + map.get("key"), level, new ParameterizedTypeReference<Void>() {});
+        callCasServer(server, "/actuator/loggers/" + map.get("key"), level, new ParameterizedTypeReference<Void>() {
+        });
     }
 
     /**
@@ -210,24 +288,26 @@ public class DashboardController {
      * Responses from all servers are then sorted together by whenActionWasPerformed fields in the responses.
      *
      * @param authentication - the user
-     * @param request - the request
-     * @param query - query params
+     * @param request        - the request
+     * @param query          - query params
      * @return - List of matching audit entries
      * @throws IllegalAccessException - insufficient permissions
      */
     @PostMapping("/audit")
     public List<AuditLog> audit(final Authentication authentication, final HttpServletRequest request,
-                                @RequestBody final Map<String, String> query) throws IllegalAccessException {
+                                @RequestBody
+                                final Map<String, String> query) throws IllegalAccessException {
         isAdmin(authentication);
         val audit = mgmtProperties.getCasServers().stream()
-                .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",
-                        query, new ParameterizedTypeReference<List<AuditLog>>() {}).stream()
-                        .map(a -> {
-                            a.setServerIpAddress(p.getName());
-                            return a;
-                        }))
-                .sorted(Comparator.comparing(AuditLog::getWhenActionWasPerformed).reversed())
-                .collect(Collectors.toList());
+            .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",
+                query, new ParameterizedTypeReference<List<AuditLog>>() {
+                }).stream()
+                .map(a -> {
+                    a.setServerIpAddress(p.getName());
+                    return a;
+                }))
+            .sorted(Comparator.comparing(AuditLog::getWhenActionWasPerformed).reversed())
+            .collect(Collectors.toList());
         request.getSession().setAttribute("audit", audit);
         if ("true".equals(query.get("download"))) {
             return null;
@@ -238,8 +318,8 @@ public class DashboardController {
     /**
      * Downloads audit log query result into plain file that is | delimited.
      *
-     * @param request - the request.
-     * @param response - the response.
+     * @param request        - the request.
+     * @param response       - the response.
      * @param authentication - the user
      */
     @GetMapping("/audit/download")
@@ -257,64 +337,16 @@ public class DashboardController {
             out.close();
         }
     }
-
-    private static String toCSV(final AuditLog log) {
-        return new StringBuilder()
-               .append(log.getWhenActionWasPerformed())
-               .append('|')
-               .append(log.getClientIpAddress())
-               .append('|')
-               .append(log.getServerIpAddress())
-               .append('|')
-               .append(log.getPrincipal())
-               .append('|')
-               .append(log.getActionPerformed())
-               .append('|')
-               .append(log.getResourceOperatedUpon())
-               .append('|')
-               .append(log.getApplicationCode())
-               .toString();
-    }
-
-    private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {
-        return callCasServer(casProperties.getServer().getPrefix(), url, type);
-    }
-
-    private static <T> T callCasServer(final String prefix, final String endpoint, final ParameterizedTypeReference<T> type) {
-        val rest = new RestTemplate();
-        try {
-            val resp = rest.exchange(prefix + endpoint, HttpMethod.GET, null, type);
-            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
-        } catch (final RestClientException e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
+    
+    private RestTemplate getRestTemplate(final String prefix, final String endpoint) {
+        val uri = URI.create(prefix + endpoint);
+        val restTemplate = new RestTemplate(
+            new HttpComponentsClientHttpRequestFactoryBasicAuth(new HttpHost(uri.getHost())));
+        if (StringUtils.isNotBlank(mgmtProperties.getActuatorBasicAuthUsername())) {
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(
+                mgmtProperties.getActuatorBasicAuthUsername(), mgmtProperties.getActuatorBasicAuthPassword()));
         }
-
+        return restTemplate;
     }
 
-    private <T> T callCasServer(final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
-        return callCasServer(casProperties.getServer().getPrefix(), endpoint, data, type);
-    }
-
-    @SneakyThrows
-    private static <T> T callCasServer(final String prefix, final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
-        val rest = new RestTemplate();
-        val headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        val send = new ObjectMapper().writeValueAsString(data);
-        val req = new HttpEntity<String>(send, headers);
-        try {
-            val resp = rest.exchange(prefix + endpoint, HttpMethod.POST, req, type);
-            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
-        } catch (final RestClientException e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
-        }
-    }
-
-    private static void isAdmin(final Authentication authentication) throws IllegalAccessException {
-        if (!CasUserProfile.from(authentication).isAdministrator()) {
-            throw new IllegalAccessException("Permission Denied");
-        }
-    }
 }

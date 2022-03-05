@@ -4,15 +4,19 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.SsoSessionResponse;
+import org.apereo.cas.mgmt.util.HttpComponentsClientHttpRequestFactoryBasicAuth;
 import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,8 +51,8 @@ public class SessionsController {
 
     private final CasConfigurationProperties casProperties;
 
-    private static SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
-        val restTemplate = new RestTemplate();
+    private SsoSessionResponse getSsoSessions(final String serverUrl, final boolean mask) {
+        val restTemplate = getRestTemplate(serverUrl);
         val resp = restTemplate.getForEntity(serverUrl, SsoSessionResponse.class).getBody();
         if (mask) {
             resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
@@ -191,5 +196,16 @@ public class SessionsController {
                                        + tickets.stream().collect(Collectors.joining(",")) + "\"}", headers);
             restTemplate.exchange(serverUrl, HttpMethod.POST, req, Void.class);
         }
+    }
+
+    private RestTemplate getRestTemplate(final String url) {
+        val uri = URI.create(url);
+        val restTemplate = new RestTemplate(
+            new HttpComponentsClientHttpRequestFactoryBasicAuth(new HttpHost(uri.getHost())));
+        if (StringUtils.isNotBlank(mgmtProperties.getActuatorBasicAuthUsername())) {
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(
+                mgmtProperties.getActuatorBasicAuthUsername(), mgmtProperties.getActuatorBasicAuthPassword()));
+        }
+        return restTemplate;
     }
 }

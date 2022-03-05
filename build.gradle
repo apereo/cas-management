@@ -438,7 +438,7 @@ subprojects {
         api libraries.springboot
         api libraries.javax
 
-        if (!Boolean.getBoolean("skipErrorProneCompiler")) {
+        if (!skipErrorProneCompiler) {
             errorprone "com.google.errorprone:error_prone_core:$errorProneVersion"
             errorproneJavac "com.google.errorprone:javac:$errorproneJavacVersion"
         }

@@ -184,6 +184,16 @@ public class CasManagementConfigurationProperties implements Serializable {
      */
     private boolean attributeStoreEnabled;
 
+    /**
+     * Basic auth username, if any, to be used when contacting actuator endpoints.
+     */
+    private String actuatorBasicAuthUsername;
+
+    /**
+     * Basic auth password, if any, to be used when contacting actuator endpoints.
+     */
+    private String actuatorBasicAuthPassword;
+    
     @Getter
     @Setter
     @RequiresModule(name = "cas-mgmt-config-ldap-authz")

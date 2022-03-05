@@ -98,7 +98,7 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases && !rootP
         list.add("-XX:+UseJVMCICompiler")
 
         if (rootProject.enableRemoteDebugging) {
-            def port = findAvailableTcpPort(5000..5010)
+            def port = findAvailableTcpPort(5001..5010)
             if (port > 0) {
                 println "Listening on port ${port} for remote debugging requests"
                 list.add("-Xrunjdwp:transport=dt_socket,address=${port},server=y,suspend=${rootProject.remoteDebuggingSuspend}")

@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -77,7 +78,7 @@ public final class CasManagementUtils {
     public static String toYaml(final RegisteredService service) {
         val output = new ByteArrayOutputStream();
         YAML_SERIALIZER.to(output, service);
-        return output.toString();
+        return output.toString(StandardCharsets.UTF_8);
     }
 
     /**
@@ -89,7 +90,7 @@ public final class CasManagementUtils {
     public static String toJson(final RegisteredService service) {
         val output = new ByteArrayOutputStream();
         JSON_SERIALIZER.to(output, service);
-        return output.toString();
+        return output.toString(StandardCharsets.UTF_8);
     }
 
     /**
@@ -210,4 +211,5 @@ public final class CasManagementUtils {
         }
         return "CAS";
     }
+
 }

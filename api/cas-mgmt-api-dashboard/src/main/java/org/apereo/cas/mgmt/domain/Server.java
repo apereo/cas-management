@@ -3,6 +3,9 @@ package org.apereo.cas.mgmt.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Data wrapper class for a CAS server status.
  *
@@ -21,5 +24,5 @@ public class Server {
     /**
      * System Health details of the CAS server.
      */
-    private SystemHealth system;
+    private Map<String, Object> health = new LinkedHashMap<>();
 }

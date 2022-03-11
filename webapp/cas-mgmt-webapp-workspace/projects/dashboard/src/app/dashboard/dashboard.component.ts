@@ -198,7 +198,7 @@ export class DashboardComponent implements OnInit {
    * @param index - index of server in the cluster
    */
   update(event: MatSlideToggleChange, index: number) {
-    if (this.timers[index] !== null) {
+    if (this.timers[index] === null) {
       this.timers[index] = () => {
         this.service.getUpdate(index).subscribe(server => {
           this.servers[index] = server;

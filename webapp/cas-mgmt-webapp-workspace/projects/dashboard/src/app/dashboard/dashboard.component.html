@@ -10,32 +10,32 @@
             </div>
           </mat-card-title>
         </mat-card-header>
-        <mat-card-content *ngIf="!server.system"
+        <mat-card-content *ngIf="!server.health"
           style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%"
           class="dashboard-card-content">
           <div>Server is down or unreachable.</div>
         </mat-card-content>
-        <mat-card-content *ngIf="server.system && !server.system.details"
+        <mat-card-content *ngIf="server.health && !server.health.components"
           style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%"
           class="dashboard-card-content">
           <div>Server details are unavailable.</div>
         </mat-card-content>
-        <mat-card-content *ngIf="server.system?.details" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
+        <mat-card-content *ngIf="server.health?.components" style="display: flex; flex-direction: column; justify-content: space-evenly; height: 85%" class="dashboard-card-content">
           <div style="display: flex; flex-direction: row; justify-content: space-around">
             <div style="flex: 0 0 25%; margin: 5px">
-              <div style="text-align: center;">{{ load(server.system) }}</div>
+              <div style="text-align: center;">{{ load(server.health) }}</div>
               <div style="text-align: center;">Load</div>
             </div>
             <div style="flex: 0 0 25%; margin: 5px">
-              <div style="text-align: center;">{{ uptime(server.system) }}</div>
+              <div style="text-align: center;">{{ uptime(server.health) }}</div>
               <div style="text-align: center;">Uptime</div>
             </div>
             <div style="flex: 0 0 25%; margin: 5px">
-              <div style="text-align: center;">{{ maxRequest(server.system) }}</div>
+              <div style="text-align: center;">{{ maxRequest(server.health) }}</div>
               <div style="text-align: center;">Max Request</div>
             </div>
             <div style="flex: 0 0 25%; margin: 5px">
-              <div style="text-align: center;">{{ threads(server.system) }}</div>
+              <div style="text-align: center;">{{ threads(server.health) }}</div>
               <div style="text-align: center;">requests</div>
             </div>
           </div>
@@ -44,36 +44,36 @@
               <mat-progress-spinner style="margin: auto"
                                     mode="determinate"
                                     diameter="50"
-                                    [value]="memoryJvm(server.system)" >
+                                    [value]="memoryJvm(server.health)" >
               </mat-progress-spinner>
-              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentJvm(server.system)}}%</div>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentJvm(server.health)}}%</div>
               <div style="text-align: center;">Jvm</div>
             </div>
             <div style="flex: 0 0 25%; margin: 5px">
               <mat-progress-spinner style="margin: auto"
                                     diameter="50"
                                     mode="determinate"
-                                    [value]="memory(server.system)" >
+                                    [value]="memory(server.health)" >
               </mat-progress-spinner>
-              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percent(server.system)}}%</div>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percent(server.health)}}%</div>
               <div style="text-align: center;">Heap</div>
             </div>
             <div style="flex: 0 0 25%; margin: 5px">
               <mat-progress-spinner style="margin: auto"
                                     mode="determinate"
                                     diameter="50"
-                                    [value]="cpu(server.system)" >
+                                    [value]="cpu(server.health)" >
               </mat-progress-spinner>
-              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpu(server.system)}}%</div>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpu(server.health)}}%</div>
               <div style="text-align: center;">CPU</div>
             </div>
             <div style="flex: 0 0 25%; margin: 5px">
               <mat-progress-spinner style="margin: auto"
                                     mode="determinate"
                                     diameter="50"
-                                    [value]="cpuProcess(server.system)" >
+                                    [value]="cpuProcess(server.health)" >
               </mat-progress-spinner>
-              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpuProcess(server.system)}}%</div>
+              <div style="position: relative; top: -35px; font-size: 14px;text-align: center">{{percentCpuProcess(server.health)}}%</div>
               <div style="text-align: center;">Process</div>
             </div>
           </div>

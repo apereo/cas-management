@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {DashboardService} from '../core/dashboard-service';
 import {Server, SystemHealth} from '../domain/dashboard.model';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -23,7 +23,10 @@ export class DashboardComponent implements OnInit {
   readonly SECONDS_IN_A_HOUR = 60.0 * 60.0;
   readonly SECONDS_IN_A_MINUTE = 60;
 
-  constructor(private service: DashboardService) {}
+  constructor(
+    private service: DashboardService,
+    private ref: ChangeDetectorRef
+  ) {}
 
   /**
    * Starts the component by calling to get the status of servers.
@@ -35,6 +38,7 @@ export class DashboardComponent implements OnInit {
       for (const server of this.servers) {
         this.timers.push(null);
       }
+      this.ref.detectChanges();
     });
   }
 
@@ -44,7 +48,7 @@ export class DashboardComponent implements OnInit {
    * @param server - server status
    */
   statusLight(server: Server): string {
-    const status = server.system ? server.system.status : 'DOWN';
+    const status = server.health ? server.health.status : 'DOWN';
     if (status === 'UP') {
       return 'led-green';
     }
@@ -60,7 +64,11 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   memory(system: SystemHealth): number {
-    return system.details?.heapUsed / system.details?.heapCommitted * 100.0 ?? 0;
+    return (
+      (system.components?.system?.details.heapUsed /
+        system.components?.system?.details.heapCommitted) *
+        100.0 ?? 0
+    );
   }
 
   /**
@@ -78,7 +86,11 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   memoryJvm(system: SystemHealth): number {
-    return system.details?.jvmUsed / system.details?.jvmCommitted * 100.0 ?? 0;
+    return (
+      (system.components?.system?.details.jvmUsed /
+        system.components?.system?.details.jvmCommitted) *
+        100.0 ?? 0
+    );
   }
 
   /**
@@ -105,7 +117,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   cpu(system: SystemHealth): number {
-    return (system.details?.systemUsage * 100.0) ?? 0;
+    return system.components?.system?.details.systemUsage * 100.0 ?? 0;
   }
 
   /**
@@ -123,7 +135,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   cpuProcess(system: SystemHealth): number {
-    return (system.details?.processUsage * 100.0) ?? 0;
+    return system.components?.system?.details.processUsage * 100.0 ?? 0;
   }
 
   /**
@@ -141,7 +153,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   load(system: SystemHealth): string {
-    return system.details?.systemLoad.toFixed(2);
+    return system.components?.system?.details.systemLoad.toFixed(2);
   }
 
   /**
@@ -150,7 +162,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   maxRequest(system: SystemHealth): string {
-    return system.details?.maxRequest.toFixed(2);
+    return system.components?.system?.details.maxRequest.toFixed(2);
   }
 
   /**
@@ -159,7 +171,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   threads(system: SystemHealth): string {
-    return system.details?.requests.toFixed(2);
+    return system.components?.system?.details.requests.toFixed(2);
   }
 
   /**
@@ -168,7 +180,7 @@ export class DashboardComponent implements OnInit {
    * @param system - server health
    */
   uptime(system: SystemHealth): string {
-    const up = system.details?.uptime ?? 0;
+    const up = system.components?.system?.details.uptime ?? 0;
     const days = up / (this.SECONDS_IN_A_DAY);
     const hours = (up % (this.SECONDS_IN_A_DAY)) / (this.SECONDS_IN_A_HOUR);
     const minutes = (up % (this.SECONDS_IN_A_HOUR)) / this.SECONDS_IN_A_MINUTE;
@@ -186,7 +198,7 @@ export class DashboardComponent implements OnInit {
    * @param index - index of server in the cluster
    */
   update(event: MatSlideToggleChange, index: number) {
-    if (event.checked) {
+    if (this.timers[index] === null) {
       this.timers[index] = () => {
         this.service.getUpdate(index).subscribe(server => {
           this.servers[index] = server;

@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,7 +110,7 @@ public class ChangeController extends AbstractVersionControlController {
      * @param ids            - Array of ids to compare
      * @throws VersionControlException - failed
      */
-    @GetMapping(value = "diff")
+    @PostMapping(value = "diff")
     @ResponseStatus(HttpStatus.OK)
     public void viewDiff(final Authentication authentication,
                          final HttpServletResponse response,

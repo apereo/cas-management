@@ -104,10 +104,11 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     /**
      * Checks if user has permission to the {@link RegisteredService}.
      *
+     * @param <T> - Param Type
      * @param service - the service
      * @return true if user has permission
      */
-    public boolean hasPermission(final RegisteredService service) {
+    public <T extends RegisteredService> boolean hasPermission(final T service) {
         val permissions = getPermissions();
         if (isAdministrator() || permissions.contains("*")) {
             return true;

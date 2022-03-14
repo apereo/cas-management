@@ -2,7 +2,6 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.services.resource.AbstractResourceBasedServiceRegistry;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
-import org.apereo.cas.services.util.CasAddonsRegisteredServicesJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.io.WatcherService;
@@ -21,7 +20,7 @@ public class VersionControlServiceRegistry extends AbstractResourceBasedServiceR
     public VersionControlServiceRegistry(final Resource configDirectory,
                                          final RegisteredServiceResourceNamingStrategy resourceNamingStrategy) throws Exception {
         super(configDirectory,
-            CollectionUtils.wrapList(new CasAddonsRegisteredServicesJsonSerializer(), new RegisteredServiceJsonSerializer()),
+            CollectionUtils.wrapList(new RegisteredServiceJsonSerializer()),
             null, null, resourceNamingStrategy, new ArrayList<>(), WatcherService.noOp());
     }
 

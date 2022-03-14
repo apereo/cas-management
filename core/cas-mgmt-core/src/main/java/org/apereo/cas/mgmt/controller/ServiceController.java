@@ -138,7 +138,7 @@ public class ServiceController {
             throw new IllegalAccessException("You do not have permission");
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
-        val services = manager.findServiceBy(s -> s instanceof SamlRegisteredService).stream().filter(user::hasPermission);
+        val services = manager.getAllServicesOfType(SamlRegisteredService.class).stream().filter(user::hasPermission);
         return manager.getServiceItems(services);
     }
 

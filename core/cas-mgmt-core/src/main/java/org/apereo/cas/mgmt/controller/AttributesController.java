@@ -64,7 +64,7 @@ public class AttributesController {
     @SneakyThrows
     public void save(@RequestBody final AttributeDefinition definition) {
         this.attributeDefinitionStore.registerAttributeDefinition(definition);
-        this.attributeDefinitionStore.to(casProperties.getPersonDirectory().getAttributeDefinitionStore().getJson().getLocation().getFile());
+        this.attributeDefinitionStore.to(casProperties.getAuthn().getAttributeRepository().getAttributeDefinitionStore().getJson().getLocation().getFile());
     }
 
     @DeleteMapping("/{key}")
@@ -72,6 +72,6 @@ public class AttributesController {
     @SneakyThrows
     public void delete(@PathVariable final String key) {
         this.attributeDefinitionStore.removeAttributeDefinition(key);
-        this.attributeDefinitionStore.to(casProperties.getPersonDirectory().getAttributeDefinitionStore().getJson().getLocation().getFile());
+        this.attributeDefinitionStore.to(casProperties.getAuthn().getAttributeRepository().getAttributeDefinitionStore().getJson().getLocation().getFile());
     }
 }

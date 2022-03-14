@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.authentication.attribute.DefaultAttributeDefinitionStore;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
+import org.apereo.cas.configuration.model.core.services.ServiceRegistryCoreProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mgmt.ContactLookup;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
@@ -75,7 +75,7 @@ public class CasManagementCoreServicesConfiguration {
     @RefreshScope
     @SneakyThrows
     public DefaultAttributeDefinitionStore attributeDefinitionStore() {
-        val resource = casProperties.getPersonDirectory().getAttributeDefinitionStore().getJson().getLocation();
+        val resource = casProperties.getAuthn().getAttributeRepository().getAttributeDefinitionStore().getJson().getLocation();
         val store = new DefaultAttributeDefinitionStore(resource);
         store.setScope(casProperties.getServer().getScope());
         return store;
@@ -147,7 +147,7 @@ public class CasManagementCoreServicesConfiguration {
                 .environments(activeProfiles)
                 .servicesCache(servicesManagerCache.getObject())
                 .build();
-        val cm = casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
+        val cm = casProperties.getServiceRegistry().getCore().getManagementType() == ServiceRegistryCoreProperties.ServiceManagementTypes.DOMAIN
                 ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
                 : new DefaultServicesManager(context);
         cm.load();

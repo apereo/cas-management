@@ -5,7 +5,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.SsoSessionResponse;
 import org.apereo.cas.mgmt.util.HttpComponentsClientHttpRequestFactoryBasicAuth;
-import org.apereo.cas.util.serialization.TicketIdSanitizationUtils;
+import org.apereo.cas.util.serialization.MessageSanitizationUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -55,7 +55,7 @@ public class SessionsController {
         val restTemplate = getRestTemplate(serverUrl);
         val resp = restTemplate.getForEntity(serverUrl, SsoSessionResponse.class).getBody();
         if (mask) {
-            resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
+            resp.getActiveSsoSessions().forEach(s -> s.setTicketGrantingTicket(MessageSanitizationUtils.sanitize(s.getTicketGrantingTicket())));
         }
         return resp;
     }
@@ -123,7 +123,7 @@ public class SessionsController {
             val sess = getSsoSessions(casProperties.getServer().getPrefix()
                                       + "/actuator/ssoSessions?user=" + casUser.getId() + "&type=ALL", false);
             val owns = sess.getActiveSsoSessions().stream()
-                .filter(s -> TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket()).equals(tgt)).findFirst();
+                .filter(s -> MessageSanitizationUtils.sanitize(s.getTicketGrantingTicket()).equals(tgt)).findFirst();
             if (!owns.isPresent()) {
                 throw new IllegalAccessException("Permission Denied");
             }
@@ -132,7 +132,7 @@ public class SessionsController {
             val sess = getSsoSessions(casProperties.getServer().getPrefix()
                                       + "/actuator/ssoSessions?user=" + ("-1".equals(user) ? casUser.getId() : user) + "&type=ALL", false);
             val owns = sess.getActiveSsoSessions().stream()
-                .filter(s -> TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket()).equals(tgt)).findFirst();
+                .filter(s -> MessageSanitizationUtils.sanitize(s.getTicketGrantingTicket()).equals(tgt)).findFirst();
             if (!owns.isPresent()) {
                 throw new IllegalAccessException("Permission Denied");
             }
@@ -183,7 +183,7 @@ public class SessionsController {
                                   + "/actuator/ssoSessions?user=" + casUser.getId() + "&type=ALL", false);
         tgts.forEach(t -> {
             val owns = sess.getActiveSsoSessions().stream()
-                .filter(s -> TicketIdSanitizationUtils.sanitize(s.getTicketGrantingTicket()).equals(t)).findFirst();
+                .filter(s -> MessageSanitizationUtils.sanitize(s.getTicketGrantingTicket()).equals(t)).findFirst();
             owns.ifPresent(ssoSession -> tickets.add(ssoSession.getTicketGrantingTicket()));
         });
         if (!tickets.isEmpty()) {

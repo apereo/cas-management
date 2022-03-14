@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.springframework.http.HttpMethod;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -38,12 +39,19 @@ public class UrlMetadataResolver {
     private HttpResponse fetchMetadata(final String metadataLocation) {
         val metadata = casProperties.getAuthn().getSamlIdp().getMetadata();
         val headers = new LinkedHashMap<String, Object>();
-        headers.put("Content-Type", metadata.getSupportedContentTypes());
+        headers.put("Content-Type", metadata.getMdq().getSupportedContentTypes());
         headers.put("Accept", "*/*");
 
         LOGGER.debug("Fetching metadata via URL for [{}]", metadataLocation);
-        val response = HttpUtils.executeGet(metadataLocation, metadata.getBasicAuthnUsername(),
-                casProperties.getAuthn().getSamlIdp().getMetadata().getBasicAuthnPassword(), new HashMap<>(), headers);
+        val execution = HttpUtils.HttpExecutionRequest.builder()
+                .url(metadataLocation)
+                .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
+                .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
+                .parameters(new HashMap<>())
+                .method(HttpMethod.GET)
+                .headers(headers)
+                .build();
+        val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);
             throw new UnauthorizedServiceException(UnauthorizedServiceException.CODE_UNAUTHZ_SERVICE);

@@ -18,6 +18,7 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -108,12 +109,19 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
     private HttpResponse fetchMetadata(final String metadataLocation) {
         val metadata = casProperties.getAuthn().getSamlIdp().getMetadata();
         val headers = new LinkedHashMap<String, Object>();
-        headers.put("Content-Type", metadata.getSupportedContentTypes());
+        headers.put("Content-Type", metadata.getMdq().getSupportedContentTypes());
         headers.put("Accept", "*/*");
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);
-        val response = HttpUtils.executeGet(metadataLocation, metadata.getBasicAuthnUsername(),
-            casProperties.getAuthn().getSamlIdp().getMetadata().getBasicAuthnPassword(), new HashMap<>(), headers);
+        val execution = HttpUtils.HttpExecutionRequest.builder()
+                .url(metadataLocation)
+                .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
+                .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
+                .parameters(new HashMap<>())
+                .headers(headers)
+                .method(HttpMethod.GET)
+                .build();
+        val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);
             throw new UnauthorizedServiceException(UnauthorizedServiceException.CODE_UNAUTHZ_SERVICE);

@@ -2,7 +2,7 @@ package org.apereo.cas.mgmt.factory;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-import org.apereo.cas.configuration.model.core.services.ServiceRegistryProperties;
+import org.apereo.cas.configuration.model.core.services.ServiceRegistryCoreProperties;
 import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
@@ -135,8 +135,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     public Cache<Long, RegisteredService> servicesManagerCache() {
         val serviceRegistry = casProperties.getServiceRegistry();
         return Caffeine.newBuilder()
-            .initialCapacity(serviceRegistry.getCacheCapacity())
-            .maximumSize(serviceRegistry.getCacheSize())
+            .initialCapacity(serviceRegistry.getCache().getInitialCapacity())
+            .maximumSize(serviceRegistry.getCache().getCacheSize())
             .recordStats()
             .build();
     }
@@ -174,7 +174,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
             .servicesCache(servicesManagerCache())
             .build();
 
-        val cm = casProperties.getServiceRegistry().getManagementType() == ServiceRegistryProperties.ServiceManagementTypes.DOMAIN
+        val cm = casProperties.getServiceRegistry().getCore().getManagementType() == ServiceRegistryCoreProperties.ServiceManagementTypes.DOMAIN
             ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
             : new DefaultServicesManager(context);
         cm.load();

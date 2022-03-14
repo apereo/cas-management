@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
+import org.apereo.cas.configuration.model.support.email.EmailProperties;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.controller.AbstractVersionControlController;
 import org.apereo.cas.mgmt.domain.PendingItem;
@@ -28,6 +29,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.eclipse.jgit.diff.RawText;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -244,6 +246,20 @@ public class SubmissionController extends AbstractVersionControlController {
         return com.mchange.io.FileUtils.getContentsAsString(res);
     }
 
+    private EmailProperties copyEmail(final EmailProperties source) {
+        val emailProps = new EmailProperties();
+        emailProps.setSubject(source.getSubject());
+        emailProps.setAttributeName(source.getAttributeName());
+        emailProps.setBcc(source.getBcc());
+        emailProps.setCc(source.getCc());
+        emailProps.setFrom(source.getFrom());
+        emailProps.setReplyTo(source.getReplyTo());
+        emailProps.setText(source.getText());
+        emailProps.setValidateAddresses(source.isValidateAddresses());
+        emailProps.setHtml(source.isHtml());
+        return emailProps;
+    }
+
     /**
      * Mapped method to delete a submission from the queue.
      *
@@ -267,7 +283,7 @@ public class SubmissionController extends AbstractVersionControlController {
     private void sendRejectMessage(final String submitName, final String note, final String email, final boolean isChange) {
         if (communicationsManager.isMailSenderDefined()) {
             val notifications = managementProperties.getSubmissions().getNotifications();
-            val emailProps = isChange ? notifications.getRejectChange() : notifications.getReject();
+            val emailProps = isChange ? copyEmail(notifications.getRejectChange()) : copyEmail(notifications.getReject());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
             communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
         }
@@ -294,7 +310,7 @@ public class SubmissionController extends AbstractVersionControlController {
 
     private void sendAddedMessage(final String submitName, final String note, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
-            val emailProps = managementProperties.getSubmissions().getNotifications().getAdded();
+            val emailProps = copyEmail(managementProperties.getSubmissions().getNotifications().getAdded());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
             communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
         }
@@ -345,7 +361,7 @@ public class SubmissionController extends AbstractVersionControlController {
 
     private void sendAcceptMessage(final String submitName, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
-            val emailProps = managementProperties.getSubmissions().getNotifications().getAccept();
+            val emailProps = copyEmail(managementProperties.getSubmissions().getNotifications().getAccept());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
             communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
         }
@@ -374,7 +390,7 @@ public class SubmissionController extends AbstractVersionControlController {
 
     private void sendDeleteMessage(final String submitName, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
-            val emailProps = managementProperties.getSubmissions().getNotifications().getDelete();
+            val emailProps = copyEmail(managementProperties.getSubmissions().getNotifications().getDelete());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
             communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
         }
@@ -417,12 +433,19 @@ public class SubmissionController extends AbstractVersionControlController {
     private HttpResponse fetchMetadata(final String metadataLocation) {
         val metadata = casProperties.getAuthn().getSamlIdp().getMetadata();
         val headers = new LinkedHashMap<String, Object>();
-        headers.put("Content-Type", metadata.getSupportedContentTypes());
+        headers.put("Content-Type", metadata.getMdq().getSupportedContentTypes());
         headers.put("Accept", "*/*");
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);
-        val response = HttpUtils.executeGet(metadataLocation, metadata.getBasicAuthnUsername(),
-                casProperties.getAuthn().getSamlIdp().getMetadata().getBasicAuthnPassword(), new HashMap<>(), headers);
+        val execution = HttpUtils.HttpExecutionRequest.builder()
+                .url(metadataLocation)
+                .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
+                .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
+                .parameters(new HashMap<>())
+                .headers(headers)
+                .method(HttpMethod.GET)
+                .build();
+        val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);
             throw new UnauthorizedServiceException(UnauthorizedServiceException.CODE_UNAUTHZ_SERVICE);

@@ -11,6 +11,7 @@ import org.hjson.JsonValue;
 import org.jooq.lambda.Unchecked;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.WebContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
 
@@ -53,7 +54,7 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
     }
 
     @Override
-    public Optional<UserProfile> generate(final WebContext context, final UserProfile profile) {
+    public Optional<UserProfile> generate(final WebContext context, final SessionStore sessionStore, final UserProfile profile) {
         val id = profile.getId();
         if (rules.containsKey(id)) {
             val defn = rules.get(id);

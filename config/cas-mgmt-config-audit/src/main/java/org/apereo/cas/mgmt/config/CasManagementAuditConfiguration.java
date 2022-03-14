@@ -1,6 +1,5 @@
 package org.apereo.cas.mgmt.config;
 
-import org.apereo.cas.audit.spi.resource.ShortenedReturnValueAsStringAuditResourceResolver;
 import org.apereo.cas.mgmt.audit.Pac4jAuditablePrincipalResolver;
 import org.apereo.cas.mgmt.audit.ServiceManagementResourceResolver;
 import org.apereo.cas.util.CollectionUtils;
@@ -12,6 +11,7 @@ import org.apereo.inspektr.audit.spi.AuditActionResolver;
 import org.apereo.inspektr.audit.spi.AuditResourceResolver;
 import org.apereo.inspektr.audit.spi.support.DefaultAuditActionResolver;
 import org.apereo.inspektr.audit.spi.support.ObjectCreationAuditActionResolver;
+import org.apereo.inspektr.audit.spi.support.ShortenedReturnValueAsStringAuditResourceResolver;
 import org.apereo.inspektr.audit.support.Slf4jLoggingAuditTrailManager;
 import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.apereo.inspektr.common.web.ClientInfoThreadLocalFilter;

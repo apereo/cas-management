@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ChainedPolicyForm } from '@apereo/mgmt-lib/src/lib/form';
 import { PoliciesComponent } from '../policies.component';
+import {ReleasePolicyType} from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Component to display and handle Attribute Release policies for a service.

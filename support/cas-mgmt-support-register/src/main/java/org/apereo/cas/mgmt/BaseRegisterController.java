@@ -107,7 +107,21 @@ public abstract class BaseRegisterController {
         out.close();
         val casUserProfile = CasUserProfile.from(authentication);
         setSubmitter(path, casUserProfile);
-        sendMessage(casUserProfile, notifications.getSubmit(), service.getName(), service.getName());
+        sendMessage(casUserProfile, copyEmail(notifications.getSubmit()), service.getName(), service.getName());
+    }
+
+    private EmailProperties copyEmail(final EmailProperties source) {
+        val emailProps = new EmailProperties();
+        emailProps.setSubject(source.getSubject());
+        emailProps.setAttributeName(source.getAttributeName());
+        emailProps.setBcc(source.getBcc());
+        emailProps.setCc(source.getCc());
+        emailProps.setFrom(source.getFrom());
+        emailProps.setReplyTo(source.getReplyTo());
+        emailProps.setText(source.getText());
+        emailProps.setValidateAddresses(source.isValidateAddresses());
+        emailProps.setHtml(source.isHtml());
+        return emailProps;
     }
 
     /**
@@ -146,7 +160,7 @@ public abstract class BaseRegisterController {
         CasManagementUtils.jsonTo(out, service);
         out.close();
         setSubmitter(path, casUserProfile);
-        sendMessage(casUserProfile, notifications.getRemove(), service.getName(), service.getName());
+        sendMessage(casUserProfile, copyEmail(notifications.getRemove()), service.getName(), service.getName());
     }
 
     /**
@@ -247,7 +261,7 @@ public abstract class BaseRegisterController {
         serializer.to(out, service);
         out.close();
         setSubmitter(path, casUserProfile);
-        sendMessage(casUserProfile, notifications.getChange(), service.getName(), service.getName());
+        sendMessage(casUserProfile, copyEmail(notifications.getChange()), service.getName(), service.getName());
     }
 
     /**

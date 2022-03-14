@@ -38,7 +38,7 @@ public class VersionControlServicesManager extends ManagementServicesManager {
 
     @Override
     @SneakyThrows
-    public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
+    public <T extends RegisteredService> List<RegisteredServiceItem> getServiceItems(final Stream<T> services) {
         val status = git.status();
         return services.map(this::createServiceItem)
                 .peek(item -> item.setStatus(determineStatus(item.getAssignedId(), status)))

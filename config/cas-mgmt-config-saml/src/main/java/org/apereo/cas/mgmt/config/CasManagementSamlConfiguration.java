@@ -44,6 +44,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -180,7 +181,7 @@ public class CasManagementSamlConfiguration {
     @RefreshScope
     public SamlRegisteredServiceCachingMetadataResolver defaultSamlRegisteredServiceCachingMetadataResolver() {
         return new SamlRegisteredServiceDefaultCachingMetadataResolver(
-            casProperties.getAuthn().getSamlIdp().getMetadata().getCacheExpirationMinutes(),
+                Duration.parse(casProperties.getAuthn().getSamlIdp().getMetadata().getCore().getCacheExpiration()),
             chainingMetadataResolverCacheLoader(), openSamlConfigBean.getObject()
         );
     }

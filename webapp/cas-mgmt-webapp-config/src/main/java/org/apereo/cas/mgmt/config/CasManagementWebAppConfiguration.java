@@ -121,7 +121,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
     @Bean
     public Collection<BaseOidcScopeAttributeReleasePolicy> userDefinedScopeBasedAttributeReleasePolicies() {
         val oidc = casProperties.getAuthn().getOidc();
-        return oidc.getUserDefinedScopes().entrySet()
+        return oidc.getCore().getUserDefinedScopes().entrySet()
             .stream()
             .map(k -> new OidcCustomScopeAttributeReleasePolicy(k.getKey(), CollectionUtils.wrapList(k.getValue().split(","))))
             .collect(Collectors.toSet());

@@ -1,5 +1,6 @@
 package org.apereo.cas.mgmt;
 
+import org.apereo.cas.authentication.principal.DefaultPrincipalAttributesRepository;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.opensaml.saml.saml2.core.NameID.EMAIL;
@@ -237,10 +239,6 @@ public class SamlController {
                 service.setSigningCredentialType("X509");
             }
         }
-
-        val env = new HashSet<String>();
-        env.add("staged");
-        service.setEnvironments(env);
         return service;
     }
 

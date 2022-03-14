@@ -40,6 +40,7 @@ public class RepositoryFactory {
     @PostConstruct
     public void init() {
         this.repositoryCache = managementServicesManagerCache();
+
     }
 
     /**

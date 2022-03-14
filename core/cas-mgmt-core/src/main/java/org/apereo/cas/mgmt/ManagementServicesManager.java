@@ -16,7 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +45,7 @@ public class ManagementServicesManager implements ServicesManager {
         manager.getAllServices().forEach(this::save);
     }
 
-    public List<RegisteredServiceItem> getServiceItems(final Stream<RegisteredService> services) {
+    public <T extends RegisteredService> List<RegisteredServiceItem> getServiceItems(final Stream<T> services) {
         return services.map(this::createServiceItem)
             .collect(Collectors.toList());
     }
@@ -78,6 +80,11 @@ public class ManagementServicesManager implements ServicesManager {
     }
 
     @Override
+    public void save(final Stream<RegisteredService> toSave) {
+        this.manager.save(toSave);
+    }
+
+    @Override
     public RegisteredService save(final RegisteredService registeredService) {
         return this.manager.save(registeredService);
     }
@@ -85,6 +92,11 @@ public class ManagementServicesManager implements ServicesManager {
     @Override
     public RegisteredService save(final RegisteredService registeredService, final boolean b) {
         return this.manager.save(registeredService, b);
+    }
+
+    @Override
+    public void save(final Supplier<RegisteredService> supplier, final Consumer<RegisteredService> andThenConsume, final long countExclusive) {
+        this.manager.save(supplier, andThenConsume, countExclusive);
     }
 
     @Override

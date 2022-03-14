@@ -52,7 +52,7 @@ public class CasManagementAuthorizationConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "staticAdminRolesAuthorizationGenerator")
     public AuthorizationGenerator staticAdminRolesAuthorizationGenerator() {
-        return (context, profile) -> {
+        return (context, store, profile) -> {
             profile.addRoles(mgmtProperties.getAdminRoles());
             profile.addRoles(mgmtProperties.getUserRoles());
             return Optional.of(profile);

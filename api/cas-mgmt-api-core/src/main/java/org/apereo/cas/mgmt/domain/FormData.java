@@ -1,12 +1,12 @@
 package org.apereo.cas.mgmt.domain;
 
-import org.apereo.cas.authentication.AttributeMergingStrategy;
+import org.apereo.cas.configuration.model.core.authentication.PrincipalAttributesCoreProperties;
+import org.apereo.cas.configuration.model.support.mfa.BaseMultifactorAuthenticationProviderProperties;
 import org.apereo.cas.configuration.model.support.saml.idp.SamlIdPResponseProperties;
 import org.apereo.cas.grouper.GrouperGroupField;
 import org.apereo.cas.oidc.OidcConstants;
 import org.apereo.cas.services.OidcSubjectTypes;
 import org.apereo.cas.services.RegisteredServiceLogoutType;
-import org.apereo.cas.services.RegisteredServiceMultifactorPolicyFailureModes;
 import org.apereo.cas.services.RegisteredServiceProperty;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
@@ -110,8 +110,8 @@ public class FormData implements Serializable {
         return TimeUnit.values();
     }
 
-    public AttributeMergingStrategy[] getMergingStrategies() {
-        return AttributeMergingStrategy.values();
+    public PrincipalAttributesCoreProperties.MergingStrategyTypes[] getMergingStrategies() {
+        return PrincipalAttributesCoreProperties.MergingStrategyTypes.values();
     }
 
     public RegisteredServiceLogoutType[] getLogoutTypes() {
@@ -127,8 +127,8 @@ public class FormData implements Serializable {
      *
      * @return the registered service multifactor policy . failure modes [ ]
      */
-    public RegisteredServiceMultifactorPolicyFailureModes[] getMfaFailureModes() {
-        return RegisteredServiceMultifactorPolicyFailureModes.values();
+    public BaseMultifactorAuthenticationProviderProperties.MultifactorAuthenticationProviderFailureModes[] getMfaFailureModes() {
+        return BaseMultifactorAuthenticationProviderProperties.MultifactorAuthenticationProviderFailureModes.values();
     }
 
     /**

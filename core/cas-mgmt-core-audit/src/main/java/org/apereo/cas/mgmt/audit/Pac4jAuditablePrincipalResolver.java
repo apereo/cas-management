@@ -39,9 +39,9 @@ public class Pac4jAuditablePrincipalResolver implements PrincipalResolver {
         val request = HttpRequestUtils.getHttpServletRequestFromRequestAttributes();
         val response = HttpRequestUtils.getHttpServletResponseFromRequestAttributes();
         if (request != null && response != null) {
-            val context = new JEEContext(request, response, new JEESessionStore());
-            val manager = new ProfileManager<>(context, context.getSessionStore());
-            val profile = (Optional<UserProfile>) manager.get(true);
+            val context = new JEEContext(request, response);
+            val manager = new ProfileManager(context, JEESessionStore.INSTANCE);
+            val profile = (Optional<UserProfile>) manager.getProfile();
             if (profile != null && profile.isPresent()) {
                 val id = profile.get().getId();
                 if (id != null) {

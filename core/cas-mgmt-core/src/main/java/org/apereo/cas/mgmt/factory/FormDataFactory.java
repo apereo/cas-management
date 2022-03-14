@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.services.persondir.support.NamedStubPersonAttributeDao;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -83,7 +84,12 @@ public class FormDataFactory {
         val params = new HashMap<String, Object>();
         val url = casProperties.getServer().getPrefix() + mgmtProperties.getDiscoveryEndpointPath();
         try {
-            val response = HttpUtils.executeGet(url, params);
+            val execution = HttpUtils.HttpExecutionRequest.builder()
+                    .url(url)
+                    .parameters(params)
+                    .method(HttpMethod.GET)
+                    .build();
+            val response = HttpUtils.execute(execution);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
                     val mapper = new ObjectMapper();
@@ -142,7 +148,7 @@ public class FormDataFactory {
     }
 
     private void loadDelegatedClientTypes(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getDelegatedClientTypesSupported().isEmpty()) {
+        if (profile.isPresent() && profile.get().getDelegatedClientTypesSupported() != null && !profile.get().getDelegatedClientTypesSupported().isEmpty()) {
             val p = profile.get();
             formData.setDelegatedAuthnProviders(p.getDelegatedClientTypesSupported());
         } else {

@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {AuthenticatedService, SsoSession} from '../../domain/sessions.model';
+import {AuthenticatedService, AuthenticationAttributes, SsoSession} from '../../domain/sessions.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
  *
  * @author Travis Schmidt
  */
+
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -16,9 +17,12 @@ import { MatTableDataSource } from '@angular/material/table';
 export class DetailComponent implements OnInit {
 
   detail: SsoSession;
-  displayedColumns = ['id', 'url'];
-  dataSource: MatTableDataSource<AuthenticatedService>;
-  selectedItem: AuthenticatedService;
+  serviceDisplayedColumns = ['id', 'originalUrl'];
+  attrDisplayedColumns = ['id', 'value'];
+  services: MatTableDataSource<AuthenticatedService>;
+
+  attributes: MatTableDataSource<{id: string, value: string}>;
+
 
   constructor(public dialogRef: MatDialogRef<DetailComponent>,
               @Inject(MAT_DIALOG_DATA) public data: SsoSession) {
@@ -29,13 +33,22 @@ export class DetailComponent implements OnInit {
    */
   ngOnInit() {
     this.detail = this.data;
-    const services: AuthenticatedService[] = [];
-    for (const st of Object.keys(this.detail.authenticatedServices)) {
-      const serv = this.detail.authenticatedServices[st];
-      serv.id = st;
-      services.push(serv);
-    }
-    this.dataSource = new MatTableDataSource(services);
+
+    const services = this.detail.authenticatedServices;
+
+    const servicesData: AuthenticatedService[] = Object.keys(services).map((id) => ({
+      ...services[id],
+      id
+    }));
+    this.services = new MatTableDataSource(servicesData);
+
+    const attributes = this.detail.authenticationAttributes;
+    const attributesData: {id: string, value: string}[] = Object.keys(this.detail.authenticationAttributes).map((id) => ({
+      value: attributes[id]?.join(','),
+      id
+    }));
+
+    this.attributes = new MatTableDataSource(attributesData);
   }
 
 }

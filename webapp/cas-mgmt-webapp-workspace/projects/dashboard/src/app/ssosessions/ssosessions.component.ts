@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, ViewChild} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {ControlsService, PaginatorComponent} from '@apereo/mgmt-lib';
@@ -59,6 +59,8 @@ export class SsosessionsComponent implements OnInit {
     this.controls.resetButtons();
     this.controls.title = 'SSO Sessions';
     this.controls.icon = 'local_activity';
+
+    this.doLookup('');
   }
 
   /**
@@ -67,12 +69,7 @@ export class SsosessionsComponent implements OnInit {
    * @param user - user to look up
    */
   query(user: string) {
-    if (user && user !== '') {
-      this.searched = user;
-      return this.service.getSessions(user);
-    } else {
-      return new Observable((observer) => observer.next(null));
-    }
+    return this.service.getSessions(user);
   }
 
   /**

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -14,12 +14,13 @@ import {ControlsService} from '../controls/controls.service';
 @Component({
   selector: 'lib-navigation',
   templateUrl: './navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./navigation.component.css']
 })
 export class LibNavigationComponent {
 
   @ViewChild(MatSidenav, { static: true })
-   drawer: MatSidenav;
+  drawer: MatSidenav;
 
   isHandset$: Observable<boolean> = this.mediaObserver.asObservable()
     .pipe(
@@ -28,7 +29,12 @@ export class LibNavigationComponent {
 
   constructor(private mediaObserver: MediaObserver,
               private userService: UserService,
-              public controls: ControlsService) {
+              public controls: ControlsService,
+              private cdr: ChangeDetectorRef) {
+  }
+
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
   }
 
   /**

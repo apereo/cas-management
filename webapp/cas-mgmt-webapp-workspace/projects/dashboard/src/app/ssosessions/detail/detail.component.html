@@ -1,34 +1,61 @@
 <div>
   <h3 mat-dialog-title>SSO Session Details {{ detail.ticketGrantingTicket }}</h3>
+
   <mat-dialog-content>
-    <lib-input>
-      <mat-form-field class="textInput" appearance="standard">
-        <mat-label i18n>Principal</mat-label>
-        <input matInput [ngModel]="detail.authenticatedPrincipal">
-      </mat-form-field>
-    </lib-input>
-    <lib-input>
-      <mat-form-field class="textInput" appearance="standard">
-        <mat-label i18n>Date</mat-label>
-        <input matInput [ngModel]="detail.authenticationDate | date: 'yyyy-MM-dd HH:mm:ss'">
-      </mat-form-field>
-    </lib-input>
-    <lib-input>
-      <mat-form-field class="textInput" appearance="standard">
-        <mat-label i18n>Proxied</mat-label>
-        <input matInput [ngModel]="detail.proxied">
-      </mat-form-field>
-    </lib-input>
-    <lib-input>
-      <mat-form-field class="textInput" appearance="standard">
-        <mat-label i18n>Number of Uses</mat-label>
-        <input matInput [ngModel]="detail.numberOfUses">
-      </mat-form-field>
-    </lib-input>
-    <mat-table #table [dataSource]="dataSource">
+
+    <h4 mat-subheader class="dialog-subheader mb-0">Properties</h4>
+
+    <mat-list>
+      
+      <mat-list-item>
+        <div class="strong mr-3">Principal</div>
+        <div>{{ detail.authenticatedPrincipal }}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div class="strong mr-3">Date</div>
+        <div>{{ detail.authenticationDate | date: 'yyyy-MM-dd HH:mm:ss' }}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div class="strong mr-3">Proxied</div>
+        <div>{{ detail.proxied }}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div class="strong mr-3">Number of Uses</div>
+        <div>{{ detail.numberOfUses }}</div>
+      </mat-list-item>
+    </mat-list>
+
+    <h4 mat-subheader class="dialog-subheader mb-0">Authentication Attributes</h4>
+
+    <mat-table #tableAttrs [dataSource]="attributes">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef [ngClass]="'idWidth'">
-          ST
+          <strong>ID</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'idWidth'">
+          {{ row.id }}
+        </mat-cell>
+      </ng-container>
+    
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'formatWidth'">
+          <strong>Value</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'formatWidth'">
+          {{ row.value }}
+        </mat-cell>
+      </ng-container>
+    
+      <mat-header-row *matHeaderRowDef="attrDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: attrDisplayedColumns;"></mat-row>
+    </mat-table>
+
+    <h4 mat-subheader class="dialog-subheader mb-0">Authenticated Services</h4>
+
+    <mat-table #tableServices [dataSource]="services">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'idWidth'">
+          <strong>Service</strong>
         </mat-header-cell>
         <mat-cell *matCellDef="let row" [ngClass]="'idWidth'">
           {{ row.id }}
@@ -37,16 +64,16 @@
 
       <ng-container matColumnDef="format">
         <mat-header-cell *matHeaderCellDef [ngClass]="'formatWidth'">
-          Format
+          <strong>Format</strong>
         </mat-header-cell>
         <mat-cell *matCellDef="let row" [ngClass]="'formatWidth'">
           {{ row.format }}
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="url">
+      <ng-container matColumnDef="originalUrl">
         <mat-header-cell *matHeaderCellDef [ngClass]="'urlWidth'">
-          Original URL
+          <strong>Original URL</strong>
         </mat-header-cell>
         <mat-cell *matCellDef="let row" [ngClass]="'urlWidth'">
           {{ row.originalUrl }}
@@ -55,15 +82,15 @@
 
       <ng-container matColumnDef="source">
         <mat-header-cell *matHeaderCellDef [ngClass]="'sourceWidth'">
-          Source
+          <strong>Source</strong>
         </mat-header-cell>
         <mat-cell *matCellDef="let row" [ngClass]="'sourceWidth'">
           {{ row.source }}
         </mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-header-row *matHeaderRowDef="serviceDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: serviceDisplayedColumns;"></mat-row>
     </mat-table>
   </mat-dialog-content>
 </div>

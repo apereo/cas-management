@@ -1,0 +1,319 @@
+{
+  "logout": {
+    "startState": "terminateSession",
+    "states": {
+      "redirectView": { "isEndState": true },
+      "terminateSession": {
+        "actionList": ["terminateSessionAction"],
+        "transitions": ["warn -> confirmLogoutView", "* -> doLogout"]
+      },
+      "confirmLogoutView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casConfirmLogoutView",
+        "transitions": ["success -> terminateSession"]
+      },
+      "doLogout": {
+        "actionList": ["logoutAction"],
+        "transitions": ["finish -> finishLogout", "front -> frontLogout"]
+      },
+      "frontLogout": {
+        "actionList": ["frontChannelLogoutAction"],
+        "transitions": [
+          "finish -> finishLogout",
+          "propagate -> propagateLogoutRequests"
+        ]
+      },
+      "propagateLogoutRequests": { "isEndState": true },
+      "logoutView": {
+        "entryActions": ["logoutViewSetupAction"],
+        "isEndState": true
+      },
+      "finishLogout": {
+        "transitions": [
+          "flowScope.logoutRedirectUrl != null -> redirectView",
+          "* -> logoutView"
+        ]
+      }
+    },
+    "possibleOutcomes": [
+      "redirectView",
+      "propagateLogoutRequests",
+      "logoutView"
+    ],
+    "stateCount": 8
+  },
+  "login": {
+    "startState": "initialAuthenticationRequestValidationCheck",
+    "startActions": [
+      "initialFlowSetupAction",
+      "verifyRequiredServiceAction",
+      "org.apereo.cas.pm.web.flow.PasswordManagementWebflowConfigurer$$Lambda$1032/0x000000080090b840@2dfe2de4"
+    ],
+    "states": {
+      "theEnd": { "isEndState": true },
+      "viewRedirectToUnauthorizedUrlView": {
+        "entryActions": ["redirectUnauthorizedServiceUrlAction"],
+        "isEndState": true
+      },
+      "viewServiceErrorView": { "isEndState": true },
+      "redirectView": { "isEndState": true },
+      "postView": { "isEndState": true },
+      "headerView": {
+        "actionList": ["injectResponseHeadersAction"],
+        "transitions": [
+          "success -> endWebflowExecution",
+          "redirect -> redirectView"
+        ]
+      },
+      "viewGenericLoginSuccess": {
+        "entryActions": ["genericSuccessViewAction"],
+        "isEndState": true
+      },
+      "showWarningView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casConfirmView",
+        "transitions": ["success -> finalizeWarning"]
+      },
+      "finalizeWarning": {
+        "actionList": ["serviceWarningAction"],
+        "transitions": ["redirect -> redirect"]
+      },
+      "endWebflowExecution": { "isEndState": true },
+      "serviceUnauthorizedCheck": {
+        "entryActions": ["setServiceUnauthorizedRedirectUrlAction"],
+        "transitions": [
+          "flowScope.unauthorizedRedirectUrl != null -> viewRedirectToUnauthorizedUrlView",
+          "* -> viewServiceErrorView"
+        ]
+      },
+      "serviceCheck": {
+        "transitions": [
+          "flowScope.service != null -> generateServiceTicket",
+          "* -> viewGenericLoginSuccess"
+        ]
+      },
+      "warn": {
+        "transitions": [
+          "flowScope.warnCookieValue -> showWarningView",
+          "* -> redirect"
+        ]
+      },
+      "gatewayRequestCheck": {
+        "transitions": [
+          "requestParameters.gateway != '' and requestParameters.gateway != null and flowScope.service != null -> gatewayServicesManagementCheck",
+          "* -> serviceAuthorizationCheck"
+        ]
+      },
+      "hasServiceCheck": {
+        "transitions": [
+          "flowScope.service != null -> renewRequestCheck",
+          "* -> viewGenericLoginSuccess"
+        ]
+      },
+      "renewRequestCheck": {
+        "actionList": ["renewAuthenticationRequestCheckAction"],
+        "transitions": [
+          "proceed -> generateServiceTicket",
+          "renew -> serviceAuthorizationCheck",
+          "* -> serviceAuthorizationCheck"
+        ]
+      },
+      "initializeLoginForm": {
+        "actionList": ["initializeLoginAction"],
+        "transitions": ["success -> afterInitializeLoginForm"]
+      },
+      "afterInitializeLoginForm": {
+        "actionList": ["set requestScope.initialized = true"],
+        "transitions": ["success -> viewLoginForm"]
+      },
+      "realSubmit": {
+        "actionList": ["authenticationViaFormAction"],
+        "transitions": [
+          "warn -> warn",
+          "success -> createTicketGrantingTicket",
+          "successWithWarnings -> showAuthenticationWarningMessages",
+          "authenticationFailure -> handleAuthenticationFailure",
+          "error -> initializeLoginForm",
+          "valid -> serviceCheck",
+          "generateServiceTicket -> generateServiceTicket",
+          "mfa-composite -> mfa-composite"
+        ]
+      },
+      "initialAuthenticationRequestValidationCheck": {
+        "entryActions": ["verifyRequiredServiceAction"],
+        "actionList": ["initialAuthenticationRequestValidationAction"],
+        "transitions": [
+          "authenticationFailure -> handleAuthenticationFailure",
+          "error -> initializeLoginForm",
+          "success -> ticketGrantingTicketCheck",
+          "successWithWarnings -> showAuthenticationWarningMessages",
+          "mfa-composite -> mfa-composite"
+        ]
+      },
+      "createTicketGrantingTicket": {
+        "actionList": ["createTicketGrantingTicketAction"],
+        "transitions": [
+          "successWithWarnings -> showAuthenticationWarningMessages",
+          "success -> sendTicketGrantingTicket"
+        ]
+      },
+      "sendTicketGrantingTicket": {
+        "actionList": ["sendTicketGrantingTicketAction"],
+        "transitions": [
+          "success -> serviceCheck",
+          "successWithWarnings -> showAuthenticationWarningMessages"
+        ]
+      },
+      "generateServiceTicket": {
+        "actionList": ["generateServiceTicketAction"],
+        "transitions": [
+          "success -> redirect",
+          "warn -> warn",
+          "authenticationFailure -> handleAuthenticationFailure",
+          "error -> initializeLoginForm",
+          "gateway -> gatewayServicesManagementCheck"
+        ]
+      },
+      "gatewayServicesManagementCheck": {
+        "actionList": ["gatewayServicesManagementCheck"],
+        "transitions": ["success -> redirect"]
+      },
+      "serviceAuthorizationCheck": {
+        "actionList": ["serviceAuthorizationCheck"],
+        "transitions": ["* -> initializeLoginForm"]
+      },
+      "redirect": {
+        "actionList": ["redirectToServiceAction"],
+        "exitActions": [
+          "[EvaluateAction@e5cc3da expression = clearWebflowCredentialsAction, resultExpression = [null]]"
+        ],
+        "transitions": [
+          "post -> postView",
+          "header -> headerView",
+          "redirect -> redirectView"
+        ]
+      },
+      "handleAuthenticationFailure": {
+        "actionList": ["authenticationExceptionHandler"],
+        "transitions": [
+          "AccountDisabledException -> casAccountDisabledView",
+          "AccountLockedException -> casAccountLockedView",
+          "AccountExpiredException -> casExpiredPassView",
+          "AccountLockedException -> casAccountLockedView",
+          "AccountPasswordMustChangeException -> casMustChangePassView",
+          "CredentialExpiredException -> casExpiredPassView",
+          "InvalidLoginLocationException -> casBadWorkstationView",
+          "InvalidLoginTimeException -> casBadHoursView",
+          "FailedLoginException -> initializeLoginForm",
+          "AccountNotFoundException -> initializeLoginForm",
+          "UnauthorizedServiceForPrincipalException -> initializeLoginForm",
+          "PrincipalException -> initializeLoginForm",
+          "UnsatisfiedAuthenticationPolicyException -> initializeLoginForm",
+          "UnauthorizedAuthenticationException -> casAuthenticationBlockedView",
+          "serviceUnauthorizedCheck -> serviceUnauthorizedCheck",
+          "* -> initializeLoginForm"
+        ]
+      },
+      "terminateSession": {
+        "actionList": ["terminateSessionAction"],
+        "transitions": ["* -> gatewayRequestCheck"]
+      },
+      "ticketGrantingTicketCheck": {
+        "actionList": ["ticketGrantingTicketCheckAction"],
+        "transitions": [
+          "notExists -> gatewayRequestCheck",
+          "invalid -> terminateSession",
+          "valid -> hasServiceCheck"
+        ]
+      },
+      "viewLoginForm": {
+        "attributes": [{ "empty": false }],
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casLoginView",
+        "transitions": ["submit -> realSubmit"]
+      },
+      "showAuthenticationWarningMessages": {
+        "entryActions": [
+          "set requestScope.messages = messageContext.allMessages"
+        ],
+        "isViewState": true,
+        "isRedirect": false,
+        "renderActions": [],
+        "viewId": "casLoginMessageView",
+        "transitions": ["proceed -> proceedFromAuthenticationWarningView"]
+      },
+      "proceedFromAuthenticationWarningView": {
+        "actionList": ["sendTicketGrantingTicketAction"],
+        "transitions": ["* -> serviceCheck"]
+      },
+      "mfa-composite": {
+        "entryActions": ["prepareMultifactorProviderSelectionAction"],
+        "isViewState": true,
+        "isRedirect": false,
+        "renderActions": [],
+        "viewId": "casCompositeMfaProviderSelectionView",
+        "transitions": ["submit -> compositeMfaProviderSelectedAction"]
+      },
+      "compositeMfaProviderSelectedAction": {
+        "actionList": ["multifactorProviderSelectedAction"]
+      },
+      "casAuthenticationBlockedView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casAuthenticationBlockedView"
+      },
+      "casBadWorkstationView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casBadWorkstationView"
+      },
+      "casBadHoursView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casBadHoursView"
+      },
+      "casAccountLockedView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casAccountLockedView"
+      },
+      "casAccountDisabledView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casAccountDisabledView"
+      },
+      "casPasswordUpdateSuccess": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casPasswordUpdateSuccessView"
+      },
+      "casExpiredPassView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casExpiredPassView"
+      },
+      "casMustChangePassView": {
+        "isViewState": true,
+        "isRedirect": false,
+        "viewId": "casMustChangePassView"
+      }
+    },
+    "possibleOutcomes": [
+      "theEnd",
+      "viewRedirectToUnauthorizedUrlView",
+      "viewServiceErrorView",
+      "redirectView",
+      "postView",
+      "viewGenericLoginSuccess",
+      "endWebflowExecution"
+    ],
+    "stateCount": 42,
+    "exceptionHandlers": [
+      "[TransitionExecutingFlowExecutionExceptionHandler@499500c6 exceptionHandlingMappings = map[PrincipalException -> serviceUnauthorizedCheck, UnauthorizedSsoServiceException -> viewLoginForm, NoSuchFlowExecutionException -> viewServiceErrorView, UnauthorizedServiceException -> serviceUnauthorizedCheck, UnauthorizedServiceForPrincipalException -> serviceUnauthorizedCheck]]"
+    ],
+    "variables": "credential"
+  }
+}

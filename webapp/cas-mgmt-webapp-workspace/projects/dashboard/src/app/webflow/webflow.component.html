@@ -1,0 +1,4 @@
+<div>Webflow page</div>
+<ng-container *ngFor="let graph of graphs$ | async">
+    <mermaid [schema]="graph.schema" [title]="graph.title"></mermaid>
+</ng-container>

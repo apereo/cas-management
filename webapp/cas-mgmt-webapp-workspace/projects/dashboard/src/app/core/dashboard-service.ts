@@ -1,10 +1,14 @@
 import {Service} from '@apereo/mgmt-lib';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Server} from '../domain/dashboard.model';
 import {Cache} from '../domain/cache.model';
 import {AuditLog} from '../domain/audit.model';
 import {Logger} from '../domain/logger.model';
+
+import webflow from '../webflow/springWebflow.json';
+import { SpringWebflow } from '../webflow/webflow.model';
+import { map } from 'rxjs/operators';
 
 /**
  * Service to handle requests to the server for dashboard functionality.
@@ -12,22 +16,21 @@ import {Logger} from '../domain/logger.model';
  * @author Travis Schmidt
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class DashboardService extends Service {
-
   /**
    * Calls server to get Cache statistics from the CAS servers.
    */
   getCache(): Observable<Cache> {
-    return this.get<Cache>('api/dashboard/cache');
+    return this.get<Cache>("api/dashboard/cache");
   }
 
   /**
    * Calls the server to get the status of each CAS server in the cluster.
    */
   getStatus(): Observable<Server[]> {
-    return this.get<Server[]>('api/dashboard');
+    return this.get<Server[]>("api/dashboard");
   }
 
   /**
@@ -36,7 +39,7 @@ export class DashboardService extends Service {
    * @param index - index of CAS server in cluster
    */
   getUpdate(index: number): Observable<Server> {
-    return this.get<Server>('api/dashboard/' + index);
+    return this.get<Server>("api/dashboard/" + index);
   }
 
   /**
@@ -45,7 +48,10 @@ export class DashboardService extends Service {
    * @param uid - user id to resolve
    */
   getResolve(uid: string): Observable<Map<string, string[]>> {
-    return this.get<Map<string, string[]>>('api/dashboard/resolve/' + uid, 'Resolving');
+    return this.get<Map<string, string[]>>(
+      "api/dashboard/resolve/" + uid,
+      "Resolving"
+    );
   }
 
   /**
@@ -54,7 +60,11 @@ export class DashboardService extends Service {
    * @param data - user credentials and service to resolve
    */
   getRelease(data: any): Observable<Map<string, string[]>> {
-    return this.post<Map<string, string[]>>('api/dashboard/release', data, 'Authenticating');
+    return this.post<Map<string, string[]>>(
+      "api/dashboard/release",
+      data,
+      "Authenticating"
+    );
   }
 
   /**
@@ -63,14 +73,21 @@ export class DashboardService extends Service {
    * @param data - user credentials and SP entityId to resolve
    */
   getResponse(data: any): Observable<string> {
-    return this.postText('api/dashboard/response', data, 'Authenticating');
+    return this.postText("api/dashboard/response", data, "Authenticating");
   }
 
   /**
    * Calls the server to get info on the current CAS instance deployed.
    */
   getInfo(): Observable<Map<string, string>> {
-    return this.get<Map<string, string>>('api/dashboard/info');
+    return this.get<Map<string, string>>("api/dashboard/info");
+  }
+
+  /**
+   * Calls server to get Cache statistics from the CAS servers.
+   */
+  getFlow(): Observable<SpringWebflow> {
+    return of(webflow as SpringWebflow);
   }
 
   /**
@@ -79,7 +96,7 @@ export class DashboardService extends Service {
    * @param data - query options.
    */
   getAudit(data: any): Observable<AuditLog[]> {
-    return this.post<AuditLog[]>('api/dashboard/audit', data, 'Searching');
+    return this.post<AuditLog[]>("api/dashboard/audit", data, "Searching");
   }
 
   /**
@@ -88,14 +105,14 @@ export class DashboardService extends Service {
    * @param data - query options
    */
   downloadAudit(data: any): Observable<void> {
-    return this.post<void>('api/dashboard/audit/download', data, 'Downloading');
+    return this.post<void>("api/dashboard/audit/download", data, "Downloading");
   }
 
   /**
    * Calls the server to get all configured loggers for each CAS server in the cluster.
    */
   getLoggers(): Observable<Map<string, Map<string, Logger>>> {
-    return this.get<Map<string, Map<string, Logger>>>('api/dashboard/loggers');
+    return this.get<Map<string, Map<string, Logger>>>("api/dashboard/loggers");
   }
 
   /**
@@ -104,7 +121,7 @@ export class DashboardService extends Service {
    * @param data - params for logger
    */
   setLogger(data: any): Observable<void> {
-    return this.post<void>('api/dashboard/loggers/', data);
+    return this.post<void>("api/dashboard/loggers/", data);
   }
 
   /**
@@ -113,6 +130,9 @@ export class DashboardService extends Service {
    * @param query - partial text of sp entity id.
    */
   lookupEntity(query: string): Observable<string[]> {
-    return this.get<string[]>('api/saml/find?query=' + query, 'Looking up entity');
+    return this.get<string[]>(
+      "api/saml/find?query=" + query,
+      "Looking up entity"
+    );
   }
 }

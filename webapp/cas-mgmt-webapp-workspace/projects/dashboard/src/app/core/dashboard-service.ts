@@ -8,7 +8,6 @@ import {Logger} from '../domain/logger.model';
 
 import webflow from '../webflow/springWebflow.json';
 import { SpringWebflow } from '../webflow/webflow.model';
-import { map } from 'rxjs/operators';
 
 /**
  * Service to handle requests to the server for dashboard functionality.

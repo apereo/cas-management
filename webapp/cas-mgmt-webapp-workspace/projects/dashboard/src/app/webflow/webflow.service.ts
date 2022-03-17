@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { SpringWebflow, Flow, WebflowGraph, FlowState, FlowStates } from "./webflow.model";
+import { SpringWebflow, Flow, WebflowGraph, FlowStates } from "./webflow.model";
 import uniqBy from 'lodash/uniqBy';
 import find from "lodash/find";
 
@@ -15,8 +14,6 @@ export interface MermaidLine {
 })
 export class WebflowService {
     createMermaidGraph(key: string, flow: Flow): string {
-        console.log(flow);
-
         return `flowchart TB\n${this.getGraphLines(this.parseFlow(flow))}`;
     }
 
@@ -32,7 +29,7 @@ export class WebflowService {
     }
 
     private getGraphLines(lines: MermaidLine[]): string {
-        return this.dedupe(lines).reduce((final: string, line: MermaidLine) =>
+        return lines.reduce((final: string, line: MermaidLine) =>
             (`${final}${line.start}[${line.start}] -->|${line.trigger}| ${line.next};`)
         , '');
     }

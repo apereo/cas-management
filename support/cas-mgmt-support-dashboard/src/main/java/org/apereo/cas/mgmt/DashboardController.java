@@ -217,17 +217,12 @@ public class DashboardController {
                        final String flowId)
         throws IllegalAccessException {
         isAdmin(authentication);
-        val ret = new HashMap<String, Map<String, Object>>();
-        mgmtProperties.getCasServers().forEach(p -> {
-            var endpoint = "/actuator/springWebflow";
-            if (StringUtils.isNotBlank(flowId)) {
-                endpoint += "?flowId=" + flowId;
-            }
-            val report = callCasServer(p.getUrl(), endpoint, new ParameterizedTypeReference<Map<String, Object>>() {
-            });
-            ret.put(p.getName(), report);
+        var endpoint = "/actuator/springWebflow";
+        if (StringUtils.isNotBlank(flowId)) {
+            endpoint += "?flowId=" + flowId;
+        }
+        return callCasServer(endpoint, new ParameterizedTypeReference<Map<String, Object>>() {
         });
-        return ret;
     }
 
     /**

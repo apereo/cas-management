@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { DashboardService } from "../core/dashboard-service";
-import { ControlsService } from "@apereo/mgmt-lib";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { Flow, SpringWebflow, WebflowGraph } from "./webflow.model";
+import { Flow } from "./webflow.model";
 import { WebflowService } from "./webflow.service";
 import { WebflowDialogComponent } from "./webflow-dialog.component";
 import { MatDialog } from "@angular/material/dialog";

@@ -8,6 +8,7 @@ import {Logger} from '../domain/logger.model';
 
 import webflow from '../webflow/springWebflow.json';
 import { SpringWebflow } from '../webflow/webflow.model';
+import { HttpParams } from '@angular/common/http';
 
 /**
  * Service to handle requests to the server for dashboard functionality.
@@ -85,8 +86,12 @@ export class DashboardService extends Service {
   /**
    * Calls server to get Cache statistics from the CAS servers.
    */
-  getFlow(): Observable<SpringWebflow> {
-    return of(webflow as SpringWebflow);
+  getFlow(id: string = null): Observable<SpringWebflow> {
+    const opts: any = {};
+    if (id) {
+      opts.params = new HttpParams().set('flowId', id);
+    }
+    return this.get<SpringWebflow>("api/dashboard/webflow", 'Loading Webflow', opts);
   }
 
   /**

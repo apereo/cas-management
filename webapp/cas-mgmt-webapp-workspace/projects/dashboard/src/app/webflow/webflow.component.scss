@@ -1,0 +1,21 @@
+.mat-grid-list .mat-grid-tile .mat-figure {
+    align-items: flex-start;
+}
+
+.mat-list-item-content {
+    align-items: flex-start !important;
+}
+
+.strong {
+    font-weight: bold !important;
+}
+
+.webflow-card {
+    width: 100%;
+    margin: 1rem;
+    box-sizing: border-box;
+
+    .mat-card-title {
+        text-transform: capitalize;
+    }
+}

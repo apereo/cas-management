@@ -3,12 +3,17 @@ import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
 
 const config = {
-  theme: "default",
+  theme: "neutral",
   startOnLoad: false,
   securityLevel: "loose",
   flowChart: {
-    useMaxWidth: false
-  }
+    useMaxWidth: true,
+    htmlLabels: true,
+  },
+  themeVariables: {
+    fontSize: "12px",
+    primaryColor: "#607D8B",
+  },
 };
 
 /**
@@ -28,6 +33,8 @@ export class MermaidComponent implements OnChanges {
   @ViewChild("mermaid")
   mermaid: ElementRef;
 
+  panZoom: any;
+
   constructor() {}
 
   /**
@@ -42,15 +49,20 @@ export class MermaidComponent implements OnChanges {
         mermaid.init();
         const element = this.mermaid.nativeElement;
         const svg = element.querySelector('svg');
-        svgPanZoom(svg, {
+        //svg.setAttribute('height', 'auto');
+        this.panZoom = svgPanZoom(svg, {
           panEnabled: true,
           zoomEnabled: true,
           mouseWheelZoomEnabled: false,
           preventMouseEventsDefault: true,
-          controlIconsEnabled: true
+          center: false
         });
-      }, 1);
+      }, 200);
     }
+  }
+
+  zoomIn(): void {
+    this.panZoom.zoomIn();
   }
 }
 

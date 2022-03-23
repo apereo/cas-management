@@ -28,6 +28,7 @@ public class DashboardForwardingController {
         "dashboard/tokens",
         "dashboard/loggers",
         "dashboard/user",
+        "dashboard/webflow",
         "dashboard"
     })
     public String forward() {

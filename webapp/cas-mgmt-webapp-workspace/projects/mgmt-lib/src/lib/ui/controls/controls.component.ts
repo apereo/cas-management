@@ -43,6 +43,8 @@ export class ControlsComponent implements OnInit {
         this.service.gitStatus();
       }
     }, 10);
+
+    this.userService.getUser().subscribe(console.log);
   }
 
   /**

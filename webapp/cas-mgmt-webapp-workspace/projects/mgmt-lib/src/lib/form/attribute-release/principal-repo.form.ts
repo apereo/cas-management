@@ -1,4 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
+import { DefaultPrincipalAttributesRepository } from '@apereo/mgmt-lib';
 import {
   AbstractPrincipalAttributesRepository,
   CachingPrincipalAttributesRepository,
@@ -28,10 +29,11 @@ export class PrincipalRepoForm extends FormGroup {
    *
    * @param repo - AbstractPrincipalAttributesRepository
    */
-  map(repo: AbstractPrincipalAttributesRepository) {
-    repo.ignoreResolvedAttributes = this.ignoreResolvedAttributes.value;
-    repo.attributeRepositoryIds = this.attributeRepositoryIds.value;
-    repo.mergingStrategy = this.mergingStrategy.value;
+  map(): DefaultPrincipalAttributesRepository {
+    return new DefaultPrincipalAttributesRepository({
+      "@class": DefaultPrincipalAttributesRepository.cName,
+      ...this.value,
+    });
   }
 }
 
@@ -54,9 +56,11 @@ export class CachingPrincipalRepoForm extends PrincipalRepoForm {
    *
    * @param repo - CachingPrincipalAttributesRepository
    */
-  map(repo: CachingPrincipalAttributesRepository) {
-    super.map(repo);
-    repo.timeUnit = this.timeUnit.value;
-    repo.expiration = this.expiration.value;
+  map(): CachingPrincipalAttributesRepository {
+    const repo = new CachingPrincipalAttributesRepository({
+      '@class': CachingPrincipalAttributesRepository.cName,
+      ...this.value,
+    });
+    return repo;
   }
 }

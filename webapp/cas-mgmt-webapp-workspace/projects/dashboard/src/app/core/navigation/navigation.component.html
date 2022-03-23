@@ -7,6 +7,10 @@
     <mat-icon>info</mat-icon>
     <span i18n>CAS Info</span>
   </a>
+  <a *ngIf="isAdmin" mat-list-item (click)="navto('webflow')">
+    <mat-icon>account_tree</mat-icon>
+    <span i18n>View Flow</span>
+  </a>
   <a *ngIf="isAdmin" mat-list-item (click)="navto('cache')">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Cache</span>

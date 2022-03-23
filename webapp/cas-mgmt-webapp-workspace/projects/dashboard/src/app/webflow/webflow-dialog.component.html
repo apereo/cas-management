@@ -1,0 +1,13 @@
+<div>
+    <div mat-dialog-title>
+        <h3 style="margin: 0;margin-right: 2rem;text-transform: capitalize;">{{ data.title }}</h3>
+    </div>
+    <div mat-dialog-content>
+        <mermaid [schema]="data.schema" ></mermaid>
+    </div>
+    <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Close</button>
+    </div>
+</div>
+
+

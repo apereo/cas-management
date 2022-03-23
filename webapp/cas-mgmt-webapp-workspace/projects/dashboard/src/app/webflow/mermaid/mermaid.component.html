@@ -1,0 +1,11 @@
+<div style="display: flex;align-items: center;">
+  <button mat-button color="primary" (click)="panZoom.zoomIn()">
+    <mat-icon>zoom_in</mat-icon> Zoom in
+  </button>
+  <button mat-button color="primary" (click)="panZoom.zoomOut()">
+    <mat-icon>zoom_out</mat-icon> Zoom out
+  </button>
+</div>
+<div *ngIf="schema" #mermaid>
+  <div class="mermaid">{{ schema }}</div>
+</div>

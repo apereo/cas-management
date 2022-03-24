@@ -6,7 +6,6 @@ import {Cache} from '../domain/cache.model';
 import {AuditLog} from '../domain/audit.model';
 import {Logger} from '../domain/logger.model';
 
-import webflow from '../webflow/springWebflow.json';
 import { SpringWebflow } from '../webflow/webflow.model';
 import { HttpParams } from '@angular/common/http';
 

@@ -2,7 +2,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {
   AbstractPrincipalAttributesRepository,
   CachingPrincipalAttributesRepository,
-  DefaultPrincipalAttributesRepository,
   PrincipalRepoType,
   RegisteredServiceAttributeReleasePolicy
 } from '@apereo/mgmt-lib/src/lib/model';
@@ -10,7 +9,7 @@ import {ChainingFilterForm} from './filters.form';
 import {CachingPrincipalRepoForm, PrincipalRepoForm} from './principal-repo.form';
 import {ConsentForm} from './consent.form';
 import {ChecksForm} from './checks.form';
-import { attributeRepoFactory } from '@apereo/mgmt-lib';
+import { attributeRepoFactory } from '@apereo/mgmt-lib/src/lib/model';
 
 /**
  * Form group to display and update fields for Attribute Release policies.

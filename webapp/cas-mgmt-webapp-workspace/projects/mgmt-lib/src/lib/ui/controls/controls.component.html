@@ -60,12 +60,12 @@
   </ng-container>
   
   <ng-container *ngIf="service.showPreview">
-    <div class="controlButton" aria-label="Preview" [matMenuTriggerFor]="previewMenu">
-      <mat-icon matTooltip="Preview">preview</mat-icon>
+    <div class="controlButton" aria-label="Preview / Diff" [matMenuTriggerFor]="previewMenu">
+      <mat-icon matTooltip="Preview / Diff">preview</mat-icon>
     </div>
     <mat-menu #previewMenu="matMenu">
-      <button mat-menu-item (click)="service.preview.emit('json')">Preview JSON</button>
-      <button mat-menu-item (click)="service.preview.emit('yaml')">Preview YAML</button>
+      <button mat-menu-item (click)="service.preview.emit('json')">JSON</button>
+      <button mat-menu-item (click)="service.preview.emit('yaml')">YAML</button>
     </mat-menu>
   </ng-container>
 

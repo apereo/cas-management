@@ -27,8 +27,10 @@ export class PreviewService extends Service {
 
     private removeNull(data) {
         return JSON.parse(JSON.stringify(data), (key, value) => {
-            if (value == null || value == '' || value == [] || value == {})
+            if (value == null || value == '' || value == [] || value == {}) {
                 return undefined;
+            }
+                
             return value;
         });
     }

@@ -11,13 +11,11 @@ import { DelegatedForm } from '../delegated.form';
  */
 export class AccessStrategyForm extends FormGroup {
 
-  principalRepoType: FormControl;
   get requireAll() { return this.get('requireAll') as FormControl; }
   get unauthorizedUrl() { return this.get('unauthorizedUrl') as FormControl; }
   get requiredAttributes() { return this.get('requiredAttributes') as AttributesForm; }
   get caseInsensitive() { return this.get('caseInsensitive') as FormControl; }
   get rejectedAttributes() { return this.get('rejectedAttributes') as AttributesForm; }
-  get principalRepo() { return this.get('repo') as PrincipalRepoForm; }
   get delegatedAuthenticationPolicy() { return this.get('delegatedAuthenticationPolicy') as DelegatedForm; }
 
   constructor(strategy: RegisteredServiceAccessStrategy) {
@@ -29,7 +27,6 @@ export class AccessStrategyForm extends FormGroup {
       rejectedAttributes: new AttributesForm(strategy?.rejectedAttributes),
       delegatedAuthenticationPolicy: new DelegatedForm(strategy?.delegatedAuthenticationPolicy)
     });
-    this.principalRepoType = new FormControl(PrincipalRepoType.DEFAULT);
   }
 
   /**

@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
@@ -61,15 +62,6 @@ public class DashboardController {
 
     private final CasConfigurationProperties casProperties;
 
-    private Server getServer(final CasServer s) {
-        val server = new Server();
-        server.setName(s.getName());
-        server.setHealth(callCasServer(s.getUrl(), "/actuator/health",
-            new ParameterizedTypeReference<Map<String, Object>>() {
-            }));
-        return server;
-    }
-
     private static String toCSV(final AuditLog log) {
         return new StringBuilder()
             .append(log.getWhenActionWasPerformed())
@@ -86,43 +78,6 @@ public class DashboardController {
             .append('|')
             .append(log.getApplicationCode())
             .toString();
-    }
-
-    private <T> T callCasServer(final String prefix, final String endpoint,
-                                       final ParameterizedTypeReference<T> type) {
-        try {
-            val restTemplate = getRestTemplate(prefix, endpoint);
-            val resp = restTemplate.exchange(prefix + endpoint, HttpMethod.GET, null, type);
-            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
-        } catch (final RestClientException e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
-        }
-
-    }
-
-    private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {
-        return callCasServer(casProperties.getServer().getPrefix(), url, type);
-    }
-
-    private <T> T callCasServer(final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
-        return callCasServer(casProperties.getServer().getPrefix(), endpoint, data, type);
-    }
-
-    private <T> T callCasServer(final String prefix, final String endpoint,
-                                       final Object data, final ParameterizedTypeReference<T> type) {
-        try {
-            val restTemplate = getRestTemplate(prefix, endpoint);
-            val headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            val send = new ObjectMapper().writeValueAsString(data);
-            val req = new HttpEntity<String>(send, headers);
-            val resp = restTemplate.exchange(prefix + endpoint, HttpMethod.POST, req, type);
-            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
-        } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
-        }
     }
 
     private static void isAdmin(final Authentication authentication) throws IllegalAccessException {
@@ -159,7 +114,11 @@ public class DashboardController {
                          @PathVariable
                          final int index) throws IllegalAccessException {
         isAdmin(authentication);
-        return getServer(mgmtProperties.getCasServers().get(index));
+        if (index < 0 || index > mgmtProperties.getCasServers().size()) {
+            throw new IllegalAccessException("Invalid server entry");
+        }
+        val server = mgmtProperties.getCasServers().get(index);
+        return getServer(server);
     }
 
     /**
@@ -226,7 +185,7 @@ public class DashboardController {
                            @RequestBody
                            final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
-        return this.<String>callCasServer("/actuator/samlPostProfileResponse", data,
+        return callCasServer("/actuator/samlPostProfileResponse", data,
             new ParameterizedTypeReference<String>() {
             });
     }
@@ -242,6 +201,28 @@ public class DashboardController {
     public Map<String, Object> info(final Authentication authentication) throws IllegalAccessException {
         isAdmin(authentication);
         return callCasServer("/actuator/info", new ParameterizedTypeReference<Map<String, Object>>() {
+        });
+    }
+
+    /**
+     * Method calls the CAS servers to provide the spring webflow report.
+     *
+     * @param authentication - the request
+     * @param flowId         the flow id
+     * @return the map
+     * @throws IllegalAccessException - insufficient permissions
+     */
+    @GetMapping("/webflow")
+    public Map webflow(final Authentication authentication,
+                       @RequestParam(name = "flowId", required = false)
+                       final String flowId)
+        throws IllegalAccessException {
+        isAdmin(authentication);
+        var endpoint = "/actuator/springWebflow";
+        if (StringUtils.isNotBlank(flowId)) {
+            endpoint += "?flowId=" + flowId;
+        }
+        return callCasServer(endpoint, new ParameterizedTypeReference<Map<String, Object>>() {
         });
     }
 
@@ -337,7 +318,53 @@ public class DashboardController {
             out.close();
         }
     }
-    
+
+    private Server getServer(final CasServer s) {
+        val server = new Server();
+        server.setName(s.getName());
+        server.setHealth(callCasServer(s.getUrl(), "/actuator/health",
+            new ParameterizedTypeReference<Map<String, Object>>() {
+            }));
+        return server;
+    }
+
+    private <T> T callCasServer(final String prefix, final String endpoint,
+                                final ParameterizedTypeReference<T> type) {
+        try {
+            val restTemplate = getRestTemplate(prefix, endpoint);
+            val resp = restTemplate.exchange(prefix + endpoint, HttpMethod.GET, null, type);
+            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
+        } catch (final RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+
+    }
+
+    private <T> T callCasServer(final String url, final ParameterizedTypeReference<T> type) {
+        return callCasServer(casProperties.getServer().getPrefix(), url, type);
+    }
+
+    private <T> T callCasServer(final String endpoint, final Object data, final ParameterizedTypeReference<T> type) {
+        return callCasServer(casProperties.getServer().getPrefix(), endpoint, data, type);
+    }
+
+    private <T> T callCasServer(final String prefix, final String endpoint,
+                                final Object data, final ParameterizedTypeReference<T> type) {
+        try {
+            val restTemplate = getRestTemplate(prefix, endpoint);
+            val headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            val send = new ObjectMapper().writeValueAsString(data);
+            val req = new HttpEntity<String>(send, headers);
+            val resp = restTemplate.exchange(prefix + endpoint, HttpMethod.POST, req, type);
+            return resp.getStatusCode().is2xxSuccessful() ? (T) resp.getBody() : null;
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
     private RestTemplate getRestTemplate(final String prefix, final String endpoint) {
         val uri = URI.create(prefix + endpoint);
         val restTemplate = new RestTemplate(

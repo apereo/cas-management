@@ -60,12 +60,12 @@
   </ng-container>
   
   <ng-container *ngIf="service.showPreview">
-    <div class="controlButton" aria-label="Preview" [matMenuTriggerFor]="previewMenu">
-      <mat-icon matTooltip="Preview">preview</mat-icon>
+    <div class="controlButton" aria-label="Preview / Diff" [matMenuTriggerFor]="previewMenu">
+      <mat-icon matTooltip="Preview / Diff">preview</mat-icon>
     </div>
     <mat-menu #previewMenu="matMenu">
-      <button mat-menu-item (click)="service.preview.emit('json')">Preview JSON</button>
-      <button mat-menu-item (click)="service.preview.emit('yaml')">Preview YAML</button>
+      <button mat-menu-item (click)="service.preview.emit('json')">JSON</button>
+      <button mat-menu-item (click)="service.preview.emit('yaml')">YAML</button>
     </mat-menu>
   </ng-container>
 
@@ -74,9 +74,12 @@
       <mat-icon matTooltip="User">account_circle</mat-icon>
     </div>
     <mat-menu #menu="matMenu">
-      <div mat-menu-item disabled class="menu-item-static">ID: {{ userService?.user?.id }}</div>
-      <div mat-menu-item disabled class="menu-item-static">Email: {{ userService?.user?.email }}</div>
-      <button mat-menu-item (click)="showUser()">Attributes & Permissions</button>
+      <ng-container *ngIf="userService?.user">
+        <div mat-menu-item disabled class="menu-item-static" *ngIf="userService?.user?.id">ID: {{ userService?.user?.id }}</div>
+        <div mat-menu-item disabled class="menu-item-static" *ngIf="userService?.user?.email">Email: {{ userService?.user?.email }}</div>
+        <button mat-menu-item (click)="showUser()" *ngIf="userService?.user?.attributes?.length > 0 || userService?.user?.permissions?.length > 0">Attributes & Permissions</button>
+      </ng-container>
+      
       <a mat-menu-item target="_self" id="logoutUrlLink" (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
         <ng-container i18n>Log Out</ng-container>
@@ -85,4 +88,3 @@
   </ng-container>
 </div>
 <input #open type="file" (change)="service.openFile.emit($event);" style="display:none;">
-

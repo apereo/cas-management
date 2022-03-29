@@ -208,6 +208,7 @@ public class DashboardController {
      * Method calls the CAS servers to provide the spring webflow report.
      *
      * @param authentication - the request
+     * @param flowId         the flow id
      * @return the map
      * @throws IllegalAccessException - insufficient permissions
      */

@@ -19,6 +19,7 @@ import {
 } from '@apereo/mgmt-lib';
 import {FormArray, FormGroup} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import cloneDeep from 'lodash/cloneDeep';
 
 /**
  * Component to display/update a service.
@@ -51,6 +52,8 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
 
   imported = false;
 
+  data: AbstractRegisteredService;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               public service: FormService,
@@ -77,6 +80,7 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
     this.route.data
       .subscribe((data: { resp: AbstractRegisteredService }) => {
         if (data.resp) {
+          this.data = cloneDeep(data.resp);
           this.loadService(data.resp);
         }
       });
@@ -106,12 +110,22 @@ export class FormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   preview(format: string) {
+
+    const service = {
+      current: cloneDeep(this.data),
+      updated: null
+    };
+
     this.map();
+
+    service.updated = cloneDeep(this.service.registeredService);
+
     const dialogRef = this.dialog.open(PreviewDialog, {
-      width: '960px',
+      width: '90vw',
+      maxWidth: '100vw',
       data: {
         format,
-        service: this.service.registeredService
+        service
       },
       height: '90vh'
     });

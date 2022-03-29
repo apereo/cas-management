@@ -1,5 +1,5 @@
 import {FormControl, FormGroup} from '@angular/forms';
-import { DefaultPrincipalAttributesRepository } from '@apereo/mgmt-lib';
+import { DefaultPrincipalAttributesRepository } from '@apereo/mgmt-lib/src/lib/model';
 import {
   AbstractPrincipalAttributesRepository,
   CachingPrincipalAttributesRepository,

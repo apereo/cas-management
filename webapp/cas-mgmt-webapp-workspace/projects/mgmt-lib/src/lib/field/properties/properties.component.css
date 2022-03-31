@@ -10,6 +10,6 @@
   flex: 0 0 40px;
 }
 
-/deep/.mat-autocomplete-panel {
+::ng-deep .mat-autocomplete-panel {
   min-width: 300px !important;
 }

@@ -133,35 +133,9 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return new ViewController();
     }
 
-    @ConditionalOnMissingBean(name = "pac4jClientConfiguration")
-    @Bean
-    public Config pac4jClientConfiguration(
-        final ServerProperties serverProperties,
-        final List<Client> authenticationClients,
-        @Qualifier("managementWebappAuthorizer")
-        final Authorizer managementWebappAuthorizer,
-        final CasManagementConfigurationProperties managementProperties) {
-        var defaultCallbackUrl = getDefaultCallbackUrl(serverProperties, managementProperties);
-        val cfg = new Config(new Clients(defaultCallbackUrl, authenticationClients));
-        cfg.addAuthorizer("mgmtAuthorizer", managementWebappAuthorizer);
-        cfg.addMatcher("excludedPath", new PathMatcher().excludeRegex("^/.*\\.(css|png|ico)$"));
-        return cfg;
-    }
-
     @Bean
     protected UrlFilenameViewController passThroughController() {
         return new UrlFilenameViewController();
-    }
-
-    /**
-     * Gets default callback url.
-     *
-     * @param serverProperties the server properties
-     * @return the default callback url
-     */
-    private String getDefaultCallbackUrl(final ServerProperties serverProperties,
-                                         final CasManagementConfigurationProperties managementProperties) {
-        return managementProperties.getServerName().concat(serverProperties.getServlet().getContextPath()).concat("/callback");
     }
 
 }

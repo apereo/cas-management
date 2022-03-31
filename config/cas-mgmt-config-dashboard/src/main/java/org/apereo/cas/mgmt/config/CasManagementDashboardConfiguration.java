@@ -9,6 +9,7 @@ import org.apereo.cas.mgmt.SessionsController;
 import org.apereo.cas.util.CollectionUtils;
 
 import lombok.val;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import java.nio.charset.StandardCharsets;
  * @since 6.0
  */
 @Configuration(value = "casManagementDashboard", proxyBeanMethods = false)
+@EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementDashboardConfiguration {
 
     @Bean

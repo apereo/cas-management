@@ -783,7 +783,7 @@ ext.libraries = [
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-notifications:$casVersion") {
                         },
-                        dependencies.create("org.apereo.cas:cas-server-core-logging:$casVersion") {
+                        dependencies.create("org.apereo.cas:cas-server-core-logging-api:$casVersion") {
                         }
                 ],
                 utilApi        :
@@ -857,9 +857,7 @@ ext.libraries = [
                         dependencies.create("org.apereo.cas:cas-server-core-authentication-api:$casVersion") {
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-authentication-attributes:$casVersion") {
-
                         }
-
                 ],
                 oauth          : [
                         dependencies.create("org.apereo.cas:cas-server-support-token-core-api:$casVersion") {
@@ -894,13 +892,10 @@ ext.libraries = [
                 },
         lucene                  : [
                 dependencies.create("org.apache.lucene:lucene-core:$luceneVersion") {
-
                 },
                 dependencies.create("org.apache.lucene:lucene-queryparser:$luceneVersion") {
-
                 },
                 dependencies.create("org.apache.lucene:lucene-analyzers-common:$luceneVersion") {
-
                 }
         ]
 ]

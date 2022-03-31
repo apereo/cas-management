@@ -175,9 +175,7 @@ public class CasManagementSamlConfiguration {
         @Qualifier(HttpClient.BEAN_NAME_HTTPCLIENT_NO_REDIRECT)
         final HttpClient httpClient) {
         return new SamlRegisteredServiceMetadataResolverCacheLoader(
-            openSamlConfigBean,
-            httpClient,
-            samlRegisteredServiceMetadataResolvers);
+            openSamlConfigBean, httpClient, samlRegisteredServiceMetadataResolvers);
     }
 
     @ConditionalOnMissingBean(name = "defaultSamlRegisteredServiceCachingMetadataResolver")

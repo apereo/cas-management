@@ -13,7 +13,6 @@ import org.pac4j.core.client.direct.AnonymousClient;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +32,6 @@ import java.util.List;
 @Slf4j
 public class CasManagementAuthenticationConfiguration {
 
-    @ConditionalOnMissingBean(name = "authenticationClients")
     @Bean
     public List<Client> authenticationClients(
         @Qualifier("staticAdminRolesAuthorizationGenerator")

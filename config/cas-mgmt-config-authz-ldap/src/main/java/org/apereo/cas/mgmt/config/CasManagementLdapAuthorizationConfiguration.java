@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.authorization.LdapUserAttributesToRolesAuthorizationGenerator;
 import org.apereo.cas.authorization.LdapUserGroupsToRolesAuthorizationGenerator;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.LdapUtils;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  * @since 5.0.0
  */
 @Configuration(value = "casManagementLdapAuthorizationConfiguration", proxyBeanMethods = false)
-@EnableConfigurationProperties(CasManagementConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementLdapAuthorizationConfiguration {
 
     private static SearchOperation ldapAuthorizationGeneratorUserSearchExecutor(final CasManagementConfigurationProperties managementProperties) {

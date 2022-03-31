@@ -1,5 +1,7 @@
 package org.apereo.cas.mgmt.config;
 
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.audit.Pac4jAuditablePrincipalResolver;
 import org.apereo.cas.mgmt.audit.ServiceManagementResourceResolver;
 import org.apereo.cas.util.CollectionUtils;
@@ -17,6 +19,7 @@ import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.apereo.inspektr.common.web.ClientInfoThreadLocalFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +35,7 @@ import java.util.Map;
  * @since 5.1.0
  */
 @Configuration(value = "casManagementAuditConfiguration", proxyBeanMethods = false)
+@EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementAuditConfiguration {
     private static final String AUDIT_ACTION_SUFFIX_FAILED = "_FAILED";
 

@@ -8,15 +8,15 @@ env:
   SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
   GH_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  JDK_CURRENT: 11.0.10
+  JDK_CURRENT: 11
 
 ##########################################################################
 
 on:
   push:
-    branches: [ 6.3.x ]
+    branches: [ 6.5.x ]
   pull_request:
-    branches: [ 6.3.x ]
+    branches: [ 6.5.x ]
 
 ##########################################################################
 

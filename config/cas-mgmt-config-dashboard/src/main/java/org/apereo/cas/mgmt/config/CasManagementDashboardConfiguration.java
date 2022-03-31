@@ -9,8 +9,7 @@ import org.apereo.cas.mgmt.SessionsController;
 import org.apereo.cas.util.CollectionUtils;
 
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -23,17 +22,8 @@ import java.nio.charset.StandardCharsets;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration("casManagementDashboard")
+@Configuration(value = "casManagementDashboard", proxyBeanMethods = false)
 public class CasManagementDashboardConfiguration {
-
-    @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    private CasConfigurationProperties casProperties;
-
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
 
     @Bean
     public DashboardViewController dashboardViewController() {
@@ -41,12 +31,14 @@ public class CasManagementDashboardConfiguration {
     }
 
     @Bean
-    public DashboardController dashboardController() {
+    public DashboardController dashboardController(final CasConfigurationProperties casProperties,
+                                                   final CasManagementConfigurationProperties managementProperties) {
         return new DashboardController(managementProperties, casProperties);
     }
 
     @Bean
-    public SessionsController sessionsController() {
+    public SessionsController sessionsController(final CasConfigurationProperties casProperties,
+                                                 final CasManagementConfigurationProperties managementProperties) {
         return new SessionsController(managementProperties, casProperties);
     }
 
@@ -56,9 +48,9 @@ public class CasManagementDashboardConfiguration {
     }
 
     @Bean
-    SpringResourceTemplateResolver dashboardTemplateResolver() {
+    SpringResourceTemplateResolver dashboardTemplateResolver(final ConfigurableApplicationContext applicationContext) {
         val resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(this.context);
+        resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");

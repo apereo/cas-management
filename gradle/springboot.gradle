@@ -24,7 +24,7 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases && !rootP
         }
 
         bootWar {
-            mainClassName = project.ext.mainClassName
+            mainClass.set(project.ext.mainClassName)
             manifest {
                 attributes(
                         "Automatic-Module-Name": project.name,
@@ -42,7 +42,7 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases && !rootP
     
     } else {
         bootJar {
-            mainClassName = project.ext.mainClassName
+            mainClass.set(project.ext.mainClassName)
             from "${buildDir}/resources/main", { into "WEB-INF/classes" }
             launchScript()
         }
@@ -65,6 +65,8 @@ if (project.ext.forceBootifulArtifact || (!rootProject.publishReleases && !rootP
     }
 
     bootRun {
+        mainClass.set(project.ext.mainClassName)
+        
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             dependsOn pathingJar
             doFirst {

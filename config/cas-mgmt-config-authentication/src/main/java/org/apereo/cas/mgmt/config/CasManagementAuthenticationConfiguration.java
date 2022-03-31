@@ -12,8 +12,6 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.client.direct.AnonymousClient;
 import org.pac4j.http.client.direct.IpClient;
 import org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,35 +28,27 @@ import java.util.List;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@Configuration("casManagementAuthenticationConfiguration")
+@Configuration(value = "casManagementAuthenticationConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @Slf4j
 public class CasManagementAuthenticationConfiguration {
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
-
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
-
-    @Autowired
-    @Qualifier("authorizationGenerator")
-    private ObjectProvider<AuthorizationGenerator> authorizationGenerator;
-
-    @Autowired
-    @Qualifier("staticAdminRolesAuthorizationGenerator")
-    private ObjectProvider<AuthorizationGenerator> staticAdminRolesAuthorizationGenerator;
-
     @ConditionalOnMissingBean(name = "authenticationClients")
     @Bean
-    public List<Client> authenticationClients() {
+    public List<Client> authenticationClients(
+        @Qualifier("staticAdminRolesAuthorizationGenerator")
+        final AuthorizationGenerator staticAdminRolesAuthorizationGenerator,
+        @Qualifier("authorizationGenerator")
+        final AuthorizationGenerator authorizationGenerator,
+        final CasConfigurationProperties casProperties,
+        final CasManagementConfigurationProperties managementProperties) {
         val clients = new ArrayList<Client>();
 
         if (managementProperties.isCasSso()) {
             LOGGER.debug("Configuring an authentication strategy based on CAS running at [{}]", casProperties.getServer().getName());
             val cfg = new CasConfiguration(casProperties.getServer().getLoginUrl());
             val client = new CasClient(cfg);
-            client.setAuthorizationGenerator(authorizationGenerator.getObject());
+            client.setAuthorizationGenerator(authorizationGenerator);
             client.setName("CasClient");
             clients.add(client);
         } else {
@@ -69,7 +59,7 @@ public class CasManagementAuthenticationConfiguration {
             LOGGER.info("Configuring an authentication strategy based on authorized IP addresses matching [{}]", managementProperties.getAuthzIpRegex());
             val ipClient = new IpClient(new IpRegexpAuthenticator(managementProperties.getAuthzIpRegex()));
             ipClient.setName("IpClient");
-            ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getObject());
+            ipClient.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
             clients.add(ipClient);
         } else {
             LOGGER.debug("Skipping IP address authentication strategy configuration; no pattern is defined");
@@ -77,9 +67,9 @@ public class CasManagementAuthenticationConfiguration {
 
         if (clients.isEmpty()) {
             LOGGER.warn("No authentication strategy is defined, CAS will establish an anonymous authentication mode whereby access is immediately granted. "
-                + "This may NOT be relevant for production purposes. Consider configuring alternative authentication strategies for maximum security.");
+                        + "This may NOT be relevant for production purposes. Consider configuring alternative authentication strategies for maximum security.");
             val anon = new AnonymousClient();
-            anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator.getObject());
+            anon.setAuthorizationGenerator(staticAdminRolesAuthorizationGenerator);
             clients.add(anon);
         }
         return clients;

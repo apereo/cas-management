@@ -34,19 +34,15 @@ import lombok.val;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import org.apache.commons.lang3.ClassUtils;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * Configuration for register end point features.
@@ -54,71 +50,71 @@ import java.util.Objects;
  * @author Travis Schmidt
  * @since 6.1
  */
-@Configuration("casManagementSamlConfiguration")
+@Configuration(value = "casManagementSamlConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @Slf4j
 public class CasManagementSamlConfiguration {
 
     private static final int POOL_SIZE = 200;
 
-    @Autowired
-    private ConfigurableApplicationContext applicationContext;
-
-    @Autowired
-    @Qualifier("noRedirectHttpClient")
-    private ObjectProvider<HttpClient> httpClient;
-
-
-    @Autowired
-    @Qualifier("managerFactory")
-    private ObjectProvider<MgmtManagerFactory<? extends ServicesManager>> managerFactory;
-
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
-
-    @Autowired
-    private CasConfigurationProperties casProperties;
-
-    @Autowired
-    @Qualifier("shibboleth.OpenSAMLConfig")
-    private ObjectProvider<OpenSamlConfigBean> openSamlConfigBean;
-
-    @Autowired
-    @Qualifier("formDataFactory")
-    private ObjectProvider<FormDataFactory> formDataFactory;
+    private static MetadataFilter getMetadataAggregateFilter(final CasManagementConfigurationProperties managementProperties) throws Exception {
+        if (ResourceUtils.doesResourceExist(managementProperties.getInCommonCert())) {
+            val signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(managementProperties.getInCommonCert());
+            signatureValidationFilter.setRequireSignedRoot(false);
+            return signatureValidationFilter;
+        }
+        return (xmlObject, metadataFilterContext) -> xmlObject;
+    }
 
     @Bean
-    public SamlController samlController() {
+    public SamlController samlController(
+        @Qualifier("urlMetadataResolver")
+        final UrlMetadataResolver urlMetadataResolver,
+        @Qualifier("metadataAggregateResolver")
+        final MetadataAggregateResolver metadataAggregateResolver,
+        @Qualifier("managerFactory")
+        final MgmtManagerFactory<? extends ServicesManager> managerFactory,
+        @Qualifier(OpenSamlConfigBean.DEFAULT_BEAN_NAME)
+        final OpenSamlConfigBean openSamlConfigBean,
+        final CasManagementConfigurationProperties managementProperties,
+        @Qualifier("formDataFactory")
+        final FormDataFactory formDataFactory) {
         return new SamlController(
-            managerFactory.getObject(),
+            managerFactory,
             managementProperties,
-            Objects.requireNonNull(formDataFactory.getObject()).create(),
-            openSamlConfigBean(),
-            metadataAggregateResolver(),
-            urlMetadataResolver());
+            formDataFactory.create(),
+            openSamlConfigBean,
+            metadataAggregateResolver,
+            urlMetadataResolver);
     }
 
     @Bean
     @SneakyThrows
-    public MetadataAggregateResolver metadataAggregateResolver() {
+    public MetadataAggregateResolver metadataAggregateResolver(
+        @Qualifier(OpenSamlConfigBean.DEFAULT_BEAN_NAME)
+        final OpenSamlConfigBean openSamlConfigBean,
+        final CasConfigurationProperties casProperties,
+        final CasManagementConfigurationProperties managementProperties) {
         return new InCommonMetadataAggregateResolver(casProperties, managementProperties,
-            openSamlConfigBean(), getMetadataAggregateFilter());
+            openSamlConfigBean, getMetadataAggregateFilter(managementProperties));
 
     }
 
     @Bean
-    public UrlMetadataResolver urlMetadataResolver() {
+    public UrlMetadataResolver urlMetadataResolver(final CasConfigurationProperties casProperties) {
         return new UrlMetadataResolver(casProperties);
     }
 
-    @Bean(name = "shibboleth.OpenSAMLConfig")
-    public OpenSamlConfigBean openSamlConfigBean() {
-        return new OpenSamlConfigBean(parserPool());
+    @Bean(name = OpenSamlConfigBean.DEFAULT_BEAN_NAME)
+    public OpenSamlConfigBean openSamlConfigBean(
+        @Qualifier("shibboleth.ParserPool")
+        final BasicParserPool parserPool) {
+        return new OpenSamlConfigBean(parserPool);
     }
 
     @SneakyThrows
     @Bean(name = "shibboleth.ParserPool", initMethod = "initialize")
-    public BasicParserPool parserPool() {
+    public BasicParserPool parserPool(final CasConfigurationProperties casProperties) {
         val pool = new BasicParserPool();
         pool.setMaxPoolSize(POOL_SIZE);
         pool.setCoalescing(true);
@@ -145,17 +141,20 @@ public class CasManagementSamlConfiguration {
 
     @ConditionalOnMissingBean(name = "samlRegisteredServiceMetadataResolvers")
     @Bean
-    public SamlRegisteredServiceMetadataResolutionPlan samlRegisteredServiceMetadataResolvers() {
+    public SamlRegisteredServiceMetadataResolutionPlan samlRegisteredServiceMetadataResolvers(
+        @Qualifier(OpenSamlConfigBean.DEFAULT_BEAN_NAME)
+        final OpenSamlConfigBean openSamlConfigBean,
+        final ConfigurableApplicationContext applicationContext,
+        final CasConfigurationProperties casProperties) {
         val plan = new DefaultSamlRegisteredServiceMetadataResolutionPlan();
 
         val samlIdp = casProperties.getAuthn().getSamlIdp();
-        val cfgBean = openSamlConfigBean.getObject();
-        plan.registerMetadataResolver(new MetadataQueryProtocolMetadataResolver(samlIdp, cfgBean));
-        plan.registerMetadataResolver(new JsonResourceMetadataResolver(samlIdp, cfgBean));
-        plan.registerMetadataResolver(new FileSystemResourceMetadataResolver(samlIdp, cfgBean));
-        plan.registerMetadataResolver(new UrlResourceMetadataResolver(samlIdp, cfgBean));
-        plan.registerMetadataResolver(new ClasspathResourceMetadataResolver(samlIdp, cfgBean));
-        plan.registerMetadataResolver(new GroovyResourceMetadataResolver(samlIdp, cfgBean));
+        plan.registerMetadataResolver(new MetadataQueryProtocolMetadataResolver(samlIdp, openSamlConfigBean));
+        plan.registerMetadataResolver(new JsonResourceMetadataResolver(samlIdp, openSamlConfigBean));
+        plan.registerMetadataResolver(new FileSystemResourceMetadataResolver(samlIdp, openSamlConfigBean));
+        plan.registerMetadataResolver(new UrlResourceMetadataResolver(samlIdp, openSamlConfigBean));
+        plan.registerMetadataResolver(new ClasspathResourceMetadataResolver(samlIdp, openSamlConfigBean));
+        plan.registerMetadataResolver(new GroovyResourceMetadataResolver(samlIdp, openSamlConfigBean));
 
         val configurers = applicationContext.getBeansOfType(SamlRegisteredServiceMetadataResolutionPlanConfigurer.class, false, true);
 
@@ -168,36 +167,38 @@ public class CasManagementSamlConfiguration {
 
     @ConditionalOnMissingBean(name = "chainingMetadataResolverCacheLoader")
     @Bean
-    @RefreshScope
-    public SamlRegisteredServiceMetadataResolverCacheLoader chainingMetadataResolverCacheLoader() {
+    public SamlRegisteredServiceMetadataResolverCacheLoader chainingMetadataResolverCacheLoader(
+        @Qualifier("samlRegisteredServiceMetadataResolvers")
+        final SamlRegisteredServiceMetadataResolutionPlan samlRegisteredServiceMetadataResolvers,
+        @Qualifier(OpenSamlConfigBean.DEFAULT_BEAN_NAME)
+        final OpenSamlConfigBean openSamlConfigBean,
+        @Qualifier(HttpClient.BEAN_NAME_HTTPCLIENT_NO_REDIRECT)
+        final HttpClient httpClient) {
         return new SamlRegisteredServiceMetadataResolverCacheLoader(
-            openSamlConfigBean.getObject(),
-            httpClient.getObject(),
-            samlRegisteredServiceMetadataResolvers());
+            openSamlConfigBean,
+            httpClient,
+            samlRegisteredServiceMetadataResolvers);
     }
 
     @ConditionalOnMissingBean(name = "defaultSamlRegisteredServiceCachingMetadataResolver")
     @Bean
-    @RefreshScope
-    public SamlRegisteredServiceCachingMetadataResolver defaultSamlRegisteredServiceCachingMetadataResolver() {
+    public SamlRegisteredServiceCachingMetadataResolver defaultSamlRegisteredServiceCachingMetadataResolver(
+        @Qualifier("chainingMetadataResolverCacheLoader")
+        final SamlRegisteredServiceMetadataResolverCacheLoader chainingMetadataResolverCacheLoader,
+        @Qualifier(OpenSamlConfigBean.DEFAULT_BEAN_NAME)
+        final OpenSamlConfigBean openSamlConfigBean,
+        final CasConfigurationProperties casProperties) {
         return new SamlRegisteredServiceDefaultCachingMetadataResolver(
-                Duration.parse(casProperties.getAuthn().getSamlIdp().getMetadata().getCore().getCacheExpiration()),
-            chainingMetadataResolverCacheLoader(), openSamlConfigBean.getObject()
+            Duration.parse(casProperties.getAuthn().getSamlIdp().getMetadata().getCore().getCacheExpiration()),
+            chainingMetadataResolverCacheLoader, openSamlConfigBean
         );
     }
 
     @Bean
     @ConditionalOnMissingBean(name = "samlIdPServicesManagerRegisteredServiceLocator")
-    public ServicesManagerRegisteredServiceLocator samlIdPServicesManagerRegisteredServiceLocator() {
-        return new SamlIdPServicesManagerRegisteredServiceLocator(defaultSamlRegisteredServiceCachingMetadataResolver());
-    }
-
-    private MetadataFilter getMetadataAggregateFilter() throws Exception {
-        if (ResourceUtils.doesResourceExist(managementProperties.getInCommonCert())) {
-            val signatureValidationFilter = SamlUtils.buildSignatureValidationFilter(managementProperties.getInCommonCert());
-            signatureValidationFilter.setRequireSignedRoot(false);
-            return signatureValidationFilter;
-        }
-        return (xmlObject, metadataFilterContext) -> xmlObject;
+    public ServicesManagerRegisteredServiceLocator samlIdPServicesManagerRegisteredServiceLocator(
+        @Qualifier("defaultSamlRegisteredServiceCachingMetadataResolver")
+        final SamlRegisteredServiceCachingMetadataResolver defaultSamlRegisteredServiceCachingMetadataResolver) {
+        return new SamlIdPServicesManagerRegisteredServiceLocator(defaultSamlRegisteredServiceCachingMetadataResolver);
     }
 }

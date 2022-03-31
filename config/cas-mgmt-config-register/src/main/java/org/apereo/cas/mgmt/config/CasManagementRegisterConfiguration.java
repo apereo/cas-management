@@ -13,12 +13,10 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.util.CollectionUtils;
 
 import lombok.val;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -32,31 +30,9 @@ import java.nio.charset.StandardCharsets;
  * @since 5.3.5
  */
 @ConditionalOnProperty(prefix = "mgmt.register", name = "enabled", havingValue = "true")
-@Configuration("casManagementRegisterConfiguration")
+@Configuration(value = "casManagementRegisterConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementRegisterConfiguration {
-
-    @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    @Qualifier("repositoryFactory")
-    private ObjectProvider<RepositoryFactory> repositoryFactory;
-
-    @Autowired
-    @Qualifier("managerFactory")
-    private ObjectProvider<VersionControlManagerFactory> managerFactory;
-
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
-
-    @Autowired
-    @Qualifier("communicationsManager")
-    private ObjectProvider<CommunicationsManager> communicationsManager;
-
-    @Autowired
-    @Qualifier("servicesManager")
-    private ObjectProvider<ServicesManager> servicesManager;
 
     @Bean
     public RegisterViewController registerViewController() {
@@ -64,21 +40,35 @@ public class CasManagementRegisterConfiguration {
     }
 
     @Bean
-    public RegisterController registerController() {
+    public RegisterController registerController(
+        final CasManagementConfigurationProperties managementProperties,
+        @Qualifier("managerFactory")
+        final VersionControlManagerFactory managerFactory,
+        @Qualifier(CommunicationsManager.BEAN_NAME)
+        final CommunicationsManager communicationsManager,
+        @Qualifier(ServicesManager.BEAN_NAME)
+        final ServicesManager servicesManager) {
         return new RegisterController(
-            managerFactory.getObject(),
+            managerFactory,
             managementProperties,
-            communicationsManager.getObject(),
-            servicesManager.getObject());
+            communicationsManager,
+            servicesManager);
     }
 
     @Bean
-    public BulkActionController bulkActionController() {
+    public BulkActionController bulkActionController(
+        final CasManagementConfigurationProperties managementProperties,
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory,
+        @Qualifier("managerFactory")
+        final VersionControlManagerFactory managerFactory,
+        @Qualifier(CommunicationsManager.BEAN_NAME)
+        final CommunicationsManager communicationsManager) {
         return new BulkActionController(
-            (VersionControlManagerFactory) managerFactory.getObject(),
+            managerFactory,
             managementProperties,
-            repositoryFactory.getObject(),
-            communicationsManager.getObject());
+            repositoryFactory,
+            communicationsManager);
     }
 
     @Bean(name = "registerForwarding")
@@ -87,9 +77,9 @@ public class CasManagementRegisterConfiguration {
     }
 
     @Bean
-    SpringResourceTemplateResolver staticTemplateResolver() {
+    SpringResourceTemplateResolver staticTemplateResolver(final ConfigurableApplicationContext applicationContext) {
         val resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(this.context);
+        resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");

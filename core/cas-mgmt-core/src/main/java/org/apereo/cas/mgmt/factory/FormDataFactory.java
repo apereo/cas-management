@@ -1,7 +1,7 @@
 package org.apereo.cas.mgmt.factory;
 
 import org.apereo.cas.authentication.attribute.AttributeDefinition;
-import org.apereo.cas.authentication.attribute.DefaultAttributeDefinitionStore;
+import org.apereo.cas.authentication.attribute.AttributeDefinitionStore;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
@@ -48,7 +48,7 @@ public class FormDataFactory {
 
     private final CasManagementConfigurationProperties mgmtProperties;
 
-    private final DefaultAttributeDefinitionStore attributeDefinitionStore;
+    private final AttributeDefinitionStore attributeDefinitionStore;
 
     private Optional<CasServerProfile> profile = Optional.empty();
 
@@ -85,10 +85,10 @@ public class FormDataFactory {
         val url = casProperties.getServer().getPrefix() + mgmtProperties.getDiscoveryEndpointPath();
         try {
             val execution = HttpUtils.HttpExecutionRequest.builder()
-                    .url(url)
-                    .parameters(params)
-                    .method(HttpMethod.GET)
-                    .build();
+                .url(url)
+                .parameters(params)
+                .method(HttpMethod.GET)
+                .build();
             val response = HttpUtils.execute(execution);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {

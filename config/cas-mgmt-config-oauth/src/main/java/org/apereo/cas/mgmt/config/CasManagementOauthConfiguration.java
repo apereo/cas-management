@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Travis Schmidt
  * @since 5.3.5
  */
-@Configuration("casManagementOAuthConfiguration")
+@Configuration(value = "casManagementOAuthConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementOauthConfiguration {
 

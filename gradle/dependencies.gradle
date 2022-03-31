@@ -192,9 +192,6 @@ ext.libraries = [
                     exclude(group: "org.mockito", module: "mockito-core")
                     exclude(group: "org.junit.jupiter", module: "junit-jupiter-api")
                 },
-                dependencies.create("org.objenesis:objenesis:$objenesisVersion") {
-                    exclude(group: "org.mockito", module: "mockito-all")
-                },
                 dependencies.create("org.junit.jupiter:junit-jupiter-api:$junitVersion") {
                 },
                 dependencies.create("org.junit.jupiter:junit-jupiter-params:$junitVersion") {
@@ -785,6 +782,8 @@ ext.libraries = [
                         dependencies.create("org.apereo.cas:cas-server-core-util:$casVersion") {
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-notifications:$casVersion") {
+                        },
+                        dependencies.create("org.apereo.cas:cas-server-core-logging:$casVersion") {
                         }
                 ],
                 utilApi        :
@@ -863,27 +862,25 @@ ext.libraries = [
 
                 ],
                 oauth          : [
+                        dependencies.create("org.apereo.cas:cas-server-support-token-core-api:$casVersion") {
+                            exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
+                        },
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-api:$casVersion") {
-
+                            exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-services:$casVersion") {
-
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-oauth-core-api:$casVersion") {
                             exclude group: 'org.apereo.cas', module: 'cas-server-core-webflow'
-
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-services-authentication:$casVersion") {
-
                         }
                 ],
                 oidc           :
                         dependencies.create("org.apereo.cas:cas-server-support-oidc-core:$casVersion") {
-
                         },
                 web            :
                         dependencies.create("org.apereo.cas:cas-server-core-web-api:$casVersion") {
-
                         }
         ],
         validationapi           : dependencies.create("javax.validation:validation-api:$javaxValidationVersion"),

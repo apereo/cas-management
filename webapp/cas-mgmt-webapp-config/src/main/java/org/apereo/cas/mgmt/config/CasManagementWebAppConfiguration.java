@@ -14,18 +14,13 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.matching.matcher.PathMatcher;
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
@@ -52,32 +47,12 @@ import java.util.stream.Collectors;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-@Configuration("casManagementWebAppConfiguration")
+@Configuration(value = "casManagementWebAppConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
-    @Autowired
-    private ServerProperties serverProperties;
-
-    @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    @Qualifier("authenticationClients")
-    private List<Client> authenticationClients;
-
-    @Autowired
-    @Qualifier("managementWebappAuthorizer")
-    private ObjectProvider<Authorizer> managementWebappAuthorizer;
-
-    @Autowired
-    private CasConfigurationProperties casProperties;
-
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
 
     @Bean
-    @Lazy
     public SimpleUrlHandlerMapping handlerMapping() {
         val mapping = new SimpleUrlHandlerMapping();
         mapping.setOrder(0);
@@ -90,7 +65,7 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @ConditionalOnMissingBean(name = "localeResolver")
     @Bean
-    public LocaleResolver casManagementLocaleResolver() {
+    public LocaleResolver casManagementLocaleResolver(final CasManagementConfigurationProperties managementProperties) {
         return new CookieLocaleResolver() {
             @Override
             protected Locale determineDefaultLocale(final HttpServletRequest request) {
@@ -104,11 +79,10 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         };
     }
 
-    @RefreshScope
     @Bean(name = "localeChangeInterceptor")
-    public HandlerInterceptor casManagementLocaleChangeInterceptor() {
+    public HandlerInterceptor casManagementLocaleChangeInterceptor(final CasConfigurationProperties casProperties) {
         val bean = new LocaleChangeInterceptor();
-        bean.setParamName(this.casProperties.getLocale().getParamName());
+        bean.setParamName(casProperties.getLocale().getParamName());
         return bean;
     }
 
@@ -117,9 +91,9 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
         return new SimpleControllerHandlerAdapter();
     }
 
-    @RefreshScope
     @Bean
-    public Collection<BaseOidcScopeAttributeReleasePolicy> userDefinedScopeBasedAttributeReleasePolicies() {
+    public Collection<BaseOidcScopeAttributeReleasePolicy> userDefinedScopeBasedAttributeReleasePolicies(
+        final CasConfigurationProperties casProperties) {
         val oidc = casProperties.getAuthn().getOidc();
         return oidc.getCore().getUserDefinedScopes().entrySet()
             .stream()
@@ -127,16 +101,16 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
             .collect(Collectors.toSet());
     }
 
-    @RefreshScope
     @Bean
     public DefaultCasManagementEventListener defaultCasManagementEventListener() {
         return new DefaultCasManagementEventListener();
     }
 
     @Bean
-    public SpringResourceTemplateResolver casManagementTemplateResolver() {
+    public SpringResourceTemplateResolver casManagementTemplateResolver(
+        final ConfigurableApplicationContext applicationContext) {
         val resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(this.context);
+        resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("classpath:/dist/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
@@ -161,11 +135,22 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
 
     @ConditionalOnMissingBean(name = "pac4jClientConfiguration")
     @Bean
-    public Config pac4jClientConfiguration() {
-        val cfg = new Config(new Clients(getDefaultCallbackUrl(serverProperties), authenticationClients));
-        cfg.addAuthorizer("mgmtAuthorizer", this.managementWebappAuthorizer.getObject());
+    public Config pac4jClientConfiguration(
+        final ServerProperties serverProperties,
+        final List<Client> authenticationClients,
+        @Qualifier("managementWebappAuthorizer")
+        final Authorizer managementWebappAuthorizer,
+        final CasManagementConfigurationProperties managementProperties) {
+        var defaultCallbackUrl = getDefaultCallbackUrl(serverProperties, managementProperties);
+        val cfg = new Config(new Clients(defaultCallbackUrl, authenticationClients));
+        cfg.addAuthorizer("mgmtAuthorizer", managementWebappAuthorizer);
         cfg.addMatcher("excludedPath", new PathMatcher().excludeRegex("^/.*\\.(css|png|ico)$"));
         return cfg;
+    }
+
+    @Bean
+    protected UrlFilenameViewController passThroughController() {
+        return new UrlFilenameViewController();
     }
 
     /**
@@ -174,19 +159,9 @@ public class CasManagementWebAppConfiguration implements WebMvcConfigurer {
      * @param serverProperties the server properties
      * @return the default callback url
      */
-    public String getDefaultCallbackUrl(final ServerProperties serverProperties) {
-        try {
-            return managementProperties.getServerName().concat(serverProperties.getServlet().getContextPath()).concat("/callback");
-        } catch (final Exception e) {
-            throw new BeanCreationException(e.getMessage(), e);
-        }
+    private String getDefaultCallbackUrl(final ServerProperties serverProperties,
+                                         final CasManagementConfigurationProperties managementProperties) {
+        return managementProperties.getServerName().concat(serverProperties.getServlet().getContextPath()).concat("/callback");
     }
-
-    @Bean
-    @Lazy
-    protected UrlFilenameViewController passThroughController() {
-        return new UrlFilenameViewController();
-    }
-
 
 }

@@ -52,10 +52,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     CassandraAutoConfiguration.class,
     DataSourceTransactionManagerAutoConfiguration.class,
     RedisRepositoriesAutoConfiguration.class,
-    MetricsAutoConfiguration.class})
+    MetricsAutoConfiguration.class}, proxyBeanMethods = false)
 @EnableConfigurationProperties({CasManagementConfigurationProperties.class, CasConfigurationProperties.class})
-@EnableAsync
-@EnableTransactionManagement(proxyTargetClass = true)
+@EnableAsync(proxyTargetClass = false)
+@EnableTransactionManagement(proxyTargetClass = false)
 @EnableScheduling
 @NoArgsConstructor
 public class CasManagementWebApplication {
@@ -69,11 +69,10 @@ public class CasManagementWebApplication {
         val properties = CasManagementEmbeddedContainerUtils.getRuntimeProperties(Boolean.TRUE);
         val banner = CasManagementEmbeddedContainerUtils.getCasManagementBannerInstance();
         new SpringApplicationBuilder(CasManagementWebApplication.class)
-                .banner(banner)
-                .web(WebApplicationType.SERVLET)
-                .properties(properties)
-                .logStartupInfo(true)
-                .contextClass(CasManagementWebApplicationContext.class)
-                .run(args);
+            .banner(banner)
+            .web(WebApplicationType.SERVLET)
+            .properties(properties)
+            .logStartupInfo(true)
+            .run(args);
     }
 }

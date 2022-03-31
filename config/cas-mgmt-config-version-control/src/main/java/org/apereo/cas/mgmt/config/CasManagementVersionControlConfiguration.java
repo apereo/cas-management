@@ -13,7 +13,6 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,50 +31,38 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementVersionControlConfiguration {
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
-
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
-
-    @Autowired
-    private ConfigurableApplicationContext applicationContext;
-
-    @Autowired
-    @Qualifier("servicesManager")
-    private ObjectProvider<ServicesManager> servicesManager;
-
-    @Autowired
-    private ObjectProvider<PendingRequests> pendingRequests;
-
-    @Autowired
-    private ObjectProvider<SubmissionRequests> submissionRequests;
-
-    @Autowired
-    @Qualifier("namingStrategy")
-    private ObjectProvider<RegisteredServiceResourceNamingStrategy> namingStrategy;
-
-
     @Bean
     public VersionControlManagerFactory managerFactory(
+        @Qualifier("servicesManager")
+        final ServicesManager servicesManager,
+        @Qualifier("namingStrategy")
+        final RegisteredServiceResourceNamingStrategy namingStrategy,
+        final ConfigurableApplicationContext applicationContext,
+        final CasConfigurationProperties casProperties,
+        final CasManagementConfigurationProperties managementProperties,
         @Qualifier("repositoryFactory")
         final RepositoryFactory repositoryFactory) {
-        return new VersionControlManagerFactory(servicesManager.getObject(),
+        return new VersionControlManagerFactory(servicesManager,
             applicationContext, managementProperties,
-            repositoryFactory, casProperties, namingStrategy.getObject());
+            repositoryFactory, casProperties, namingStrategy);
     }
 
     @Bean
-    public RepositoryFactory repositoryFactory() {
+    public RepositoryFactory repositoryFactory(final CasManagementConfigurationProperties managementProperties) {
         return new RepositoryFactory(managementProperties);
     }
 
     @Bean
     public CommitController commitController(
+        final ObjectProvider<SubmissionRequests> submissionRequests,
+        final ObjectProvider<PendingRequests> pendingRequests,
+        @Qualifier("servicesManager")
+        final ServicesManager servicesManager,
+        final CasManagementConfigurationProperties managementProperties,
         @Qualifier("repositoryFactory")
         final RepositoryFactory repositoryFactory) {
         return new CommitController(repositoryFactory,
-            managementProperties, servicesManager.getObject(),
+            managementProperties, servicesManager,
             pendingRequests, submissionRequests);
     }
 

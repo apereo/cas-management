@@ -15,6 +15,7 @@ import org.apereo.inspektr.audit.spi.support.ShortenedReturnValueAsStringAuditRe
 import org.apereo.inspektr.audit.support.Slf4jLoggingAuditTrailManager;
 import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.apereo.inspektr.common.web.ClientInfoThreadLocalFilter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +31,10 @@ import java.util.Map;
  * @author Misagh Moayyed
  * @since 5.1.0
  */
-@Configuration("casManagementAuditConfiguration")
+@Configuration(value = "casManagementAuditConfiguration", proxyBeanMethods = false)
 public class CasManagementAuditConfiguration {
     private static final String AUDIT_ACTION_SUFFIX_FAILED = "_FAILED";
+
     private static final String AUDIT_ACTION_SUFFIX_SUCCESS = "_SUCCESS";
 
     @Bean
@@ -65,11 +67,18 @@ public class CasManagementAuditConfiguration {
     }
 
     @Bean
-    public AuditTrailManagementAspect auditTrailManagementAspect() {
+    public AuditTrailManagementAspect auditTrailManagementAspect(
+        @Qualifier("auditResourceResolverMap")
+        final Map<String, AuditResourceResolver> auditResourceResolverMap,
+        @Qualifier("auditActionResolverMap")
+        final Map<String, AuditActionResolver> auditActionResolverMap,
+        @Qualifier("auditablePrincipalResolver")
+        final PrincipalResolver auditablePrincipalResolver,
+        @Qualifier("auditTrailManager")
+        final AuditTrailManager auditTrailManager) {
         return new AuditTrailManagementAspect("CAS_Management",
-            auditablePrincipalResolver(), CollectionUtils.wrap(auditTrailManager()),
-            auditActionResolverMap(),
-            auditResourceResolverMap());
+            auditablePrincipalResolver, CollectionUtils.wrap(auditTrailManager),
+            auditActionResolverMap, auditResourceResolverMap);
     }
 
     @Bean
@@ -78,18 +87,26 @@ public class CasManagementAuditConfiguration {
     }
 
     @Bean
-    public Map<String, AuditResourceResolver> auditResourceResolverMap() {
+    public Map<String, AuditResourceResolver> auditResourceResolverMap(
+        @Qualifier("saveServiceResourceResolver")
+        final AuditResourceResolver saveServiceResourceResolver,
+        @Qualifier("deleteServiceResourceResolver")
+        final AuditResourceResolver deleteServiceResourceResolver) {
         val map = new HashMap<String, AuditResourceResolver>(2);
-        map.put("DELETE_SERVICE_RESOURCE_RESOLVER", deleteServiceResourceResolver());
-        map.put("SAVE_SERVICE_RESOURCE_RESOLVER", saveServiceResourceResolver());
+        map.put("DELETE_SERVICE_RESOURCE_RESOLVER", deleteServiceResourceResolver);
+        map.put("SAVE_SERVICE_RESOURCE_RESOLVER", saveServiceResourceResolver);
         return map;
     }
 
     @Bean
-    public Map<String, AuditActionResolver> auditActionResolverMap() {
+    public Map<String, AuditActionResolver> auditActionResolverMap(
+        @Qualifier("saveServiceActionResolver")
+        final AuditActionResolver saveServiceActionResolver,
+        @Qualifier("deleteServiceActionResolver")
+        final AuditActionResolver deleteServiceActionResolver) {
         val map = new HashMap<String, AuditActionResolver>(2);
-        map.put("DELETE_SERVICE_ACTION_RESOLVER", deleteServiceActionResolver());
-        map.put("SAVE_SERVICE_ACTION_RESOLVER", saveServiceActionResolver());
+        map.put("DELETE_SERVICE_ACTION_RESOLVER", deleteServiceActionResolver);
+        map.put("SAVE_SERVICE_ACTION_RESOLVER", saveServiceActionResolver);
         return map;
     }
 

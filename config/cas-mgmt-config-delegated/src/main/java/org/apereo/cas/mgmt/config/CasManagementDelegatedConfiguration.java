@@ -13,8 +13,6 @@ import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
 
 import lombok.val;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,44 +28,48 @@ import java.util.Objects;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration("casManagementDelegatedConfiguration")
+@Configuration(value = "casManagementDelegatedConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
 public class CasManagementDelegatedConfiguration {
 
-    @Autowired
-    private CasManagementConfigurationProperties managementProperties;
-
-    @Autowired
-    private ObjectProvider<RepositoryFactory> repositoryFactory;
-
-    @Autowired
-    @Qualifier("communicationsManager")
-    private ObjectProvider<CommunicationsManager> communicationsManager;
-
     @Bean
-    public SubmitController submitController() {
-        return new SubmitController(repositoryFactory.getObject(),
-            managementProperties, communicationsManager.getObject());
+    public SubmitController submitController(
+        final CasManagementConfigurationProperties managementProperties,
+        @Qualifier(CommunicationsManager.BEAN_NAME)
+        final CommunicationsManager communicationsManager,
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory) {
+        return new SubmitController(repositoryFactory,
+            managementProperties, communicationsManager);
     }
 
     @Bean
-    public PullController pullController() {
-        return new PullController(repositoryFactory.getObject(),
-            managementProperties, communicationsManager.getObject());
+    public PullController pullController(
+        final CasManagementConfigurationProperties managementProperties,
+        @Qualifier(CommunicationsManager.BEAN_NAME)
+        final CommunicationsManager communicationsManager,
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory) {
+        return new PullController(repositoryFactory,
+            managementProperties, communicationsManager);
     }
 
     @Bean
-    public NoteController noteController() {
-        return new NoteController(repositoryFactory.getObject());
+    public NoteController noteController(
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory) {
+        return new NoteController(repositoryFactory);
     }
 
     @Bean
-    public PendingRequests pendingRequests() {
+    public PendingRequests pendingRequests(
+        @Qualifier("repositoryFactory")
+        final RepositoryFactory repositoryFactory) {
         return authentication -> {
             val user = Objects.requireNonNull(CasUserProfile.from(authentication));
             if (user.isAdministrator()) {
-                val git = Objects.requireNonNull(repositoryFactory.getObject()).masterRepository();
+                val git = Objects.requireNonNull(repositoryFactory).masterRepository();
                 try {
                     return (int) git.branches()
                         .map(git::mapBranches)

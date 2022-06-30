@@ -24,12 +24,10 @@ import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.ServicesManagerConfigurationContext;
-import org.apereo.cas.services.ServicesManagerRegisteredServiceLocator;
 import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
-import org.apereo.cas.support.oauth.services.OAuth20ServicesManagerRegisteredServiceLocator;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import lombok.val;
@@ -171,10 +169,5 @@ public class CasManagementCoreServicesConfiguration {
         return new ForwardingController();
     }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "oauthServicesManagerRegisteredServiceLocator")
-    public ServicesManagerRegisteredServiceLocator oauthServicesManagerRegisteredServiceLocator() {
-        return new OAuth20ServicesManagerRegisteredServiceLocator();
-    }
 
 }

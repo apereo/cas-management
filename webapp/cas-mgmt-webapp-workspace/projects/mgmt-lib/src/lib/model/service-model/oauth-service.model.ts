@@ -49,8 +49,8 @@ export class OAuthRegisteredService extends RegexRegisteredService {
     this.clientId = s?.clientId;
     this.bypassApprovalPrompt = s?.bypassApprovalPrompt ?? false;
     this.generateRefreshToken = s?.generateRefreshToken ?? false;
-    this.supportedGrantTypes = s?.supportedGrantTypes;
-    this.supportedResponseTypes = s?.supportedResponseTypes;
+    this.supportedGrantTypes = s?.supportedGrantTypes ?? [];
+    this.supportedResponseTypes = s?.supportedResponseTypes ?? [];
     this.jwtAccessToken = s?.jwtAccessToken ?? false;
     this.codeExpirationPolicy = codeExpirationPolicy(s?.codeExpirationPolicy);
     this.accessTokenExpirationPolicy = accessTokenExpirationPolicy(s?.accessTokenExpirationPolicy);
@@ -112,7 +112,7 @@ export class OidcRegisteredService extends OAuthRegisteredService {
     this.userInfoEncryptedResponseEncoding = s?.userInfoEncryptedResponseEncoding;
     this.dynamicallyRegistered = s?.dynamicallyRegistered ?? false;
     this.dynamicRegistrationDateTime = s?.dynamicRegistrationDateTime;
-    this.scopes = s?.scopes;
+    this.scopes = s?.scopes ?? [];
     this.subjectType = s?.subjectType ?? 'PUBLIC';
     this.sectorIdentifierUri = s?.sectorIdentifierUri;
     this.applicationType = s?.applicationType ?? 'web';

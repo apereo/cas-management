@@ -134,7 +134,7 @@ export class ReturnAllowedAttributeReleasePolicy extends AbstractRegisteredServi
     super(policy);
     const p: ReturnAllowedAttributeReleasePolicy = ReturnAllowedAttributeReleasePolicy.instanceOf(policy)
       ? policy as ReturnAllowedAttributeReleasePolicy : undefined;
-    this.allowedAttributes = p?.allowedAttributes;
+    this.allowedAttributes = p?.allowedAttributes ?? [];
     this['@class'] = ReturnAllowedAttributeReleasePolicy.cName;
   }
 }
@@ -488,7 +488,7 @@ export function attributeReleaseFactory(policy?: any, type?: ReleasePolicyType):
     return new ChainingAttributeReleasePolicy(policy);
   }
   if (!type && !policy) {
-    return new DenyAllAttributeReleasePolicy();
+    return new ReturnAllowedAttributeReleasePolicy();
   }
   return policy;
 }

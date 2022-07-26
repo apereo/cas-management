@@ -33,7 +33,7 @@ export class DefaultRegisteredServiceMultifactorPolicy extends RegisteredService
     const p: DefaultRegisteredServiceMultifactorPolicy = DefaultRegisteredServiceMultifactorPolicy.instanceOf(policy)
       ? policy as DefaultRegisteredServiceMultifactorPolicy : undefined;
     this.multifactorAuthenticationProviders = p?.multifactorAuthenticationProviders;
-    this.failureMode = p?.failureMode;
+    this.failureMode = p?.failureMode ?? 'UNDEFINED';
     this.principalAttributeNameTrigger = p?.principalAttributeNameTrigger;
     this.principalAttributeValueToMatch = p?.principalAttributeValueToMatch;
     this.bypassEnabled = p?.bypassEnabled ?? false;
@@ -87,6 +87,9 @@ export function mfaPolicyFactory(policy?: any, type?: MfaPolicyType): Registered
   }
   if (type === MfaPolicyType.GROOVY  || (!type && GroovyRegisteredServiceMultifactorPolicy.instanceOf(policy))) {
     return new GroovyRegisteredServiceMultifactorPolicy(policy);
+  }
+  if (!type && !policy) {
+    return new DefaultRegisteredServiceMultifactorPolicy();
   }
   return policy;
 }

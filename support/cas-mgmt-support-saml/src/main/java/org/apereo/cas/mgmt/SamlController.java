@@ -300,7 +300,7 @@ public class SamlController {
             if (kdEncryption.isEmpty() && kdSigning.isEmpty() && !keyDescriptors.isEmpty()
                 && !keyDescriptors.get(0).getKeyInfo().getX509Datas().isEmpty()) {
                 service.setEncryptAssertions(true);
-                service.setSignResponses(true);
+                service.setSignResponses(TriStateBoolean.TRUE);
                 service.setSigningCredentialType("X509");
             }
         }

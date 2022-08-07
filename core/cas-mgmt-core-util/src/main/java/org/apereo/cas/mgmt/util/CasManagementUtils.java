@@ -8,9 +8,11 @@ import org.apereo.cas.util.RegexUtils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.hjson.JsonValue;
+import org.springframework.context.support.StaticApplicationContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,17 +33,23 @@ import java.util.regex.Pattern;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
+@UtilityClass
 public final class CasManagementUtils {
 
-    private static final RegisteredServiceJsonSerializer JSON_SERIALIZER = new RegisteredServiceJsonSerializer();
+    public static final RegisteredServiceJsonSerializer JSON_SERIALIZER;
 
-    private static final RegisteredServiceYamlSerializer YAML_SERIALIZER = new RegisteredServiceYamlSerializer();
+    private static final RegisteredServiceYamlSerializer YAML_SERIALIZER;
 
     private static final Pattern DOMAIN_EXTRACTOR = RegexUtils.createPattern("^\\^?https?\\??://(.*?)(?:[(]?[:/]|$)");
 
     private static final Pattern DOMAIN_PATTERN = RegexUtils.createPattern("^[a-z0-9-.]*$");
 
-    private CasManagementUtils() {
+    static {
+        val context = new StaticApplicationContext();
+        context.refresh();
+
+        JSON_SERIALIZER = new RegisteredServiceJsonSerializer(context);
+        YAML_SERIALIZER = new RegisteredServiceYamlSerializer(context);
     }
 
     /**

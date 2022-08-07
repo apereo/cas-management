@@ -5,6 +5,7 @@ import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.services.CasRegisteredService;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -84,7 +85,7 @@ public class ServiceController {
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
         return manager.getServiceItems(manager.getServicesForDomain(domain)
             .stream()
-            .filter(s -> s.getFriendlyName().equalsIgnoreCase(RegexRegisteredService.FRIENDLY_NAME))
+            .filter(s -> s.getFriendlyName().equalsIgnoreCase(CasRegisteredService.FRIENDLY_NAME))
             .sorted(Comparator.comparing(RegisteredService::getEvaluationOrder)));
     }
 

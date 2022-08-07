@@ -7,6 +7,7 @@ import org.apereo.cas.mgmt.exception.NoDifferenceException;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -1075,6 +1076,7 @@ public class GitUtil implements AutoCloseable {
      *
      * @return self
      */
+    @CanIgnoreReturnValue
     public GitUtil rebase() {
         try {
             if (checkMaster()) {

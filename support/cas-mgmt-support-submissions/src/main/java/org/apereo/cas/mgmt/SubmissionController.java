@@ -14,7 +14,6 @@ import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.UnauthorizedServiceException;
-import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.EncodingUtils;
@@ -145,8 +144,7 @@ public class SubmissionController extends AbstractVersionControlController {
     }
 
     private static RegisteredServiceItem createServiceItem(final Path p) {
-        val serializer = new RegisteredServiceJsonSerializer();
-        val service = serializer.from(p.toFile());
+        val service = CasManagementUtils.JSON_SERIALIZER.from(p.toFile());
         val serviceItem = new RegisteredServiceItem();
         serviceItem.setAssignedId(p.getFileName().toString());
         serviceItem.setEvalOrder(service.getEvaluationOrder());
@@ -432,8 +430,8 @@ public class SubmissionController extends AbstractVersionControlController {
 
     private HttpResponse fetchMetadata(final String metadataLocation) {
         val metadata = casProperties.getAuthn().getSamlIdp().getMetadata();
-        val headers = new LinkedHashMap<String, Object>();
-        headers.put("Content-Type", metadata.getMdq().getSupportedContentTypes());
+        val headers = new LinkedHashMap<String, String>();
+        headers.put("Content-Type", metadata.getMdq().getSupportedContentType());
         headers.put("Accept", "*/*");
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);

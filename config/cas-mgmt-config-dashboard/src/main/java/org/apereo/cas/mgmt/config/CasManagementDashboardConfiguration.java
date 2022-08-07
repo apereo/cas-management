@@ -7,8 +7,10 @@ import org.apereo.cas.mgmt.DashboardForwardingController;
 import org.apereo.cas.mgmt.DashboardViewController;
 import org.apereo.cas.mgmt.SessionsController;
 import org.apereo.cas.util.CollectionUtils;
+import org.apereo.cas.util.text.MessageSanitizer;
 
 import lombok.val;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -40,8 +42,10 @@ public class CasManagementDashboardConfiguration {
 
     @Bean
     public SessionsController sessionsController(final CasConfigurationProperties casProperties,
-                                                 final CasManagementConfigurationProperties managementProperties) {
-        return new SessionsController(managementProperties, casProperties);
+                                                 final CasManagementConfigurationProperties managementProperties,
+                                                 @Qualifier(MessageSanitizer.BEAN_NAME)
+                                                 final MessageSanitizer messageSanitizer) {
+        return new SessionsController(managementProperties, casProperties, messageSanitizer);
     }
 
     @Bean(name = "dashboardForwarding")

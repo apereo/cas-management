@@ -166,7 +166,8 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
     @SneakyThrows
     private ServicesManager createVersionControlServiceManager(final GitUtil git) {
         val activeProfiles = new HashSet<String>();
-        val serviceRegistryDAO = new VersionControlServiceRegistry(new FileSystemResource(Paths.get(git.repoPath())), namingStrategy);
+        val configDirectory = new FileSystemResource(Paths.get(git.repoPath()));
+        val serviceRegistryDAO = new VersionControlServiceRegistry(configDirectory, namingStrategy, applicationContext);
         val context = ServicesManagerConfigurationContext.builder()
             .serviceRegistry(serviceRegistryDAO)
             .applicationContext(applicationContext)

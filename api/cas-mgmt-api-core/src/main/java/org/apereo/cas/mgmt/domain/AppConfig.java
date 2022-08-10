@@ -20,6 +20,11 @@ public class AppConfig {
     private String mgmtType;
 
     /**
+     * Flag indicating if admin dashboard is enabled.
+     */
+    private boolean dashboardEnabled;
+
+    /**
      * Flag indicating if version control is enabled.
      */
     private boolean versionControl;

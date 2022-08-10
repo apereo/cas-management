@@ -107,6 +107,11 @@ public class CasManagementConfigurationProperties implements Serializable {
     private String discoveryEndpointPath = "/actuator/discoveryProfile";
 
     /**
+     * Flag to enable/disable dashboard.
+     */
+    private boolean dashboardEnabled = true;
+
+    /**
      * Properties for version control.
      */
     private VersionControl versionControl = new VersionControl();

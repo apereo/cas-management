@@ -86,6 +86,7 @@ public class ApplicationDataController {
         val config = new AppConfig();
         val formData = formDataFactory.create();
         config.setMgmtType(casProperties.getServiceRegistry().getCore().getManagementType().toString());
+        config.setDashboardEnabled(managementProperties.isDashboardEnabled());
         config.setVersionControl(managementProperties.getVersionControl().isEnabled());
         config.setDelegatedMgmt(managementProperties.getDelegated().isEnabled());
         config.setSyncScript(managementProperties.getVersionControl().getSyncScript() != null);

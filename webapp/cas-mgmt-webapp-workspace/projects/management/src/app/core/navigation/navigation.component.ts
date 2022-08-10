@@ -67,6 +67,13 @@ export class NavigationComponent {
     return this.appService.config.versionControl;
   }
 
+    /**
+     * Returns true if the app's dashboard is enabled.
+     */
+    isDashboardEnabled(): boolean {
+      return this.appService.config.dashboardEnabled;
+    }
+
   /**
    * Calls the server to sync the management registry to CAS servers using the sync script.
    */

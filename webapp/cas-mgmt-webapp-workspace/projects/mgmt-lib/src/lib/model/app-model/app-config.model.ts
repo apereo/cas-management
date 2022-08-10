@@ -3,6 +3,7 @@
  */
 export class AppConfig {
   mgmtType = 'DEFAULT';
+  dashboardEnabled: boolean;
   versionControl: boolean;
   delegatedMgmt: boolean;
   syncScript: boolean;

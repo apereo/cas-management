@@ -99,7 +99,7 @@ export abstract class RegisteredService {
     this.logoutType = service?.logoutType ?? 'BACK_CHANNEL';
     this.accessStrategy = accessStrategyFactory(service?.accessStrategy);
     this.publicKey = service?.publicKey;
-    this.properties = service?.properties;
+    this.properties = service?.properties ?? new Map<string, DefaultRegisteredServiceProperty>();
     this.contacts = contactsFactory(service?.contacts);
     this.expirationPolicy = expirationPolicyFactory(service?.expirationPolicy);
     this.environments = service?.environments;

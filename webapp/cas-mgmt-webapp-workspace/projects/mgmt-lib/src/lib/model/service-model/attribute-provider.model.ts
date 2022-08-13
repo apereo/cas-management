@@ -200,5 +200,8 @@ export function usernameProviderFactory(provider?: any, type?: UserAttributeType
   if (type === UserAttributeType.ANONYMOUS || (!type && AnonymousRegisteredServiceUsernameProvider.instanceOf(provider))) {
     return new AnonymousRegisteredServiceUsernameProvider(provider);
   }
+  if (!type && !provider) {
+    return new DefaultRegisteredServiceUsernameProvider();
+  }
   return provider;
 }

@@ -191,7 +191,7 @@ public class FormDataFactory {
     }
 
     private void loadUserDefinedScopes(final FormData formData) {
-        if (profile.isPresent() && !profile.get().getUserDefinedScopes().isEmpty()) {
+        if (profile.isPresent() && profile.get().getUserDefinedScopes() != null && !profile.get().getUserDefinedScopes().isEmpty()) {
             val p = profile.get();
             formData.setUserDefinedScopes(p.getUserDefinedScopes());
         }

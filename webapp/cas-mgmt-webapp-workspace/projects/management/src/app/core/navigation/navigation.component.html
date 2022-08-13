@@ -67,7 +67,7 @@
     <mat-icon>history</mat-icon>
     <ng-container i18n>History</ng-container>
   </a>
-  <a [href]="dashboardUrl" *ngIf="isAdmin()" mat-list-item target="_self">
+  <a [href]="dashboardUrl" *ngIf="isAdmin() && isDashboardEnabled()" mat-list-item target="_self">
     <mat-icon>view_quilt</mat-icon>
     <span i18n>Administration</span>
   </a>

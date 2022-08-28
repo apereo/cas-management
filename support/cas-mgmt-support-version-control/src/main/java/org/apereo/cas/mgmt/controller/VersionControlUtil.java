@@ -4,7 +4,6 @@ import org.apereo.cas.mgmt.GitUtil;
 import org.apereo.cas.mgmt.domain.Change;
 import org.apereo.cas.mgmt.domain.Diff;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
-import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -34,8 +33,7 @@ public class VersionControlUtil {
      */
     @SneakyThrows
     public static void insertService(final GitUtil git, final String path) {
-        val ser = new RegisteredServiceJsonSerializer();
-        ser.from(git.readObject(git.history(path).get(0).getId()));
+        CasManagementUtils.JSON_SERIALIZER.from(git.readObject(git.history(path).get(0).getId()));
     }
 
     /**

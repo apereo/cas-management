@@ -7,6 +7,7 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.discovery.CasServerProfile;
 import org.apereo.cas.mgmt.domain.FormData;
+import org.apereo.cas.services.CasRegisteredService;
 import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
@@ -17,6 +18,8 @@ import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -81,7 +84,7 @@ public class FormDataFactory {
             return;
         }
 
-        val params = new HashMap<String, Object>();
+        val params = new HashMap<String, String>();
         val url = casProperties.getServer().getPrefix() + mgmtProperties.getDiscoveryEndpointPath();
         try {
             val execution = HttpUtils.HttpExecutionRequest.builder()
@@ -109,14 +112,20 @@ public class FormDataFactory {
     private void loadServiceTypes(final FormData formData) {
         if (profile.isPresent() && !profile.get().getRegisteredServiceTypesSupported().isEmpty()) {
             val p = profile.get();
-
-            val types = p.getRegisteredServiceTypesSupported().entrySet().stream()
-                .map(e -> new FormData.Option(e.getKey(), e.getValue().getTypeName()))
+            val types = p.getRegisteredServiceTypesSupported()
+                .stream()
+                .map(e -> {
+                    val split = Splitter.on('@').split(e);
+                    val typeName = Iterables.get(split, 0);
+                    val value = Iterables.get(split, 1);
+                    return new FormData.Option(typeName, value);
+                })
                 .collect(toList());
             formData.setServiceTypes(types);
         } else {
             val serviceTypes = new ArrayList<FormData.Option>();
-            serviceTypes.add(new FormData.Option("CAS Client", RegexRegisteredService.class.getTypeName()));
+            serviceTypes.add(new FormData.Option("CAS Client (Deprecated)", RegexRegisteredService.class.getTypeName()));
+            serviceTypes.add(new FormData.Option("CAS Client", CasRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("OAuth2 Client", OAuthRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("SAML2 Service Provider", SamlRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("OpenID Connect Relying Party", OidcRegisteredService.class.getTypeName()));

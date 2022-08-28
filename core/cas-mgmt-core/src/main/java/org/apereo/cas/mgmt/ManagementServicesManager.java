@@ -63,7 +63,7 @@ public class ManagementServicesManager implements ServicesManager {
         serviceItem.setName(service.getName());
         serviceItem.setServiceId(service.getServiceId());
         serviceItem.setDescription(DigestUtils.abbreviate(service.getDescription()));
-        var multifactorPolicy = service.getMultifactorPolicy();
+        var multifactorPolicy = service.getMultifactorAuthenticationPolicy();
         if (multifactorPolicy != null && multifactorPolicy.getMultifactorAuthenticationProviders() != null) {
             serviceItem.setDuo(multifactorPolicy.getMultifactorAuthenticationProviders().contains("mfa-duo"));
         }

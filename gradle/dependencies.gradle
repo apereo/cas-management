@@ -804,6 +804,8 @@ ext.libraries = [
                 core           : [
                         dependencies.create("org.apereo.cas:cas-server-core-util-api:$casVersion") {
                         },
+                        dependencies.create("org.apereo.cas:cas-server-core-web:$casVersion") {
+                        },
                         dependencies.create("org.apereo.cas:cas-server-support-ws-idp-api:$casVersion") {
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-grouper-core:$casVersion") {
@@ -833,6 +835,9 @@ ext.libraries = [
                         },
                 saml           : [
                         dependencies.create("org.apereo.cas:cas-server-support-saml-core-api:$casVersion") {
+                            transitive = false
+                        },
+                        dependencies.create("org.apereo.cas:cas-server-support-saml-core:$casVersion") {
                             transitive = false
                         },
                         dependencies.create("org.apereo.cas:cas-server-support-saml-idp-core:$casVersion") {

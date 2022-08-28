@@ -3,7 +3,7 @@ package org.apereo.cas.mgmt.controller;
 import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
-import org.apereo.cas.services.RegexRegisteredService;
+import org.apereo.cas.services.CasRegisteredService;
 import org.apereo.cas.services.ServicesManager;
 
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class DomainController {
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
         return manager.getAllServices().stream()
-            .filter(s -> s.getFriendlyName().equalsIgnoreCase(RegexRegisteredService.FRIENDLY_NAME))
+            .filter(s -> s.getFriendlyName().equalsIgnoreCase(CasRegisteredService.FRIENDLY_NAME))
             .map(s -> manager.extractDomain(s.getServiceId()))
             .distinct()
             .sorted()

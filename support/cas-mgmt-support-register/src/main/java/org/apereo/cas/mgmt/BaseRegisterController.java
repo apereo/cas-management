@@ -11,7 +11,6 @@ import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -254,11 +253,10 @@ public abstract class BaseRegisterController {
      * @throws IOException - failed to save file
      */
     protected void saveService(final RegisteredService service, final String id, final CasUserProfile casUserProfile) throws IOException {
-        val serializer = new RegisteredServiceJsonSerializer();
         val path = isNumber(id) ? Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/edit-" + service.getId() + ".json")
                 : Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         val out = Files.newOutputStream(path);
-        serializer.to(out, service);
+        CasManagementUtils.JSON_SERIALIZER.to(out, service);
         out.close();
         setSubmitter(path, casUserProfile);
         sendMessage(casUserProfile, copyEmail(notifications.getChange()), service.getName(), service.getName());

@@ -38,8 +38,8 @@ public class UrlMetadataResolver {
 
     private HttpResponse fetchMetadata(final String metadataLocation) {
         val metadata = casProperties.getAuthn().getSamlIdp().getMetadata();
-        val headers = new LinkedHashMap<String, Object>();
-        headers.put("Content-Type", metadata.getMdq().getSupportedContentTypes());
+        val headers = new LinkedHashMap<String, String>();
+        headers.put("Content-Type", metadata.getMdq().getSupportedContentType());
         headers.put("Accept", "*/*");
 
         LOGGER.debug("Fetching metadata via URL for [{}]", metadataLocation);

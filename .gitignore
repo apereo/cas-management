@@ -47,3 +47,4 @@ webapp/resources/static/js/*-bundle.js
 **/bootRun.sh
 /webapp/cas-mgmt-webapp-workspace/.angular/cache/
 /webapp/cas-mgmt-webapp-workspace/test-build.sh
+*.zip

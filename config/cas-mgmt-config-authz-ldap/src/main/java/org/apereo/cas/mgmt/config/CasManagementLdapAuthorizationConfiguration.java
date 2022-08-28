@@ -29,14 +29,18 @@ public class CasManagementLdapAuthorizationConfiguration {
 
     private static SearchOperation ldapAuthorizationGeneratorUserSearchExecutor(final CasManagementConfigurationProperties managementProperties) {
         val ldapAuthz = managementProperties.getLdap().getLdapAuthz();
-        return LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getBaseDn(), ldapAuthz.getSearchFilter(),
+        SearchOperation operation = LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getBaseDn(), ldapAuthz.getSearchFilter(),
             new ArrayList<>(0), CollectionUtils.wrap(ldapAuthz.getRoleAttribute()));
+        operation.setConnectionFactory(LdapUtils.newLdaptiveConnectionFactory(managementProperties.getLdap()));
+        return operation;
     }
 
     private static SearchOperation ldapAuthorizationGeneratorGroupSearchExecutor(final CasManagementConfigurationProperties managementProperties) {
         val ldapAuthz = managementProperties.getLdap().getLdapAuthz();
-        return LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getGroupBaseDn(), ldapAuthz.getGroupFilter(),
+         SearchOperation operation = LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getGroupBaseDn(), ldapAuthz.getGroupFilter(),
             new ArrayList<>(0), CollectionUtils.wrap(ldapAuthz.getGroupAttribute()));
+        operation.setConnectionFactory(LdapUtils.newLdaptiveConnectionFactory(managementProperties.getLdap()));
+        return operation;
     }
 
     @Bean

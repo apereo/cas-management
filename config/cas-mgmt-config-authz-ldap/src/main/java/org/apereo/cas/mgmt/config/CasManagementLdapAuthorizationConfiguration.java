@@ -29,7 +29,7 @@ public class CasManagementLdapAuthorizationConfiguration {
 
     private static SearchOperation ldapAuthorizationGeneratorUserSearchExecutor(final CasManagementConfigurationProperties managementProperties) {
         val ldapAuthz = managementProperties.getLdap().getLdapAuthz();
-        SearchOperation operation = LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getBaseDn(), ldapAuthz.getSearchFilter(),
+        val operation = LdapUtils.newLdaptiveSearchOperation(ldapAuthz.getBaseDn(), ldapAuthz.getSearchFilter(),
             new ArrayList<>(0), CollectionUtils.wrap(ldapAuthz.getRoleAttribute()));
         operation.setConnectionFactory(LdapUtils.newLdaptiveConnectionFactory(managementProperties.getLdap()));
         return operation;

@@ -794,8 +794,6 @@ ext.libraries = [
                         },
                         dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {
                         },
-                        dependencies.create("org.apereo.cas:cas-server-support-json-service-registry:$casVersion") {
-                        },
                 ],
                 testCore       : [
                         dependencies.create("org.apereo.cas:cas-server-core-services:$casVersion") {

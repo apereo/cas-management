@@ -7,6 +7,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.BranchData;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.notifications.mail.EmailMessageRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -127,7 +128,8 @@ public class SubmitController {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getDelegated().getNotifications().getSubmit();
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, user.getEmail(), emailProps.getText());
+            val request = EmailMessageRequest.builder().body(emailProps.getText()).to(List.of(user.getEmail())).build();
+            communicationsManager.email(request);
         }
     }
 }

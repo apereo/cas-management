@@ -7,6 +7,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.notifications.mail.EmailMessageRequest;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
@@ -80,7 +81,7 @@ public abstract class BaseRegisterController {
     public BaseRegisterController(final VersionControlManagerFactory managerFactory,
                                   final CasManagementConfigurationProperties managementProperties,
                                   final CommunicationsManager communicationsManager,
-                                  final ServicesManager published){
+                                  final ServicesManager published) {
         this.managerFactory = managerFactory;
         this.managementProperties = managementProperties;
         this.communicationsManager = communicationsManager;
@@ -92,15 +93,16 @@ public abstract class BaseRegisterController {
      * Mapped method that accepts a submitted service by end user and adds is to Submissions queue.
      *
      * @param authentication - the user
-     * @param service - the Service to be submitted
+     * @param service        - the Service to be submitted
      */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void submit(final Authentication authentication,
-                       @RequestBody final RegisteredService service) {
-        val id = service.getId() > 0 ? service.getId() : new Date().getTime();
-        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/submit-" + id +".json");
+                       @RequestBody
+                       final RegisteredService service) {
+        val id = service.getId() > 0 ? service.getId() : System.nanoTime();
+        val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/submit-" + id + ".json");
         val out = Files.newOutputStream(path);
         CasManagementUtils.jsonTo(out, service);
         out.close();
@@ -109,7 +111,7 @@ public abstract class BaseRegisterController {
         sendMessage(casUserProfile, copyEmail(notifications.getSubmit()), service.getName(), service.getName());
     }
 
-    private EmailProperties copyEmail(final EmailProperties source) {
+    private static EmailProperties copyEmail(final EmailProperties source) {
         val emailProps = new EmailProperties();
         emailProps.setSubject(source.getSubject());
         emailProps.setAttributeName(source.getAttributeName());
@@ -127,13 +129,14 @@ public abstract class BaseRegisterController {
      * Mapped method to handle updating a service submitted by a user.
      *
      * @param authentication - the user
-     * @param pair - the Service to update
+     * @param pair           - the Service to update
      */
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void registerSave(final Authentication authentication,
-                             @RequestBody final DataPair pair) {
+                             @RequestBody
+                             final DataPair pair) {
         val service = pair.getRight();
         val id = pair.getLeft();
         val casUserProfile = CasUserProfile.from(authentication);
@@ -144,13 +147,14 @@ public abstract class BaseRegisterController {
      * Request to delete a service.
      *
      * @param authentication - the user
-     * @param id - the id
+     * @param id             - the id
      */
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void remove(final Authentication authentication,
-                       @PathVariable final String id) {
+                       @PathVariable
+                       final String id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.master();
         val service = manager.findServiceBy(Long.parseLong(id));
@@ -166,13 +170,14 @@ public abstract class BaseRegisterController {
      * Mapped method that returns the RegisteredService by the passed Id form the master repo.
      *
      * @param authentication - the user
-     * @param id - assigned id of the service
+     * @param id             - assigned id of the service
      * @return - the requested RegisteredService
      */
     @GetMapping("{id}")
     @SneakyThrows
     public RegisteredService getRegisterService(final Authentication authentication,
-                                                @PathVariable final String id) {
+                                                @PathVariable
+                                                final String id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val manager = managerFactory.master();
@@ -185,14 +190,15 @@ public abstract class BaseRegisterController {
      * Method will cancel a pending submission.
      *
      * @param authentication - the user
-     * @param id - id of pending submission
+     * @param id             - id of pending submission
      * @throws IllegalAccessException - Insufficient permissions
-     * @throws IOException - failed to delete file
+     * @throws IOException            - failed to delete file
      */
     @DeleteMapping("cancel")
     @ResponseStatus(HttpStatus.OK)
     public void cancel(final Authentication authentication,
-                       @RequestParam final String id) throws IllegalAccessException, IOException {
+                       @RequestParam
+                       final String id) throws IllegalAccessException, IOException {
         val casUserProfile = CasUserProfile.from(authentication);
         val service = Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         if (!isSubmitter(service, casUserProfile)) {
@@ -204,13 +210,15 @@ public abstract class BaseRegisterController {
     /**
      * Submits a request to promote a service.
      *
-     * @param id - the id
+     * @param id             - the id
      * @param authentication - the user
      */
     @GetMapping("promote/{id}")
     @SneakyThrows
-    public void promote(@PathVariable final Long id,
-                        final Authentication authentication) {
+    public void promote(
+        @PathVariable
+        final Long id,
+        final Authentication authentication) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.master();
         val service = manager.findServiceBy(id);
@@ -226,11 +234,11 @@ public abstract class BaseRegisterController {
         try {
             val email = new byte[MAX_EMAIL_LENGTH];
             Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
-                    .read("original_author", ByteBuffer.wrap(email));
+                .read("original_author", ByteBuffer.wrap(email));
             return new String(email, StandardCharsets.UTF_8).trim().split(":");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return new String[] {StringUtils.EMPTY, StringUtils.EMPTY};
+            return new String[]{StringUtils.EMPTY, StringUtils.EMPTY};
         }
     }
 
@@ -240,21 +248,24 @@ public abstract class BaseRegisterController {
                              final String subjectArg) {
         if (communicationsManager.isMailSenderDefined()) {
             emailProperties.setSubject(MessageFormat.format(emailProperties.getSubject(), subjectArg));
-            communicationsManager.email(emailProperties, user.getEmail(), MessageFormat.format(emailProperties.getText(), textArg));
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProperties.getText(), textArg))
+                .to(List.of(user.getEmail())).build();
+            communicationsManager.email(request);
         }
     }
 
     /**
      * Saves a submitted service.
      *
-     * @param service - the service
-     * @param id - the id of the service
+     * @param service        - the service
+     * @param id             - the id of the service
      * @param casUserProfile - user profile
      * @throws IOException - failed to save file
      */
     protected void saveService(final RegisteredService service, final String id, final CasUserProfile casUserProfile) throws IOException {
         val path = isNumber(id) ? Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/edit-" + service.getId() + ".json")
-                : Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
+            : Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         val out = Files.newOutputStream(path);
         CasManagementUtils.JSON_SERIALIZER.to(out, service);
         out.close();
@@ -266,7 +277,7 @@ public abstract class BaseRegisterController {
      * Returns the contact if the passed email is an owner of the service or null.
      *
      * @param contacts - List of contacts for a service.
-     * @param email - Email to search for
+     * @param email    - Email to search for
      * @return - RegisteredServiceContact or null
      */
     protected RegisteredServiceContact owner(final List<RegisteredServiceContact> contacts, final String email) {
@@ -279,11 +290,11 @@ public abstract class BaseRegisterController {
         }
     }
 
-    private static void setSubmitter(final Path path, final CasUserProfile casUserProfile) throws IOException{
+    private static void setSubmitter(final Path path, final CasUserProfile casUserProfile) throws IOException {
         val payload = casUserProfile.getEmail() + ':' + casUserProfile.getFirstName() + ' '
-                + casUserProfile.getFamilyName();
+                      + casUserProfile.getFamilyName();
         Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
-                .write("original_author", ByteBuffer.wrap(payload.getBytes(StandardCharsets.UTF_8)));
+            .write("original_author", ByteBuffer.wrap(payload.getBytes(StandardCharsets.UTF_8)));
     }
 
     private static boolean isNumber(final String id) {
@@ -298,6 +309,7 @@ public abstract class BaseRegisterController {
     @Data
     private static class DataPair {
         private String left;
+
         private RegisteredService right;
     }
 }

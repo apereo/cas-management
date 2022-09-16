@@ -11,6 +11,7 @@ import org.apereo.cas.mgmt.domain.RejectData;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.notifications.mail.EmailMessageRequest;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.UnauthorizedServiceException;
@@ -283,7 +284,10 @@ public class SubmissionController extends AbstractVersionControlController {
             val notifications = managementProperties.getSubmissions().getNotifications();
             val emailProps = isChange ? copyEmail(notifications.getRejectChange()) : copyEmail(notifications.getReject());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), submitName, note))
+                .to(List.of(email)).build();
+            communicationsManager.email(request);
         }
     }
 
@@ -310,7 +314,10 @@ public class SubmissionController extends AbstractVersionControlController {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = copyEmail(managementProperties.getSubmissions().getNotifications().getAdded());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), submitName, note))
+                .to(List.of(email)).build();
+            communicationsManager.email(request);
         }
     }
     /**
@@ -361,7 +368,10 @@ public class SubmissionController extends AbstractVersionControlController {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = copyEmail(managementProperties.getSubmissions().getNotifications().getAccept());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), submitName))
+                .to(List.of(email)).build();
+            communicationsManager.email(request);
         }
     }
 
@@ -390,7 +400,11 @@ public class SubmissionController extends AbstractVersionControlController {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = copyEmail(managementProperties.getSubmissions().getNotifications().getDelete());
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
+
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), submitName))
+                .to(List.of(email)).build();
+            communicationsManager.email(request);
         }
     }
 

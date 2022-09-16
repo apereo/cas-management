@@ -5,6 +5,7 @@ import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.notifications.mail.EmailMessageRequest;
 import org.apereo.cas.services.RegisteredServiceContact;
 
 import lombok.RequiredArgsConstructor;
@@ -37,22 +38,26 @@ import java.util.List;
 public class BulkActionController {
 
     private final VersionControlManagerFactory managerFactory;
+
     private final CasManagementConfigurationProperties managementProperties;
+
     private final RepositoryFactory repositoryFactory;
+
     private final CommunicationsManager communicationsManager;
 
     /**
      * Method used to remove the logged in user as contact from multiple services.
      *
      * @param authentication - the user
-     * @param services - Array of service IDs
+     * @param services       - Array of service IDs
      * @throws IllegalAccessException - Does not own service
-     * @throws IllegalStateException - Service requires at least one contact
+     * @throws IllegalStateException  - Service requires at least one contact
      */
     @PostMapping("unclaim")
     @ResponseStatus(HttpStatus.OK)
     public void bulkUnclaim(final Authentication authentication,
-                            @RequestBody final String[] services) throws IllegalStateException, IllegalAccessException {
+                            @RequestBody
+                            final String[] services) throws IllegalStateException, IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();
@@ -71,7 +76,7 @@ public class BulkActionController {
                 git.close();
                 removeClone(clone);
                 throw new IllegalStateException("You are the only contact for service: '" + service.getName()
-                        + "'.  A second contact must be added before you can remove yourself.");
+                                                + "'.  A second contact must be added before you can remove yourself.");
             }
         }
         if (git.scanWorkingDiffs().isEmpty()) {
@@ -87,7 +92,10 @@ public class BulkActionController {
     private void sendBulkRemoveMessage(final String services, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getRegister().getBulkNotifications().getRemove();
-            communicationsManager.email(emailProps, user.getEmail(), MessageFormat.format(emailProps.getText(), services));
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), services))
+                .to(List.of(user.getEmail())).build();
+            communicationsManager.email(request);
         }
     }
 
@@ -95,13 +103,14 @@ public class BulkActionController {
      * Method will add the logged in user as contact to multiple services.
      *
      * @param authentication - the user
-     * @param services - Array of Service IDs
+     * @param services       - Array of Service IDs
      * @throws IllegalStateException - failed
      */
     @PostMapping("claim")
     @ResponseStatus(HttpStatus.OK)
     public void bulkclaim(final Authentication authentication,
-                          @RequestBody final String[] services) throws IllegalStateException {
+                          @RequestBody
+                          final String[] services) throws IllegalStateException {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();
@@ -134,7 +143,10 @@ public class BulkActionController {
     private void sendBulkAddMessage(final String services, final CasUserProfile user) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getRegister().getBulkNotifications().getAdd();
-            communicationsManager.email(emailProps, user.getEmail(), MessageFormat.format(emailProps.getText(), services));
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), services))
+                .to(List.of(user.getEmail())).build();
+            communicationsManager.email(request);
         }
     }
 

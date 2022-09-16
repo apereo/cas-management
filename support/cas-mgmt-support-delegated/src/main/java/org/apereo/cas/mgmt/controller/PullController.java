@@ -9,6 +9,7 @@ import org.apereo.cas.mgmt.domain.BranchData;
 import org.apereo.cas.mgmt.exception.VersionControlException;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.notifications.mail.EmailMessageRequest;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
@@ -141,15 +142,21 @@ public class PullController extends AbstractVersionControlController {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getDelegated().getNotifications().getAccept();
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName));
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), submitName))
+                .to(List.of(email)).build();
+            communicationsManager.email(request);
         }
     }
 
     private void sendRejectMessage(final String submitName, final String note, final String email) {
         if (communicationsManager.isMailSenderDefined()) {
             val emailProps = managementProperties.getDelegated().getNotifications().getReject();
+            val request = EmailMessageRequest.builder()
+                .body(MessageFormat.format(emailProps.getText(), submitName, note))
+                .to(List.of(email)).build();
             emailProps.setSubject(MessageFormat.format(emailProps.getSubject(), submitName));
-            communicationsManager.email(emailProps, email, MessageFormat.format(emailProps.getText(), submitName, note));
+            communicationsManager.email(request);
         }
     }
 }

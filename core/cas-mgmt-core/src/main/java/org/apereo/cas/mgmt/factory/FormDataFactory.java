@@ -92,7 +92,8 @@ public class FormDataFactory {
                 .parameters(params)
                 .method(HttpMethod.GET);
             if (StringUtils.isNotBlank(mgmtProperties.getActuatorBasicAuthUsername())) {
-                executionRequestBuilder.basicAuthUsername(mgmtProperties.getActuatorBasicAuthUsername()).basicAuthPassword(mgmtProperties.getActuatorBasicAuthPassword());
+                executionRequestBuilder.basicAuthUsername(mgmtProperties.getActuatorBasicAuthUsername())
+                    .basicAuthPassword(mgmtProperties.getActuatorBasicAuthPassword());
             }
             val execution = executionRequestBuilder.build();
             val response = HttpUtils.execute(execution);

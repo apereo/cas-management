@@ -87,11 +87,15 @@ public class FormDataFactory {
         val params = new HashMap<String, String>();
         val url = casProperties.getServer().getPrefix() + mgmtProperties.getDiscoveryEndpointPath();
         try {
-            val execution = HttpUtils.HttpExecutionRequest.builder()
+            val executionRequestBuilder = HttpUtils.HttpExecutionRequest.builder()
                 .url(url)
                 .parameters(params)
-                .method(HttpMethod.GET)
-                .build();
+                .method(HttpMethod.GET);
+            if (StringUtils.isNotBlank(mgmtProperties.getActuatorBasicAuthUsername())) {
+                executionRequestBuilder.basicAuthUsername(mgmtProperties.getActuatorBasicAuthUsername())
+                    .basicAuthPassword(mgmtProperties.getActuatorBasicAuthPassword());
+            }
+            val execution = executionRequestBuilder.build();
             val response = HttpUtils.execute(execution);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {

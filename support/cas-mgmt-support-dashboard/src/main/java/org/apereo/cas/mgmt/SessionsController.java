@@ -143,9 +143,9 @@ public class SessionsController {
             tgtMapped = owns.get().getTicketGrantingTicket();
         }
         if (tgtMapped != null && !tgtMapped.isEmpty()) {
-            val restTemplate = new RestTemplate();
             val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
                             + "/actuator/ssoSessions";
+            val restTemplate = getRestTemplate(serverUrl);
             restTemplate.delete(serverUrl + '/' + tgtMapped);
         }
     }
@@ -160,9 +160,9 @@ public class SessionsController {
     public void revokeAll(final Authentication authentication) {
         val casUser = CasUserProfile.from(authentication);
         LOGGER.info("Attempting to revoke all sessions for [{}]", casUser.getId());
-        val restTemplate = new RestTemplate();
         val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
                         + "/actuator/ssoSessions";
+        val restTemplate = getRestTemplate(serverUrl);
         val headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         val req = new HttpEntity(null, headers);
@@ -191,9 +191,9 @@ public class SessionsController {
             owns.ifPresent(ssoSession -> tickets.add(ssoSession.getTicketGrantingTicket()));
         });
         if (!tickets.isEmpty()) {
-            val restTemplate = new RestTemplate();
             val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
                             + "/actuator/ssoSessions";
+            val restTemplate = getRestTemplate(serverUrl);
             val headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             val req = new HttpEntity<>("{\"tickets\": \""

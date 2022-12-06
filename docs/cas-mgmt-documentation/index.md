@@ -24,6 +24,7 @@ To learn how to contribute to the project, [please see this guide](/cas/develope
 We recommend reading the following documentation in order to plan and execute a CAS deployment.
 
 * [Installation](installation/Installing-ServicesMgmt-Webapp.html)
+* [Development Environment](installation/Development-Environment.html)
 
 ## Powered By
 

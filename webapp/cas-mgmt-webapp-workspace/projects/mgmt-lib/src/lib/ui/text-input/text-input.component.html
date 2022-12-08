@@ -7,6 +7,7 @@
              [pattern]="pattern ? pattern : ''"
              [type] = type>
       <mat-error *ngIf="control.hasError('required')">This field is required</mat-error>
+      <mat-error *ngIf="control.hasError('pattern')">Contains invalid characters</mat-error>
       <ng-container *ngFor="let e of errors">
         <mat-error *ngIf="control.hasError(e.key)">{{ e.display }}</mat-error>
       </ng-container>

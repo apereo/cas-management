@@ -7,12 +7,12 @@ import {FormControl} from '@angular/forms';
  * @author Travis Schmidt
  */
 @Component({
-  selector: 'lib-servicename',
-  templateUrl: './servicename.component.html'
+  selector: "lib-servicename",
+  templateUrl: "./servicename.component.html",
 })
 export class ServicenameComponent {
+  pattern: RegExp = new RegExp(/[^<>:"/|\\?*]+$/y);
 
   @Input()
   control: FormControl;
-
 }

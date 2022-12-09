@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 public class VersionControlServicesManager extends ManagementServicesManager {
 
     private final GitUtil git;
+
     private long lastModified;
 
     public VersionControlServicesManager(final ServicesManager servicesManager,
@@ -41,8 +42,8 @@ public class VersionControlServicesManager extends ManagementServicesManager {
     public <T extends RegisteredService> List<RegisteredServiceItem> getServiceItems(final Stream<T> services) {
         val status = git.status();
         return services.map(this::createServiceItem)
-                .peek(item -> item.setStatus(determineStatus(item.getAssignedId(), status)))
-                .collect(Collectors.toList());
+            .peek(item -> item.setStatus(determineStatus(item.getAssignedId(), status)))
+            .collect(Collectors.toList());
     }
 
     public String determineStatus(final String id, final Status status) {
@@ -61,8 +62,8 @@ public class VersionControlServicesManager extends ManagementServicesManager {
 
     private boolean changed() {
         val max = Arrays.stream(Objects.requireNonNull(git.getRepository().getWorkTree().getAbsoluteFile().listFiles()))
-                .map(File::lastModified)
-                .max(Long::compare).orElse(this.lastModified);
+            .map(File::lastModified)
+            .max(Long::compare).orElse(this.lastModified);
         if (this.lastModified == max) {
             return false;
         }

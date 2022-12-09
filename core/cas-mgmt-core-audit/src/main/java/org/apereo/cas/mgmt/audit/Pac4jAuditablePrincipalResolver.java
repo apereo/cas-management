@@ -51,5 +51,4 @@ public class Pac4jAuditablePrincipalResolver implements PrincipalResolver {
         }
         return PrincipalResolver.UNKNOWN_USER;
     }
-
 }

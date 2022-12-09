@@ -56,8 +56,7 @@ public class BulkActionController {
     @PostMapping("unclaim")
     @ResponseStatus(HttpStatus.OK)
     public void bulkUnclaim(final Authentication authentication,
-                            @RequestBody
-                            final String[] services) throws IllegalStateException, IllegalAccessException {
+                            @RequestBody final String[] services) throws IllegalStateException, IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();
@@ -109,8 +108,7 @@ public class BulkActionController {
     @PostMapping("claim")
     @ResponseStatus(HttpStatus.OK)
     public void bulkclaim(final Authentication authentication,
-                          @RequestBody
-                          final String[] services) throws IllegalStateException {
+                          @RequestBody final String[] services) throws IllegalStateException {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val timestamp = new Date().getTime();

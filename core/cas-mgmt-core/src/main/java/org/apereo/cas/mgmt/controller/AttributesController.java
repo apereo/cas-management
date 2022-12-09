@@ -60,8 +60,7 @@ public class AttributesController {
 
     @GetMapping("/{key}")
     public AttributeDefinition getAttribute(final Authentication authentication,
-                                            @PathVariable
-                                            final String key) throws IllegalAccessException {
+                                            @PathVariable final String key) throws IllegalAccessException {
         if (!CasUserProfile.from(authentication).isUser()) {
             throw new IllegalAccessException("Insufficient permissions");
         }
@@ -72,8 +71,7 @@ public class AttributesController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void save(
-        @RequestBody
-        final AttributeDefinition definition) {
+        @RequestBody final AttributeDefinition definition) {
         this.attributeDefinitionStore.registerAttributeDefinition(definition);
         writeToFile();
     }
@@ -82,8 +80,7 @@ public class AttributesController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void delete(
-        @PathVariable
-        final String key) {
+        @PathVariable final String key) {
         this.attributeDefinitionStore.removeAttributeDefinition(key);
         writeToFile();
     }

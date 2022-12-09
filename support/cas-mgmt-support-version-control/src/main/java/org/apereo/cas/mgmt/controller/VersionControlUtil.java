@@ -66,14 +66,13 @@ public class VersionControlUtil {
         val json = git.readObject(entry.getOldId().toObjectId());
         val svc = CasManagementUtils.fromJson(json);
         return new Change(String.valueOf(svc.getId()),
-                entry.getOldPath(),
-                DiffEntry.ChangeType.DELETE.toString(),
-                svc.getName(),
-                ObjectId.toString(entry.getOldId().toObjectId()),
-                null,
-                CasManagementUtils.getType(svc));
+            entry.getOldPath(),
+            DiffEntry.ChangeType.DELETE.toString(),
+            svc.getName(),
+            ObjectId.toString(entry.getOldId().toObjectId()),
+            null,
+            CasManagementUtils.getType(svc));
     }
-
 
 
     /**
@@ -90,19 +89,19 @@ public class VersionControlUtil {
         val json = new String(Files.readAllBytes(Paths.get(file)));
         val svc = CasManagementUtils.fromJson(json);
         return new Change(String.valueOf(svc.getId()),
-                entry.getNewPath(),
-                entry.getChangeType().toString(),
-                svc.getName(),
-                ObjectId.toString(entry.getOldId().toObjectId()),
-                ObjectId.toString(entry.getNewId().toObjectId()),
-                CasManagementUtils.getType(svc));
+            entry.getNewPath(),
+            entry.getChangeType().toString(),
+            svc.getName(),
+            ObjectId.toString(entry.getOldId().toObjectId()),
+            ObjectId.toString(entry.getNewId().toObjectId()),
+            CasManagementUtils.getType(svc));
     }
 
     /**
      * Method creates a diff object to be returned to the client.
      *
      * @param diff - DiffEntry
-     * @param git - GitUtil
+     * @param git  - GitUtil
      * @return - Diff
      */
     public static Diff createDiff(final DiffEntry diff, final GitUtil git) {
@@ -110,10 +109,10 @@ public class VersionControlUtil {
             val id = diff.getChangeType() == DiffEntry.ChangeType.ADD ? diff.getNewId().toObjectId() : diff.getOldId().toObjectId();
             val service = CasManagementUtils.fromJson(git.readObject(id));
             return new Diff(diff.getNewPath(),
-                    diff.getOldId().toObjectId(),
-                    diff.getNewId().toObjectId(),
-                    diff.getChangeType().toString(),
-                    service.getName());
+                diff.getOldId().toObjectId(),
+                diff.getNewId().toObjectId(),
+                diff.getChangeType().toString(),
+                service.getName());
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             return null;

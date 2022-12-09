@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -58,7 +59,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Controller class to handle accepting and rejecting submitted Services.
@@ -74,9 +75,13 @@ public class SubmissionController extends AbstractVersionControlController {
     private static final int MAX_EMAIL_LENGTH = 200;
 
     private final RepositoryFactory repositoryFactory;
+
     private final MgmtManagerFactory<? extends ServicesManager> managerFactory;
+
     private final CasManagementConfigurationProperties managementProperties;
+
     private final CasConfigurationProperties casProperties;
+
     private final CommunicationsManager communicationsManager;
 
     public SubmissionController(final RepositoryFactory repositoryFactory,
@@ -122,15 +127,15 @@ public class SubmissionController extends AbstractVersionControlController {
         val casUserProfile = CasUserProfile.from(authentication);
         try (Stream<Path> stream = Files.list(Paths.get(managementProperties.getSubmissions().getSubmitDir()))) {
             val list = stream.filter(p -> isSubmitter(p, casUserProfile))
-                    .map(SubmissionController::createPendingItem).collect(toList());
+                .map(SubmissionController::createPendingItem).collect(toList());
 
             val git = repositoryFactory.masterRepository();
             val bulks = git.branches()
-                    .map(git::mapBranches)
-                    .filter(b -> !b.getName().endsWith("master") && b.getCommitter().equalsIgnoreCase(casUserProfile.getId()))
-                    .filter(r -> !r.isAccepted() && !r.isRejected())
-                    .map(p -> createPendingItem(p, git))
-                    .collect(toList());
+                .map(git::mapBranches)
+                .filter(b -> !b.getName().endsWith("master") && b.getCommitter().equalsIgnoreCase(casUserProfile.getId()))
+                .filter(r -> !r.isAccepted() && !r.isRejected())
+                .map(p -> createPendingItem(p, git))
+                .collect(toList());
             list.addAll(bulks);
             return list;
 
@@ -201,7 +206,7 @@ public class SubmissionController extends AbstractVersionControlController {
      * Mapped method to return a submitted service in YAML format.
      *
      * @param authentication - the user
-     * @param id - file id of the submitted service
+     * @param id             - file id of the submitted service
      * @return - YAML version of the service
      * @throws Exception - failed
      */
@@ -217,7 +222,7 @@ public class SubmissionController extends AbstractVersionControlController {
      * Mapped method to return a JSON representation of the submitted service.
      *
      * @param authentication - the user
-     * @param id - the file name of the service
+     * @param id             - the file name of the service
      * @return - JSON version of the service
      * @throws Exception - failed
      */
@@ -225,7 +230,7 @@ public class SubmissionController extends AbstractVersionControlController {
     public String getJsonSubmission(final Authentication authentication,
                                     @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
-        val svc = CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + '/' +id));
+        val svc = CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id));
         return CasManagementUtils.toJson(svc);
     }
 
@@ -233,7 +238,7 @@ public class SubmissionController extends AbstractVersionControlController {
     public String getMetadataSubmission(final Authentication authentication,
                                         @RequestBody final String id) throws Exception {
         isAdministrator(authentication);
-        val svc = (SamlRegisteredService) CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + '/' +id));
+        val svc = (SamlRegisteredService) CasManagementUtils.fromJson(new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id));
         val location = svc.getMetadataLocation();
         if (location.contains("mdq.incommon.org")) {
             val resp = fetchMetadata(svc.getMetadataLocation().replace("{0}", EncodingUtils.urlEncode(svc.getServiceId())));
@@ -263,7 +268,7 @@ public class SubmissionController extends AbstractVersionControlController {
      * Mapped method to delete a submission from the queue.
      *
      * @param authentication - the user
-     * @param data - RejectData
+     * @param data           - RejectData
      * @throws Exception - failed
      */
     @PostMapping(path = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -276,7 +281,7 @@ public class SubmissionController extends AbstractVersionControlController {
         val contact = getSubmitter(path)[0];
         Files.delete(path);
         sendRejectMessage(service.getName(), data.getNote(),
-                 contact, data.getId().contains("edit"));
+            contact, data.getId().contains("edit"));
     }
 
     private void sendRejectMessage(final String submitName, final String note, final String email, final boolean isChange) {
@@ -295,7 +300,7 @@ public class SubmissionController extends AbstractVersionControlController {
      * Mapped method to delete a submission from the queue.
      *
      * @param authentication - the user
-     * @param id - file name of the service
+     * @param id             - file name of the service
      * @throws Exception - failed
      */
     @PostMapping("added")
@@ -320,12 +325,13 @@ public class SubmissionController extends AbstractVersionControlController {
             communicationsManager.email(request);
         }
     }
+
     /**
      * Mapped method that will return a diff of the submission and the current version in the repo.
      *
      * @param authentication - the user
-     * @param response - the response
-     * @param id - the file name of the submission
+     * @param response       - the response
+     * @param id             - the file name of the submission
      * @throws Exception - failed
      */
     @PostMapping("diff")
@@ -336,10 +342,10 @@ public class SubmissionController extends AbstractVersionControlController {
         isAdministrator(authentication);
         val git = repositoryFactory.masterRepository();
         val subPath = new RawText(FileUtils.readFileToByteArray(
-                new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id)));
+            new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id)));
         val splitSub = Splitter.on("-").splitToList(id);
         val gitPath = new RawText(FileUtils.readFileToByteArray(
-                new File(managementProperties.getVersionControl().getServicesRepo() + "/service-" + splitSub.get(1))));
+            new File(managementProperties.getVersionControl().getServicesRepo() + "/service-" + splitSub.get(1))));
         response.getOutputStream().write(git.getFormatter(gitPath, subPath));
     }
 
@@ -347,7 +353,7 @@ public class SubmissionController extends AbstractVersionControlController {
      * Mapped method to accept submissions.
      *
      * @param authentication - the user
-     * @param id - the file name of the submission
+     * @param id             - the file name of the submission
      * @throws Exception - failed
      */
     @PostMapping("accept")
@@ -379,7 +385,7 @@ public class SubmissionController extends AbstractVersionControlController {
      * Mapped method to accept removal of service submissions.
      *
      * @param authentication - the user
-     * @param id - the file name of the submission
+     * @param id             - the file name of the submission
      * @throws Exception - failed
      */
     @DeleteMapping
@@ -418,18 +424,18 @@ public class SubmissionController extends AbstractVersionControlController {
     @PostMapping("import")
     public RegisteredService importSubmission(@RequestBody final String id) throws Exception {
         return CasManagementUtils.fromJson(
-                new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id));
+            new File(managementProperties.getSubmissions().getSubmitDir() + '/' + id));
     }
 
     private static String[] getSubmitter(final Path path) {
         try {
             val email = new byte[MAX_EMAIL_LENGTH];
             Files.getFileAttributeView(path, UserDefinedFileAttributeView.class)
-                    .read("original_author", ByteBuffer.wrap(email));
+                .read("original_author", ByteBuffer.wrap(email));
             return new String(email, StandardCharsets.UTF_8).trim().split(":");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return new String[] {StringUtils.EMPTY, StringUtils.EMPTY};
+            return new String[]{StringUtils.EMPTY, StringUtils.EMPTY};
         }
     }
 
@@ -450,13 +456,13 @@ public class SubmissionController extends AbstractVersionControlController {
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);
         val execution = HttpUtils.HttpExecutionRequest.builder()
-                .url(metadataLocation)
-                .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
-                .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
-                .parameters(new HashMap<>())
-                .headers(headers)
-                .method(HttpMethod.GET)
-                .build();
+            .url(metadataLocation)
+            .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
+            .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
+            .parameters(new HashMap<>())
+            .headers(headers)
+            .method(HttpMethod.GET)
+            .build();
         val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);

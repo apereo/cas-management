@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 public class ServicesManagerFactory implements MgmtManagerFactory<ServicesManager> {
 
     private final ServicesManager servicesManager;
+
     private final RegisteredServiceResourceNamingStrategy namingStrategy;
 
     /**
@@ -27,6 +28,7 @@ public class ServicesManagerFactory implements MgmtManagerFactory<ServicesManage
      * @param authentication - user authentication
      * @return - GitServicesManager for the logged in user
      */
+    @Override
     public ManagementServicesManager from(final Authentication authentication) {
         return new ManagementServicesManager(servicesManager, namingStrategy);
     }

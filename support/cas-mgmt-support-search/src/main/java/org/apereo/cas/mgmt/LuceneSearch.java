@@ -69,13 +69,14 @@ public class LuceneSearch {
     private static final int MAX_RESULTS = 5_000;
 
     private final MgmtManagerFactory<? extends ServicesManager> mgmtManagerFactory;
+
     private final CasManagementConfigurationProperties managementProperties;
 
     /**
      * Searches the current state of the the accessible services to a user from a query string.
      *
      * @param authentication - the user
-     * @param queryString - the query
+     * @param queryString    - the query
      * @return - List of RegisteredServiceItem
      * @throws SearchException - failed
      */
@@ -90,17 +91,17 @@ public class LuceneSearch {
             val manager = (ManagementServicesManager) mgmtManagerFactory.from(authentication);
             try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + '/' + casUserProfile.getUsername()))) {
                 val docs = manager.getAllServices().stream()
-                        .filter(casUserProfile::hasPermission)
-                        .map(CasManagementUtils::toJson)
-                        .map(JsonObject::readHjson)
-                        .map(r -> createDocument(r.asObject(), fields))
-                        .collect(Collectors.toList());
+                    .filter(casUserProfile::hasPermission)
+                    .map(CasManagementUtils::toJson)
+                    .map(JsonObject::readHjson)
+                    .map(r -> createDocument(r.asObject(), fields))
+                    .collect(Collectors.toList());
                 writeDocs(analyzer, memoryIndex, docs);
                 val results = results(memoryIndex, query).stream()
-                        .map(d -> d.getField("id"))
-                        .map(id -> manager.findServiceBy(Long.parseLong(id.stringValue())))
-                        .map(manager::createServiceItem)
-                        .collect(Collectors.toList());
+                    .map(d -> d.getField("id"))
+                    .map(id -> manager.findServiceBy(Long.parseLong(id.stringValue())))
+                    .map(manager::createServiceItem)
+                    .collect(Collectors.toList());
                 LOGGER.debug("Found search results [{}]", results);
                 FileUtils.deleteDirectory(memoryIndex.getDirectory().toFile());
                 return results;
@@ -114,7 +115,7 @@ public class LuceneSearch {
     /**
      * Creates a {@link Document} to add to the directory for searching.
      *
-     * @param json - service as json
+     * @param json   - service as json
      * @param fields - list of fields parsed from query string.
      * @return - the document
      */
@@ -122,9 +123,9 @@ public class LuceneSearch {
         val document = new Document();
         val id = json.asObject().getLong("id", -1);
         fields.stream()
-                .map(f -> createTriple(json.asObject(), f))
-                .flatMap(t -> createFields(t).stream())
-                .forEach(document::add);
+            .map(f -> createTriple(json.asObject(), f))
+            .flatMap(t -> createFields(t).stream())
+            .forEach(document::add);
         if (fields.contains("body")) {
             document.add(new TextField("body", json.toString(), Field.Store.NO));
 
@@ -150,9 +151,9 @@ public class LuceneSearch {
     /**
      * Creates list of {@link Field} to be indexed and added to a {@link Document} from the passed
      * Triple representing a parsed query clause.
-     *    left = JsonType - Object type of value in service
-     *    middle = Object - value of the field extracted from json.
-     *    right - String - field key
+     * left = JsonType - Object type of value in service
+     * middle = Object - value of the field extracted from json.
+     * right - String - field key
      *
      * @param triple - the triple
      * @return - List of Field
@@ -185,9 +186,9 @@ public class LuceneSearch {
     /**
      * Writes the list of {@link Document} to the index for searching.
      *
-     * @param analyzer - the analyzer
+     * @param analyzer    - the analyzer
      * @param memoryIndex - the directory
-     * @param docs - List of Document
+     * @param docs        - List of Document
      */
     @SneakyThrows
     private static void writeDocs(final StandardAnalyzer analyzer, final MMapDirectory memoryIndex, final List<Document> docs) {
@@ -205,7 +206,7 @@ public class LuceneSearch {
      * results of the search.
      *
      * @param memoryIndex - the Directory
-     * @param query - the query
+     * @param query       - the query
      * @return -List of Document
      */
     @SneakyThrows
@@ -213,8 +214,8 @@ public class LuceneSearch {
         val indexReader = DirectoryReader.open(memoryIndex);
         val searcher = new IndexSearcher(indexReader);
         return Arrays.stream(searcher.search(query, MAX_RESULTS).scoreDocs)
-                .map(s -> pullDoc(searcher, s))
-                .collect(Collectors.toList());
+            .map(s -> pullDoc(searcher, s))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -237,7 +238,7 @@ public class LuceneSearch {
      * Returns a list of fields to be searched from the parsed query.  Method called recursively if a top level
      * {@link BooleanQuery} is used.
      *
-     * @param query - the parsed query
+     * @param query  - the parsed query
      * @param fields - list to hold fields
      * @return - List of Field
      */
@@ -271,7 +272,7 @@ public class LuceneSearch {
     /**
      * Wrapper method to create a Triple describing a query clause.
      *
-     * @param json - the JsonObject
+     * @param json  - the JsonObject
      * @param field - field key
      * @return - Triple
      */
@@ -284,7 +285,7 @@ public class LuceneSearch {
      * Extracts the value to be searched from the json based on the field key.  The method is called recursively in the
      * case of fields that are nested in json objects.
      *
-     * @param json - the json
+     * @param json  - the json
      * @param field - the field key
      * @return - Pair representing object type and value
      */

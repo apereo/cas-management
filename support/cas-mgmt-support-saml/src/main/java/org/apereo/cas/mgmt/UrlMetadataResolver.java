@@ -44,13 +44,13 @@ public class UrlMetadataResolver {
 
         LOGGER.debug("Fetching metadata via URL for [{}]", metadataLocation);
         val execution = HttpUtils.HttpExecutionRequest.builder()
-                .url(metadataLocation)
-                .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
-                .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
-                .parameters(new HashMap<>())
-                .method(HttpMethod.GET)
-                .headers(headers)
-                .build();
+            .url(metadataLocation)
+            .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
+            .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
+            .parameters(new HashMap<>())
+            .method(HttpMethod.GET)
+            .headers(headers)
+            .build();
         val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);

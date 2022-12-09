@@ -38,6 +38,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.net.URI;
 import java.util.Comparator;
 import java.util.Date;
@@ -111,8 +112,7 @@ public class DashboardController {
      */
     @GetMapping("{index}")
     public Server update(final Authentication authentication,
-                         @PathVariable
-                         final int index) throws IllegalAccessException {
+                         @PathVariable final int index) throws IllegalAccessException {
         isAdmin(authentication);
         if (index < 0 || index > mgmtProperties.getCasServers().size()) {
             throw new IllegalAccessException("Invalid server entry");
@@ -146,8 +146,7 @@ public class DashboardController {
      */
     @GetMapping("/resolve/{id}")
     public Map<String, List<String>> resolve(final Authentication authentication,
-                                             @PathVariable
-                                             final String id) throws IllegalAccessException {
+                                             @PathVariable final String id) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<Attributes>callCasServer("/actuator/resolveAttributes/" + id,
             new ParameterizedTypeReference<Attributes>() {
@@ -164,8 +163,7 @@ public class DashboardController {
      */
     @PostMapping(value = "/release", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, List<String>> release(final Authentication authentication,
-                                             @RequestBody
-                                             final Map<String, String> data) throws IllegalAccessException {
+                                             @RequestBody final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
         return this.<Attributes>callCasServer("/actuator/releaseAttributes", data,
             new ParameterizedTypeReference<Attributes>() {
@@ -182,8 +180,7 @@ public class DashboardController {
      */
     @PostMapping("/response")
     public String response(final Authentication authentication,
-                           @RequestBody
-                           final Map<String, String> data) throws IllegalAccessException {
+                           @RequestBody final Map<String, String> data) throws IllegalAccessException {
         isAdmin(authentication);
         return callCasServer("/actuator/samlPostProfileResponse", data,
             new ParameterizedTypeReference<String>() {
@@ -214,8 +211,7 @@ public class DashboardController {
      */
     @GetMapping("/webflow")
     public Map webflow(final Authentication authentication,
-                       @RequestParam(name = "flowId", required = false)
-                       final String flowId)
+                       @RequestParam(name = "flowId", required = false) final String flowId)
         throws IllegalAccessException {
         isAdmin(authentication);
         var endpoint = "/actuator/springWebflow";
@@ -255,8 +251,7 @@ public class DashboardController {
     @PostMapping("/loggers")
     @ResponseStatus(HttpStatus.OK)
     public void setLogger(final Authentication authentication,
-                          @RequestBody
-                          final Map<String, String> map) throws IllegalAccessException {
+                          @RequestBody final Map<String, String> map) throws IllegalAccessException {
         isAdmin(authentication);
         val level = Map.of("configuredLevel", map.get("level"));
         val server = mgmtProperties.getCasServers().stream().filter(s -> s.getName().equals(map.get("server"))).findFirst().get().getUrl();
@@ -276,8 +271,7 @@ public class DashboardController {
      */
     @PostMapping("/audit")
     public List<AuditLog> audit(final Authentication authentication, final HttpServletRequest request,
-                                @RequestBody
-                                final Map<String, String> query) throws IllegalAccessException {
+                                @RequestBody final Map<String, String> query) throws IllegalAccessException {
         isAdmin(authentication);
         val audit = mgmtProperties.getCasServers().stream()
             .flatMap(p -> callCasServer(p.getUrl(), "/actuator/auditLog",

@@ -8,7 +8,7 @@ import org.apereo.cas.mgmt.factory.VersionControlManagerFactory;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.notifications.mail.EmailMessageRequest;
-import org.apereo.cas.services.RegexRegisteredService;
+import org.apereo.cas.services.BaseRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.RegisteredServiceContact;
 import org.apereo.cas.services.ServicesManager;
@@ -98,8 +98,7 @@ public abstract class BaseRegisterController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void submit(final Authentication authentication,
-                       @RequestBody
-                       final RegisteredService service) {
+                       @RequestBody final RegisteredService service) {
         val id = service.getId() > 0 ? service.getId() : System.nanoTime();
         val path = Paths.get(managementProperties.getSubmissions().getSubmitDir() + "/submit-" + id + ".json");
         val out = Files.newOutputStream(path);
@@ -134,8 +133,7 @@ public abstract class BaseRegisterController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void registerSave(final Authentication authentication,
-                             @RequestBody
-                             final DataPair pair) {
+                             @RequestBody final DataPair pair) {
         val service = pair.getRight();
         val id = pair.getLeft();
         val casUserProfile = CasUserProfile.from(authentication);
@@ -152,8 +150,7 @@ public abstract class BaseRegisterController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void remove(final Authentication authentication,
-                       @PathVariable
-                       final String id) {
+                       @PathVariable final String id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.master();
         val service = manager.findServiceBy(Long.parseLong(id));
@@ -175,8 +172,7 @@ public abstract class BaseRegisterController {
     @GetMapping("{id}")
     @SneakyThrows
     public RegisteredService getRegisterService(final Authentication authentication,
-                                                @PathVariable
-                                                final String id) {
+                                                @PathVariable final String id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val email = casUserProfile.getEmail();
         val manager = managerFactory.master();
@@ -196,8 +192,7 @@ public abstract class BaseRegisterController {
     @DeleteMapping("cancel")
     @ResponseStatus(HttpStatus.OK)
     public void cancel(final Authentication authentication,
-                       @RequestParam
-                       final String id) throws IllegalAccessException, IOException {
+                       @RequestParam final String id) throws IllegalAccessException, IOException {
         val casUserProfile = CasUserProfile.from(authentication);
         val service = Paths.get(managementProperties.getSubmissions().getSubmitDir() + '/' + id);
         if (!isSubmitter(service, casUserProfile)) {
@@ -215,13 +210,12 @@ public abstract class BaseRegisterController {
     @GetMapping("promote/{id}")
     @SneakyThrows
     public void promote(
-        @PathVariable
-        final Long id,
+        @PathVariable final Long id,
         final Authentication authentication) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.master();
         val service = manager.findServiceBy(id);
-        ((RegexRegisteredService) service).setEnvironments(null);
+        ((BaseRegisteredService) service).setEnvironments(null);
         saveService(service, String.valueOf(id), casUserProfile);
     }
 
@@ -306,6 +300,7 @@ public abstract class BaseRegisterController {
     }
 
     @Data
+    @SuppressWarnings("UnusedMethod")
     private static class DataPair {
         private String left;
 

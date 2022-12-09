@@ -126,8 +126,7 @@ public class SamlController {
     @GetMapping("find")
     @SneakyThrows
     public List<String> find(
-        @RequestParam
-        final String query) {
+        @RequestParam final String query) {
         return this.entities.stream()
             .filter(e -> e.contains(query))
             .collect(Collectors.toList());
@@ -142,8 +141,7 @@ public class SamlController {
     @GetMapping("search")
     @SneakyThrows
     public List<String> search(
-        @RequestParam
-        final String query) {
+        @RequestParam final String query) {
         return sps.query(query);
     }
 
@@ -157,8 +155,7 @@ public class SamlController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public SamlRegisteredService upload(
-        @RequestBody
-        final String xml) {
+        @RequestBody final String xml) {
         val entity = MetadataUtil.fromXML(xml, configBean);
         val service = createService(entity);
         val entityId = entity.getEntityID();
@@ -180,8 +177,7 @@ public class SamlController {
      */
     @GetMapping("add")
     public SamlRegisteredService add(
-        @RequestParam
-        final String id) throws SignatureException {
+        @RequestParam final String id) throws SignatureException {
         if (exists(id)) {
             throw new IllegalArgumentException("Service already registered");
         }
@@ -195,8 +191,7 @@ public class SamlController {
     @GetMapping("download")
     @SneakyThrows
     public SamlRegisteredService download(
-        @RequestParam
-        final String url) {
+        @RequestParam final String url) {
         val entity = this.urlMetadataResolver.xml(url);
         LOGGER.error(entity);
         val service = createService(MetadataUtil.fromXML(entity, configBean));
@@ -213,8 +208,7 @@ public class SamlController {
     @GetMapping("/metadata/{id}")
     @SneakyThrows
     public Metadata getMetadata(
-        @PathVariable
-        final Long id) {
+        @PathVariable final Long id) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         if (!sps.query(service.getServiceId()).isEmpty()) {
             return new Metadata(true, sps.xml(service.getServiceId()));
@@ -233,10 +227,8 @@ public class SamlController {
     @PostMapping("/metadata/{id}")
     @SneakyThrows
     public void saveMetadata(
-        @PathVariable
-        final Long id,
-        @RequestBody
-        final String metadata) {
+        @PathVariable final Long id,
+        @RequestBody final String metadata) {
         val service = (SamlRegisteredService) managerFactory.master().findServiceBy(id);
         val fileName = DigestUtils.sha(service.getServiceId()) + ".xml";
         val res = Paths.get('/' + managementProperties.getMetadataRepoDir() + '/' + fileName);

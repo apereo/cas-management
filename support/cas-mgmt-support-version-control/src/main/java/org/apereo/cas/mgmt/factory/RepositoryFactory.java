@@ -15,6 +15,7 @@ import org.eclipse.jgit.api.Git;
 import org.springframework.security.core.Authentication;
 
 import javax.annotation.PostConstruct;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -30,11 +31,15 @@ import java.nio.file.Paths;
 public class RepositoryFactory {
 
     private static final String REPO_DIR = "/.git";
+
     private static final int INITIAL_CACHE_SIZE = 10;
+
     private static final int MAX_CACHE_SIZE = 100;
 
     private final CasManagementConfigurationProperties casProperties;
+
     private GitUtil masterRepository;
+
     private Cache<Authentication, GitUtil> repositoryCache;
 
     @PostConstruct
@@ -46,7 +51,7 @@ public class RepositoryFactory {
     /**
      * Method looks up user from servlet request to return correct repository.
      *
-     * @param authentication  - HttpServletRequest
+     * @param authentication - HttpServletRequest
      * @return - GitUtil wrapping the user's repository
      */
     @SneakyThrows
@@ -112,10 +117,10 @@ public class RepositoryFactory {
     private static Cache<Authentication, GitUtil> managementServicesManagerCache() {
         val duration = Beans.newDuration("PT30M");
         return Caffeine.newBuilder()
-                .initialCapacity(INITIAL_CACHE_SIZE)
-                .maximumSize(MAX_CACHE_SIZE)
-                .expireAfterWrite(duration)
-                .recordStats()
-                .build();
+            .initialCapacity(INITIAL_CACHE_SIZE)
+            .maximumSize(MAX_CACHE_SIZE)
+            .expireAfterWrite(duration)
+            .recordStats()
+            .build();
     }
 }

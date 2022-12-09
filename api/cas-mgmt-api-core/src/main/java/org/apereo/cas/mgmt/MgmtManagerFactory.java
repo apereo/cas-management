@@ -1,6 +1,7 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.services.ServicesManager;
+
 import org.springframework.security.core.Authentication;
 
 /**
@@ -28,3 +29,4 @@ public interface MgmtManagerFactory<T extends ServicesManager> {
      */
     T master() throws Exception;
 }
+

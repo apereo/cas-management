@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DashboardForwardingController {
 
     /**
-     *
      * @return string url
      */
     @RequestMapping({

@@ -24,7 +24,9 @@ import java.util.List;
 @Getter
 public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     private static final long serialVersionUID = -6308325782274816263L;
+
     private final boolean administrator;
+
     private final boolean delegate;
 
     public CasUserProfile() {
@@ -52,10 +54,12 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
         return new CasUserProfile(authentication);
     }
 
+    @Override
     public String getDepartment() {
         return findFirstMatchingAttribute("department|ou");
     }
 
+    @Override
     public String getPhone() {
         return findFirstMatchingAttribute("phone|phoneNumber|telephoneNumber|primaryPhone|primaryPhoneNumber");
     }
@@ -98,13 +102,13 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     public boolean hasPermission(final String domain) {
         val permissions = getPermissions();
         return isAdministrator() || permissions.contains("*")
-                || permissions.stream().anyMatch(domain::endsWith);
+               || permissions.stream().anyMatch(domain::endsWith);
     }
 
     /**
      * Checks if user has permission to the {@link RegisteredService}.
      *
-     * @param <T> - Param Type
+     * @param <T>     - Param Type
      * @param service - the service
      * @return true if user has permission
      */
@@ -114,8 +118,8 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
             return true;
         }
         return Arrays.stream(service.getServiceId().split("|"))
-                .map(CasManagementUtils::extractDomain)
-                .anyMatch(d -> permissions.stream().anyMatch(d::endsWith));
+            .map(CasManagementUtils::extractDomain)
+            .anyMatch(d -> permissions.stream().anyMatch(d::endsWith));
     }
 
     public boolean isUser() {

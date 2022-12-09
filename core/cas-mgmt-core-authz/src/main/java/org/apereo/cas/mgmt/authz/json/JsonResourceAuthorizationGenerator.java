@@ -40,7 +40,7 @@ public class JsonResourceAuthorizationGenerator implements AuthorizationGenerato
 
         loadResource(resource);
         val watcher = new FileWatcherService(resource.getFile(),
-                Unchecked.consumer(file -> loadResource(resource)));
+            Unchecked.consumer(file -> loadResource(resource)));
         watcher.start(getClass().getSimpleName());
     }
 

@@ -33,8 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApplicationDataController {
 
     private final FormDataFactory formDataFactory;
+
     private final CasManagementConfigurationProperties managementProperties;
+
     private final CasConfigurationProperties casProperties;
+
     private final ContactLookup contactLookup;
 
     @GetMapping(value = "/managerType")
@@ -70,9 +73,9 @@ public class ApplicationDataController {
      */
     @GetMapping("/footer")
     public String[] footer() {
-        return new String[] {
-                CasVersion.getVersion(),
-                this.getClass().getPackage().getImplementationVersion()
+        return new String[]{
+            CasVersion.getVersion(),
+            this.getClass().getPackage().getImplementationVersion()
         };
     }
 
@@ -92,9 +95,9 @@ public class ApplicationDataController {
         config.setSyncScript(managementProperties.getVersionControl().getSyncScript() != null);
         config.setContactLookup(!(contactLookup instanceof NoOpContactLookup));
         config.setOauthEnabled(formData.getServiceTypes().stream()
-                .anyMatch(s -> s.getValue().contains("OAuth") || s.getValue().contains("Oidc")));
+            .anyMatch(s -> s.getValue().contains("OAuth") || s.getValue().contains("Oidc")));
         config.setSamlEnabled(formData.getServiceTypes().stream()
-                .anyMatch(s -> s.getValue().contains("Saml")));
+            .anyMatch(s -> s.getValue().contains("Saml")));
         config.setAttributeStoreEnabled(managementProperties.isAttributeStoreEnabled());
         config.setSubmissionsEnabled(managementProperties.getSubmissions().isEnabled());
         return config;

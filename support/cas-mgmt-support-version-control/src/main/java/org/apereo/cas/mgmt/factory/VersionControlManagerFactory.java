@@ -29,6 +29,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.core.Authentication;
 
 import javax.annotation.PostConstruct;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -108,6 +109,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      * @param authentication - user authentication
      * @return - GitServicesManager for the logged in user
      */
+    @Override
     public ManagementServicesManager from(final Authentication authentication) {
         return getManagementServicesManager(authentication);
     }
@@ -127,6 +129,7 @@ public class VersionControlManagerFactory implements MgmtManagerFactory<Manageme
      *
      * @return - master repo manager
      */
+    @Override
     public ManagementServicesManager master() {
         master.load();
         return master;

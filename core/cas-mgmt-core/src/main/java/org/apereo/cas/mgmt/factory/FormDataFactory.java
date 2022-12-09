@@ -9,7 +9,6 @@ import org.apereo.cas.discovery.CasServerProfile;
 import org.apereo.cas.mgmt.domain.FormData;
 import org.apereo.cas.services.CasRegisteredService;
 import org.apereo.cas.services.OidcRegisteredService;
-import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.support.saml.web.idp.profile.builders.attr.SamlIdPAttributeDefinition;
@@ -30,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -128,7 +128,6 @@ public class FormDataFactory {
             formData.setServiceTypes(types);
         } else {
             val serviceTypes = new ArrayList<FormData.Option>();
-            serviceTypes.add(new FormData.Option("CAS Client (Deprecated)", RegexRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("CAS Client", CasRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("OAuth2 Client", OAuthRegisteredService.class.getTypeName()));
             serviceTypes.add(new FormData.Option("SAML2 Service Provider", SamlRegisteredService.class.getTypeName()));

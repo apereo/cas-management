@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -53,6 +52,7 @@ public final class CasManagementUtils {
     }
 
     /**
+     * Get CAS mgmt version.
      * @return Return the full CAS mgmt version string.
      * @see java.lang.Package#getImplementationVersion
      */
@@ -199,7 +199,7 @@ public final class CasManagementUtils {
      * @return - formatted Date.
      */
     public static String formatDateTime(final long time) {
-        return LocalDateTime.ofInstant(new Date(time * 1000L).toInstant(), ZoneId.systemDefault())
+        return LocalDateTime.ofInstant(Instant.ofEpochSecond(time), ZoneId.systemDefault())
             .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 

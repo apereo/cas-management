@@ -24,6 +24,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -114,13 +115,13 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);
         val execution = HttpUtils.HttpExecutionRequest.builder()
-                .url(metadataLocation)
-                .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
-                .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
-                .parameters(new HashMap<>())
-                .headers(headers)
-                .method(HttpMethod.GET)
-                .build();
+            .url(metadataLocation)
+            .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
+            .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
+            .parameters(new HashMap<>())
+            .headers(headers)
+            .method(HttpMethod.GET)
+            .build();
         val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);

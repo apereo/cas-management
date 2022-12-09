@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Class will handle requests from the register endpoint.
@@ -34,7 +34,7 @@ public class RegisterController extends BaseRegisterController {
     public RegisterController(final VersionControlManagerFactory managerFactory,
                               final CasManagementConfigurationProperties managementProperties,
                               final CommunicationsManager communicationsManager,
-                              final ServicesManager published){
+                              final ServicesManager published) {
         super(managerFactory, managementProperties, communicationsManager, published);
     }
 
@@ -42,7 +42,7 @@ public class RegisterController extends BaseRegisterController {
      * Claim the service.
      *
      * @param authentication - the user
-     * @param id - the service id
+     * @param id             - the service id
      * @throws Exception - failed
      */
     @GetMapping("claim/{id}")
@@ -60,7 +60,7 @@ public class RegisterController extends BaseRegisterController {
      * Unclaim an service.
      *
      * @param authentication - the user
-     * @param id - the service id
+     * @param id             - the service id
      * @throws Exception - failed
      */
     @GetMapping("unclaim/{id}")
@@ -71,8 +71,8 @@ public class RegisterController extends BaseRegisterController {
         val manager = managerFactory.master();
         val service = manager.findServiceBy(Long.parseLong(id));
         val contact = service.getContacts().stream()
-                .filter(c -> c.getEmail().equalsIgnoreCase(casUserProfile.getEmail()))
-                .findFirst().orElseThrow();
+            .filter(c -> c.getEmail().equalsIgnoreCase(casUserProfile.getEmail()))
+            .findFirst().orElseThrow();
         service.getContacts().remove(contact);
         saveService(service, id, casUserProfile);
     }
@@ -90,8 +90,8 @@ public class RegisterController extends BaseRegisterController {
         val email = casUserProfile.getEmail();
         val manager = (ManagementServicesManager) managerFactory.master();
         return manager.getAllServices().stream()
-                .filter(s -> s.getContacts().stream().anyMatch(c -> email != null && email.equals(c.getEmail())))
-                .map(manager::createServiceItem)
-                .collect(toList());
+            .filter(s -> s.getContacts().stream().anyMatch(c -> email != null && email.equals(c.getEmail())))
+            .map(manager::createServiceItem)
+            .collect(toList());
     }
 }

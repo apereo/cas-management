@@ -5,8 +5,8 @@ import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
+import org.apereo.cas.services.BaseRegisteredService;
 import org.apereo.cas.services.CasRegisteredService;
-import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
@@ -75,8 +75,7 @@ public class ServiceController {
      */
     @GetMapping
     public List<RegisteredServiceItem> getServices(final Authentication authentication,
-                                                   @RequestParam
-                                                   final String domain) throws IllegalAccessException {
+                                                   @RequestParam final String domain) throws IllegalAccessException {
         val casUserProfile = new CasUserProfile(authentication);
 
         if (!casUserProfile.isAdministrator() && !casUserProfile.hasPermission(domain)) {
@@ -154,8 +153,7 @@ public class ServiceController {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteRegisteredService(final Authentication authentication,
-                                        @PathVariable("id")
-                                        final long id) {
+                                        @PathVariable("id") final long id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val svc = manager.findServiceBy(id);
@@ -177,8 +175,7 @@ public class ServiceController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void saveService(final Authentication authentication,
-                            @RequestBody
-                            final RegisteredService service) {
+                            @RequestBody final RegisteredService service) {
         val user = CasUserProfile.from(authentication);
         if (user.isUser() && user.hasPermission(service)) {
             val manager = (ManagementServicesManager) managerFactory.from(authentication);
@@ -195,8 +192,7 @@ public class ServiceController {
      */
     @GetMapping("/{id}")
     public RegisteredService getServiceById(final Authentication authentication,
-                                            @PathVariable(value = "id")
-                                            final Long id) {
+                                            @PathVariable(value = "id") final Long id) {
         val casUserProfile = CasUserProfile.from(authentication);
         if (casUserProfile.isUser()) {
             val service = getService(authentication, id);
@@ -216,8 +212,7 @@ public class ServiceController {
      */
     @GetMapping("/yaml/{id}")
     public String getYaml(final Authentication authentication,
-                          @PathVariable("id")
-                          final Long id) {
+                          @PathVariable("id") final Long id) {
         val casUserProfile = CasUserProfile.from(authentication);
         val service = getService(authentication, id);
         return casUserProfile.hasPermission(service) ? CasManagementUtils.toYaml(service) : StringUtils.EMPTY;
@@ -233,10 +228,8 @@ public class ServiceController {
      */
     @PostMapping("yaml/{id}")
     public void saveYaml(final Authentication authentication,
-                         @PathVariable("id")
-                         final Long id,
-                         @RequestBody
-                         final String yaml) throws IOException {
+                         @PathVariable("id") final Long id,
+                         @RequestBody final String yaml) throws IOException {
         val casUserProfile = CasUserProfile.from(authentication);
         val service = CasManagementUtils.parseYaml(yaml);
         if (casUserProfile.hasPermission(service)) {
@@ -250,10 +243,8 @@ public class ServiceController {
 
     @PostMapping("validate")
     public ResponseEntity<String> validate(final Authentication authentication,
-                                           @RequestParam(required = false, name = "format", defaultValue = "json")
-                                           final String format,
-                                           @RequestBody
-                                           final RegisteredService service) {
+                                           @RequestParam(required = false, name = "format", defaultValue = "json") final String format,
+                                           @RequestBody final RegisteredService service) {
         val casUserProfile = CasUserProfile.from(authentication);
         if (casUserProfile.hasPermission(service)) {
             var result = StringUtils.EMPTY;
@@ -276,8 +267,7 @@ public class ServiceController {
      */
     @GetMapping("/json/{id}")
     public String getJson(final Authentication authentication,
-                          @PathVariable("id")
-                          final Long id) {
+                          @PathVariable("id") final Long id) {
         val service = getService(authentication, id);
         val casUserProfile = CasUserProfile.from(authentication);
         return casUserProfile.hasPermission(service) ? CasManagementUtils.toJson(service) : StringUtils.EMPTY;
@@ -293,10 +283,8 @@ public class ServiceController {
      */
     @PostMapping("/json/{id}")
     public void saveJson(final Authentication authentication,
-                         @PathVariable("id")
-                         final Long id,
-                         @RequestBody
-                         final String json) throws IOException {
+                         @PathVariable("id") final Long id,
+                         @RequestBody final String json) throws IOException {
         val service = CasManagementUtils.parseJson(json);
         val casUserProfile = CasUserProfile.from(authentication);
         if (casUserProfile.hasPermission(service)) {
@@ -317,8 +305,7 @@ public class ServiceController {
      */
     @PostMapping(value = "import", consumes = MediaType.TEXT_PLAIN_VALUE)
     public RegisteredService importService(
-        @RequestBody
-        final String service) {
+        @RequestBody final String service) {
         val svc = service.startsWith("{") ? CasManagementUtils.fromJson(service) : CasManagementUtils.fromYaml(service);
         svc.setId(-1);
         return svc;
@@ -334,8 +321,7 @@ public class ServiceController {
     @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final Authentication authentication,
-                            @RequestBody
-                            final List<RegisteredServiceItem> svcs) throws IllegalAccessException {
+                            @RequestBody final List<RegisteredServiceItem> svcs) throws IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         for (val svc : svcs) {
@@ -362,12 +348,11 @@ public class ServiceController {
      */
     @GetMapping("promote/{id}")
     public void promote(
-        @PathVariable
-        final Long id,
+        @PathVariable final Long id,
         final Authentication authentication) throws IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
-        val service = (RegexRegisteredService) manager.findServiceBy(id);
+        val service = (BaseRegisteredService) manager.findServiceBy(id);
         if (!casUserProfile.hasPermission(service)) {
             throw new IllegalAccessException("You do not have permission");
         }
@@ -384,12 +369,11 @@ public class ServiceController {
      */
     @GetMapping("demote/{id}")
     public void demote(
-        @PathVariable
-        final Long id,
+        @PathVariable final Long id,
         final Authentication authentication) throws IllegalAccessException {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
-        val service = (RegexRegisteredService) manager.findServiceBy(id);
+        val service = (BaseRegisteredService) manager.findServiceBy(id);
         if (!casUserProfile.hasPermission(service)) {
             throw new IllegalAccessException("You do not have permission");
         }
@@ -402,7 +386,7 @@ public class ServiceController {
     private RegisteredService getService(final Authentication authentication,
                                          final Long id) {
         val manager = managerFactory.from(authentication);
-        val service = id == -1 ? new RegexRegisteredService() : manager.findServiceBy(id);
+        val service = id == -1 ? new CasRegisteredService() : manager.findServiceBy(id);
         if (service == null) {
             LOGGER.warn("Invalid service id specified [{}]. Cannot find service in the registry", id);
             throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));

@@ -3,6 +3,7 @@ package org.apereo.cas.mgmt;
 import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
+
 import lombok.val;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,7 @@ public class OauthController {
         service.setClientSecret(generateId());
         return service;
     }
+
     /**
      * Generates a new random string used for client Id and Secrets.
      *

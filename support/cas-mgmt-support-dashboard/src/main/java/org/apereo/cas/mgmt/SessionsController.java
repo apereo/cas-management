@@ -96,8 +96,7 @@ public class SessionsController {
      */
     @GetMapping("{user}")
     public SsoSessionResponse getSession(
-        @PathVariable
-        final String user,
+        @PathVariable final String user,
         final Authentication authentication) throws IllegalAccessException {
         isAdmin(authentication);
         val serverUrl = mgmtProperties.getCasServers().get(0).getUrl()
@@ -115,10 +114,8 @@ public class SessionsController {
      **/
     @DeleteMapping("{tgt}")
     public void revokeSession(
-        @PathVariable
-        final String tgt,
-        @RequestParam
-        final String user,
+        @PathVariable final String tgt,
+        @RequestParam final String user,
         final Authentication authentication) throws IllegalAccessException {
         LOGGER.info("Attempting to revoke [{}]", tgt);
         val casUser = CasUserProfile.from(authentication);
@@ -178,8 +175,7 @@ public class SessionsController {
     @PostMapping("bulkRevoke")
     @ResponseStatus(HttpStatus.OK)
     public void bulkRevoke(final Authentication authentication,
-                           @RequestBody
-                           final List<String> tgts) {
+                           @RequestBody final List<String> tgts) {
         LOGGER.info("Attempting to revoke [{}]", tgts);
         val casUser = CasUserProfile.from(authentication);
         val tickets = new ArrayList<String>();

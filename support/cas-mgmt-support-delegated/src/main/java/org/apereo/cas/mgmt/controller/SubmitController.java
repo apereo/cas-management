@@ -50,10 +50,8 @@ public class SubmitController {
 
     @PostMapping
     public void submitPull(final Authentication authentication,
-                           @RequestParam
-                           final String title,
-                           @RequestBody
-                           final String msg) throws Exception {
+                           @RequestParam final String title,
+                           @RequestBody final String msg) throws Exception {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {
@@ -110,8 +108,7 @@ public class SubmitController {
     @ResponseStatus(HttpStatus.OK)
     @SneakyThrows
     public void revertSubmit(final Authentication authentication,
-                             @RequestParam
-                             final String branch) {
+                             @RequestParam final String branch) {
         val user = CasUserProfile.from(authentication);
         try (GitUtil git = repositoryFactory.from(authentication)) {
             if (git.isUndefined()) {

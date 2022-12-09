@@ -59,6 +59,7 @@ public class DomainController {
 
     @Data
     @AllArgsConstructor
+    @SuppressWarnings("UnusedMethod")
     private static class DomainRpc implements Serializable {
         private String name;
     }

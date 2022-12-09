@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Date;
 
 /**
@@ -56,8 +57,8 @@ public class NoteController {
     /**
      * Method will add the supplied note from the client to the submit request in the repo.
      *
-     * @param authentication  - the user
-     * @param cnote    - CNote
+     * @param authentication - the user
+     * @param cnote          - CNote
      */
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
@@ -68,7 +69,7 @@ public class NoteController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val com = git.getCommit(cnote.getId());
             val msg = user.getId() + " - " + new Date() + " : \n    "
-                    + cnote.getText().replaceAll("\\n", "\n    ");
+                      + cnote.getText().replaceAll("\\n", "\n    ");
             git.appendNote(com, msg);
         }
     }

@@ -138,7 +138,7 @@ public class ManagementServicesManager implements ServicesManager {
     public <T extends RegisteredService> Collection<T> getAllServicesOfType(final Class<T> clazz) {
         return this.manager.getAllServicesOfType(clazz);
     }
-    
+
     @Override
     public Collection<RegisteredService> getAllServices() {
         return this.manager.getAllServices();

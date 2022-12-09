@@ -14,5 +14,6 @@ import java.io.Serializable;
 @Data
 public class CommitMessage implements Serializable {
     private String message;
+
     private String title;
 }

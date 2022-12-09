@@ -26,11 +26,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Controller that handles requests for history.
@@ -44,6 +45,7 @@ import static java.util.stream.Collectors.toList;
 public class HistoryController extends AbstractVersionControlController {
 
     private static final int MAX_COMMITS = 100;
+
     private static final int NO_CHANGES_FOUND = 244;
 
     private final RepositoryFactory repositoryFactory;
@@ -55,7 +57,7 @@ public class HistoryController extends AbstractVersionControlController {
     /**
      * Method returns a list of the last MAX_COMMITS commits in the service repositoiry.
      *
-     * @param authentication  - the user
+     * @param authentication - the user
      * @return - List of Commit
      * @throws VersionControlException - failed.
      */
@@ -64,12 +66,12 @@ public class HistoryController extends AbstractVersionControlController {
         isAdministrator(authentication);
         try (GitUtil git = repositoryFactory.masterRepository()) {
             return git.getLastNCommits(MAX_COMMITS)
-                    .filter(c -> !c.getFullMessage().equals("Created"))
-                    .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
-                            c.getFullMessage(),
-                            CasManagementUtils.formatDateTime(c.getCommitTime()))
-                    )
-                    .collect(toList());
+                .filter(c -> !c.getFullMessage().equals("Created"))
+                .map(c -> new Commit(c.abbreviate(GitUtil.NAME_LENGTH).name(),
+                    c.getFullMessage(),
+                    CasManagementUtils.formatDateTime(c.getCommitTime()))
+                )
+                .collect(toList());
         } catch (final GitAPIException ex) {
             LOGGER.error(ex.getMessage(), ex);
             throw new VersionControlException();
@@ -79,8 +81,8 @@ public class HistoryController extends AbstractVersionControlController {
     /**
      * Method will return a complete history of commits for a given file.
      *
-     * @param authentication  - the user
-     * @param path     - path of file
+     * @param authentication - the user
+     * @param path           - path of file
      * @return - List of History
      * @throws VersionControlException - failed
      */
@@ -101,7 +103,7 @@ public class HistoryController extends AbstractVersionControlController {
      * Method returns a list of changes committed by a commit int the repository.
      *
      * @param authentication - the user
-     * @param id       - String representing an id of a commit
+     * @param id             - String representing an id of a commit
      * @return - List of Differences
      * @throws VersionControlException - failed
      */
@@ -112,14 +114,14 @@ public class HistoryController extends AbstractVersionControlController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             val r = git.getCommit(id);
             return git.getPublishDiffs(id).stream()
-                    .map(d -> VersionControlUtil.createDiff(d, git))
-                    .filter(Objects::nonNull)
-                    .peek(d -> {
-                        d.setCommitter(r.getCommitterIdent().getName());
-                        d.setCommitTime(CasManagementUtils.formatDateTime(r.getCommitTime()));
-                        d.setCommit(id);
-                    })
-                    .collect(toList());
+                .map(d -> VersionControlUtil.createDiff(d, git))
+                .filter(Objects::nonNull)
+                .peek(d -> {
+                    d.setCommitter(r.getCommitterIdent().getName());
+                    d.setCommitTime(CasManagementUtils.formatDateTime(r.getCommitTime()));
+                    d.setCommit(id);
+                })
+                .collect(toList());
         } catch (final GitAPIException | IOException ex) {
             LOGGER.error(ex.getMessage(), ex);
             throw new VersionControlException();
@@ -129,8 +131,8 @@ public class HistoryController extends AbstractVersionControlController {
     /**
      * Method will checkout a file with passed id into the working directory.
      *
-     * @param authentication  - the user
-     * @param id       - the id of the commit
+     * @param authentication - the user
+     * @param id             - the id of the commit
      * @throws VersionControlException - failed
      */
     @GetMapping("revert/{id}")
@@ -150,9 +152,9 @@ public class HistoryController extends AbstractVersionControlController {
     /**
      * Method will restore a deleted file to the working dir.
      *
-     * @param authentication  - the user
-     * @param response - the response
-     * @param path     - path of the file
+     * @param authentication - the user
+     * @param response       - the response
+     * @param path           - path of the file
      */
     @GetMapping("revertDelete")
     @ResponseStatus(HttpStatus.OK)
@@ -174,8 +176,8 @@ public class HistoryController extends AbstractVersionControlController {
     /**
      * Method will checkout a file from a specific commit.
      *
-     * @param authentication  - the user
-     * @param data     - String[] {path, id}
+     * @param authentication - the user
+     * @param data           - String[] {path, id}
      * @throws VersionControlException - failed
      */
     @PostMapping("checkout")
@@ -197,7 +199,7 @@ public class HistoryController extends AbstractVersionControlController {
      * Method will checkout all changes in the passed commit to the working directory.
      *
      * @param authentication - the user
-     * @param id       - Id of the commit
+     * @param id             - Id of the commit
      * @throws VersionControlException - failed
      */
     @GetMapping("checkout/{id}")

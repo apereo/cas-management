@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt;
 
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.support.saml.SamlUtils;
+
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.val;
@@ -12,7 +13,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import java.util.UUID;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * Static Utility class for Metadata.
@@ -26,7 +27,7 @@ public class MetadataUtil {
     /**
      * Static util function to parse Metadata that is received as an xml string.
      *
-     * @param xml - the metadata
+     * @param xml        - the metadata
      * @param configBean - open saml config bean
      * @return - parsed EntityDescriptor
      */

@@ -1,5 +1,9 @@
 <div fxLayout="column">
 
+  <mat-form-field floatLabel="never" style="width:100%;min-width:250px;">
+    <input matInput (keyup)="doFilter(filter.value)" #filter placeholder="Filter CAS Services" >
+  </mat-form-field>
+
   <mat-table #table [dataSource]="dataSource" cdkDropList (cdkDropListDropped)="drop($event)">
 
     <ng-container matColumnDef="actions">

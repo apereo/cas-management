@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {AppConfigService, ControlsService} from '@apereo/mgmt-lib/src/lib/ui';
-import {ServiceItem} from '@apereo/mgmt-lib/src/lib/model';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { AppConfigService, ControlsService } from '@apereo/mgmt-lib/src/lib/ui';
+import { ServiceItem } from '@apereo/mgmt-lib/src/lib/model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import {MediaObserver} from '@angular/flex-layout';
-import {BaseServicesComponent} from '../base-services.component';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {RegistryService} from '../registry.service';
+import { MediaObserver } from '@angular/flex-layout';
+import { BaseServicesComponent } from '../base-services.component';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { RegistryService } from '../registry.service';
 
 /**
  * Component to display a list of services in a registry.
@@ -22,12 +22,12 @@ export class ServicesComponent extends BaseServicesComponent implements OnInit {
   domain: string;
 
   constructor(route: ActivatedRoute,
-              router: Router,
-              service: RegistryService,
-              appService: AppConfigService,
-              controls: ControlsService,
-              dialog: MatDialog,
-              mediaObserver: MediaObserver) {
+    router: Router,
+    service: RegistryService,
+    appService: AppConfigService,
+    controls: ControlsService,
+    dialog: MatDialog,
+    mediaObserver: MediaObserver) {
     super(service, route, router, appService, controls, dialog, mediaObserver);
     this.controls.icon = 'list';
     this.controls.title = 'Services';
@@ -48,7 +48,7 @@ export class ServicesComponent extends BaseServicesComponent implements OnInit {
   getServices() {
     this.service.getServices(this.domain)
       .subscribe(resp => this.dataSource.data = resp,
-       () => this.appService.showSnackBar('Unable to retrieve service listing.')
+        () => this.appService.showSnackBar('Unable to retrieve service listing.')
       );
   }
 
@@ -66,7 +66,7 @@ export class ServicesComponent extends BaseServicesComponent implements OnInit {
   drop(event: CdkDragDrop<ServiceItem[]>) {
     moveItemInArray(this.dataSource.data, event.previousIndex, event.currentIndex);
     this.dataSource._updateChangeSubscription();
-    setTimeout( () => this.updateIndexes(), 10);
+    setTimeout(() => this.updateIndexes(), 10);
   }
 
   /**
@@ -83,5 +83,15 @@ export class ServicesComponent extends BaseServicesComponent implements OnInit {
     if (chgs.length > 0) {
       this.service.updateOrder(chgs).subscribe(() => this.refresh());
     }
+  }
+
+  /**
+  * Receives entered text form the screen filter to apply to the list.
+  *
+  * @param val - partial string to filter by
+  */
+  doFilter(val: string) {
+    if (!this.dataSource) { return; }
+    this.dataSource.filter = val;
   }
 }

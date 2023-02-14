@@ -117,23 +117,23 @@ export abstract class AbstractRegisteredService extends RegisteredService {
 }
 
 /**
- * Data class for RegexRegisteredService.
+ * Data class for (Regex|CAS)RegisteredService.
  */
 export class RegexRegisteredService extends AbstractRegisteredService {
-  static cName = 'org.apereo.cas.services.RegexRegisteredService';
+  static oldName = 'org.apereo.cas.services.RegexRegisteredService';
+  static newName = 'org.apereo.cas.services.CasRegisteredService';
 
   /**
-   * Returns true if the passed object is an instance of RegexRegisteredService.
+   * Returns true if the passed object is an instance of (Regex|CAS)RegisteredService.
    *
    * @param obj - object to be inspected
    */
   static instanceOf(obj: any): boolean {
-    return obj && obj['@class'] === RegexRegisteredService.cName;
+    return obj && (obj['@class'] === RegexRegisteredService.oldName || obj['@class'] === RegexRegisteredService.newName);
   }
 
   constructor(service?: RegisteredService) {
     super(service);
-    this['@class'] = RegexRegisteredService.cName;
+    this['@class'] = RegexRegisteredService.newName;
   }
 }
-

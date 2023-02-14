@@ -155,6 +155,7 @@ public class FormDataFactory {
             mfaProviders.add(new FormData.Option("Microsoft Azure", "mfa-azure"));
             mfaProviders.add(new FormData.Option("FIDO U2F", "mfa-u2f"));
             mfaProviders.add(new FormData.Option("Swivel Secure", "mfa-swivel"));
+            mfaProviders.add(new FormData.Option("Simple MFA", "mfa-simple"));
             formData.setMfaProviders(mfaProviders);
         }
     }

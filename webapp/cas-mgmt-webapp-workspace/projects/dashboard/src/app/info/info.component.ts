@@ -33,7 +33,7 @@ export class InfoComponent implements OnInit {
    */
   ngOnInit() {
     this.route.data.subscribe((data: {resp: Map<string, string>}) => {
-      const d = this.keys.map(k => new Attribute(k, data.resp[k]));
+      const d = this.keys.map(k => new Attribute(k, data.resp.systemInfo[k]));
       this.dataSource = new MatTableDataSource(d);
       this.dataSource.paginator = this.paginator.paginator;
     });

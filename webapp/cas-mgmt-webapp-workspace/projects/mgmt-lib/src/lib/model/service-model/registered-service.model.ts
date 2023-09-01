@@ -51,6 +51,7 @@ export abstract class RegisteredService {
   serviceId: string;
   name: string;
   theme: string;
+  locale: string;
   informationUrl: string;
   privacyUrl: string;
   responseType: string;
@@ -80,6 +81,7 @@ export abstract class RegisteredService {
     this.serviceId = service?.serviceId;
     this.name = service?.name;
     this.theme = service?.theme;
+    this.locale = service?.locale;
     this.informationUrl = service?.informationUrl;
     this.privacyUrl = service?.privacyUrl;
     this.responseType = service?.responseType;

@@ -14,6 +14,7 @@ export class TabBasicsForm extends FormGroup implements MgmtFormGroup<AbstractRe
   get serviceName() { return this.get('serviceName') as FormControl; }
   get description() { return this.get('description') as FormControl; }
   get theme() { return this.get('theme') as FormControl; }
+  get locale() { return this.get('locale') as FormControl; }
   get logo() { return this.get('logo') as FormControl; }
   get informationUrl() { return this.get('informationUrl') as FormControl; }
   get privacyUrl() { return this.get('privacyUrl') as FormControl; }
@@ -33,6 +34,7 @@ export class TabBasicsForm extends FormGroup implements MgmtFormGroup<AbstractRe
     this.setControl('serviceName', new FormControl(this.service?.name, Validators.required));
     this.setControl('description', new FormControl(this.service?.description));
     this.setControl('theme', new FormControl(this.service?.theme));
+    this.setControl('locale', new FormControl(this.service?.locale));
     this.setControl('logo', new FormControl(this.service?.logo));
     this.setControl('informationUrl', new FormControl(this.service?.informationUrl));
     this.setControl('privacyUrl', new FormControl(this.service?.privacyUrl));
@@ -50,6 +52,7 @@ export class TabBasicsForm extends FormGroup implements MgmtFormGroup<AbstractRe
     service.name = this.serviceName.value;
     service.description = this.description.value;
     service.theme = this.theme.value;
+    service.locale = this.locale.value;
     service.logo = this.logo.value;
     service.informationUrl = this.informationUrl.value;
     service.privacyUrl = this.privacyUrl.value;

@@ -65,6 +65,7 @@ import {ServicetypeComponent} from './servicetype/servicetype.component';
 import {SsoPolicyComponent} from './sso/policy/sso-policy.component';
 import {SsoComponent} from './sso/sso-chain.component';
 import {ThemeidComponent} from './themeid/themeid.component';
+import {LocaleComponent} from './locale/locale.component';
 import {WsfedclientComponent} from './wsfedclient/wsfedclient.component';
 import {AttributesModule} from './attributes/attributes.module';
 import {AuthenticationPolicyComponent} from "./authn-policy/authn-policy.component";
@@ -145,6 +146,7 @@ import { AcceptableUsagePolicyComponent } from './acceptable-usage-policy/accept
     SsoComponent,
     AuthenticationPolicyComponent,
     ThemeidComponent,
+    LocaleComponent,
     WsfedclientComponent,
     AcceptableUsagePolicyTextComponent,
     AcceptableUsagePolicyMessageCode,
@@ -239,6 +241,7 @@ import { AcceptableUsagePolicyComponent } from './acceptable-usage-policy/accept
     SsoComponent,
     AuthenticationPolicyComponent,
     ThemeidComponent,
+    LocaleComponent,
     WsfedclientComponent,
     AcceptableUsagePolicyTextComponent,
     AcceptableUsagePolicyMessageCode,

@@ -185,7 +185,7 @@ was encountered.
 
 ## Form Data
 
-On startup, the webapp will try and contact the configured CAS server at it's `status/discovery` endpoint.  If 
+On startup, the webapp will try and contact the configured CAS server at it's `/actuator/discoveryProfile` endpoint.  If 
 successful, the data obtained from this endpoint will be used to populate the following field options in the form.
 
 - Registered Service Type

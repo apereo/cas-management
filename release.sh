@@ -22,12 +22,9 @@ echo -e "\t\torg.gradle.parallel=false"
 echo -e "\nFor more information, please visit https://apereo.github.io/cas/developer/Release-Process.html\n"
 
 read -s -p "If you are ready, press ENTER to continue..." anykey
-clear
 
-read -s -p "Sonatype Username: " username
-echo
-read -s -p "Sonatype Password: " password
-echo
+username="${SONATYPE_USERNAME}"
+password="${SONATYPE_PASSWORD}"
 
 clear
 echo -e "\nBuilding CAS Management. Please be patient as this might take a while..."

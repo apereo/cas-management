@@ -8,8 +8,7 @@ import lombok.val;
 import org.jooq.lambda.Unchecked;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.authorization.generator.SpringSecurityPropertiesAuthorizationGenerator;
-import org.pac4j.core.context.WebContext;
-import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.context.CallContext;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
 
@@ -58,7 +57,7 @@ public class CasSpringSecurityAuthorizationGenerator implements AuthorizationGen
     }
 
     @Override
-    public Optional<UserProfile> generate(final WebContext context, final SessionStore sessionStore, final UserProfile profile) {
-        return this.generator.generate(context, sessionStore, profile);
+    public Optional<UserProfile> generate(final CallContext callContext, final UserProfile profile) {
+        return this.generator.generate(callContext, profile);
     }
 }

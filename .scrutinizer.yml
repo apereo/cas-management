@@ -3,9 +3,3 @@ build:
         override:
             - ./ci/init-build.sh
             - ./ci/install.sh -DshowStandardStreams=true
-    tests:
-        override:
-            -
-                coverage:
-                    file: './build/reports/jacoco/jacocoAggregateReport/jacocoAggregateReport.xml'
-                    format: 'jacoco'

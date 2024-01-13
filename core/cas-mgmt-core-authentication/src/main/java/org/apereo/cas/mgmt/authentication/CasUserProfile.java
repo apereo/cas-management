@@ -1,16 +1,10 @@
 package org.apereo.cas.mgmt.authentication;
 
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
-import org.apereo.cas.mgmt.util.CasManagementUtils;
-import org.apereo.cas.services.RegisteredService;
-
 import lombok.Getter;
-import lombok.val;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.springframework.security.core.Authentication;
-
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,7 +38,6 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
         setLinkedId(up.getId());
         setRemembered(up.isRemembered());
         addRoles(up.getRoles());
-        addPermissions(up.getPermissions());
 
         this.administrator = adminRoles.stream().anyMatch(r -> getRoles().contains(r));
         this.delegate = getRoles().contains("ROLE_USER");
@@ -91,35 +84,6 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
             .map(e -> e.getValue().toString())
             .findFirst()
             .orElse(null);
-    }
-
-    /**
-     * Checks a user's permissions if they have access to the passed domain.
-     *
-     * @param domain - the domain
-     * @return - true if user has permission
-     */
-    public boolean hasPermission(final String domain) {
-        val permissions = getPermissions();
-        return isAdministrator() || permissions.contains("*")
-               || permissions.stream().anyMatch(domain::endsWith);
-    }
-
-    /**
-     * Checks if user has permission to the {@link RegisteredService}.
-     *
-     * @param <T>     - Param Type
-     * @param service - the service
-     * @return true if user has permission
-     */
-    public <T extends RegisteredService> boolean hasPermission(final T service) {
-        val permissions = getPermissions();
-        if (isAdministrator() || permissions.contains("*")) {
-            return true;
-        }
-        return Arrays.stream(service.getServiceId().split("|"))
-            .map(CasManagementUtils::extractDomain)
-            .anyMatch(d -> permissions.stream().anyMatch(d::endsWith));
     }
 
     public boolean isUser() {

@@ -45,7 +45,7 @@ public class CasManagementAuthorizationConfiguration {
             if (authzAttributes.stream().anyMatch(a -> a.equals("*"))) {
                 return staticAdminRolesAuthorizationGenerator;
             }
-            return new FromAttributesAuthorizationGenerator(authzAttributes.toArray(ArrayUtils.EMPTY_STRING_ARRAY), ArrayUtils.EMPTY_STRING_ARRAY);
+            return new FromAttributesAuthorizationGenerator(authzAttributes.toArray(ArrayUtils.EMPTY_STRING_ARRAY));
         }
 
         return springSecurityPropertiesAuthorizationGenerator;
@@ -55,7 +55,7 @@ public class CasManagementAuthorizationConfiguration {
     @ConditionalOnMissingBean(name = "staticAdminRolesAuthorizationGenerator")
     public AuthorizationGenerator staticAdminRolesAuthorizationGenerator(
         final CasManagementConfigurationProperties mgmtProperties) {
-        return (context, store, profile) -> {
+        return (context, profile) -> {
             profile.addRoles(mgmtProperties.getAdminRoles());
             profile.addRoles(mgmtProperties.getUserRoles());
             return Optional.of(profile);

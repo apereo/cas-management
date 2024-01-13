@@ -5,11 +5,11 @@
         <Property name="baseDir">/tmp/logs</Property>
         <Property name="cas.log.level">info</Property>
         <Property name="spring.webflow.log.level">info</Property>
-        <Property name="spring.security.log.level">info</Property>
+        <Property name="spring.security.log.level">debug</Property>
         <Property name="spring.web.log.level">warn</Property>
         <Property name="spring.boot.log.level">info</Property>
         <Property name="ldap.log.level">warn</Property>
-        <Property name="pac4j.log.level">warn</Property>
+        <Property name="pac4j.log.level">debug</Property>
     </Properties>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">

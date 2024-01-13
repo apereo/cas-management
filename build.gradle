@@ -6,23 +6,18 @@ defaultTasks "clean", "build"
 
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral() 
-        gradlePluginPortal()
-        maven {
-            url "https://maven.eveoh.nl/content/repositories/releases"
-        }
         gradlePluginPortal()
     }
 
     dependencies {
-        classpath "com.github.jk1:gradle-license-report:$gradleLicenseVersion"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:$gradleGitVersion"
-        classpath "io.franzbecker:gradle-lombok:$gradleLombokVersion"
+        classpath "io.freefair.gradle:lombok-plugin:$gradleLombokVersion"
 
         classpath "net.ltgt.gradle:gradle-errorprone-plugin:$gradleErrorProneVersion"
         classpath "com.github.node-gradle:gradle-node-plugin:$gradleNodeVersion"
-        classpath "org.owasp:dependency-check-gradle:$gradleDependencyCheckVersion"
         classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishingVersion" 
     }
 }
@@ -44,18 +39,6 @@ ext {
     generateGitProperties = Boolean.getBoolean("generateGitProperties")
 
     ci = System.getenv("CI") || Boolean.getBoolean("CI")
-
-    excludedFilesFromTestCoverage = [
-        '**/**ConfigurationMetadata**',
-        '**/**NtlmAuthenticationHandler**',
-        '**/**CosmosDbServiceRegistry**',
-        '**/**NimbusOAuthJacksonModule**',
-        '**/**Application**',
-        '**/**Application$**',
-        '**/**Exception$**',
-        '**/**Properties**',
-        '**/**Properties$**'
-    ]
 }
 
 def isArtifactSigningRequired = {
@@ -87,7 +70,6 @@ allprojects {
     apply plugin: "idea"
     apply plugin: "eclipse"
     apply plugin: "java-library"
-    apply plugin: "jacoco"
 
     if (gradle.startParameter.taskNames.any {task -> task.equalsIgnoreCase("install") }) {
         apply plugin: "maven"
@@ -108,11 +90,6 @@ allprojects {
 
     project.ext["forceBootifulArtifact"] = null
 
-    afterEvaluate { project ->
-        jacoco {
-            toolVersion = "$gradleJacocoVersion"
-        }
-    }
 
     java {
         toolchain {
@@ -137,6 +114,21 @@ allprojects {
         mavenCentral()
         maven {
             url "$sonatypeReleasesRepositoryUrl"
+            mavenContent { releasesOnly() }
+        }
+        maven {
+            url "https://build.shibboleth.net/maven/releases/"
+            mavenContent {releasesOnly() }
+            content {
+                includeGroupByRegex "org\\.opensaml.*"
+                includeGroupByRegex "net\\.shibboleth.*"
+            }
+        }
+        maven {
+            url "https://jitpack.io"
+            content {
+                includeGroupByRegex ".*wss4j.*"
+            }
             mavenContent { releasesOnly() }
         }
     }
@@ -209,38 +201,6 @@ subprojects {
     configurations {
         tests
         provided
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.required.set(true)
-            html.required.set(true)
-        }
-        afterEvaluate {
-            classDirectories.setFrom(files(classDirectories.files.collect {
-                fileTree(dir: it, include: ['**/*.*'], exclude: rootProject.excludedFilesFromTestCoverage)
-            }))
-        }
-        sourceSets sourceSets.main
-        getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
-    }
-
-
-    jacocoTestCoverageVerification {
-        getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
-        afterEvaluate {
-            classDirectories.setFrom(files(classDirectories.files.collect {
-                fileTree(dir: it, include: ['**/*.*'], exclude: rootProject.excludedFilesFromTestCoverage)
-            }))
-        }
-        violationRules {
-            rule {
-                element = 'CLASS'
-                limit {
-                    minimum = 0.80
-                }
-            }
-        }
     }
 
     apply from: rootProject.file("gradle/overrides.gradle")
@@ -383,21 +343,11 @@ subprojects {
         options.compilerArgs.addAll(casCompilerArgs)
     }
 
-    def currentTime = java.time.ZonedDateTime.now(ZoneId.systemDefault())
-    compileJava.doLast {
-        buildDate = currentTime
-    }
-    tasks.jar.onlyIf {
-        project.buildDate != null || !project.buildJarFile.exists()
-    }
-
     if (projectShouldBePublished(project)) {
-        apply plugin: "io.franzbecker.gradle-lombok"
+        apply plugin: "io.freefair.lombok"
         lombok {
             version = "$lombokVersion"
-            sha256 = ""
         }
-        installLombok.enabled=false
     }
 
     jar {
@@ -407,7 +357,6 @@ subprojects {
                     "Implementation-Title": project.name,
                     "Implementation-Vendor": project.group,
                     "Created-By": project.group,
-                    "Implementation-Date": java.time.ZonedDateTime.now(ZoneId.systemDefault()),
                     "Specification-Version": "${-> project.ext.has("gitProps") ? project.ext.gitProps['git.commit.id'] : 'N/A'}",
                     "Implementation-Version": project.version)
         }
@@ -440,7 +389,6 @@ subprojects {
 
         if (!skipErrorProneCompiler) {
             errorprone "com.google.errorprone:error_prone_core:$errorProneVersion"
-            errorproneJavac "com.google.errorprone:javac:$errorproneJavacVersion"
         }
         testImplementation libraries.tests
         implementation libraries.log4j
@@ -456,7 +404,7 @@ tasks.withType(Javadoc) {
 }
 
 task aggregateJavadocsIntoJar(type: Jar, dependsOn: javadoc, description: "Aggregate all Javadocs into a single directory") {
-    classifier = "javadoc"
+    archiveClassifier = "javadoc"
     from javadoc
 }
 
@@ -475,46 +423,6 @@ if (rootProject.publishReleases || rootProject.publishSnapshots) {
     artifacts {
         archives aggregateJavadocsIntoJar
         archives rootSourcesJar
-    }
-}
-
-
-task jacocoMerge(type: JacocoMerge) {
-    subprojects.each { subproject ->
-        executionData subproject.tasks.withType(Test)
-        dependsOn tasks.withType(Test)
-    }
-    doFirst {
-        executionData = files(executionData.findAll { it.exists() })
-    }
-}
-
-task jacocoRootReport(type: JacocoReport) {
-    description = 'Generates an aggregate report from all projects'
-
-    subprojects.each {
-        if (!it.path.contains(":docs")) {
-            it.tasks.withType(Test).each { task -> dependsOn(task) }
-        }
-    }
-
-    dependsOn jacocoMerge
-
-    additionalSourceDirs.setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
-    sourceDirectories.setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
-    classDirectories.setFrom(
-            files(subprojects.sourceSets.main.output).collect {
-                fileTree(dir: it,
-                        include: ['**/*.*'],
-                        exclude: rootProject.excludedFilesFromTestCoverage
-                        )
-            })
-    //executionData.setFrom(files(subprojects.jacocoTestReport.executionData))
-    executionData jacocoMerge.destinationFile
-
-    reports {
-        html.required = true
-        xml.required = true
     }
 }
 

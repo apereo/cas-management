@@ -12,7 +12,6 @@ import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Comparator;
@@ -78,7 +76,7 @@ public class ServiceController {
                                                    @RequestParam final String domain) throws IllegalAccessException {
         val casUserProfile = new CasUserProfile(authentication);
 
-        if (!casUserProfile.isAdministrator() && !casUserProfile.hasPermission(domain)) {
+        if (!casUserProfile.isAdministrator()) {
             throw new IllegalAccessException("You do not have permission to the domain '" + domain + '\'');
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
@@ -102,8 +100,8 @@ public class ServiceController {
             throw new IllegalAccessException("You do not have permission");
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
-        val services = manager.findServiceBy(s -> s instanceof OAuthRegisteredService);
-        return manager.getServiceItems(services.stream().filter(casUserProfile::hasPermission));
+        val services = manager.findServiceBy(OAuthRegisteredService.class::isInstance);
+        return manager.getServiceItems(services.stream());
     }
 
     /**
@@ -120,8 +118,8 @@ public class ServiceController {
             throw new IllegalAccessException("You do not have permission");
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
-        val services = manager.findServiceBy(s -> s instanceof WSFederationRegisteredService);
-        return manager.getServiceItems(services.stream().filter(casUserProfile::hasPermission));
+        val services = manager.findServiceBy(WSFederationRegisteredService.class::isInstance);
+        return manager.getServiceItems(services.stream());
     }
 
     /**
@@ -138,7 +136,7 @@ public class ServiceController {
             throw new IllegalAccessException("You do not have permission");
         }
         val manager = (ManagementServicesManager) managerFactory.from(authentication);
-        val services = manager.getAllServicesOfType(SamlRegisteredService.class).stream().filter(user::hasPermission);
+        val services = manager.getAllServicesOfType(SamlRegisteredService.class).stream();
         return manager.getServiceItems(services);
     }
 
@@ -157,7 +155,7 @@ public class ServiceController {
         val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val svc = manager.findServiceBy(id);
-        if (casUserProfile.isUser() && casUserProfile.hasPermission(svc)) {
+        if (casUserProfile.isUser()) {
             if (svc == null) {
                 throw new IllegalArgumentException(MessageFormat.format(NOT_FOUND_PATTERN, id));
             }
@@ -177,7 +175,7 @@ public class ServiceController {
     public void saveService(final Authentication authentication,
                             @RequestBody final RegisteredService service) {
         val user = CasUserProfile.from(authentication);
-        if (user.isUser() && user.hasPermission(service)) {
+        if (user.isUser()) {
             val manager = (ManagementServicesManager) managerFactory.from(authentication);
             save(service, manager);
         }
@@ -195,10 +193,7 @@ public class ServiceController {
                                             @PathVariable(value = "id") final Long id) {
         val casUserProfile = CasUserProfile.from(authentication);
         if (casUserProfile.isUser()) {
-            val service = getService(authentication, id);
-            if (casUserProfile.hasPermission(service)) {
-                return service;
-            }
+            return getService(authentication, id);
         }
         throw new IllegalArgumentException("You do not have permission");
     }
@@ -213,9 +208,8 @@ public class ServiceController {
     @GetMapping("/yaml/{id}")
     public String getYaml(final Authentication authentication,
                           @PathVariable("id") final Long id) {
-        val casUserProfile = CasUserProfile.from(authentication);
         val service = getService(authentication, id);
-        return casUserProfile.hasPermission(service) ? CasManagementUtils.toYaml(service) : StringUtils.EMPTY;
+        return CasManagementUtils.toYaml(service);
     }
 
     /**
@@ -230,32 +224,25 @@ public class ServiceController {
     public void saveYaml(final Authentication authentication,
                          @PathVariable("id") final Long id,
                          @RequestBody final String yaml) throws IOException {
-        val casUserProfile = CasUserProfile.from(authentication);
         val service = CasManagementUtils.parseYaml(yaml);
-        if (casUserProfile.hasPermission(service)) {
-            if (!id.equals(service.getId())) {
-                throw new IllegalArgumentException("Changes to assigned id are not allowed");
-            }
-            val manager = (ManagementServicesManager) managerFactory.from(authentication);
-            save(service, manager);
+        if (!id.equals(service.getId())) {
+            throw new IllegalArgumentException("Changes to assigned id are not allowed");
         }
+        val manager = (ManagementServicesManager) managerFactory.from(authentication);
+        save(service, manager);
     }
 
     @PostMapping("validate")
     public ResponseEntity<String> validate(final Authentication authentication,
                                            @RequestParam(required = false, name = "format", defaultValue = "json") final String format,
                                            @RequestBody final RegisteredService service) {
-        val casUserProfile = CasUserProfile.from(authentication);
-        if (casUserProfile.hasPermission(service)) {
-            var result = StringUtils.EMPTY;
-            if (StringUtils.equalsIgnoreCase(format, "yaml")) {
-                result = CasManagementUtils.toYaml(service);
-            } else {
-                result = CasManagementUtils.toJson(service);
-            }
-            return ResponseEntity.ok(result);
+        var result = StringUtils.EMPTY;
+        if (StringUtils.equalsIgnoreCase(format, "yaml")) {
+            result = CasManagementUtils.toYaml(service);
+        } else {
+            result = CasManagementUtils.toJson(service);
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(result);
     }
 
     /**
@@ -269,8 +256,7 @@ public class ServiceController {
     public String getJson(final Authentication authentication,
                           @PathVariable("id") final Long id) {
         val service = getService(authentication, id);
-        val casUserProfile = CasUserProfile.from(authentication);
-        return casUserProfile.hasPermission(service) ? CasManagementUtils.toJson(service) : StringUtils.EMPTY;
+        return CasManagementUtils.toJson(service);
     }
 
     /**
@@ -286,14 +272,11 @@ public class ServiceController {
                          @PathVariable("id") final Long id,
                          @RequestBody final String json) throws IOException {
         val service = CasManagementUtils.parseJson(json);
-        val casUserProfile = CasUserProfile.from(authentication);
-        if (casUserProfile.hasPermission(service)) {
-            if (!id.equals(service.getId())) {
-                throw new IllegalArgumentException("Changes to assigned id are not allowed.");
-            }
-            val manager = (ManagementServicesManager) managerFactory.from(authentication);
-            save(service, manager);
+        if (!id.equals(service.getId())) {
+            throw new IllegalArgumentException("Changes to assigned id are not allowed.");
         }
+        val manager = (ManagementServicesManager) managerFactory.from(authentication);
+        save(service, manager);
     }
 
     /**
@@ -322,13 +305,9 @@ public class ServiceController {
     @ResponseStatus(HttpStatus.OK)
     public void updateOrder(final Authentication authentication,
                             @RequestBody final List<RegisteredServiceItem> svcs) throws IllegalAccessException {
-        val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         for (val svc : svcs) {
             LOGGER.warn("Service = [{}], order = [{}]", svc, svc.getEvalOrder());
-            if (!casUserProfile.hasPermission(svc.getServiceId())) {
-                throw new IllegalAccessException("You do not have permission");
-            }
             val id = svc.getAssignedId();
             val svcA = manager.findServiceBy(Long.parseLong(id));
             if (svcA == null) {
@@ -350,12 +329,8 @@ public class ServiceController {
     public void promote(
         @PathVariable final Long id,
         final Authentication authentication) throws IllegalAccessException {
-        val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val service = (BaseRegisteredService) manager.findServiceBy(id);
-        if (!casUserProfile.hasPermission(service)) {
-            throw new IllegalAccessException("You do not have permission");
-        }
         service.setEnvironments(null);
         manager.save(service);
     }
@@ -371,12 +346,8 @@ public class ServiceController {
     public void demote(
         @PathVariable final Long id,
         final Authentication authentication) throws IllegalAccessException {
-        val casUserProfile = CasUserProfile.from(authentication);
         val manager = managerFactory.from(authentication);
         val service = (BaseRegisteredService) manager.findServiceBy(id);
-        if (!casUserProfile.hasPermission(service)) {
-            throw new IllegalAccessException("You do not have permission");
-        }
         val env = new HashSet<String>();
         env.add("staged");
         service.setEnvironments(env);

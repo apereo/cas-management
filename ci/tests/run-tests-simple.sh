@@ -9,7 +9,7 @@ echo -e "***********************************************"
 echo -e "Gradle build started at `date`"
 echo -e "***********************************************"
 
-gradleBuild="$gradleBuild test jacocoRootReport --parallel -x javadoc -x check \
+gradleBuild="$gradleBuild test --parallel -x javadoc -x check \
     -DskipNpmLint=true -DskipGradleLint=true -DskipSass=true -DskipNpmLint=true -DskipClientBuild=true \
     -DskipNpmCache=false -DskipNestedConfigMetadataGen=true "
 

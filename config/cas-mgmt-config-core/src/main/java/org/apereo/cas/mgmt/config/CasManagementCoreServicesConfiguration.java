@@ -18,27 +18,25 @@ import org.apereo.cas.mgmt.controller.ServiceController;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.mgmt.factory.ServicesManagerFactory;
 import org.apereo.cas.services.ChainingServicesManager;
-import org.apereo.cas.services.DefaultChainingServicesManager;
-import org.apereo.cas.services.DefaultServicesManager;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServiceRegistry;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.ServicesManagerConfigurationContext;
 import org.apereo.cas.services.domain.DefaultDomainAwareServicesManager;
 import org.apereo.cas.services.domain.DefaultRegisteredServiceDomainExtractor;
+import org.apereo.cas.services.mgmt.DefaultChainingServicesManager;
+import org.apereo.cas.services.mgmt.DefaultServicesManager;
 import org.apereo.cas.services.resource.DefaultRegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
-
+import org.apereo.services.persondir.IPersonAttributeDao;
 import com.github.benmanes.caffeine.cache.Cache;
 import lombok.val;
-import org.apereo.services.persondir.IPersonAttributeDao;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.HashSet;
 
 /**

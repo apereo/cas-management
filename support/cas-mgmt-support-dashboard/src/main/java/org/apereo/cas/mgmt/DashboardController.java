@@ -16,7 +16,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
+import org.apache.hc.core5.http.HttpHost;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,9 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.Comparator;
 import java.util.Date;
@@ -64,21 +63,19 @@ public class DashboardController {
     private final CasConfigurationProperties casProperties;
 
     private static String toCSV(final AuditLog log) {
-        return new StringBuilder()
-            .append(log.getWhenActionWasPerformed())
-            .append('|')
-            .append(log.getClientIpAddress())
-            .append('|')
-            .append(log.getServerIpAddress())
-            .append('|')
-            .append(log.getPrincipal())
-            .append('|')
-            .append(log.getActionPerformed())
-            .append('|')
-            .append(log.getResourceOperatedUpon())
-            .append('|')
-            .append(log.getApplicationCode())
-            .toString();
+        return String.valueOf(log.getWhenActionWasPerformed()) +
+            '|' +
+            log.getClientIpAddress() +
+            '|' +
+            log.getServerIpAddress() +
+            '|' +
+            log.getPrincipal() +
+            '|' +
+            log.getActionPerformed() +
+            '|' +
+            log.getResourceOperatedUpon() +
+            '|' +
+            log.getApplicationCode();
     }
 
     private static void isAdmin(final Authentication authentication) throws IllegalAccessException {

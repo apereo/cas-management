@@ -36,7 +36,7 @@ public class CasManagementSamlConfiguration {
             signatureValidationFilter.setRequireSignedRoot(false);
             return signatureValidationFilter;
         }
-        return (xmlObject, metadataFilterContext) -> xmlObject;
+        return null;
     }
 
     @Bean

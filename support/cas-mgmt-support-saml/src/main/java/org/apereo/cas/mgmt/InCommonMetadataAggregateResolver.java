@@ -5,14 +5,15 @@ import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.services.UnauthorizedServiceException;
 import org.apereo.cas.support.saml.OpenSamlConfigBean;
 import org.apereo.cas.util.EncodingUtils;
-import org.apereo.cas.util.HttpUtils;
-
+import org.apereo.cas.util.http.HttpExecutionRequest;
+import org.apereo.cas.util.http.HttpUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.HttpEntityContainer;
+import org.apache.hc.core5.http.HttpResponse;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
@@ -22,9 +23,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -79,7 +78,9 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
     public EntityDescriptor find(final String entityId) throws SignatureException {
         val entity = MetadataUtil.fromXML(xml(entityId), configBean);
         try {
-            this.signatureValidationFilter.filter(entity, new MetadataFilterContext());
+            if (signatureValidationFilter != null) {
+                this.signatureValidationFilter.filter(entity, new MetadataFilterContext());
+            }
         } catch (final FilterException exception) {
             LOGGER.error(exception.getMessage(), exception);
             throw new SignatureException("Invalid metadata signature for [" + entityId + ']');
@@ -91,12 +92,9 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
     @SneakyThrows
     public String xml(final String entityId) {
         if (sps.contains(entityId)) {
-            val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl() + '/' + EncodingUtils.urlEncode(entityId));
-
-            try (val entity = resp.getEntity().getContent()) {
-                return IOUtils.toString(entity, StandardCharsets.UTF_8);
-            } catch (final Exception e) {
-                LOGGER.error(e.getMessage(), e);
+            val response = fetchMetadata(mgmtProperties.getInCommonMDQUrl() + '/' + EncodingUtils.urlEncode(entityId));
+            try (val content = ((HttpEntityContainer) response).getEntity().getContent()) {
+                return IOUtils.toString(content, StandardCharsets.UTF_8);
             }
         }
         throw new IllegalArgumentException("Entity not found");
@@ -114,7 +112,7 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
         headers.put("Accept", "*/*");
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);
-        val execution = HttpUtils.HttpExecutionRequest.builder()
+        val execution = HttpExecutionRequest.builder()
             .url(metadataLocation)
             .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
             .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
@@ -125,28 +123,30 @@ public class InCommonMetadataAggregateResolver implements MetadataAggregateResol
         val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);
-            throw new UnauthorizedServiceException(UnauthorizedServiceException.CODE_UNAUTHZ_SERVICE);
+            throw UnauthorizedServiceException.denied("Unable to fetch metadata from " + metadataLocation);
         }
         return response;
     }
 
     @SneakyThrows
     private List<String> fromInCommon() {
-        //return new ArrayList<>();
         if (StringUtils.isNotBlank(mgmtProperties.getInCommonMDQUrl())) {
-            val resp = fetchMetadata(mgmtProperties.getInCommonMDQUrl());
-            val entity = resp.getEntity();
-            val result = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-            val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            val doc = docBuilder.parse(new InputSource(new StringReader(result)));
-            val list = new ArrayList<String>();
-            val nodes = doc.getDocumentElement().getElementsByTagName("EntityDescriptor");
-            for (int i = 0; i < nodes.getLength(); i++) {
-                if (((Element) nodes.item(i)).getElementsByTagName("SPSSODescriptor").getLength() > 0) {
-                    list.add(((Element) nodes.item(i)).getAttribute("entityID"));
+            val response = fetchMetadata(mgmtProperties.getInCommonMDQUrl());
+            try (val content = ((HttpEntityContainer) response).getEntity().getContent()) {
+                val result = IOUtils.toString(content, StandardCharsets.UTF_8);
+                val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                val doc = docBuilder.parse(new InputSource(new StringReader(result)));
+                val list = new ArrayList<String>();
+                val nodes = doc.getDocumentElement().getElementsByTagName("EntityDescriptor");
+                for (int i = 0; i < nodes.getLength(); i++) {
+                    if (((Element) nodes.item(i)).getElementsByTagName("SPSSODescriptor").getLength() > 0) {
+                        list.add(((Element) nodes.item(i)).getAttribute("entityID"));
+                    }
                 }
+                return list;
             }
-            return list;
+
+
         }
         return new ArrayList<>(0);
     }

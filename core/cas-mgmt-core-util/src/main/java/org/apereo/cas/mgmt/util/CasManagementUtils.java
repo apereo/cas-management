@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -176,7 +177,7 @@ public final class CasManagementUtils {
      * @return the string
      */
     public static String extractDomain(final String service) {
-        val extractor = DOMAIN_EXTRACTOR.matcher(service.toLowerCase());
+        val extractor = DOMAIN_EXTRACTOR.matcher(service.toLowerCase(Locale.ENGLISH));
         return extractor.lookingAt() ? validateDomain(extractor.group(1)) : "default";
     }
 

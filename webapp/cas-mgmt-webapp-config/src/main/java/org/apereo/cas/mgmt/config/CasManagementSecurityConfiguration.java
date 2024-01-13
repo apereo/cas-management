@@ -2,30 +2,32 @@ package org.apereo.cas.mgmt.config;
 
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
-
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.matching.matcher.PathMatcher;
-import org.pac4j.springframework.security.web.CallbackFilter;
-import org.pac4j.springframework.security.web.SecurityFilter;
+import org.pac4j.springframework.annotation.AnnotationConfig;
+import org.pac4j.springframework.component.ComponentConfig;
+import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 /**
@@ -36,12 +38,12 @@ import java.util.List;
  */
 @Configuration(value = "casManagementSecurityConfiguration", proxyBeanMethods = false)
 @EnableWebSecurity
-@Slf4j
 @EnableConfigurationProperties({CasConfigurationProperties.class,
     ServerProperties.class,
     CasManagementConfigurationProperties.class})
+@Import({ComponentConfig.class, AnnotationConfig.class})
+@ComponentScan(basePackages = "org.pac4j.springframework.web")
 public class CasManagementSecurityConfiguration {
-
 
     /**
      * Gets default callback url.
@@ -60,8 +62,7 @@ public class CasManagementSecurityConfiguration {
     public Config pac4jClientConfiguration(
         final ServerProperties serverProperties,
         final List<Client> authenticationClients,
-        @Qualifier("managementWebappAuthorizer")
-        final Authorizer managementWebappAuthorizer,
+        @Qualifier("managementWebappAuthorizer") final Authorizer managementWebappAuthorizer,
         final CasManagementConfigurationProperties managementProperties) {
         var defaultCallbackUrl = getDefaultCallbackUrl(serverProperties, managementProperties);
         val cfg = new Config(new Clients(defaultCallbackUrl, authenticationClients));
@@ -71,41 +72,27 @@ public class CasManagementSecurityConfiguration {
     }
 
     @Bean
-    public WebSecurityConfigurerAdapter callbackFilterAdapter(
+    public WebMvcConfigurer managementWebMvcConfigurer(
         final CasManagementConfigurationProperties mgmtProperties,
-        @Qualifier("pac4jClientConfiguration")
-        final Config config) {
-        return new WebSecurityConfigurerAdapter() {
+        @Qualifier("pac4jClientConfiguration") final Config config) {
+        return new WebMvcConfigurer() {
             @Override
-            protected void configure(final HttpSecurity http) throws Exception {
-                LOGGER.debug("Configuring Callback security filter");
-                val callbackFilter = new CallbackFilter(config);
-                http.antMatcher("/callback/**")
-                    .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class);
-
-                if (mgmtProperties.isCasSso()) {
-                    LOGGER.debug("Configuring CAS security filter");
-                    val securityFilter = new SecurityFilter(config, "CasClient", "mgmtAuthorizer");
-                    securityFilter.setMatchers("excludedPath");
-                    http.antMatcher("/**")
-                        .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
-                        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-                    http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                    http.headers().frameOptions().sameOrigin();
-                    http.requiresChannel().anyRequest().requiresSecure();
-                }
-
-                if (StringUtils.isNotBlank(mgmtProperties.getAuthzIpRegex())) {
-                    LOGGER.debug("Configuring Static IP security filter.");
-                    val securityFilter = new SecurityFilter(config, "IpClient", "mgmtAuthorizer");
-                    http.antMatcher("/**")
-                        .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
-                        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-                    http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                    http.headers().frameOptions().sameOrigin();
-                    http.requiresChannel().anyRequest().requiresSecure();
-                }
+            public void addInterceptors(final InterceptorRegistry registry) {
+                registry.addInterceptor(new SecurityInterceptor(config)).addPathPatterns("/**");
             }
         };
+    }
+
+    @Bean
+    public SecurityFilterChain springSecurityFilterChain(final HttpSecurity http,
+                                                         @Qualifier("pac4jClientConfiguration") final Config config,
+                                                         final CasManagementConfigurationProperties mgmtProperties) throws Exception {
+        http.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+        http.csrf(c -> c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+        http.headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+        http.requiresChannel(c -> c.anyRequest().requiresSecure());
+        http.httpBasic(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable);
+        return http.getObject();
     }
 }

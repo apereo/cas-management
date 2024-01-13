@@ -44,8 +44,6 @@ configurations.all {
     exclude(group: "pull-parser", module: "pull-parser")
     exclude(group: "javax.servlet", module: "servlet-api")
     exclude(group: "commons-logging", module: "commons-logging")
-    exclude(group: "com.github.mmoayyed.cxf")
-    exclude(group: "org.apache.wss4j")
 }
 
 ext["log4j2.version"] = ext["log4jVersion"]

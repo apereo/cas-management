@@ -18,8 +18,9 @@ import org.apereo.cas.services.UnauthorizedServiceException;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.util.DigestUtils;
 import org.apereo.cas.util.EncodingUtils;
-import org.apereo.cas.util.HttpUtils;
 import org.apereo.cas.util.ResourceUtils;
+import org.apereo.cas.util.http.HttpExecutionRequest;
+import org.apereo.cas.util.http.HttpUtils;
 
 import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,8 @@ import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.HttpEntityContainer;
+import org.apache.hc.core5.http.HttpResponse;
 import org.eclipse.jgit.diff.RawText;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -42,7 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -242,8 +244,9 @@ public class SubmissionController extends AbstractVersionControlController {
         val location = svc.getMetadataLocation();
         if (location.contains("mdq.incommon.org")) {
             val resp = fetchMetadata(svc.getMetadataLocation().replace("{0}", EncodingUtils.urlEncode(svc.getServiceId())));
-            val entity = resp.getEntity();
-            return IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
+            try (val content = ((HttpEntityContainer) resp).getEntity().getContent()) {
+                return IOUtils.toString(content, StandardCharsets.UTF_8);
+            }
         }
         val fileName = DigestUtils.sha(svc.getServiceId()) + ".xml";
         val res = ResourceUtils.getResourceFrom("file:/" + managementProperties.getMetadataRepoDir() + '/' + fileName).getFile();
@@ -455,7 +458,7 @@ public class SubmissionController extends AbstractVersionControlController {
         headers.put("Accept", "*/*");
 
         LOGGER.debug("Fetching dynamic metadata via MDQ for [{}]", metadataLocation);
-        val execution = HttpUtils.HttpExecutionRequest.builder()
+        val execution = HttpExecutionRequest.builder()
             .url(metadataLocation)
             .basicAuthUsername(metadata.getMdq().getBasicAuthnUsername())
             .basicAuthPassword(metadata.getMdq().getBasicAuthnPassword())
@@ -466,7 +469,7 @@ public class SubmissionController extends AbstractVersionControlController {
         val response = HttpUtils.execute(execution);
         if (response == null) {
             LOGGER.error("Unable to fetch metadata from [{}]", metadataLocation);
-            throw new UnauthorizedServiceException(UnauthorizedServiceException.CODE_UNAUTHZ_SERVICE);
+            throw UnauthorizedServiceException.denied("Unable to fetch metadata from " + metadataLocation);
         }
         return response;
     }

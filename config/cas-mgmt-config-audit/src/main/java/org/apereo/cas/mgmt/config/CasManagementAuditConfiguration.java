@@ -16,6 +16,7 @@ import org.apereo.inspektr.audit.spi.support.ObjectCreationAuditActionResolver;
 import org.apereo.inspektr.audit.spi.support.ShortenedReturnValueAsStringAuditResourceResolver;
 import org.apereo.inspektr.audit.support.Slf4jLoggingAuditTrailManager;
 import org.apereo.inspektr.common.spi.PrincipalResolver;
+import org.apereo.inspektr.common.web.ClientInfoExtractionOptions;
 import org.apereo.inspektr.common.web.ClientInfoThreadLocalFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,7 +25,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public class CasManagementAuditConfiguration {
         final AuditTrailManager auditTrailManager) {
         return new AuditTrailManagementAspect("CAS_Management",
             auditablePrincipalResolver, CollectionUtils.wrap(auditTrailManager),
-            auditActionResolverMap, auditResourceResolverMap);
+            auditActionResolverMap, auditResourceResolverMap, Map.of(), AuditTrailManager.AuditFormats.JSON);
     }
 
     @Bean
@@ -96,7 +97,7 @@ public class CasManagementAuditConfiguration {
         final AuditResourceResolver saveServiceResourceResolver,
         @Qualifier("deleteServiceResourceResolver")
         final AuditResourceResolver deleteServiceResourceResolver) {
-        val map = new HashMap<String, AuditResourceResolver>(2);
+        val map = new HashMap<String, AuditResourceResolver>();
         map.put("DELETE_SERVICE_RESOURCE_RESOLVER", deleteServiceResourceResolver);
         map.put("SAVE_SERVICE_RESOURCE_RESOLVER", saveServiceResourceResolver);
         return map;
@@ -108,16 +109,23 @@ public class CasManagementAuditConfiguration {
         final AuditActionResolver saveServiceActionResolver,
         @Qualifier("deleteServiceActionResolver")
         final AuditActionResolver deleteServiceActionResolver) {
-        val map = new HashMap<String, AuditActionResolver>(2);
+        val map = new HashMap<String, AuditActionResolver>();
         map.put("DELETE_SERVICE_ACTION_RESOLVER", deleteServiceActionResolver);
         map.put("SAVE_SERVICE_ACTION_RESOLVER", saveServiceActionResolver);
         return map;
     }
 
     @Bean
-    public FilterRegistrationBean<Filter> casClientInfoLoggingFilter() {
+    public FilterRegistrationBean<Filter> casClientInfoLoggingFilter(final CasConfigurationProperties casProperties) {
+        val audit = casProperties.getAudit().getEngine();
+        val options = ClientInfoExtractionOptions.builder()
+            .alternateLocalAddrHeaderName(audit.getAlternateClientAddrHeaderName())
+            .alternateServerAddrHeaderName(audit.getAlternateServerAddrHeaderName())
+            .useServerHostAddress(audit.isUseServerHostAddress())
+            .httpRequestHeaders(audit.getHttpRequestHeaders())
+            .build();
         val bean = new FilterRegistrationBean<>();
-        bean.setFilter(new ClientInfoThreadLocalFilter());
+        bean.setFilter(new ClientInfoThreadLocalFilter(options));
         bean.setUrlPatterns(CollectionUtils.wrap("/*"));
         bean.setName("CAS Client Info Logging Filter");
         bean.setAsyncSupported(true);

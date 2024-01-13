@@ -1,7 +1,5 @@
 package org.apereo.cas.mgmt.domain;
 
-import java.util.Set;
-
 /**
  * Interface for serializing profile to client webapp.
  *
@@ -16,13 +14,6 @@ public interface MgmtUserProfile {
      * @return - the user id.
      */
     String getId();
-
-    /**
-     * Permissions represented as domains.
-     *
-     * @return - Set of String
-     */
-    Set<String> getPermissions();
 
     /**
      * Email.

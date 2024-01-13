@@ -9,10 +9,8 @@ import org.pac4j.jee.context.session.JEESessionStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 /**
@@ -61,7 +59,7 @@ public class ViewController {
     @GetMapping(value = "/logout.html")
     public String logoutView(final HttpServletRequest request, final HttpServletResponse response) {
         LOGGER.debug("Invalidating application session...");
-        new ProfileManager(new JEEContext(request, response), JEESessionStore.INSTANCE).removeProfiles();
+        new ProfileManager(new JEEContext(request, response), new JEESessionStore()).removeProfiles();
         request.getSession(false).invalidate();
         return "logout";
     }

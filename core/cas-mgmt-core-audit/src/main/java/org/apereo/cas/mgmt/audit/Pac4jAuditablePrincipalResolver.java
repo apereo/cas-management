@@ -1,8 +1,7 @@
 package org.apereo.cas.mgmt.audit;
 
-import org.apereo.cas.util.HttpRequestUtils;
-
 import lombok.val;
+import org.apereo.cas.util.http.HttpRequestUtils;
 import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.aspectj.lang.JoinPoint;
 import org.pac4j.core.profile.ProfileManager;
@@ -40,7 +39,7 @@ public class Pac4jAuditablePrincipalResolver implements PrincipalResolver {
         val response = HttpRequestUtils.getHttpServletResponseFromRequestAttributes();
         if (request != null && response != null) {
             val context = new JEEContext(request, response);
-            val manager = new ProfileManager(context, JEESessionStore.INSTANCE);
+            val manager = new ProfileManager(context, new JEESessionStore());
             val profile = (Optional<UserProfile>) manager.getProfile();
             if (profile != null && profile.isPresent()) {
                 val id = profile.get().getId();

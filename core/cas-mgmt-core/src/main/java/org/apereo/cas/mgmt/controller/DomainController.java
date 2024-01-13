@@ -52,7 +52,6 @@ public class DomainController {
             .map(s -> manager.extractDomain(s.getServiceId()))
             .distinct()
             .sorted()
-            .filter(casUserProfile::hasPermission)
             .map(DomainRpc::new)
             .collect(Collectors.toList());
     }

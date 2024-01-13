@@ -12,9 +12,10 @@ import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.saml.services.SamlRegisteredService;
 import org.apereo.cas.support.saml.web.idp.profile.builders.attr.SamlIdPAttributeDefinition;
-import org.apereo.cas.util.HttpUtils;
+import org.apereo.cas.util.http.HttpExecutionRequest;
+import org.apereo.cas.util.http.HttpUtils;
 import org.apereo.cas.ws.idp.services.WSFederationRegisteredService;
-
+import org.apereo.services.persondir.support.NamedStubPersonAttributeDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Splitter;
@@ -23,18 +24,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.services.persondir.support.NamedStubPersonAttributeDao;
+import org.apache.hc.core5.http.HttpEntityContainer;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
-
-import javax.annotation.PostConstruct;
-
+import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
-
 import static java.util.stream.Collectors.*;
 
 /**
@@ -64,11 +62,11 @@ public class FormDataFactory {
         val formData = new FormData();
         loadServiceTypes(formData);
         loadMfaProviders(formData);
-        loadDelegatedClientTypes(formData);
+//        loadDelegatedClientTypes(formData);
         loadAvailableAttributes(formData);
         loadAttributeRepositories(formData);
         loadSamlIdpAttributes(formData);
-        loadUserDefinedScopes(formData);
+//        loadUserDefinedScopes(formData);
         return formData;
     }
 
@@ -87,10 +85,10 @@ public class FormDataFactory {
         val params = new HashMap<String, String>();
         val url = casProperties.getServer().getPrefix() + mgmtProperties.getDiscoveryEndpointPath();
         try {
-            val executionRequestBuilder = HttpUtils.HttpExecutionRequest.builder()
+            val executionRequestBuilder = HttpExecutionRequest.builder()
+                .method(HttpMethod.GET)
                 .url(url)
-                .parameters(params)
-                .method(HttpMethod.GET);
+                .parameters(params);
             if (StringUtils.isNotBlank(mgmtProperties.getActuatorBasicAuthUsername())) {
                 executionRequestBuilder.basicAuthUsername(mgmtProperties.getActuatorBasicAuthUsername())
                     .basicAuthPassword(mgmtProperties.getActuatorBasicAuthPassword());
@@ -98,14 +96,15 @@ public class FormDataFactory {
             val execution = executionRequestBuilder.build();
             val response = HttpUtils.execute(execution);
             if (response != null) {
-                if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
+                if (response.getCode() == HttpStatus.OK.value()) {
                     val mapper = new ObjectMapper();
-                    val wrapper = mapper.readValue(response.getEntity().getContent(), ObjectNode.class);
-                    this.profile = Optional.of(mapper.convertValue(wrapper.findValue("profile"), CasServerProfile.class));
-                    LOGGER.info("FormData is populated with values from {}.", url);
+                    try (val content = ((HttpEntityContainer) response).getEntity().getContent()) {
+                        val wrapper = mapper.readValue(content, ObjectNode.class);
+                        this.profile = Optional.of(mapper.convertValue(wrapper.findValue("profile"), CasServerProfile.class));
+                        LOGGER.info("FormData is populated with values from {}.", url);
+                    }
                 } else {
-                    LOGGER.info("CAS Server returned {} status code from endpoint {}. Using default FormData values.",
-                        response.getStatusLine().getStatusCode(), url);
+                    LOGGER.info("CAS Server returned {} status code from endpoint {}. Using default FormData values.", response.getCode(), url);
                 }
             }
         } catch (final Exception e) {
@@ -160,14 +159,14 @@ public class FormDataFactory {
         }
     }
 
-    private void loadDelegatedClientTypes(final FormData formData) {
-        if (profile.isPresent() && profile.get().getDelegatedClientTypesSupported() != null && !profile.get().getDelegatedClientTypesSupported().isEmpty()) {
-            val p = profile.get();
-            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypesSupported());
-        } else {
-            formData.setDelegatedAuthnProviders(mgmtProperties.getDelegatedIdentityProviders());
-        }
-    }
+//    private void loadDelegatedClientTypes(final FormData formData) {
+//        if (profile.isPresent() && profile.get().get() != null && !profile.get().getDelegatedClientTypesSupported().isEmpty()) {
+//            val p = profile.get();
+//            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypesSupported());
+//        } else {
+//            formData.setDelegatedAuthnProviders(mgmtProperties.getDelegatedIdentityProviders());
+//        }
+//    }
 
     private void loadAvailableAttributes(final FormData formData) {
         val attributes = attributeDefinitionStore.getAttributeDefinitions().stream()
@@ -189,15 +188,15 @@ public class FormDataFactory {
 
     private void loadSamlIdpAttributes(final FormData formData) {
         formData.setSamlIdpAttributes(attributeDefinitionStore.getAttributeDefinitions().stream()
-            .filter(d -> d instanceof SamlIdPAttributeDefinition)
+            .filter(SamlIdPAttributeDefinition.class::isInstance)
             .map(AttributeDefinition::getKey)
             .collect(toSet()));
     }
 
-    private void loadUserDefinedScopes(final FormData formData) {
-        if (profile.isPresent() && profile.get().getUserDefinedScopes() != null && !profile.get().getUserDefinedScopes().isEmpty()) {
-            val p = profile.get();
-            formData.setUserDefinedScopes(p.getUserDefinedScopes());
-        }
-    }
+//    private void loadUserDefinedScopes(final FormData formData) {
+//        if (profile.isPresent() && profile.get().getUserDefinedScopes() != null && !profile.get().getUserDefinedScopes().isEmpty()) {
+//            val p = profile.get();
+//            formData.setUserDefinedScopes(p.getUserDefinedScopes());
+//        }
+//    }
 }

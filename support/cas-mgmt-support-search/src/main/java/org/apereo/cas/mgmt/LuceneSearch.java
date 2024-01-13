@@ -91,7 +91,6 @@ public class LuceneSearch {
             val manager = (ManagementServicesManager) mgmtManagerFactory.from(authentication);
             try (val memoryIndex = new MMapDirectory(Paths.get(managementProperties.getLuceneIndexDir() + '/' + casUserProfile.getUsername()))) {
                 val docs = manager.getAllServices().stream()
-                    .filter(casUserProfile::hasPermission)
                     .map(CasManagementUtils::toJson)
                     .map(JsonObject::readHjson)
                     .map(r -> createDocument(r.asObject(), fields))
@@ -119,7 +118,7 @@ public class LuceneSearch {
      * @param fields - list of fields parsed from query string.
      * @return - the document
      */
-    private static Document createDocument(final JsonObject json, final ArrayList<String> fields) {
+    private static Document createDocument(final JsonObject json, final List<String> fields) {
         val document = new Document();
         val id = json.asObject().getLong("id", -1);
         fields.stream()
@@ -158,7 +157,7 @@ public class LuceneSearch {
      * @param triple - the triple
      * @return - List of Field
      */
-    private static ArrayList<Field> createFields(final Triple<JsonType, Object, String> triple) {
+    private static List<Field> createFields(final Triple<JsonType, Object, String> triple) {
         val field = triple.getRight();
         val type = triple.getLeft();
         val value = triple.getMiddle();
@@ -242,7 +241,7 @@ public class LuceneSearch {
      * @param fields - list to hold fields
      * @return - List of Field
      */
-    private static ArrayList<String> getFields(final Query query, final ArrayList<String> fields) {
+    private static List<String> getFields(final Query query, final List<String> fields) {
         if (query instanceof BooleanQuery) {
             ((BooleanQuery) query).clauses().forEach(c -> getFields(c.getQuery(), fields));
         }

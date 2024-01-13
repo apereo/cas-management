@@ -5,6 +5,7 @@ import org.apereo.cas.mgmt.domain.RegisteredServiceItem;
 import org.apereo.cas.mgmt.util.CasManagementUtils;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.query.RegisteredServiceQuery;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 import org.apereo.cas.util.DigestUtils;
 
@@ -67,7 +68,7 @@ public class ManagementServicesManager implements ServicesManager {
         if (multifactorPolicy != null && multifactorPolicy.getMultifactorAuthenticationProviders() != null) {
             serviceItem.setDuo(multifactorPolicy.getMultifactorAuthenticationProviders().contains("mfa-duo"));
         }
-        serviceItem.setSso(service.getAccessStrategy().isServiceAccessAllowedForSso());
+        serviceItem.setSso(service.getAccessStrategy().isServiceAccessAllowedForSso(service));
         serviceItem.setStaged(service.getEnvironments() != null && service.getEnvironments().contains("staged"));
         serviceItem.setCName(service.getClass().getCanonicalName());
         serviceItem.setType(CasManagementUtils.getType(service));
@@ -158,6 +159,11 @@ public class ManagementServicesManager implements ServicesManager {
     @Override
     public Collection<RegisteredService> getServicesForDomain(final String domain) {
         return this.manager.getServicesForDomain(domain);
+    }
+
+    @Override
+    public Stream<RegisteredService> findServicesBy(final RegisteredServiceQuery... queries) {
+        return this.manager.findServicesBy(queries);
     }
 
     @Override

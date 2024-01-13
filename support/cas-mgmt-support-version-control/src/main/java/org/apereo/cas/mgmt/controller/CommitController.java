@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -114,7 +114,6 @@ public class CommitController extends AbstractVersionControlController {
         try (GitUtil git = repositoryFactory.masterRepository()) {
             git.getUnpublishedCommits().forEach(commit -> {
                 val diffs = publishDiffs(git, commit);
-                /** Run through deletes first in case of name change */
                 diffs.stream().filter(d -> d.getChangeType() == DiffEntry.ChangeType.DELETE)
                     .forEach(c -> this.servicesManager.delete(CasManagementUtils.fromJson(getService(git, c.getOldId())).getId()));
                 diffs.stream().filter(d -> d.getChangeType() != DiffEntry.ChangeType.DELETE)

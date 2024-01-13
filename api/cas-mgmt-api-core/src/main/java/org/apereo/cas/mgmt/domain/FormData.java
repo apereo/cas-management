@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -70,8 +71,8 @@ public class FormData implements Serializable {
     );
 
     private List<String> samlCredentialTypes = Arrays.stream(SamlIdPResponseProperties.SignatureCredentialTypes.values())
-        .map(s -> s.name().toUpperCase())
-        .collect(Collectors.toList());
+        .map(s -> s.name().toUpperCase(Locale.ENGLISH))
+        .toList();
 
     private List<String> encryptAlgOptions = locateKeyAlgorithmsSupported();
 

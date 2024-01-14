@@ -3,9 +3,9 @@ package org.apereo.cas.mgmt.config;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.CasManagementConfigurationProperties;
 import org.apereo.cas.mgmt.OauthController;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration for register end point features.
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Travis Schmidt
  * @since 5.3.5
  */
-@Configuration(value = "casManagementOAuthConfiguration", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementOauthConfiguration {
 

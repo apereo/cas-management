@@ -19,11 +19,11 @@ import org.apereo.inspektr.common.spi.PrincipalResolver;
 import org.apereo.inspektr.common.web.ClientInfoExtractionOptions;
 import org.apereo.inspektr.common.web.ClientInfoThreadLocalFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import jakarta.servlet.Filter;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Misagh Moayyed
  * @since 5.1.0
  */
-@Configuration(value = "casManagementAuditConfiguration", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementAuditConfiguration {
     private static final String AUDIT_ACTION_SUFFIX_FAILED = "_FAILED";

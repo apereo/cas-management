@@ -11,9 +11,9 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.ldaptive.SearchOperation;
 import org.pac4j.core.authorization.generator.AuthorizationGenerator;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ import java.util.Optional;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-@Configuration(value = "casManagementLdapAuthorizationConfiguration", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementLdapAuthorizationConfiguration {
 

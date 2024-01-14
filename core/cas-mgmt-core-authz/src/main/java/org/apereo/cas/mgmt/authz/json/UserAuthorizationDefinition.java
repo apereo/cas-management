@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class UserAuthorizationDefinition implements Serializable {
+    @Serial
     private static final long serialVersionUID = 5612860879960019695L;
 
     /**

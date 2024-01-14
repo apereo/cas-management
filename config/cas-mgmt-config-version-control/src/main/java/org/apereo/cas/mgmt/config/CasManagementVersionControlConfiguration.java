@@ -14,11 +14,11 @@ import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration class for version control.
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration(value = "CasManagementVersionControlConfiguration", proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnProperty(prefix = "mgmt.version-control", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementVersionControlConfiguration {

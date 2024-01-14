@@ -1,0 +1,2 @@
+org.apereo.cas.mgmt.config.CasManagementSecurityConfiguration
+org.apereo.cas.mgmt.config.CasManagementWebAppConfiguration

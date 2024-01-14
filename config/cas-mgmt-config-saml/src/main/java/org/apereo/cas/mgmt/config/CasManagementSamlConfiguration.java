@@ -16,9 +16,9 @@ import org.apereo.cas.util.ResourceUtils;
 import lombok.val;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration for register end point features.
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Travis Schmidt
  * @since 6.1
  */
-@Configuration(value = "casManagementSamlConfiguration", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementSamlConfiguration {
 

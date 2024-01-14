@@ -18,6 +18,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ import java.util.stream.Stream;
 @Setter
 @ConfigurationProperties(value = "mgmt", ignoreUnknownFields = false)
 public class CasManagementConfigurationProperties implements Serializable {
+    @Serial
     private static final long serialVersionUID = -7686426966125636166L;
 
     /**
@@ -203,6 +205,7 @@ public class CasManagementConfigurationProperties implements Serializable {
     @Setter
     @RequiresModule(name = "cas-mgmt-config-ldap-authz")
     public static class Ldap extends AbstractLdapProperties {
+        @Serial
         private static final long serialVersionUID = -8129280052479631538L;
 
         /**

@@ -14,10 +14,10 @@ import org.apereo.cas.notifications.CommunicationsManager;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.EnumSet;
 import java.util.Objects;
@@ -28,7 +28,7 @@ import java.util.Objects;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration(value = "casManagementDelegatedConfiguration", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 @ConditionalOnProperty(prefix = "mgmt.delegated", name = "enabled", havingValue = "true")
 public class CasManagementDelegatedConfiguration {

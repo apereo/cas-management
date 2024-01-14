@@ -14,11 +14,11 @@ import org.apereo.cas.util.CollectionUtils;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 
 import java.nio.charset.StandardCharsets;
@@ -29,8 +29,8 @@ import java.nio.charset.StandardCharsets;
  * @author Travis Schmidt
  * @since 5.3.5
  */
+@AutoConfiguration
 @ConditionalOnProperty(prefix = "mgmt.register", name = "enabled", havingValue = "true")
-@Configuration(value = "casManagementRegisterConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementRegisterConfiguration {
 

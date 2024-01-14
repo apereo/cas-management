@@ -22,6 +22,7 @@ import org.apereo.services.persondir.util.CaseCanonicalizationMode;
 import org.opensaml.saml.saml2.core.NameID;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +45,7 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 public class FormData implements Serializable {
+    @Serial
     private static final long serialVersionUID = -5201796557461644152L;
 
     private List<String> availableAttributes = new ArrayList<>();

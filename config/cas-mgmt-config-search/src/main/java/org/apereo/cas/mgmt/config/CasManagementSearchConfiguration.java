@@ -7,9 +7,9 @@ import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.services.ServicesManager;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration for Lucene search.
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration(value = "casManagementSearch", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementSearchConfiguration {
 

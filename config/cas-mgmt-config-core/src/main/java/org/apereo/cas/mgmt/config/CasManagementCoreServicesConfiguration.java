@@ -32,11 +32,11 @@ import org.apereo.services.persondir.IPersonAttributeDao;
 import com.github.benmanes.caffeine.cache.Cache;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import java.util.HashSet;
 
 /**
@@ -45,7 +45,7 @@ import java.util.HashSet;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration(value = "casManagementCoreServicesConfiguration", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementCoreServicesConfiguration {
 
@@ -138,7 +138,7 @@ public class CasManagementCoreServicesConfiguration {
     }
 
 
-    @Bean(name = "servicesManager")
+    @Bean
     public ChainingServicesManager servicesManager(
         @Qualifier("serviceRegistry")
         final ServiceRegistry serviceRegistry,
@@ -152,6 +152,7 @@ public class CasManagementCoreServicesConfiguration {
             .applicationContext(applicationContext)
             .environments(activeProfiles)
             .servicesCache(servicesManagerCache)
+            .registeredServicesTemplatesManager(registeredService -> registeredService)
             .build();
         val cm = casProperties.getServiceRegistry().getCore().getManagementType() == ServiceRegistryCoreProperties.ServiceManagementTypes.DOMAIN
             ? new DefaultDomainAwareServicesManager(context, new DefaultRegisteredServiceDomainExtractor())
@@ -162,7 +163,7 @@ public class CasManagementCoreServicesConfiguration {
         return chain;
     }
 
-    @Bean(name = "forwarding")
+    @Bean
     public ForwardingController forwarding() {
         return new ForwardingController();
     }

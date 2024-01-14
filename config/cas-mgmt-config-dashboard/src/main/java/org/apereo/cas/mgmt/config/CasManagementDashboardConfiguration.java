@@ -11,10 +11,10 @@ import org.apereo.cas.util.text.MessageSanitizer;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 
 import java.nio.charset.StandardCharsets;
@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
  * @author Travis Schmidt
  * @since 6.0
  */
-@Configuration(value = "casManagementDashboard", proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties({CasConfigurationProperties.class, CasManagementConfigurationProperties.class})
 public class CasManagementDashboardConfiguration {
 

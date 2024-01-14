@@ -5,8 +5,9 @@ import lombok.Getter;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.springframework.security.core.Authentication;
+import java.io.Serial;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 /**
  * This is {@link CasUserProfile}.
@@ -17,7 +18,10 @@ import java.util.List;
  */
 @Getter
 public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
+    @Serial
     private static final long serialVersionUID = -6308325782274816263L;
+
+    private static final Set<String> ADMIN_ROLES = Set.of("ROLE_ADMIN");
 
     private final boolean administrator;
 
@@ -29,7 +33,17 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
     }
 
     public CasUserProfile(final Authentication authentication) {
-        this((CommonProfile) authentication.getPrincipal(), List.of("ROLE_ADMIN"));
+        this(buildCommonProfileFromAuthentication(authentication), ADMIN_ROLES);
+    }
+
+    private static CommonProfile buildCommonProfileFromAuthentication(final Authentication authentication) {
+        if (authentication.getPrincipal() instanceof CommonProfile cf) {
+            return cf;
+        }
+        final var commonProfile = new CommonProfile();
+        commonProfile.setId(authentication.getName());
+        commonProfile.setRoles(ADMIN_ROLES);
+        return commonProfile;
     }
 
     public CasUserProfile(final CommonProfile up, final Collection<String> adminRoles) {

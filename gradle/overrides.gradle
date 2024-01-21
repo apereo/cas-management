@@ -1,5 +1,11 @@
 configurations.all {
     resolutionStrategy {
+        capabilitiesResolution {
+            withCapability("com.google.collections:google-collections") {
+                selectHighestVersion()
+            }
+        }
+
         if (!Boolean.getBoolean("skipVersionConflict")) {
             failOnVersionConflict()
         }

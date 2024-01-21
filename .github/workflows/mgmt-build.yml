@@ -34,6 +34,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: ls ./ci && chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
 
@@ -47,6 +48,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: ls ./ci && chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
       - uses: actions/checkout@v4
@@ -74,6 +76,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
         shell: bash
@@ -98,6 +101,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
       - uses: actions/cache@v4
@@ -120,6 +124,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
       - uses: actions/cache@v4
@@ -143,6 +148,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
       - uses: actions/cache@v4
@@ -167,6 +173,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
       - uses: actions/cache@v4
@@ -190,6 +197,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JDK_CURRENT }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
       - uses: actions/cache@v4

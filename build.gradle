@@ -134,12 +134,14 @@ allprojects {
     }
 
     javadoc {
+        options.memberLevel = JavadocMemberLevel.PUBLIC
         options.addBooleanOption('html5', true)
-        failOnError = Boolean.getBoolean("ignoreJavadocFailures")
+        options.addStringOption('Xdoclint:html,reference,syntax', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        failOnError = providers.systemProperty("ignoreJavadocFailures").present
         excludes = ['**/generated/**']
     }
-
-
+    
 }
 
 subprojects {

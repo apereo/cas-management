@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 import org.springframework.boot.Banner;
-
 import java.util.HashMap;
 import java.util.Map;
 

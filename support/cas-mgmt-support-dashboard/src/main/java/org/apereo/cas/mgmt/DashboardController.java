@@ -9,7 +9,6 @@ import org.apereo.cas.mgmt.domain.AuditLog;
 import org.apereo.cas.mgmt.domain.Cache;
 import org.apereo.cas.mgmt.domain.Server;
 import org.apereo.cas.mgmt.util.HttpComponentsClientHttpRequestFactoryBasicAuth;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
@@ -63,19 +61,19 @@ public class DashboardController {
     private final CasConfigurationProperties casProperties;
 
     private static String toCSV(final AuditLog log) {
-        return String.valueOf(log.getWhenActionWasPerformed()) +
-            '|' +
-            log.getClientIpAddress() +
-            '|' +
-            log.getServerIpAddress() +
-            '|' +
-            log.getPrincipal() +
-            '|' +
-            log.getActionPerformed() +
-            '|' +
-            log.getResourceOperatedUpon() +
-            '|' +
-            log.getApplicationCode();
+        return String.valueOf(log.getWhenActionWasPerformed())
+            + '|'
+            + log.getClientIpAddress()
+            + '|'
+            + log.getServerIpAddress()
+            + '|'
+            + log.getPrincipal()
+            + '|'
+            + log.getActionPerformed()
+            + '|'
+            + log.getResourceOperatedUpon()
+            + '|'
+            + log.getApplicationCode();
     }
 
     private static void isAdmin(final Authentication authentication) throws IllegalAccessException {

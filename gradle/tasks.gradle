@@ -1,7 +1,6 @@
-import org.gradle.internal.logging.*
-import org.gradle.internal.logging.events.*
-
-import java.util.regex.Pattern
+import org.gradle.internal.logging.LoggingOutputInternal
+import org.gradle.internal.logging.events.OutputEvent
+import org.gradle.internal.logging.events.OutputEventListener
 
 tasks.withType(Javadoc) {
     def exceptions = []

@@ -8,7 +8,6 @@ import org.apereo.cas.mgmt.DashboardViewController;
 import org.apereo.cas.mgmt.SessionsController;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.text.MessageSanitizer;
-
 import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -16,7 +15,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
-
 import java.nio.charset.StandardCharsets;
 
 /**

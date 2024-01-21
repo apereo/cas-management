@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt.authz.json;
 
 import org.apereo.cas.util.io.FileWatcherService;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +12,6 @@ import org.pac4j.core.authorization.generator.AuthorizationGenerator;
 import org.pac4j.core.context.CallContext;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.core.io.Resource;
-
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;

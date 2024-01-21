@@ -5,7 +5,6 @@ import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.mgmt.authentication.CasUserProfile;
 import org.apereo.cas.services.CasRegisteredService;
 import org.apereo.cas.services.ServicesManager;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -59,7 +57,7 @@ public class DomainController {
     @Data
     @AllArgsConstructor
     @SuppressWarnings("UnusedMethod")
-    private static class DomainRpc implements Serializable {
+    static class DomainRpc implements Serializable {
         private String name;
     }
 

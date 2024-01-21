@@ -62,11 +62,9 @@ public class FormDataFactory {
         val formData = new FormData();
         loadServiceTypes(formData);
         loadMfaProviders(formData);
-//        loadDelegatedClientTypes(formData);
         loadAvailableAttributes(formData);
         loadAttributeRepositories(formData);
         loadSamlIdpAttributes(formData);
-//        loadUserDefinedScopes(formData);
         return formData;
     }
 
@@ -159,15 +157,6 @@ public class FormDataFactory {
         }
     }
 
-//    private void loadDelegatedClientTypes(final FormData formData) {
-//        if (profile.isPresent() && profile.get().get() != null && !profile.get().getDelegatedClientTypesSupported().isEmpty()) {
-//            val p = profile.get();
-//            formData.setDelegatedAuthnProviders(p.getDelegatedClientTypesSupported());
-//        } else {
-//            formData.setDelegatedAuthnProviders(mgmtProperties.getDelegatedIdentityProviders());
-//        }
-//    }
-
     private void loadAvailableAttributes(final FormData formData) {
         val attributes = attributeDefinitionStore.getAttributeDefinitions().stream()
             .map(AttributeDefinition::getKey)
@@ -193,10 +182,4 @@ public class FormDataFactory {
             .collect(toSet()));
     }
 
-//    private void loadUserDefinedScopes(final FormData formData) {
-//        if (profile.isPresent() && profile.get().getUserDefinedScopes() != null && !profile.get().getUserDefinedScopes().isEmpty()) {
-//            val p = profile.get();
-//            formData.setUserDefinedScopes(p.getUserDefinedScopes());
-//        }
-//    }
 }

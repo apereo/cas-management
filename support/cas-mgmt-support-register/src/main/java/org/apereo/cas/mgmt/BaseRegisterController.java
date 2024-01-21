@@ -301,7 +301,7 @@ public abstract class BaseRegisterController {
 
     @Data
     @SuppressWarnings("UnusedMethod")
-    private static class DataPair {
+    static class DataPair {
         private String left;
 
         private RegisteredService right;

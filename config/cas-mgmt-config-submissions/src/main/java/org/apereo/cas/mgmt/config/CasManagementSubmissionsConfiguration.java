@@ -8,13 +8,11 @@ import org.apereo.cas.mgmt.SubmissionRequests;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.services.ServicesManager;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 

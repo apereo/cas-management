@@ -11,14 +11,12 @@ import org.apereo.cas.mgmt.controller.PullController;
 import org.apereo.cas.mgmt.controller.SubmitController;
 import org.apereo.cas.mgmt.factory.RepositoryFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
-
 import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
 import java.util.EnumSet;
 import java.util.Objects;
 

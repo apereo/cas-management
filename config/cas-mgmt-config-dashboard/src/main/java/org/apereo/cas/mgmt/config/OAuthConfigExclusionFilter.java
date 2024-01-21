@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.config;
 import lombok.val;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 

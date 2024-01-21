@@ -4,7 +4,6 @@ import org.apereo.cas.mgmt.ManagementServicesManager;
 import org.apereo.cas.mgmt.MgmtManagerFactory;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.resource.RegisteredServiceResourceNamingStrategy;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 

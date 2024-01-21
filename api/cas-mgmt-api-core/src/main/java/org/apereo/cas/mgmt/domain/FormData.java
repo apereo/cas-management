@@ -12,16 +12,14 @@ import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.ws.idp.WSFederationClaims;
-
+import org.apereo.services.persondir.util.CaseCanonicalizationMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
-import org.apereo.services.persondir.util.CaseCanonicalizationMode;
 import org.opensaml.saml.saml2.core.NameID;
 import org.springframework.http.HttpStatus;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -3,7 +3,6 @@ package org.apereo.cas.mgmt.authz.json;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedHashSet;

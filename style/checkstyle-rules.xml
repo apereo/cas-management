@@ -562,20 +562,6 @@
             <property name="format" value="\s*for\s*\((final\s+)*(?!val|var)\w+\s+\w+\s*:"/>
             <property name="message" value="Use lombok.val when declaring variable definitions for loops."/>
         </module>
-
-        <module name="CustomImportOrder">
-            <property name="severity" value="error"/>
-            <property name="customImportOrderRules"
-                      value="SAME_PACKAGE(3)###THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS###STANDARD_JAVA_PACKAGE###STATIC"/>
-            <property name="specialImportsRegExp" value="^javax\."/>
-            <property name="standardPackageRegExp" value="^java\."/>
-            <property name="sortImportsInGroupAlphabetically" value="true"/>
-            <property name="separateLineBetweenGroups" value="false"/>
-        </module>
-        <module name="ImportControl">
-            <property name="file" value="${checkstyle.importcontrol.file}"/>
-            <property name="severity" value="error"/>
-        </module>
     </module>
 
     <!-- Checker module checks -->
@@ -628,13 +614,6 @@
         <property name="severity" value="error"/>
         <property name="format" value="\w+\s+$"/>
         <property name="message" value="Line has trailing spaces."/>
-    </module>
-    <module name="RegexpSingleline">
-        <metadata name="net.sf.eclipsecs.core.comment" value="Forbidden annotations"/>
-        <property name="severity" value="error"/>
-        <property name="id" value="forbiddenAnnotations"/>
-        <property name="format" value="@Component|@Value"/>
-        <property name="message" value="Avoid using the indicated annotations such as @Component, @Value, etc."/>
     </module>
     <module name="RegexpSingleline">
         <metadata name="net.sf.eclipsecs.core.comment" value="Use @TestConfiguration"/>

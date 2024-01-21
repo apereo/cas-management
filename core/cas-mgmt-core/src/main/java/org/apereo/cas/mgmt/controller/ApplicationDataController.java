@@ -11,7 +11,6 @@ import org.apereo.cas.mgmt.domain.MgmtUserProfile;
 import org.apereo.cas.mgmt.factory.FormDataFactory;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.gen.DefaultRandomStringGenerator;
-
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.MediaType;

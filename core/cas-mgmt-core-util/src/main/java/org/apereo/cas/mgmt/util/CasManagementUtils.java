@@ -5,7 +5,6 @@ import org.apereo.cas.services.util.RegisteredServiceJsonSerializer;
 import org.apereo.cas.services.util.RegisteredServiceYamlSerializer;
 import org.apereo.cas.util.DateTimeUtils;
 import org.apereo.cas.util.RegexUtils;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -13,7 +12,6 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.hjson.JsonValue;
 import org.springframework.context.support.StaticApplicationContext;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;

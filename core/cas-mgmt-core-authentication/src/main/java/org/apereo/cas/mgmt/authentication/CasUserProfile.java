@@ -2,6 +2,7 @@ package org.apereo.cas.mgmt.authentication;
 
 import org.apereo.cas.mgmt.domain.MgmtUserProfile;
 import lombok.Getter;
+import lombok.val;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.springframework.security.core.Authentication;
@@ -36,16 +37,6 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
         this(buildCommonProfileFromAuthentication(authentication), ADMIN_ROLES);
     }
 
-    private static CommonProfile buildCommonProfileFromAuthentication(final Authentication authentication) {
-        if (authentication.getPrincipal() instanceof CommonProfile cf) {
-            return cf;
-        }
-        final var commonProfile = new CommonProfile();
-        commonProfile.setId(authentication.getName());
-        commonProfile.setRoles(ADMIN_ROLES);
-        return commonProfile;
-    }
-
     public CasUserProfile(final CommonProfile up, final Collection<String> adminRoles) {
         build(up.getId(), up.getAttributes());
         setClientName(up.getClientName());
@@ -55,6 +46,16 @@ public class CasUserProfile extends CommonProfile implements MgmtUserProfile {
 
         this.administrator = adminRoles.stream().anyMatch(r -> getRoles().contains(r));
         this.delegate = getRoles().contains("ROLE_USER");
+    }
+
+    private static CommonProfile buildCommonProfileFromAuthentication(final Authentication authentication) {
+        if (authentication.getPrincipal() instanceof CommonProfile cf) {
+            return cf;
+        }
+        val commonProfile = new CommonProfile();
+        commonProfile.setId(authentication.getName());
+        commonProfile.setRoles(ADMIN_ROLES);
+        return commonProfile;
     }
 
     public static CasUserProfile from(final Authentication authentication) {

@@ -1,7 +1,6 @@
 package org.apereo.cas.mgmt;
 
 import org.apereo.cas.services.RegisteredServiceContact;
-
 import java.util.Collection;
 
 /**

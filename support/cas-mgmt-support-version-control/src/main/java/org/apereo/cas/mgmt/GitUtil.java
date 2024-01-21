@@ -702,7 +702,7 @@ public class GitUtil implements AutoCloseable {
      * Class used to define a TreeFilter to only pull history for a single path.
      */
     @RequiredArgsConstructor
-    private static class HistoryTreeFilter extends TreeFilter {
+    static class HistoryTreeFilter extends TreeFilter {
         private final String path;
 
         @Override

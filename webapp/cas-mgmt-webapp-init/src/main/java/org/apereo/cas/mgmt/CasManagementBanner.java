@@ -5,7 +5,6 @@ import org.apereo.cas.util.AsciiArtUtils;
 import org.apereo.cas.util.CasVersion;
 import org.apereo.cas.util.ResourceUtils;
 import org.apereo.cas.util.SystemUtils;
-
 import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
@@ -15,7 +14,6 @@ import org.springframework.boot.info.GitProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;

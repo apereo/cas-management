@@ -1,10 +1,9 @@
 package org.apereo.cas.mgmt.audit;
 
 import org.apereo.cas.util.AopUtils;
-
+import org.apereo.inspektr.audit.spi.AuditResourceResolver;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.inspektr.audit.spi.AuditResourceResolver;
 import org.aspectj.lang.JoinPoint;
 
 

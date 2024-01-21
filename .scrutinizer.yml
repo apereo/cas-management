@@ -1,5 +1,0 @@
-build:
-    project_setup:
-        override:
-            - ./ci/init-build.sh
-            - ./ci/install.sh -DshowStandardStreams=true

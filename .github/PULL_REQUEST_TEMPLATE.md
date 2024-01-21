@@ -6,8 +6,6 @@ First off, thank you for considering to contribute to CAS.
 
 # Details
 
-Closes #IssueNumber
-
 Ensure that you include the following:
 
 - [] Brief description of changes applied

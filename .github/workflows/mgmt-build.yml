@@ -8,8 +8,10 @@ env:
   SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
   GH_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  JDK_DISTRIBUTION: "corretto"
   JDK_CURRENT: 21
   DOCS_BRANCH: 7.0.x
+
 
 ##########################################################################
 

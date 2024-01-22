@@ -76,6 +76,7 @@ export * from './servicetype/servicetype.component';
 export * from './sso/sso-chain.component';
 export * from './sso/policy/sso-policy.component';
 export * from './themeid/themeid.component';
+export * from './locale/locale.component';
 export * from './uidattrs/uidattrs.component';
 export * from './wsfedattrrelpolocies/wsfedattrrelpolicies.component';
 export * from './wsfedclient/wsfedclient.component';

@@ -63,7 +63,7 @@ The default manager loads the registry as a single ordered list.  The order of t
 `evaluationOrder` field of the registered service. When determining which service applies to the current request,
 the default manager starts at the beginning of the list and attempts to match the passed `service` parameter
 to the `serviceId` field of the registered service.  It walks the list until it finds the first match, and
-returns that service entry.  If it reaches the end of the list without finding a match, the incoming request
+returns that service entry. If it reaches the end of the list without finding a match, the incoming request
 is denied and the user is prompted that their application is not authorized to use CAS.
 
 There are some caveats when putting together `serviceId`  expressions that should be observed:
@@ -120,10 +120,10 @@ name: Apereo AND multifactorPolicy.bypassEnabled: true
 The management webapp is able to provide version control for the service registry.  To enable version control make sure these properties are set:
 
 ```properties
-mgmt.enableVersionControl=true
-mgmt.servicesRepo=/etc/cas/services-repo
+mgmt.version-control.enabled=true
+mgmt.version-control.services-repo=/etc/cas/services-repo
 ```
-The "servicesRepo" directory must be a place where your webapp has read/write permissions.  Version control is handled by 
+The "services-repo" directory must be a place where your webapp has read/write permissions.  Version control is handled by 
 storing your registry as json files in a Git repository.  When the webapp is started, it will create the repository from 
 your configured registry persistence, if one does not exist in the defined location.  
 
@@ -163,15 +163,15 @@ You can also perform "diffs" on a service and compare the changes between the cu
 ## Sync Script
 
 An installation option maybe to configure the registry persistence for the webapp to be local to the webapp server
-itself. A common option would be use JsonServiceRegistry to persist the registry of record locally to the webapp server.
+itself. A common option would be use JsonServiceRegistry to persist the registry of record locally to the CAS server.
 
 ```properties
-cas.serviceRegistry.json.location=file:/etc/cas/services
+cas.service-registry.json.location=file:/etc/cas/services-repo
 ```
 Then a "sync script" that is executable in the runtime of the webpp server can be set in the configuration.
 
 ```properties
-mgmt.syncScript=/etc/cas/sync.sh
+mgmt.version-control.sync-script=/etc/cas/sync.sh
 ```
 
 This script can then use "rsync" or any other means to sync the service registry to CAS nodes.
@@ -185,8 +185,8 @@ was encountered.
 
 ## Form Data
 
-On startup, the webapp will try and contact the configured CAS server at it's `status/discovery` endpoint.  If 
-successful, the data obtained from this endpoint will be used to populate the following field options in the form.
+On startup, the webapp will try and contact the configured CAS server at it's `actuator/discoveryProfile` endpoint.
+If successful, the data obtained from this endpoint will be used to populate the following field options in the form.
 
 - Registered Service Type
 - MFA Provider Type
@@ -359,10 +359,10 @@ Delegated management is only available as a feature in the management webapp whe
 mangement is enabled by setting the following porperties
 
 ```properties
-mgmt.enableDelegatedMgmt=true
-mgmt.userReposDir=/etc/cas/user-repos
+mgmt.delegated.enabled=true
+mgmt.delegated.user-repos-dir=/etc/cas/user-repos
 ```
-The "userReposDir" must be a location where the webapp has read/write permissions.
+The "user-repos-dir" must be a location where the webapp has read/write permissions.
 
 ### User Permissions
  

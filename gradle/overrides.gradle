@@ -44,12 +44,20 @@ configurations.all {
     exclude(group: "org.slf4j", module: "slf4j-log4j12")
     exclude(group: "org.slf4j", module: "slf4j-simple")
     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
-    exclude(group: "org.slf4j", module: "jul-to-slf4j")
     exclude(group: "org.apache.logging.log4j", module: "log4j-to-slf4j")
-    exclude(group: "commons-logging", module: "commons-logging")
     exclude(group: "pull-parser", module: "pull-parser")
     exclude(group: "javax.servlet", module: "servlet-api")
+    exclude(group: "javax.ws.rs", module: "javax.ws.rs-api")
+    exclude(group: "javax.annotation", module: "javax.annotation-api")
+    exclude(group: "javax.activation", module: "activation")
+    exclude group: "com.sun.activation", module: "jakarta.activation"
     exclude(group: "commons-logging", module: "commons-logging")
+    exclude(group: "com.fasterxml.jackson.module", module: "jackson-module-jaxb-annotations")
+    exclude(group: "org.bouncycastle", module: "bcprov-ext-jdk15on")
+    exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
+    exclude(group: "org.bouncycastle", module: "bcpkix-jdk15on")
+    exclude(group: "io.netty", module: "netty-transport-native-epoll")
+    exclude(group: "io.netty", module: "netty-transport-native-kqueue")
 }
 
 ext["log4j2.version"] = ext["log4jVersion"]

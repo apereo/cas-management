@@ -3,5 +3,18 @@
     "config:base",
     ":preserveSemverRanges"
   ],
-  "gradle": { "enabled": true }
+  "gradle": { "enabled": true },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "ignoreTests": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["at any time"]
+    },
+    {
+      "matchFileNames": ["**/package.json"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"]
+    }
+  ]
 }

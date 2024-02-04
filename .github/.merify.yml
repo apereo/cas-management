@@ -1,0 +1,13 @@
+pull_request_rules:
+- name: automatic merge
+  conditions:
+    - status-success=build
+    - status-success=tests
+    - "#changes-requested-reviews-by=0"
+    - base=7.0.x
+    - label=dependencies
+  actions:
+    merge:
+      method: merge
+    update:
+    delete_head_branch:

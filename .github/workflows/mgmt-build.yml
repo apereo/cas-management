@@ -51,27 +51,19 @@ jobs:
         with:
           java-version: ${{ env.JDK_CURRENT }}
           distribution: ${{ env.JDK_DISTRIBUTION }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Initialize
         run: ls ./ci && chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
       - uses: actions/checkout@v4
       - name: Download Dependencies
         run: ./ci/download-dependencies.sh
-      - uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
 
   ##########################################################################
 
   build:
     needs: [cache]
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK
@@ -79,15 +71,11 @@ jobs:
         with:
           java-version: ${{ env.JDK_CURRENT }}
           distribution: ${{ env.JDK_DISTRIBUTION }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
         shell: bash
-      - uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Build with Gradle
         run: ./ci/build.sh
 
@@ -104,14 +92,10 @@ jobs:
         with:
           java-version: ${{ env.JDK_CURRENT }}
           distribution: ${{ env.JDK_DISTRIBUTION }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
-      - uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Run Static Analysis
         run: ./ci/analyze-style.sh
         
@@ -127,14 +111,10 @@ jobs:
         with:
           java-version: ${{ env.JDK_CURRENT }}
           distribution: ${{ env.JDK_DISTRIBUTION }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
-      - uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Validate Javadocs
         run: ./ci/build-javadocs.sh
 
@@ -151,14 +131,10 @@ jobs:
         with:
           java-version: ${{ env.JDK_CURRENT }}
           distribution: ${{ env.JDK_DISTRIBUTION }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
-      - uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Publish SNAPSHOTs
         if: ${{ env.SONATYPE_USER != null && env.SONATYPE_PWD != null }}
         run: ./ci/publish-snapshots-release.sh
@@ -176,14 +152,10 @@ jobs:
         with:
           java-version: ${{ env.JDK_CURRENT }}
           distribution: ${{ env.JDK_DISTRIBUTION }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
-      - uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Publish Documentation
         run: ./ci/push-docs-ghpages.sh ${DOCS_BRANCH}
 
@@ -200,16 +172,9 @@ jobs:
         with:
           java-version: ${{ env.JDK_CURRENT }}
           distribution: ${{ env.JDK_DISTRIBUTION }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Initialize
         run: chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
-      - uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
       - name: Run Tests
         run: ./ci/tests/run-tests-simple.sh
-
-  ##########################################################################
-

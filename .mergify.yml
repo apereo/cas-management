@@ -1,13 +1,13 @@
 pull_request_rules:
 - name: automatic merge
   conditions:
-    - status-success=build (macos-latest)
+    - status-success=build
     - status-success=WIP
     - "#changes-requested-reviews-by=0"
-    - base=master
-    - label=dependencies
+    - base=7.0.x
+    - author=renovate[bot]
   actions:
     merge:
       method: merge
-    update:  
+    update:
     delete_head_branch:

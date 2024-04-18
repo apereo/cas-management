@@ -4,6 +4,10 @@
     ":preserveSemverRanges"
   ],
   "gradle": { "enabled": true },
+  "labels": ["Bot", "Renovate"],
+  "schedule": [
+    "after 10pm and before 6am every weekday"
+  ],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],

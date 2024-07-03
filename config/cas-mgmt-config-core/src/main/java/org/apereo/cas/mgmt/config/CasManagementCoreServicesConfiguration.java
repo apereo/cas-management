@@ -152,6 +152,7 @@ public class CasManagementCoreServicesConfiguration {
             .applicationContext(applicationContext)
             .environments(activeProfiles)
             .servicesCache(servicesManagerCache)
+            .casProperties(casProperties)
             .registeredServicesTemplatesManager(registeredService -> registeredService)
             .build();
         val cm = casProperties.getServiceRegistry().getCore().getManagementType() == ServiceRegistryCoreProperties.ServiceManagementTypes.DOMAIN

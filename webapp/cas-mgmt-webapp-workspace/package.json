@@ -35,7 +35,7 @@
     "ace-builds": "^1.4.14",
     "ace-diff": "^3.0.3",
     "lodash": "~4.17.21",
-    "mermaid": "^9.1.2",
+    "mermaid": "^11.2.1",
     "rxjs": "~7.5.5",
     "svg-pan-zoom": "^3.6.1",
     "tslib": "^2.3.1",
